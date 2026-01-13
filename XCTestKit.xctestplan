@@ -1,0 +1,73 @@
+{
+  "configurations" : [
+    {
+      "id" : "77B39A9C-6E63-4AEE-84AC-0488230AF595",
+      "name" : "Address Sanitizer",
+      "options" : {
+        "addressSanitizer" : {
+          "detectStackUseAfterReturn" : true,
+          "enabled" : true
+        },
+        "mallocScribbleEnabled" : true,
+        "undefinedBehaviorSanitizerEnabled" : true
+      }
+    },
+    {
+      "id" : "FA201237-15A0-41C4-A129-559C3E8921F2",
+      "name" : "Thread Sanitizer",
+      "options" : {
+        "threadSanitizerEnabled" : true,
+        "undefinedBehaviorSanitizerEnabled" : true
+      }
+    },
+    {
+      "id" : "BF4C0E74-676C-4D14-9D7A-572902453272",
+      "name" : "Malloc Guard Edges",
+      "options" : {
+        "mallocGuardEdgesEnabled" : true,
+        "mallocScribbleEnabled" : true,
+        "mallocStackLoggingOptions" : {
+          "loggingType" : "liveAllocations"
+        }
+      }
+    },
+    {
+      "id" : "6A194718-FA60-4608-A7A9-FCDB5F1B11A9",
+      "name" : "Hardware Memory Tagging",
+      "options" : {
+        "checkedAllocations" : {
+          "enabled" : true,
+          "requiresHardwareAcceleration" : false
+        },
+        "mallocStackLoggingOptions" : {
+          "loggingType" : "liveAllocations"
+        }
+      }
+    }
+  ],
+  "defaultOptions" : {
+    "mainThreadCheckerDetectionPolicy" : {
+      "severity" : "failure"
+    },
+    "nsZombieEnabled" : true,
+    "runtimeIssueDetection" : {
+      "severity" : "failure"
+    },
+    "testExecutionOrdering" : "random",
+    "testTimeoutsEnabled" : true,
+    "threadPerformanceCheckerRuntimeIssueDetection" : {
+      "severity" : "failure"
+    }
+  },
+  "testTargets" : [
+    {
+      "parallelizable" : false,
+      "target" : {
+        "containerPath" : "container:",
+        "identifier" : "XCTestKitTests",
+        "name" : "XCTestKitTests"
+      }
+    }
+  ],
+  "version" : 1
+}
