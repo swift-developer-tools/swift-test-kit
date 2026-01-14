@@ -63,26 +63,14 @@ public struct XCTKDiffOptions: Equatable, Sendable
     /// representation rather than their internal structure.
     ///
     /// - Warning: Disabling the depth limit may impact performance.
-    public var maxRecursionDepth    : Int?
-    
-    /// Whether to collapse equal trees when computing diffs.
-    ///
-    /// The default value is `true`.
-    ///
-    /// When enabled, the diff computation stops recursing once it determines
-    /// that two subtrees are equal, improving performance on large structures
-    /// with localized changes.
-    ///
-    /// - Warning: Disabling tree-collapsing may impact performance.
-    public var collapseEqualTrees   : Bool
+    public var maxRecursionDepth: Int?
     
     
     
     /// Initializes an ``XCTKDiffOptions`` instance, optionally specifying
     /// values for its properties.
     public init(
-        maxRecursionDepth   : Int?  = 20,
-        collapseEqualTrees  : Bool  = true
+        maxRecursionDepth: Int? = 20,
     )
     {
         precondition(
@@ -91,8 +79,7 @@ public struct XCTKDiffOptions: Equatable, Sendable
             "maxRecursionDepth must be positive or nil"
         )
         
-        self.maxRecursionDepth      = maxRecursionDepth
-        self.collapseEqualTrees     = collapseEqualTrees
+        self.maxRecursionDepth = maxRecursionDepth
     }
 }
 

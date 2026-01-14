@@ -120,7 +120,6 @@ final class ConfigurationTests: XCTestCaseReset
         let options = XCTKDiffOptions()
         
         XCTAssertEqual(options.maxRecursionDepth, 20)
-        XCTAssertEqual(options.collapseEqualTrees, true)
     }
     
     
