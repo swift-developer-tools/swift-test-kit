@@ -35,9 +35,19 @@ let package = Package(
             name: "XCTestKit"
         ),
         
+        .target(
+            name:           "XCTestKitTestUtilities",
+            dependencies:   ["XCTestKit"],
+            path:           "Tests/Utilities"
+        ),
+        
         .testTarget(
-            name:           "XCTestKitTests",
-            dependencies:   ["XCTestKit"]
+            name: "XCTestKitTests",
+            dependencies:
+            [
+                "XCTestKit",
+                "XCTestKitTestUtilities"
+            ]
         )
     ]
 )
