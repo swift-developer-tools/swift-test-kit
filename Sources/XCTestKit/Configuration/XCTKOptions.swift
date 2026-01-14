@@ -7,6 +7,48 @@
 //
 //===----------------------------------------------------------------------===//
 
+// MARK: - XCTKOptions
+
+// TODO: Collapse options to a flat hierarchy if many more are not added?
+/// The options for testing.
+public struct XCTKOptions: Equatable, Sendable
+{
+    /// Whether to compute and display diffs on assertion failure.
+    ///
+    /// The default value is `true`. Pass `false` to delegate to the underlying
+    /// XCTest equivalent.
+    public var diffEnabled  : Bool
+    
+    /// The options for computing diffs.
+    ///
+    /// The default value is a default-initialized ``XCTKDiffOptions``
+    /// instance.
+    public var diffOptions  : XCTKDiffOptions
+    
+    /// The options for printing diffs.
+    ///
+    /// The default value is a default-initialized ``XCTKPrintOptions``
+    /// instance.
+    public var printOptions : XCTKPrintOptions
+    
+    
+    
+    /// Initializes an ``XCTKOptions`` instance, optionally specifying values
+    /// for its properties.
+    public init(
+        diffEnabled     : Bool              = true,
+        diffOptions     : XCTKDiffOptions   = .init(),
+        printOptions    : XCTKPrintOptions  = .init()
+    )
+    {
+        self.diffEnabled    = diffEnabled
+        self.diffOptions    = diffOptions
+        self.printOptions   = printOptions
+    }
+}
+
+
+
 // MARK: - XCTKDiffOptions
 
 /// The options for computing diffs.
