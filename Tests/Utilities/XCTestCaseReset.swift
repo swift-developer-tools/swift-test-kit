@@ -12,10 +12,22 @@ import XCTest
 
 
 
-final class XCTestKitTests: XCTestCase
+/// Resets the global XCTestKit configuration between test cases.
+class XCTestCaseReset: XCTestCase
 {
-    func testExample() throws
+    override func setUp()
     {
+        super.setUp()
         
+        XCTKConfig.global = XCTKOptions()
+    }
+    
+    
+    
+    override func tearDown()
+    {
+        XCTKConfig.global = XCTKOptions()
+        
+        super.tearDown()
     }
 }
