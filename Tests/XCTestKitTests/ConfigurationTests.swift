@@ -14,7 +14,7 @@ import XCTest
 
 
 // TODO: Test assertion-level options override class and global.
-final class ConfigurationTests: XCTestCaseReset
+final class ConfigurationTests: XCTestKitCase
 {
     func testGlobalConfigAssignment() throws
     {

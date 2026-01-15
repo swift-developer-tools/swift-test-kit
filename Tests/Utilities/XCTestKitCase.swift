@@ -13,7 +13,7 @@ import XCTest
 
 
 /// Resets the global XCTestKit configuration between test cases.
-class XCTestCaseReset: XCTestCase
+class XCTestKitCase: XCTestCase
 {
     override func setUp()
     {
