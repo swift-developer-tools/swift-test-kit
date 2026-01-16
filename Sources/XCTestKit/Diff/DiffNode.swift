@@ -202,6 +202,12 @@ internal enum DiffNodeLabel: Equatable, Sendable
         _ index: Int
     )
     
+    /// A character in a string.
+    /// - Parameter index: The zero-indexed character position.
+    case character(
+        _ index: Int
+    )
+    
     
     
     /// Creates a ``DiffNodeLabel/key(description:typeName:)`` instance from
