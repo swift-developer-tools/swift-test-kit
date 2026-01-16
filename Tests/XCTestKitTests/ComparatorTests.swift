@@ -13,7 +13,7 @@ import XCTest
 
 
 
-final class DiffEngineTests: XCTestKitCase
+final class ComparatorTests: XCTestKitCase
 {
     // MARK: - Arrays
     
@@ -22,7 +22,7 @@ final class DiffEngineTests: XCTestKitCase
         let expected    : [String]  = ["a", "b", "c"]
         let actual      : [String]  = ["a", "b"]
         
-        let node: DiffNode = DiffEngine.computeDiff(
+        let node: DiffNode = Comparator.computeDiff(
             expected:   expected,
             actual:     actual
         )
@@ -56,7 +56,7 @@ final class DiffEngineTests: XCTestKitCase
         let expected    : [String]  = ["a", "b", "c"]
         let actual      : [String]  = ["a", "x", "c"]
         
-        let node: DiffNode = DiffEngine.computeDiff(
+        let node: DiffNode = Comparator.computeDiff(
             expected:   expected,
             actual:     actual
         )
@@ -92,7 +92,7 @@ final class DiffEngineTests: XCTestKitCase
         let expected    : [String]  = ["a", "b"]
         let actual      : [String]  = ["a", "b", "c"]
         
-        let node: DiffNode = DiffEngine.computeDiff(
+        let node: DiffNode = Comparator.computeDiff(
             expected:   expected,
             actual:     actual
         )
@@ -133,7 +133,7 @@ final class DiffEngineTests: XCTestKitCase
         let expected    : [Item]    = [Item(id: 1), Item(id: 2), Item(id: 3)]
         let actual      : [Item]    = [Item(id: 1), Item(id: 0), Item(id: 3)]
         
-        let node: DiffNode = DiffEngine.computeDiff(
+        let node: DiffNode = Comparator.computeDiff(
             expected:   expected,
             actual:     actual
         )
@@ -185,7 +185,7 @@ final class DiffEngineTests: XCTestKitCase
         /// Examine the children of `Outer`, but not those of `Inner`.
         let options = XCTKDiffOptions(maxRecursionDepth: 1)
         
-        let node: DiffNode = DiffEngine.computeDiff(
+        let node: DiffNode = Comparator.computeDiff(
             expected:   expected,
             actual:     actual,
             options:    options
@@ -227,7 +227,7 @@ final class DiffEngineTests: XCTestKitCase
         let actual      = L1(l2: L2(l3: L3(value: 2)))
         let options     = XCTKDiffOptions(maxRecursionDepth: nil)
         
-        let node: DiffNode = DiffEngine.computeDiff(
+        let node: DiffNode = Comparator.computeDiff(
             expected:   expected,
             actual:     actual,
             options:    options
@@ -275,7 +275,7 @@ final class DiffEngineTests: XCTestKitCase
         let expected    : [String : Int]    = ["a": 1, "b": 2]
         let actual      : [String : Int]    = ["a": 1, "b": 0]
         
-        let node: DiffNode = DiffEngine.computeDiff(
+        let node: DiffNode = Comparator.computeDiff(
             expected:   expected,
             actual:     actual
         )
@@ -315,7 +315,7 @@ final class DiffEngineTests: XCTestKitCase
         let expected    : [String : Int]    = ["a": 1, "b": 2]
         let actual      : [String : Int]    = ["a": 1]
         
-        let node: DiffNode = DiffEngine.computeDiff(
+        let node: DiffNode = Comparator.computeDiff(
             expected:   expected,
             actual:     actual
         )
@@ -353,7 +353,7 @@ final class DiffEngineTests: XCTestKitCase
         let expected    : [String : Int]    = ["a": 1]
         let actual      : [String : Int]    = ["a": 1, "b": 2]
         
-        let node: DiffNode = DiffEngine.computeDiff(
+        let node: DiffNode = Comparator.computeDiff(
             expected:   expected,
             actual:     actual
         )
@@ -393,7 +393,7 @@ final class DiffEngineTests: XCTestKitCase
         let expected    : String?   = nil
         let actual      : String?   = nil
         
-        let node: DiffNode = DiffEngine.computeDiff(
+        let node: DiffNode = Comparator.computeDiff(
             expected:   expected,
             actual:     actual
         )
@@ -413,7 +413,7 @@ final class DiffEngineTests: XCTestKitCase
         let expected    : String?   = "hello"
         let actual      : String?   = "world"
         
-        let node: DiffNode = DiffEngine.computeDiff(
+        let node: DiffNode = Comparator.computeDiff(
             expected:   expected,
             actual:     actual
         )
@@ -449,7 +449,7 @@ final class DiffEngineTests: XCTestKitCase
         let expected    : String?   = "hello"
         let actual      : String?   = "hello"
         
-        let node: DiffNode = DiffEngine.computeDiff(
+        let node: DiffNode = Comparator.computeDiff(
             expected:   expected,
             actual:     actual
         )
@@ -469,7 +469,7 @@ final class DiffEngineTests: XCTestKitCase
         let expected    : String?   = nil
         let actual      : String?   = "hello"
         
-        let node: DiffNode = DiffEngine.computeDiff(
+        let node: DiffNode = Comparator.computeDiff(
             expected:   expected,
             actual:     actual
         )
@@ -503,7 +503,7 @@ final class DiffEngineTests: XCTestKitCase
         let expected    : String?   = "hello"
         let actual      : String?   = nil
         
-        let node: DiffNode = DiffEngine.computeDiff(
+        let node: DiffNode = Comparator.computeDiff(
             expected:   expected,
             actual:     actual
         )
@@ -536,7 +536,7 @@ final class DiffEngineTests: XCTestKitCase
     
     func testPrimitiveEqualValues() throws
     {
-        let node: DiffNode = DiffEngine.computeDiff(
+        let node: DiffNode = Comparator.computeDiff(
             expected:   10,
             actual:     10
         )
@@ -562,7 +562,7 @@ final class DiffEngineTests: XCTestKitCase
         let expected    : Set<String>   = ["a", "b", "c"]
         let actual      : Set<String>   = ["a", "b"]
         
-        let node: DiffNode = DiffEngine.computeDiff(
+        let node: DiffNode = Comparator.computeDiff(
             expected:   expected,
             actual:     actual
         )
@@ -596,7 +596,7 @@ final class DiffEngineTests: XCTestKitCase
         let expected    : Set<String>   = ["a", "b"]
         let actual      : Set<String>   = ["a", "b", "c"]
         
-        let node: DiffNode = DiffEngine.computeDiff(
+        let node: DiffNode = Comparator.computeDiff(
             expected:   expected,
             actual:     actual
         )
@@ -653,7 +653,7 @@ final class DiffEngineTests: XCTestKitCase
             address:    Address(city: "Place", zip: "54321")
         )
         
-        let node: DiffNode = DiffEngine.computeDiff(
+        let node: DiffNode = Comparator.computeDiff(
             expected:   expected,
             actual:     actual
         )
@@ -712,7 +712,7 @@ final class DiffEngineTests: XCTestKitCase
             age:    10
         )
         
-        let node: DiffNode = DiffEngine.computeDiff(
+        let node: DiffNode = Comparator.computeDiff(
             expected:   user,
             actual:     user
         )
@@ -747,7 +747,7 @@ final class DiffEngineTests: XCTestKitCase
             age:    20
         )
         
-        let node: DiffNode = DiffEngine.computeDiff(
+        let node: DiffNode = Comparator.computeDiff(
             expected:   expected,
             actual:     actual
         )

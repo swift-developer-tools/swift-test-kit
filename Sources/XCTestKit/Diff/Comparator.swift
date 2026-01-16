@@ -8,14 +8,14 @@
 //===----------------------------------------------------------------------===//
 
 // TODO: Multi-line string diffing.
-// TODO: DiffContext?
+// TODO: ComparatorContext?
 /// Currently, the recursion depth is passed as a parameter to comparison
 /// methods. It could have also been a private property, but the methods would
 /// then have had to be mutating. If additional context is necessary, it would
 /// be best to extract the mutable state to a `DiffContext` object.
 
 /// Computes and manages diffs.
-internal struct DiffEngine
+internal struct Comparator
 {
     /// The options for computing diffs.
     let options: XCTKDiffOptions
@@ -35,7 +35,7 @@ internal struct DiffEngine
         options     : XCTKDiffOptions   = .init()
     ) -> DiffNode
     {
-        let engine = DiffEngine(options: options)
+        let engine = Comparator(options: options)
         
         let kind: DiffNodeKind = engine.compareEquatable(
             expected:   expected,
