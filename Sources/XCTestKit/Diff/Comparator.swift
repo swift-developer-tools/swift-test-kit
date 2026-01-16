@@ -376,17 +376,17 @@ internal struct Comparator
         {
             let kind: DiffNodeKind
             
-            let hasRemoval      : Bool  = removals[offset] != nil
-            let hasInsertion    : Bool  = insertions[offset] != nil
+            let removal     : Any?  = removals[offset]
+            let insertion   : Any?  = insertions[offset]
             
             if
-                hasRemoval,
-                hasInsertion
+                let removal,
+                let insertion
             {
                 /// Modified element.
                 kind = compareAny(
-                    expected:       removals[offset]!,
-                    actual:         insertions[offset]!,
+                    expected:       removal,
+                    actual:         insertion,
                     parentDepth:    depth
                 )
                 
@@ -395,13 +395,17 @@ internal struct Comparator
                     continue
                 }
             }
-            else if hasRemoval
+            else if let removal
             {
-                kind = .missingElement(expected: removals[offset]!)
+                kind = .missingElement(expected: removal)
+            }
+            else if let insertion
+            {
+                kind = .unexpectedElement(actual: insertion)
             }
             else
             {
-                kind = .unexpectedElement(actual: insertions[offset]!)
+                continue;
             }
             
             
