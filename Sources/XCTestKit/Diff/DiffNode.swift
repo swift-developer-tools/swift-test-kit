@@ -196,6 +196,12 @@ internal enum DiffNodeLabel: Equatable, Sendable
     /// A member of an unordered collection (for example, a set).
     case member
     
+    /// A line in a multi-line string.
+    /// - Parameter index: The zero-indexed line number.
+    case line(
+        _ index: Int
+    )
+    
     
     
     /// Creates a ``DiffNodeLabel/key(description:typeName:)`` instance from
