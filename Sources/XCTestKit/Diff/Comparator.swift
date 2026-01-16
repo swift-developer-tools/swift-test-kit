@@ -12,9 +12,9 @@
 /// Currently, the recursion depth is passed as a parameter to comparison
 /// methods. It could have also been a private property, but the methods would
 /// then have had to be mutating. If additional context is necessary, it would
-/// be best to extract the mutable state to a `DiffContext` object.
+/// be best to extract the mutable state to a `ComparatorContext` object.
 
-/// Computes and manages diffs.
+/// The entry point for computing diffs between various data types.
 internal struct Comparator
 {
     /// The options for computing diffs.
