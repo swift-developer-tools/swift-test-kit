@@ -118,6 +118,23 @@ internal enum CycleLocation
 /// actual value.
 internal enum DiffNodeKind
 {
+    /// A cycle was detected during comparison.
+    ///
+    /// A cycle may occur when comparing reference types (classes) that contain
+    /// a circular reference. The comparison stops immediately to prevent
+    /// infinite recursion (rather than waiting to stop at the limit specified
+    /// by ``XCTKDiffOptions/maxRecursionDepth``, if any).
+    ///
+    /// - Parameters:
+    ///   - expected: The expected value.
+    ///   - actual: The actual value.
+    ///   - location: The location where the cycle was detected.
+    case cycle(
+        expected    : Any,
+        actual      : Any,
+        location    : CycleLocation
+    )
+    
     /// The values are equal.
     /// - Parameter expected: The expected value.
     case same(
@@ -150,9 +167,9 @@ internal enum DiffNodeKind
     ///   - tree: The diff tree representing the difference between the
     ///   expected and actual values. This will be empty at leaf nodes.
     case different(
-        expected:   Any,
-        actual:     Any,
-        tree:       [DiffNode]
+        expected    : Any,
+        actual      : Any,
+        tree        : [DiffNode]
     )
     
     /// An element or key was present in the expected value, but missing from
