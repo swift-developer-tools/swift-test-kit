@@ -7,7 +7,6 @@
 //
 //===----------------------------------------------------------------------===//
 
-// TODO: Multi-line string diffing.
 // TODO: ComparatorContext?
 /// Currently, the recursion depth is passed as a parameter to comparison
 /// methods. It could have also been a private property, but the methods would
@@ -258,6 +257,19 @@ internal struct Comparator
             default:
                 
                 break
+        }
+        
+        
+        
+        if
+            let expectedString  = expected  as? String,
+            let actualString    = actual    as? String
+        {
+            return StringComparator.compare(
+                expected:   expectedString,
+                actual:     actualString,
+                options:    options
+            )
         }
         
         

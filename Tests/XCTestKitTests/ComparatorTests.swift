@@ -82,7 +82,8 @@ final class ComparatorTests: XCTestKitCase
         
         XCTAssertEqual(exp as? String, "b")
         XCTAssertEqual(act as? String, "x")
-        XCTAssertTrue(childTree.isEmpty)
+        XCTAssertEqual(childTree.count, 1)
+        XCTAssertEqual(childTree[0].label, .character(0))
     }
     
     
@@ -439,7 +440,9 @@ final class ComparatorTests: XCTestKitCase
         
         XCTAssertEqual(exp as? String, "hello")
         XCTAssertEqual(act as? String, "world")
-        XCTAssertTrue(childTree.isEmpty)
+        XCTAssertEqual(childTree.count, 2)
+        XCTAssertEqual(childTree[0].label, .character(0))
+        XCTAssertEqual(childTree[1].label, .character(5))
     }
     
     
@@ -692,7 +695,9 @@ final class ComparatorTests: XCTestKitCase
         
         XCTAssertEqual(exp as? String, "12345")
         XCTAssertEqual(act as? String, "54321")
-        XCTAssertTrue(addressChildTree.isEmpty)
+        XCTAssertFalse(addressChildTree.isEmpty)
+        XCTAssertEqual(addressChildTree[0].label, .character(0))
+        XCTAssertEqual(addressChildTree[1].label, .character(5))
     }
     
     
