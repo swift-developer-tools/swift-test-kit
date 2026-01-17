@@ -274,7 +274,13 @@ internal struct Comparator
                 
                 
                 
-            default:
+            case
+                .class,
+                .foreignReference,
+                .struct,
+                .tuple,
+                .none,
+                .some:
                 
                 break
         }
