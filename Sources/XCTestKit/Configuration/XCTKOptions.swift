@@ -9,7 +9,6 @@
 
 // MARK: - XCTKOptions
 
-// TODO: Collapse options to a flat hierarchy if many more are not added?
 /// The options for testing.
 public struct XCTKOptions: Equatable, Sendable
 {
