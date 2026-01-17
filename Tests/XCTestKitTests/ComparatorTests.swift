@@ -546,14 +546,14 @@ final class ComparatorTests: XCTestKitCase
         
         XCTAssertEqual(node.label, .root)
         
-        guard case let .same(expected) = node.kind
+        guard case let .same(exp) = node.kind
         else
         {
             XCTFail("Expected .same, got \(node.kind)")
             return
         }
         
-        XCTAssertEqual(expected as? Int, 10)
+        XCTAssertEqual(exp as? Int, 10)
     }
     
     
