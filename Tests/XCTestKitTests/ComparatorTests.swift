@@ -1323,4 +1323,86 @@ final class ComparatorTests: XCTestKitCase
         XCTAssertEqual(act as? Int, 2)
         XCTAssertTrue(valueTree.isEmpty)
     }
+    
+    
+    
+    func testDeeplyNestedEqualStructs() throws
+    {
+        struct L4: Equatable { let value    : Int }
+        struct L3: Equatable { let l4       : L4 }
+        struct L2: Equatable { let l3       : L3 }
+        struct L1: Equatable { let l2       : L2 }
+        
+        let expected = L1(l2: L2(l3: L3(l4: L4(value: 99))))
+        
+        let node: DiffNode = Comparator.computeDiff(
+            expected:   expected,
+            actual:     expected
+        )
+        
+        guard case .same = node.kind
+        else
+        {
+            XCTFail("Expected .same, got \(node.kind)")
+            return
+        }
+    }
+    
+    
+    
+    func testDeeplyNestedStructsWithMultipleEqualSiblings() throws
+    {
+        struct Leaf: Equatable
+        {
+            let value: Int
+        }
+        
+        struct Parent: Equatable
+        {
+            let a   : Leaf
+            let b   : Leaf
+            let c   : Leaf
+        }
+        
+        
+        
+        let expected = Parent(
+            a:  Leaf(value: 1),
+            b:  Leaf(value: 2),
+            c:  Leaf(value: 3)
+        )
+        
+        let actual = Parent(
+            a:  Leaf(value: 1),
+            b:  Leaf(value: 0),
+            c:  Leaf(value: 3)
+        )
+        
+        let node: DiffNode = Comparator.computeDiff(
+            expected:   expected,
+            actual:     actual
+        )
+        
+        guard case let .different(_, _, tree) = node.kind
+        else
+        {
+            XCTFail("Expected .different, got \(node.kind)")
+            return
+        }
+        
+        XCTAssertEqual(tree.count, 1)
+        XCTAssertEqual(tree[0].label, .property(name: "b"))
+        
+        
+        
+        guard case let .different(_, _, valueTree) = tree[0].kind
+        else
+        {
+            XCTFail("Expected .different, got \(tree[0].kind)")
+            return
+        }
+        
+        XCTAssertEqual(valueTree.count, 1)
+        XCTAssertEqual(valueTree[0].label, .property(name: "value"))
+    }
 }
