@@ -120,6 +120,7 @@ final class ConfigurationTests: XCTestKitCase
         let options = XCTKDiffOptions()
         
         XCTAssertEqual(options.maxRecursionDepth, 20)
+        XCTAssertNil(options.characterDiffThreshold)
     }
     
     
