@@ -180,16 +180,6 @@ internal struct Comparator
         /// ensures both values are of the same type.
         switch expectedMirror.displayStyle
         {
-            case .optional:
-                
-                return compareOptionals(
-                    expected:           expected,
-                    actual:             actual,
-                    expectedMirror:     expectedMirror,
-                    actualMirror:       actualMirror,
-                    depth:              depth
-                )
-                
             case .collection:
                 
                 let expectedElements: [Any]
@@ -209,6 +199,8 @@ internal struct Comparator
                     actual:     actual,
                     tree:       children
                 )
+                
+                
                 
             case .dictionary:
                 
@@ -232,6 +224,20 @@ internal struct Comparator
                     tree:       children
                 )
                 
+                
+                
+            case .optional:
+                
+                return compareOptionals(
+                    expected:           expected,
+                    actual:             actual,
+                    expectedMirror:     expectedMirror,
+                    actualMirror:       actualMirror,
+                    depth:              depth
+                )
+                
+                
+                
             case .set:
                 
                 guard
@@ -253,6 +259,8 @@ internal struct Comparator
                     actual:     actual,
                     tree:       children
                 )
+                
+                
                 
             default:
                 
