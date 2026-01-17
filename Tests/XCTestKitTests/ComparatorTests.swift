@@ -1249,12 +1249,13 @@ final class ComparatorTests: XCTestKitCase
     
     func testUnlimitedDepth() throws
     {
-        struct L3: Equatable { let value    : Int }
+        struct L4: Equatable { let value    : Int }
+        struct L3: Equatable { let l4       : L4 }
         struct L2: Equatable { let l3       : L3 }
         struct L1: Equatable { let l2       : L2 }
         
-        let expected    = L1(l2: L2(l3: L3(value: 1)))
-        let actual      = L1(l2: L2(l3: L3(value: 2)))
+        let expected    = L1(l2: L2(l3: L3(l4: L4(value: 1))))
+        let actual      = L1(l2: L2(l3: L3(l4: L4(value: 2))))
         let options     = XCTKDiffOptions(maxRecursionDepth: nil)
         
         let node: DiffNode = Comparator.computeDiff(
@@ -1271,6 +1272,7 @@ final class ComparatorTests: XCTestKitCase
         }
         
         XCTAssertEqual(tree1.count, 1)
+        XCTAssertEqual(tree1[0].label, .property(name: "l2"))
         
         
         
@@ -1282,6 +1284,7 @@ final class ComparatorTests: XCTestKitCase
         }
         
         XCTAssertEqual(tree2.count, 1)
+        XCTAssertEqual(tree2[0].label, .property(name: "l3"))
         
         
         
@@ -1293,6 +1296,31 @@ final class ComparatorTests: XCTestKitCase
         }
         
         XCTAssertEqual(tree3.count, 1)
-        XCTAssertEqual(tree3[0].label, .property(name: "value"))
+        XCTAssertEqual(tree3[0].label, .property(name: "l4"))
+        
+        
+        
+        guard case let .different(_, _, tree4) = tree3[0].kind
+        else
+        {
+            XCTFail("Expected .different, got \(tree3[0].kind)")
+            return
+        }
+        
+        XCTAssertEqual(tree4.count, 1)
+        XCTAssertEqual(tree4[0].label, .property(name: "value"))
+        
+        
+        
+        guard case let .different(exp, act, valueTree) = tree4[0].kind
+        else
+        {
+            XCTFail("Expected .different, got \(tree4[0].kind)")
+            return
+        }
+        
+        XCTAssertEqual(exp as? Int, 1)
+        XCTAssertEqual(act as? Int, 2)
+        XCTAssertTrue(valueTree.isEmpty)
     }
 }
