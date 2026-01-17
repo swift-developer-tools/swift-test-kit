@@ -205,8 +205,8 @@ internal struct Comparator
             case .dictionary:
                 
                 guard
-                    let expectedDict    = expected as? [AnyHashable : Any],
-                    let actualDict      = actual as? [AnyHashable : Any]
+                    let expectedDict    = expected  as? [AnyHashable : Any],
+                    let actualDict      = actual    as? [AnyHashable : Any]
                 else
                 {
                     break
@@ -222,6 +222,18 @@ internal struct Comparator
                     expected:   expected,
                     actual:     actual,
                     tree:       children
+                )
+                
+                
+                
+            case .enum:
+                
+                return compareEnums(
+                    expected:           expected,
+                    actual:             actual,
+                    expectedMirror:     expectedMirror,
+                    actualMirror:       actualMirror,
+                    depth:              depth
                 )
                 
                 
@@ -780,6 +792,118 @@ internal struct Comparator
     
     
     
+    /// Compares the given enum values.
+    /// - Parameters:
+    ///   - expected: The expected value.
+    ///   - actual: The actual value.
+    ///   - expectedMirror: The `Mirror` of the expected value.
+    ///   - actualMirror: The `Mirror` of the actual value.
+    ///   - depth: The recursion depth.
+    /// - Returns: The diff node kind.
+    private func compareEnums(
+        expected        : Any,
+        actual          : Any,
+        expectedMirror  : Mirror,
+        actualMirror    : Mirror,
+        depth           : Int
+    ) -> DiffNodeKind
+    {
+        let expectedCaseName: String
+            = Self.getEnumCaseName(from: expected)
+        
+        let actualCaseName: String
+            = Self.getEnumCaseName(from: actual)
+        
+        guard expectedCaseName == actualCaseName
+        else
+        {
+            return .different(
+                expected:   expected,
+                actual:     actual,
+                tree:       []
+            )
+        }
+        
+        
+        
+        /// Bypass the case-name wrapper that `Mirror` produces.
+        /// `typealias Mirror.Child = (label: String?, value: Any)`
+        guard
+            let expectedAssoc   : Any   = expectedMirror.children.first?.value,
+            let actualAssoc     : Any   = actualMirror.children.first?.value
+        else
+        {
+            return .same(expected: expected)
+        }
+        
+        
+        
+        let expectedAssocMirror     = Mirror(reflecting: expectedAssoc)
+        let actualAssocMirror       = Mirror(reflecting: actualAssoc)
+        
+        /// Check if this is a single primitive associated value.
+        /// `Mirror` represents multi-value associates values as tuples with
+        /// children, but single primitive associated values have no children.
+        if expectedAssocMirror.children.isEmpty
+        {
+            let innerKind: DiffNodeKind = compareAny(
+                expected:       expectedAssoc,
+                actual:         actualAssoc,
+                parentDepth:    depth
+            )
+            
+            if case .same = innerKind
+            {
+                return .same(expected: expected)
+            }
+            
+            return .different(
+                expected:   expected,
+                actual:     actual,
+                tree:
+                [
+                    DiffNode(
+                        label:  .index(0),
+                        kind:   innerKind
+                    )
+                ]
+            )
+        }
+        
+        
+        
+        let assocKind: DiffNodeKind = compareMirrorChildren(
+            expected:           expectedAssoc,
+            actual:             actualAssoc,
+            expectedMirror:     expectedAssocMirror,
+            actualMirror:       actualAssocMirror,
+            depth:              depth
+        )
+        
+        if case .same = assocKind
+        {
+            return .same(expected: expected)
+        }
+        
+        guard case let .different(_, _, assocTree) = assocKind
+        else
+        {
+            return .different(
+                expected:   expected,
+                actual:     actual,
+                tree:       []
+            )
+        }
+        
+        return .different(
+            expected:   expected,
+            actual:     actual,
+            tree:       assocTree
+        )
+    }
+    
+    
+    
     /// Compares the given optional values.
     /// - Parameters:
     ///   - expected: The expected value.
@@ -939,5 +1063,29 @@ internal struct Comparator
         }
         
         return .property(name: mirrorLabel)
+    }
+    
+    
+    
+    /// Gets the enum case name from the given enum value.
+    ///
+    /// For example, `SomeEnum.someCase(value: 0)` returns `someCase`.
+    ///
+    /// - Parameter value: The enum value from which to get the case name.
+    /// - Returns: The enum case name.
+    private static func getEnumCaseName(
+        from value: Any
+    ) -> String
+    {
+        let description = String(describing: value)
+        
+        guard let parenIndex: String.Index = description.firstIndex(of: "(")
+        else
+        {
+            /// No associated values.
+            return description
+        }
+        
+        return String(description[..<parenIndex])
     }
 }
