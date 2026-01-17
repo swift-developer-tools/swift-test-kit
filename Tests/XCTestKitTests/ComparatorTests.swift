@@ -164,6 +164,74 @@ final class ComparatorTests: XCTestKitCase
     
     
     
+    func testArrayInsertionAtStart() throws
+    {
+        let expected    : [String]  = ["a", "b", "c"]
+        let actual      : [String]  = ["x", "a", "b", "c"]
+        
+        let node: DiffNode = Comparator.computeDiff(
+            expected:   expected,
+            actual:     actual
+        )
+        
+        guard case let .different(_, _, tree) = node.kind
+        else
+        {
+            XCTFail("Expected .different, got \(node.kind)")
+            return
+        }
+        
+        XCTAssertEqual(tree.count, 1)
+        XCTAssertEqual(tree[0].label, .index(0))
+        
+        
+        
+        guard case let .unexpectedElement(act) = tree[0].kind
+        else
+        {
+            XCTFail("Expected .unexpectedElement, got \(tree[0].kind)")
+            return
+        }
+        
+        XCTAssertEqual(act as? String, "x")
+    }
+    
+    
+    
+    func testArrayRemovalAtStart() throws
+    {
+        let expected    : [String]  = ["x", "a", "b", "c"]
+        let actual      : [String]  = ["a", "b", "c"]
+        
+        let node: DiffNode = Comparator.computeDiff(
+            expected:   expected,
+            actual:     actual
+        )
+        
+        guard case let .different(_, _, tree) = node.kind
+        else
+        {
+            XCTFail("Expected .different, got \(node.kind)")
+            return
+        }
+        
+        XCTAssertEqual(tree.count, 1)
+        XCTAssertEqual(tree[0].label, .index(0))
+        
+        
+        
+        guard case let .missingElement(exp) = tree[0].kind
+        else
+        {
+            XCTFail("Expected .missingElement, got \(tree[0].kind)")
+            return
+        }
+        
+        XCTAssertEqual(exp as? String, "x")
+    }
+    
+    
+    
     // MARK: - Depth
     
     func testDepthLimitStopsRecursion() throws
