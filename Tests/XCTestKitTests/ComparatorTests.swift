@@ -42,7 +42,7 @@ final class ComparatorTests: XCTestKitCase
         guard case let .missingElement(exp) = tree[0].kind
         else
         {
-            XCTFail("Expected .missingElement at index 2")
+            XCTFail("Expected .missingElement, got \(tree[0].kind)")
             return
         }
         
@@ -76,7 +76,7 @@ final class ComparatorTests: XCTestKitCase
         guard case let .different(exp, act, childTree) = tree[0].kind
         else
         {
-            XCTFail("Expected .different at index 1")
+            XCTFail("Expected .different, got \(tree[0].kind)")
             return
         }
         
@@ -113,7 +113,7 @@ final class ComparatorTests: XCTestKitCase
         guard case let .unexpectedElement(act) = tree[0].kind
         else
         {
-            XCTFail("Expected .unexpectedElement at index 2")
+            XCTFail("Expected .unexpectedElement, got \(tree[0].kind)")
             return
         }
         
@@ -154,7 +154,7 @@ final class ComparatorTests: XCTestKitCase
         guard case let .different(_, _, childTree) = tree[0].kind
         else
         {
-            XCTFail("Expected .different at index 1")
+            XCTFail("Expected .different, got \(tree[0].kind)")
             return
         }
         
@@ -207,7 +207,7 @@ final class ComparatorTests: XCTestKitCase
         guard case let .different(exp, act, childTree) = tree[0].kind
         else
         {
-            XCTFail("Expected .different for property 'inner'")
+            XCTFail("Expected .different, got \(tree[0].kind)")
             return
         }
         
@@ -237,7 +237,7 @@ final class ComparatorTests: XCTestKitCase
         guard case let .different(_, _, tree1) = node.kind
         else
         {
-            XCTFail("Expected .different at root, got \(node.kind)")
+            XCTFail("Expected .different, got \(node.kind)")
             return
         }
         
@@ -248,7 +248,7 @@ final class ComparatorTests: XCTestKitCase
         guard case let .different(_, _, tree2) = tree1[0].kind
         else
         {
-            XCTFail("Expected .different at level 2, got \(tree1[0].kind)")
+            XCTFail("Expected .different, got \(tree1[0].kind)")
             return
         }
         
@@ -259,7 +259,7 @@ final class ComparatorTests: XCTestKitCase
         guard case let .different(_, _, tree3) = tree2[0].kind
         else
         {
-            XCTFail("Expected .different at level 3, got \(tree2[0].kind)")
+            XCTFail("Expected .different, got \(tree2[0].kind)")
             return
         }
         
@@ -300,7 +300,7 @@ final class ComparatorTests: XCTestKitCase
         guard case let .different(exp, act, childTree) = tree[0].kind
         else
         {
-            XCTFail("Expected .different for key 'b'")
+            XCTFail("Expected .different, got \(tree[0].kind)")
             return
         }
         
@@ -340,7 +340,7 @@ final class ComparatorTests: XCTestKitCase
         guard case let .missingElement(exp) = tree[0].kind
         else
         {
-            XCTFail("Expected .missingElement for key 'b'")
+            XCTFail("Expected .missingElement, got \(tree[0].kind)")
             return
         }
         
@@ -378,7 +378,7 @@ final class ComparatorTests: XCTestKitCase
         guard case let .unexpectedElement(act) = tree[0].kind
         else
         {
-            XCTFail("Expected .unexpectedElement for key 'b'")
+            XCTFail("Expected .unexpectedElement, got \(tree[0].kind)")
             return
         }
         
@@ -434,7 +434,7 @@ final class ComparatorTests: XCTestKitCase
         guard case let .different(exp, act, childTree) = tree[0].kind
         else
         {
-            XCTFail("Expected .different for wrapped value")
+            XCTFail("Expected .different, got \(tree[0].kind)")
             return
         }
         
@@ -492,7 +492,7 @@ final class ComparatorTests: XCTestKitCase
         guard case let .unexpectedElement(act) = tree[0].kind
         else
         {
-            XCTFail("Expected .unexpectedElement for wrapped value")
+            XCTFail("Expected .unexpectedElement, got \(tree[0].kind)")
             return
         }
         
@@ -526,7 +526,7 @@ final class ComparatorTests: XCTestKitCase
         guard case let .missingElement(exp) = tree[0].kind
         else
         {
-            XCTFail("Expected .missingElement for wrapped value")
+            XCTFail("Expected .missingElement, got \(tree[0].kind)")
             return
         }
         
@@ -585,7 +585,7 @@ final class ComparatorTests: XCTestKitCase
         guard case let .missingElement(exp) = tree[0].kind
         else
         {
-            XCTFail("Expected .missingElement")
+            XCTFail("Expected .missingElement, got \(tree[0].kind)")
             return
         }
         
@@ -619,7 +619,7 @@ final class ComparatorTests: XCTestKitCase
         guard case let .unexpectedElement(act) = tree[0].kind
         else
         {
-            XCTFail("Expected .unexpectedElement")
+            XCTFail("Expected .unexpectedElement, got \(tree[0].kind)")
             return
         }
         
@@ -664,7 +664,7 @@ final class ComparatorTests: XCTestKitCase
         guard case let .different(_, _, personTree) = node.kind
         else
         {
-            XCTFail("Expected .different at root")
+            XCTFail("Expected .different, got \(node.kind)")
             return
         }
         
@@ -676,7 +676,7 @@ final class ComparatorTests: XCTestKitCase
         guard case let .different(_, _, addressTree) = personTree[0].kind
         else
         {
-            XCTFail("Expected .different for property 'address'")
+            XCTFail("Expected .different, got \(personTree[0].kind)")
             return
         }
         
@@ -689,7 +689,7 @@ final class ComparatorTests: XCTestKitCase
             = addressTree[0].kind
         else
         {
-            XCTFail("Expected .different for property 'zip'")
+            XCTFail("Expected .different, got \(addressTree[0].kind)")
             return
         }
         
@@ -772,7 +772,7 @@ final class ComparatorTests: XCTestKitCase
         guard case let .different(exp, act, childTree) = tree[0].kind
         else
         {
-            XCTFail("Expected .different for age node kind")
+            XCTFail("Expected .different, got \(tree[0].kind)")
             return
         }
         
