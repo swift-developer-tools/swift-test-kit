@@ -775,6 +775,67 @@ final class ComparatorTests: XCTestKitCase
     
     
     
+    func testEnumRawValueDifferentCases() throws
+    {
+        enum Priority: Int, Equatable
+        {
+            case low        = 1
+            case medium     = 2
+            case high       = 3
+        }
+        
+        
+        
+        let expected    : Priority  = .low
+        let actual      : Priority  = .high
+        
+        let node: DiffNode = Comparator.computeDiff(
+            expected:   expected,
+            actual:     actual
+        )
+        
+        guard case let .different(exp, act, tree) = node.kind
+        else
+        {
+            XCTFail("Expected .different, got \(node.kind)")
+            return
+        }
+        
+        XCTAssertEqual(exp as? Priority, expected)
+        XCTAssertEqual(act as? Priority, actual)
+        XCTAssertTrue(tree.isEmpty)
+    }
+    
+    
+    
+    func testEnumRawValueSameCase() throws
+    {
+        enum Priority: Int, Equatable
+        {
+            case low        = 1
+            case medium     = 2
+            case high       = 3
+        }
+        
+        
+        
+        let expected: Priority = .low
+        
+        let node: DiffNode = Comparator.computeDiff(
+            expected:   expected,
+            actual:     expected
+        )
+        
+        guard case .same = node.kind
+        else
+        {
+            XCTFail("Expected .same, got \(node.kind)")
+            return
+        }
+    }
+    
+    
+    
     // MARK: - Optionals
     
     func testOptionalBothNone() throws
