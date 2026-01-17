@@ -95,6 +95,23 @@ internal struct DiffNode
 
 
 
+// MARK: - CycleLocation
+
+/// The location where a cycle was detected.
+internal enum CycleLocation
+{
+    /// A cycle was detected in the expected value.
+    case expected
+    
+    /// A cycle was detected in the actual value.
+    case actual
+    
+    /// A cycle was detected in both the expected and actual values.
+    case both
+}
+
+
+
 // MARK: - DiffNodeKind
 
 /// The kind of diff computed between by comparing an expected value to an
