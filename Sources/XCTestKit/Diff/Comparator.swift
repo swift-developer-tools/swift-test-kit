@@ -311,16 +311,22 @@ internal struct Comparator
                 let actualElements: [Any]
                     = actualMirror.children.map { $0.value }
                 
-                let children: [DiffNode] = compareArrays(
+                let tree: [DiffNode] = compareArrays(
                     expected:   expectedElements,
                     actual:     actualElements,
                     depth:      depth
                 )
                 
+                guard !tree.isEmpty
+                else
+                {
+                    return .same(expected: expected)
+                }
+                
                 return .different(
                     expected:   expected,
                     actual:     actual,
-                    tree:       children
+                    tree:       tree
                 )
                 
                 
@@ -335,16 +341,22 @@ internal struct Comparator
                     break
                 }
 
-                let children: [DiffNode] = compareDictionaries(
+                let tree: [DiffNode] = compareDictionaries(
                     expected:   expectedDict,
                     actual:     actualDict,
                     depth:      depth
                 )
                 
+                guard !tree.isEmpty
+                else
+                {
+                    return .same(expected: expected)
+                }
+                
                 return .different(
                     expected:   expected,
                     actual:     actual,
-                    tree:       children
+                    tree:       tree
                 )
                 
                 
@@ -376,23 +388,29 @@ internal struct Comparator
             case .set:
                 
                 guard
-                    let expectedSet     = expected as? Set<AnyHashable>,
-                    let actualSet       = actual as? Set<AnyHashable>
+                    let expectedSet     = expected  as? Set<AnyHashable>,
+                    let actualSet       = actual    as? Set<AnyHashable>
                 else
                 {
                     break
                 }
                 
-                let children: [DiffNode] = compareSets(
+                let tree: [DiffNode] = compareSets(
                     expected:   expectedSet,
                     actual:     actualSet,
                     depth:      depth
                 )
                 
+                guard !tree.isEmpty
+                else
+                {
+                    return .same(expected: expected)
+                }
+                
                 return .different(
                     expected:   expected,
                     actual:     actual,
-                    tree:       children
+                    tree:       tree
                 )
                 
                 
