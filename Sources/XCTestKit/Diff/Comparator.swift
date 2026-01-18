@@ -834,13 +834,26 @@ internal struct Comparator
     /// leaf nodes (for example, they are not primitive values). This finds
     /// where the difference is located within the data structures.
     ///
+    /// The returned tree may be empty if the difference could not be found
+    /// within the children of the given values. This can occur when a type's
+    /// `Equatable` implementation considers state not visible to
+    /// `Mirror`, or when the type has no useful `Mirror` children.
+    ///
+    /// For example, a class may use identity-based equality (`===`), but the
+    /// given instances have identical property values. The `Equatable`
+    /// implementation produces a not-equal result, but all `Mirror` children
+    /// are the same.
+    ///
+    /// Regardless, this method always returns a different node kind, since
+    /// the given values are already known to be unequal.
+    ///
     /// - Parameters:
     ///   - expected: The expected value.
     ///   - actual: The actual value.
     ///   - expectedMirror: The `Mirror` of the expected value.
     ///   - actualMirror: The `Mirror` of the actual value.
     ///   - depth: The recursion depth.
-    /// - Returns: The diff node kind.
+    /// - Returns: Always ``DiffNodeKind/different(expected:actual:tree)``.
     private func compareMirrorChildren(
         expected        : Any,
         actual          : Any,
