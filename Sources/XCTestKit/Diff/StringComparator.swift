@@ -449,7 +449,7 @@ internal struct StringComparator
                     actualIndex += 1
                 }
                 
-                continue;
+                continue
             }
             
             

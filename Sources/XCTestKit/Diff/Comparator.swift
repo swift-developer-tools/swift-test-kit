@@ -566,7 +566,7 @@ internal struct Comparator
             }
             else
             {
-                continue;
+                continue
             }
             
             
