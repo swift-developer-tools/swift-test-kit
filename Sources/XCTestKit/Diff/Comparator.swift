@@ -7,17 +7,11 @@
 //
 //===----------------------------------------------------------------------===//
 
-// TODO: ComparatorContext?
-/// Currently, the recursion depth is passed as a parameter to comparison
-/// methods. It could have also been a private property, but the methods would
-/// then have had to be mutating. If additional context is necessary, it would
-/// be best to extract the mutable state to a `ComparatorContext` object.
-
 /// The entry point for computing diffs between various data types.
 internal struct Comparator
 {
-    /// The options for computing diffs.
-    let options: XCTKDiffOptions
+    /// The context for tracking state across recursive comparison calls.
+    private let context: ComparatorContext
     
     
     
@@ -34,9 +28,27 @@ internal struct Comparator
         options     : XCTKDiffOptions   = .init()
     ) -> DiffNode
     {
-        let engine = Comparator(options: options)
+        let context     = ComparatorContext(options: options)
+        let comparator  = Comparator(context: context)
         
-        let kind: DiffNodeKind = engine.compareEquatable(
+        
+        
+        if let expectedID: ObjectIdentifier
+            = getClassObjectIdentifier(of: expected)
+        {
+            context.visitedExpected.insert(expectedID)
+        }
+        
+        if let actualID: ObjectIdentifier
+            = getClassObjectIdentifier(of: actual)
+        {
+            context.visitedActual.insert(actualID)
+        }
+        
+        
+        
+        
+        let kind: DiffNodeKind = comparator.compareEquatable(
             expected:   expected,
             actual:     actual,
             depth:      0
@@ -119,6 +131,88 @@ internal struct Comparator
         
         
         
+        /// Check for cycles in reference types.
+        let expectedID: ObjectIdentifier?
+            = Self.getClassObjectIdentifier(of: expected)
+        
+        let actualID: ObjectIdentifier?
+            = Self.getClassObjectIdentifier(of: actual)
+        
+        
+        
+        let expectedCycle: Bool = expectedID.map
+        {
+            context.visitedExpected.contains($0)
+        } ?? false
+        
+        let actualCycle: Bool = actualID.map
+        {
+            context.visitedActual.contains($0)
+        } ?? false
+        
+        if
+            expectedCycle
+            || actualCycle
+        {
+            let location: CycleLocation
+            
+            if
+                expectedCycle,
+                actualCycle
+            {
+                location = .both
+            }
+            else if expectedCycle
+            {
+                location = .expected
+            }
+            else
+            {
+                location = .actual
+            }
+            
+            return .cycle(
+                expected:   expected,
+                actual:     actual,
+                location:   location
+            )
+        }
+        
+        
+        
+        if let expectedID
+        {
+            context.visitedExpected.insert(expectedID)
+        }
+        
+        if let actualID
+        {
+            context.visitedActual.insert(actualID)
+        }
+        
+        /// Remove from visited sets when returning. This ensures that
+        /// shared references are not incorrectly reported as cycles.
+        ///
+        /// A true cycle is when the same object appears again on the current
+        /// traversal path (for example, ancestor -> descendant -> ancestor).
+        ///
+        /// A shared reference is when thet same object appears in different
+        /// branches.
+        defer
+        {
+            if let expectedID
+            {
+                context.visitedExpected.remove(expectedID)
+            }
+            
+            if let actualID
+            {
+                context.visitedActual.remove(actualID)
+            }
+        }
+        
+        
+        
         guard type(of: expected) == type(of: actual)
         else
         {
@@ -133,21 +227,46 @@ internal struct Comparator
         
         
         
-        let areEqual: Bool = Self.areAnyValuesEqual(
-            expected,
-            actual
-        )
+        /// Determine whether this value might contain reference types. If so,
+        /// skip the equality comparison and proceed to structural comparison.
+        ///
+        /// ``areAnyValuesEqual(_:_:)`` falls back to `String(describing:)`
+        /// comparison when the values are not hashable. For types that contain
+        /// reference types (for example, `Optional<Node>`), the string
+        /// comparison can report equality even when the wrapped references
+        /// are difference instances that are being tracked for cycle
+        /// detection. Structural comparison correctly handles these cases.
+        ///
+        /// For plain value types (for example, structs and enums), the
+        /// equality comparison is reliable.
+        let expectedMirror = Mirror(reflecting: expected)
         
-        guard !areEqual
-        else
+        let mightContainTrackedReferences: Bool =
+            Self.getClassObjectIdentifier(of: expected) != nil
+            || expectedMirror.displayStyle == .collection
+            || expectedMirror.displayStyle == .dictionary
+            || expectedMirror.displayStyle == .optional
+            || expectedMirror.displayStyle == .set
+        
+        if !mightContainTrackedReferences
         {
-            return .same(expected: expected)
+            let areEqual: Bool = Self.areAnyValuesEqual(
+                expected,
+                actual
+            )
+            
+            guard !areEqual
+            else
+            {
+                return .same(expected: expected)
+            }
         }
         
         return compareStructurally(
-            expected:   expected,
-            actual:     actual,
-            depth:      depth
+            expected:           expected,
+            actual:             actual,
+            expectedMirror:     expectedMirror,
+            depth:              depth
         )
     }
     
@@ -164,16 +283,20 @@ internal struct Comparator
     /// - Parameters:
     ///   - expected: The expected value.
     ///   - actual: The actual value.
+    ///   - expMirror: The `Mirror` of the expected value.
+    ///   - actMirror: The `Mirror` of the actual value.
     ///   - depth: The recursion depth.
     /// - Returns: The diff node kind.
     private func compareStructurally(
-        expected    : Any,
-        actual      : Any,
-        depth       : Int
+        expected                    : Any,
+        actual                      : Any,
+        expectedMirror expMirror    : Mirror? = nil,
+        actualMirror   actMirror    : Mirror? = nil,
+        depth                       : Int
     ) -> DiffNodeKind
     {
-        let expectedMirror  = Mirror(reflecting: expected)
-        let actualMirror    = Mirror(reflecting: actual)
+        let expectedMirror  = expMirror ?? Mirror(reflecting: expected)
+        let actualMirror    = actMirror ?? Mirror(reflecting: actual)
         
         /// The display style can be trusted since the type check in
         /// ``compareAny(expected:actual:depth:)`` used `type(of:)`, which
@@ -294,7 +417,7 @@ internal struct Comparator
             return StringComparator.compare(
                 expected:   expectedString,
                 actual:     actualString,
-                options:    options
+                options:    context.options
             )
         }
         
@@ -1003,7 +1126,7 @@ internal struct Comparator
         _ depth: Int
     ) -> Bool
     {
-        guard let maxRecursionDepth: Int = options.maxRecursionDepth
+        guard let maxRecursionDepth: Int = context.options.maxRecursionDepth
         else
         {
             return false
@@ -1093,5 +1216,25 @@ internal struct Comparator
         }
         
         return String(description[..<parenIndex])
+    }
+    
+    
+    
+    /// Gets the object identifier of the given value, if it is a reference
+    /// type.
+    /// - Parameter value: The value to check.
+    /// - Returns: The object identifier of the given value, or `nil` if it is
+    /// not a reference type.
+    private static func getClassObjectIdentifier(
+        of value: Any
+    ) -> ObjectIdentifier?
+    {
+        guard type(of: value) is AnyClass
+        else
+        {
+            return nil
+        }
+        
+        return ObjectIdentifier(value as AnyObject)
     }
 }
