@@ -972,8 +972,20 @@ internal struct Comparator
         
         
         
-        /// Bypass the case-name wrapper that `Mirror` produces.
+        /// `Mirror` represents an enum case with associated values as a single
+        /// child, where `label` is the case name and `value` contains all the
+        /// associated values, if any (directly for single values, or as a
+        /// tuple for multiple values).
+        ///
         /// `typealias Mirror.Child = (label: String?, value: Any)`
+        ///
+        /// | Enum Case              | `Mirror.children`                     |
+        /// |------------------------|---------------------------------------|
+        /// | `case noAssocValue`    | None                                  |
+        /// | `case one(T)`          | `(label: "one", value: T) `           |
+        /// | `case two(a: T, b: T)` | `(label: "two", value: (a: T, b: T))` |
+        ///
+        /// Therefore, checking only `Mirror.children.first` is appropriate.
         guard
             let expectedAssoc   : Any   = expectedMirror.children.first?.value,
             let actualAssoc     : Any   = actualMirror.children.first?.value
@@ -987,11 +999,9 @@ internal struct Comparator
         let expectedAssocMirror     = Mirror(reflecting: expectedAssoc)
         let actualAssocMirror       = Mirror(reflecting: actualAssoc)
         
-        /// Check if this is a single primitive associated value.
-        /// `Mirror` represents multi-value associates values as tuples with
-        /// children, but single primitive associated values have no children.
         if expectedAssocMirror.children.isEmpty
         {
+            /// This is a single unlabeled primitive value (`case v(T)`).
             let innerKind: DiffNodeKind = compareAny(
                 expected:       expectedAssoc,
                 actual:         actualAssoc,
@@ -1018,6 +1028,9 @@ internal struct Comparator
         
         
         
+        /// This is a labeled value (`case v(data: T)`), or there are multiple
+        /// associated values (`case v(T, T)`), or it is a struct/class with
+        /// properties.
         let assocKind: DiffNodeKind = compareMirrorChildren(
             expected:           expectedAssoc,
             actual:             actualAssoc,
