@@ -79,7 +79,7 @@ internal struct StringComparator
             return .same(expected: expected)
         }
         
-        let nodes: [DiffNode] = compareCharacters(
+        let tree: [DiffNode] = compareCharacters(
             expected:   expected,
             actual:     actual
         )
@@ -87,7 +87,7 @@ internal struct StringComparator
         return .different(
             expected:   expected,
             actual:     actual,
-            tree:       nodes
+            tree:       tree
         )
     }
     
@@ -110,12 +110,12 @@ internal struct StringComparator
         let expectedLines   : [String]  = splitIntoLines(normalizedExpected)
         let actualLines     : [String]  = splitIntoLines(normalizedActual)
         
-        let nodes: [DiffNode] = compareLines(
+        let tree: [DiffNode] = compareLines(
             expected:   expectedLines,
             actual:     actualLines
         )
         
-        guard !nodes.isEmpty
+        guard !tree.isEmpty
         else
         {
             return .same(expected: expected)
@@ -124,7 +124,7 @@ internal struct StringComparator
         return .different(
             expected:   normalizedExpected,
             actual:     normalizedActual,
-            tree:       nodes
+            tree:       tree
         )
     }
     
@@ -136,7 +136,7 @@ internal struct StringComparator
     /// - Parameters:
     ///   - expected: The expected lines.
     ///   - actual: The actual lines.
-    /// - Returns: The diff nodes.
+    /// - Returns: The diff tree.
     private func compareLines(
         expected    : [String],
         actual      : [String]
@@ -168,9 +168,9 @@ internal struct StringComparator
             .union(insertions.keys)
             .sorted()
         
-        var nodes: [DiffNode] = []
+        var tree: [DiffNode] = []
         
-        nodes.reserveCapacity(allOffsets.count)
+        tree.reserveCapacity(allOffsets.count)
         
         for offset in allOffsets
         {
@@ -220,12 +220,12 @@ internal struct StringComparator
                 kind:   kind
             )
             
-            nodes.append(node)
+            tree.append(node)
         }
         
         
         
-        return nodes
+        return tree
     }
     
     
@@ -236,7 +236,7 @@ internal struct StringComparator
     /// - Parameters:
     ///   - expected: The expected line.
     ///   - actual: The actual line.
-    /// - Returns: The diff nodes.
+    /// - Returns: The diff tree.
     private func compareCharacters(
         expected    : String,
         actual      : String
@@ -335,7 +335,7 @@ internal struct StringComparator
     ///   - diff: The character-level diff to coalesce.
     ///   - expected: The expected line.
     ///   - actual: The actual line.
-    /// - Returns: The coalesced diff nodes.
+    /// - Returns: The coalesced diff tree.
     private func coalesceCharacterChanges(
         of diff     : CollectionDifference<Character>,
         expected    : String,
@@ -365,7 +365,7 @@ internal struct StringComparator
         let actualChars     : [Character]   = Array(actual)
         var expectedIndex   : Int           = 0
         var actualIndex     : Int           = 0
-        var nodes           : [DiffNode]    = []
+        var tree            : [DiffNode]    = []
         
         while
             expectedIndex < expectedChars.count
@@ -459,12 +459,12 @@ internal struct StringComparator
                 kind:   kind
             )
             
-            nodes.append(node)
+            tree.append(node)
         }
         
         
         
-        return nodes
+        return tree
     }
     
     

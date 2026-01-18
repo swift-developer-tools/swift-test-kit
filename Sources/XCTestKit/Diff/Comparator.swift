@@ -441,7 +441,7 @@ internal struct Comparator
     ///   - expected: The expected array.
     ///   - actual: The actual array.
     ///   - depth: The recursion depth.
-    /// - Returns: The diff nodes.
+    /// - Returns: The diff tree.
     private func compareArrays(
         expected    : [Any],
         actual      : [Any],
@@ -478,7 +478,7 @@ internal struct Comparator
     ///   - expectedHashable: The hashable expected array.
     ///   - actualHashable: The hashable actual array.
     ///   - depth: The recursion depth.
-    /// - Returns: The diff nodes.
+    /// - Returns: The diff tree.
     private func compareArraysWithDifference(
         expected            : [Any],
         actual              : [Any],
@@ -529,9 +529,9 @@ internal struct Comparator
             .union(insertions.keys)
             .sorted()
         
-        var nodes: [DiffNode] = []
+        var tree: [DiffNode] = []
         
-        nodes.reserveCapacity(allOffsets.count)
+        tree.reserveCapacity(allOffsets.count)
         
         for offset in allOffsets
         {
@@ -576,12 +576,12 @@ internal struct Comparator
                 kind:   kind
             )
             
-            nodes.append(node)
+            tree.append(node)
         }
         
         
         
-        return nodes
+        return tree
     }
     
     
@@ -591,7 +591,7 @@ internal struct Comparator
     ///   - expected: The expected array.
     ///   - actual: The actual array.
     ///   - depth: The recursion depth.
-    /// - Returns: The diff nodes.
+    /// - Returns: The diff tree.
     private func compareArraysByIndex(
         expected    : [Any],
         actual      : [Any],
@@ -603,9 +603,9 @@ internal struct Comparator
             actual.count
         )
         
-        var nodes: [DiffNode] = []
+        var tree: [DiffNode] = []
         
-        nodes.reserveCapacity(maxCount)
+        tree.reserveCapacity(maxCount)
         
         
         
@@ -647,12 +647,12 @@ internal struct Comparator
                 kind:   kind
             )
             
-            nodes.append(node)
+            tree.append(node)
         }
         
         
         
-        return nodes
+        return tree
     }
     
     
@@ -662,7 +662,7 @@ internal struct Comparator
     ///   - expected: The expected dictionary.
     ///   - actual: The actual dictionary.
     ///   - depth: The recursion depth.
-    /// - Returns: The diff nodes.
+    /// - Returns: The diff tree.
     private func compareDictionaries<K: Hashable, V>(
         expected    : [K : V],
         actual      : [K : V],
@@ -675,9 +675,9 @@ internal struct Comparator
         let missingKeys     : Set<K>    = expectedKeys.subtracting(actualKeys)
         let unexpectedKeys  : Set<K>    = actualKeys.subtracting(expectedKeys)
         
-        var nodes: [DiffNode] = []
+        var tree: [DiffNode] = []
         
-        nodes.reserveCapacity(
+        tree.reserveCapacity(
             sharedKeys.count
             + missingKeys.count
             + unexpectedKeys.count
@@ -710,7 +710,7 @@ internal struct Comparator
                 kind:   kind
             )
             
-            nodes.append(node)
+            tree.append(node)
         }
         
         
@@ -728,7 +728,7 @@ internal struct Comparator
                 kind:   .missingElement(expected: expectedValue)
             )
             
-            nodes.append(node)
+            tree.append(node)
         }
         
         
@@ -746,12 +746,12 @@ internal struct Comparator
                 kind:   .unexpectedElement(actual: actualValue)
             )
             
-            nodes.append(node)
+            tree.append(node)
         }
         
         
         
-        return nodes
+        return tree
     }
     
     
@@ -761,7 +761,7 @@ internal struct Comparator
     ///   - expected: The expected set.
     ///   - actual: The actual set.
     ///   - depth: The recursion depth.
-    /// - Returns: The diff nodes.
+    /// - Returns: The diff tree.
     private func compareSets<T: Hashable>(
         expected    : Set<T>,
         actual      : Set<T>,
@@ -771,9 +771,9 @@ internal struct Comparator
         let missingElements     : Set<T>    = expected.subtracting(actual)
         let unexpectedElements  : Set<T>    = actual.subtracting(expected)
         
-        var nodes: [DiffNode] = []
+        var tree: [DiffNode] = []
         
-        nodes.reserveCapacity(
+        tree.reserveCapacity(
             missingElements.count
             + unexpectedElements.count
         )
@@ -787,7 +787,7 @@ internal struct Comparator
                 kind:   .missingElement(expected: element)
             )
             
-            nodes.append(node)
+            tree.append(node)
         }
         
         
@@ -799,12 +799,12 @@ internal struct Comparator
                 kind:   .unexpectedElement(actual: element)
             )
             
-            nodes.append(node)
+            tree.append(node)
         }
         
         
         
-        return nodes
+        return tree
     }
     
     
@@ -840,9 +840,9 @@ internal struct Comparator
             actualChildren.count
         )
         
-        var nodes: [DiffNode] = []
+        var tree: [DiffNode] = []
         
-        nodes.reserveCapacity(maxCount)
+        tree.reserveCapacity(maxCount)
 
         
         
@@ -907,7 +907,7 @@ internal struct Comparator
                 kind:   kind
             )
             
-            nodes.append(node)
+            tree.append(node)
         }
         
         
@@ -915,7 +915,7 @@ internal struct Comparator
         return .different(
             expected:   expected,
             actual:     actual,
-            tree:       nodes
+            tree:       tree
         )
     }
     
