@@ -683,7 +683,6 @@ internal struct Comparator
             + unexpectedKeys.count
         )
         
-        
         for key in sharedKeys
         {
             guard
@@ -751,7 +750,7 @@ internal struct Comparator
         
         
         
-        return tree
+        return Self.sortTree(tree)
     }
     
     
@@ -804,7 +803,7 @@ internal struct Comparator
         
         
         
-        return tree
+        return Self.sortSetTree(tree)
     }
     
     
@@ -1236,5 +1235,104 @@ internal struct Comparator
         }
         
         return ObjectIdentifier(value as AnyObject)
+    }
+    
+    
+    
+    /// Sort the given tree by the node labels.
+    ///
+    /// This is used to sort the keys of dictionaries and the elements of
+    /// sets when computing diffs. Although these data structures are
+    /// inherently unordered, their keys and elements must be sorted when
+    /// computing a diff. Otherwise, running the same test with the same input
+    /// may produce a diff that has the same content, but in a different order.
+    ///
+    /// For example, consider the following:
+    ///
+    /// ```swift
+    /// let expected    : [String : Int]    = ["a": 1, "b": 2, "c": 3]
+    /// let actual      : [String : Int]    = ["a": 1, "b": 4, "c": 6]
+    ///
+    /// // Run 1 diff output:
+    /// // [key "b"]: 2 -> 4
+    /// // [key "c"]: 3 -> 6
+    ///
+    /// // Run 2 diff output:
+    /// // [key "c"]: 3 -> 6
+    /// // [key "b"]: 2 -> 4
+    /// ```
+    ///
+    /// Although the content of the diff is the same, the order is different,
+    /// which may create ambiguity as to whether this is the same error.
+    ///
+    /// This adds overhead based on the number of keys or elements being
+    /// sorted, but is acceptable since it happens only when the values are
+    /// different, and because clarity and determinism are important for diff
+    /// output.
+    ///
+    /// - Note: Use ``sortSetTree(_:)`` to sort the tree of a set.
+    ///
+    /// - Parameter tree: The tree to sort.
+    /// - Returns: The sorted tree.
+    private static func sortTree(
+        _ tree: [DiffNode]
+    ) -> [DiffNode]
+    {
+        return tree.sorted
+        {
+            $0.label.sortKey < $1.label.sortKey
+        }
+    }
+    
+    
+    
+    /// Sort the given tree by the node labels.
+    ///
+    /// - Note: See ``sortTree(_:)`` for more information on sorting diff
+    /// values.
+    ///
+    /// - Parameter tree: The tree to sort.
+    /// - Returns: The sorted tree.
+    private static func sortSetTree(
+        _ tree: [DiffNode]
+    ) -> [DiffNode]
+    {
+        return tree.sorted
+        {
+            let lhs : String
+            let rhs : String
+            
+            switch $0.kind
+            {
+                case let .missingElement(exp):
+                    
+                    lhs = String(describing: exp)
+                    
+                case let .unexpectedElement(act):
+                    
+                    lhs = String(describing: act)
+                    
+                default:
+                    
+                    lhs = ""
+            }
+            
+            switch $1.kind
+            {
+                case let .missingElement(exp):
+                    
+                    rhs = String(describing: exp)
+                    
+                case let .unexpectedElement(act):
+                    
+                    rhs = String(describing: act)
+                    
+                default:
+                    
+                    rhs = ""
+            }
+            
+            return lhs < rhs
+        }
     }
 }
