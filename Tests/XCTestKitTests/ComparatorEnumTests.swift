@@ -47,7 +47,7 @@ final class ComparatorEnumTests: XCTestKitCase
     
     
     
-    func testEnumSameCaseSameValues() throws
+    func testEnumSameCaseEqualValues() throws
     {
         enum Status: Equatable
         {
