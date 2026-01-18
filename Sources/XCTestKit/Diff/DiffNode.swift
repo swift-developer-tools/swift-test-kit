@@ -244,6 +244,23 @@ internal enum DiffNodeLabel: Equatable, Sendable
     
     
     
+    /// A string key used for sorting.
+    var sortKey: String
+    {
+        switch self
+        {
+            case .root                      : return ""
+            case let .property(name)        : return name
+            case let .index(index)          : return String(index)
+            case let .key(description, _)   : return description
+            case .member                    : return ""
+            case let .line(index)           : return String(index)
+            case let .character(index)      : return String(index)
+        }
+    }
+    
+    
+    
     /// Creates a ``DiffNodeLabel/key(description:typeName:)`` instance from
     /// the given key.
     /// - Parameter key: The key to use.
