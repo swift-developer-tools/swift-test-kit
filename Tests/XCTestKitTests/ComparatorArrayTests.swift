@@ -59,29 +59,29 @@ final class ComparatorArrayTests: XCTestKitCase
             actual:     actual
         )
         
-        guard case let .different(_, _, tree) = node.kind
+        guard case let .different(_, _, tree1) = node.kind
         else
         {
             XCTFail("Expected .different, got \(node.kind)")
             return
         }
         
-        XCTAssertEqual(tree.count, 1)
-        XCTAssertEqual(tree[0].label, .index(1))
+        XCTAssertEqual(tree1.count, 1)
+        XCTAssertEqual(tree1[0].label, .index(1))
         
         
         
-        guard case let .different(exp, act, childTree) = tree[0].kind
+        guard case let .different(exp, act, tree2) = tree1[0].kind
         else
         {
-            XCTFail("Expected .different, got \(tree[0].kind)")
+            XCTFail("Expected .different, got \(tree1[0].kind)")
             return
         }
         
         XCTAssertEqual(exp as? String, "b")
         XCTAssertEqual(act as? String, "x")
-        XCTAssertEqual(childTree.count, 1)
-        XCTAssertEqual(childTree[0].label, .character(0))
+        XCTAssertEqual(tree2.count, 1)
+        XCTAssertEqual(tree2[0].label, .character(0))
     }
     
     
@@ -137,27 +137,27 @@ final class ComparatorArrayTests: XCTestKitCase
             actual:     actual
         )
         
-        guard case let .different(_, _, tree) = node.kind
+        guard case let .different(_, _, tree1) = node.kind
         else
         {
             XCTFail("Expected .different, got \(node.kind)")
             return
         }
         
-        XCTAssertEqual(tree.count, 1)
-        XCTAssertEqual(tree[0].label, .index(1))
+        XCTAssertEqual(tree1.count, 1)
+        XCTAssertEqual(tree1[0].label, .index(1))
         
         
         
-        guard case let .different(_, _, childTree) = tree[0].kind
+        guard case let .different(_, _, tree2) = tree1[0].kind
         else
         {
-            XCTFail("Expected .different, got \(tree[0].kind)")
+            XCTFail("Expected .different, got \(tree1[0].kind)")
             return
         }
         
-        XCTAssertEqual(childTree.count, 1)
-        XCTAssertEqual(childTree[0].label, .property(name: "id"))
+        XCTAssertEqual(tree2.count, 1)
+        XCTAssertEqual(tree2[0].label, .property(name: "id"))
     }
     
     

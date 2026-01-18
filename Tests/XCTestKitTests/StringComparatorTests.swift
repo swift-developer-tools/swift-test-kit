@@ -46,7 +46,7 @@ final class StringComparatorTests: XCTestKitCase
             actual:     actual
         )
         
-        guard case let .different(exp1, act1, tree) = kind
+        guard case let .different(exp1, act1, tree1) = kind
         else
         {
             XCTFail("Expected .different, got \(kind)")
@@ -55,21 +55,21 @@ final class StringComparatorTests: XCTestKitCase
         
         XCTAssertEqual(exp1 as? String, expected)
         XCTAssertEqual(act1 as? String, actual)
-        XCTAssertEqual(tree.count, 1)
-        XCTAssertEqual(tree[0].label, .character(1))
+        XCTAssertEqual(tree1.count, 1)
+        XCTAssertEqual(tree1[0].label, .character(1))
         
         
         
-        guard case let .different(exp2, act2, charTree) = tree[0].kind
+        guard case let .different(exp2, act2, tree2) = tree1[0].kind
         else
         {
-            XCTFail("Expected .different, got \(tree[0].kind)")
+            XCTFail("Expected .different, got \(tree1[0].kind)")
             return
         }
         
         XCTAssertEqual(exp2 as? String, "e")
         XCTAssertEqual(act2 as? String, "a")
-        XCTAssertTrue(charTree.isEmpty)
+        XCTAssertTrue(tree2.isEmpty)
     }
     
     
@@ -444,29 +444,29 @@ final class StringComparatorTests: XCTestKitCase
             actual:     actual
         )
         
-        guard case let .different(_, _, tree) = kind
+        guard case let .different(_, _, tree1) = kind
         else
         {
             XCTFail("Expected .different, got \(kind)")
             return
         }
         
-        XCTAssertEqual(tree.count, 1)
-        XCTAssertEqual(tree[0].label, .line(1))
+        XCTAssertEqual(tree1.count, 1)
+        XCTAssertEqual(tree1[0].label, .line(1))
         
         
         
-        guard case let .different(exp, act, charTree) = tree[0].kind
+        guard case let .different(exp, act, tree2) = tree1[0].kind
         else
         {
-            XCTFail("Expected .different, got \(tree[0].kind)")
+            XCTFail("Expected .different, got \(tree1[0].kind)")
             return
         }
         
         XCTAssertEqual(exp as? String, "line1")
         XCTAssertEqual(act as? String, "lineX")
-        XCTAssertEqual(charTree.count, 1)
-        XCTAssertEqual(charTree[0].label, .character(4))
+        XCTAssertEqual(tree2.count, 1)
+        XCTAssertEqual(tree2[0].label, .character(4))
     }
     
     
@@ -1205,28 +1205,28 @@ final class StringComparatorTests: XCTestKitCase
             options:    XCTKDiffOptions(characterDiffThreshold: 0.5)
         )
         
-        guard case let .different(_, _, tree) = kind
+        guard case let .different(_, _, tree1) = kind
         else
         {
             XCTFail("Expected .different, got \(kind)")
             return
         }
         
-        XCTAssertEqual(tree.count, 1)
-        XCTAssertEqual(tree[0].label, .line(1))
+        XCTAssertEqual(tree1.count, 1)
+        XCTAssertEqual(tree1[0].label, .line(1))
         
         
         
-        guard case let .different(exp, act, childTree) = tree[0].kind
+        guard case let .different(exp, act, tree2) = tree1[0].kind
         else
         {
-            XCTFail("Expected .different, got \(tree[0].kind)")
+            XCTFail("Expected .different, got \(tree1[0].kind)")
             return
         }
         
         XCTAssertEqual(exp as? String, "12345")
         XCTAssertEqual(act as? String, "54321")
-        XCTAssertTrue(childTree.isEmpty)
+        XCTAssertTrue(tree2.isEmpty)
     }
     
     
@@ -1418,7 +1418,7 @@ final class StringComparatorTests: XCTestKitCase
             actual:     actual
         )
         
-        guard case let .different(_, _, tree) = kind
+        guard case let .different(_, _, tree1) = kind
         else
         {
             XCTFail("Expected .different, got \(kind)")
@@ -1430,20 +1430,20 @@ final class StringComparatorTests: XCTestKitCase
         /// accumulate the only character in `expected` and all three
         /// characters in `actual`, since there are entries at each index.
         /// The tree will contain the single coalesced node.
-        XCTAssertEqual(tree.count, 1)
-        XCTAssertEqual(tree[0].label, .character(0))
+        XCTAssertEqual(tree1.count, 1)
+        XCTAssertEqual(tree1[0].label, .character(0))
         
         
         
-        guard case let .different(exp, act, childTree) = tree[0].kind
+        guard case let .different(exp, act, tree2) = tree1[0].kind
         else
         {
-            XCTFail("Expected .different, got \(tree[0].kind)")
+            XCTFail("Expected .different, got \(tree1[0].kind)")
             return
         }
         
         XCTAssertEqual(exp as? String, expected)
         XCTAssertEqual(act as? String, actual)
-        XCTAssertTrue(childTree.isEmpty)
+        XCTAssertTrue(tree2.isEmpty)
     }
 }

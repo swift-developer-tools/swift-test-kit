@@ -25,32 +25,32 @@ final class ComparatorDictionaryTests: XCTestKitCase
             actual:     actual
         )
         
-        guard case let .different(_, _, tree) = node.kind
+        guard case let .different(_, _, tree1) = node.kind
         else
         {
             XCTFail("Expected .different, got \(node.kind)")
             return
         }
         
-        XCTAssertEqual(tree.count, 1)
+        XCTAssertEqual(tree1.count, 1)
         
         XCTAssertEqual(
-            tree[0].label,
+            tree1[0].label,
             .key(description: "b", typeName: "String")
         )
         
         
         
-        guard case let .different(exp, act, childTree) = tree[0].kind
+        guard case let .different(exp, act, tree2) = tree1[0].kind
         else
         {
-            XCTFail("Expected .different, got \(tree[0].kind)")
+            XCTFail("Expected .different, got \(tree1[0].kind)")
             return
         }
         
         XCTAssertEqual(exp as? Int, 2)
         XCTAssertEqual(act as? Int, 0)
-        XCTAssertTrue(childTree.isEmpty)
+        XCTAssertTrue(tree2.isEmpty)
     }
     
     

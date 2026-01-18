@@ -45,30 +45,30 @@ final class ComparatorOptionalTests: XCTestKitCase
             actual:     actual
         )
         
-        guard case let .different(_, _, tree) = node.kind
+        guard case let .different(_, _, tree1) = node.kind
         else
         {
             XCTFail("Expected .different, got \(node.kind)")
             return
         }
         
-        XCTAssertEqual(tree.count, 1)
-        XCTAssertEqual(tree[0].label, .property(name: "some"))
+        XCTAssertEqual(tree1.count, 1)
+        XCTAssertEqual(tree1[0].label, .property(name: "some"))
         
         
         
-        guard case let .different(exp, act, childTree) = tree[0].kind
+        guard case let .different(exp, act, tree2) = tree1[0].kind
         else
         {
-            XCTFail("Expected .different, got \(tree[0].kind)")
+            XCTFail("Expected .different, got \(tree1[0].kind)")
             return
         }
         
         XCTAssertEqual(exp as? String, "hello")
         XCTAssertEqual(act as? String, "world")
-        XCTAssertEqual(childTree.count, 2)
-        XCTAssertEqual(childTree[0].label, .character(0))
-        XCTAssertEqual(childTree[1].label, .character(5))
+        XCTAssertEqual(tree2.count, 2)
+        XCTAssertEqual(tree2[0].label, .character(0))
+        XCTAssertEqual(tree2[1].label, .character(5))
     }
     
     

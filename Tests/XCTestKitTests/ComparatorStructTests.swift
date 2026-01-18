@@ -46,43 +46,43 @@ final class ComparatorStructTests: XCTestKitCase
             actual:     actual
         )
         
-        guard case let .different(_, _, personTree) = node.kind
+        guard case let .different(_, _, tree1) = node.kind
         else
         {
             XCTFail("Expected .different, got \(node.kind)")
             return
         }
         
-        XCTAssertEqual(personTree.count, 1)
-        XCTAssertEqual(personTree[0].label, .property(name: "address"))
+        XCTAssertEqual(tree1.count, 1)
+        XCTAssertEqual(tree1[0].label, .property(name: "address"))
         
         
         
-        guard case let .different(_, _, addressTree) = personTree[0].kind
+        guard case let .different(_, _, tree2) = tree1[0].kind
         else
         {
-            XCTFail("Expected .different, got \(personTree[0].kind)")
+            XCTFail("Expected .different, got \(tree1[0].kind)")
             return
         }
         
-        XCTAssertEqual(addressTree.count, 1)
-        XCTAssertEqual(addressTree[0].label, .property(name: "zip"))
+        XCTAssertEqual(tree2.count, 1)
+        XCTAssertEqual(tree2[0].label, .property(name: "zip"))
         
         
         
-        guard case let .different(exp, act, addressChildTree)
-                = addressTree[0].kind
+        guard case let .different(exp, act, tree3)
+                = tree2[0].kind
         else
         {
-            XCTFail("Expected .different, got \(addressTree[0].kind)")
+            XCTFail("Expected .different, got \(tree2[0].kind)")
             return
         }
         
         XCTAssertEqual(exp as? String, "12345")
         XCTAssertEqual(act as? String, "54321")
-        XCTAssertFalse(addressChildTree.isEmpty)
-        XCTAssertEqual(addressChildTree[0].label, .character(0))
-        XCTAssertEqual(addressChildTree[1].label, .character(5))
+        XCTAssertFalse(tree3.isEmpty)
+        XCTAssertEqual(tree3[0].label, .character(0))
+        XCTAssertEqual(tree3[1].label, .character(5))
     }
     
     
@@ -142,28 +142,28 @@ final class ComparatorStructTests: XCTestKitCase
             actual:     actual
         )
         
-        guard case let .different(_, _, tree) = node.kind
+        guard case let .different(_, _, tree1) = node.kind
         else
         {
             XCTFail("Expected .same, got \(node.kind)")
             return
         }
         
-        XCTAssertEqual(tree.count, 1)
-        XCTAssertEqual(tree[0].label, .property(name: "age"))
+        XCTAssertEqual(tree1.count, 1)
+        XCTAssertEqual(tree1[0].label, .property(name: "age"))
         
         
         
-        guard case let .different(exp, act, childTree) = tree[0].kind
+        guard case let .different(exp, act, tree2) = tree1[0].kind
         else
         {
-            XCTFail("Expected .different, got \(tree[0].kind)")
+            XCTFail("Expected .different, got \(tree1[0].kind)")
             return
         }
         
         XCTAssertEqual(exp as? Int, 10)
         XCTAssertEqual(act as? Int, 20)
-        XCTAssertTrue(childTree.isEmpty)
+        XCTAssertTrue(tree2.isEmpty)
     }
     
     
@@ -194,28 +194,28 @@ final class ComparatorStructTests: XCTestKitCase
             options:    options
         )
         
-        guard case let .different(_, _, tree) = node.kind
+        guard case let .different(_, _, tree1) = node.kind
         else
         {
             XCTFail("Expected .different, got \(node.kind)")
             return
         }
         
-        XCTAssertEqual(tree.count, 1)
-        XCTAssertEqual(tree[0].label, .property(name: "inner"))
+        XCTAssertEqual(tree1.count, 1)
+        XCTAssertEqual(tree1[0].label, .property(name: "inner"))
         
         
         
-        guard case let .different(exp, act, childTree) = tree[0].kind
+        guard case let .different(exp, act, tree2) = tree1[0].kind
         else
         {
-            XCTFail("Expected .different, got \(tree[0].kind)")
+            XCTFail("Expected .different, got \(tree1[0].kind)")
             return
         }
         
         XCTAssertEqual((exp as? Inner)?.value, 1)
         XCTAssertEqual((act as? Inner)?.value, 2)
-        XCTAssertTrue(childTree.isEmpty)
+        XCTAssertTrue(tree2.isEmpty)
     }
     
     
@@ -285,7 +285,7 @@ final class ComparatorStructTests: XCTestKitCase
         
         
         
-        guard case let .different(exp, act, valueTree) = tree4[0].kind
+        guard case let .different(exp, act, tree5) = tree4[0].kind
         else
         {
             XCTFail("Expected .different, got \(tree4[0].kind)")
@@ -294,7 +294,7 @@ final class ComparatorStructTests: XCTestKitCase
         
         XCTAssertEqual(exp as? Int, 1)
         XCTAssertEqual(act as? Int, 2)
-        XCTAssertTrue(valueTree.isEmpty)
+        XCTAssertTrue(tree5.isEmpty)
     }
     
     
@@ -356,26 +356,26 @@ final class ComparatorStructTests: XCTestKitCase
             actual:     actual
         )
         
-        guard case let .different(_, _, tree) = node.kind
+        guard case let .different(_, _, tree1) = node.kind
         else
         {
             XCTFail("Expected .different, got \(node.kind)")
             return
         }
         
-        XCTAssertEqual(tree.count, 1)
-        XCTAssertEqual(tree[0].label, .property(name: "b"))
+        XCTAssertEqual(tree1.count, 1)
+        XCTAssertEqual(tree1[0].label, .property(name: "b"))
         
         
         
-        guard case let .different(_, _, valueTree) = tree[0].kind
+        guard case let .different(_, _, tree2) = tree1[0].kind
         else
         {
-            XCTFail("Expected .different, got \(tree[0].kind)")
+            XCTFail("Expected .different, got \(tree1[0].kind)")
             return
         }
         
-        XCTAssertEqual(valueTree.count, 1)
-        XCTAssertEqual(valueTree[0].label, .property(name: "value"))
+        XCTAssertEqual(tree2.count, 1)
+        XCTAssertEqual(tree2[0].label, .property(name: "value"))
     }
 }
