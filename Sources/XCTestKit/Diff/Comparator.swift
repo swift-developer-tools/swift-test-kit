@@ -889,7 +889,7 @@ internal struct Comparator
                 let expectedChild   : Mirror.Child  = expectedChildren[i]
                 let actualChild     : Mirror.Child  = actualChildren[i]
                 
-                label = Self.makeMirrorLabel(
+                label = Self.makeDiffNodeLabel(
                     from:   expectedChild.label,
                     index:  i
                 )
@@ -905,7 +905,7 @@ internal struct Comparator
                 /// Only the expected value has this child.
                 let expectedChild: Mirror.Child = expectedChildren[i]
                 
-                label = Self.makeMirrorLabel(
+                label = Self.makeDiffNodeLabel(
                     from:   expectedChild.label,
                     index:  i
                 )
@@ -917,7 +917,7 @@ internal struct Comparator
                 /// Only the actual value has this child.
                 let actualChild: Mirror.Child = actualChildren[i]
                 
-                label = Self.makeMirrorLabel(
+                label = Self.makeDiffNodeLabel(
                     from:   actualChild.label,
                     index:  i
                 )
@@ -1223,9 +1223,9 @@ internal struct Comparator
     ///   - index: The index to use.
     /// - Returns: A property label if `mirrorLabel` is not `nil`, and an
     /// index label otherwise.
-    private static func makeMirrorLabel(
-        from mirrorLabel: String?,
-        index: Int
+    private static func makeDiffNodeLabel(
+        from mirrorLabel    : String?,
+        index               : Int
     ) -> DiffNodeLabel
     {
         guard let mirrorLabel
