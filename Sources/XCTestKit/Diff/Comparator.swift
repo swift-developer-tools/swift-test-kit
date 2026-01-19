@@ -120,8 +120,8 @@ internal struct Comparator
             else
             {
                 return .different(
-                    expected:   expected,
-                    actual:     actual,
+                    expected:   DiffValue(expected),
+                    actual:     DiffValue(actual),
                     tree:       []
                 )
             }
@@ -172,8 +172,8 @@ internal struct Comparator
             }
             
             return .cycle(
-                expected:   expected,
-                actual:     actual,
+                expected:   DiffValue(expected),
+                actual:     DiffValue(actual),
                 location:   location
             )
         }
@@ -219,8 +219,8 @@ internal struct Comparator
             /// When the types are different, structural comparison is not
             /// meaningful.
             return .different(
-                expected:   expected,
-                actual:     actual,
+                expected:   DiffValue(expected),
+                actual:     DiffValue(actual),
                 tree:       []
             )
         }
@@ -324,8 +324,8 @@ internal struct Comparator
                 }
                 
                 return .different(
-                    expected:   expected,
-                    actual:     actual,
+                    expected:   DiffValue(expected),
+                    actual:     DiffValue(actual),
                     tree:       tree
                 )
                 
@@ -354,8 +354,8 @@ internal struct Comparator
                 }
                 
                 return .different(
-                    expected:   expected,
-                    actual:     actual,
+                    expected:   DiffValue(expected),
+                    actual:     DiffValue(actual),
                     tree:       tree
                 )
                 
@@ -408,8 +408,8 @@ internal struct Comparator
                 }
                 
                 return .different(
-                    expected:   expected,
-                    actual:     actual,
+                    expected:   DiffValue(expected),
+                    actual:     DiffValue(actual),
                     tree:       tree
                 )
                 
@@ -576,11 +576,11 @@ internal struct Comparator
             }
             else if let removal
             {
-                kind = .missingElement(expected: removal)
+                kind = .missingElement(expected: DiffValue(removal))
             }
             else if let insertion
             {
-                kind = .unexpectedElement(actual: insertion)
+                kind = .unexpectedElement(actual: DiffValue(insertion))
             }
             else
             {
@@ -645,12 +645,12 @@ internal struct Comparator
             else if i < expected.count
             {
                 /// Only the expected array has this element.
-                kind = .missingElement(expected: expected[i])
+                kind = .missingElement(expected: DiffValue(expected[i]))
             }
             else
             {
                 /// Only the actual array has this element.
-                kind = .unexpectedElement(actual: actual[i])
+                kind = .unexpectedElement(actual: DiffValue(actual[i]))
             }
             
             
@@ -742,7 +742,7 @@ internal struct Comparator
             
             let node = DiffNode(
                 label:  .makeKey(key),
-                kind:   .missingElement(expected: expectedValue)
+                kind:   .missingElement(expected: DiffValue(expectedValue))
             )
             
             tree.append(node)
@@ -760,7 +760,7 @@ internal struct Comparator
             
             let node = DiffNode(
                 label:  .makeKey(key),
-                kind:   .unexpectedElement(actual: actualValue)
+                kind:   .unexpectedElement(actual: DiffValue(actualValue))
             )
             
             tree.append(node)
@@ -801,7 +801,7 @@ internal struct Comparator
         {
             let node = DiffNode(
                 label:  .member,
-                kind:   .missingElement(expected: element)
+                kind:   .missingElement(expected: DiffValue(element))
             )
             
             tree.append(node)
@@ -813,7 +813,7 @@ internal struct Comparator
         {
             let node = DiffNode(
                 label:  .member,
-                kind:   .unexpectedElement(actual: element)
+                kind:   .unexpectedElement(actual: DiffValue(element))
             )
             
             tree.append(node)
@@ -910,7 +910,9 @@ internal struct Comparator
                     index:  i
                 )
                 
-                kind = .missingElement(expected: expectedChild.value)
+                kind = .missingElement(
+                    expected: DiffValue(expectedChild.value)
+                )
             }
             else
             {
@@ -922,7 +924,9 @@ internal struct Comparator
                     index:  i
                 )
                 
-                kind = .unexpectedElement(actual: actualChild.value)
+                kind = .unexpectedElement(
+                    actual: DiffValue(actualChild.value)
+                )
             }
             
             
@@ -943,8 +947,8 @@ internal struct Comparator
         
         
         return .different(
-            expected:   expected,
-            actual:     actual,
+            expected:   DiffValue(expected),
+            actual:     DiffValue(actual),
             tree:       tree
         )
     }
@@ -977,8 +981,8 @@ internal struct Comparator
         else
         {
             return .different(
-                expected:   expected,
-                actual:     actual,
+                expected:   DiffValue(expected),
+                actual:     DiffValue(actual),
                 tree:       []
             )
         }
@@ -1027,8 +1031,8 @@ internal struct Comparator
             }
             
             return .different(
-                expected:   expected,
-                actual:     actual,
+                expected:   DiffValue(expected),
+                actual:     DiffValue(actual),
                 tree:
                 [
                     DiffNode(
@@ -1061,15 +1065,15 @@ internal struct Comparator
         else
         {
             return .different(
-                expected:   expected,
-                actual:     actual,
+                expected:   DiffValue(expected),
+                actual:     DiffValue(actual),
                 tree:       []
             )
         }
         
         return .different(
-            expected:   expected,
-            actual:     actual,
+            expected:   DiffValue(expected),
+            actual:     DiffValue(actual),
             tree:       assocTree
         )
     }
@@ -1115,8 +1119,8 @@ internal struct Comparator
                 }
                 
                 return .different(
-                    expected:   expected,
-                    actual:     actual,
+                    expected:   DiffValue(expected),
+                    actual:     DiffValue(actual),
                     tree:
                     [
                         DiffNode(
@@ -1129,13 +1133,15 @@ internal struct Comparator
             case let (.some(exp), .none):
                 
                 return .different(
-                    expected:   expected,
-                    actual:     actual,
+                    expected:   DiffValue(expected),
+                    actual:     DiffValue(actual),
                     tree:
                     [
                         DiffNode(
                             label:  .property(name: "some"),
-                            kind:   .missingElement(expected: exp.value)
+                            kind:   .missingElement(
+                                        expected: DiffValue(exp.value)
+                                    )
                         )
                     ]
                 )
@@ -1143,13 +1149,15 @@ internal struct Comparator
             case let (.none, .some(act)):
                 
                 return .different(
-                    expected:   expected,
-                    actual:     actual,
+                    expected:   DiffValue(expected),
+                    actual:     DiffValue(actual),
                     tree:
                     [
                         DiffNode(
                             label:  .property(name: "some"),
-                            kind:   .unexpectedElement(actual: act.value)
+                            kind:   .unexpectedElement(
+                                        actual: DiffValue(act.value)
+                                    )
                         )
                     ]
                 )

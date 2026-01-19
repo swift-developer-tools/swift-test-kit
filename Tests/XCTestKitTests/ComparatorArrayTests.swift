@@ -44,7 +44,7 @@ final class ComparatorArrayTests: XCTestKitCase
             return
         }
         
-        XCTAssertEqual(exp as? String, "c")
+        XCTAssertEqual(exp.value as? String, "c")
     }
     
     
@@ -78,8 +78,8 @@ final class ComparatorArrayTests: XCTestKitCase
             return
         }
         
-        XCTAssertEqual(exp as? String, "b")
-        XCTAssertEqual(act as? String, "x")
+        XCTAssertEqual(exp.value as? String, "b")
+        XCTAssertEqual(act.value as? String, "x")
         XCTAssertEqual(tree2.count, 1)
         XCTAssertEqual(tree2[0].label, .character(0))
     }
@@ -115,7 +115,7 @@ final class ComparatorArrayTests: XCTestKitCase
             return
         }
         
-        XCTAssertEqual(act as? String, "c")
+        XCTAssertEqual(act.value as? String, "c")
     }
     
     
@@ -191,7 +191,7 @@ final class ComparatorArrayTests: XCTestKitCase
             return
         }
         
-        XCTAssertEqual(act as? String, "x")
+        XCTAssertEqual(act.value as? String, "x")
     }
     
     
@@ -225,7 +225,7 @@ final class ComparatorArrayTests: XCTestKitCase
             return
         }
         
-        XCTAssertEqual(exp as? String, "x")
+        XCTAssertEqual(exp.value as? String, "x")
     }
     
     
@@ -299,7 +299,7 @@ final class ComparatorArrayTests: XCTestKitCase
             return
         }
         
-        XCTAssertEqual((act as? Item)?.id, 3)
+        XCTAssertEqual((act.value as? Item)?.id, 3)
     }
     
     
@@ -352,7 +352,7 @@ final class ComparatorArrayTests: XCTestKitCase
             return
         }
         
-        XCTAssertEqual((act as? Item)?.id, 0)
+        XCTAssertEqual((act.value as? Item)?.id, 0)
     }
     
     
@@ -398,7 +398,7 @@ final class ComparatorArrayTests: XCTestKitCase
             return
         }
         
-        XCTAssertEqual(act as? Int, 2)
+        XCTAssertEqual(act.value as? Int, 2)
     }
     
     
@@ -433,7 +433,7 @@ final class ComparatorArrayTests: XCTestKitCase
             return
         }
         
-        XCTAssertEqual(exp as? String, "a")
+        XCTAssertEqual(exp.value as? String, "a")
         
         
         
@@ -444,7 +444,7 @@ final class ComparatorArrayTests: XCTestKitCase
             return
         }
         
-        XCTAssertEqual(act as? String, "a")
+        XCTAssertEqual(act.value as? String, "a")
     }
     
     
@@ -503,8 +503,8 @@ final class ComparatorArrayTests: XCTestKitCase
             return
         }
         
-        XCTAssertEqual(exp as? Int, 4)
-        XCTAssertEqual(act as? Int, 99)
+        XCTAssertEqual(exp.value as? Int, 4)
+        XCTAssertEqual(act.value as? Int, 99)
     }
     
     
@@ -560,7 +560,7 @@ final class ComparatorArrayTests: XCTestKitCase
             return
         }
         
-        XCTAssertEqual(act as? String, "w")
+        XCTAssertEqual(act.value as? String, "w")
         
         
         
@@ -571,6 +571,6 @@ final class ComparatorArrayTests: XCTestKitCase
             return
         }
         
-        XCTAssertEqual(exp as? String, "z")
+        XCTAssertEqual(exp.value as? String, "z")
     }
 }

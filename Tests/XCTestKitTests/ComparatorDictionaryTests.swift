@@ -67,8 +67,8 @@ final class ComparatorDictionaryTests: XCTestKitCase
             return
         }
         
-        XCTAssertEqual(exp as? Int, 2)
-        XCTAssertEqual(act as? Int, 0)
+        XCTAssertEqual(exp.value as? Int, 2)
+        XCTAssertEqual(act.value as? Int, 0)
         XCTAssertTrue(tree2.isEmpty)
     }
     
@@ -139,7 +139,7 @@ final class ComparatorDictionaryTests: XCTestKitCase
             return
         }
         
-        XCTAssertEqual(exp as? Int, 2)
+        XCTAssertEqual(exp.value as? Int, 2)
     }
     
     
@@ -226,7 +226,7 @@ final class ComparatorDictionaryTests: XCTestKitCase
             return
         }
         
-        XCTAssertEqual(act as? Int, 2)
+        XCTAssertEqual(act.value as? Int, 2)
     }
     
     
@@ -323,7 +323,7 @@ final class ComparatorDictionaryTests: XCTestKitCase
             return
         }
         
-        XCTAssertEqual(exp1 as? Int, 2)
+        XCTAssertEqual(exp1.value as? Int, 2)
         
         
 
@@ -334,8 +334,8 @@ final class ComparatorDictionaryTests: XCTestKitCase
             return
         }
         
-        XCTAssertEqual(exp2 as? Int, 3)
-        XCTAssertEqual(act2 as? Int, 9)
+        XCTAssertEqual(exp2.value as? Int, 3)
+        XCTAssertEqual(act2.value as? Int, 9)
         
         
         
@@ -346,7 +346,7 @@ final class ComparatorDictionaryTests: XCTestKitCase
             return
         }
         
-        XCTAssertEqual(act3 as? Int, 4)
+        XCTAssertEqual(act3.value as? Int, 4)
     }
     
     
@@ -429,7 +429,7 @@ final class ComparatorDictionaryTests: XCTestKitCase
             return
         }
         
-        XCTAssertEqual(act1 as? Int, 1)
+        XCTAssertEqual(act1.value as? Int, 1)
         
         
         
@@ -440,7 +440,7 @@ final class ComparatorDictionaryTests: XCTestKitCase
             return
         }
         
-        XCTAssertEqual(act2 as? Int, 2)
+        XCTAssertEqual(act2.value as? Int, 2)
     }
     
     
@@ -483,7 +483,7 @@ final class ComparatorDictionaryTests: XCTestKitCase
             return
         }
         
-        XCTAssertEqual(exp1 as? Int, 1)
+        XCTAssertEqual(exp1.value as? Int, 1)
         
         
         
@@ -494,7 +494,7 @@ final class ComparatorDictionaryTests: XCTestKitCase
             return
         }
         
-        XCTAssertEqual(exp2 as? Int, 2)
+        XCTAssertEqual(exp2.value as? Int, 2)
     }
     
     
@@ -563,7 +563,7 @@ final class ComparatorDictionaryTests: XCTestKitCase
             return
         }
         
-        XCTAssertEqual(act as? Int, 2)
+        XCTAssertEqual(act.value as? Int, 2)
     }
     
     
@@ -622,8 +622,8 @@ final class ComparatorDictionaryTests: XCTestKitCase
             return
         }
         
-        XCTAssertEqual(exp as? Int, 5)
-        XCTAssertEqual(act as? Int, 7)
+        XCTAssertEqual(exp.value as? Int, 5)
+        XCTAssertEqual(act.value as? Int, 7)
     }
     
     
@@ -683,7 +683,7 @@ final class ComparatorDictionaryTests: XCTestKitCase
             return
         }
         
-        XCTAssertEqual(exp as? Int, 6)
+        XCTAssertEqual(exp.value as? Int, 6)
         
         
         
@@ -694,7 +694,7 @@ final class ComparatorDictionaryTests: XCTestKitCase
             return
         }
         
-        XCTAssertEqual(act as? Int, 8)
+        XCTAssertEqual(act.value as? Int, 8)
     }
     
     
@@ -748,8 +748,8 @@ final class ComparatorDictionaryTests: XCTestKitCase
             return
         }
         
-        XCTAssertEqual(exp as? String, "b")
-        XCTAssertEqual(act as? String, "c")
+        XCTAssertEqual(exp.value as? String, "b")
+        XCTAssertEqual(act.value as? String, "c")
     }
     
     
@@ -803,7 +803,7 @@ final class ComparatorDictionaryTests: XCTestKitCase
             return
         }
         
-        XCTAssertEqual(exp as? String, "diagonal")
+        XCTAssertEqual(exp.value as? String, "diagonal")
     }
     
     
@@ -861,6 +861,6 @@ final class ComparatorDictionaryTests: XCTestKitCase
             return
         }
         
-        XCTAssertEqual(act as? Int, 90)
+        XCTAssertEqual(act.value as? Int, 90)
     }
 }

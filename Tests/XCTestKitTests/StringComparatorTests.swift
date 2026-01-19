@@ -53,8 +53,8 @@ final class StringComparatorTests: XCTestKitCase
             return
         }
         
-        XCTAssertEqual(exp1 as? String, expected)
-        XCTAssertEqual(act1 as? String, actual)
+        XCTAssertEqual(exp1.value as? String, expected)
+        XCTAssertEqual(act1.value as? String, actual)
         XCTAssertEqual(tree1.count, 1)
         XCTAssertEqual(tree1[0].label, .character(1))
         
@@ -67,8 +67,8 @@ final class StringComparatorTests: XCTestKitCase
             return
         }
         
-        XCTAssertEqual(exp2 as? String, "e")
-        XCTAssertEqual(act2 as? String, "a")
+        XCTAssertEqual(exp2.value as? String, "e")
+        XCTAssertEqual(act2.value as? String, "a")
         XCTAssertTrue(tree2.isEmpty)
     }
     
@@ -110,8 +110,8 @@ final class StringComparatorTests: XCTestKitCase
             return
         }
         
-        XCTAssertEqual(exp1 as? String, expected)
-        XCTAssertEqual(act1 as? String, actual)
+        XCTAssertEqual(exp1.value as? String, expected)
+        XCTAssertEqual(act1.value as? String, actual)
         XCTAssertEqual(tree.count, 1)
         XCTAssertEqual(tree[0].label, .character(0))
         
@@ -124,7 +124,7 @@ final class StringComparatorTests: XCTestKitCase
             return
         }
         
-        XCTAssertEqual(act2 as? String, actual)
+        XCTAssertEqual(act2.value as? String, actual)
     }
     
     
@@ -146,8 +146,8 @@ final class StringComparatorTests: XCTestKitCase
             return
         }
         
-        XCTAssertEqual(exp1 as? String, expected)
-        XCTAssertEqual(act1 as? String, actual)
+        XCTAssertEqual(exp1.value as? String, expected)
+        XCTAssertEqual(act1.value as? String, actual)
         XCTAssertEqual(tree.count, 1)
         XCTAssertEqual(tree[0].label, .character(0))
         
@@ -160,7 +160,7 @@ final class StringComparatorTests: XCTestKitCase
             return
         }
         
-        XCTAssertEqual(exp2 as? String, expected)
+        XCTAssertEqual(exp2.value as? String, expected)
     }
     
     
@@ -194,8 +194,8 @@ final class StringComparatorTests: XCTestKitCase
             return
         }
         
-        XCTAssertEqual(exp as? String, "h")
-        XCTAssertEqual(act as? String, "X")
+        XCTAssertEqual(exp.value as? String, "h")
+        XCTAssertEqual(act.value as? String, "X")
     }
     
     
@@ -229,8 +229,8 @@ final class StringComparatorTests: XCTestKitCase
             return
         }
         
-        XCTAssertEqual(exp as? String, "o")
-        XCTAssertEqual(act as? String, "X")
+        XCTAssertEqual(exp.value as? String, "o")
+        XCTAssertEqual(act.value as? String, "X")
     }
     
     
@@ -252,8 +252,8 @@ final class StringComparatorTests: XCTestKitCase
             return
         }
         
-        XCTAssertEqual(exp as? String, expected)
-        XCTAssertEqual(act as? String, actual)
+        XCTAssertEqual(exp.value as? String, expected)
+        XCTAssertEqual(act.value as? String, actual)
         XCTAssertEqual(tree.count, 1)
         XCTAssertEqual(tree[0].label, .character(3))
         
@@ -266,7 +266,7 @@ final class StringComparatorTests: XCTestKitCase
             return
         }
         
-        XCTAssertEqual(act as? String, "def")
+        XCTAssertEqual(act.value as? String, "def")
     }
     
     
@@ -288,8 +288,8 @@ final class StringComparatorTests: XCTestKitCase
             return
         }
         
-        XCTAssertEqual(exp as? String, expected)
-        XCTAssertEqual(act as? String, actual)
+        XCTAssertEqual(exp.value as? String, expected)
+        XCTAssertEqual(act.value as? String, actual)
         XCTAssertEqual(tree.count, 1)
         XCTAssertEqual(tree[0].label, .character(0))
         
@@ -302,7 +302,7 @@ final class StringComparatorTests: XCTestKitCase
             return
         }
         
-        XCTAssertEqual(exp as? String, "abc")
+        XCTAssertEqual(exp.value as? String, "abc")
     }
     
     
@@ -324,8 +324,8 @@ final class StringComparatorTests: XCTestKitCase
             return
         }
         
-        XCTAssertEqual(exp1 as? String, expected)
-        XCTAssertEqual(act1 as? String, actual)
+        XCTAssertEqual(exp1.value as? String, expected)
+        XCTAssertEqual(act1.value as? String, actual)
         XCTAssertEqual(tree.count, 1)
         XCTAssertEqual(tree[0].label, .character(0))
         
@@ -338,8 +338,8 @@ final class StringComparatorTests: XCTestKitCase
             return
         }
         
-        XCTAssertEqual(exp2 as? String, expected)
-        XCTAssertEqual(act2 as? String, actual)
+        XCTAssertEqual(exp2.value as? String, expected)
+        XCTAssertEqual(act2.value as? String, actual)
     }
     
     
@@ -373,7 +373,7 @@ final class StringComparatorTests: XCTestKitCase
             return
         }
         
-        XCTAssertEqual(act as? String, " ")
+        XCTAssertEqual(act.value as? String, " ")
     }
     
     
@@ -407,8 +407,8 @@ final class StringComparatorTests: XCTestKitCase
             return
         }
         
-        XCTAssertEqual(exp as? String, "\t")
-        XCTAssertEqual(act as? String, " ")
+        XCTAssertEqual(exp.value as? String, "\t")
+        XCTAssertEqual(act.value as? String, " ")
     }
     
     
@@ -463,8 +463,8 @@ final class StringComparatorTests: XCTestKitCase
             return
         }
         
-        XCTAssertEqual(exp as? String, "line1")
-        XCTAssertEqual(act as? String, "lineX")
+        XCTAssertEqual(exp.value as? String, "line1")
+        XCTAssertEqual(act.value as? String, "lineX")
         XCTAssertEqual(tree2.count, 1)
         XCTAssertEqual(tree2[0].label, .character(4))
     }
@@ -500,7 +500,7 @@ final class StringComparatorTests: XCTestKitCase
             return
         }
         
-        XCTAssertEqual(exp as? String, "line1")
+        XCTAssertEqual(exp.value as? String, "line1")
     }
     
     
@@ -527,14 +527,14 @@ final class StringComparatorTests: XCTestKitCase
         
         
         
-        guard case let .unexpectedElement(actLine) = tree[0].kind
+        guard case let .unexpectedElement(act) = tree[0].kind
         else
         {
             XCTFail("Expected .unexpectedElement, got \(tree[0].kind)")
             return
         }
         
-        XCTAssertEqual(actLine as? String, "line1")
+        XCTAssertEqual(act.value as? String, "line1")
     }
     
     
@@ -569,8 +569,8 @@ final class StringComparatorTests: XCTestKitCase
             return
         }
         
-        XCTAssertEqual(exp1 as? String, expected)
-        XCTAssertEqual(act1 as? String, "multiple")
+        XCTAssertEqual(exp1.value as? String, expected)
+        XCTAssertEqual(act1.value as? String, "multiple")
         
         
         
@@ -581,7 +581,7 @@ final class StringComparatorTests: XCTestKitCase
             return
         }
         
-        XCTAssertEqual(act2 as? String, "lines")
+        XCTAssertEqual(act2.value as? String, "lines")
     }
     
     
@@ -616,8 +616,8 @@ final class StringComparatorTests: XCTestKitCase
             return
         }
         
-        XCTAssertEqual(exp1 as? String, "remove")
-        XCTAssertEqual(act1 as? String, "change")
+        XCTAssertEqual(exp1.value as? String, "remove")
+        XCTAssertEqual(act1.value as? String, "change")
         
         
         
@@ -628,8 +628,8 @@ final class StringComparatorTests: XCTestKitCase
             return
         }
         
-        XCTAssertEqual(exp2 as? String, "modify")
-        XCTAssertEqual(act2 as? String, "add")
+        XCTAssertEqual(exp2.value as? String, "modify")
+        XCTAssertEqual(act2.value as? String, "add")
     }
     
     
@@ -674,8 +674,8 @@ final class StringComparatorTests: XCTestKitCase
             return
         }
         
-        XCTAssertEqual(exp1 as? String, "remove")
-        XCTAssertEqual(act1 as? String, "modified")
+        XCTAssertEqual(exp1.value as? String, "remove")
+        XCTAssertEqual(act1.value as? String, "modified")
         
         
         
@@ -686,7 +686,7 @@ final class StringComparatorTests: XCTestKitCase
             return
         }
         
-        XCTAssertEqual(exp2 as? String, "modify")
+        XCTAssertEqual(exp2.value as? String, "modify")
         
         
         
@@ -697,7 +697,7 @@ final class StringComparatorTests: XCTestKitCase
             return
         }
         
-        XCTAssertEqual(act2 as? String, "add")
+        XCTAssertEqual(act2.value as? String, "add")
     }
     
     
@@ -733,7 +733,7 @@ final class StringComparatorTests: XCTestKitCase
             return
         }
         
-        XCTAssertEqual(exp as? String, "")
+        XCTAssertEqual(exp.value as? String, "")
     }
     
     
@@ -790,7 +790,7 @@ final class StringComparatorTests: XCTestKitCase
             return
         }
         
-        XCTAssertEqual(exp1 as? String, "")
+        XCTAssertEqual(exp1.value as? String, "")
         
         
         
@@ -801,7 +801,7 @@ final class StringComparatorTests: XCTestKitCase
             return
         }
         
-        XCTAssertEqual(exp2 as? String, "")
+        XCTAssertEqual(exp2.value as? String, "")
     }
     
     
@@ -838,7 +838,7 @@ final class StringComparatorTests: XCTestKitCase
             return
         }
         
-        XCTAssertEqual(exp1 as? String, "")
+        XCTAssertEqual(exp1.value as? String, "")
         
         
         
@@ -849,7 +849,7 @@ final class StringComparatorTests: XCTestKitCase
             return
         }
         
-        XCTAssertEqual(exp2 as? String, "")
+        XCTAssertEqual(exp2.value as? String, "")
     }
     
     
@@ -886,8 +886,8 @@ final class StringComparatorTests: XCTestKitCase
             return
         }
         
-        XCTAssertEqual(exp1 as? String, "")
-        XCTAssertEqual(act1 as? String, "line0")
+        XCTAssertEqual(exp1.value as? String, "")
+        XCTAssertEqual(act1.value as? String, "line0")
         
         
         
@@ -898,7 +898,7 @@ final class StringComparatorTests: XCTestKitCase
             return
         }
         
-        XCTAssertEqual(act2 as? String, "line1")
+        XCTAssertEqual(act2.value as? String, "line1")
     }
     
     
@@ -934,7 +934,7 @@ final class StringComparatorTests: XCTestKitCase
             return
         }
         
-        XCTAssertEqual(exp as? String, "")
+        XCTAssertEqual(exp.value as? String, "")
     }
     
     
@@ -1060,8 +1060,8 @@ final class StringComparatorTests: XCTestKitCase
             return
         }
         
-        XCTAssertEqual(exp as? String, expected)
-        XCTAssertEqual(act as? String, actual)
+        XCTAssertEqual(exp.value as? String, expected)
+        XCTAssertEqual(act.value as? String, actual)
         XCTAssertTrue(tree.isEmpty)
     }
     
@@ -1131,8 +1131,8 @@ final class StringComparatorTests: XCTestKitCase
             return
         }
         
-        XCTAssertEqual(exp as? String, expected)
-        XCTAssertEqual(act as? String, actual)
+        XCTAssertEqual(exp.value as? String, expected)
+        XCTAssertEqual(act.value as? String, actual)
         XCTAssertEqual(tree.count, 1)
         XCTAssertEqual(tree[0].label, .character(2))
     }
@@ -1157,8 +1157,8 @@ final class StringComparatorTests: XCTestKitCase
             return
         }
         
-        XCTAssertEqual(exp as? String, expected)
-        XCTAssertEqual(act as? String, actual)
+        XCTAssertEqual(exp.value as? String, expected)
+        XCTAssertEqual(act.value as? String, actual)
         XCTAssertTrue(tree.isEmpty)
     }
     
@@ -1186,8 +1186,8 @@ final class StringComparatorTests: XCTestKitCase
         /// accumulate all three characters in each of `expected` and `actual`,
         /// since there are entries at each index. The tree will contain the
         /// single coalesced node.
-        XCTAssertEqual(exp as? String, expected)
-        XCTAssertEqual(act as? String, actual)
+        XCTAssertEqual(exp.value as? String, expected)
+        XCTAssertEqual(act.value as? String, actual)
         XCTAssertEqual(tree.count, 1)
         XCTAssertEqual(tree[0].label, .character(0))
     }
@@ -1224,8 +1224,8 @@ final class StringComparatorTests: XCTestKitCase
             return
         }
         
-        XCTAssertEqual(exp as? String, "12345")
-        XCTAssertEqual(act as? String, "54321")
+        XCTAssertEqual(exp.value as? String, "12345")
+        XCTAssertEqual(act.value as? String, "54321")
         XCTAssertTrue(tree2.isEmpty)
     }
     
@@ -1262,7 +1262,7 @@ final class StringComparatorTests: XCTestKitCase
             return
         }
         
-        XCTAssertEqual(exp as? String, "bc")
+        XCTAssertEqual(exp.value as? String, "bc")
     }
     
     
@@ -1296,7 +1296,7 @@ final class StringComparatorTests: XCTestKitCase
             return
         }
         
-        XCTAssertEqual(act as? String, "bc")
+        XCTAssertEqual(act.value as? String, "bc")
     }
     
     
@@ -1331,8 +1331,8 @@ final class StringComparatorTests: XCTestKitCase
             return
         }
         
-        XCTAssertEqual(exp1 as? String, "b")
-        XCTAssertEqual(act1 as? String, "XX")
+        XCTAssertEqual(exp1.value as? String, "b")
+        XCTAssertEqual(act1.value as? String, "XX")
         
         
         
@@ -1343,8 +1343,8 @@ final class StringComparatorTests: XCTestKitCase
             return
         }
         
-        XCTAssertEqual(exp2 as? String, "de")
-        XCTAssertEqual(act2 as? String, "YY")
+        XCTAssertEqual(exp2.value as? String, "de")
+        XCTAssertEqual(act2.value as? String, "YY")
     }
     
     
@@ -1380,8 +1380,8 @@ final class StringComparatorTests: XCTestKitCase
             return
         }
         
-        XCTAssertEqual(exp as? String, "👋")
-        XCTAssertEqual(act as? String, "🌎")
+        XCTAssertEqual(exp.value as? String, "👋")
+        XCTAssertEqual(act.value as? String, "🌎")
     }
     
     
@@ -1442,8 +1442,8 @@ final class StringComparatorTests: XCTestKitCase
             return
         }
         
-        XCTAssertEqual(exp as? String, expected)
-        XCTAssertEqual(act as? String, actual)
+        XCTAssertEqual(exp.value as? String, expected)
+        XCTAssertEqual(act.value as? String, actual)
         XCTAssertTrue(tree2.isEmpty)
     }
 }

@@ -85,8 +85,8 @@ internal struct StringComparator
         )
         
         return .different(
-            expected:   expected,
-            actual:     actual,
+            expected:   DiffValue(expected),
+            actual:     DiffValue(actual),
             tree:       tree
         )
     }
@@ -122,8 +122,8 @@ internal struct StringComparator
         }
         
         return .different(
-            expected:   normalizedExpected,
-            actual:     normalizedActual,
+            expected:   DiffValue(normalizedExpected),
+            actual:     DiffValue(normalizedActual),
             tree:       tree
         )
     }
@@ -195,18 +195,18 @@ internal struct StringComparator
                 )
                 
                 kind = .different(
-                    expected:   removal,
-                    actual:     insertion,
+                    expected:   DiffValue(removal),
+                    actual:     DiffValue(insertion),
                     tree:       characterNodes
                 )
             }
             else if let removal
             {
-                kind = .missingElement(expected: removal)
+                kind = .missingElement(expected: DiffValue(removal))
             }
             else if let insertion
             {
-                kind = .unexpectedElement(actual: insertion)
+                kind = .unexpectedElement(actual: DiffValue(insertion))
             }
             else
             {
@@ -422,18 +422,22 @@ internal struct StringComparator
                 !insertedChars.isEmpty
             {
                 kind = .different(
-                    expected:   String(removedChars),
-                    actual:     String(insertedChars),
+                    expected:   DiffValue(String(removedChars)),
+                    actual:     DiffValue(String(insertedChars)),
                     tree:       []
                 )
             }
             else if !removedChars.isEmpty
             {
-                kind = .missingElement(expected: String(removedChars))
+                kind = .missingElement(
+                    expected: DiffValue(String(removedChars))
+                )
             }
             else if !insertedChars.isEmpty
             {
-                kind = .unexpectedElement(actual: String(insertedChars))
+                kind = .unexpectedElement(
+                    actual: DiffValue(String(insertedChars))
+                )
             }
             else
             {

@@ -40,8 +40,8 @@ final class ComparatorEnumTests: XCTestKitCase
             return
         }
         
-        XCTAssertEqual(exp as? Status, expected)
-        XCTAssertEqual(act as? Status, actual)
+        XCTAssertEqual(exp.value as? Status, expected)
+        XCTAssertEqual(act.value as? Status, actual)
         XCTAssertTrue(tree.isEmpty)
     }
     
@@ -111,8 +111,8 @@ final class ComparatorEnumTests: XCTestKitCase
             return
         }
         
-        XCTAssertEqual(exp as? String, "hello")
-        XCTAssertEqual(act as? String, "goodbye")
+        XCTAssertEqual(exp.value as? String, "hello")
+        XCTAssertEqual(act.value as? String, "goodbye")
     }
     
     
@@ -143,8 +143,8 @@ final class ComparatorEnumTests: XCTestKitCase
             return
         }
         
-        XCTAssertEqual(exp as? State, expected)
-        XCTAssertEqual(act as? State, actual)
+        XCTAssertEqual(exp.value as? State, expected)
+        XCTAssertEqual(act.value as? State, actual)
         XCTAssertTrue(tree.isEmpty)
     }
     
@@ -202,8 +202,8 @@ final class ComparatorEnumTests: XCTestKitCase
             return
         }
         
-        XCTAssertEqual(exp as? State, expected)
-        XCTAssertEqual(act as? State, actual)
+        XCTAssertEqual(exp.value as? State, expected)
+        XCTAssertEqual(act.value as? State, actual)
         XCTAssertTrue(tree.isEmpty)
     }
     
@@ -234,8 +234,8 @@ final class ComparatorEnumTests: XCTestKitCase
             return
         }
         
-        XCTAssertEqual(exp as? State, expected)
-        XCTAssertEqual(act as? State, actual)
+        XCTAssertEqual(exp.value as? State, expected)
+        XCTAssertEqual(act.value as? State, actual)
         XCTAssertTrue(tree.isEmpty)
     }
     
@@ -277,8 +277,8 @@ final class ComparatorEnumTests: XCTestKitCase
             return
         }
         
-        XCTAssertEqual(exp as? String, "x")
-        XCTAssertEqual(act as? String, "y")
+        XCTAssertEqual(exp.value as? String, "x")
+        XCTAssertEqual(act.value as? String, "y")
     }
     
     
@@ -351,8 +351,8 @@ final class ComparatorEnumTests: XCTestKitCase
             return
         }
         
-        XCTAssertEqual(exp as? Int, 2)
-        XCTAssertEqual(act as? Int, 4)
+        XCTAssertEqual(exp.value as? Int, 2)
+        XCTAssertEqual(act.value as? Int, 4)
     }
     
     
@@ -381,8 +381,8 @@ final class ComparatorEnumTests: XCTestKitCase
             return
         }
         
-        XCTAssertEqual(exp1 as? Wrapper, expected)
-        XCTAssertEqual(act1 as? Wrapper, actual)
+        XCTAssertEqual(exp1.value as? Wrapper, expected)
+        XCTAssertEqual(act1.value as? Wrapper, actual)
         XCTAssertEqual(tree.count, 1)
         XCTAssertEqual(tree[0].label, .index(0))
         
@@ -395,8 +395,8 @@ final class ComparatorEnumTests: XCTestKitCase
             return
         }
         
-        XCTAssertEqual(exp2 as? Int, 1)
-        XCTAssertEqual(act2 as? Int, 2)
+        XCTAssertEqual(exp2.value as? Int, 1)
+        XCTAssertEqual(act2.value as? Int, 2)
     }
     
     
@@ -427,8 +427,8 @@ final class ComparatorEnumTests: XCTestKitCase
             return
         }
         
-        XCTAssertEqual(exp as? Priority, expected)
-        XCTAssertEqual(act as? Priority, actual)
+        XCTAssertEqual(exp.value as? Priority, expected)
+        XCTAssertEqual(act.value as? Priority, actual)
         XCTAssertTrue(tree.isEmpty)
     }
     
@@ -524,8 +524,8 @@ final class ComparatorEnumTests: XCTestKitCase
             return
         }
         
-        XCTAssertEqual(exp as? String, "hello")
-        XCTAssertEqual(act as? String, "goodbye")
+        XCTAssertEqual(exp.value as? String, "hello")
+        XCTAssertEqual(act.value as? String, "goodbye")
     }
     
     
@@ -560,8 +560,11 @@ final class ComparatorEnumTests: XCTestKitCase
         
         
         guard
-            case .success(let expValue) = exp as? Result<String, TestError>,
-            case .failure(let actValue) = act as? Result<String, TestError>
+            case .success(let expValue)
+                = exp.value as? Result<String, TestError>,
+            
+            case .failure(let actValue)
+                = act.value as? Result<String, TestError>
         else
         {
             XCTFail("Unexpected types in diff")
@@ -625,7 +628,7 @@ final class ComparatorEnumTests: XCTestKitCase
             return
         }
         
-        XCTAssertEqual(exp as? Int, 404)
-        XCTAssertEqual(act as? Int, 418)
+        XCTAssertEqual(exp.value as? Int, 404)
+        XCTAssertEqual(act.value as? Int, 418)
     }
 }

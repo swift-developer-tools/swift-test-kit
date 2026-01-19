@@ -130,8 +130,8 @@ internal enum DiffNodeKind
     ///   - actual: The actual value.
     ///   - location: The location where the cycle was detected.
     case cycle(
-        expected    : Any,
-        actual      : Any,
+        expected    : DiffValue,
+        actual      : DiffValue,
         location    : CycleLocation
     )
     
@@ -164,8 +164,8 @@ internal enum DiffNodeKind
     ///   - tree: The diff tree representing the difference between the
     ///   expected and actual values. This will be empty at leaf nodes.
     case different(
-        expected    : Any,
-        actual      : Any,
+        expected    : DiffValue,
+        actual      : DiffValue,
         tree        : [DiffNode]
     )
     
@@ -173,14 +173,14 @@ internal enum DiffNodeKind
     /// the actual value.
     /// - Parameter expected: The expected value.
     case missingElement(
-        expected: Any
+        expected: DiffValue
     )
     
     /// An element or key was present in the actual value, but was not in the
     /// expected value.
     /// - Parameter actual: The actual value.
     case unexpectedElement(
-        actual: Any
+        actual: DiffValue
     )
 }
 

@@ -63,7 +63,7 @@ final class ComparatorSetTests: XCTestKitCase
             return
         }
         
-        XCTAssertEqual(exp as? String, "c")
+        XCTAssertEqual(exp.value as? String, "c")
     }
     
     
@@ -99,7 +99,7 @@ final class ComparatorSetTests: XCTestKitCase
             return
         }
         
-        XCTAssertEqual(exp1 as? String, "b")
+        XCTAssertEqual(exp1.value as? String, "b")
         
         
         
@@ -110,7 +110,7 @@ final class ComparatorSetTests: XCTestKitCase
             return
         }
         
-        XCTAssertEqual(exp2 as? String, "c")
+        XCTAssertEqual(exp2.value as? String, "c")
         
         
         
@@ -121,7 +121,7 @@ final class ComparatorSetTests: XCTestKitCase
             return
         }
         
-        XCTAssertEqual(exp3 as? String, "d")
+        XCTAssertEqual(exp3.value as? String, "d")
     }
     
     
@@ -155,7 +155,7 @@ final class ComparatorSetTests: XCTestKitCase
             return
         }
         
-        XCTAssertEqual(act as? String, "c")
+        XCTAssertEqual(act.value as? String, "c")
     }
     
     
@@ -191,7 +191,7 @@ final class ComparatorSetTests: XCTestKitCase
             return
         }
         
-        XCTAssertEqual(act1 as? String, "b")
+        XCTAssertEqual(act1.value as? String, "b")
         
         
         
@@ -202,7 +202,7 @@ final class ComparatorSetTests: XCTestKitCase
             return
         }
         
-        XCTAssertEqual(act2 as? String, "c")
+        XCTAssertEqual(act2.value as? String, "c")
         
         
         
@@ -213,7 +213,7 @@ final class ComparatorSetTests: XCTestKitCase
             return
         }
         
-        XCTAssertEqual(act3 as? String, "d")
+        XCTAssertEqual(act3.value as? String, "d")
     }
     
     
@@ -250,7 +250,7 @@ final class ComparatorSetTests: XCTestKitCase
             return
         }
         
-        XCTAssertEqual(exp1 as? String, "b")
+        XCTAssertEqual(exp1.value as? String, "b")
         
         
         
@@ -261,7 +261,7 @@ final class ComparatorSetTests: XCTestKitCase
             return
         }
         
-        XCTAssertEqual(exp2 as? String, "c")
+        XCTAssertEqual(exp2.value as? String, "c")
         
         
         
@@ -272,7 +272,7 @@ final class ComparatorSetTests: XCTestKitCase
             return
         }
         
-        XCTAssertEqual(act1 as? String, "d")
+        XCTAssertEqual(act1.value as? String, "d")
         
         
         
@@ -283,7 +283,7 @@ final class ComparatorSetTests: XCTestKitCase
             return
         }
         
-        XCTAssertEqual(act2 as? String, "e")
+        XCTAssertEqual(act2.value as? String, "e")
     }
     
     
@@ -318,7 +318,7 @@ final class ComparatorSetTests: XCTestKitCase
             return
         }
         
-        XCTAssertEqual(act1 as? String, "a")
+        XCTAssertEqual(act1.value as? String, "a")
         
         
         
@@ -329,7 +329,7 @@ final class ComparatorSetTests: XCTestKitCase
             return
         }
         
-        XCTAssertEqual(act2 as? String, "b")
+        XCTAssertEqual(act2.value as? String, "b")
     }
     
     
@@ -364,7 +364,7 @@ final class ComparatorSetTests: XCTestKitCase
             return
         }
         
-        XCTAssertEqual(exp1 as? String, "a")
+        XCTAssertEqual(exp1.value as? String, "a")
         
         
         
@@ -375,7 +375,7 @@ final class ComparatorSetTests: XCTestKitCase
             return
         }
         
-        XCTAssertEqual(exp2 as? String, "b")
+        XCTAssertEqual(exp2.value as? String, "b")
     }
     
     
@@ -429,7 +429,7 @@ final class ComparatorSetTests: XCTestKitCase
             return
         }
         
-        XCTAssertEqual(act as? Int, 2)
+        XCTAssertEqual(act.value as? Int, 2)
         
         
         
@@ -440,7 +440,7 @@ final class ComparatorSetTests: XCTestKitCase
             return
         }
         
-        XCTAssertTrue(exp is Int?)
-        XCTAssertNil(exp as? Int)
+        XCTAssertTrue(exp.value is Int?)
+        XCTAssertNil(exp.value as? Int)
     }
 }

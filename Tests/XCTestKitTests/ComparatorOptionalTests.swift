@@ -63,8 +63,8 @@ final class ComparatorOptionalTests: XCTestKitCase
             return
         }
         
-        XCTAssertEqual(exp as? String, "hello")
-        XCTAssertEqual(act as? String, "world")
+        XCTAssertEqual(exp.value as? String, "hello")
+        XCTAssertEqual(act.value as? String, "world")
         XCTAssertEqual(tree2.count, 2)
         XCTAssertEqual(tree2[0].label, .character(0))
         XCTAssertEqual(tree2[1].label, .character(5))
@@ -121,7 +121,7 @@ final class ComparatorOptionalTests: XCTestKitCase
             return
         }
         
-        XCTAssertEqual(act as? String, "hello")
+        XCTAssertEqual(act.value as? String, "hello")
     }
     
     
@@ -155,7 +155,7 @@ final class ComparatorOptionalTests: XCTestKitCase
             return
         }
         
-        XCTAssertEqual(exp as? String, "hello")
+        XCTAssertEqual(exp.value as? String, "hello")
     }
     
     
@@ -213,8 +213,8 @@ final class ComparatorOptionalTests: XCTestKitCase
             return
         }
         
-        XCTAssertEqual(exp as? Int, 1)
-        XCTAssertEqual(act as? Int, 2)
+        XCTAssertEqual(exp.value as? Int, 1)
+        XCTAssertEqual(act.value as? Int, 2)
         XCTAssertTrue(tree4.isEmpty)
     }
     
@@ -261,7 +261,7 @@ final class ComparatorOptionalTests: XCTestKitCase
             return
         }
         
-        XCTAssertTrue(exp is Int?)
+        XCTAssertTrue(exp.value is Int?)
     }
     
     
@@ -314,7 +314,7 @@ final class ComparatorOptionalTests: XCTestKitCase
             return
         }
         
-        XCTAssertTrue(exp is Int??)
+        XCTAssertTrue(exp.value is Int??)
     }
     
     

@@ -156,8 +156,8 @@ final class ComparatorCycleTests: XCTestKitCase
         }
         
         /// Depth limit reached. Leaf comparison with an empty tree.
-        XCTAssertEqual(exp as? Int, 1)
-        XCTAssertEqual(act as? Int, 2)
+        XCTAssertEqual(exp.value as? Int, 1)
+        XCTAssertEqual(act.value as? Int, 2)
         XCTAssertTrue(tree2.isEmpty)
         
         assertNoCycles(in: node.kind)
@@ -445,8 +445,8 @@ final class ComparatorCycleTests: XCTestKitCase
             return
         }
         
-        XCTAssertEqual(exp as? Int, 99)
-        XCTAssertEqual(act as? Int, 50)
+        XCTAssertEqual(exp.value as? Int, 99)
+        XCTAssertEqual(act.value as? Int, 50)
         XCTAssertTrue(tree4.isEmpty)
     }
     

@@ -57,8 +57,8 @@ final class ComparatorMiscTests: XCTestKitCase
             return
         }
         
-        XCTAssertEqual(exp as? Bool, expected)
-        XCTAssertEqual(act as? Bool, actual)
+        XCTAssertEqual(exp.value as? Bool, expected)
+        XCTAssertEqual(act.value as? Bool, actual)
         XCTAssertTrue(tree.isEmpty)
     }
     
@@ -104,8 +104,8 @@ final class ComparatorMiscTests: XCTestKitCase
             return
         }
         
-        XCTAssertEqual(exp as? Int, expected)
-        XCTAssertEqual(act as? Int, actual)
+        XCTAssertEqual(exp.value as? Int, expected)
+        XCTAssertEqual(act.value as? Int, actual)
         XCTAssertTrue(tree.isEmpty)
     }
     
@@ -151,8 +151,8 @@ final class ComparatorMiscTests: XCTestKitCase
             return
         }
         
-        XCTAssertEqual(exp as? Float64, expected)
-        XCTAssertEqual(act as? Float64, actual)
+        XCTAssertEqual(exp.value as? Float64, expected)
+        XCTAssertEqual(act.value as? Float64, actual)
         XCTAssertTrue(tree.isEmpty)
     }
     
@@ -198,8 +198,8 @@ final class ComparatorMiscTests: XCTestKitCase
             return
         }
         
-        XCTAssertEqual(exp as? String, expected)
-        XCTAssertEqual(act as? String, actual)
+        XCTAssertEqual(exp.value as? String, expected)
+        XCTAssertEqual(act.value as? String, actual)
         XCTAssertEqual(tree.count, 2)
         XCTAssertEqual(tree[0].label, .character(0))
         XCTAssertEqual(tree[1].label, .character(5))
@@ -267,8 +267,8 @@ final class ComparatorMiscTests: XCTestKitCase
             return
         }
         
-        XCTAssertEqual(exp as? Int, 30)
-        XCTAssertEqual(act as? Int, 20)
+        XCTAssertEqual(exp.value as? Int, 30)
+        XCTAssertEqual(act.value as? Int, 20)
     }
     
     
@@ -338,8 +338,8 @@ final class ComparatorMiscTests: XCTestKitCase
             return
         }
         
-        XCTAssertEqual(exp as? String, "a")
-        XCTAssertEqual(act as? String, "b")
+        XCTAssertEqual(exp.value as? String, "a")
+        XCTAssertEqual(act.value as? String, "b")
     }
     
     
@@ -382,8 +382,8 @@ final class ComparatorMiscTests: XCTestKitCase
             return
         }
         
-        XCTAssertEqual(exp1 as? Data, expected)
-        XCTAssertEqual(act1 as? Data, actual)
+        XCTAssertEqual(exp1.value as? Data, expected)
+        XCTAssertEqual(act1.value as? Data, actual)
         XCTAssertEqual(tree1.count, 1)
         XCTAssertEqual(tree1[0].label, .property(name: "bytes"))
         
@@ -408,8 +408,8 @@ final class ComparatorMiscTests: XCTestKitCase
             return
         }
         
-        XCTAssertEqual(exp2 as? UInt8, 0x02)
-        XCTAssertEqual(act2 as? UInt8, 0xFF)
+        XCTAssertEqual(exp2.value as? UInt8, 0x02)
+        XCTAssertEqual(act2.value as? UInt8, 0xFF)
     }
     
     
@@ -431,8 +431,8 @@ final class ComparatorMiscTests: XCTestKitCase
             return
         }
         
-        XCTAssertEqual(exp1 as? Data, expected)
-        XCTAssertEqual(act1 as? Data, actual)
+        XCTAssertEqual(exp1.value as? Data, expected)
+        XCTAssertEqual(act1.value as? Data, actual)
         XCTAssertEqual(tree1.count, 2)
         XCTAssertEqual(tree1[0].label, .property(name: "count"))
         XCTAssertEqual(tree1[1].label, .property(name: "bytes"))
@@ -446,8 +446,8 @@ final class ComparatorMiscTests: XCTestKitCase
             return
         }
         
-        XCTAssertEqual(exp1 as? Int, expected.count)
-        XCTAssertEqual(act1 as? Int, actual.count)
+        XCTAssertEqual(exp1.value as? Int, expected.count)
+        XCTAssertEqual(act1.value as? Int, actual.count)
         
         
         
@@ -470,7 +470,7 @@ final class ComparatorMiscTests: XCTestKitCase
             return
         }
         
-        XCTAssertEqual(exp as? UInt8, 0x02)
+        XCTAssertEqual(exp.value as? UInt8, 0x02)
     }
     
     
@@ -511,8 +511,8 @@ final class ComparatorMiscTests: XCTestKitCase
             return
         }
         
-        XCTAssertEqual(exp as? Date, expected)
-        XCTAssertEqual(act as? Date, actual)
+        XCTAssertEqual(exp.value as? Date, expected)
+        XCTAssertEqual(act.value as? Date, actual)
     }
     
     
@@ -587,8 +587,8 @@ final class ComparatorMiscTests: XCTestKitCase
             return
         }
         
-        XCTAssertEqual(exp as? Int, expected.rawValue)
-        XCTAssertEqual(act as? Int, actual.rawValue)
+        XCTAssertEqual(exp.value as? Int, expected.rawValue)
+        XCTAssertEqual(act.value as? Int, actual.rawValue)
     }
     
     
@@ -641,8 +641,8 @@ final class ComparatorMiscTests: XCTestKitCase
             return
         }
         
-        XCTAssertEqual(exp as? Int, 10)
-        XCTAssertEqual(act as? Int, 5)
+        XCTAssertEqual(exp.value as? Int, 10)
+        XCTAssertEqual(act.value as? Int, 5)
     }
     
     
@@ -676,8 +676,8 @@ final class ComparatorMiscTests: XCTestKitCase
             return
         }
         
-        XCTAssertEqual(exp as? Int, 0)
-        XCTAssertEqual(act as? Int, 5)
+        XCTAssertEqual(exp.value as? Int, 0)
+        XCTAssertEqual(act.value as? Int, 5)
     }
     
     
@@ -718,8 +718,8 @@ final class ComparatorMiscTests: XCTestKitCase
             return
         }
         
-        XCTAssertEqual(exp as? URL, expected)
-        XCTAssertEqual(act as? URL, actual)
+        XCTAssertEqual(exp.value as? URL, expected)
+        XCTAssertEqual(act.value as? URL, actual)
     }
     
     
@@ -767,8 +767,8 @@ final class ComparatorMiscTests: XCTestKitCase
             return
         }
         
-        XCTAssertEqual(exp as? UUID, expected)
-        XCTAssertEqual(act as? UUID, actual)
+        XCTAssertEqual(exp.value as? UUID, expected)
+        XCTAssertEqual(act.value as? UUID, actual)
     }
     
     

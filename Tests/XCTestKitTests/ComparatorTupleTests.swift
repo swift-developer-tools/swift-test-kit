@@ -105,8 +105,8 @@ final class ComparatorTupleTests: XCTestKitCase
             return
         }
         
-        XCTAssertEqual(exp as? String, "hello")
-        XCTAssertEqual(act as? String, "goodbye")
+        XCTAssertEqual(exp.value as? String, "hello")
+        XCTAssertEqual(act.value as? String, "goodbye")
         XCTAssertEqual(tree3.count, 2)
     }
     
@@ -168,8 +168,8 @@ final class ComparatorTupleTests: XCTestKitCase
             return
         }
         
-        XCTAssertEqual(exp as? Int, 30)
-        XCTAssertEqual(act as? Int, 20)
+        XCTAssertEqual(exp.value as? Int, 30)
+        XCTAssertEqual(act.value as? Int, 20)
         XCTAssertTrue(tree3.isEmpty)
     }
 }
