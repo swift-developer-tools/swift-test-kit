@@ -83,7 +83,7 @@ internal struct Comparator
         guard expected != actual
         else
         {
-            return .same(expected: expected)
+            return .same
         }
         
         return compareStructurally(
@@ -126,7 +126,7 @@ internal struct Comparator
                 )
             }
             
-            return .same(expected: expected)
+            return .same
         }
         
         
@@ -258,7 +258,7 @@ internal struct Comparator
             guard !areEqual
             else
             {
-                return .same(expected: expected)
+                return .same
             }
         }
         
@@ -320,7 +320,7 @@ internal struct Comparator
                 guard !tree.isEmpty
                 else
                 {
-                    return .same(expected: expected)
+                    return .same
                 }
                 
                 return .different(
@@ -350,7 +350,7 @@ internal struct Comparator
                 guard !tree.isEmpty
                 else
                 {
-                    return .same(expected: expected)
+                    return .same
                 }
                 
                 return .different(
@@ -404,7 +404,7 @@ internal struct Comparator
                 guard !tree.isEmpty
                 else
                 {
-                    return .same(expected: expected)
+                    return .same
                 }
                 
                 return .different(
@@ -1004,7 +1004,7 @@ internal struct Comparator
             let actualAssoc     : Any   = actualMirror.children.first?.value
         else
         {
-            return .same(expected: expected)
+            return .same
         }
         
         
@@ -1023,7 +1023,7 @@ internal struct Comparator
             
             if case .same = innerKind
             {
-                return .same(expected: expected)
+                return .same
             }
             
             return .different(
@@ -1054,7 +1054,7 @@ internal struct Comparator
         
         if case .same = assocKind
         {
-            return .same(expected: expected)
+            return .same
         }
         
         guard case let .different(_, _, assocTree) = assocKind
@@ -1099,7 +1099,7 @@ internal struct Comparator
         {
             case (.none, .none):
                 
-                return .same(expected: expected)
+                return .same
                 
             case let (.some(exp), .some(act)):
                 
@@ -1111,7 +1111,7 @@ internal struct Comparator
                 
                 if case .same = childKind
                 {
-                    return .same(expected: expected)
+                    return .same
                 }
                 
                 return .different(

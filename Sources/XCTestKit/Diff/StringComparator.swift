@@ -76,7 +76,7 @@ internal struct StringComparator
         guard expected != actual
         else
         {
-            return .same(expected: expected)
+            return .same
         }
         
         let tree: [DiffNode] = compareCharacters(
@@ -118,7 +118,7 @@ internal struct StringComparator
         guard !tree.isEmpty
         else
         {
-            return .same(expected: expected)
+            return .same
         }
         
         return .different(

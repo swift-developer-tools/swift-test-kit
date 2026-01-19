@@ -75,14 +75,12 @@ final class ComparatorMiscTests: XCTestKitCase
         
         XCTAssertEqual(node.label, .root)
         
-        guard case let .same(exp) = node.kind
+        guard case .same = node.kind
         else
         {
             XCTFail("Expected .same, got \(node.kind)")
             return
         }
-        
-        XCTAssertEqual(exp as? Int, expected)
     }
     
     
@@ -124,14 +122,12 @@ final class ComparatorMiscTests: XCTestKitCase
         
         XCTAssertEqual(node.label, .root)
         
-        guard case let .same(exp) = node.kind
+        guard case .same = node.kind
         else
         {
             XCTFail("Expected .same, got \(node.kind)")
             return
         }
-        
-        XCTAssertEqual(exp as? Float64, expected)
     }
     
     
@@ -173,14 +169,12 @@ final class ComparatorMiscTests: XCTestKitCase
         
         XCTAssertEqual(node.label, .root)
         
-        guard case let .same(exp) = node.kind
+        guard case .same = node.kind
         else
         {
             XCTFail("Expected .same, got \(node.kind)")
             return
         }
-        
-        XCTAssertEqual(exp as? String, expected)
     }
     
     

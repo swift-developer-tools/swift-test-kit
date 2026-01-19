@@ -136,10 +136,7 @@ internal enum DiffNodeKind
     )
     
     /// The values are equal.
-    /// - Parameter expected: The expected value.
-    case same(
-        expected: Any
-    )
+    case same
     
     /// The values are not equal.
     ///
