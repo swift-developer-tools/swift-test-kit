@@ -97,14 +97,14 @@ final class ComparatorStructTests: XCTestKitCase
         
         
         
-        let user = User(
+        let expected = User(
             name:   "Someone",
             age:    10
         )
         
         let node: DiffNode = Comparator.computeDiff(
-            expected:   user,
-            actual:     user
+            expected:   expected,
+            actual:     expected
         )
         
         guard case .same = node.kind
@@ -227,6 +227,8 @@ final class ComparatorStructTests: XCTestKitCase
         struct L2: Equatable { let l3       : L3 }
         struct L1: Equatable { let l2       : L2 }
         
+        
+        
         let expected    = L1(l2: L2(l3: L3(l4: L4(value: 1))))
         let actual      = L1(l2: L2(l3: L3(l4: L4(value: 2))))
         let options     = XCTKDiffOptions(maxRecursionDepth: nil)
@@ -306,6 +308,8 @@ final class ComparatorStructTests: XCTestKitCase
         struct L2: Equatable { let l3       : L3 }
         struct L1: Equatable { let l2       : L2 }
         
+        
+        
         let expected = L1(l2: L2(l3: L3(l4: L4(value: 99))))
         
         let node: DiffNode = Comparator.computeDiff(
@@ -377,5 +381,150 @@ final class ComparatorStructTests: XCTestKitCase
         
         XCTAssertEqual(tree2.count, 1)
         XCTAssertEqual(tree2[0].label, .property(name: "value"))
+    }
+    
+    
+    
+    func testEmptyStructEqualValues() throws
+    {
+        struct Empty: Equatable { }
+        
+        let expected = Empty()
+        
+        let node: DiffNode = Comparator.computeDiff(
+            expected:   expected,
+            actual:     expected
+        )
+        
+        guard case .same = node.kind
+        else
+        {
+            XCTFail("Expected .same, got \(node.kind)")
+            return
+        }
+    }
+    
+    
+    
+    func testEmptyStructWithPrivateBackingProperty() throws
+    {
+        struct Wrapper: Equatable
+        {
+            private var _value: Int
+            
+            var value: Int
+            {
+                return _value
+            }
+            
+            init(
+                value: Int
+            )
+            {
+                self._value = value
+            }
+        }
+        
+        
+        
+        let expected    = Wrapper(value: 10)
+        let actual      = Wrapper(value: 20)
+        
+        let node: DiffNode = Comparator.computeDiff(
+            expected:   expected,
+            actual:     actual
+        )
+        
+        guard case let .different(_, _, tree) = node.kind
+        else
+        {
+            XCTFail("Expected .different, got \(node.kind)")
+            return
+        }
+        
+        XCTAssertEqual(tree.count, 1)
+        XCTAssertEqual(tree[0].label, .property(name: "_value"))
+        
+        
+        
+        guard case let .different(exp, act, _) = tree[0].kind
+        else
+        {
+            XCTFail("Expected .different, got \(tree[0].kind)")
+            return
+        }
+        
+        XCTAssertEqual(exp as? Int, 10)
+        XCTAssertEqual(act as? Int, 20)
+    }
+    
+    
+    
+    func testDepthLimitAtExactBoundary() throws
+    {
+        struct L5: Equatable { let value    : Int }
+        struct L4: Equatable { let l5       : L5 }
+        struct L3: Equatable { let l4       : L4 }
+        struct L2: Equatable { let l3       : L3 }
+        struct L1: Equatable { let l2       : L2 }
+        
+        
+        
+        let expected    = L1(l2: L2(l3: L3(l4: L4(l5: L5(value: 1)))))
+        let actual      = L1(l2: L2(l3: L3(l4: L4(l5: L5(value: 2)))))
+        
+        let node: DiffNode = Comparator.computeDiff(
+            expected:   expected,
+            actual:     actual,
+            options:    XCTKDiffOptions(maxRecursionDepth: 3)
+        )
+        
+        guard case let .different(_, _, tree1) = node.kind
+        else
+        {
+            XCTFail("Expected .different, got \(node.kind)")
+            return
+        }
+        
+        XCTAssertEqual(tree1.count, 1)
+        XCTAssertEqual(tree1[0].label, .property(name: "l2"))
+        
+        
+        
+        guard case let .different(_, _, tree2) = tree1[0].kind
+        else
+        {
+            XCTFail("Expected .different, got \(tree1[0].kind)")
+            return
+        }
+        
+        XCTAssertEqual(tree2.count, 1)
+        XCTAssertEqual(tree2[0].label, .property(name: "l3"))
+        
+        
+        
+        guard case let .different(_, _, tree3) = tree2[0].kind
+        else
+        {
+            XCTFail("Expected .different, got \(tree2[0].kind)")
+            return
+        }
+        
+        XCTAssertEqual(tree3.count, 1)
+        XCTAssertEqual(tree3[0].label, .property(name: "l4"))
+        
+        
+        
+        guard case let .different(exp, act, tree4) = tree3[0].kind
+        else
+        {
+            XCTFail("Expected .different, got \(tree3[0].kind)")
+            return
+        }
+        
+        /// Depth limit reached. Leaf comparison with an empty tree.
+        XCTAssertTrue(exp is L4)
+        XCTAssertTrue(act is L4)
+        XCTAssertTrue(tree4.isEmpty)
     }
 }
