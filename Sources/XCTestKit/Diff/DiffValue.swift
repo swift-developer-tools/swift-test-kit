@@ -121,4 +121,27 @@ internal struct DiffValue
     
     /// The pre-rendered information about the value.
     let rendered    : RenderedValue
+    
+    
+    
+    /// Initializes a ``DiffValue`` instance from the given values.
+    init(
+        value       : Any,
+        rendered    : RenderedValue
+    )
+    {
+        self.value      = value
+        self.rendered   = rendered
+    }
+    
+    
+    
+    /// Initializes a ``DiffValue`` instance from the given value.
+    init(
+        _ value: Any
+    )
+    {
+        self.value      = value
+        self.rendered   = RenderedValue(value)
+    }
 }
