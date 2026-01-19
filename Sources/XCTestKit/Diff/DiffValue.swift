@@ -44,6 +44,47 @@ internal struct RenderedValue: Equatable, Sendable, CustomStringConvertible
     
     /// The kind of value, used to determine the formatting behavior.
     let kind        : RenderedValueKind
+    
+    
+    
+    /// Initializes a ``RenderedValue`` instance from the given values.
+    init(
+        description : String,
+        typeName    : String,
+        kind        : RenderedValueKind
+    )
+    {
+        self.description    = description
+        self.typeName       = typeName
+        self.kind           = kind
+    }
+    
+    
+    
+    /// Initializes a ``RenderedValue`` instance from the given value.
+    /// - Parameter value: The value to use.
+    init(
+        _ value: Any
+    )
+    {
+        self.typeName = XCTestKit.typeName(of: value)
+        
+        if let string = value as? String
+        {
+            self.description    = string.escaped
+            self.kind           = .string
+        }
+        else if let character = value as? Character
+        {
+            self.description    = String(character).escaped
+            self.kind           = .string
+        }
+        else
+        {
+            self.description    = String(describing: value)
+            self.kind           = .other
+        }
+    }
 }
 
 
