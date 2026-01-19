@@ -192,7 +192,10 @@ internal enum DiffNodeKind
 internal enum DiffNodeLabel: Equatable, Sendable
 {
     /// The root node of a diff tree.
-    case root
+    /// - Parameter typeName: The name of the value's type.
+    case root(
+        typeName: String
+    )
     
     /// A property of an enum, class, or struct.
     ///

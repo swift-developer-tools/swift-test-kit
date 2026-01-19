@@ -26,7 +26,7 @@ final class ComparatorMiscTests: XCTestKitCase
             actual:     expected
         )
         
-        XCTAssertEqual(node.label, .root)
+        XCTAssertEqual(node.label, .root(typeName: typeName(of: expected)))
         
         guard case .same = node.kind
         else
@@ -48,7 +48,7 @@ final class ComparatorMiscTests: XCTestKitCase
             actual:     actual
         )
         
-        XCTAssertEqual(node.label, .root)
+        XCTAssertEqual(node.label, .root(typeName: typeName(of: expected)))
         
         guard case let .different(exp, act, tree) = node.kind
         else
@@ -73,7 +73,7 @@ final class ComparatorMiscTests: XCTestKitCase
             actual:     expected
         )
         
-        XCTAssertEqual(node.label, .root)
+        XCTAssertEqual(node.label, .root(typeName: typeName(of: expected)))
         
         guard case .same = node.kind
         else
@@ -95,7 +95,7 @@ final class ComparatorMiscTests: XCTestKitCase
             actual:     actual
         )
         
-        XCTAssertEqual(node.label, .root)
+        XCTAssertEqual(node.label, .root(typeName: typeName(of: expected)))
         
         guard case let .different(exp, act, tree) = node.kind
         else
@@ -120,7 +120,7 @@ final class ComparatorMiscTests: XCTestKitCase
             actual:     expected
         )
         
-        XCTAssertEqual(node.label, .root)
+        XCTAssertEqual(node.label, .root(typeName: typeName(of: expected)))
         
         guard case .same = node.kind
         else
@@ -142,7 +142,7 @@ final class ComparatorMiscTests: XCTestKitCase
             actual:     actual
         )
         
-        XCTAssertEqual(node.label, .root)
+        XCTAssertEqual(node.label, .root(typeName: typeName(of: expected)))
         
         guard case let .different(exp, act, tree) = node.kind
         else
@@ -167,7 +167,7 @@ final class ComparatorMiscTests: XCTestKitCase
             actual:     expected
         )
         
-        XCTAssertEqual(node.label, .root)
+        XCTAssertEqual(node.label, .root(typeName: typeName(of: expected)))
         
         guard case .same = node.kind
         else
@@ -189,7 +189,7 @@ final class ComparatorMiscTests: XCTestKitCase
             actual:     actual
         )
         
-        XCTAssertEqual(node.label, .root)
+        XCTAssertEqual(node.label, .root(typeName: typeName(of: expected)))
         
         guard case let .different(exp, act, tree) = node.kind
         else

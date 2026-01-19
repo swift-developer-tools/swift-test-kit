@@ -55,7 +55,7 @@ internal struct Comparator
         )
         
         return DiffNode(
-            label:  .root,
+            label:  .root(typeName: typeName(of: expected)),
             kind:   kind
         )
     }
