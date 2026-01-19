@@ -459,4 +459,173 @@ final class ComparatorEnumTests: XCTestKitCase
             return
         }
     }
+    
+    
+    
+    func testResultSuccessEqualValues() throws
+    {
+        enum TestError: Error, Equatable
+        {
+            case failed
+        }
+        
+        
+        
+        let expected: Result<String, TestError> = .success("hello")
+        
+        let node: DiffNode = Comparator.computeDiff(
+            expected:   expected,
+            actual:     expected
+        )
+        
+        guard case .same = node.kind
+        else
+        {
+            XCTFail("Expected .same, got \(node.kind)")
+            return
+        }
+    }
+    
+    
+    
+    func testResultSuccessDifferentValues() throws
+    {
+        enum TestError: Error, Equatable
+        {
+            case failed
+        }
+        
+        
+        
+        let expected    : Result<String, TestError>     = .success("hello")
+        let actual      : Result<String, TestError>     = .success("goodbye")
+        
+        let node: DiffNode = Comparator.computeDiff(
+            expected:   expected,
+            actual:     actual
+        )
+        
+        guard case let .different(_, _, tree) = node.kind
+        else
+        {
+            XCTFail("Expected .different, got \(node.kind)")
+            return
+        }
+        
+        XCTAssertEqual(tree.count, 1)
+        XCTAssertEqual(tree[0].label, .index(0))
+        
+        
+        
+        guard case let .different(exp, act, _) = tree[0].kind
+        else
+        {
+            XCTFail("Expected .different, got \(tree[0].kind)")
+            return
+        }
+        
+        XCTAssertEqual(exp as? String, "hello")
+        XCTAssertEqual(act as? String, "goodbye")
+    }
+    
+    
+    
+    func testResultSuccessVsFailure() throws
+    {
+        enum TestError: Error, Equatable
+        {
+            case errorA
+            case errorB
+        }
+        
+        
+        
+        let expected    : Result<String, TestError>     = .success("data")
+        let actual      : Result<String, TestError>     = .failure(.errorA)
+        
+        let node: DiffNode = Comparator.computeDiff(
+            expected:   expected,
+            actual:     actual
+        )
+        
+        guard case let .different(exp, act, tree) = node.kind
+        else
+        {
+            XCTFail("Expected .different, got \(node.kind)")
+            return
+        }
+        
+        XCTAssertTrue(tree.isEmpty)
+        
+        
+        
+        guard
+            case .success(let expValue) = exp as? Result<String, TestError>,
+            case .failure(let actValue) = act as? Result<String, TestError>
+        else
+        {
+            XCTFail("Unexpected types in diff")
+            return
+        }
+        
+        XCTAssertEqual(expValue, "data")
+        XCTAssertEqual(actValue, .errorA)
+    }
+    
+    
+    
+    func testResultFailureDifferentErrors() throws
+    {
+        enum TestError: Error, Equatable
+        {
+            case someError(code: Int)
+        }
+        
+        
+        
+        let expected: Result<String, TestError>
+            = .failure(.someError(code: 404))
+        
+        let actual: Result<String, TestError>
+            = .failure(.someError(code: 418))
+        
+        let node: DiffNode = Comparator.computeDiff(
+            expected:   expected,
+            actual:     actual
+        )
+        
+        guard case let .different(_, _, tree1) = node.kind
+        else
+        {
+            XCTFail("Expected .different, got \(node.kind)")
+            return
+        }
+        
+        XCTAssertEqual(tree1.count, 1)
+        XCTAssertEqual(tree1[0].label, .property(name: "someError"))
+        
+        
+        
+        guard case let .different(_, _, tree2) = tree1[0].kind
+        else
+        {
+            XCTFail("Expected .different, got \(tree1[0].kind)")
+            return
+        }
+        
+        XCTAssertEqual(tree2.count, 1)
+        XCTAssertEqual(tree2[0].label, .property(name: "code"))
+        
+        
+        
+        guard case let .different(exp, act, _) = tree2[0].kind
+        else
+        {
+            XCTFail("Expected .different, got \(tree2[0].kind)")
+            return
+        }
+        
+        XCTAssertEqual(exp as? Int, 404)
+        XCTAssertEqual(act as? Int, 418)
+    }
 }
