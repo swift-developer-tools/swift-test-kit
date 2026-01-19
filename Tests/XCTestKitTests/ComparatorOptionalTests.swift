@@ -17,12 +17,11 @@ final class ComparatorOptionalTests: XCTestKitCase
 {
     func testOptionalBothNone() throws
     {
-        let expected    : String?   = nil
-        let actual      : String?   = nil
+        let expected: String? = nil
         
         let node: DiffNode = Comparator.computeDiff(
             expected:   expected,
-            actual:     actual
+            actual:     expected
         )
         
         guard case .same = node.kind
@@ -157,5 +156,183 @@ final class ComparatorOptionalTests: XCTestKitCase
         }
         
         XCTAssertEqual(exp as? String, "hello")
+    }
+    
+    
+    
+    func testNestedOptionalBothSomeDifferentWrappedValue() throws
+    {
+        let expected    : Int???    = 1
+        let actual      : Int???    = 2
+        
+        let node: DiffNode = Comparator.computeDiff(
+            expected:   expected,
+            actual:     actual
+        )
+        
+        guard case let .different(_, _, tree1) = node.kind
+        else
+        {
+            XCTFail("Expected .different, got \(node.kind)")
+            return
+        }
+        
+        XCTAssertEqual(tree1.count, 1)
+        XCTAssertEqual(tree1[0].label, .property(name: "some"))
+        
+        
+        
+        guard case let .different(_, _, tree2) = tree1[0].kind
+        else
+        {
+            XCTFail("Expected .different, got \(tree1[0].kind)")
+            return
+        }
+        
+        XCTAssertEqual(tree2.count, 1)
+        XCTAssertEqual(tree2[0].label, .property(name: "some"))
+        
+        
+        
+        guard case let .different(_, _, tree3) = tree2[0].kind
+        else
+        {
+            XCTFail("Expected .different, got \(tree2[0].kind)")
+            return
+        }
+        
+        XCTAssertEqual(tree3.count, 1)
+        XCTAssertEqual(tree3[0].label, .property(name: "some"))
+        
+        
+        
+        guard case let .different(exp, act, tree4) = tree3[0].kind
+        else
+        {
+            XCTFail("Expected .different, got \(tree3[0].kind)")
+            return
+        }
+        
+        XCTAssertEqual(exp as? Int, 1)
+        XCTAssertEqual(act as? Int, 2)
+        XCTAssertTrue(tree4.isEmpty)
+    }
+    
+    
+    
+    func testNestedOptionalNilAtDifferentLevels() throws
+    {
+        let expected    : Int???    = .some(.some(nil))
+        let actual      : Int???    = .some(nil)
+        
+        let node: DiffNode = Comparator.computeDiff(
+            expected:   expected,
+            actual:     actual
+        )
+        
+        guard case let .different(_, _, tree1) = node.kind
+        else
+        {
+            XCTFail("Expected .different, got \(node.kind)")
+            return
+        }
+        
+        XCTAssertEqual(tree1.count, 1)
+        XCTAssertEqual(tree1[0].label, .property(name: "some"))
+        
+        
+        
+        guard case let .different(_, _, tree2) = tree1[0].kind
+        else
+        {
+            XCTFail("Expected .different, got \(tree1[0].kind)")
+            return
+        }
+        
+        XCTAssertEqual(tree2.count, 1)
+        XCTAssertEqual(tree2[0].label, .property(name: "some"))
+        
+        
+        
+        guard case let .missingElement(exp) = tree2[0].kind
+        else
+        {
+            XCTFail("Expected .missingElement, got \(tree2[0].kind)")
+            return
+        }
+        
+        XCTAssertTrue(exp is Int?)
+    }
+    
+    
+    
+    func testNestedOptionalBothNilAtSameLevel() throws
+    {
+        let expected: Int??? = .some(.some(nil))
+        
+        let node: DiffNode = Comparator.computeDiff(
+            expected:   expected,
+            actual:     expected
+        )
+        
+        guard case .same = node.kind
+        else
+        {
+            XCTFail("Expected .same, got \(node.kind)")
+            return
+        }
+    }
+    
+    
+    
+    func testNestedOptionalSomeVsOutermostNil() throws
+    {
+        let expected    : Int???    = 1
+        let actual      : Int???    = nil
+        
+        let node: DiffNode = Comparator.computeDiff(
+            expected:   expected,
+            actual:     actual
+        )
+        
+        guard case let .different(_, _, tree1) = node.kind
+        else
+        {
+            XCTFail("Expected .different, got \(node.kind)")
+            return
+        }
+        
+        XCTAssertEqual(tree1.count, 1)
+        XCTAssertEqual(tree1[0].label, .property(name: "some"))
+        
+        
+        
+        guard case let .missingElement(exp) = tree1[0].kind
+        else
+        {
+            XCTFail("Expected .missingElement, got \(tree1[0].kind)")
+            return
+        }
+        
+        XCTAssertTrue(exp is Int??)
+    }
+    
+    
+    
+    func testNestedOptionalBothOutermostNil() throws
+    {
+        let expected: Int??? = nil
+        
+        let node: DiffNode = Comparator.computeDiff(
+            expected:   expected,
+            actual:     expected
+        )
+        
+        guard case .same = node.kind
+        else
+        {
+            XCTFail("Expected .same, got \(node.kind)")
+            return
+        }
     }
 }
