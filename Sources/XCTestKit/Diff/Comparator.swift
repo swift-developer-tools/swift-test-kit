@@ -62,7 +62,7 @@ internal struct Comparator
     
     
     
-    // MARK: - Core comparison
+    // MARK: - Core
     
     /// Compares the given `Equatable` values.
     ///
@@ -272,7 +272,7 @@ internal struct Comparator
     
     
     
-    // MARK: - Structural comparison
+    // MARK: - Structural
     
     /// Compares the given values structurally, using `Mirror` reflection.
     ///
@@ -452,7 +452,7 @@ internal struct Comparator
     
     
     
-    // MARK: - Collection comparison
+    // MARK: - Collections
     
     /// Compares the given arrays by element.
     /// - Parameters:
@@ -826,7 +826,7 @@ internal struct Comparator
     
     
     
-    // MARK: - Other comparison
+    // MARK: - Other
     
     /// Compares the given `Mirror` children.
     ///
