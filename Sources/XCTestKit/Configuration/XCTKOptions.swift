@@ -150,11 +150,6 @@ public struct XCTKPrintOptions: Equatable, Sendable
     /// The default value is `nil`. Pass `nil` to show all diffs.
     public var maxDiffs             : Int?
     
-    /// The maximum number of diff lines shown, before truncating the output.
-    ///
-    /// The default value is `nil`. Pass `nil` to show all diff lines.
-    public var maxDiffLines         : Int?
-    
     
     
     /// Initializes an ``XCTKPrintOptions`` instance, optionally specifying
@@ -163,8 +158,7 @@ public struct XCTKPrintOptions: Equatable, Sendable
         indentationSpaces   : Int   = 4,
         maxLineLength       : Int   = 80,
         showTypeAnnotations : Bool  = true,
-        maxDiffs            : Int?  = nil,
-        maxDiffLines        : Int?  = nil
+        maxDiffs            : Int?  = nil
     )
     {
         precondition(
@@ -183,16 +177,9 @@ public struct XCTKPrintOptions: Equatable, Sendable
             "maxDiffs must be positive or nil"
         )
         
-        precondition(
-            maxDiffLines == nil
-            || maxDiffLines! >= 1,
-            "maxDiffLines must be positive or nil"
-        )
-        
         self.indentationSpaces      = indentationSpaces
         self.maxLineLength          = maxLineLength
         self.showTypeAnnotations    = showTypeAnnotations
         self.maxDiffs               = maxDiffs
-        self.maxDiffLines           = maxDiffLines
     }
 }
