@@ -130,11 +130,6 @@ public struct XCTKDiffOptions: Equatable, Sendable
 /// The options for printing diffs.
 public struct XCTKPrintOptions: Equatable, Sendable
 {
-    /// The number of lines of context shown around each change in diff output.
-    ///
-    /// The default value is `3`. Pass `0` to show only the changed lines.
-    public var contextLines         : Int
-    
     /// The number of spaces used for each indent.
     ///
     /// The default value is `4`.
@@ -160,36 +155,18 @@ public struct XCTKPrintOptions: Equatable, Sendable
     /// The default value is `nil`. Pass `nil` to show all diff lines.
     public var maxDiffLines         : Int?
     
-    /// The character to use in a diff to indicate the expected value.
-    ///
-    /// The default value is `+`.
-    public var expectedSymbol       : Character
-    
-    /// The character to use in a diff to indicate the actual value.
-    ///
-    /// The default value is `-`.
-    public var actualSymbol         : Character
-    
     
     
     /// Initializes an ``XCTKPrintOptions`` instance, optionally specifying
     /// values for its properties.
     public init(
-        contextLines        : Int           = 3,
-        indentationSpaces   : Int           = 4,
-        maxLineLength       : Int           = 80,
-        showTypeAnnotations : Bool          = true,
-        maxDiffs            : Int?          = nil,
-        maxDiffLines        : Int?          = nil,
-        expectedSymbol      : Character     = .init("+"),
-        actualSymbol        : Character     = .init("-")
+        indentationSpaces   : Int   = 4,
+        maxLineLength       : Int   = 80,
+        showTypeAnnotations : Bool  = true,
+        maxDiffs            : Int?  = nil,
+        maxDiffLines        : Int?  = nil
     )
     {
-        precondition(
-            contextLines >= 0,
-            "contextLines must be non-negative"
-        )
-        
         precondition(
             indentationSpaces >= 0,
             "indentationSpaces must be non-negative"
@@ -212,13 +189,10 @@ public struct XCTKPrintOptions: Equatable, Sendable
             "maxDiffLines must be positive or nil"
         )
         
-        self.contextLines           = contextLines
         self.indentationSpaces      = indentationSpaces
         self.maxLineLength          = maxLineLength
         self.showTypeAnnotations    = showTypeAnnotations
         self.maxDiffs               = maxDiffs
         self.maxDiffLines           = maxDiffLines
-        self.expectedSymbol         = expectedSymbol
-        self.actualSymbol           = actualSymbol
     }
 }

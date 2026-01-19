@@ -22,17 +22,17 @@ final class ConfigurationTests: XCTestKitCase
         
         XCTAssertEqual(options.diffEnabled, true)
         XCTAssertEqual(options.diffOptions.maxRecursionDepth, 20)
-        XCTAssertEqual(options.printOptions.contextLines, 3)
+        XCTAssertEqual(options.printOptions.maxLineLength, 80)
         
         options.diffEnabled                     = false
         options.diffOptions.maxRecursionDepth   = 1
-        options.printOptions.contextLines       = 1
+        options.printOptions.maxLineLength      = 40
 
         XCTKConfig.global = options
         
         XCTAssertEqual(options.diffEnabled, false)
         XCTAssertEqual(XCTKConfig.global.diffOptions.maxRecursionDepth, 1)
-        XCTAssertEqual(XCTKConfig.global.printOptions.contextLines, 1)
+        XCTAssertEqual(XCTKConfig.global.printOptions.maxLineLength, 40)
     }
     
     
@@ -129,13 +129,10 @@ final class ConfigurationTests: XCTestKitCase
     {
         let options = XCTKPrintOptions()
         
-        XCTAssertEqual(options.contextLines, 3)
         XCTAssertEqual(options.indentationSpaces, 4)
         XCTAssertEqual(options.maxLineLength, 80)
         XCTAssertEqual(options.showTypeAnnotations, true)
         XCTAssertEqual(options.maxDiffs, nil)
         XCTAssertEqual(options.maxDiffLines, nil)
-        XCTAssertEqual(options.expectedSymbol, Character("+"))
-        XCTAssertEqual(options.actualSymbol, Character("-"))
     }
 }
