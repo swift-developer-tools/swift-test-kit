@@ -12,14 +12,18 @@ import XCTest
 
 
 
-/// Resets the global XCTestKit configuration between test cases.
-class XCTestCaseReset: XCTestCase
+/// The base class for testing with XCTest.
+///
+/// This resets the global XCTestKit configuration between test cases and
+/// disables continuation after failure.
+class XCTestKitCase: XCTestCase
 {
     override func setUp()
     {
         super.setUp()
         
-        XCTKConfig.global = XCTKOptions()
+        XCTKConfig.global       = XCTKOptions()
+        continueAfterFailure    = false
     }
     
     
