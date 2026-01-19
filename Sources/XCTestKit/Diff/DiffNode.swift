@@ -98,7 +98,7 @@ internal struct DiffNode
 // MARK: - CycleLocation
 
 /// The location where a cycle was detected.
-internal enum CycleLocation
+internal enum CycleLocation: CustomStringConvertible
 {
     /// A cycle was detected in the expected value.
     case expected
@@ -108,6 +108,27 @@ internal enum CycleLocation
     
     /// A cycle was detected in both the expected and actual values.
     case both
+    
+    
+    
+    /// A description of where the cycle location was detected.
+    var description: String
+    {
+        switch self
+        {
+            case .expected:
+                
+                return "Cycle detected in expected value"
+                
+            case .actual:
+                
+                return "Cycle detected in actual value"
+                
+            case .both:
+                
+                return "Cycle detected in both expected and actual values"
+        }
+    }
 }
 
 
