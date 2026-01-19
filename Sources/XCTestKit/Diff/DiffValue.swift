@@ -93,14 +93,14 @@ internal struct RenderedValue: Equatable, Sendable, CustomStringConvertible
 
 /// A value captured during diff computation.
 ///
-/// This stores both the original value and its pre-rendered representation in
-/// a diff node, allowing for a single rendering location. The comparator is
+/// This stores both the underlying value and its pre-rendered representation
+/// in a diff node, allowing for a single rendering location. The comparator is
 /// responsible for all value inspection and rendering, and the formatter works
 /// with only pre-rendered data. The formatter can therefore focus only on
 /// layout issues like indentation, alignment, and truncation.
 ///
-/// Storing only the original value with lightweight metadata (type name, kind,
-/// etc.) would split the rendering logic and require the formatter to
+/// Storing only the underlying value with lightweight metadata (type name,
+/// kind, etc.) would split the rendering logic and require the formatter to
 /// understand escaping rules, type introspection, and other concerns that
 /// belong with the comparator. Notably, the comparator already has access to
 /// the `Mirror` values, and can extract the necessary information at that time,
@@ -116,7 +116,7 @@ internal struct RenderedValue: Equatable, Sendable, CustomStringConvertible
 /// overhead is relatively light compared to the overall test execution cost.
 internal struct DiffValue
 {
-    /// The original value.
+    /// The underlying value.
     let value       : Any
     
     /// The pre-rendered information about the value.
