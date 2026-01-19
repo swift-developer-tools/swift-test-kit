@@ -22,17 +22,17 @@ final class ConfigurationTests: XCTestKitCase
         
         XCTAssertEqual(options.diffEnabled, true)
         XCTAssertEqual(options.diffOptions.maxRecursionDepth, 20)
-        XCTAssertEqual(options.printOptions.maxLineLength, 80)
+        XCTAssertEqual(options.formatOptions.maxLineLength, 80)
         
         options.diffEnabled                     = false
         options.diffOptions.maxRecursionDepth   = 1
-        options.printOptions.maxLineLength      = 40
+        options.formatOptions.maxLineLength      = 40
 
         XCTKConfig.global = options
         
         XCTAssertEqual(options.diffEnabled, false)
         XCTAssertEqual(XCTKConfig.global.diffOptions.maxRecursionDepth, 1)
-        XCTAssertEqual(XCTKConfig.global.printOptions.maxLineLength, 40)
+        XCTAssertEqual(XCTKConfig.global.formatOptions.maxLineLength, 40)
     }
     
     
@@ -43,7 +43,7 @@ final class ConfigurationTests: XCTestKitCase
         
         XCTAssertEqual(options.diffEnabled, true)
         XCTAssertEqual(options.diffOptions, XCTKDiffOptions())
-        XCTAssertEqual(options.printOptions, XCTKPrintOptions())
+        XCTAssertEqual(options.formatOptions, XCTKFormatOptions())
     }
     
     
@@ -110,7 +110,7 @@ final class ConfigurationTests: XCTestKitCase
         let options = XCTKOptions()
         
         XCTAssertEqual(options.diffOptions, XCTKDiffOptions())
-        XCTAssertEqual(options.printOptions, XCTKPrintOptions())
+        XCTAssertEqual(options.formatOptions, XCTKFormatOptions())
     }
     
     
@@ -125,9 +125,9 @@ final class ConfigurationTests: XCTestKitCase
     
     
     
-    func testXCTKPrintOptions() throws
+    func testXCTKFormatOptions() throws
     {
-        let options = XCTKPrintOptions()
+        let options = XCTKFormatOptions()
         
         XCTAssertEqual(options.indentationSpaces, 4)
         XCTAssertEqual(options.maxLineLength, 80)

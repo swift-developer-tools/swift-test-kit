@@ -24,25 +24,25 @@ public struct XCTKOptions: Equatable, Sendable
     /// instance.
     public var diffOptions  : XCTKDiffOptions
     
-    /// The options for printing diffs.
+    /// The options for formatting diffs.
     ///
-    /// The default value is a default-initialized ``XCTKPrintOptions``
+    /// The default value is a default-initialized ``XCTKFormatOptions``
     /// instance.
-    public var printOptions : XCTKPrintOptions
+    public var formatOptions : XCTKFormatOptions
     
     
     
     /// Initializes an ``XCTKOptions`` instance, optionally specifying values
     /// for its properties.
     public init(
-        diffEnabled     : Bool              = true,
-        diffOptions     : XCTKDiffOptions   = .init(),
-        printOptions    : XCTKPrintOptions  = .init()
+        diffEnabled     : Bool                  = true,
+        diffOptions     : XCTKDiffOptions       = .init(),
+        formatOptions   : XCTKFormatOptions     = .init()
     )
     {
         self.diffEnabled    = diffEnabled
         self.diffOptions    = diffOptions
-        self.printOptions   = printOptions
+        self.formatOptions  = formatOptions
     }
 }
 
@@ -125,10 +125,10 @@ public struct XCTKDiffOptions: Equatable, Sendable
 
 
 
-// MARK: - XCTKPrintOptions
+// MARK: - XCTKFormatOptions
 
-/// The options for printing diffs.
-public struct XCTKPrintOptions: Equatable, Sendable
+/// The options for formatting diffs.
+public struct XCTKFormatOptions: Equatable, Sendable
 {
     /// The number of spaces used for each indent.
     ///
@@ -152,7 +152,7 @@ public struct XCTKPrintOptions: Equatable, Sendable
     
     
     
-    /// Initializes an ``XCTKPrintOptions`` instance, optionally specifying
+    /// Initializes an ``XCTKFormatOptions`` instance, optionally specifying
     /// values for its properties.
     public init(
         indentationSpaces   : Int   = 4,

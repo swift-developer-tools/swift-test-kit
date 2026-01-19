@@ -26,4 +26,4 @@ configuration is used.
 
 - ``XCTKOptions``
 - ``XCTKDiffOptions``
-- ``XCTKPrintOptions``
+- ``XCTKFormatOptions``
