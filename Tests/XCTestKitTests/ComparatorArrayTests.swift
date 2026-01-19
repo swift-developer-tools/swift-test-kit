@@ -354,4 +354,223 @@ final class ComparatorArrayTests: XCTestKitCase
         
         XCTAssertEqual((act as? Item)?.id, 0)
     }
+    
+    
+    
+    func testArrayOfMixedOptionals() throws
+    {
+        let expected    : [Int?]    = [1, nil, 3, nil]
+        let actual      : [Int?]    = [1, 2, 3, nil]
+        
+        let node: DiffNode = Comparator.computeDiff(
+            expected:   expected,
+            actual:     actual
+        )
+        
+        guard case let .different(_, _, tree1) = node.kind
+        else
+        {
+            XCTFail("Expected .different, got \(node.kind)")
+            return
+        }
+        
+        XCTAssertEqual(tree1.count, 1)
+        XCTAssertEqual(tree1[0].label, .index(1))
+        
+        
+        
+        guard case let .different(_, _, tree2) = tree1[0].kind
+        else
+        {
+            XCTFail("Expected .different, got \(tree1[0].kind)")
+            return
+        }
+        
+        XCTAssertEqual(tree2.count, 1)
+        XCTAssertEqual(tree2[0].label, .property(name: "some"))
+        
+        
+        
+        guard case let .unexpectedElement(act) = tree2[0].kind
+        else
+        {
+            XCTFail("Expected .unexpectedElement, got \(tree2[0].kind)")
+            return
+        }
+        
+        XCTAssertEqual(act as? Int, 2)
+    }
+    
+    
+    
+    func testArrayWithDuplicateElements() throws
+    {
+        let expected    : [String]  = ["a", "a", "b", "c"]
+        let actual      : [String]  = ["a", "b", "a", "c"]
+        
+        let node: DiffNode = Comparator.computeDiff(
+            expected:   expected,
+            actual:     actual
+        )
+        
+        guard case let .different(_, _, tree) = node.kind
+        else
+        {
+            XCTFail("Expected .different, got \(node.kind)")
+            return
+        }
+        
+        XCTAssertEqual(tree.count, 2)
+        XCTAssertEqual(tree[0].label, .index(1))
+        XCTAssertEqual(tree[1].label, .index(2))
+        
+        
+        
+        guard case let .missingElement(exp) = tree[0].kind
+        else
+        {
+            XCTFail("Expected .missingElement, got \(tree[0].kind)")
+            return
+        }
+        
+        XCTAssertEqual(exp as? String, "a")
+        
+        
+        
+        guard case let .unexpectedElement(act) = tree[1].kind
+        else
+        {
+            XCTFail("Expected .unexpectedElement, got \(tree[1].kind)")
+            return
+        }
+        
+        XCTAssertEqual(act as? String, "a")
+    }
+    
+    
+    
+    func testArrayOfDictionaries() throws
+    {
+        let expected: [[String : Int]] =
+        [
+            ["a": 1, "b": 2],
+            ["c": 3, "d": 4]
+        ]
+        
+        let actual: [[String : Int]] =
+        [
+            ["a": 1, "b": 2],
+            ["c": 3, "d": 99]
+        ]
+        
+        let node: DiffNode = Comparator.computeDiff(
+            expected:   expected,
+            actual:     actual
+        )
+        
+        guard case let .different(_, _, tree1) = node.kind
+        else
+        {
+            XCTFail("Expected .different, got \(node.kind)")
+            return
+        }
+        
+        XCTAssertEqual(tree1.count, 1)
+        XCTAssertEqual(tree1[0].label, .index(1))
+        
+        
+        
+        guard case let .different(_, _, tree2) = tree1[0].kind
+        else
+        {
+            XCTFail("Expected .different, got \(tree1[0].kind)")
+            return
+        }
+        
+        XCTAssertEqual(tree2.count, 1)
+        
+        XCTAssertEqual(
+            tree2[0].label,
+            .key(description: "d", typeName: "String")
+        )
+        
+        
+        
+        guard case let .different(exp, act, _) = tree2[0].kind
+        else
+        {
+            XCTFail("Expected .different, got \(tree2[0].kind)")
+            return
+        }
+        
+        XCTAssertEqual(exp as? Int, 4)
+        XCTAssertEqual(act as? Int, 99)
+    }
+    
+    
+    
+    func testArrayOfSets() throws
+    {
+        let expected: [Set<String>] =
+        [
+            ["a", "b", "c"],
+            ["x", "y", "z"]
+        ]
+        
+        let actual: [Set<String>] =
+        [
+            ["a", "b", "c"],
+            ["x", "y", "w"]
+        ]
+        
+        let node: DiffNode = Comparator.computeDiff(
+            expected:   expected,
+            actual:     actual
+        )
+        
+        guard case let .different(_, _, tree1) = node.kind
+        else
+        {
+            XCTFail("Expected .different, got \(node.kind)")
+            return
+        }
+        
+        XCTAssertEqual(tree1.count, 1)
+        XCTAssertEqual(tree1[0].label, .index(1))
+        
+        
+        
+        guard case let .different(_, _, tree2) = tree1[0].kind
+        else
+        {
+            XCTFail("Expected .different, got \(tree1[0].kind)")
+            return
+        }
+        
+        XCTAssertEqual(tree2.count, 2)
+        XCTAssertEqual(tree2[0].label, .member)
+        XCTAssertEqual(tree2[1].label, .member)
+        
+        
+        
+        guard case let .unexpectedElement(act) = tree2[0].kind
+        else
+        {
+            XCTFail("Expected .unexpectedElement, got \(tree2[0].kind)")
+            return
+        }
+        
+        XCTAssertEqual(act as? String, "w")
+        
+        
+        
+        guard case let .missingElement(exp) = tree2[1].kind
+        else
+        {
+            XCTFail("Expected .missingElement, got \(tree2[1].kind)")
+            return
+        }
+        
+        XCTAssertEqual(exp as? String, "z")
+    }
 }
