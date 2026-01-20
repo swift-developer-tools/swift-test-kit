@@ -140,11 +140,6 @@ public struct XCTKFormatOptions: Equatable, Sendable
     /// The default value is `80`.
     public var maxLineLength        : Int
     
-    /// Whether to show type annotations.
-    ///
-    /// The default value is `true`.
-    public var showTypeAnnotations  : Bool
-    
     /// The maximum number of diffs shown, before truncating the output.
     ///
     /// The default value is `nil`. Pass `nil` to show all diffs.
@@ -157,7 +152,6 @@ public struct XCTKFormatOptions: Equatable, Sendable
     public init(
         indentationSpaces   : Int   = 4,
         maxLineLength       : Int   = 80,
-        showTypeAnnotations : Bool  = true,
         maxDiffs            : Int?  = nil
     )
     {
@@ -177,9 +171,8 @@ public struct XCTKFormatOptions: Equatable, Sendable
             "maxDiffs must be positive or nil"
         )
         
-        self.indentationSpaces      = indentationSpaces
-        self.maxLineLength          = maxLineLength
-        self.showTypeAnnotations    = showTypeAnnotations
-        self.maxDiffs               = maxDiffs
+        self.indentationSpaces  = indentationSpaces
+        self.maxLineLength      = maxLineLength
+        self.maxDiffs           = maxDiffs
     }
 }

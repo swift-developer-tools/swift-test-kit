@@ -131,7 +131,6 @@ final class ConfigurationTests: XCTestKitCase
         
         XCTAssertEqual(options.indentationSpaces, 4)
         XCTAssertEqual(options.maxLineLength, 80)
-        XCTAssertEqual(options.showTypeAnnotations, true)
         XCTAssertEqual(options.maxDiffs, nil)
     }
 }
