@@ -20,7 +20,7 @@ internal extension Array<DiffNode>
         
         for node in self
         {
-            guard case .member = node.label
+            guard node.label.isMember
             else
             {
                 return false

@@ -342,6 +342,90 @@ internal enum DiffNodeLabel: Equatable, Sendable
     
     
     
+    var isRoot: Bool
+    {
+        if case .root = self
+        {
+            return true
+        }
+        
+        return false
+    }
+    
+    
+    
+    var isProperty: Bool
+    {
+        if case .property = self
+        {
+            return true
+        }
+        
+        return false
+    }
+    
+    
+    
+    var isIndex: Bool
+    {
+        if case .index = self
+        {
+            return true
+        }
+        
+        return false
+    }
+    
+    
+    
+    var isKey: Bool
+    {
+        if case .key = self
+        {
+            return true
+        }
+        
+        return false
+    }
+    
+    
+    
+    var isMember: Bool
+    {
+        if case .member = self
+        {
+            return true
+        }
+        
+        return false
+    }
+    
+    
+    
+    var isLine: Bool
+    {
+        if case .line = self
+        {
+            return true
+        }
+        
+        return false
+    }
+    
+    
+    
+    var isCharacter: Bool
+    {
+        if case .character = self
+        {
+            return true
+        }
+        
+        return false
+    }
+    
+    
+    
     /// Creates a ``DiffNodeLabel/key(description:typeName:)`` instance from
     /// the given key.
     /// - Parameter key: The key to use.
