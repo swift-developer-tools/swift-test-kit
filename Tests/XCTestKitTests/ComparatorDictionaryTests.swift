@@ -219,10 +219,10 @@ final class ComparatorDictionaryTests: XCTestKitCase
         
         
         
-        guard case let .unexpectedElement(act) = tree[0].kind
+        guard case let .unexpected(act) = tree[0].kind
         else
         {
-            XCTFail("Expected .unexpectedElement, got \(tree[0].kind)")
+            XCTFail("Expected .unexpected, got \(tree[0].kind)")
             return
         }
         
@@ -269,10 +269,10 @@ final class ComparatorDictionaryTests: XCTestKitCase
         
         for node in tree
         {
-            guard case .unexpectedElement = node.kind
+            guard case .unexpected = node.kind
             else
             {
-                XCTFail("Expected .unexpectedElement, got \(node.kind)")
+                XCTFail("Expected .unexpected, got \(node.kind)")
                 return
             }
         }
@@ -339,10 +339,10 @@ final class ComparatorDictionaryTests: XCTestKitCase
         
         
         
-        guard case let .unexpectedElement(act3) = tree[2].kind
+        guard case let .unexpected(act3) = tree[2].kind
         else
         {
-            XCTFail("Expected .unexpectedElement, got \(tree[2].kind)")
+            XCTFail("Expected .unexpected, got \(tree[2].kind)")
             return
         }
         
@@ -422,10 +422,10 @@ final class ComparatorDictionaryTests: XCTestKitCase
         
         
         
-        guard case let .unexpectedElement(act1) = tree[0].kind
+        guard case let .unexpected(act1) = tree[0].kind
         else
         {
-            XCTFail("Expected .unexpectedElement, got \(tree[0].kind)")
+            XCTFail("Expected .unexpected, got \(tree[0].kind)")
             return
         }
         
@@ -433,10 +433,10 @@ final class ComparatorDictionaryTests: XCTestKitCase
         
         
         
-        guard case let .unexpectedElement(act2) = tree[1].kind
+        guard case let .unexpected(act2) = tree[1].kind
         else
         {
-            XCTFail("Expected .unexpectedElement, got \(tree[1].kind)")
+            XCTFail("Expected .unexpected, got \(tree[1].kind)")
             return
         }
         
@@ -556,10 +556,10 @@ final class ComparatorDictionaryTests: XCTestKitCase
         
         
         
-        guard case let .unexpectedElement(act) = tree2[0].kind
+        guard case let .unexpected(act) = tree2[0].kind
         else
         {
-            XCTFail("Expected .unexpectedElement, got \(tree2[0].kind)")
+            XCTFail("Expected .unexpected, got \(tree2[0].kind)")
             return
         }
         
@@ -687,10 +687,10 @@ final class ComparatorDictionaryTests: XCTestKitCase
         
         
         
-        guard case let .unexpectedElement(act) = tree2[1].kind
+        guard case let .unexpected(act) = tree2[1].kind
         else
         {
-            XCTFail("Expected .unexpectedElement, got \(tree2[1].kind)")
+            XCTFail("Expected .unexpected, got \(tree2[1].kind)")
             return
         }
         
@@ -854,10 +854,10 @@ final class ComparatorDictionaryTests: XCTestKitCase
         
         
         
-        guard case let .unexpectedElement(act) = tree[0].kind
+        guard case let .unexpected(act) = tree[0].kind
         else
         {
-            XCTFail("Expected .unexpectedElement, got \(tree[0].kind)")
+            XCTFail("Expected .unexpected, got \(tree[0].kind)")
             return
         }
         

@@ -114,10 +114,10 @@ final class ComparatorOptionalTests: XCTestKitCase
         
         
         
-        guard case let .unexpectedElement(act) = tree[0].kind
+        guard case let .unexpected(act) = tree[0].kind
         else
         {
-            XCTFail("Expected .unexpectedElement, got \(tree[0].kind)")
+            XCTFail("Expected .unexpected, got \(tree[0].kind)")
             return
         }
         

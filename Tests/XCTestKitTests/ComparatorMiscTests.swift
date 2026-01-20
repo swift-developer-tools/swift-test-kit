@@ -897,7 +897,7 @@ final class ComparatorMiscTests: XCTestKitCase
         
         let unexpectedCount: Int = tree.filter
         {
-            if case .unexpectedElement = $0.kind
+            if case .unexpected = $0.kind
             {
                 return true
             }

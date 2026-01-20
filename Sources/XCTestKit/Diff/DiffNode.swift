@@ -200,7 +200,7 @@ internal enum DiffNodeKind
     /// An element or key was present in the actual value, but was not in the
     /// expected value.
     /// - Parameter actual: The actual value.
-    case unexpectedElement(
+    case unexpected(
         actual: DiffValue
     )
 }

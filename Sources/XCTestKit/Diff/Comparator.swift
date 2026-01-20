@@ -580,7 +580,7 @@ internal struct Comparator
             }
             else if let insertion
             {
-                kind = .unexpectedElement(actual: DiffValue(insertion))
+                kind = .unexpected(actual: DiffValue(insertion))
             }
             else
             {
@@ -650,7 +650,7 @@ internal struct Comparator
             else
             {
                 /// Only the actual array has this element.
-                kind = .unexpectedElement(actual: DiffValue(actual[i]))
+                kind = .unexpected(actual: DiffValue(actual[i]))
             }
             
             
@@ -760,7 +760,7 @@ internal struct Comparator
             
             let node = DiffNode(
                 label:  .makeKey(key),
-                kind:   .unexpectedElement(actual: DiffValue(actualValue))
+                kind:   .unexpected(actual: DiffValue(actualValue))
             )
             
             tree.append(node)
@@ -785,14 +785,14 @@ internal struct Comparator
         depth       : Int
     ) -> [DiffNode]
     {
-        let missing             : Set<T>    = expected.subtracting(actual)
-        let unexpectedElements  : Set<T>    = actual.subtracting(expected)
+        let missing     : Set<T>    = expected.subtracting(actual)
+        let unexpected  : Set<T>    = actual.subtracting(expected)
         
         var tree: [DiffNode] = []
         
         tree.reserveCapacity(
             missing.count
-            + unexpectedElements.count
+            + unexpected.count
         )
         
         
@@ -809,11 +809,11 @@ internal struct Comparator
         
         
         
-        for element in unexpectedElements
+        for element in unexpected
         {
             let node = DiffNode(
                 label:  .member,
-                kind:   .unexpectedElement(actual: DiffValue(element))
+                kind:   .unexpected(actual: DiffValue(element))
             )
             
             tree.append(node)
@@ -922,9 +922,7 @@ internal struct Comparator
                     index:  i
                 )
                 
-                kind = .unexpectedElement(
-                    actual: DiffValue(actualChild.value)
-                )
+                kind = .unexpected(actual: DiffValue(actualChild.value))
             }
             
             
@@ -1151,9 +1149,7 @@ internal struct Comparator
                     [
                         DiffNode(
                             label:  .property(name: "some"),
-                            kind:   .unexpectedElement(
-                                        actual: DiffValue(act.value)
-                                    )
+                            kind:   .unexpected(actual: DiffValue(act.value))
                         )
                     ]
                 )
@@ -1352,32 +1348,16 @@ internal struct Comparator
             
             switch $0.kind
             {
-                case let .missing(exp):
-                    
-                    lhs = String(describing: exp)
-                    
-                case let .unexpectedElement(act):
-                    
-                    lhs = String(describing: act)
-                    
-                default:
-                    
-                    lhs = ""
+                case let .missing(exp)      : lhs = String(describing: exp)
+                case let .unexpected(act)   : lhs = String(describing: act)
+                default                     : lhs = ""
             }
             
             switch $1.kind
             {
-                case let .missing(exp):
-                    
-                    rhs = String(describing: exp)
-                    
-                case let .unexpectedElement(act):
-                    
-                    rhs = String(describing: act)
-                    
-                default:
-                    
-                    rhs = ""
+                case let .missing(exp)      : rhs = String(describing: exp)
+                case let .unexpected(act)   : rhs = String(describing: act)
+                default                     : rhs = ""
             }
             
             return lhs < rhs

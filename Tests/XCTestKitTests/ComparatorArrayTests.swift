@@ -108,10 +108,10 @@ final class ComparatorArrayTests: XCTestKitCase
         
         
         
-        guard case let .unexpectedElement(act) = tree[0].kind
+        guard case let .unexpected(act) = tree[0].kind
         else
         {
-            XCTFail("Expected .unexpectedElement, got \(tree[0].kind)")
+            XCTFail("Expected .unexpected, got \(tree[0].kind)")
             return
         }
         
@@ -184,10 +184,10 @@ final class ComparatorArrayTests: XCTestKitCase
         
         
         
-        guard case let .unexpectedElement(act) = tree[0].kind
+        guard case let .unexpected(act) = tree[0].kind
         else
         {
-            XCTFail("Expected .unexpectedElement, got \(tree[0].kind)")
+            XCTFail("Expected .unexpected, got \(tree[0].kind)")
             return
         }
         
@@ -292,10 +292,10 @@ final class ComparatorArrayTests: XCTestKitCase
         
         
         
-        guard case let .unexpectedElement(act) = tree1[3].kind
+        guard case let .unexpected(act) = tree1[3].kind
         else
         {
-            XCTFail("Expected .unexpectedElement, got \(tree1[3].kind)")
+            XCTFail("Expected .unexpected, got \(tree1[3].kind)")
             return
         }
         
@@ -345,10 +345,10 @@ final class ComparatorArrayTests: XCTestKitCase
         
         
         
-        guard case let .unexpectedElement(act) = tree[0].kind
+        guard case let .unexpected(act) = tree[0].kind
         else
         {
-            XCTFail("Expected .unexpectedElement, got \(tree[0].kind)")
+            XCTFail("Expected .unexpected, got \(tree[0].kind)")
             return
         }
         
@@ -391,10 +391,10 @@ final class ComparatorArrayTests: XCTestKitCase
         
         
         
-        guard case let .unexpectedElement(act) = tree2[0].kind
+        guard case let .unexpected(act) = tree2[0].kind
         else
         {
-            XCTFail("Expected .unexpectedElement, got \(tree2[0].kind)")
+            XCTFail("Expected .unexpected, got \(tree2[0].kind)")
             return
         }
         
@@ -437,10 +437,10 @@ final class ComparatorArrayTests: XCTestKitCase
         
         
         
-        guard case let .unexpectedElement(act) = tree[1].kind
+        guard case let .unexpected(act) = tree[1].kind
         else
         {
-            XCTFail("Expected .unexpectedElement, got \(tree[1].kind)")
+            XCTFail("Expected .unexpected, got \(tree[1].kind)")
             return
         }
         
@@ -553,10 +553,10 @@ final class ComparatorArrayTests: XCTestKitCase
         
         
         
-        guard case let .unexpectedElement(act) = tree2[0].kind
+        guard case let .unexpected(act) = tree2[0].kind
         else
         {
-            XCTFail("Expected .unexpectedElement, got \(tree2[0].kind)")
+            XCTFail("Expected .unexpected, got \(tree2[0].kind)")
             return
         }
         
