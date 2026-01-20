@@ -26,7 +26,7 @@ final class StringComparatorTests: XCTestKitCase
             actual:     expected
         )
         
-        guard case .same = kind
+        guard kind.isSame
         else
         {
             XCTFail("Expected .same, got \(kind)")
@@ -83,7 +83,7 @@ final class StringComparatorTests: XCTestKitCase
             actual:     expected
         )
         
-        guard case .same = kind
+        guard kind.isSame
         else
         {
             XCTFail("Expected .same, got \(kind)")
@@ -424,7 +424,7 @@ final class StringComparatorTests: XCTestKitCase
             actual:     expected
         )
         
-        guard case .same = kind
+        guard kind.isSame
         else
         {
             XCTFail("Expected .same, got \(kind)")
@@ -748,7 +748,7 @@ final class StringComparatorTests: XCTestKitCase
             actual:     actual
         )
         
-        guard case .same = kind
+        guard kind.isSame
         else
         {
             XCTFail("Expected .same, got \(kind)")
@@ -948,7 +948,7 @@ final class StringComparatorTests: XCTestKitCase
             actual:     expected
         )
         
-        guard case .same = kind
+        guard kind.isSame
         else
         {
             XCTFail("Expected .same, got \(kind)")
@@ -970,7 +970,7 @@ final class StringComparatorTests: XCTestKitCase
             actual:     actual
         )
         
-        guard case .same = kind
+        guard kind.isSame
         else
         {
             XCTFail("Expected .same, got \(kind)")
@@ -990,7 +990,7 @@ final class StringComparatorTests: XCTestKitCase
             actual:     actual
         )
         
-        guard case .same = kind
+        guard kind.isSame
         else
         {
             XCTFail("Expected .same, got \(kind)")
@@ -1010,7 +1010,7 @@ final class StringComparatorTests: XCTestKitCase
             actual:     actual
         )
         
-        guard case .same = kind
+        guard kind.isSame
         else
         {
             XCTFail("Expected .same, got \(kind)")
@@ -1030,7 +1030,7 @@ final class StringComparatorTests: XCTestKitCase
             actual:     actual
         )
         
-        guard case .same = kind
+        guard kind.isSame
         else
         {
             XCTFail("Expected .same, got \(kind)")
@@ -1099,7 +1099,7 @@ final class StringComparatorTests: XCTestKitCase
             options:    XCTKDiffOptions(characterDiffThreshold: 0.5)
         )
         
-        guard case .same = kind
+        guard kind.isSame
         else
         {
             XCTFail("Expected .same, got \(kind)")
@@ -1398,7 +1398,7 @@ final class StringComparatorTests: XCTestKitCase
             actual:     actual
         )
         
-        guard case .same = kind
+        guard kind.isSame
         else
         {
             XCTFail("Expected .same, got \(kind)")

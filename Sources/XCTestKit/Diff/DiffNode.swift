@@ -203,6 +203,66 @@ internal enum DiffNodeKind
     case unexpected(
         actual: DiffValue
     )
+    
+    
+    
+    var isCycle: Bool
+    {
+        if case .cycle = self
+        {
+            return true
+        }
+        
+        return false
+    }
+    
+    
+    
+    var isSame: Bool
+    {
+        if case .same = self
+        {
+            return true
+        }
+        
+        return false
+    }
+    
+    
+    
+    var isDifferent: Bool
+    {
+        if case .different = self
+        {
+            return true
+        }
+        
+        return false
+    }
+    
+    
+    
+    var isMissing: Bool
+    {
+        if case .missing = self
+        {
+            return true
+        }
+        
+        return false
+    }
+    
+    
+    
+    var isUnexpected: Bool
+    {
+        if case .unexpected = self
+        {
+            return true
+        }
+        
+        return false
+    }
 }
 
 

@@ -569,7 +569,7 @@ internal struct Comparator
                     parentDepth:    depth
                 )
                 
-                if case .same = kind
+                if kind.isSame
                 {
                     continue
                 }
@@ -655,7 +655,7 @@ internal struct Comparator
             
             
             
-            if case .same = kind
+            if kind.isSame
             {
                 continue
             }
@@ -717,7 +717,7 @@ internal struct Comparator
                 parentDepth:    depth
             )
             
-            if case .same = kind
+            if kind.isSame
             {
                 continue
             }
@@ -927,7 +927,7 @@ internal struct Comparator
             
             
             
-            if case .same = kind
+            if kind.isSame
             {
                 continue
             }
@@ -1021,7 +1021,7 @@ internal struct Comparator
                 parentDepth:    depth
             )
             
-            if case .same = innerKind
+            if innerKind.isSame
             {
                 return .same
             }
@@ -1052,7 +1052,7 @@ internal struct Comparator
             depth:              depth
         )
         
-        if case .same = assocKind
+        if assocKind.isSame
         {
             return .same
         }
@@ -1109,7 +1109,7 @@ internal struct Comparator
                     parentDepth:    depth
                 )
                 
-                if case .same = childKind
+                if childKind.isSame
                 {
                     return .same
                 }

@@ -24,7 +24,7 @@ final class ComparatorDictionaryTests: XCTestKitCase
             actual:     expected
         )
         
-        guard case .same = node.kind
+        guard node.kind.isSame
         else
         {
             XCTFail("Expected .same, got \(node.kind)")
@@ -182,7 +182,7 @@ final class ComparatorDictionaryTests: XCTestKitCase
         
         for node in tree
         {
-            guard case .missing = node.kind
+            guard node.kind.isMissing
             else
             {
                 XCTFail("Expected .missing, got \(node.kind)")
@@ -269,7 +269,7 @@ final class ComparatorDictionaryTests: XCTestKitCase
         
         for node in tree
         {
-            guard case .unexpected = node.kind
+            guard node.kind.isUnexpected
             else
             {
                 XCTFail("Expected .unexpected, got \(node.kind)")
@@ -508,7 +508,7 @@ final class ComparatorDictionaryTests: XCTestKitCase
             actual:     expected
         )
         
-        guard case .same = node.kind
+        guard node.kind.isSame
         else
         {
             XCTFail("Expected .same, got \(node.kind)")

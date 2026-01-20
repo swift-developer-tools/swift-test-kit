@@ -356,7 +356,7 @@ final class ComparatorCycleTests: XCTestKitCase
         /// ``Node`` uses identity-based equality (`===`), so the same object
         /// compared to itself is equal. The comparison should not traverse
         /// into the cycle.
-        guard case .same = node.kind
+        guard node.kind.isSame
         else
         {
             XCTFail("Expected .same, got \(node.kind)")

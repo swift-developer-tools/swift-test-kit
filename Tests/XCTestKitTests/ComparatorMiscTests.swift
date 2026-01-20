@@ -28,7 +28,7 @@ final class ComparatorMiscTests: XCTestKitCase
         
         XCTAssertEqual(node.label, .root(typeName: typeName(of: expected)))
         
-        guard case .same = node.kind
+        guard node.kind.isSame
         else
         {
             XCTFail("Expected .same, got \(node.kind)")
@@ -75,7 +75,7 @@ final class ComparatorMiscTests: XCTestKitCase
         
         XCTAssertEqual(node.label, .root(typeName: typeName(of: expected)))
         
-        guard case .same = node.kind
+        guard node.kind.isSame
         else
         {
             XCTFail("Expected .same, got \(node.kind)")
@@ -122,7 +122,7 @@ final class ComparatorMiscTests: XCTestKitCase
         
         XCTAssertEqual(node.label, .root(typeName: typeName(of: expected)))
         
-        guard case .same = node.kind
+        guard node.kind.isSame
         else
         {
             XCTFail("Expected .same, got \(node.kind)")
@@ -169,7 +169,7 @@ final class ComparatorMiscTests: XCTestKitCase
         
         XCTAssertEqual(node.label, .root(typeName: typeName(of: expected)))
         
-        guard case .same = node.kind
+        guard node.kind.isSame
         else
         {
             XCTFail("Expected .same, got \(node.kind)")
@@ -355,7 +355,7 @@ final class ComparatorMiscTests: XCTestKitCase
             actual:     expected
         )
         
-        guard case .same = node.kind
+        guard node.kind.isSame
         else
         {
             XCTFail("Expected .same, got \(node.kind)")
@@ -484,7 +484,7 @@ final class ComparatorMiscTests: XCTestKitCase
             actual:     expected
         )
         
-        guard case .same = node.kind
+        guard node.kind.isSame
         else
         {
             XCTFail("Expected .same, got \(node.kind)")
@@ -537,7 +537,7 @@ final class ComparatorMiscTests: XCTestKitCase
             actual:     expected
         )
         
-        guard case .same = node.kind
+        guard node.kind.isSame
         else
         {
             XCTFail("Expected .same, got \(node.kind)")
@@ -602,7 +602,7 @@ final class ComparatorMiscTests: XCTestKitCase
             actual:     expected
         )
         
-        guard case .same = node.kind
+        guard node.kind.isSame
         else
         {
             XCTFail("Expected .same, got \(node.kind)")
@@ -691,7 +691,7 @@ final class ComparatorMiscTests: XCTestKitCase
             actual:     expected
         )
         
-        guard case .same = node.kind
+        guard node.kind.isSame
         else
         {
             XCTFail("Expected .same, got \(node.kind)")
@@ -735,7 +735,7 @@ final class ComparatorMiscTests: XCTestKitCase
             actual:     expected
         )
         
-        guard case .same = node.kind
+        guard node.kind.isSame
         else
         {
             XCTFail("Expected .same, got \(node.kind)")
@@ -881,29 +881,13 @@ final class ComparatorMiscTests: XCTestKitCase
         
         
         
-        let missingCount: Int = tree.filter
-        {
-            if case .missing = $0.kind
-            {
-                return true
-            }
-            
-            return false
-        }.count
+        let missingCount: Int = tree.filter { $0.kind.isMissing }.count
         
         XCTAssertEqual(missingCount, 500)
         
         
         
-        let unexpectedCount: Int = tree.filter
-        {
-            if case .unexpected = $0.kind
-            {
-                return true
-            }
-            
-            return false
-        }.count
+        let unexpectedCount: Int = tree.filter { $0.kind.isUnexpected }.count
         
         XCTAssertEqual(unexpectedCount, 500)
     }
