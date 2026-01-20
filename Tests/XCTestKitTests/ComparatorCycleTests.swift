@@ -617,7 +617,7 @@ private extension ComparatorCycleTests
                 
             case
                 .same,
-                .missingElement,
+                .missing,
                 .unexpectedElement:
                 
                 break
@@ -647,7 +647,7 @@ private extension ComparatorCycleTests
                 
             case
                 .same,
-                .missingElement,
+                .missing,
                 .unexpectedElement:
                 
                 return 0

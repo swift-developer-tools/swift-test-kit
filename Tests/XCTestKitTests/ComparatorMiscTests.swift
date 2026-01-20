@@ -463,10 +463,10 @@ final class ComparatorMiscTests: XCTestKitCase
         
         
         
-        guard case let .missingElement(exp) = tree2[0].kind
+        guard case let .missing(exp) = tree2[0].kind
         else
         {
-            XCTFail("Expected .missingElement, got \(tree2[0].kind)")
+            XCTFail("Expected .missing, got \(tree2[0].kind)")
             return
         }
         
@@ -883,7 +883,7 @@ final class ComparatorMiscTests: XCTestKitCase
         
         let missingCount: Int = tree.filter
         {
-            if case .missingElement = $0.kind
+            if case .missing = $0.kind
             {
                 return true
             }

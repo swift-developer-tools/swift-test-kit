@@ -576,7 +576,7 @@ internal struct Comparator
             }
             else if let removal
             {
-                kind = .missingElement(expected: DiffValue(removal))
+                kind = .missing(expected: DiffValue(removal))
             }
             else if let insertion
             {
@@ -645,7 +645,7 @@ internal struct Comparator
             else if i < expected.count
             {
                 /// Only the expected array has this element.
-                kind = .missingElement(expected: DiffValue(expected[i]))
+                kind = .missing(expected: DiffValue(expected[i]))
             }
             else
             {
@@ -742,7 +742,7 @@ internal struct Comparator
             
             let node = DiffNode(
                 label:  .makeKey(key),
-                kind:   .missingElement(expected: DiffValue(expectedValue))
+                kind:   .missing(expected: DiffValue(expectedValue))
             )
             
             tree.append(node)
@@ -785,23 +785,23 @@ internal struct Comparator
         depth       : Int
     ) -> [DiffNode]
     {
-        let missingElements     : Set<T>    = expected.subtracting(actual)
+        let missing             : Set<T>    = expected.subtracting(actual)
         let unexpectedElements  : Set<T>    = actual.subtracting(expected)
         
         var tree: [DiffNode] = []
         
         tree.reserveCapacity(
-            missingElements.count
+            missing.count
             + unexpectedElements.count
         )
         
         
         
-        for element in missingElements
+        for element in missing
         {
             let node = DiffNode(
                 label:  .member,
-                kind:   .missingElement(expected: DiffValue(element))
+                kind:   .missing(expected: DiffValue(element))
             )
             
             tree.append(node)
@@ -910,9 +910,7 @@ internal struct Comparator
                     index:  i
                 )
                 
-                kind = .missingElement(
-                    expected: DiffValue(expectedChild.value)
-                )
+                kind = .missing(expected: DiffValue(expectedChild.value))
             }
             else
             {
@@ -1139,9 +1137,7 @@ internal struct Comparator
                     [
                         DiffNode(
                             label:  .property(name: "some"),
-                            kind:   .missingElement(
-                                        expected: DiffValue(exp.value)
-                                    )
+                            kind:   .missing(expected: DiffValue(exp.value))
                         )
                     ]
                 )
@@ -1356,7 +1352,7 @@ internal struct Comparator
             
             switch $0.kind
             {
-                case let .missingElement(exp):
+                case let .missing(exp):
                     
                     lhs = String(describing: exp)
                     
@@ -1371,7 +1367,7 @@ internal struct Comparator
             
             switch $1.kind
             {
-                case let .missingElement(exp):
+                case let .missing(exp):
                     
                     rhs = String(describing: exp)
                     

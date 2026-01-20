@@ -66,7 +66,7 @@
 ///
 ///                             DiffNode(
 ///                                 label:  .index(2),
-///                                 kind:   .missingElement(expected: "c")
+///                                 kind:   .missing(expected: "c")
 ///                             )
 ///                         ]
 ///                     )
@@ -82,8 +82,8 @@
 /// and other primitive values cannot be further decomposed.
 /// - The `tags` comparison is a structural node (`tree` is non-empty), since
 /// arrays can be further decomposed.
-/// - The `tags[2]` element uses ``DiffNodeKind/missingElement(expected:)``,
-/// since it exists in `expected` but not in `actual`.
+/// - The `tags[2]` element uses ``DiffNodeKind/missingexpected:)``, since it
+/// exists in `expected` but not in `actual`.
 internal struct DiffNode
 {
     /// The node label.
@@ -193,7 +193,7 @@ internal enum DiffNodeKind
     /// An element or key was present in the expected value, but missing from
     /// the actual value.
     /// - Parameter expected: The expected value.
-    case missingElement(
+    case missing(
         expected: DiffValue
     )
     

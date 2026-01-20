@@ -37,10 +37,10 @@ final class ComparatorArrayTests: XCTestKitCase
         
         
         
-        guard case let .missingElement(exp) = tree[0].kind
+        guard case let .missing(exp) = tree[0].kind
         else
         {
-            XCTFail("Expected .missingElement, got \(tree[0].kind)")
+            XCTFail("Expected .missing, got \(tree[0].kind)")
             return
         }
         
@@ -218,10 +218,10 @@ final class ComparatorArrayTests: XCTestKitCase
         
         
         
-        guard case let .missingElement(exp) = tree[0].kind
+        guard case let .missing(exp) = tree[0].kind
         else
         {
-            XCTFail("Expected .missingElement, got \(tree[0].kind)")
+            XCTFail("Expected .missing, got \(tree[0].kind)")
             return
         }
         
@@ -426,10 +426,10 @@ final class ComparatorArrayTests: XCTestKitCase
         
         
         
-        guard case let .missingElement(exp) = tree[0].kind
+        guard case let .missing(exp) = tree[0].kind
         else
         {
-            XCTFail("Expected .missingElement, got \(tree[0].kind)")
+            XCTFail("Expected .missing, got \(tree[0].kind)")
             return
         }
         
@@ -564,10 +564,10 @@ final class ComparatorArrayTests: XCTestKitCase
         
         
         
-        guard case let .missingElement(exp) = tree2[1].kind
+        guard case let .missing(exp) = tree2[1].kind
         else
         {
-            XCTFail("Expected .missingElement, got \(tree2[1].kind)")
+            XCTFail("Expected .missing, got \(tree2[1].kind)")
             return
         }
         
