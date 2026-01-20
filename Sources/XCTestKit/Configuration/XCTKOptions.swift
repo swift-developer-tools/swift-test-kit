@@ -145,6 +145,19 @@ public struct XCTKFormatOptions: Equatable, Sendable
     /// The default value is `nil`. Pass `nil` to show all diffs.
     public var maxDiffs             : Int?
     
+    /// Whether to count the total number of diffs to display when output
+    /// is truncated by ``maxDiffs``.
+    ///
+    /// The default value is `false`.
+    ///
+    /// When `true`, the truncation message shows the exact remaining count
+    /// (for example, "... and 5 more differences"). When `false`, it shows
+    /// only the limit (for example, "... and more differences (limit: 10)").
+    ///
+    /// - Note: Enabling this requires traversing the entire diff tree, which
+    /// may impact performance for large diffs.
+    public var countDiffs           : Bool
+    
     
     
     /// Initializes an ``XCTKFormatOptions`` instance, optionally specifying
@@ -152,7 +165,8 @@ public struct XCTKFormatOptions: Equatable, Sendable
     public init(
         indentationSpaces   : Int   = 4,
         maxLineLength       : Int   = 80,
-        maxDiffs            : Int?  = nil
+        maxDiffs            : Int?  = nil,
+        countDiffs          : Bool  = false
     )
     {
         precondition(
@@ -174,5 +188,6 @@ public struct XCTKFormatOptions: Equatable, Sendable
         self.indentationSpaces  = indentationSpaces
         self.maxLineLength      = maxLineLength
         self.maxDiffs           = maxDiffs
+        self.countDiffs         = countDiffs
     }
 }
