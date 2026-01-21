@@ -433,16 +433,11 @@ internal enum DiffNodeLabel: Equatable, Sendable
     /// the given key.
     /// - Parameter key: The key to use.
     /// - Returns: The created node label.
-    static func makeKey<T>(
-        _ key: T
-    ) -> DiffNodeLabel
+    static func makeKey<K>(
+        _ key: K
+    ) -> DiffNodeLabel where K : Hashable
     {
-        var unwrapped: Any = key
-        
-        if let hashable = key as? AnyHashable
-        {
-            unwrapped = hashable.base
-        }
+        let unwrapped: Any = (key as AnyHashable).base
         
         return .key(
             description:    String(describing: unwrapped),
