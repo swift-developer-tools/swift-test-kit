@@ -519,7 +519,7 @@ final class ComparatorCycleTests: XCTestKitCase
 
 // MARK: - Extensions
 
-private extension ComparatorCycleTests
+extension ComparatorCycleTests
 {
     // MARK: - Node
     
@@ -553,9 +553,12 @@ private extension ComparatorCycleTests
             return lhs === rhs
         }
     }
-    
-    
-    
+}
+
+
+
+private extension ComparatorCycleTests
+{
     // MARK: - TreeNode
     
     /// A reference type for testing cycle detection.
