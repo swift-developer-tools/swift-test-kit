@@ -66,8 +66,8 @@ final class ComparatorOptionalTests: XCTestKitCase
         XCTAssertEqual(exp.value as? String, "hello")
         XCTAssertEqual(act.value as? String, "world")
         XCTAssertEqual(tree2.count, 2)
-        XCTAssertEqual(tree2[0].label, .character(0))
-        XCTAssertEqual(tree2[1].label, .character(5))
+        XCTAssertEqual(tree2[0].label, .character(index: 0, count: 4))
+        XCTAssertEqual(tree2[1].label, .character(index: 5, count: 3))
     }
     
     

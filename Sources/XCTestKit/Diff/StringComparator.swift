@@ -415,12 +415,15 @@ internal struct StringComparator
             
             
             
-            let kind: DiffNodeKind
+            let count   : Int
+            let kind    : DiffNodeKind
             
             if
                 !removedChars.isEmpty,
                 !insertedChars.isEmpty
             {
+                count = removedChars.count
+                
                 kind = .different(
                     expected:   DiffValue(String(removedChars)),
                     actual:     DiffValue(String(insertedChars)),
@@ -429,11 +432,13 @@ internal struct StringComparator
             }
             else if !removedChars.isEmpty
             {
-                kind = .missing(expected: DiffValue(String(removedChars)))
+                count   = removedChars.count
+                kind    = .missing(expected: DiffValue(String(removedChars)))
             }
             else if !insertedChars.isEmpty
             {
-                kind = .unexpected(actual: DiffValue(String(insertedChars)))
+                count   = insertedChars.count
+                kind    = .unexpected(actual: DiffValue(String(insertedChars)))
             }
             else
             {
@@ -454,8 +459,13 @@ internal struct StringComparator
             
             
             
+            let label = DiffNodeLabel.character(
+                index:  changePosition,
+                count:  count
+            )
+            
             let node = DiffNode(
-                label:  .character(changePosition),
+                label:  label,
                 kind:   kind
             )
             

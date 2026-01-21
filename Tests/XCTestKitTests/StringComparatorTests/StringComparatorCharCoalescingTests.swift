@@ -33,7 +33,7 @@ final class StringComparatorCharCoalescingTests: XCTestKitCase
         }
         
         XCTAssertEqual(tree.count, 1)
-        XCTAssertEqual(tree[0].label, .character(1))
+        XCTAssertEqual(tree[0].label, .character(index: 1, count: 2))
         
         
         
@@ -67,7 +67,7 @@ final class StringComparatorCharCoalescingTests: XCTestKitCase
         }
         
         XCTAssertEqual(tree.count, 1)
-        XCTAssertEqual(tree[0].label, .character(1))
+        XCTAssertEqual(tree[0].label, .character(index: 1, count: 2))
         
         
         
@@ -101,10 +101,10 @@ final class StringComparatorCharCoalescingTests: XCTestKitCase
         }
         
         XCTAssertEqual(tree.count, 2)
-        XCTAssertEqual(tree[0].label, .character(1))
-        XCTAssertEqual(tree[1].label, .character(3))
+        XCTAssertEqual(tree[0].label, .character(index: 1, count: 1))
+        XCTAssertEqual(tree[1].label, .character(index: 3, count: 2))
         
-        
+        print(tree)
         
         guard case let .different(exp1, act1, _) = tree[0].kind
         else

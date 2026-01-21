@@ -33,7 +33,7 @@ final class StringComparatorUnicodeTests: XCTestKitCase
         }
         
         XCTAssertEqual(tree.count, 1)
-        XCTAssertEqual(tree[0].label, .character(6))
+        XCTAssertEqual(tree[0].label, .character(index: 6, count: 1))
         
         
         
@@ -95,7 +95,7 @@ final class StringComparatorUnicodeTests: XCTestKitCase
         /// characters in `actual`, since there are entries at each index.
         /// The tree will contain the single coalesced node.
         XCTAssertEqual(tree1.count, 1)
-        XCTAssertEqual(tree1[0].label, .character(0))
+        XCTAssertEqual(tree1[0].label, .character(index: 0, count: 1))
         
         
         

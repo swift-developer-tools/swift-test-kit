@@ -201,8 +201,8 @@ final class ComparatorMiscTests: XCTestKitCase
         XCTAssertEqual(exp.value as? String, expected)
         XCTAssertEqual(act.value as? String, actual)
         XCTAssertEqual(tree.count, 2)
-        XCTAssertEqual(tree[0].label, .character(0))
-        XCTAssertEqual(tree[1].label, .character(5))
+        XCTAssertEqual(tree[0].label, .character(index: 0, count: 4))
+        XCTAssertEqual(tree[1].label, .character(index: 5, count: 5))
     }
     
     

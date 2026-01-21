@@ -54,7 +54,7 @@ final class StringComparatorSingleLineTests: XCTestKitCase
         XCTAssertEqual(exp1.value as? String, expected)
         XCTAssertEqual(act1.value as? String, actual)
         XCTAssertEqual(tree1.count, 1)
-        XCTAssertEqual(tree1[0].label, .character(1))
+        XCTAssertEqual(tree1[0].label, .character(index: 1, count: 1))
         
         
         
@@ -111,7 +111,7 @@ final class StringComparatorSingleLineTests: XCTestKitCase
         XCTAssertEqual(exp1.value as? String, expected)
         XCTAssertEqual(act1.value as? String, actual)
         XCTAssertEqual(tree.count, 1)
-        XCTAssertEqual(tree[0].label, .character(0))
+        XCTAssertEqual(tree[0].label, .character(index: 0, count: 5))
         
         
         
@@ -147,7 +147,7 @@ final class StringComparatorSingleLineTests: XCTestKitCase
         XCTAssertEqual(exp1.value as? String, expected)
         XCTAssertEqual(act1.value as? String, actual)
         XCTAssertEqual(tree.count, 1)
-        XCTAssertEqual(tree[0].label, .character(0))
+        XCTAssertEqual(tree[0].label, .character(index: 0, count: 5))
         
         
         
@@ -181,7 +181,7 @@ final class StringComparatorSingleLineTests: XCTestKitCase
         }
         
         XCTAssertEqual(tree.count, 1)
-        XCTAssertEqual(tree[0].label, .character(0))
+        XCTAssertEqual(tree[0].label, .character(index: 0, count: 1))
         
         
         
@@ -216,7 +216,7 @@ final class StringComparatorSingleLineTests: XCTestKitCase
         }
         
         XCTAssertEqual(tree.count, 1)
-        XCTAssertEqual(tree[0].label, .character(4))
+        XCTAssertEqual(tree[0].label, .character(index: 4, count: 1))
         
         
         
@@ -253,7 +253,7 @@ final class StringComparatorSingleLineTests: XCTestKitCase
         XCTAssertEqual(exp.value as? String, expected)
         XCTAssertEqual(act.value as? String, actual)
         XCTAssertEqual(tree.count, 1)
-        XCTAssertEqual(tree[0].label, .character(3))
+        XCTAssertEqual(tree[0].label, .character(index: 3, count: 3))
         
         
         
@@ -289,7 +289,7 @@ final class StringComparatorSingleLineTests: XCTestKitCase
         XCTAssertEqual(exp.value as? String, expected)
         XCTAssertEqual(act.value as? String, actual)
         XCTAssertEqual(tree.count, 1)
-        XCTAssertEqual(tree[0].label, .character(0))
+        XCTAssertEqual(tree[0].label, .character(index: 0, count: 3))
         
         
         
@@ -325,7 +325,7 @@ final class StringComparatorSingleLineTests: XCTestKitCase
         XCTAssertEqual(exp1.value as? String, expected)
         XCTAssertEqual(act1.value as? String, actual)
         XCTAssertEqual(tree.count, 1)
-        XCTAssertEqual(tree[0].label, .character(0))
+        XCTAssertEqual(tree[0].label, .character(index: 0, count: 1))
         
         
         
@@ -360,7 +360,7 @@ final class StringComparatorSingleLineTests: XCTestKitCase
         }
         
         XCTAssertEqual(tree.count, 1)
-        XCTAssertEqual(tree[0].label, .character(6))
+        XCTAssertEqual(tree[0].label, .character(index: 6, count: 1))
         
         
         
@@ -394,7 +394,7 @@ final class StringComparatorSingleLineTests: XCTestKitCase
         }
         
         XCTAssertEqual(tree.count, 1)
-        XCTAssertEqual(tree[0].label, .character(5))
+        XCTAssertEqual(tree[0].label, .character(index: 5, count: 1))
         
         
         

@@ -81,8 +81,8 @@ final class ComparatorStructTests: XCTestKitCase
         XCTAssertEqual(exp.value as? String, "12345")
         XCTAssertEqual(act.value as? String, "54321")
         XCTAssertFalse(tree3.isEmpty)
-        XCTAssertEqual(tree3[0].label, .character(0))
-        XCTAssertEqual(tree3[1].label, .character(5))
+        XCTAssertEqual(tree3[0].label, .character(index: 0, count: 4))
+        XCTAssertEqual(tree3[1].label, .character(index: 5, count: 4))
     }
     
     

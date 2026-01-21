@@ -59,7 +59,7 @@ final class StringComparatorCharThresholdTests: XCTestKitCase
         }
         
         XCTAssertEqual(tree.count, 1)
-        XCTAssertEqual(tree[0].label, .character(1))
+        XCTAssertEqual(tree[0].label, .character(index: 1, count: 1))
     }
     
     
@@ -107,7 +107,7 @@ final class StringComparatorCharThresholdTests: XCTestKitCase
         XCTAssertEqual(exp.value as? String, expected)
         XCTAssertEqual(act.value as? String, actual)
         XCTAssertEqual(tree.count, 1)
-        XCTAssertEqual(tree[0].label, .character(2))
+        XCTAssertEqual(tree[0].label, .character(index: 2, count: 2))
     }
     
     
@@ -162,7 +162,7 @@ final class StringComparatorCharThresholdTests: XCTestKitCase
         XCTAssertEqual(exp.value as? String, expected)
         XCTAssertEqual(act.value as? String, actual)
         XCTAssertEqual(tree.count, 1)
-        XCTAssertEqual(tree[0].label, .character(0))
+        XCTAssertEqual(tree[0].label, .character(index: 0, count: 3))
     }
     
     

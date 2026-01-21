@@ -81,7 +81,7 @@ final class ComparatorArrayTests: XCTestKitCase
         XCTAssertEqual(exp.value as? String, "b")
         XCTAssertEqual(act.value as? String, "x")
         XCTAssertEqual(tree2.count, 1)
-        XCTAssertEqual(tree2[0].label, .character(0))
+        XCTAssertEqual(tree2[0].label, .character(index: 0, count: 1))
     }
     
     

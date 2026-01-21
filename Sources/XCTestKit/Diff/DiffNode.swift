@@ -318,9 +318,12 @@ internal enum DiffNodeLabel: Equatable, Sendable
     )
     
     /// A character in a string.
-    /// - Parameter index: The zero-indexed character position.
+    /// - Parameters:
+    ///   - index: The zero-indexed character position.
+    ///   - count: The number of different characters.
     case character(
-        _ index: Int
+        index   : Int,
+        count   : Int
     )
     
     
@@ -336,7 +339,7 @@ internal enum DiffNodeLabel: Equatable, Sendable
             case let .key(description, _)   : return description
             case .member                    : return ""
             case let .line(index)           : return String(index)
-            case let .character(index)      : return String(index)
+            case let .character(index, _)   : return String(index)
         }
     }
     

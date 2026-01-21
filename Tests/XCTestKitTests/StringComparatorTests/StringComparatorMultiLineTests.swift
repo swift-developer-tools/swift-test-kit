@@ -66,7 +66,7 @@ final class StringComparatorMultiLineTests: XCTestKitCase
         XCTAssertEqual(exp.value as? String, "line1")
         XCTAssertEqual(act.value as? String, "lineX")
         XCTAssertEqual(tree2.count, 1)
-        XCTAssertEqual(tree2[0].label, .character(4))
+        XCTAssertEqual(tree2[0].label, .character(index: 4, count: 1))
     }
     
     
