@@ -12,7 +12,7 @@
 /// - Returns: The string description of the dynamic type of the given value.
 internal func typeName<T>(
     of value: borrowing T
-) -> String where T: ~Copyable, T: ~Escapable
+) -> String where T : ~Copyable, T : ~Escapable
 {
     return String(describing: type(of: value))
 }

@@ -22,11 +22,11 @@ internal struct Comparator
     ///   - options: The diff options to use. The default value is a default-
     ///   initialized ``XCTKDiffOptions`` instance.
     /// - Returns: The diff node.
-    static func computeDiff<T: Equatable>(
+    static func computeDiff<T>(
         expected    : T,
         actual      : T,
         options     : XCTKDiffOptions   = .init()
-    ) -> DiffNode
+    ) -> DiffNode where T : Equatable
     {
         let context     = ComparatorContext(options: options)
         let comparator  = Comparator(context: context)
@@ -74,11 +74,11 @@ internal struct Comparator
     ///   - actual: The actual value.
     ///   - depth: The recursion depth.
     /// - Returns: The diff node kind.
-    private func compareEquatable<T: Equatable>(
+    private func compareEquatable<T>(
         expected    : T,
         actual      : T,
         depth       : Int
-    ) -> DiffNodeKind
+    ) -> DiffNodeKind where T : Equatable
     {
         guard expected != actual
         else
@@ -681,11 +681,11 @@ internal struct Comparator
     ///   - actual: The actual dictionary.
     ///   - depth: The recursion depth.
     /// - Returns: The diff tree.
-    private func compareDictionaries<K: Hashable, V>(
+    private func compareDictionaries<K, V>(
         expected    : [K : V],
         actual      : [K : V],
         depth       : Int
-    ) -> [DiffNode]
+    ) -> [DiffNode] where K : Hashable
     {
         let expectedKeys    : Set<K>    = Set(expected.keys)
         let actualKeys      : Set<K>    = Set(actual.keys)
@@ -779,11 +779,11 @@ internal struct Comparator
     ///   - actual: The actual set.
     ///   - depth: The recursion depth.
     /// - Returns: The diff tree.
-    private func compareSets<T: Hashable>(
+    private func compareSets<T>(
         expected    : Set<T>,
         actual      : Set<T>,
         depth       : Int
-    ) -> [DiffNode]
+    ) -> [DiffNode] where T : Hashable
     {
         let missing     : Set<T>    = expected.subtracting(actual)
         let unexpected  : Set<T>    = actual.subtracting(expected)
