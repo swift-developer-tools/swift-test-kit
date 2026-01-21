@@ -55,14 +55,14 @@ internal struct Comparator
         )
         
         return DiffNode(
-            label:  .root,
+            label:  .root(typeName: typeName(of: expected)),
             kind:   kind
         )
     }
     
     
     
-    // MARK: - Core comparison
+    // MARK: - Core
     
     /// Compares the given `Equatable` values.
     ///
@@ -83,7 +83,7 @@ internal struct Comparator
         guard expected != actual
         else
         {
-            return .same(expected: expected)
+            return .same
         }
         
         return compareStructurally(
@@ -120,13 +120,13 @@ internal struct Comparator
             else
             {
                 return .different(
-                    expected:   expected,
-                    actual:     actual,
+                    expected:   DiffValue(expected),
+                    actual:     DiffValue(actual),
                     tree:       []
                 )
             }
             
-            return .same(expected: expected)
+            return .same
         }
         
         
@@ -172,8 +172,8 @@ internal struct Comparator
             }
             
             return .cycle(
-                expected:   expected,
-                actual:     actual,
+                expected:   DiffValue(expected),
+                actual:     DiffValue(actual),
                 location:   location
             )
         }
@@ -219,8 +219,8 @@ internal struct Comparator
             /// When the types are different, structural comparison is not
             /// meaningful.
             return .different(
-                expected:   expected,
-                actual:     actual,
+                expected:   DiffValue(expected),
+                actual:     DiffValue(actual),
                 tree:       []
             )
         }
@@ -258,7 +258,7 @@ internal struct Comparator
             guard !areEqual
             else
             {
-                return .same(expected: expected)
+                return .same
             }
         }
         
@@ -272,7 +272,7 @@ internal struct Comparator
     
     
     
-    // MARK: - Structural comparison
+    // MARK: - Structural
     
     /// Compares the given values structurally, using `Mirror` reflection.
     ///
@@ -320,12 +320,12 @@ internal struct Comparator
                 guard !tree.isEmpty
                 else
                 {
-                    return .same(expected: expected)
+                    return .same
                 }
                 
                 return .different(
-                    expected:   expected,
-                    actual:     actual,
+                    expected:   DiffValue(expected),
+                    actual:     DiffValue(actual),
                     tree:       tree
                 )
                 
@@ -350,12 +350,12 @@ internal struct Comparator
                 guard !tree.isEmpty
                 else
                 {
-                    return .same(expected: expected)
+                    return .same
                 }
                 
                 return .different(
-                    expected:   expected,
-                    actual:     actual,
+                    expected:   DiffValue(expected),
+                    actual:     DiffValue(actual),
                     tree:       tree
                 )
                 
@@ -404,12 +404,12 @@ internal struct Comparator
                 guard !tree.isEmpty
                 else
                 {
-                    return .same(expected: expected)
+                    return .same
                 }
                 
                 return .different(
-                    expected:   expected,
-                    actual:     actual,
+                    expected:   DiffValue(expected),
+                    actual:     DiffValue(actual),
                     tree:       tree
                 )
                 
@@ -452,7 +452,7 @@ internal struct Comparator
     
     
     
-    // MARK: - Collection comparison
+    // MARK: - Collections
     
     /// Compares the given arrays by element.
     /// - Parameters:
@@ -569,18 +569,18 @@ internal struct Comparator
                     parentDepth:    depth
                 )
                 
-                if case .same = kind
+                if kind.isSame
                 {
                     continue
                 }
             }
             else if let removal
             {
-                kind = .missingElement(expected: removal)
+                kind = .missing(expected: DiffValue(removal))
             }
             else if let insertion
             {
-                kind = .unexpectedElement(actual: insertion)
+                kind = .unexpected(actual: DiffValue(insertion))
             }
             else
             {
@@ -645,17 +645,17 @@ internal struct Comparator
             else if i < expected.count
             {
                 /// Only the expected array has this element.
-                kind = .missingElement(expected: expected[i])
+                kind = .missing(expected: DiffValue(expected[i]))
             }
             else
             {
                 /// Only the actual array has this element.
-                kind = .unexpectedElement(actual: actual[i])
+                kind = .unexpected(actual: DiffValue(actual[i]))
             }
             
             
             
-            if case .same = kind
+            if kind.isSame
             {
                 continue
             }
@@ -717,7 +717,7 @@ internal struct Comparator
                 parentDepth:    depth
             )
             
-            if case .same = kind
+            if kind.isSame
             {
                 continue
             }
@@ -742,7 +742,7 @@ internal struct Comparator
             
             let node = DiffNode(
                 label:  .makeKey(key),
-                kind:   .missingElement(expected: expectedValue)
+                kind:   .missing(expected: DiffValue(expectedValue))
             )
             
             tree.append(node)
@@ -760,7 +760,7 @@ internal struct Comparator
             
             let node = DiffNode(
                 label:  .makeKey(key),
-                kind:   .unexpectedElement(actual: actualValue)
+                kind:   .unexpected(actual: DiffValue(actualValue))
             )
             
             tree.append(node)
@@ -785,23 +785,23 @@ internal struct Comparator
         depth       : Int
     ) -> [DiffNode]
     {
-        let missingElements     : Set<T>    = expected.subtracting(actual)
-        let unexpectedElements  : Set<T>    = actual.subtracting(expected)
+        let missing     : Set<T>    = expected.subtracting(actual)
+        let unexpected  : Set<T>    = actual.subtracting(expected)
         
         var tree: [DiffNode] = []
         
         tree.reserveCapacity(
-            missingElements.count
-            + unexpectedElements.count
+            missing.count
+            + unexpected.count
         )
         
         
         
-        for element in missingElements
+        for element in missing
         {
             let node = DiffNode(
                 label:  .member,
-                kind:   .missingElement(expected: element)
+                kind:   .missing(expected: DiffValue(element))
             )
             
             tree.append(node)
@@ -809,11 +809,11 @@ internal struct Comparator
         
         
         
-        for element in unexpectedElements
+        for element in unexpected
         {
             let node = DiffNode(
                 label:  .member,
-                kind:   .unexpectedElement(actual: element)
+                kind:   .unexpected(actual: DiffValue(element))
             )
             
             tree.append(node)
@@ -826,7 +826,7 @@ internal struct Comparator
     
     
     
-    // MARK: - Other comparison
+    // MARK: - Other
     
     /// Compares the given `Mirror` children.
     ///
@@ -889,7 +889,7 @@ internal struct Comparator
                 let expectedChild   : Mirror.Child  = expectedChildren[i]
                 let actualChild     : Mirror.Child  = actualChildren[i]
                 
-                label = Self.makeMirrorLabel(
+                label = Self.makeDiffNodeLabel(
                     from:   expectedChild.label,
                     index:  i
                 )
@@ -905,29 +905,29 @@ internal struct Comparator
                 /// Only the expected value has this child.
                 let expectedChild: Mirror.Child = expectedChildren[i]
                 
-                label = Self.makeMirrorLabel(
+                label = Self.makeDiffNodeLabel(
                     from:   expectedChild.label,
                     index:  i
                 )
                 
-                kind = .missingElement(expected: expectedChild.value)
+                kind = .missing(expected: DiffValue(expectedChild.value))
             }
             else
             {
                 /// Only the actual value has this child.
                 let actualChild: Mirror.Child = actualChildren[i]
                 
-                label = Self.makeMirrorLabel(
+                label = Self.makeDiffNodeLabel(
                     from:   actualChild.label,
                     index:  i
                 )
                 
-                kind = .unexpectedElement(actual: actualChild.value)
+                kind = .unexpected(actual: DiffValue(actualChild.value))
             }
             
             
             
-            if case .same = kind
+            if kind.isSame
             {
                 continue
             }
@@ -943,8 +943,8 @@ internal struct Comparator
         
         
         return .different(
-            expected:   expected,
-            actual:     actual,
+            expected:   DiffValue(expected),
+            actual:     DiffValue(actual),
             tree:       tree
         )
     }
@@ -977,8 +977,8 @@ internal struct Comparator
         else
         {
             return .different(
-                expected:   expected,
-                actual:     actual,
+                expected:   DiffValue(expected),
+                actual:     DiffValue(actual),
                 tree:       []
             )
         }
@@ -1004,7 +1004,7 @@ internal struct Comparator
             let actualAssoc     : Any   = actualMirror.children.first?.value
         else
         {
-            return .same(expected: expected)
+            return .same
         }
         
         
@@ -1021,14 +1021,14 @@ internal struct Comparator
                 parentDepth:    depth
             )
             
-            if case .same = innerKind
+            if innerKind.isSame
             {
-                return .same(expected: expected)
+                return .same
             }
             
             return .different(
-                expected:   expected,
-                actual:     actual,
+                expected:   DiffValue(expected),
+                actual:     DiffValue(actual),
                 tree:
                 [
                     DiffNode(
@@ -1052,24 +1052,24 @@ internal struct Comparator
             depth:              depth
         )
         
-        if case .same = assocKind
+        if assocKind.isSame
         {
-            return .same(expected: expected)
+            return .same
         }
         
         guard case let .different(_, _, assocTree) = assocKind
         else
         {
             return .different(
-                expected:   expected,
-                actual:     actual,
+                expected:   DiffValue(expected),
+                actual:     DiffValue(actual),
                 tree:       []
             )
         }
         
         return .different(
-            expected:   expected,
-            actual:     actual,
+            expected:   DiffValue(expected),
+            actual:     DiffValue(actual),
             tree:       assocTree
         )
     }
@@ -1099,7 +1099,7 @@ internal struct Comparator
         {
             case (.none, .none):
                 
-                return .same(expected: expected)
+                return .same
                 
             case let (.some(exp), .some(act)):
                 
@@ -1109,14 +1109,14 @@ internal struct Comparator
                     parentDepth:    depth
                 )
                 
-                if case .same = childKind
+                if childKind.isSame
                 {
-                    return .same(expected: expected)
+                    return .same
                 }
                 
                 return .different(
-                    expected:   expected,
-                    actual:     actual,
+                    expected:   DiffValue(expected),
+                    actual:     DiffValue(actual),
                     tree:
                     [
                         DiffNode(
@@ -1129,13 +1129,13 @@ internal struct Comparator
             case let (.some(exp), .none):
                 
                 return .different(
-                    expected:   expected,
-                    actual:     actual,
+                    expected:   DiffValue(expected),
+                    actual:     DiffValue(actual),
                     tree:
                     [
                         DiffNode(
                             label:  .property(name: "some"),
-                            kind:   .missingElement(expected: exp.value)
+                            kind:   .missing(expected: DiffValue(exp.value))
                         )
                     ]
                 )
@@ -1143,13 +1143,13 @@ internal struct Comparator
             case let (.none, .some(act)):
                 
                 return .different(
-                    expected:   expected,
-                    actual:     actual,
+                    expected:   DiffValue(expected),
+                    actual:     DiffValue(actual),
                     tree:
                     [
                         DiffNode(
                             label:  .property(name: "some"),
-                            kind:   .unexpectedElement(actual: act.value)
+                            kind:   .unexpected(actual: DiffValue(act.value))
                         )
                     ]
                 )
@@ -1223,9 +1223,9 @@ internal struct Comparator
     ///   - index: The index to use.
     /// - Returns: A property label if `mirrorLabel` is not `nil`, and an
     /// index label otherwise.
-    private static func makeMirrorLabel(
-        from mirrorLabel: String?,
-        index: Int
+    private static func makeDiffNodeLabel(
+        from mirrorLabel    : String?,
+        index               : Int
     ) -> DiffNodeLabel
     {
         guard let mirrorLabel
@@ -1348,32 +1348,16 @@ internal struct Comparator
             
             switch $0.kind
             {
-                case let .missingElement(exp):
-                    
-                    lhs = String(describing: exp)
-                    
-                case let .unexpectedElement(act):
-                    
-                    lhs = String(describing: act)
-                    
-                default:
-                    
-                    lhs = ""
+                case let .missing(exp)      : lhs = String(describing: exp)
+                case let .unexpected(act)   : lhs = String(describing: act)
+                default                     : lhs = ""
             }
             
             switch $1.kind
             {
-                case let .missingElement(exp):
-                    
-                    rhs = String(describing: exp)
-                    
-                case let .unexpectedElement(act):
-                    
-                    rhs = String(describing: act)
-                    
-                default:
-                    
-                    rhs = ""
+                case let .missing(exp)      : rhs = String(describing: exp)
+                case let .unexpected(act)   : rhs = String(describing: act)
+                default                     : rhs = ""
             }
             
             return lhs < rhs

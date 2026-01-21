@@ -156,8 +156,8 @@ final class ComparatorCycleTests: XCTestKitCase
         }
         
         /// Depth limit reached. Leaf comparison with an empty tree.
-        XCTAssertEqual(exp as? Int, 1)
-        XCTAssertEqual(act as? Int, 2)
+        XCTAssertEqual(exp.value as? Int, 1)
+        XCTAssertEqual(act.value as? Int, 2)
         XCTAssertTrue(tree2.isEmpty)
         
         assertNoCycles(in: node.kind)
@@ -356,7 +356,7 @@ final class ComparatorCycleTests: XCTestKitCase
         /// ``Node`` uses identity-based equality (`===`), so the same object
         /// compared to itself is equal. The comparison should not traverse
         /// into the cycle.
-        guard case .same = node.kind
+        guard node.kind.isSame
         else
         {
             XCTFail("Expected .same, got \(node.kind)")
@@ -445,8 +445,8 @@ final class ComparatorCycleTests: XCTestKitCase
             return
         }
         
-        XCTAssertEqual(exp as? Int, 99)
-        XCTAssertEqual(act as? Int, 50)
+        XCTAssertEqual(exp.value as? Int, 99)
+        XCTAssertEqual(act.value as? Int, 50)
         XCTAssertTrue(tree4.isEmpty)
     }
     
@@ -519,7 +519,7 @@ final class ComparatorCycleTests: XCTestKitCase
 
 // MARK: - Extensions
 
-private extension ComparatorCycleTests
+extension ComparatorCycleTests
 {
     // MARK: - Node
     
@@ -553,9 +553,12 @@ private extension ComparatorCycleTests
             return lhs === rhs
         }
     }
-    
-    
-    
+}
+
+
+
+private extension ComparatorCycleTests
+{
     // MARK: - TreeNode
     
     /// A reference type for testing cycle detection.
@@ -617,8 +620,8 @@ private extension ComparatorCycleTests
                 
             case
                 .same,
-                .missingElement,
-                .unexpectedElement:
+                .missing,
+                .unexpected:
                 
                 break
         }
@@ -647,8 +650,8 @@ private extension ComparatorCycleTests
                 
             case
                 .same,
-                .missingElement,
-                .unexpectedElement:
+                .missing,
+                .unexpected:
                 
                 return 0
         }

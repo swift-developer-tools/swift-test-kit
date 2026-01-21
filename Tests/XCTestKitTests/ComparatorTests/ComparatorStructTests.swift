@@ -78,11 +78,11 @@ final class ComparatorStructTests: XCTestKitCase
             return
         }
         
-        XCTAssertEqual(exp as? String, "12345")
-        XCTAssertEqual(act as? String, "54321")
+        XCTAssertEqual(exp.value as? String, "12345")
+        XCTAssertEqual(act.value as? String, "54321")
         XCTAssertFalse(tree3.isEmpty)
-        XCTAssertEqual(tree3[0].label, .character(0))
-        XCTAssertEqual(tree3[1].label, .character(5))
+        XCTAssertEqual(tree3[0].label, .character(index: 0, count: 4))
+        XCTAssertEqual(tree3[1].label, .character(index: 5, count: 4))
     }
     
     
@@ -107,7 +107,7 @@ final class ComparatorStructTests: XCTestKitCase
             actual:     expected
         )
         
-        guard case .same = node.kind
+        guard node.kind.isSame
         else
         {
             XCTFail("Expected .same, got \(node.kind)")
@@ -161,8 +161,8 @@ final class ComparatorStructTests: XCTestKitCase
             return
         }
         
-        XCTAssertEqual(exp as? Int, 10)
-        XCTAssertEqual(act as? Int, 20)
+        XCTAssertEqual(exp.value as? Int, 10)
+        XCTAssertEqual(act.value as? Int, 20)
         XCTAssertTrue(tree2.isEmpty)
     }
     
@@ -213,8 +213,8 @@ final class ComparatorStructTests: XCTestKitCase
             return
         }
         
-        XCTAssertEqual((exp as? Inner)?.value, 1)
-        XCTAssertEqual((act as? Inner)?.value, 2)
+        XCTAssertEqual((exp.value as? Inner)?.value, 1)
+        XCTAssertEqual((act.value as? Inner)?.value, 2)
         XCTAssertTrue(tree2.isEmpty)
     }
     
@@ -294,8 +294,8 @@ final class ComparatorStructTests: XCTestKitCase
             return
         }
         
-        XCTAssertEqual(exp as? Int, 1)
-        XCTAssertEqual(act as? Int, 2)
+        XCTAssertEqual(exp.value as? Int, 1)
+        XCTAssertEqual(act.value as? Int, 2)
         XCTAssertTrue(tree5.isEmpty)
     }
     
@@ -317,7 +317,7 @@ final class ComparatorStructTests: XCTestKitCase
             actual:     expected
         )
         
-        guard case .same = node.kind
+        guard node.kind.isSame
         else
         {
             XCTFail("Expected .same, got \(node.kind)")
@@ -396,7 +396,7 @@ final class ComparatorStructTests: XCTestKitCase
             actual:     expected
         )
         
-        guard case .same = node.kind
+        guard node.kind.isSame
         else
         {
             XCTFail("Expected .same, got \(node.kind)")
@@ -454,8 +454,8 @@ final class ComparatorStructTests: XCTestKitCase
             return
         }
         
-        XCTAssertEqual(exp as? Int, 10)
-        XCTAssertEqual(act as? Int, 20)
+        XCTAssertEqual(exp.value as? Int, 10)
+        XCTAssertEqual(act.value as? Int, 20)
     }
     
     
@@ -523,8 +523,8 @@ final class ComparatorStructTests: XCTestKitCase
         }
         
         /// Depth limit reached. Leaf comparison with an empty tree.
-        XCTAssertTrue(exp is L4)
-        XCTAssertTrue(act is L4)
+        XCTAssertTrue(exp.value is L4)
+        XCTAssertTrue(act.value is L4)
         XCTAssertTrue(tree4.isEmpty)
     }
 }

@@ -76,7 +76,7 @@ internal struct StringComparator
         guard expected != actual
         else
         {
-            return .same(expected: expected)
+            return .same
         }
         
         let tree: [DiffNode] = compareCharacters(
@@ -85,8 +85,8 @@ internal struct StringComparator
         )
         
         return .different(
-            expected:   expected,
-            actual:     actual,
+            expected:   DiffValue(expected),
+            actual:     DiffValue(actual),
             tree:       tree
         )
     }
@@ -118,12 +118,12 @@ internal struct StringComparator
         guard !tree.isEmpty
         else
         {
-            return .same(expected: expected)
+            return .same
         }
         
         return .different(
-            expected:   normalizedExpected,
-            actual:     normalizedActual,
+            expected:   DiffValue(normalizedExpected),
+            actual:     DiffValue(normalizedActual),
             tree:       tree
         )
     }
@@ -195,18 +195,18 @@ internal struct StringComparator
                 )
                 
                 kind = .different(
-                    expected:   removal,
-                    actual:     insertion,
+                    expected:   DiffValue(removal),
+                    actual:     DiffValue(insertion),
                     tree:       characterNodes
                 )
             }
             else if let removal
             {
-                kind = .missingElement(expected: removal)
+                kind = .missing(expected: DiffValue(removal))
             }
             else if let insertion
             {
-                kind = .unexpectedElement(actual: insertion)
+                kind = .unexpected(actual: DiffValue(insertion))
             }
             else
             {
@@ -415,25 +415,30 @@ internal struct StringComparator
             
             
             
-            let kind: DiffNodeKind
+            let count   : Int
+            let kind    : DiffNodeKind
             
             if
                 !removedChars.isEmpty,
                 !insertedChars.isEmpty
             {
+                count = removedChars.count
+                
                 kind = .different(
-                    expected:   String(removedChars),
-                    actual:     String(insertedChars),
+                    expected:   DiffValue(String(removedChars)),
+                    actual:     DiffValue(String(insertedChars)),
                     tree:       []
                 )
             }
             else if !removedChars.isEmpty
             {
-                kind = .missingElement(expected: String(removedChars))
+                count   = removedChars.count
+                kind    = .missing(expected: DiffValue(String(removedChars)))
             }
             else if !insertedChars.isEmpty
             {
-                kind = .unexpectedElement(actual: String(insertedChars))
+                count   = insertedChars.count
+                kind    = .unexpected(actual: DiffValue(String(insertedChars)))
             }
             else
             {
@@ -454,8 +459,13 @@ internal struct StringComparator
             
             
             
+            let label = DiffNodeLabel.character(
+                index:  changePosition,
+                count:  count
+            )
+            
             let node = DiffNode(
-                label:  .character(changePosition),
+                label:  label,
                 kind:   kind
             )
             

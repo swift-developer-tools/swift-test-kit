@@ -24,25 +24,25 @@ public struct XCTKOptions: Equatable, Sendable
     /// instance.
     public var diffOptions  : XCTKDiffOptions
     
-    /// The options for printing diffs.
+    /// The options for formatting diffs.
     ///
-    /// The default value is a default-initialized ``XCTKPrintOptions``
+    /// The default value is a default-initialized ``XCTKFormatOptions``
     /// instance.
-    public var printOptions : XCTKPrintOptions
+    public var formatOptions : XCTKFormatOptions
     
     
     
     /// Initializes an ``XCTKOptions`` instance, optionally specifying values
     /// for its properties.
     public init(
-        diffEnabled     : Bool              = true,
-        diffOptions     : XCTKDiffOptions   = .init(),
-        printOptions    : XCTKPrintOptions  = .init()
+        diffEnabled     : Bool                  = true,
+        diffOptions     : XCTKDiffOptions       = .init(),
+        formatOptions   : XCTKFormatOptions     = .init()
     )
     {
         self.diffEnabled    = diffEnabled
         self.diffOptions    = diffOptions
-        self.printOptions   = printOptions
+        self.formatOptions  = formatOptions
     }
 }
 
@@ -125,16 +125,11 @@ public struct XCTKDiffOptions: Equatable, Sendable
 
 
 
-// MARK: - XCTKPrintOptions
+// MARK: - XCTKFormatOptions
 
-/// The options for printing diffs.
-public struct XCTKPrintOptions: Equatable, Sendable
+/// The options for formatting diffs.
+public struct XCTKFormatOptions: Equatable, Sendable
 {
-    /// The number of lines of context shown around each change in diff output.
-    ///
-    /// The default value is `3`. Pass `0` to show only the changed lines.
-    public var contextLines         : Int
-    
     /// The number of spaces used for each indent.
     ///
     /// The default value is `4`.
@@ -145,51 +140,35 @@ public struct XCTKPrintOptions: Equatable, Sendable
     /// The default value is `80`.
     public var maxLineLength        : Int
     
-    /// Whether to show type annotations.
-    ///
-    /// The default value is `true`.
-    public var showTypeAnnotations  : Bool
-    
     /// The maximum number of diffs shown, before truncating the output.
     ///
     /// The default value is `nil`. Pass `nil` to show all diffs.
     public var maxDiffs             : Int?
     
-    /// The maximum number of diff lines shown, before truncating the output.
+    /// Whether to count the total number of diffs to display when output
+    /// is truncated by ``maxDiffs``.
     ///
-    /// The default value is `nil`. Pass `nil` to show all diff lines.
-    public var maxDiffLines         : Int?
-    
-    /// The character to use in a diff to indicate the expected value.
+    /// The default value is `false`.
     ///
-    /// The default value is `+`.
-    public var expectedSymbol       : Character
-    
-    /// The character to use in a diff to indicate the actual value.
+    /// When `true`, the truncation message shows the exact remaining count
+    /// (for example, "... and 5 more differences"). When `false`, it shows
+    /// only the limit (for example, "... and more differences (limit: 10)").
     ///
-    /// The default value is `-`.
-    public var actualSymbol         : Character
+    /// - Note: Enabling this requires traversing the entire diff tree, which
+    /// may impact performance for large diffs.
+    public var countDiffs           : Bool
     
     
     
-    /// Initializes an ``XCTKPrintOptions`` instance, optionally specifying
+    /// Initializes an ``XCTKFormatOptions`` instance, optionally specifying
     /// values for its properties.
     public init(
-        contextLines        : Int           = 3,
-        indentationSpaces   : Int           = 4,
-        maxLineLength       : Int           = 80,
-        showTypeAnnotations : Bool          = true,
-        maxDiffs            : Int?          = nil,
-        maxDiffLines        : Int?          = nil,
-        expectedSymbol      : Character     = .init("+"),
-        actualSymbol        : Character     = .init("-")
+        indentationSpaces   : Int   = 4,
+        maxLineLength       : Int   = 80,
+        maxDiffs            : Int?  = nil,
+        countDiffs          : Bool  = false
     )
     {
-        precondition(
-            contextLines >= 0,
-            "contextLines must be non-negative"
-        )
-        
         precondition(
             indentationSpaces >= 0,
             "indentationSpaces must be non-negative"
@@ -206,19 +185,9 @@ public struct XCTKPrintOptions: Equatable, Sendable
             "maxDiffs must be positive or nil"
         )
         
-        precondition(
-            maxDiffLines == nil
-            || maxDiffLines! >= 1,
-            "maxDiffLines must be positive or nil"
-        )
-        
-        self.contextLines           = contextLines
-        self.indentationSpaces      = indentationSpaces
-        self.maxLineLength          = maxLineLength
-        self.showTypeAnnotations    = showTypeAnnotations
-        self.maxDiffs               = maxDiffs
-        self.maxDiffLines           = maxDiffLines
-        self.expectedSymbol         = expectedSymbol
-        self.actualSymbol           = actualSymbol
+        self.indentationSpaces  = indentationSpaces
+        self.maxLineLength      = maxLineLength
+        self.maxDiffs           = maxDiffs
+        self.countDiffs         = countDiffs
     }
 }

@@ -24,7 +24,7 @@ final class ComparatorDictionaryTests: XCTestKitCase
             actual:     expected
         )
         
-        guard case .same = node.kind
+        guard node.kind.isSame
         else
         {
             XCTFail("Expected .same, got \(node.kind)")
@@ -67,8 +67,8 @@ final class ComparatorDictionaryTests: XCTestKitCase
             return
         }
         
-        XCTAssertEqual(exp as? Int, 2)
-        XCTAssertEqual(act as? Int, 0)
+        XCTAssertEqual(exp.value as? Int, 2)
+        XCTAssertEqual(act.value as? Int, 0)
         XCTAssertTrue(tree2.isEmpty)
     }
     
@@ -132,14 +132,14 @@ final class ComparatorDictionaryTests: XCTestKitCase
         
         
         
-        guard case let .missingElement(exp) = tree[0].kind
+        guard case let .missing(exp) = tree[0].kind
         else
         {
-            XCTFail("Expected .missingElement, got \(tree[0].kind)")
+            XCTFail("Expected .missing, got \(tree[0].kind)")
             return
         }
         
-        XCTAssertEqual(exp as? Int, 2)
+        XCTAssertEqual(exp.value as? Int, 2)
     }
     
     
@@ -182,10 +182,10 @@ final class ComparatorDictionaryTests: XCTestKitCase
         
         for node in tree
         {
-            guard case .missingElement = node.kind
+            guard node.kind.isMissing
             else
             {
-                XCTFail("Expected .missingElement, got \(node.kind)")
+                XCTFail("Expected .missing, got \(node.kind)")
                 return
             }
         }
@@ -219,14 +219,14 @@ final class ComparatorDictionaryTests: XCTestKitCase
         
         
         
-        guard case let .unexpectedElement(act) = tree[0].kind
+        guard case let .unexpected(act) = tree[0].kind
         else
         {
-            XCTFail("Expected .unexpectedElement, got \(tree[0].kind)")
+            XCTFail("Expected .unexpected, got \(tree[0].kind)")
             return
         }
         
-        XCTAssertEqual(act as? Int, 2)
+        XCTAssertEqual(act.value as? Int, 2)
     }
     
     
@@ -269,10 +269,10 @@ final class ComparatorDictionaryTests: XCTestKitCase
         
         for node in tree
         {
-            guard case .unexpectedElement = node.kind
+            guard node.kind.isUnexpected
             else
             {
-                XCTFail("Expected .unexpectedElement, got \(node.kind)")
+                XCTFail("Expected .unexpected, got \(node.kind)")
                 return
             }
         }
@@ -316,14 +316,14 @@ final class ComparatorDictionaryTests: XCTestKitCase
         
         
         
-        guard case let .missingElement(exp1) = tree[0].kind
+        guard case let .missing(exp1) = tree[0].kind
         else
         {
-            XCTFail("Expected .missingElement, got \(tree[0].kind)")
+            XCTFail("Expected .missing, got \(tree[0].kind)")
             return
         }
         
-        XCTAssertEqual(exp1 as? Int, 2)
+        XCTAssertEqual(exp1.value as? Int, 2)
         
         
 
@@ -334,19 +334,19 @@ final class ComparatorDictionaryTests: XCTestKitCase
             return
         }
         
-        XCTAssertEqual(exp2 as? Int, 3)
-        XCTAssertEqual(act2 as? Int, 9)
+        XCTAssertEqual(exp2.value as? Int, 3)
+        XCTAssertEqual(act2.value as? Int, 9)
         
         
         
-        guard case let .unexpectedElement(act3) = tree[2].kind
+        guard case let .unexpected(act3) = tree[2].kind
         else
         {
-            XCTFail("Expected .unexpectedElement, got \(tree[2].kind)")
+            XCTFail("Expected .unexpected, got \(tree[2].kind)")
             return
         }
         
-        XCTAssertEqual(act3 as? Int, 4)
+        XCTAssertEqual(act3.value as? Int, 4)
     }
     
     
@@ -422,25 +422,25 @@ final class ComparatorDictionaryTests: XCTestKitCase
         
         
         
-        guard case let .unexpectedElement(act1) = tree[0].kind
+        guard case let .unexpected(act1) = tree[0].kind
         else
         {
-            XCTFail("Expected .unexpectedElement, got \(tree[0].kind)")
+            XCTFail("Expected .unexpected, got \(tree[0].kind)")
             return
         }
         
-        XCTAssertEqual(act1 as? Int, 1)
+        XCTAssertEqual(act1.value as? Int, 1)
         
         
         
-        guard case let .unexpectedElement(act2) = tree[1].kind
+        guard case let .unexpected(act2) = tree[1].kind
         else
         {
-            XCTFail("Expected .unexpectedElement, got \(tree[1].kind)")
+            XCTFail("Expected .unexpected, got \(tree[1].kind)")
             return
         }
         
-        XCTAssertEqual(act2 as? Int, 2)
+        XCTAssertEqual(act2.value as? Int, 2)
     }
     
     
@@ -476,25 +476,25 @@ final class ComparatorDictionaryTests: XCTestKitCase
         
         
         
-        guard case let .missingElement(exp1) = tree[0].kind
+        guard case let .missing(exp1) = tree[0].kind
         else
         {
-            XCTFail("Expected .missingElement, got \(tree[0].kind)")
+            XCTFail("Expected .missing, got \(tree[0].kind)")
             return
         }
         
-        XCTAssertEqual(exp1 as? Int, 1)
+        XCTAssertEqual(exp1.value as? Int, 1)
         
         
         
-        guard case let .missingElement(exp2) = tree[1].kind
+        guard case let .missing(exp2) = tree[1].kind
         else
         {
-            XCTFail("Expected .missingElement, got \(tree[1].kind)")
+            XCTFail("Expected .missing, got \(tree[1].kind)")
             return
         }
         
-        XCTAssertEqual(exp2 as? Int, 2)
+        XCTAssertEqual(exp2.value as? Int, 2)
     }
     
     
@@ -508,7 +508,7 @@ final class ComparatorDictionaryTests: XCTestKitCase
             actual:     expected
         )
         
-        guard case .same = node.kind
+        guard node.kind.isSame
         else
         {
             XCTFail("Expected .same, got \(node.kind)")
@@ -556,14 +556,14 @@ final class ComparatorDictionaryTests: XCTestKitCase
         
         
         
-        guard case let .unexpectedElement(act) = tree2[0].kind
+        guard case let .unexpected(act) = tree2[0].kind
         else
         {
-            XCTFail("Expected .unexpectedElement, got \(tree2[0].kind)")
+            XCTFail("Expected .unexpected, got \(tree2[0].kind)")
             return
         }
         
-        XCTAssertEqual(act as? Int, 2)
+        XCTAssertEqual(act.value as? Int, 2)
     }
     
     
@@ -622,8 +622,8 @@ final class ComparatorDictionaryTests: XCTestKitCase
             return
         }
         
-        XCTAssertEqual(exp as? Int, 5)
-        XCTAssertEqual(act as? Int, 7)
+        XCTAssertEqual(exp.value as? Int, 5)
+        XCTAssertEqual(act.value as? Int, 7)
     }
     
     
@@ -676,25 +676,25 @@ final class ComparatorDictionaryTests: XCTestKitCase
         
         
         
-        guard case let .missingElement(exp) = tree2[0].kind
+        guard case let .missing(exp) = tree2[0].kind
         else
         {
-            XCTFail("Expected .missingElement, got \(tree2[0].kind)")
+            XCTFail("Expected .missing, got \(tree2[0].kind)")
             return
         }
         
-        XCTAssertEqual(exp as? Int, 6)
+        XCTAssertEqual(exp.value as? Int, 6)
         
         
         
-        guard case let .unexpectedElement(act) = tree2[1].kind
+        guard case let .unexpected(act) = tree2[1].kind
         else
         {
-            XCTFail("Expected .unexpectedElement, got \(tree2[1].kind)")
+            XCTFail("Expected .unexpected, got \(tree2[1].kind)")
             return
         }
         
-        XCTAssertEqual(act as? Int, 8)
+        XCTAssertEqual(act.value as? Int, 8)
     }
     
     
@@ -748,8 +748,8 @@ final class ComparatorDictionaryTests: XCTestKitCase
             return
         }
         
-        XCTAssertEqual(exp as? String, "b")
-        XCTAssertEqual(act as? String, "c")
+        XCTAssertEqual(exp.value as? String, "b")
+        XCTAssertEqual(act.value as? String, "c")
     }
     
     
@@ -796,14 +796,14 @@ final class ComparatorDictionaryTests: XCTestKitCase
         
         
         
-        guard case let .missingElement(exp) = tree[0].kind
+        guard case let .missing(exp) = tree[0].kind
         else
         {
-            XCTFail("Expected .missingElement, got \(tree[0].kind)")
+            XCTFail("Expected .missing, got \(tree[0].kind)")
             return
         }
         
-        XCTAssertEqual(exp as? String, "diagonal")
+        XCTAssertEqual(exp.value as? String, "diagonal")
     }
     
     
@@ -854,13 +854,13 @@ final class ComparatorDictionaryTests: XCTestKitCase
         
         
         
-        guard case let .unexpectedElement(act) = tree[0].kind
+        guard case let .unexpected(act) = tree[0].kind
         else
         {
-            XCTFail("Expected .unexpectedElement, got \(tree[0].kind)")
+            XCTFail("Expected .unexpected, got \(tree[0].kind)")
             return
         }
         
-        XCTAssertEqual(act as? Int, 90)
+        XCTAssertEqual(act.value as? Int, 90)
     }
 }

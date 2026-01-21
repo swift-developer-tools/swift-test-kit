@@ -66,7 +66,7 @@
 ///
 ///                             DiffNode(
 ///                                 label:  .index(2),
-///                                 kind:   .missingElement(expected: "c")
+///                                 kind:   .missing(expected: "c")
 ///                             )
 ///                         ]
 ///                     )
@@ -82,8 +82,8 @@
 /// and other primitive values cannot be further decomposed.
 /// - The `tags` comparison is a structural node (`tree` is non-empty), since
 /// arrays can be further decomposed.
-/// - The `tags[2]` element uses ``DiffNodeKind/missingElement(expected:)``,
-/// since it exists in `expected` but not in `actual`.
+/// - The `tags[2]` element uses ``DiffNodeKind/missingexpected:)``, since it
+/// exists in `expected` but not in `actual`.
 internal struct DiffNode
 {
     /// The node label.
@@ -98,7 +98,7 @@ internal struct DiffNode
 // MARK: - CycleLocation
 
 /// The location where a cycle was detected.
-internal enum CycleLocation
+internal enum CycleLocation: CustomStringConvertible
 {
     /// A cycle was detected in the expected value.
     case expected
@@ -108,6 +108,27 @@ internal enum CycleLocation
     
     /// A cycle was detected in both the expected and actual values.
     case both
+    
+    
+    
+    /// A description of where the cycle location was detected.
+    var description: String
+    {
+        switch self
+        {
+            case .expected:
+                
+                return "Cycle detected in expected value"
+                
+            case .actual:
+                
+                return "Cycle detected in actual value"
+                
+            case .both:
+                
+                return "Cycle detected in both expected and actual values"
+        }
+    }
 }
 
 
@@ -130,16 +151,13 @@ internal enum DiffNodeKind
     ///   - actual: The actual value.
     ///   - location: The location where the cycle was detected.
     case cycle(
-        expected    : Any,
-        actual      : Any,
+        expected    : DiffValue,
+        actual      : DiffValue,
         location    : CycleLocation
     )
     
     /// The values are equal.
-    /// - Parameter expected: The expected value.
-    case same(
-        expected: Any
-    )
+    case same
     
     /// The values are not equal.
     ///
@@ -167,24 +185,84 @@ internal enum DiffNodeKind
     ///   - tree: The diff tree representing the difference between the
     ///   expected and actual values. This will be empty at leaf nodes.
     case different(
-        expected    : Any,
-        actual      : Any,
+        expected    : DiffValue,
+        actual      : DiffValue,
         tree        : [DiffNode]
     )
     
     /// An element or key was present in the expected value, but missing from
     /// the actual value.
     /// - Parameter expected: The expected value.
-    case missingElement(
-        expected: Any
+    case missing(
+        expected: DiffValue
     )
     
     /// An element or key was present in the actual value, but was not in the
     /// expected value.
     /// - Parameter actual: The actual value.
-    case unexpectedElement(
-        actual: Any
+    case unexpected(
+        actual: DiffValue
     )
+    
+    
+    
+    var isCycle: Bool
+    {
+        if case .cycle = self
+        {
+            return true
+        }
+        
+        return false
+    }
+    
+    
+    
+    var isSame: Bool
+    {
+        if case .same = self
+        {
+            return true
+        }
+        
+        return false
+    }
+    
+    
+    
+    var isDifferent: Bool
+    {
+        if case .different = self
+        {
+            return true
+        }
+        
+        return false
+    }
+    
+    
+    
+    var isMissing: Bool
+    {
+        if case .missing = self
+        {
+            return true
+        }
+        
+        return false
+    }
+    
+    
+    
+    var isUnexpected: Bool
+    {
+        if case .unexpected = self
+        {
+            return true
+        }
+        
+        return false
+    }
 }
 
 
@@ -195,7 +273,10 @@ internal enum DiffNodeKind
 internal enum DiffNodeLabel: Equatable, Sendable
 {
     /// The root node of a diff tree.
-    case root
+    /// - Parameter typeName: The name of the value's type.
+    case root(
+        typeName: String
+    )
     
     /// A property of an enum, class, or struct.
     ///
@@ -237,9 +318,12 @@ internal enum DiffNodeLabel: Equatable, Sendable
     )
     
     /// A character in a string.
-    /// - Parameter index: The zero-indexed character position.
+    /// - Parameters:
+    ///   - index: The zero-indexed character position.
+    ///   - count: The number of different characters.
     case character(
-        _ index: Int
+        index   : Int,
+        count   : Int
     )
     
     
@@ -255,8 +339,92 @@ internal enum DiffNodeLabel: Equatable, Sendable
             case let .key(description, _)   : return description
             case .member                    : return ""
             case let .line(index)           : return String(index)
-            case let .character(index)      : return String(index)
+            case let .character(index, _)   : return String(index)
         }
+    }
+    
+    
+    
+    var isRoot: Bool
+    {
+        if case .root = self
+        {
+            return true
+        }
+        
+        return false
+    }
+    
+    
+    
+    var isProperty: Bool
+    {
+        if case .property = self
+        {
+            return true
+        }
+        
+        return false
+    }
+    
+    
+    
+    var isIndex: Bool
+    {
+        if case .index = self
+        {
+            return true
+        }
+        
+        return false
+    }
+    
+    
+    
+    var isKey: Bool
+    {
+        if case .key = self
+        {
+            return true
+        }
+        
+        return false
+    }
+    
+    
+    
+    var isMember: Bool
+    {
+        if case .member = self
+        {
+            return true
+        }
+        
+        return false
+    }
+    
+    
+    
+    var isLine: Bool
+    {
+        if case .line = self
+        {
+            return true
+        }
+        
+        return false
+    }
+    
+    
+    
+    var isCharacter: Bool
+    {
+        if case .character = self
+        {
+            return true
+        }
+        
+        return false
     }
     
     
