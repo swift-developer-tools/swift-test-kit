@@ -31,19 +31,19 @@ import XCTest
 ///   filename of the test case in which this function was called.
 ///   - line: The line where the failure occurs. The default value is the line
 ///   number where this function was called.
-/// - Returns: The value returned by the given expression, or `nil` if the
-/// expression throws an error.
+/// - Returns: A `Result` containing the value or error produced by evaluating
+/// the given expression.
 internal func evaluateAssertion<T>(
     kind        : AssertionKind,
     expression  : () throws -> T,
     message     : () -> String?,
     file        : StaticString,
     line        : UInt,
-) -> T?
+) -> Result<T, Error>
 {
     do
     {
-        return try expression()
+        return .success(try expression())
     }
     catch
     {
@@ -55,7 +55,7 @@ internal func evaluateAssertion<T>(
             line:       line
         )
         
-        return nil
+        return .failure(error)
     }
 }
 

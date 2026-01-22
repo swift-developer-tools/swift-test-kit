@@ -37,7 +37,7 @@ public func XCTKAssert(
     line            : UInt                              = #line
 )
 {
-    let value: Bool? = evaluateAssertion(
+    let result: Result<Bool, Error> = evaluateAssertion(
         kind:           .assert,
         expression:     expression,
         message:        message,
@@ -45,7 +45,13 @@ public func XCTKAssert(
         line:           line
     )
     
-    if value == false
+    guard case let .success(value) = result
+    else
+    {
+        return
+    }
+    
+    if !value
     {
         failAssertion(
             kind:       .assert,
@@ -78,7 +84,7 @@ public func XCTKAssertTrue(
     line            : UInt                              = #line
 )
 {
-    let value: Bool? = evaluateAssertion(
+    let result: Result<Bool, Error> = evaluateAssertion(
         kind:           .`true`,
         expression:     expression,
         message:        message,
@@ -86,7 +92,13 @@ public func XCTKAssertTrue(
         line:           line
     )
     
-    if value == false
+    guard case let .success(value) = result
+    else
+    {
+        return
+    }
+    
+    if !value
     {
         failAssertion(
             kind:       .`true`,
@@ -118,7 +130,7 @@ public func XCTKAssertFalse(
     line            : UInt                              = #line
 )
 {
-    let value: Bool? = evaluateAssertion(
+    let result: Result<Bool, Error> = evaluateAssertion(
         kind:           .`false`,
         expression:     expression,
         message:        message,
@@ -126,7 +138,13 @@ public func XCTKAssertFalse(
         line:           line
     )
     
-    if value == true
+    guard case let .success(value) = result
+    else
+    {
+        return
+    }
+    
+    if value
     {
         failAssertion(
             kind:       .`false`,
