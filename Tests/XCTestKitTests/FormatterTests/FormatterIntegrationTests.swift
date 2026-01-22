@@ -86,14 +86,14 @@ final class FormatterIntegrationTests: XCTestKitCase
 \(typeName) differs at:
 
     [1], character 1
-        \(LK.expected.rawValue)\(exp[1].quoted)
-        \(LK.actual.rawValue)\(act[1].quoted)
+        \(LK.expected.rawValue)\(quote(exp[1]))
+        \(LK.actual.rawValue)\(quote(act[1]))
 
     [2]
-        \(LK.missing.rawValue)\(exp[2].quoted)
+        \(LK.missing.rawValue)\(quote(exp[2]))
 
     [3]
-        \(LK.unexpected.rawValue)\(act[3].quoted)
+        \(LK.unexpected.rawValue)\(quote(act[3]))
 """
         
         XCTAssertEqual(Formatter.format(node), expected)

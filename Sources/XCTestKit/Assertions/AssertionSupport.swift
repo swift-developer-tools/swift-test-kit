@@ -53,7 +53,7 @@ internal func evaluateExpression<T>(
     {
         failAssertion(
             kind:       assertion,
-            reason:     "threw error \"\(error)\"",
+            reason:     "threw error \(quote(error))",
             message:    message,
             file:       file,
             line:       line
