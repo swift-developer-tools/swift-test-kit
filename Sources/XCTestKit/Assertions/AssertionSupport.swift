@@ -159,3 +159,27 @@ public struct XCTKUnwrapError: Error, CustomStringConvertible
         return "XCTKUnwrap unwrapped a nil value"
     }
 }
+
+
+
+// MARK: - Numeric equality
+
+internal func areEqual<T>(
+    _ expression1   : T,
+    _ expression2   : T,
+    accuracy        : T
+) -> Bool where T : Numeric
+{
+    if expression1 == expression2
+    {
+        return true
+    }
+    
+    /// `NaN` values are handled implicitly, since the `<=` operator returns
+    /// `false` when comparing any value to `NaN`.
+    let difference: T = expression1.magnitude > expression2.magnitude
+        ? expression1 - expression2
+        : expression2 - expression1
+    
+    return difference.magnitude <= accuracy.magnitude
+}
