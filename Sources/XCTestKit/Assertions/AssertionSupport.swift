@@ -20,6 +20,63 @@ import XCTest
 
 
 
+// MARK: - AssertionKind
+
+/// The kind of an assertion.
+internal enum AssertionKind
+{
+    case assert
+    case equal
+    case equalWithAccuracy
+    case identical
+    case notIdentical
+    case greaterThan
+    case greaterThanOrEqual
+    case lessThan
+    case lessThanOrEqual
+    case notEqual
+    case notEqualWithAccuracy
+    case `nil`
+    case notNil
+    case unwrap
+    case `true`
+    case `false`
+    case fail
+    case throwsError
+    case noThrow
+    
+    
+    
+    /// The assertion name.
+    var name: String
+    {
+        switch self
+        {
+            case .assert                : return "XCTKAssert"
+            case .equal                 : return "XCTKAssertEqual"
+            case .equalWithAccuracy     : return "XCTKAssertEqual"
+            case .identical             : return "XCTKAssertIdentical"
+            case .notIdentical          : return "XCTKAssertNotIdentical"
+            case .greaterThan           : return "XCTKAssertGreaterThan"
+            case .greaterThanOrEqual    : return "XCTKAssertGreaterThanOrEqual"
+            case .lessThan              : return "XCTKAssertLessThan"
+            case .lessThanOrEqual       : return "XCTKAssertLessThanOrEqual"
+            case .notEqual              : return "XCTKAssertNotEqual"
+            case .notEqualWithAccuracy  : return "XCTKAssertNotEqual"
+            case .`nil`                 : return "XCTKAssertNil"
+            case .notNil                : return "XCTKAssertNotNil"
+            case .unwrap                : return "XCTKUnwrap"
+            case .`true`                : return "XCTKAssertTrue"
+            case .`false`               : return "XCTKAssertFalse"
+            case .throwsError           : return "XCTKAssertThrowsError"
+            case .noThrow               : return "XCTKAssertNoThrow"
+            case .fail                  : return "XCTKAssertion"
+        }
+    }
+}
+
+
+
 // MARK: - Evaluate expressions
 
 /// Evaluates the given expression.
