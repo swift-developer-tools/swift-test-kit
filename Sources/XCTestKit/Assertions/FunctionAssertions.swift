@@ -178,22 +178,17 @@ public func XCTKAssertNil(
     line            : UInt                              = #line
 )
 {
-    let value: Any?
+    let result: Result<Any?, Error> = evaluateAssertion(
+        kind:           .`nil`,
+        expression:     expression,
+        message:        message,
+        file:           file,
+        line:           line
+    )
     
-    do
+    guard case let .success(value) = result
+    else
     {
-        value = try expression()
-    }
-    catch
-    {
-        failAssertion(
-            kind:       .`nil`,
-            reason:     "threw error \"\(error)\"",
-            message:    message,
-            file:       file,
-            line:       line
-        )
-        
         return
     }
     
@@ -229,22 +224,17 @@ public func XCTKAssertNotNil(
     line            : UInt                              = #line
 )
 {
-    let value: Any?
+    let result: Result<Any?, Error> = evaluateAssertion(
+        kind:           .notNil,
+        expression:     expression,
+        message:        message,
+        file:           file,
+        line:           line
+    )
     
-    do
+    guard case let .success(value) = result
+    else
     {
-        value = try expression()
-    }
-    catch
-    {
-        failAssertion(
-            kind:       .notNil,
-            reason:     "threw error \"\(error)\"",
-            message:    message,
-            file:       file,
-            line:       line
-        )
-        
         return
     }
     
@@ -266,7 +256,7 @@ public func XCTKAssertNotNil(
 /// value.
 ///
 /// This generates a failure when `expression == nil`. Otherwise, it returns
-/// the unwarpped value of `expression`.
+/// the unwrapped value of `expression`.
 ///
 /// - Parameters:
 ///   - expression: An expression of type `T?`.
@@ -277,7 +267,8 @@ public func XCTKAssertNotNil(
 ///   number where this function was called.
 /// - Returns: The result of evaluating and unwrapped the given expression.
 /// This only returns a value if the unwrapped value is not `nil`.
-/// - Throws: An ``XCTKUnwrapError`` if the unwrapped value is `nil`.
+/// - Throws: An ``XCTKUnwrapError`` if the unwrapped value is `nil`, or an
+/// error thrown by the given expression.
 public func XCTKUnwrap<T>(
     _ expression    : @autoclosure () throws -> T?,
     _ message       : @autoclosure () -> String     = "",
@@ -285,37 +276,36 @@ public func XCTKUnwrap<T>(
     line            : UInt                          = #line
 ) throws -> T
 {
-    let value: T?
-    
-    do
-    {
-        value = try expression()
-    }
-    catch
-    {
-        failAssertion(
-            kind:       .unwrap,
-            reason:     "threw error \"\(error)\"",
-            message:    message,
-            file:       file,
-            line:       line
-        )
-        
-        throw error
-    }
-    
-    if let unwrapped: T = value
-    {
-        return unwrapped
-    }
-    
-    failAssertion(
-        kind:       .unwrap,
-        reason:     nil,
-        message:    message,
-        file:       file,
-        line:       line
+    let result: Result<T?, Error> = evaluateAssertion(
+        kind:           .unwrap,
+        expression:     expression,
+        message:        message,
+        file:           file,
+        line:           line
     )
     
-    throw XCTKUnwrapError()
+    switch result
+    {
+        case let .success(value):
+            
+            guard let value
+            else
+            {
+                failAssertion(
+                    kind:       .unwrap,
+                    reason:     nil,
+                    message:    message,
+                    file:       file,
+                    line:       line
+                )
+                
+                throw XCTKUnwrapError()
+            }
+            
+            return value
+            
+        case let .failure(error):
+            
+            throw error
+    }
 }
