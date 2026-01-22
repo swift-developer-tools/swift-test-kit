@@ -105,6 +105,48 @@ internal func failAssertion(
 
 
 
+/// Reports an assertion failure.
+/// - Parameters:
+///   - kind: The assertion kind.
+///   - diff: The computed diff.
+///   - options: The options for formatting diffs.
+///   - message: The description of a failure.
+///   - file: The file where the failure occurs.
+///   - line: The line where the failure occurs.
+internal func failAssertion(
+    kind    : AssertionKind,
+    diff    : DiffNode,
+    options : XCTKFormatOptions,
+    message : () -> String?,
+    file    : StaticString,
+    line    : UInt
+)
+{
+    let diffOutput: String = Formatter.format(
+        diff,
+        options: options
+    )
+    
+    var fullOutput: String = "\(kind.name) failed"
+    
+    if
+        let msg: String = message(),
+        !msg.isEmpty
+    {
+        fullOutput += " - \(msg)"
+    }
+    
+    fullOutput += ":\n\n\(diffOutput)"
+    
+    XCTFail(
+        fullOutput,
+        file:   file,
+        line:   line
+    )
+}
+
+
+
 // MARK: - XCTKUnwrapError
 
 /// The error thrown by ``XCTKUnwrap(_:_:file:line:)`` when the unwrapped
