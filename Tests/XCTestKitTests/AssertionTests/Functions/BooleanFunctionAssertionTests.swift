@@ -128,6 +128,31 @@ final class BooleanFunctionAssertionTests: XCTestKitCase
     
     
     
+    func testAssertTrueMessageNotEvaluatedOnSuccess() throws
+    {
+        var count: Int = 0
+        
+        XCTKAssertTrue(true, { count += 1; return "msg" }())
+        
+        XCTAssertEqual(count, 0)
+    }
+    
+    
+    
+    func testAssertTrueMessageEvaluatedOnlyOnceOnFailure() throws
+    {
+        var count: Int = 0
+        
+        XCTExpectFailure()
+        {
+            XCTKAssertTrue(false, { count += 1; return "msg" }())
+        }
+        
+        XCTAssertEqual(count, 1)
+    }
+    
+    
+    
     // MARK: - False
     
     func testAssertFalseWithFalseExpr() throws
