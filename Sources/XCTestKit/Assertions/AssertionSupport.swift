@@ -23,6 +23,10 @@ import XCTest
 // MARK: - Evaluate expressions
 
 /// Evaluates the given expression.
+///
+/// - Important: This fails the assertion if the given expression throws an
+/// error when called.
+///
 /// - Parameters:
 ///   - expression: The expression to evaluate.
 ///   - assertion: The assertion kind.
