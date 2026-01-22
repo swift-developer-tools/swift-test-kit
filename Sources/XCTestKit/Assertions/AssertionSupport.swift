@@ -27,15 +27,15 @@ internal enum AssertionKind
 {
     case assert
     case equal
+    case notEqual
     case equalWithAccuracy
+    case notEqualWithAccuracy
     case identical
     case notIdentical
     case greaterThan
     case greaterThanOrEqual
     case lessThan
     case lessThanOrEqual
-    case notEqual
-    case notEqualWithAccuracy
     case `nil`
     case notNil
     case unwrap
@@ -54,15 +54,15 @@ internal enum AssertionKind
         {
             case .assert                : return "XCTKAssert"
             case .equal                 : return "XCTKAssertEqual"
+            case .notEqual              : return "XCTKAssertNotEqual"
             case .equalWithAccuracy     : return "XCTKAssertEqual"
+            case .notEqualWithAccuracy  : return "XCTKAssertNotEqual"
             case .identical             : return "XCTKAssertIdentical"
             case .notIdentical          : return "XCTKAssertNotIdentical"
             case .greaterThan           : return "XCTKAssertGreaterThan"
             case .greaterThanOrEqual    : return "XCTKAssertGreaterThanOrEqual"
             case .lessThan              : return "XCTKAssertLessThan"
             case .lessThanOrEqual       : return "XCTKAssertLessThanOrEqual"
-            case .notEqual              : return "XCTKAssertNotEqual"
-            case .notEqualWithAccuracy  : return "XCTKAssertNotEqual"
             case .`nil`                 : return "XCTKAssertNil"
             case .notNil                : return "XCTKAssertNotNil"
             case .unwrap                : return "XCTKUnwrap"
