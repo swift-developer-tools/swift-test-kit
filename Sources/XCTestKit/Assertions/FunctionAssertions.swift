@@ -45,19 +45,16 @@ public func XCTKAssert(
         line:           line
     )
     
-    guard value == false
-    else
+    if value == false
     {
-        return
+        failAssertion(
+            kind:       .assert,
+            reason:     nil,
+            message:    message,
+            file:       file,
+            line:       line
+        )
     }
-    
-    failAssertion(
-        kind:       .assert,
-        reason:     nil,
-        message:    message,
-        file:       file,
-        line:       line
-    )
 }
 
 
@@ -89,19 +86,16 @@ public func XCTKAssertTrue(
         line:           line
     )
     
-    guard value == false
-    else
+    if value == false
     {
-        return
+        failAssertion(
+            kind:       .`true`,
+            reason:     nil,
+            message:    message,
+            file:       file,
+            line:       line
+        )
     }
-    
-    failAssertion(
-        kind:       .`true`,
-        reason:     nil,
-        message:    message,
-        file:       file,
-        line:       line
-    )
 }
 
 
@@ -132,17 +126,14 @@ public func XCTKAssertFalse(
         line:           line
     )
     
-    guard value == true
-    else
+    if value == true
     {
-        return
+        failAssertion(
+            kind:       .`false`,
+            reason:     nil,
+            message:    message,
+            file:       file,
+            line:       line
+        )
     }
-    
-    failAssertion(
-        kind:       .`false`,
-        reason:     nil,
-        message:    message,
-        file:       file,
-        line:       line
-    )
 }
