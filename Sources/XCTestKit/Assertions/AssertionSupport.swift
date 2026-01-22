@@ -82,15 +82,11 @@ internal func failAssertion(
     line    : UInt
 )
 {
-    var text: String = kind.name
+    var text: String = "\(kind.name) failed"
     
     if let reason
     {
-        text += " \(reason)"
-    }
-    else
-    {
-        text += " failed"
+        text += ": \(reason)"
     }
     
     if
