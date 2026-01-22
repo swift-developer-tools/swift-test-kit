@@ -37,12 +37,12 @@ public func XCTKAssert(
     line            : UInt                              = #line
 )
 {
-    let result: Result<Bool, Error> = evaluateAssertion(
-        kind:           .assert,
-        expression:     expression,
-        message:        message,
-        file:           file,
-        line:           line
+    let result: Result<Bool, Error> = evaluateExpression(
+        expression,
+        assertion:  .assert,
+        message:    message,
+        file:       file,
+        line:       line
     )
     
     guard case let .success(value) = result
@@ -84,12 +84,12 @@ public func XCTKAssertTrue(
     line            : UInt                              = #line
 )
 {
-    let result: Result<Bool, Error> = evaluateAssertion(
-        kind:           .`true`,
-        expression:     expression,
-        message:        message,
-        file:           file,
-        line:           line
+    let result: Result<Bool, Error> = evaluateExpression(
+        expression,
+        assertion:  .`true`,
+        message:    message,
+        file:       file,
+        line:       line
     )
     
     guard case let .success(value) = result
@@ -130,12 +130,12 @@ public func XCTKAssertFalse(
     line            : UInt                              = #line
 )
 {
-    let result: Result<Bool, Error> = evaluateAssertion(
-        kind:           .`false`,
-        expression:     expression,
-        message:        message,
-        file:           file,
-        line:           line
+    let result: Result<Bool, Error> = evaluateExpression(
+        expression,
+        assertion:  .`false`,
+        message:    message,
+        file:       file,
+        line:       line
     )
     
     guard case let .success(value) = result
@@ -178,12 +178,12 @@ public func XCTKAssertNil(
     line            : UInt                              = #line
 )
 {
-    let result: Result<Any?, Error> = evaluateAssertion(
-        kind:           .`nil`,
-        expression:     expression,
-        message:        message,
-        file:           file,
-        line:           line
+    let result: Result<Any?, Error> = evaluateExpression(
+        expression,
+        assertion:  .`nil`,
+        message:    message,
+        file:       file,
+        line:       line
     )
     
     guard case let .success(value) = result
@@ -224,12 +224,12 @@ public func XCTKAssertNotNil(
     line            : UInt                              = #line
 )
 {
-    let result: Result<Any?, Error> = evaluateAssertion(
-        kind:           .notNil,
-        expression:     expression,
-        message:        message,
-        file:           file,
-        line:           line
+    let result: Result<Any?, Error> = evaluateExpression(
+        expression,
+        assertion:  .notNil,
+        message:    message,
+        file:       file,
+        line:       line
     )
     
     guard case let .success(value) = result
@@ -276,12 +276,12 @@ public func XCTKUnwrap<T>(
     line            : UInt                          = #line
 ) throws -> T
 {
-    let result: Result<T?, Error> = evaluateAssertion(
-        kind:           .unwrap,
-        expression:     expression,
-        message:        message,
-        file:           file,
-        line:           line
+    let result: Result<T?, Error> = evaluateExpression(
+        expression,
+        assertion:  .unwrap,
+        message:    message,
+        file:       file,
+        line:       line
     )
     
     switch result

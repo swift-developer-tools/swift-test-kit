@@ -20,12 +20,12 @@ import XCTest
 
 
 
-// MARK: - Evaluate
+// MARK: - Evaluate expressions
 
 /// Evaluates the given expression.
 /// - Parameters:
-///   - kind: The assertion kind.
 ///   - expression: The expression to evaluate.
+///   - assertion: The assertion kind.
 ///   - message: The description of a failure.
 ///   - file: The file where the failure occurs. The default value is the
 ///   filename of the test case in which this function was called.
@@ -33,12 +33,12 @@ import XCTest
 ///   number where this function was called.
 /// - Returns: A `Result` containing the value or error produced by evaluating
 /// the given expression.
-internal func evaluateAssertion<T>(
-    kind        : AssertionKind,
-    expression  : () throws -> T,
-    message     : () -> String?,
-    file        : StaticString,
-    line        : UInt,
+internal func evaluateExpression<T>(
+    _ expression    : () throws -> T,
+    assertion       : AssertionKind,
+    message         : () -> String?,
+    file            : StaticString,
+    line            : UInt,
 ) -> Result<T, Error>
 {
     do
@@ -48,7 +48,7 @@ internal func evaluateAssertion<T>(
     catch
     {
         failAssertion(
-            kind:       kind,
+            kind:       assertion,
             reason:     "threw error \"\(error)\"",
             message:    message,
             file:       file,
@@ -61,7 +61,7 @@ internal func evaluateAssertion<T>(
 
 
 
-// MARK: - Fail
+// MARK: - Fail assertions
 
 /// Reports an assertion failure.
 /// - Parameters:
