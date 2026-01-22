@@ -20,3 +20,10 @@ See <doc:Configuration> for information on configuring diffs.
 - ``XCTKAssert(_:_:file:line:)``
 - ``XCTKAssertTrue(_:_:file:line:)``
 - ``XCTKAssertFalse(_:_:file:line:)``
+
+### Nil and Non-Nil Assertions
+
+- ``XCTKAssertNil(_:_:file:line:)``
+- ``XCTKAssertNotNil(_:_:file:line:)``
+- ``XCTKUnwrap(_:_:file:line:)``
+- ``XCTKUnwrapError``
