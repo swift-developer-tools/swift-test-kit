@@ -102,3 +102,18 @@ internal func failAssertion(
         line:   line
     )
 }
+
+
+
+// MARK: - XCTKUnwrapError
+
+/// The error thrown by ``XCTKUnwrap(_:_:file:line:)`` when the unwrapped
+/// value is `nil`.
+public struct XCTKUnwrapError: Error, CustomStringConvertible
+{
+    /// The error description.
+    public var description: String
+    {
+        return "XCTKUnwrap unwrapped a nil value"
+    }
+}
