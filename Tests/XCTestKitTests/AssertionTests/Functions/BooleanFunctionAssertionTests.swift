@@ -66,6 +66,20 @@ final class BooleanFunctionAssertionTests: XCTestKitCase
     
     
     
+    func testAssertMessageNotEvaluatedOnSuccess() throws
+    {
+        testAssertionMessageNotEvaluatedOnSuccess(.assert)
+    }
+    
+    
+    
+    func testAssertMessageEvaluatedOnlyOnceOnFailure() throws
+    {
+        testAssertionMessageEvaluatedOnceOnFailure(.assert)
+    }
+    
+    
+    
     // MARK: - True
     
     func testAssertTrueWithTrueExpr() throws
@@ -130,25 +144,14 @@ final class BooleanFunctionAssertionTests: XCTestKitCase
     
     func testAssertTrueMessageNotEvaluatedOnSuccess() throws
     {
-        var count: Int = 0
-        
-        XCTKAssertTrue(true, { count += 1; return "msg" }())
-        
-        XCTAssertEqual(count, 0)
+        testAssertionMessageNotEvaluatedOnSuccess(.`true`)
     }
     
     
     
     func testAssertTrueMessageEvaluatedOnlyOnceOnFailure() throws
     {
-        var count: Int = 0
-        
-        XCTExpectFailure()
-        {
-            XCTKAssertTrue(false, { count += 1; return "msg" }())
-        }
-        
-        XCTAssertEqual(count, 1)
+        testAssertionMessageEvaluatedOnceOnFailure(.`true`)
     }
     
     
@@ -211,5 +214,19 @@ final class BooleanFunctionAssertionTests: XCTestKitCase
         }
         
         XCTKAssertFalse(try TestError.throwError())
+    }
+    
+    
+    
+    func testAssertFalseMessageNotEvaluatedOnSuccess() throws
+    {
+        testAssertionMessageNotEvaluatedOnSuccess(.`false`)
+    }
+    
+    
+    
+    func testAssertFalseMessageEvaluatedOnlyOnceOnFailure() throws
+    {
+        testAssertionMessageEvaluatedOnceOnFailure(.`false`)
     }
 }
