@@ -82,7 +82,11 @@ internal enum AssertionKind
 /// Evaluates the given expression.
 ///
 /// - Important: This fails the assertion if the given expression throws an
-/// error when called.
+/// error when called. This does not apply to ``AssertionKind/throwsErrow``.
+/// In this single case, `.failure` indicates that the expresion threw an
+/// error as expected, and the assertion passed. For all other cases,
+/// `.failure`indicates that the expression unexpectedly threw an error, and
+/// the assertion failed.
 ///
 /// - Parameters:
 ///   - expression: The expression to evaluate.
@@ -92,6 +96,7 @@ internal enum AssertionKind
 ///   filename of the test case in which this function was called.
 ///   - line: The line where the failure occurs. The default value is the line
 ///   number where this function was called.
+///   - errorHandler: An optional handler for errors thrown by `expression`.
 /// - Returns: A `Result` containing the value or error produced by evaluating
 /// the given expression.
 internal func evaluateExpression<T>(
@@ -100,6 +105,7 @@ internal func evaluateExpression<T>(
     message         : () -> String?,
     file            : StaticString,
     line            : UInt,
+    errorHandler    : (any Error) -> Void   = { _ in }
 ) -> Result<T, Error>
 {
     do
@@ -108,13 +114,20 @@ internal func evaluateExpression<T>(
     }
     catch
     {
-        failAssertion(
-            kind:       assertion,
-            reason:     "threw error \(quote(error))",
-            message:    message,
-            file:       file,
-            line:       line
-        )
+        if assertion == .throwsError
+        {
+            errorHandler(error)
+        }
+        else
+        {
+            failAssertion(
+                kind:       assertion,
+                reason:     "threw error \(quote(error))",
+                message:    message,
+                file:       file,
+                line:       line
+            )
+        }
         
         return .failure(error)
     }
