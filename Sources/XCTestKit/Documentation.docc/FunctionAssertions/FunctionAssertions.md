@@ -20,3 +20,4 @@ See <doc:Configuration> for information on configuring diffs.
 - <doc:BooleanFunctionAssertions>
 - <doc:NilFunctionAssertions>
 - <doc:EqualityFunctionAssertions>
+- <doc:ComparableFunctionAssertions>
