@@ -16,6 +16,10 @@
 //
 //===----------------------------------------------------------------------===//
 
+import XCTest
+
+
+
 // MARK: - Boolean
 
 /// Asserts that the given expression is true.
@@ -1252,5 +1256,29 @@ public func XCTKAssertNoThrow<T>(
         message:    message,
         file:       file,
         line:       line
+    )
+}
+
+
+
+// MARK: - Fail
+
+/// Immediately generates an unconditional failure.
+/// - Parameters:
+///   - message: An optional description of a failure.
+///   - file: The file where the failure occurs. The default value is the
+///   filename of the test case in which this function was called.
+///   - line: The line where the failure occurs. The default value is the line
+///   number where this function was called.
+public func XCTKFail(
+    _ message   : String        = "",
+    file        : StaticString  = #filePath,
+    line        : UInt          = #line
+)
+{
+    XCTFail(
+        message,
+        file:   file,
+        line:   line
     )
 }
