@@ -133,13 +133,13 @@ func testAssertionMessageNotEvaluatedOnSuccess(
             
         case .throwsError:
             
-            // TODO: Implement.
-            notImplemented(kind)
+            let expr: () throws -> Int = { try TestError.throwError() }
+            
+            XCTKAssertThrowsError(try expr(), message())
             
         case .noThrow:
             
-            // TODO: Implement.
-            notImplemented(kind)
+            XCTKAssertNoThrow({ }, message())
     }
     
     XCTAssertEqual(count, 0)
@@ -161,7 +161,12 @@ func testAssertionMessageEvaluatedOnceOnFailure(
     var count   : Int           = 0
     let message : () -> String  = { count += 1; return "msg" }
     
-    XCTExpectFailure()
+    /// The compiler infers a throwing closure due to `try` in the `.noThrow`
+    /// case, even though the assertion function catches the error internally.
+    /// If `do`/`catch` is used, then the compiler correctly infers that no
+    /// error is thrown, but emits a warning. Using `try?` at the assertion
+    /// level interferes with the test. Use `try?` here to silence the issue.
+    try? XCTExpectFailure()
     {
         switch kind
         {
@@ -261,13 +266,13 @@ func testAssertionMessageEvaluatedOnceOnFailure(
                 
             case .throwsError:
                 
-                // TODO: Implement.
-                return
+                XCTKAssertThrowsError({ }, message())
                 
             case .noThrow:
                 
-                // TODO: Implement.
-                return
+                let expr: () throws -> Int = { try TestError.throwError() }
+                
+                XCTKAssertNoThrow(try expr(), message())
         }
     }
     
