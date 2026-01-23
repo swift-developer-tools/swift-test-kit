@@ -924,3 +924,265 @@ public func XCTKAssertNotEqual<T>(
         line:       line
     )
 }
+
+
+
+// MARK: - Comparable
+
+/// Asserts that the value of the first expression is greater than the value
+/// of the second expression.
+/// - Parameters:
+///   - expression1: The first expression to evaluate.
+///   - expression2: The second expression to evaluate.
+///   - message: An optional description of a failure.
+///   - file: The file where the failure occurs. The default value is the
+///   filename of the test case in which this function was called.
+///   - line: The line where the failure occurs. The default value is the line
+///   number where this function was called.
+public func XCTKAssertGreaterThan<T>(
+    _ expression1   : @autoclosure () throws -> T,
+    _ expression2   : @autoclosure () throws -> T,
+    _ message       : @autoclosure () -> String     = "",
+    file            : StaticString                  = #filePath,
+    line            : UInt                          = #line
+) where T : Comparable
+{
+    let result1: Result<T, Error> = evaluateExpression(
+        expression1,
+        assertion:  .greaterThan,
+        message:    message,
+        file:       file,
+        line:       line
+    )
+    
+    guard case let .success(value1) = result1
+    else
+    {
+        return
+    }
+    
+    
+    
+    let result2: Result<T, Error> = evaluateExpression(
+        expression2,
+        assertion:  .greaterThan,
+        message:    message,
+        file:       file,
+        line:       line
+    )
+    
+    guard case let .success(value2) = result2
+    else
+    {
+        return
+    }
+    
+    
+    
+    if value1 <= value2
+    {
+        failAssertion(
+            kind:       .greaterThan,
+            reason:     "(\(quote(value1))) is not greater than"
+                        + " (\(quote(value2)))",
+            message:    message,
+            file:       file,
+            line:       line
+        )
+    }
+}
+
+
+
+/// Asserts that the value of the first expression is greater than or equal to
+/// the value of the second expression.
+/// - Parameters:
+///   - expression1: The first expression to evaluate.
+///   - expression2: The second expression to evaluate.
+///   - message: An optional description of a failure.
+///   - file: The file where the failure occurs. The default value is the
+///   filename of the test case in which this function was called.
+///   - line: The line where the failure occurs. The default value is the line
+///   number where this function was called.
+public func XCTKAssertGreaterThanOrEqual<T>(
+    _ expression1   : @autoclosure () throws -> T,
+    _ expression2   : @autoclosure () throws -> T,
+    _ message       : @autoclosure () -> String     = "",
+    file            : StaticString                  = #filePath,
+    line            : UInt                          = #line
+) where T : Comparable
+{
+    let result1: Result<T, Error> = evaluateExpression(
+        expression1,
+        assertion:  .greaterThanOrEqual,
+        message:    message,
+        file:       file,
+        line:       line
+    )
+    
+    guard case let .success(value1) = result1
+    else
+    {
+        return
+    }
+    
+    
+    
+    let result2: Result<T, Error> = evaluateExpression(
+        expression2,
+        assertion:  .greaterThanOrEqual,
+        message:    message,
+        file:       file,
+        line:       line
+    )
+    
+    guard case let .success(value2) = result2
+    else
+    {
+        return
+    }
+    
+    
+    
+    if value1 < value2
+    {
+        failAssertion(
+            kind:       .greaterThanOrEqual,
+            reason:     "(\(quote(value1))) is not greater than or equal to"
+                        + " (\(quote(value2)))",
+            message:    message,
+            file:       file,
+            line:       line
+        )
+    }
+}
+
+
+
+/// Asserts that the value of the first expression is less than or equal to
+/// the value of the second expression.
+/// - Parameters:
+///   - expression1: The first expression to evaluate.
+///   - expression2: The second expression to evaluate.
+///   - message: An optional description of a failure.
+///   - file: The file where the failure occurs. The default value is the
+///   filename of the test case in which this function was called.
+///   - line: The line where the failure occurs. The default value is the line
+///   number where this function was called.
+public func XCTKAssertLessThanOrEqual<T>(
+    _ expression1   : @autoclosure () throws -> T,
+    _ expression2   : @autoclosure () throws -> T,
+    _ message       : @autoclosure () -> String     = "",
+    file            : StaticString                  = #filePath,
+    line            : UInt                          = #line
+) where T : Comparable
+{
+    let result1: Result<T, Error> = evaluateExpression(
+        expression1,
+        assertion:  .lessThanOrEqual,
+        message:    message,
+        file:       file,
+        line:       line
+    )
+    
+    guard case let .success(value1) = result1
+    else
+    {
+        return
+    }
+    
+    
+    
+    let result2: Result<T, Error> = evaluateExpression(
+        expression2,
+        assertion:  .lessThanOrEqual,
+        message:    message,
+        file:       file,
+        line:       line
+    )
+    
+    guard case let .success(value2) = result2
+    else
+    {
+        return
+    }
+    
+    
+    
+    if value1 > value2
+    {
+        failAssertion(
+            kind:       .lessThanOrEqual,
+            reason:     "(\(quote(value1))) is not less than or equal to"
+                        + " (\(quote(value2)))",
+            message:    message,
+            file:       file,
+            line:       line
+        )
+    }
+}
+
+
+
+/// Asserts that the value of the first expression is less than the value of
+/// the second expression.
+/// - Parameters:
+///   - expression1: The first expression to evaluate.
+///   - expression2: The second expression to evaluate.
+///   - message: An optional description of a failure.
+///   - file: The file where the failure occurs. The default value is the
+///   filename of the test case in which this function was called.
+///   - line: The line where the failure occurs. The default value is the line
+///   number where this function was called.
+public func XCTKAssertLessThan<T>(
+    _ expression1   : @autoclosure () throws -> T,
+    _ expression2   : @autoclosure () throws -> T,
+    _ message       : @autoclosure () -> String     = "",
+    file            : StaticString                  = #filePath,
+    line            : UInt                          = #line
+) where T : Comparable
+{
+    let result1: Result<T, Error> = evaluateExpression(
+        expression1,
+        assertion:  .lessThan,
+        message:    message,
+        file:       file,
+        line:       line
+    )
+    
+    guard case let .success(value1) = result1
+    else
+    {
+        return
+    }
+    
+    
+    
+    let result2: Result<T, Error> = evaluateExpression(
+        expression2,
+        assertion:  .lessThan,
+        message:    message,
+        file:       file,
+        line:       line
+    )
+    
+    guard case let .success(value2) = result2
+    else
+    {
+        return
+    }
+    
+    
+    
+    if value1 >= value2
+    {
+        failAssertion(
+            kind:       .lessThan,
+            reason:     "(\(quote(value1))) is not less than"
+                        + " (\(quote(value2)))",
+            message:    message,
+            file:       file,
+            line:       line
+        )
+    }
+}
