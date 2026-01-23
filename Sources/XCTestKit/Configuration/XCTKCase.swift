@@ -22,9 +22,6 @@ public enum XCTKConfig
     private static let _global = Mutex<XCTKOptions>(.init())
     
     /// The global default options used by all XCTestKit assertions.
-    ///
-    /// Assertions use these options unless they are overridden at the class
-    /// level (using ``XCTKCase/options``) or at the assertion level.
     public static var global: XCTKOptions
     {
         get { _global.withLock { $0 } }
