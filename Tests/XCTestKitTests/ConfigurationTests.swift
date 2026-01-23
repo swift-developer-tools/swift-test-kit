@@ -13,7 +13,6 @@ import XCTest
 
 
 
-// TODO: Test assertion-level options override class and global.
 final class ConfigurationTests: XCTestKitCase
 {
     func testGlobalConfigAssignment() throws
@@ -26,7 +25,7 @@ final class ConfigurationTests: XCTestKitCase
         
         options.diffEnabled                     = false
         options.diffOptions.maxRecursionDepth   = 1
-        options.formatOptions.maxLineLength      = 40
+        options.formatOptions.maxLineLength     = 40
 
         XCTKConfig.global = options
         
@@ -101,6 +100,20 @@ final class ConfigurationTests: XCTestKitCase
         
         XCTAssertEqual(customCase.options.diffOptions.maxRecursionDepth, 1)
         XCTAssertEqual(XCTKConfig.global.diffOptions.maxRecursionDepth, 5)
+    }
+    
+    
+    
+    func testAssertionOptionsOverridePrecedence() throws
+    {
+        XCTKConfig.global.diffEnabled = true
+        
+        XCTExpectFailure
+        {
+            return !$0.compactDescription.contains("differs at:")
+        }
+        
+        XCTKAssertEqual(1, 2, options: XCTKOptions(diffEnabled: false))
     }
     
     

@@ -20,12 +20,12 @@ extension DiffNode
     ///   - actual: The actual value.
     ///   - tree: The diff nodes.
     /// - Returns: The root node.
-    static func makeRoot<T: Equatable>(
+    static func makeRoot<T>(
         typeName    : String,
         expected    : T,
         actual      : T,
         tree        : [DiffNode]
-    ) -> DiffNode
+    ) -> DiffNode where T : Equatable
     {
         return makeStructural(
             label:      .root(typeName: typeName),
@@ -43,11 +43,11 @@ extension DiffNode
     ///   - expected: The expected value.
     ///   - actual: The actual value.
     /// - Returns: The different leaf node.
-    static func makeLeaf<T: Equatable>(
+    static func makeLeaf<T>(
         label       : DiffNodeLabel,
         expected    : T,
         actual      : T
-    ) -> DiffNode
+    ) -> DiffNode where T : Equatable
     {
         return DiffNode(
             label:  label,
@@ -68,12 +68,12 @@ extension DiffNode
     ///   - actual: The actual value.
     ///   - tree: The diff nodes.
     /// - Returns: The different structural node.
-    static func makeStructural<T: Equatable>(
+    static func makeStructural<T>(
         label       : DiffNodeLabel,
         expected    : T,
         actual      : T,
         tree        : [DiffNode]
-    ) -> DiffNode
+    ) -> DiffNode where T : Equatable
     {
         return DiffNode(
             label:  label,
@@ -94,12 +94,12 @@ extension DiffNode
     ///   - actual: The actual value.
     ///   - location: The cycle location.
     /// - Returns: The cycle node.
-    static func makeCycle<T: Equatable>(
+    static func makeCycle<T>(
         label       : DiffNodeLabel,
         expected    : T,
         actual      : T,
         location    : CycleLocation
-    ) -> DiffNode
+    ) -> DiffNode where T : Equatable
     {
         return DiffNode(
             label:  label,
@@ -118,10 +118,10 @@ extension DiffNode
     ///   - label: The diff node label.
     ///   - expected: The expected value.
     /// - Returns: The missing node.
-    static func makeMissing<T: Equatable>(
+    static func makeMissing<T>(
         label       : DiffNodeLabel,
         expected    : T
-    ) -> DiffNode
+    ) -> DiffNode where T : Equatable
     {
         return DiffNode(
             label:  label,
@@ -136,10 +136,10 @@ extension DiffNode
     ///   - label: The diff node label.
     ///   - actual: The actual value.
     /// - Returns: The unexpected node.
-    static func makeUnexpected<T: Equatable>(
+    static func makeUnexpected<T>(
         label   : DiffNodeLabel,
         actual  : T
-    ) -> DiffNode
+    ) -> DiffNode where T : Equatable
     {
         return DiffNode(
             label:  label,

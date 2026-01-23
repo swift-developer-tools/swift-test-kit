@@ -19,12 +19,4 @@ internal extension String
             .replacingOccurrences(of: "\r", with: "\\r")
             .replacingOccurrences(of: "\0", with: "\\0")
     }
-    
-    
-    
-    /// The string wrapped in double quotes.
-    var quoted: String
-    {
-        return "\"\(self)\""
-    }
 }

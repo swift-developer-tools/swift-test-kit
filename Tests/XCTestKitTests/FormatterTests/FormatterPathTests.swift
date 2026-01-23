@@ -154,8 +154,8 @@ final class FormatterPathTests: XCTestKitCase
 \(typeName) differs at:
 
     [0].name
-        \(LK.expected.rawValue)\(exp[0].name.quoted)
-        \(LK.actual.rawValue)\(act[0].name.quoted)
+        \(LK.expected.rawValue)\(quote(exp[0].name))
+        \(LK.actual.rawValue)\(quote(act[0].name))
 """
         
         XCTAssertEqual(Formatter.format(node), expected)
@@ -487,8 +487,8 @@ final class FormatterPathTests: XCTestKitCase
 \(typeName) differs at:
 
     .name
-        \(LK.expected.rawValue)\(exp.name.quoted)
-        \(LK.actual.rawValue)\(act.name.quoted)
+        \(LK.expected.rawValue)\(quote(exp.name))
+        \(LK.actual.rawValue)\(quote(act.name))
 
     .age
         \(LK.expected.rawValue)\(exp.age)

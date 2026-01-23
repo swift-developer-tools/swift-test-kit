@@ -241,7 +241,7 @@ internal struct Formatter
         }
             
         return rendered.kind == .string
-            ? display.quoted
+            ? quote(display)
             : display
     }
     
@@ -325,7 +325,7 @@ internal struct Formatter
                     
                 case let .key(description, _):
                     
-                    path += "[\(description.quoted)]"
+                    path += "[\(quote(description))]"
                     
                 case let .line(index):
                     

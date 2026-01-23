@@ -235,13 +235,13 @@ final class FormatterTruncationTests: XCTestKitCase
 \(typeName) differs at:
 
     line 1
-        \(LK.expected.rawValue)\(expLines[0].quoted)
-        \(LK.actual.rawValue)\(actLines[0].quoted)
+        \(LK.expected.rawValue)\(quote(expLines[0]))
+        \(LK.actual.rawValue)\(quote(actLines[0]))
         \(LK.changed.rawValue)character 1 ("l" → "A")
 
     line 2
-        \(LK.expected.rawValue)\(expLines[1].quoted)
-        \(LK.actual.rawValue)\(actLines[1].quoted)
+        \(LK.expected.rawValue)\(quote(expLines[1]))
+        \(LK.actual.rawValue)\(quote(actLines[1]))
         \(LK.changed.rawValue)character 1 ("l" → "B")
 
     ... and 3 more differences
@@ -503,8 +503,8 @@ final class FormatterTruncationTests: XCTestKitCase
         
         let expected: String =
 """
-\(LK.expected.rawValue)\((truncatedExp + "...").quoted)
-\(LK.actual.rawValue)\(act.quoted)
+\(LK.expected.rawValue)\(quote(truncatedExp + "..."))
+\(LK.actual.rawValue)\(quote(act))
 """
         
         XCTAssertEqual(Formatter.format(node, options: options), expected)
@@ -532,8 +532,8 @@ final class FormatterTruncationTests: XCTestKitCase
         
         let expected: String =
 """
-\(LK.expected.rawValue)\((shortExp + "...").quoted)
-\(LK.actual.rawValue)\(act.quoted)
+\(LK.expected.rawValue)\(quote(shortExp + "..."))
+\(LK.actual.rawValue)\(quote(act))
 """
         
         XCTAssertEqual(Formatter.format(node, options: options), expected)
@@ -580,8 +580,8 @@ final class FormatterTruncationTests: XCTestKitCase
 \(typeName) differs at:
 
     .data
-        \(LK.expected.rawValue)\((shortData + "...").quoted)
-        \(LK.actual.rawValue)\(act.data.quoted)
+        \(LK.expected.rawValue)\(quote(shortData + "..."))
+        \(LK.actual.rawValue)\(quote(act.data))
 """
         
         XCTAssertEqual(Formatter.format(node, options: options), expected)
@@ -641,8 +641,8 @@ final class FormatterTruncationTests: XCTestKitCase
 \(typeName) differs at:
 
     .l2.l3.data
-        \(LK.expected.rawValue)\((shortData + "...").quoted)
-        \(LK.actual.rawValue)\(act.l2.l3.data.quoted)
+        \(LK.expected.rawValue)\(quote(shortData + "..."))
+        \(LK.actual.rawValue)\(quote(act.l2.l3.data))
 """
         
         XCTAssertEqual(Formatter.format(node, options: options), expected)
