@@ -68,10 +68,8 @@ final class NilFunctionAssertionTests: XCTestKitCase
     {
         XCTExpectFailure
         {
-            issue in
-            
-            return issue.type == .assertionFailure
-                && issue.compactDescription.contains("threw error")
+            return $0.compactDescription.contains("\(AK.`nil`.name) failed")
+                && $0.compactDescription.contains("threw error")
         }
         
         XCTKAssertNil(try TestError.throwError())
@@ -143,10 +141,8 @@ final class NilFunctionAssertionTests: XCTestKitCase
     {
         XCTExpectFailure
         {
-            issue in
-            
-            return issue.type == .assertionFailure
-                && issue.compactDescription.contains("threw error")
+            return $0.compactDescription.contains("\(AK.notNil.name) failed")
+                && $0.compactDescription.contains("threw error")
         }
         
         XCTKAssertNotNil(try TestError.throwError())
@@ -218,10 +214,8 @@ final class NilFunctionAssertionTests: XCTestKitCase
     {
         XCTExpectFailure
         {
-            issue in
-            
-            return issue.type == .assertionFailure
-                && issue.compactDescription.contains("threw error")
+            return $0.compactDescription.contains("\(AK.unwrap.name) failed")
+                && $0.compactDescription.contains("threw error")
         }
         
         _ = try XCTKUnwrap(try TestError.throwError())

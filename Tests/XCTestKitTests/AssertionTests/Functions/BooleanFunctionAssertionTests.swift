@@ -129,10 +129,8 @@ final class BooleanFunctionAssertionTests: XCTestKitCase
     {
         XCTExpectFailure
         {
-            issue in
-            
-            return issue.type == .assertionFailure
-                && issue.compactDescription.contains("threw error")
+            return $0.compactDescription.contains("\(AK.`true`.name) failed")
+                && $0.compactDescription.contains("threw error")
         }
         
         XCTKAssertTrue(try TestError.throwError())
@@ -204,10 +202,8 @@ final class BooleanFunctionAssertionTests: XCTestKitCase
     {
         XCTExpectFailure
         {
-            issue in
-            
-            return issue.type == .assertionFailure
-                && issue.compactDescription.contains("threw error")
+            return $0.compactDescription.contains("\(AK.`false`.name) failed")
+                && $0.compactDescription.contains("threw error")
         }
         
         XCTKAssertFalse(try TestError.throwError())
