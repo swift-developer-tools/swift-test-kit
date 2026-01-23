@@ -327,15 +327,15 @@ public func XCTKUnwrap<T>(
 ///   filename of the test case in which this function was called.
 ///   - line: The line where the failure occurs. The default value is the line
 ///   number where this function was called.
-///   - options: The options for testing. The default value is a
-///   default-initialized ``XCTKOptions`` instance.
+///   - options: The options for testing. The default value is `nil`, which
+///   falls back to using global options.
 public func XCTKAssertEqual<T>(
     _ expected  : @autoclosure () throws -> T,
     _ actual    : @autoclosure () throws -> T,
     _ message   : @autoclosure () -> String     = "",
     file        : StaticString                  = #filePath,
     line        : UInt                          = #line,
-    options     : XCTKOptions                   = .init()
+    options     : XCTKOptions?                  = nil
 ) where T : Equatable
 {
     let expResult: Result<T, Error> = evaluateExpression(
@@ -375,7 +375,11 @@ public func XCTKAssertEqual<T>(
         return
     }
     
-    guard options.diffEnabled
+    
+    
+    let opts: XCTKOptions = options ?? XCTKConfig.global
+    
+    guard opts.diffEnabled
     else
     {
         failAssertion(
@@ -392,13 +396,13 @@ public func XCTKAssertEqual<T>(
     let diff: DiffNode = Comparator.computeDiff(
         expected:   exp,
         actual:     act,
-        options:    options.diffOptions
+        options:    opts.diffOptions
     )
     
     failAssertion(
         kind:       .equal,
         diff:       diff,
-        options:    options.formatOptions,
+        options:    opts.formatOptions,
         message:    message,
         file:       file,
         line:       line
