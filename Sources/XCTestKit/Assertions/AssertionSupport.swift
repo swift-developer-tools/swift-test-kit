@@ -16,10 +16,6 @@
 //
 //===----------------------------------------------------------------------===//
 
-import XCTest
-
-
-
 // MARK: - AssertionKind
 
 /// The kind of an assertion.
@@ -166,7 +162,7 @@ internal func failAssertion(
         text += " - \(msg)"
     }
     
-    XCTFail(
+    XCTKFail(
         text,
         file:   file,
         line:   line
@@ -208,7 +204,7 @@ internal func failAssertion(
     
     fullOutput += ":\n\n\(diffOutput)"
     
-    XCTFail(
+    XCTKFail(
         fullOutput,
         file:   file,
         line:   line
