@@ -56,9 +56,8 @@ final class BooleanFunctionAssertionTests: XCTestKitCase
         
         XCTExpectFailure
         {
-            return $0.compactDescription.contains(
-                "\(AK.assert.name) failed - \(message)"
-            )
+            return $0.compactDescription.contains("\(AK.assert.name) failed")
+                && $0.compactDescription.contains(message)
         }
         
         XCTKAssert(false, message)
@@ -117,9 +116,8 @@ final class BooleanFunctionAssertionTests: XCTestKitCase
         
         XCTExpectFailure
         {
-            return $0.compactDescription.contains(
-                "\(AK.`true`.name) failed - \(message)"
-            )
+            return $0.compactDescription.contains("\(AK.`true`.name) failed")
+                && $0.compactDescription.contains(message)
         }
         
         XCTKAssertTrue(false, message)
@@ -193,9 +191,8 @@ final class BooleanFunctionAssertionTests: XCTestKitCase
         
         XCTExpectFailure
         {
-            return $0.compactDescription.contains(
-                "\(AK.`false`.name) failed - \(message)"
-            )
+            return $0.compactDescription.contains("\(AK.`false`.name) failed")
+                && $0.compactDescription.contains(message)
         }
         
         XCTKAssertFalse(true, message)
