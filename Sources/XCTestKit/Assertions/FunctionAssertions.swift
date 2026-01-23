@@ -1186,3 +1186,71 @@ public func XCTKAssertLessThan<T>(
         )
     }
 }
+
+
+
+// MARK: - Error
+
+/// Asserts that the given expression throws an error.
+/// - Parameters:
+///   - expression: The expression to evaluate.
+///   - message: An optional description of a failure.
+///   - file: The file where the failure occurs. The default value is the
+///   filename of the test case in which this function was called.
+///   - line: The line where the failure occurs. The default value is the line
+///   number where this function was called.
+///   - errorHandler: An optional handler for errors thrown by `expression`.
+public func XCTKAssertThrowsError<T>(
+    _ expression    : @autoclosure () throws -> T,
+    _ message       : @autoclosure () -> String     = "",
+    file            : StaticString                  = #filePath,
+    line            : UInt                          = #line,
+    _ errorHandler  : (any Error) -> Void           = { _ in }
+)
+{
+    let result: Result<T, Error> = evaluateExpression(
+        expression,
+        assertion:      .throwsError,
+        message:        message,
+        file:           file,
+        line:           line,
+        errorHandler:   errorHandler
+    )
+    
+    if case .success = result
+    {
+        failAssertion(
+            kind:       .throwsError,
+            reason:     "did not throw an error",
+            message:    message,
+            file:       file,
+            line:       line
+        )
+    }
+}
+
+
+
+/// Asserts that the given expression does not throw an error.
+/// - Parameters:
+///   - expression: The expression to evaluate.
+///   - message: An optional description of a failure.
+///   - file: The file where the failure occurs. The default value is the
+///   filename of the test case in which this function was called.
+///   - line: The line where the failure occurs. The default value is the line
+///   number where this function was called.
+public func XCTKAssertNoThrow<T>(
+    _ expression    : @autoclosure () throws -> T,
+    _ message       : @autoclosure () -> String     = "",
+    file            : StaticString                  = #filePath,
+    line            : UInt                          = #line
+)
+{
+    _ = evaluateExpression(
+        expression,
+        assertion:  .noThrow,
+        message:    message,
+        file:       file,
+        line:       line
+    )
+}
