@@ -22,3 +22,4 @@ See <doc:Configuration> for information on configuring diffs.
 - <doc:EqualityFunctionAssertions>
 - <doc:ComparableFunctionAssertions>
 - <doc:ErrorFunctionAssertions>
+- <doc:FailFunctionAssertions>
