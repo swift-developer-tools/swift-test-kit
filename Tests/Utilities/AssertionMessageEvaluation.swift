@@ -92,23 +92,19 @@ func testAssertionMessageNotEvaluatedOnSuccess(
             
         case .greaterThan:
             
-            // TODO: Implement.
-            notImplemented(kind)
+            XCTKAssertGreaterThan(1, 0)
             
         case .greaterThanOrEqual:
             
-            // TODO: Implement.
-            notImplemented(kind)
+            XCTKAssertGreaterThanOrEqual(1, 0)
             
         case .lessThan:
             
-            // TODO: Implement.
-            notImplemented(kind)
+            XCTKAssertLessThan(0, 1)
             
         case .lessThanOrEqual:
             
-            // TODO: Implement.
-            notImplemented(kind)
+            XCTKAssertLessThanOrEqual(0, 1)
             
         case .nil:
             
@@ -224,23 +220,19 @@ func testAssertionMessageEvaluatedOnceOnFailure(
                 
             case .greaterThan:
                 
-                // TODO: Implement.
-                return
+                XCTKAssertGreaterThan(0, 1)
                 
             case .greaterThanOrEqual:
                 
-                // TODO: Implement.
-                return
+                XCTKAssertGreaterThanOrEqual(0, 1)
                 
             case .lessThan:
                 
-                // TODO: Implement.
-                return
+                XCTKAssertLessThan(1, 0)
                 
             case .lessThanOrEqual:
                 
-                // TODO: Implement.
-                return
+                XCTKAssertLessThanOrEqual(1, 0)
                 
             case .nil:
                 
