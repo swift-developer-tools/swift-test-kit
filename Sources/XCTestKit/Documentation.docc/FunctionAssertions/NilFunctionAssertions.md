@@ -1,6 +1,6 @@
 # Nil and Non-Nil Function Assertions
 
-Assert whether or not a test condition has a value.
+Assert whether a value is nil.
 
 ## Topics
 
