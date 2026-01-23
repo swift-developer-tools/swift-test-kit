@@ -229,6 +229,13 @@ final class NilFunctionAssertionTests: XCTestKitCase
     {
         XCTExpectFailure()
         
+        continueAfterFailure = true
+        
+        defer
+        {
+            continueAfterFailure = false
+        }
+        
         do
         {
             _ = try XCTKUnwrap(Optional<Int>(nil))
@@ -250,6 +257,13 @@ final class NilFunctionAssertionTests: XCTestKitCase
     func testUnwrapRethrowsOriginalError() throws
     {
         XCTExpectFailure()
+        
+        continueAfterFailure = true
+        
+        defer
+        {
+            continueAfterFailure = false
+        }
         
         do
         {
