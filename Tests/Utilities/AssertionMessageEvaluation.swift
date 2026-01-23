@@ -24,9 +24,12 @@ private func notImplemented(
 
 /// Asserts that the message of the specified assertion is not evaluated
 /// when the assertion succeeds.
-/// - Parameter kind: The assertion to use.
+///   - kind: The assertion to use.
+///   - useFloats: Whether to use floating-point numbers when testing for
+///   equality with accuracy. Otherwise, integers will be used.
 func testAssertionMessageNotEvaluatedOnSuccess(
-    _ kind: AssertionKind
+    _ kind      : AssertionKind,
+    useFloats   : Bool          = false
 )
 {
     var count   : Int           = 0
@@ -40,23 +43,52 @@ func testAssertionMessageNotEvaluatedOnSuccess(
             
         case .equal:
             
-            // TODO: Implement.
-            notImplemented(kind)
+            XCTKAssertEqual(1, 1, message())
+            
+        case .notEqual:
+            
+            XCTKAssertNotEqual(0, 1, message())
             
         case .equalWithAccuracy:
             
-            // TODO: Implement.
-            notImplemented(kind)
+            if useFloats
+            {
+                XCTKAssertEqual(1.0, 1.0, accuracy: 0.5, message())
+            }
+            else
+            {
+                let expr1   : Int   = 1
+                let expr2   : Int   = 1
+                
+                XCTKAssertEqual(expr1, expr2, accuracy: 1, message())
+            }
+            
+        case .notEqualWithAccuracy:
+            
+            if useFloats
+            {
+                XCTKAssertNotEqual(0.0, 1.0, accuracy: 0.0, message())
+            }
+            else
+            {
+                let expr1   : Int   = 0
+                let expr2   : Int   = 1
+                
+                XCTKAssertNotEqual(expr1, expr2, accuracy: 0, message())
+            }
             
         case .identical:
             
-            // TODO: Implement.
-            notImplemented(kind)
+            let object = TestError() as AnyObject
+            
+            XCTKAssertIdentical(object, object, message())
             
         case .notIdentical:
             
-            // TODO: Implement.
-            notImplemented(kind)
+            let object1     = TestError() as AnyObject
+            let object2     = TestError() as AnyObject
+            
+            XCTKAssertNotIdentical(object1, object2, message())
             
         case .greaterThan:
             
@@ -74,16 +106,6 @@ func testAssertionMessageNotEvaluatedOnSuccess(
             notImplemented(kind)
             
         case .lessThanOrEqual:
-            
-            // TODO: Implement.
-            notImplemented(kind)
-            
-        case .notEqual:
-            
-            // TODO: Implement.
-            notImplemented(kind)
-            
-        case .notEqualWithAccuracy:
             
             // TODO: Implement.
             notImplemented(kind)
@@ -131,9 +153,13 @@ func testAssertionMessageNotEvaluatedOnSuccess(
 
 /// Asserts that the message of the specified assertion is evaluated only
 /// once when the assertion fails.
-/// - Parameter kind: The assertion to use.
+/// - Parameters:
+///   - kind: The assertion to use.
+///   - useFloats: Whether to use floating-point numbers when testing for
+///   equality with accuracy. Otherwise, integers will be used.
 func testAssertionMessageEvaluatedOnceOnFailure(
-    _ kind: AssertionKind
+    _ kind      : AssertionKind,
+    useFloats   : Bool          = false
 )
 {
     var count   : Int           = 0
@@ -149,23 +175,52 @@ func testAssertionMessageEvaluatedOnceOnFailure(
                 
             case .equal:
                 
-                // TODO: Implement.
-                return
+                XCTKAssertEqual(0, 1, message())
+                
+            case .notEqual:
+                
+                XCTKAssertNotEqual(1, 1, message())
                 
             case .equalWithAccuracy:
                 
-                // TODO: Implement.
-                return
+                if useFloats
+                {
+                    XCTKAssertEqual(0.0, 1.0, accuracy: 0.5, message())
+                }
+                else
+                {
+                    let expr1   : Int   = 0
+                    let expr2   : Int   = 1
+                    
+                    XCTKAssertEqual(expr1, expr2, accuracy: 0, message())
+                }
+                
+            case .notEqualWithAccuracy:
+                
+                if useFloats
+                {
+                    XCTKAssertNotEqual(0.0, 1.0, accuracy: 1.0, message())
+                }
+                else
+                {
+                    let expr1   : Int   = 0
+                    let expr2   : Int   = 1
+                    
+                    XCTKAssertNotEqual(expr1, expr2, accuracy: 1, message())
+                }
                 
             case .identical:
                 
-                // TODO: Implement.
-                return
+                let object1     = TestError() as AnyObject
+                let object2     = TestError() as AnyObject
+                
+                XCTKAssertIdentical(object1, object2, message())
                 
             case .notIdentical:
                 
-                // TODO: Implement.
-                return
+                let object = TestError() as AnyObject
+                
+                XCTKAssertNotIdentical(object, object, message())
                 
             case .greaterThan:
                 
@@ -183,16 +238,6 @@ func testAssertionMessageEvaluatedOnceOnFailure(
                 return
                 
             case .lessThanOrEqual:
-                
-                // TODO: Implement.
-                return
-                
-            case .notEqual:
-                
-                // TODO: Implement.
-                return
-                
-            case .notEqualWithAccuracy:
                 
                 // TODO: Implement.
                 return
