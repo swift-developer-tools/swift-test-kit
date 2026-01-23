@@ -11,7 +11,7 @@
 struct TestError: Error
 {
     /// Throws a ``TestError``.
-    static func throwError() throws -> Bool
+    static func throwError<T>() throws -> T
     {
         throw TestError()
     }

@@ -218,7 +218,9 @@ final class NilFunctionAssertionTests: XCTestKitCase
                 && $0.compactDescription.contains("threw error")
         }
         
-        _ = try XCTKUnwrap(try TestError.throwError())
+        let expr: () throws -> Bool = { try TestError.throwError() }
+        
+        _ = try XCTKUnwrap(try expr())
     }
     
     
@@ -251,7 +253,9 @@ final class NilFunctionAssertionTests: XCTestKitCase
         
         do
         {
-            _ = try XCTKUnwrap(try TestError.throwError())
+            let expr: () throws -> Bool = { try TestError.throwError() }
+            
+            _ = try XCTKUnwrap(try expr())
             
             XCTFail("Expected TestError to be thrown")
         }
