@@ -12,18 +12,11 @@ import XCTest
 
 
 
-// TODO: Remove
-private func notImplemented(
-    _ kind: AssertionKind
-)
-{
-    XCTFail("\(kind.name) not implemented")
-}
-
-
-
 /// Asserts that the message of the specified assertion is not evaluated
 /// when the assertion succeeds.
+///
+/// - Note: This does nothing for ``AssertionKind/fail``.
+///
 ///   - kind: The assertion to use.
 ///   - useFloats: Whether to use floating-point numbers when testing for
 ///   equality with accuracy. Otherwise, integers will be used.
@@ -128,8 +121,7 @@ func testAssertionMessageNotEvaluatedOnSuccess(
             
         case .fail:
             
-            // TODO: Implement.
-            notImplemented(kind)
+            return
             
         case .throwsError:
             
@@ -261,8 +253,7 @@ func testAssertionMessageEvaluatedOnceOnFailure(
                 
             case .fail:
                 
-                // TODO: Implement.
-                return
+                XCTKFail(message())
                 
             case .throwsError:
                 
