@@ -15,7 +15,7 @@ clear insight into where values differ within complex data structures.
 
 Below are examples of diff output for several common data types. The number 
 of diffs shown, truncation behavior, and other formatting options may be 
-configured at the global, class, or assertion level.
+configured at the global or assertion level.
 
 **Nested Structs**
 
