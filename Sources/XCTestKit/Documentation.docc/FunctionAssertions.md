@@ -27,3 +27,14 @@ See <doc:Configuration> for information on configuring diffs.
 - ``XCTKAssertNotNil(_:_:file:line:)``
 - ``XCTKUnwrap(_:_:file:line:)``
 - ``XCTKUnwrapError``
+
+### Equality and Inequality Assertions
+
+- ``XCTKAssertEqual(_:_:_:file:line:options:)``
+- ``XCTKAssertNotEqual(_:_:_:file:line:)``
+- ``XCTKAssertIdentical(_:_:_:file:line:)``
+- ``XCTKAssertNotIdentical(_:_:_:file:line:)``
+- ``XCTKAssertEqual(_:_:accuracy:_:file:line:)-jeg2``
+- ``XCTKAssertEqual(_:_:accuracy:_:file:line:)-13agy``
+- ``XCTKAssertNotEqual(_:_:accuracy:_:file:line:)-4ufkt``
+- ``XCTKAssertNotEqual(_:_:accuracy:_:file:line:)-4v5x3``

@@ -24,7 +24,7 @@
 /// ``XCTKAssertTrue(_:_:file:line:)``.
 ///
 /// - Parameters:
-///   - expression: A Boolean expression.
+///   - expression: The expression to evaluate.
 ///   - message: An optional description of a failure.
 ///   - file: The file where the failure occurs. The default value is the
 ///   filename of the test case in which this function was called.
@@ -71,7 +71,7 @@ public func XCTKAssert(
 /// ``XCTKAssert(_:_:file:line:)``.
 ///
 /// - Parameters:
-///   - expression: A Boolean expression.
+///   - expression: The expression to evaluate.
 ///   - message: An optional description of a failure.
 ///   - file: The file where the failure occurs. The default value is the
 ///   filename of the test case in which this function was called.
@@ -117,7 +117,7 @@ public func XCTKAssertTrue(
 /// This generates a failure when `expression == true`.
 ///
 /// - Parameters:
-///   - expression: A Boolean expression.
+///   - expression: The expression to evaluate.
 ///   - message: An optional description of a failure.
 ///   - file: The file where the failure occurs. The default value is the
 ///   filename of the test case in which this function was called.
@@ -165,7 +165,7 @@ public func XCTKAssertFalse(
 /// This generates a failure when `expression != nil`.
 ///
 /// - Parameters:
-///   - expression: An expression of type `Any?` to compare against `nil`.
+///   - expression: The expression to evaluate.
 ///   - message: An optional description of a failure.
 ///   - file: The file where the failure occurs. The default value is the
 ///   filename of the test case in which this function was called.
@@ -211,7 +211,7 @@ public func XCTKAssertNil(
 /// This generates a failure when `expression == nil`.
 ///
 /// - Parameters:
-///   - expression: An expression of type `Any?` to compare against `nil`.
+///   - expression: The expression to evaluate.
 ///   - message: An optional description of a failure.
 ///   - file: The file where the failure occurs. The default value is the
 ///   filename of the test case in which this function was called.
@@ -259,7 +259,7 @@ public func XCTKAssertNotNil(
 /// the unwrapped value of `expression`.
 ///
 /// - Parameters:
-///   - expression: An expression of type `T?`.
+///   - expression: The expression to evaluate.
 ///   - message: An optional description of a failure.
 ///   - file: The file where the failure occurs. The default value is the
 ///   filename of the test case in which this function was called.
@@ -308,4 +308,619 @@ public func XCTKUnwrap<T>(
             
             throw error
     }
+}
+
+
+
+// MARK: - Equality and inequality
+
+/// Asserts that the given values are equal.
+/// - Parameters:
+///   - expected: The expected value.
+///   - actual: The actual value.
+///   - message: An optional description of a failure.
+///   - file: The file where the failure occurs. The default value is the
+///   filename of the test case in which this function was called.
+///   - line: The line where the failure occurs. The default value is the line
+///   number where this function was called.
+///   - options: The options for testing. The default value is a
+///   default-initialized ``XCTKOptions`` instance.
+public func XCTKAssertEqual<T>(
+    _ expected  : @autoclosure () throws -> T,
+    _ actual    : @autoclosure () throws -> T,
+    _ message   : @autoclosure () -> String     = "",
+    file        : StaticString                  = #filePath,
+    line        : UInt                          = #line,
+    options     : XCTKOptions                   = .init()
+) where T : Equatable
+{
+    let expResult: Result<T, Error> = evaluateExpression(
+        expected,
+        assertion:  .equal,
+        message:    message,
+        file:       file,
+        line:       line
+    )
+    
+    guard case let .success(exp) = expResult
+    else
+    {
+        return
+    }
+    
+    
+    
+    let actResult: Result<T, Error> = evaluateExpression(
+        actual,
+        assertion:  .equal,
+        message:    message,
+        file:       file,
+        line:       line
+    )
+    
+    guard case let .success(act) = actResult
+    else
+    {
+        return
+    }
+    
+    
+    
+    if exp == act
+    {
+        return
+    }
+    
+    guard options.diffEnabled
+    else
+    {
+        failAssertion(
+            kind:       .equal,
+            reason:     "(\(quote(exp))) is not equal to (\(quote(act)))",
+            message:    message,
+            file:       file,
+            line:       line
+        )
+        
+        return
+    }
+    
+    let diff: DiffNode = Comparator.computeDiff(
+        expected:   exp,
+        actual:     act,
+        options:    options.diffOptions
+    )
+    
+    failAssertion(
+        kind:       .equal,
+        diff:       diff,
+        options:    options.formatOptions,
+        message:    message,
+        file:       file,
+        line:       line
+    )
+}
+
+
+
+/// Asserts that the given values are not equal.
+/// - Parameters:
+///   - expression1: The first expression to evaluate.
+///   - expression2: The second expression to evaluate.
+///   - message: An optional description of a failure.
+///   - file: The file where the failure occurs. The default value is the
+///   filename of the test case in which this function was called.
+///   - line: The line where the failure occurs. The default value is the line
+///   number where this function was called.
+public func XCTKAssertNotEqual<T>(
+    _ expression1   : @autoclosure () throws -> T,
+    _ expression2   : @autoclosure () throws -> T,
+    _ message       : @autoclosure () -> String     = "",
+    file            : StaticString                  = #filePath,
+    line            : UInt                          = #line
+) where T : Equatable
+{
+    let result1: Result<T, Error> = evaluateExpression(
+        expression1,
+        assertion:  .notEqual,
+        message:    message,
+        file:       file,
+        line:       line
+    )
+    
+    guard case let .success(value1) = result1
+    else
+    {
+        return
+    }
+    
+    
+    
+    let result2: Result<T, Error> = evaluateExpression(
+        expression2,
+        assertion:  .notEqual,
+        message:    message,
+        file:       file,
+        line:       line
+    )
+    
+    guard case let .success(value2) = result2
+    else
+    {
+        return
+    }
+    
+    
+    
+    if value1 != value2
+    {
+        return
+    }
+    
+    failAssertion(
+        kind:       .notEqual,
+        reason:     "both values equal (\(quote(value1)))",
+        message:    message,
+        file:       file,
+        line:       line
+    )
+}
+
+
+
+/// Asserts that the given values are identical.
+///
+/// The values are considered identical if they are the same instance.
+///
+/// - Parameters:
+///   - expression1: The first expression to evaluate.
+///   - expression2: The second expression to evaluate.
+///   - message: An optional description of a failure.
+///   - file: The file where the failure occurs. The default value is the
+///   filename of the test case in which this function was called.
+///   - line: The line where the failure occurs. The default value is the line
+///   number where this function was called.
+public func XCTKAssertIdentical(
+    _ expression1   : @autoclosure () throws -> AnyObject?,
+    _ expression2   : @autoclosure () throws -> AnyObject?,
+    _ message       : @autoclosure () -> String             = "",
+    file            : StaticString                          = #filePath,
+    line            : UInt                                  = #line
+)
+{
+    let value1: AnyObject?
+    
+    do
+    {
+        value1 = try expression1()
+    }
+    catch
+    {
+        failAssertion(
+            kind:       .identical,
+            reason:     "threw error \(quote(error))",
+            message:    message,
+            file:       file,
+            line:       line
+        )
+        
+        return
+    }
+    
+    
+    
+    let value2: AnyObject?
+    
+    do
+    {
+        value2 = try expression2()
+    }
+    catch
+    {
+        failAssertion(
+            kind:       .identical,
+            reason:     "threw error \(quote(error))",
+            message:    message,
+            file:       file,
+            line:       line
+        )
+        
+        return
+    }
+    
+    
+    
+    if value1 === value2
+    {
+        return
+    }
+    
+    failAssertion(
+        kind:       .identical,
+        reason:     "(\(quote(value1))) is not identical to (\(quote(value2)))",
+        message:    message,
+        file:       file,
+        line:       line
+    )
+}
+
+
+
+/// Asserts that the given values are not identical.
+///
+/// The values are considered identical if they are the same instance.
+///
+/// - Parameters:
+///   - expression1: The first expression to evaluate.
+///   - expression2: The second expression to evaluate.
+///   - message: An optional description of a failure.
+///   - file: The file where the failure occurs. The default value is the
+///   filename of the test case in which this function was called.
+///   - line: The line where the failure occurs. The default value is the line
+///   number where this function was called.
+public func XCTKAssertNotIdentical(
+    _ expression1   : @autoclosure () throws -> AnyObject?,
+    _ expression2   : @autoclosure () throws -> AnyObject?,
+    _ message       : @autoclosure () -> String             = "",
+    file            : StaticString                          = #filePath,
+    line            : UInt                                  = #line
+)
+{
+    let value1: AnyObject?
+    
+    do
+    {
+        value1 = try expression1()
+    }
+    catch
+    {
+        failAssertion(
+            kind:       .notIdentical,
+            reason:     "threw error \(quote(error))",
+            message:    message,
+            file:       file,
+            line:       line
+        )
+        
+        return
+    }
+    
+    
+    
+    let value2: AnyObject?
+    
+    do
+    {
+        value2 = try expression2()
+    }
+    catch
+    {
+        failAssertion(
+            kind:       .notIdentical,
+            reason:     "threw error \(quote(error))",
+            message:    message,
+            file:       file,
+            line:       line
+        )
+        
+        return
+    }
+    
+    
+    
+    if value1 !== value2
+    {
+        return
+    }
+    
+    failAssertion(
+        kind:       .notIdentical,
+        reason:     "both values are identical (\(quote(value1)))",
+        message:    message,
+        file:       file,
+        line:       line
+    )
+}
+
+
+
+/// Asserts that the given floating-point values are equal within the given
+/// accuracy.
+/// - Parameters:
+///   - expression1: The first expression to evaluate.
+///   - expression2: The second expression to evaluate.
+///   - accuracy: The maximum difference between the given expressions for
+///   them to be considered equal.
+///   - message: An optional description of a failure.
+///   - file: The file where the failure occurs. The default value is the
+///   filename of the test case in which this function was called.
+///   - line: The line where the failure occurs. The default value is the line
+///   number where this function was called.
+public func XCTKAssertEqual<T>(
+    _ expression1   : @autoclosure () throws -> T,
+    _ expression2   : @autoclosure () throws -> T,
+    accuracy        : T,
+    _ message       : @autoclosure () -> String     = "",
+    file            : StaticString                  = #filePath,
+    line            : UInt                          = #line
+) where T : FloatingPoint
+{
+    let result1: Result<T, Error> = evaluateExpression(
+        expression1,
+        assertion:  .equalWithAccuracy,
+        message:    message,
+        file:       file,
+        line:       line
+    )
+    
+    guard case let .success(value1) = result1
+    else
+    {
+        return
+    }
+    
+    
+    
+    let result2: Result<T, Error> = evaluateExpression(
+        expression2,
+        assertion:  .equalWithAccuracy,
+        message:    message,
+        file:       file,
+        line:       line
+    )
+    
+    guard case let .success(value2) = result2
+    else
+    {
+        return
+    }
+    
+    
+    
+    let equal: Bool = areEqual(
+        value1,
+        value2,
+        accuracy: accuracy
+    )
+    
+    if equal
+    {
+        return
+    }
+    
+    failAssertion(
+        kind:       .equalWithAccuracy,
+        reason:     "(\(quote(value1))) is not equal to (\(quote(value2)))"
+                    + " +/- (\(quote(accuracy)))",
+        message:    message,
+        file:       file,
+        line:       line
+    )
+}
+
+
+
+/// Asserts that the given numeric values are equal within the given accuracy.
+/// - Parameters:
+///   - expression1: The first expression to evaluate.
+///   - expression2: The second expression to evaluate.
+///   - accuracy: The maximum difference between the given expressions for
+///   them to be considered equal.
+///   - message: An optional description of a failure.
+///   - file: The file where the failure occurs. The default value is the
+///   filename of the test case in which this function was called.
+///   - line: The line where the failure occurs. The default value is the line
+///   number where this function was called.
+public func XCTKAssertEqual<T>(
+    _ expression1   : @autoclosure () throws -> T,
+    _ expression2   : @autoclosure () throws -> T,
+    accuracy        : T,
+    _ message       : @autoclosure () -> String     = "",
+    file            : StaticString                  = #filePath,
+    line            : UInt                          = #line
+) where T : Numeric
+{
+    let result1: Result<T, Error> = evaluateExpression(
+        expression1,
+        assertion:  .equalWithAccuracy,
+        message:    message,
+        file:       file,
+        line:       line
+    )
+    
+    guard case let .success(value1) = result1
+    else
+    {
+        return
+    }
+    
+    
+    
+    let result2: Result<T, Error> = evaluateExpression(
+        expression2,
+        assertion:  .equalWithAccuracy,
+        message:    message,
+        file:       file,
+        line:       line
+    )
+    
+    guard case let .success(value2) = result2
+    else
+    {
+        return
+    }
+    
+    
+    
+    let equal: Bool = areEqual(
+        value1,
+        value2,
+        accuracy: accuracy
+    )
+    
+    if equal
+    {
+        return
+    }
+    
+    failAssertion(
+        kind:       .equalWithAccuracy,
+        reason:     "(\(quote(value1))) is not equal to (\(quote(value2)))"
+                    + " +/- (\(quote(accuracy)))",
+        message:    message,
+        file:       file,
+        line:       line
+    )
+}
+
+
+
+/// Asserts that the given floating-point values are not equal within the
+/// given accuracy.
+/// - Parameters:
+///   - expression1: The first expression to evaluate.
+///   - expression2: The second expression to evaluate.
+///   - accuracy: The maximum difference between the given expressions for
+///   them to be considered not equal.
+///   - message: An optional description of a failure.
+///   - file: The file where the failure occurs. The default value is the
+///   filename of the test case in which this function was called.
+///   - line: The line where the failure occurs. The default value is the line
+///   number where this function was called.
+public func XCTKAssertNotEqual<T>(
+    _ expression1   : @autoclosure () throws -> T,
+    _ expression2   : @autoclosure () throws -> T,
+    accuracy        : T,
+    _ message       : @autoclosure () -> String     = "",
+    file            : StaticString                  = #filePath,
+    line            : UInt                          = #line
+) where T : FloatingPoint
+{
+    let result1: Result<T, Error> = evaluateExpression(
+        expression1,
+        assertion:  .notEqualWithAccuracy,
+        message:    message,
+        file:       file,
+        line:       line
+    )
+    
+    guard case let .success(value1) = result1
+    else
+    {
+        return
+    }
+    
+    
+    
+    let result2: Result<T, Error> = evaluateExpression(
+        expression2,
+        assertion:  .notEqualWithAccuracy,
+        message:    message,
+        file:       file,
+        line:       line
+    )
+    
+    guard case let .success(value2) = result2
+    else
+    {
+        return
+    }
+    
+    
+    
+    let equal: Bool = areEqual(
+        value1,
+        value2,
+        accuracy: accuracy
+    )
+    
+    if !equal
+    {
+        return
+    }
+    
+    failAssertion(
+        kind:       .notEqualWithAccuracy,
+        reason:     "both values equal (\(quote(value1)))"
+                    + " +/- (\(quote(accuracy)))",
+        message:    message,
+        file:       file,
+        line:       line
+    )
+}
+
+
+
+/// Asserts that the given numeric values are not equal within the given
+/// accuracy.
+/// - Parameters:
+///   - expression1: The first expression to evaluate.
+///   - expression2: The second expression to evaluate.
+///   - accuracy: The maximum difference between the given expressions for
+///   them to be considered not equal.
+///   - message: An optional description of a failure.
+///   - file: The file where the failure occurs. The default value is the
+///   filename of the test case in which this function was called.
+///   - line: The line where the failure occurs. The default value is the line
+///   number where this function was called.
+public func XCTKAssertNotEqual<T>(
+    _ expression1   : @autoclosure () throws -> T,
+    _ expression2   : @autoclosure () throws -> T,
+    accuracy        : T,
+    _ message       : @autoclosure () -> String     = "",
+    file            : StaticString                  = #filePath,
+    line            : UInt                          = #line
+) where T : Numeric
+{
+    let result1: Result<T, Error> = evaluateExpression(
+        expression1,
+        assertion:  .notEqualWithAccuracy,
+        message:    message,
+        file:       file,
+        line:       line
+    )
+    
+    guard case let .success(value1) = result1
+    else
+    {
+        return
+    }
+    
+    
+    
+    let result2: Result<T, Error> = evaluateExpression(
+        expression2,
+        assertion:  .notEqualWithAccuracy,
+        message:    message,
+        file:       file,
+        line:       line
+    )
+    
+    guard case let .success(value2) = result2
+    else
+    {
+        return
+    }
+    
+    
+    
+    let equal: Bool = areEqual(
+        value1,
+        value2,
+        accuracy: accuracy
+    )
+    
+    if !equal
+    {
+        return
+    }
+    
+    failAssertion(
+        kind:       .notEqualWithAccuracy,
+        reason:     "both values equal (\(quote(value1)))"
+                    + " +/- (\(quote(accuracy)))",
+        message:    message,
+        file:       file,
+        line:       line
+    )
 }
