@@ -47,7 +47,6 @@ internal struct Comparator
         
         
         
-        
         let kind: DiffNodeKind = comparator.compareEquatable(
             expected:   expected,
             actual:     actual,
@@ -55,7 +54,7 @@ internal struct Comparator
         )
         
         return DiffNode(
-            label:  .root(typeName: typeName(of: expected)),
+            label:  .root(typeName: String(describing: type(of: expected))),
             kind:   kind
         )
     }

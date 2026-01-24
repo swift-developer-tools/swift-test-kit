@@ -67,7 +67,7 @@ internal struct RenderedValue: Equatable, Sendable, CustomStringConvertible
         _ value: Any
     )
     {
-        self.typeName = XCTestKit.typeName(of: value)
+        self.typeName = String(describing: type(of: value))
         
         if let string = value as? String
         {
