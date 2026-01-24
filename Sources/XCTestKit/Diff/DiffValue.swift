@@ -67,21 +67,23 @@ internal struct RenderedValue: Equatable, Sendable, CustomStringConvertible
         _ value: Any
     )
     {
-        self.typeName = String(describing: type(of: value))
+        let unwrapped: Any = (value as? AnyHashable)?.base ?? value
         
-        if let string = value as? String
+        self.typeName = String(describing: type(of: unwrapped))
+        
+        if let string = unwrapped as? String
         {
             self.description    = string.escaped
             self.kind           = .string
         }
-        else if let character = value as? Character
+        else if let character = unwrapped as? Character
         {
             self.description    = String(character).escaped
             self.kind           = .string
         }
         else
         {
-            self.description    = String(describing: value)
+            self.description    = String(describing: unwrapped)
             self.kind           = .other
         }
     }
