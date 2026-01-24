@@ -98,7 +98,7 @@ internal struct DiffNode
 // MARK: - CycleLocation
 
 /// The location where a cycle was detected.
-internal enum CycleLocation: CustomStringConvertible
+internal enum CycleLocation: Equatable, CustomStringConvertible
 {
     /// A cycle was detected in the expected value.
     case expected
