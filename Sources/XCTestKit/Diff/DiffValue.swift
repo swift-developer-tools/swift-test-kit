@@ -114,7 +114,7 @@ internal struct RenderedValue: Equatable, Sendable, CustomStringConvertible
 /// The tradeoffs of this approach include increased memory usage, but this is
 /// generally acceptable since diff trees are short-lived, and the string
 /// overhead is relatively light compared to the overall test execution cost.
-internal struct DiffValue
+internal struct DiffValue: Equatable
 {
     /// The underlying value.
     let value       : Any
@@ -143,5 +143,23 @@ internal struct DiffValue
     {
         self.value      = value
         self.rendered   = RenderedValue(value)
+    }
+    
+    
+    
+    /// Checks whether the given values are equal.
+    ///
+    /// - Note: Equality is based on only ``DiffValue/rendered``.
+    ///
+    /// - Parameters:
+    ///   - lhs: The left-hand side value to compare.
+    ///   - rhs: The right-hand side value to compare.
+    /// - Returns: Whether the given values are equal.
+    static func == (
+        lhs : DiffValue,
+        rhs : DiffValue
+    ) -> Bool
+    {
+        return lhs.rendered == rhs.rendered
     }
 }
