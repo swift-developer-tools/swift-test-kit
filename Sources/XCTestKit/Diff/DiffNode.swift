@@ -84,13 +84,29 @@
 /// arrays can be further decomposed.
 /// - The `tags[2]` element uses ``DiffNodeKind/missingexpected:)``, since it
 /// exists in `expected` but not in `actual`.
-internal struct DiffNode
+internal struct DiffNode: Equatable
 {
     /// The node label.
     let label   : DiffNodeLabel
     
     /// The kind of diff node.
     let kind    : DiffNodeKind
+    
+    
+    
+    /// Checks whether the given nodes are equal.
+    /// - Parameters:
+    ///   - lhs: The left-hand side node to compare.
+    ///   - rhs: The right-hand side node to compare.
+    /// - Returns: Whether the given nodes are equal.
+    static func == (
+        lhs : DiffNode,
+        rhs : DiffNode
+    ) -> Bool
+    {
+        return lhs.label == rhs.label
+            && lhs.kind == rhs.kind
+    }
 }
 
 
@@ -137,7 +153,7 @@ internal enum CycleLocation: Equatable, CustomStringConvertible
 
 /// The kind of diff computed between by comparing an expected value to an
 /// actual value.
-internal enum DiffNodeKind
+internal enum DiffNodeKind: Equatable
 {
     /// A cycle was detected during comparison.
     ///
