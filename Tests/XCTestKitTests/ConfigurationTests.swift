@@ -19,9 +19,9 @@ final class ConfigurationTests: XCTestKitCase
     {
         var options = XCTKConfig.global
         
-        XCTAssertEqual(options.diffEnabled, true)
-        XCTAssertEqual(options.diffOptions.maxRecursionDepth, 20)
-        XCTAssertEqual(options.formatOptions.maxLineLength, 80)
+        XCTKAssertEqual(options.diffEnabled, true)
+        XCTKAssertEqual(options.diffOptions.maxRecursionDepth, 20)
+        XCTKAssertEqual(options.formatOptions.maxLineLength, 80)
         
         options.diffEnabled                     = false
         options.diffOptions.maxRecursionDepth   = 1
@@ -29,9 +29,9 @@ final class ConfigurationTests: XCTestKitCase
 
         XCTKConfig.global = options
         
-        XCTAssertEqual(options.diffEnabled, false)
-        XCTAssertEqual(XCTKConfig.global.diffOptions.maxRecursionDepth, 1)
-        XCTAssertEqual(XCTKConfig.global.formatOptions.maxLineLength, 40)
+        XCTKAssertEqual(options.diffEnabled, false)
+        XCTKAssertEqual(XCTKConfig.global.diffOptions.maxRecursionDepth, 1)
+        XCTKAssertEqual(XCTKConfig.global.formatOptions.maxLineLength, 40)
     }
     
     
@@ -40,20 +40,20 @@ final class ConfigurationTests: XCTestKitCase
     {
         let options = XCTKConfig.global
         
-        XCTAssertEqual(options.diffEnabled, true)
-        XCTAssertEqual(options.diffOptions, XCTKDiffOptions())
-        XCTAssertEqual(options.formatOptions, XCTKFormatOptions())
+        XCTKAssertEqual(options.diffEnabled, true)
+        XCTKAssertEqual(options.diffOptions, XCTKDiffOptions())
+        XCTKAssertEqual(options.formatOptions, XCTKFormatOptions())
     }
     
     
     
     func testGlobalConfigDirectModification() throws
     {
-        XCTAssertTrue(XCTKConfig.global.diffEnabled)
+        XCTKAssertTrue(XCTKConfig.global.diffEnabled)
         
         XCTKConfig.global.diffEnabled = false
         
-        XCTAssertFalse(XCTKConfig.global.diffEnabled)
+        XCTKAssertFalse(XCTKConfig.global.diffEnabled)
     }
     
     
@@ -62,11 +62,11 @@ final class ConfigurationTests: XCTestKitCase
     {
         let testCase = XCTKCase()
         
-        XCTAssertEqual(testCase.options.diffOptions.maxRecursionDepth, 20)
+        XCTKAssertEqual(testCase.options.diffOptions.maxRecursionDepth, 20)
         
         XCTKConfig.global.diffOptions.maxRecursionDepth = 1
         
-        XCTAssertEqual(testCase.options.diffOptions.maxRecursionDepth, 1)
+        XCTKAssertEqual(testCase.options.diffOptions.maxRecursionDepth, 1)
     }
     
     
@@ -75,7 +75,7 @@ final class ConfigurationTests: XCTestKitCase
     {
         let testCase = XCTKCase()
         
-        XCTAssertEqual(testCase.options, XCTKConfig.global)
+        XCTKAssertEqual(testCase.options, XCTKConfig.global)
     }
     
     
@@ -98,8 +98,8 @@ final class ConfigurationTests: XCTestKitCase
         
         let customCase = CustomCase()
         
-        XCTAssertEqual(customCase.options.diffOptions.maxRecursionDepth, 1)
-        XCTAssertEqual(XCTKConfig.global.diffOptions.maxRecursionDepth, 5)
+        XCTKAssertEqual(customCase.options.diffOptions.maxRecursionDepth, 1)
+        XCTKAssertEqual(XCTKConfig.global.diffOptions.maxRecursionDepth, 5)
     }
     
     
@@ -122,8 +122,8 @@ final class ConfigurationTests: XCTestKitCase
     {
         let options = XCTKOptions()
         
-        XCTAssertEqual(options.diffOptions, XCTKDiffOptions())
-        XCTAssertEqual(options.formatOptions, XCTKFormatOptions())
+        XCTKAssertEqual(options.diffOptions, XCTKDiffOptions())
+        XCTKAssertEqual(options.formatOptions, XCTKFormatOptions())
     }
     
     
@@ -132,8 +132,8 @@ final class ConfigurationTests: XCTestKitCase
     {
         let options = XCTKDiffOptions()
         
-        XCTAssertEqual(options.maxRecursionDepth, 20)
-        XCTAssertNil(options.characterDiffThreshold)
+        XCTKAssertEqual(options.maxRecursionDepth, 20)
+        XCTKAssertNil(options.characterDiffThreshold)
     }
     
     
@@ -142,8 +142,8 @@ final class ConfigurationTests: XCTestKitCase
     {
         let options = XCTKFormatOptions()
         
-        XCTAssertEqual(options.indentationSpaces, 4)
-        XCTAssertEqual(options.maxLineLength, 80)
-        XCTAssertEqual(options.maxDiffs, nil)
+        XCTKAssertEqual(options.indentationSpaces, 4)
+        XCTKAssertEqual(options.maxLineLength, 80)
+        XCTKAssertEqual(options.maxDiffs, nil)
     }
 }

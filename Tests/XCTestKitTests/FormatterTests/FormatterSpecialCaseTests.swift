@@ -59,7 +59,7 @@ final class FormatterSpecialCaseTests: XCTestKitCase
         \(LK.changed.rawValue)character 2 ("e" → "a")
 """
         
-        XCTAssertEqual(Formatter.format(node), expected)
+        XCTKAssertEqual(Formatter.format(node), expected)
     }
     
     
@@ -109,7 +109,7 @@ final class FormatterSpecialCaseTests: XCTestKitCase
         \(LK.changed.rawValue)character 4 ("d" → "Y")
 """
         
-        XCTAssertEqual(Formatter.format(node), expected)
+        XCTKAssertEqual(Formatter.format(node), expected)
     }
     
     
@@ -151,7 +151,7 @@ final class FormatterSpecialCaseTests: XCTestKitCase
         \(LK.missing.rawValue)characters 3-4 "ll"
 """
         
-        XCTAssertEqual(Formatter.format(node), expected)
+        XCTKAssertEqual(Formatter.format(node), expected)
     }
     
     
@@ -193,7 +193,7 @@ final class FormatterSpecialCaseTests: XCTestKitCase
         \(LK.missing.rawValue)characters 4-6 "def"
 """
         
-        XCTAssertEqual(Formatter.format(node), expected)
+        XCTKAssertEqual(Formatter.format(node), expected)
     }
     
     
@@ -248,7 +248,7 @@ final class FormatterSpecialCaseTests: XCTestKitCase
         \(LK.unexpected.rawValue)2 characters at position 5 "YZ"
 """
         
-        XCTAssertEqual(Formatter.format(node), expected)
+        XCTKAssertEqual(Formatter.format(node), expected)
     }
     
     
@@ -282,7 +282,7 @@ final class FormatterSpecialCaseTests: XCTestKitCase
         \(LK.actual.rawValue)"xyz"
 """
         
-        XCTAssertEqual(Formatter.format(node), expected)
+        XCTKAssertEqual(Formatter.format(node), expected)
     }
     
     
@@ -344,7 +344,7 @@ final class FormatterSpecialCaseTests: XCTestKitCase
         \(LK.changed.rawValue)character 3 ("c" → "Y")
 """
         
-        XCTAssertEqual(Formatter.format(node), expected)
+        XCTKAssertEqual(Formatter.format(node), expected)
     }
     
     
@@ -378,7 +378,7 @@ final class FormatterSpecialCaseTests: XCTestKitCase
         \(LK.actual.rawValue)"ABC"
 """
         
-        XCTAssertEqual(Formatter.format(node), expected)
+        XCTKAssertEqual(Formatter.format(node), expected)
     }
     
     
@@ -417,7 +417,7 @@ final class FormatterSpecialCaseTests: XCTestKitCase
     \(LK.missing.rawValue)"c"
 """
         
-        XCTAssertEqual(Formatter.format(node), expected)
+        XCTKAssertEqual(Formatter.format(node), expected)
     }
     
     
@@ -454,7 +454,7 @@ final class FormatterSpecialCaseTests: XCTestKitCase
     \(LK.unexpected.rawValue)"c"
 """
         
-        XCTAssertEqual(Formatter.format(node), expected)
+        XCTKAssertEqual(Formatter.format(node), expected)
     }
     
     
@@ -491,7 +491,7 @@ final class FormatterSpecialCaseTests: XCTestKitCase
     \(LK.unexpected.rawValue)"c"
 """
         
-        XCTAssertEqual(Formatter.format(node), expected)
+        XCTKAssertEqual(Formatter.format(node), expected)
     }
     
     
@@ -534,7 +534,7 @@ final class FormatterSpecialCaseTests: XCTestKitCase
     \(LK.unexpected.rawValue)4
 """
         
-        XCTAssertEqual(Formatter.format(node), expected)
+        XCTKAssertEqual(Formatter.format(node), expected)
     }
     
     
@@ -587,6 +587,6 @@ final class FormatterSpecialCaseTests: XCTestKitCase
         \(LK.unexpected.rawValue)"c"
 """
         
-        XCTAssertEqual(Formatter.format(node), expected)
+        XCTKAssertEqual(Formatter.format(node), expected)
     }
 }

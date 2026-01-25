@@ -30,21 +30,19 @@ final class ComparatorTupleTests: XCTestKitCase
             }
         }
         
+        let exp = Container(pair: (1, "hello"))
         
-        
-        let expected = Container(pair: (1, "hello"))
-        
-        let node: DiffNode = Comparator.computeDiff(
-            expected:   expected,
-            actual:     expected
+        let actual: DiffNode = Comparator.computeDiff(
+            expected:   exp,
+            actual:     exp
         )
         
-        guard node.kind.isSame
-        else
-        {
-            XCTFail("Expected .same, got \(node.kind)")
-            return
-        }
+        let expected = DiffNode(
+            label:  .root(typeName: typeName(of: exp)),
+            kind:   .same
+        )
+        
+        XCTKAssertEqual(expected, actual)
     }
     
     
@@ -64,50 +62,50 @@ final class ComparatorTupleTests: XCTestKitCase
             }
         }
         
+        let exp     = Container(pair: (1, "hello"))
+        let act     = Container(pair: (1, "goodbye"))
         
-        
-        let expected    = Container(pair: (1, "hello"))
-        let actual      = Container(pair: (1, "goodbye"))
-        
-        let node: DiffNode = Comparator.computeDiff(
-            expected:   expected,
-            actual:     actual
+        let actual: DiffNode = Comparator.computeDiff(
+            expected:   exp,
+            actual:     act
         )
         
-        guard case let .different(_, _, tree1) = node.kind
-        else
-        {
-            XCTFail("Expected .different, got \(node.kind)")
-            return
-        }
+        let expected = DiffNode.makeRoot(
+            typeName:   typeName(of: exp),
+            expected:   exp,
+            actual:     act,
+            tree:
+            [
+                .makeStructuralAny(
+                    label:      .property(name: "pair"),
+                    expected:   exp.pair,
+                    actual:     act.pair,
+                    tree:
+                    [
+                        .makeStructuralAny(
+                            label:      .property(name: ".1"),
+                            expected:   exp.pair.1,
+                            actual:     act.pair.1,
+                            tree:
+                            [
+                                .makeLeaf(
+                                    label:      .character(index: 0, count: 4),
+                                    expected:   "hell",
+                                    actual:     "g"
+                                ),
+                                
+                                .makeUnexpected(
+                                    label:      .character(index: 5, count: 5),
+                                    actual:     "odbye"
+                                )
+                            ]
+                        )
+                    ]
+                )
+            ]
+        )
         
-        XCTAssertEqual(tree1.count, 1)
-        XCTAssertEqual(tree1[0].label, .property(name: "pair"))
-        
-        
-        
-        guard case let .different(_, _, tree2) = tree1[0].kind
-        else
-        {
-            XCTFail("Expected .different, got \(tree1[0].kind)")
-            return
-        }
-        
-        XCTAssertEqual(tree2.count, 1)
-        XCTAssertEqual(tree2[0].label, .property(name: ".1"))
-        
-        
-        
-        guard case let .different(exp, act, tree3) = tree2[0].kind
-        else
-        {
-            XCTFail("Expected .different, got \(tree2[0].kind)")
-            return
-        }
-        
-        XCTAssertEqual(exp.value as? String, "hello")
-        XCTAssertEqual(act.value as? String, "goodbye")
-        XCTAssertEqual(tree3.count, 2)
+        XCTKAssertEqual(expected, actual)
     }
     
     
@@ -127,49 +125,36 @@ final class ComparatorTupleTests: XCTestKitCase
             }
         }
         
+        let exp     = Container(user: (name: "Someone", age: 30))
+        let act     = Container(user: (name: "Someone", age: 20))
         
-        
-        let expected    = Container(user: (name: "Someone", age: 30))
-        let actual      = Container(user: (name: "Someone", age: 20))
-        
-        let node: DiffNode = Comparator.computeDiff(
-            expected:   expected,
-            actual:     actual
+        let actual: DiffNode = Comparator.computeDiff(
+            expected:   exp,
+            actual:     act
         )
         
-        guard case let .different(_, _, tree1) = node.kind
-        else
-        {
-            XCTFail("Expected .different, got \(node.kind)")
-            return
-        }
+        let expected = DiffNode.makeRoot(
+            typeName:   typeName(of: exp),
+            expected:   exp,
+            actual:     act,
+            tree:
+            [
+                .makeStructuralAny(
+                    label:      .property(name: "user"),
+                    expected:   exp.user,
+                    actual:     act.user,
+                    tree:
+                    [
+                        .makeLeaf(
+                            label:      .property(name: "age"),
+                            expected:   exp.user.age,
+                            actual:     act.user.age,
+                        )
+                    ]
+                )
+            ]
+        )
         
-        XCTAssertEqual(tree1.count, 1)
-        XCTAssertEqual(tree1[0].label, .property(name: "user"))
-        
-        
-        
-        guard case let .different(_, _, tree2) = tree1[0].kind
-        else
-        {
-            XCTFail("Expected .different, got \(tree1[0].kind)")
-            return
-        }
-        
-        XCTAssertEqual(tree2.count, 1)
-        XCTAssertEqual(tree2[0].label, .property(name: "age"))
-        
-        
-        
-        guard case let .different(exp, act, tree3) = tree2[0].kind
-        else
-        {
-            XCTFail("Expected .different, got \(tree2[0].kind)")
-            return
-        }
-        
-        XCTAssertEqual(exp.value as? Int, 30)
-        XCTAssertEqual(act.value as? Int, 20)
-        XCTAssertTrue(tree3.isEmpty)
+        XCTKAssertEqual(expected, actual)
     }
 }

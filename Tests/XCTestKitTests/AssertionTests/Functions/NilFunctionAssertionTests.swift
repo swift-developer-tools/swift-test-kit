@@ -240,7 +240,7 @@ final class NilFunctionAssertionTests: XCTestKitCase
         {
             _ = try XCTKUnwrap(Optional<Int>(nil))
             
-            XCTKFail("Expected XCTKUnwrapError to be thrown")
+            XCTFail("Expected XCTKUnwrapError to be thrown")
         }
         catch is XCTKUnwrapError
         {
@@ -248,7 +248,7 @@ final class NilFunctionAssertionTests: XCTestKitCase
         }
         catch
         {
-            XCTKFail("Expected XCTKUnwrapError, got \(type(of: error))")
+            XCTFail("Expected XCTKUnwrapError, got \(type(of: error))")
         }
     }
     
@@ -271,7 +271,7 @@ final class NilFunctionAssertionTests: XCTestKitCase
             
             _ = try XCTKUnwrap(try expr())
             
-            XCTKFail("Expected TestError to be thrown")
+            XCTFail("Expected TestError to be thrown")
         }
         catch is TestError
         {
@@ -279,7 +279,7 @@ final class NilFunctionAssertionTests: XCTestKitCase
         }
         catch
         {
-            XCTKFail("Expected TestError, got \(type(of: error))")
+            XCTFail("Expected TestError, got \(type(of: error))")
         }
     }
     

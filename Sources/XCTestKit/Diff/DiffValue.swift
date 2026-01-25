@@ -67,21 +67,23 @@ internal struct RenderedValue: Equatable, Sendable, CustomStringConvertible
         _ value: Any
     )
     {
-        self.typeName = XCTestKit.typeName(of: value)
+        let unwrapped: Any = (value as? AnyHashable)?.base ?? value
         
-        if let string = value as? String
+        self.typeName = String(describing: type(of: unwrapped))
+        
+        if let string = unwrapped as? String
         {
             self.description    = string.escaped
             self.kind           = .string
         }
-        else if let character = value as? Character
+        else if let character = unwrapped as? Character
         {
             self.description    = String(character).escaped
             self.kind           = .string
         }
         else
         {
-            self.description    = String(describing: value)
+            self.description    = String(describing: unwrapped)
             self.kind           = .other
         }
     }
@@ -114,7 +116,7 @@ internal struct RenderedValue: Equatable, Sendable, CustomStringConvertible
 /// The tradeoffs of this approach include increased memory usage, but this is
 /// generally acceptable since diff trees are short-lived, and the string
 /// overhead is relatively light compared to the overall test execution cost.
-internal struct DiffValue
+internal struct DiffValue: Equatable
 {
     /// The underlying value.
     let value       : Any
@@ -143,5 +145,23 @@ internal struct DiffValue
     {
         self.value      = value
         self.rendered   = RenderedValue(value)
+    }
+    
+    
+    
+    /// Checks whether the given values are equal.
+    ///
+    /// - Note: Equality is based on only ``DiffValue/rendered``.
+    ///
+    /// - Parameters:
+    ///   - lhs: The left-hand side value to compare.
+    ///   - rhs: The right-hand side value to compare.
+    /// - Returns: Whether the given values are equal.
+    static func == (
+        lhs : DiffValue,
+        rhs : DiffValue
+    ) -> Bool
+    {
+        return lhs.rendered == rhs.rendered
     }
 }

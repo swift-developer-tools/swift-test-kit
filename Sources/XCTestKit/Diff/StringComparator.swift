@@ -202,11 +202,11 @@ internal struct StringComparator
             }
             else if let removal
             {
-                kind = .missing(expected: DiffValue(removal))
+                kind = .missing(DiffValue(removal))
             }
             else if let insertion
             {
-                kind = .unexpected(actual: DiffValue(insertion))
+                kind = .unexpected(DiffValue(insertion))
             }
             else
             {
@@ -433,12 +433,12 @@ internal struct StringComparator
             else if !removedChars.isEmpty
             {
                 count   = removedChars.count
-                kind    = .missing(expected: DiffValue(String(removedChars)))
+                kind    = .missing(DiffValue(String(removedChars)))
             }
             else if !insertedChars.isEmpty
             {
                 count   = insertedChars.count
-                kind    = .unexpected(actual: DiffValue(String(insertedChars)))
+                kind    = .unexpected(DiffValue(String(insertedChars)))
             }
             else
             {

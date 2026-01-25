@@ -44,7 +44,7 @@ final class FormatterIntegrationTests: XCTestKitCase
         Cycle detected in both expected and actual values
 """
         
-        XCTAssertEqual(Formatter.format(node), expected)
+        XCTKAssertEqual(Formatter.format(node), expected)
     }
     
     
@@ -65,7 +65,7 @@ final class FormatterIntegrationTests: XCTestKitCase
 \(LK.actual.rawValue)\(act)
 """
         
-        XCTAssertEqual(Formatter.format(node), expected)
+        XCTKAssertEqual(Formatter.format(node), expected)
     }
     
     
@@ -96,7 +96,7 @@ final class FormatterIntegrationTests: XCTestKitCase
         \(LK.unexpected.rawValue)\(quote(act[3]))
 """
         
-        XCTAssertEqual(Formatter.format(node), expected)
+        XCTKAssertEqual(Formatter.format(node), expected)
     }
     
     
@@ -128,7 +128,7 @@ final class FormatterIntegrationTests: XCTestKitCase
         \(LK.actual.rawValue)\(act["key"]!.count)
 """
         
-        XCTAssertEqual(Formatter.format(node), expected)
+        XCTKAssertEqual(Formatter.format(node), expected)
     }
     
     
@@ -153,7 +153,7 @@ final class FormatterIntegrationTests: XCTestKitCase
     \(LK.unexpected.rawValue)"d"
 """
         
-        XCTAssertEqual(Formatter.format(node), expected)
+        XCTKAssertEqual(Formatter.format(node), expected)
     }
     
     
@@ -179,7 +179,7 @@ final class FormatterIntegrationTests: XCTestKitCase
         \(LK.changed.rawValue)character 2 ("e" → "a")
 """
         
-        XCTAssertEqual(Formatter.format(node), expected)
+        XCTKAssertEqual(Formatter.format(node), expected)
     }
     
     
@@ -212,7 +212,7 @@ final class FormatterIntegrationTests: XCTestKitCase
         \(LK.actual.rawValue)\(act.age)
 """
         
-        XCTAssertEqual(Formatter.format(node), expected)
+        XCTKAssertEqual(Formatter.format(node), expected)
     }
     
     
@@ -249,7 +249,7 @@ final class FormatterIntegrationTests: XCTestKitCase
         \(LK.actual.rawValue)\(act.inner.value)
 """
         
-        XCTAssertEqual(Formatter.format(node), expected)
+        XCTKAssertEqual(Formatter.format(node), expected)
     }
     
     
@@ -285,6 +285,6 @@ final class FormatterIntegrationTests: XCTestKitCase
     ... and 3 more differences
 """
         
-        XCTAssertEqual(Formatter.format(node, options: options), expected)
+        XCTKAssertEqual(Formatter.format(node, options: options), expected)
     }
 }

@@ -61,7 +61,7 @@ final class FormatterTruncationTests: XCTestKitCase
     ... and more differences (limit: 2)
 """
         
-        XCTAssertEqual(Formatter.format(node, options: options), expected)
+        XCTKAssertEqual(Formatter.format(node, options: options), expected)
     }
     
     
@@ -106,7 +106,7 @@ final class FormatterTruncationTests: XCTestKitCase
     ... and 3 more differences
 """
         
-        XCTAssertEqual(Formatter.format(node, options: options), expected)
+        XCTKAssertEqual(Formatter.format(node, options: options), expected)
     }
     
     
@@ -150,7 +150,7 @@ final class FormatterTruncationTests: XCTestKitCase
         \(LK.actual.rawValue)\(act[2])
 """
         
-        XCTAssertEqual(Formatter.format(node, options: options), expected)
+        XCTKAssertEqual(Formatter.format(node, options: options), expected)
     }
     
     
@@ -190,7 +190,7 @@ final class FormatterTruncationTests: XCTestKitCase
     ... and 7 more differences
 """
         
-        XCTAssertEqual(Formatter.format(node, options: options), expected)
+        XCTKAssertEqual(Formatter.format(node, options: options), expected)
     }
     
     
@@ -247,7 +247,7 @@ final class FormatterTruncationTests: XCTestKitCase
     ... and 3 more differences
 """
         
-        XCTAssertEqual(Formatter.format(node, options: options), expected)
+        XCTKAssertEqual(Formatter.format(node, options: options), expected)
     }
     
     
@@ -288,7 +288,7 @@ final class FormatterTruncationTests: XCTestKitCase
     ... and 2 more differences
 """
         
-        XCTAssertEqual(Formatter.format(node, options: options), expected)
+        XCTKAssertEqual(Formatter.format(node, options: options), expected)
     }
     
     
@@ -382,7 +382,7 @@ final class FormatterTruncationTests: XCTestKitCase
     ... and 2 more differences
 """
         
-        XCTAssertEqual(Formatter.format(node, options: options), expected)
+        XCTKAssertEqual(Formatter.format(node, options: options), expected)
     }
     
     
@@ -476,7 +476,7 @@ final class FormatterTruncationTests: XCTestKitCase
         \(LK.actual.rawValue)\(act.l2.l3.l4.l5.l6.l7.l8.l9.l10.val)
 """
         
-        XCTAssertEqual(Formatter.format(node, options: options), expected)
+        XCTKAssertEqual(Formatter.format(node, options: options), expected)
     }
     
     
@@ -507,7 +507,7 @@ final class FormatterTruncationTests: XCTestKitCase
 \(LK.actual.rawValue)\(quote(act))
 """
         
-        XCTAssertEqual(Formatter.format(node, options: options), expected)
+        XCTKAssertEqual(Formatter.format(node, options: options), expected)
     }
     
     
@@ -536,7 +536,7 @@ final class FormatterTruncationTests: XCTestKitCase
 \(LK.actual.rawValue)\(quote(act))
 """
         
-        XCTAssertEqual(Formatter.format(node, options: options), expected)
+        XCTKAssertEqual(Formatter.format(node, options: options), expected)
     }
     
     
@@ -584,7 +584,7 @@ final class FormatterTruncationTests: XCTestKitCase
         \(LK.actual.rawValue)\(quote(act.data))
 """
         
-        XCTAssertEqual(Formatter.format(node, options: options), expected)
+        XCTKAssertEqual(Formatter.format(node, options: options), expected)
     }
     
     
@@ -645,7 +645,7 @@ final class FormatterTruncationTests: XCTestKitCase
         \(LK.actual.rawValue)\(quote(act.l2.l3.data))
 """
         
-        XCTAssertEqual(Formatter.format(node, options: options), expected)
+        XCTKAssertEqual(Formatter.format(node, options: options), expected)
     }
     
     
@@ -690,7 +690,7 @@ final class FormatterTruncationTests: XCTestKitCase
 \(LK.actual.rawValue)\(act.age)
 """
         
-        XCTAssertEqual(Formatter.format(node, options: options), expected)
+        XCTKAssertEqual(Formatter.format(node, options: options), expected)
     }
     
     
@@ -733,7 +733,7 @@ final class FormatterTruncationTests: XCTestKitCase
     \(LK.actual.rawValue)\(act.age)
 """
         
-        XCTAssertEqual(Formatter.format(node, options: options), expected)
+        XCTKAssertEqual(Formatter.format(node, options: options), expected)
     }
     
     
@@ -758,6 +758,6 @@ final class FormatterTruncationTests: XCTestKitCase
 \(LK.actual.rawValue)\(act)
 """
         
-        XCTAssertEqual(Formatter.format(node, options: options), expected)
+        XCTKAssertEqual(Formatter.format(node, options: options), expected)
     }
 }

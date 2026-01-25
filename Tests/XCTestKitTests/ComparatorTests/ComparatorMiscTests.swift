@@ -19,190 +19,176 @@ final class ComparatorMiscTests: XCTestKitCase
     
     func testBooleanEqualValues() throws
     {
-        let expected: Bool = true
+        let exp: Bool = true
         
-        let node: DiffNode = Comparator.computeDiff(
-            expected:   expected,
-            actual:     expected
+        let actual: DiffNode = Comparator.computeDiff(
+            expected:   exp,
+            actual:     exp
         )
         
-        XCTAssertEqual(node.label, .root(typeName: typeName(of: expected)))
+        let expected = DiffNode(
+            label:  .root(typeName: typeName(of: exp)),
+            kind:   .same
+        )
         
-        guard node.kind.isSame
-        else
-        {
-            XCTFail("Expected .same, got \(node.kind)")
-            return
-        }
+        XCTKAssertEqual(expected, actual)
     }
     
     
     
     func testBooleanDifferentValues() throws
     {
-        let expected    : Bool    = true
-        let actual      : Bool    = false
+        let exp : Bool  = true
+        let act : Bool  = false
         
-        let node: DiffNode = Comparator.computeDiff(
-            expected:   expected,
-            actual:     actual
+        let actual: DiffNode = Comparator.computeDiff(
+            expected:   exp,
+            actual:     act
         )
         
-        XCTAssertEqual(node.label, .root(typeName: typeName(of: expected)))
+        let expected = DiffNode.makeRoot(
+            typeName:   typeName(of: exp),
+            expected:   exp,
+            actual:     act,
+            tree:       []
+        )
         
-        guard case let .different(exp, act, tree) = node.kind
-        else
-        {
-            XCTFail("Expected .different, got \(node.kind)")
-            return
-        }
-        
-        XCTAssertEqual(exp.value as? Bool, expected)
-        XCTAssertEqual(act.value as? Bool, actual)
-        XCTAssertTrue(tree.isEmpty)
+        XCTKAssertEqual(expected, actual)
     }
     
     
     
     func testIntegerEqualValues() throws
     {
-        let expected: Int = 10
+        let exp: Int = 10
         
-        let node: DiffNode = Comparator.computeDiff(
-            expected:   expected,
-            actual:     expected
+        let actual: DiffNode = Comparator.computeDiff(
+            expected:   exp,
+            actual:     exp
         )
         
-        XCTAssertEqual(node.label, .root(typeName: typeName(of: expected)))
+        let expected = DiffNode(
+            label:  .root(typeName: typeName(of: exp)),
+            kind:   .same
+        )
         
-        guard node.kind.isSame
-        else
-        {
-            XCTFail("Expected .same, got \(node.kind)")
-            return
-        }
+        XCTKAssertEqual(expected, actual)
     }
     
     
     
     func testIntegerDifferentValues() throws
     {
-        let expected    : Int   = 10
-        let actual      : Int   = 20
+        let exp : Int   = 10
+        let act : Int   = 20
         
-        let node: DiffNode = Comparator.computeDiff(
-            expected:   expected,
-            actual:     actual
+        let actual: DiffNode = Comparator.computeDiff(
+            expected:   exp,
+            actual:     act
         )
         
-        XCTAssertEqual(node.label, .root(typeName: typeName(of: expected)))
+        let expected = DiffNode.makeRoot(
+            typeName:   typeName(of: exp),
+            expected:   exp,
+            actual:     act,
+            tree:       []
+        )
         
-        guard case let .different(exp, act, tree) = node.kind
-        else
-        {
-            XCTFail("Expected .different, got \(node.kind)")
-            return
-        }
-        
-        XCTAssertEqual(exp.value as? Int, expected)
-        XCTAssertEqual(act.value as? Int, actual)
-        XCTAssertTrue(tree.isEmpty)
+        XCTKAssertEqual(expected, actual)
     }
     
     
     
     func testFloatEqualValues() throws
     {
-        let expected: Float64 = 10 / 3
+        let exp: Float64 = 10 / 3
         
-        let node: DiffNode = Comparator.computeDiff(
-            expected:   expected,
-            actual:     expected
+        let actual: DiffNode = Comparator.computeDiff(
+            expected:   exp,
+            actual:     exp
         )
         
-        XCTAssertEqual(node.label, .root(typeName: typeName(of: expected)))
+        let expected = DiffNode(
+            label:  .root(typeName: typeName(of: exp)),
+            kind:   .same
+        )
         
-        guard node.kind.isSame
-        else
-        {
-            XCTFail("Expected .same, got \(node.kind)")
-            return
-        }
+        XCTKAssertEqual(expected, actual)
     }
     
     
     
     func testFloatDifferentValues() throws
     {
-        let expected    : Float64   = 10 / 3
-        let actual      : Float64   = 20 / 3
+        let exp : Float64   = 10 / 3
+        let act : Float64   = 20 / 3
         
-        let node: DiffNode = Comparator.computeDiff(
-            expected:   expected,
-            actual:     actual
+        let actual: DiffNode = Comparator.computeDiff(
+            expected:   exp,
+            actual:     act
         )
         
-        XCTAssertEqual(node.label, .root(typeName: typeName(of: expected)))
+        let expected = DiffNode.makeRoot(
+            typeName:   typeName(of: exp),
+            expected:   exp,
+            actual:     act,
+            tree:       []
+        )
         
-        guard case let .different(exp, act, tree) = node.kind
-        else
-        {
-            XCTFail("Expected .different, got \(node.kind)")
-            return
-        }
-        
-        XCTAssertEqual(exp.value as? Float64, expected)
-        XCTAssertEqual(act.value as? Float64, actual)
-        XCTAssertTrue(tree.isEmpty)
+        XCTKAssertEqual(expected, actual)
     }
     
     
     
     func testStringEqualValues() throws
     {
-        let expected: String = "hello"
+        let exp: String = "hello"
         
-        let node: DiffNode = Comparator.computeDiff(
-            expected:   expected,
-            actual:     expected
+        let actual: DiffNode = Comparator.computeDiff(
+            expected:   exp,
+            actual:     exp
         )
         
-        XCTAssertEqual(node.label, .root(typeName: typeName(of: expected)))
+        let expected = DiffNode(
+            label:  .root(typeName: typeName(of: exp)),
+            kind:   .same
+        )
         
-        guard node.kind.isSame
-        else
-        {
-            XCTFail("Expected .same, got \(node.kind)")
-            return
-        }
+        XCTKAssertEqual(expected, actual)
     }
     
     
     
     func testStringDifferentValues() throws
     {
-        let expected    : String    = "hello"
-        let actual      : String    = "goodbye"
+        let exp : String    = "hello"
+        let act : String    = "goodbye"
         
-        let node: DiffNode = Comparator.computeDiff(
-            expected:   expected,
-            actual:     actual
+        let actual: DiffNode = Comparator.computeDiff(
+            expected:   exp,
+            actual:     act
         )
         
-        XCTAssertEqual(node.label, .root(typeName: typeName(of: expected)))
+        let expected = DiffNode.makeRoot(
+            typeName:   typeName(of: exp),
+            expected:   exp,
+            actual:     act,
+            tree:
+            [
+                .makeLeaf(
+                    label:      .character(index: 0, count: 4),
+                    expected:   "hell",
+                    actual:     "g"
+                ),
+                
+                .makeUnexpected(
+                    label:      .character(index: 5, count: 5),
+                    actual:     "odbye"
+                )
+            ]
+        )
         
-        guard case let .different(exp, act, tree) = node.kind
-        else
-        {
-            XCTFail("Expected .different, got \(node.kind)")
-            return
-        }
-        
-        XCTAssertEqual(exp.value as? String, expected)
-        XCTAssertEqual(act.value as? String, actual)
-        XCTAssertEqual(tree.count, 2)
-        XCTAssertEqual(tree[0].label, .character(index: 0, count: 4))
-        XCTAssertEqual(tree[1].label, .character(index: 5, count: 5))
+        XCTKAssertEqual(expected, actual)
     }
     
     
@@ -238,37 +224,29 @@ final class ComparatorMiscTests: XCTestKitCase
             }
         }
         
+        let exp     = User(name: "Someone", age: 30)
+        let act     = User(name: "Someone", age: 20)
         
-        
-        let expected    = User(name: "Someone", age: 30)
-        let actual      = User(name: "Someone", age: 20)
-        
-        let node: DiffNode = Comparator.computeDiff(
-            expected:   expected,
-            actual:     actual
+        let actual: DiffNode = Comparator.computeDiff(
+            expected:   exp,
+            actual:     act
         )
         
-        guard case let .different(_, _, tree) = node.kind
-        else
-        {
-            XCTFail("Expected .different, got \(node.kind)")
-            return
-        }
+        let expected = DiffNode.makeRoot(
+            typeName:   typeName(of: exp),
+            expected:   exp,
+            actual:     act,
+            tree:
+            [
+                .makeLeaf(
+                    label:      .property(name: "age"),
+                    expected:   exp.age,
+                    actual:     act.age
+                )
+            ]
+        )
         
-        XCTAssertEqual(tree.count, 1)
-        XCTAssertEqual(tree[0].label, .property(name: "age"))
-        
-        
-        
-        guard case let .different(exp, act, _) = tree[0].kind
-        else
-        {
-            XCTFail("Expected .different, got \(tree[0].kind)")
-            return
-        }
-        
-        XCTAssertEqual(exp.value as? Int, 30)
-        XCTAssertEqual(act.value as? Int, 20)
+        XCTKAssertEqual(expected, actual)
     }
     
     
@@ -298,48 +276,46 @@ final class ComparatorMiscTests: XCTestKitCase
             }
         }
         
-        
-        
-        let expected = Handler(
+        let exp = Handler(
             id:         1,
             name:       "a",
             action:     { return 2 + 2 }
         )
         
-        let actual = Handler(
+        let act = Handler(
             id:         1,
             name:       "b",
             action:     { return 3 * 3 }
         )
         
-        
-        
-        let node: DiffNode = Comparator.computeDiff(
-            expected:   expected,
-            actual:     actual
+        let actual: DiffNode = Comparator.computeDiff(
+            expected:   exp,
+            actual:     act
         )
         
-        guard case let .different(_, _, tree) = node.kind
-        else
-        {
-            XCTFail("Expected .different, got \(node.kind)")
-            return
-        }
+        let expected = DiffNode.makeRoot(
+            typeName:   typeName(of: exp),
+            expected:   exp,
+            actual:     act,
+            tree:
+            [
+                .makeStructural(
+                    label:      .property(name: "name"),
+                    expected:   exp.name,
+                    actual:     act.name,
+                    tree:
+                    [
+                        .makeLeaf(
+                            label:      .character(index: 0, count: 1),
+                            expected:   exp.name,
+                            actual:     act.name
+                        )
+                    ]
+                )
+            ]
+        )
         
-        XCTAssertEqual(tree.count, 1)
-        XCTAssertEqual(tree[0].label, .property(name: "name"))
-        
-        
-        
-        guard case let .different(exp, act, _) = tree[0].kind
-        else
-        {
-            XCTFail("Expected .different, got \(tree[0].kind)")
-            return
-        }
-        
-        XCTAssertEqual(exp.value as? String, "a")
-        XCTAssertEqual(act.value as? String, "b")
+        XCTKAssertEqual(expected, actual)
     }
     
     
@@ -348,171 +324,152 @@ final class ComparatorMiscTests: XCTestKitCase
     
     func testDataEqualValues() throws
     {
-        let expected = Data([0x00, 0x01, 0x02, 0x03])
+        let exp = Data([0x00, 0x01, 0x02, 0x03])
         
-        let node: DiffNode = Comparator.computeDiff(
-            expected:   expected,
-            actual:     expected
+        let actual: DiffNode = Comparator.computeDiff(
+            expected:   exp,
+            actual:     exp
         )
         
-        guard node.kind.isSame
-        else
-        {
-            XCTFail("Expected .same, got \(node.kind)")
-            return
-        }
+        let expected = DiffNode(
+            label:  .root(typeName: typeName(of: exp)),
+            kind:   .same
+        )
+        
+        XCTKAssertEqual(expected, actual)
     }
     
     
     
     func testDataDifferentValues() throws
     {
-        let expected    = Data([0x00, 0x01, 0x02, 0x03])
-        let actual      = Data([0x00, 0x01, 0xFF, 0x03])
+        let expBytes    : [UInt8]   = [0x00, 0x01, 0x02, 0x03]
+        let actBytes    : [UInt8]   = [0x00, 0x01, 0xFF, 0x03]
+        let exp         : Data      = .init(expBytes)
+        let act         : Data      = .init(actBytes)
         
-        let node: DiffNode = Comparator.computeDiff(
-            expected:   expected,
-            actual:     actual
+        let actual: DiffNode = Comparator.computeDiff(
+            expected:   exp,
+            actual:     act
         )
         
-        guard case let .different(exp1, act1, tree1) = node.kind
-        else
-        {
-            XCTFail("Expected .different, got \(node.kind)")
-            return
-        }
+        let expected = DiffNode.makeRoot(
+            typeName:   typeName(of: exp),
+            expected:   exp,
+            actual:     act,
+            tree:
+            [
+                .makeStructural(
+                    label:      .property(name: "bytes"),
+                    expected:   expBytes,
+                    actual:     actBytes,
+                    tree:
+                    [
+                        .makeLeaf(
+                            label:      .index(2),
+                            expected:   expBytes[2],
+                            actual:     actBytes[2]
+                        )
+                    ]
+                )
+            ]
+        )
         
-        XCTAssertEqual(exp1.value as? Data, expected)
-        XCTAssertEqual(act1.value as? Data, actual)
-        XCTAssertEqual(tree1.count, 1)
-        XCTAssertEqual(tree1[0].label, .property(name: "bytes"))
-        
-        
-        
-        guard case let .different(_, _, tree2) = tree1[0].kind
-        else
-        {
-            XCTFail("Expected .different, got \(tree1[0].kind)")
-            return
-        }
-        
-        XCTAssertEqual(tree2.count, 1)
-        XCTAssertEqual(tree2[0].label, .index(2))
-        
-        
-        
-        guard case let .different(exp2, act2, _) = tree2[0].kind
-        else
-        {
-            XCTFail("Expected .different, got \(tree2[0].kind)")
-            return
-        }
-        
-        XCTAssertEqual(exp2.value as? UInt8, 0x02)
-        XCTAssertEqual(act2.value as? UInt8, 0xFF)
+        XCTKAssertEqual(expected, actual)
     }
     
     
     
     func testDataDifferentLengths() throws
     {
-        let expected    = Data([0x00, 0x01, 0x02])
-        let actual      = Data([0x00, 0x01])
+        let expBytes    : [UInt8]   = [0x00, 0x01, 0x02]
+        let actBytes    : [UInt8]   = [0x00, 0x01]
+        let exp         : Data      = .init(expBytes)
+        let act         : Data      = .init(actBytes)
         
-        let node: DiffNode = Comparator.computeDiff(
-            expected:   expected,
-            actual:     actual
+        let actual: DiffNode = Comparator.computeDiff(
+            expected:   exp,
+            actual:     act
         )
         
-        guard case let .different(exp1, act1, tree1) = node.kind
-        else
-        {
-            XCTFail("Expected .different, got \(node.kind)")
-            return
-        }
+        let expected = DiffNode.makeRoot(
+            typeName:   typeName(of: exp),
+            expected:   exp,
+            actual:     act,
+            tree:
+            [
+                .makeLeaf(
+                    label:      .property(name: "count"),
+                    expected:   exp.count,
+                    actual:     act.count
+                ),
+                
+                .makeStructural(
+                    label:      .property(name: "bytes"),
+                    expected:   expBytes,
+                    actual:     actBytes,
+                    tree:
+                    [
+                        .makeMissing(
+                            label:      .index(2),
+                            expected:   expBytes[2]
+                        )
+                    ]
+                )
+            ]
+        )
         
-        XCTAssertEqual(exp1.value as? Data, expected)
-        XCTAssertEqual(act1.value as? Data, actual)
-        XCTAssertEqual(tree1.count, 2)
-        XCTAssertEqual(tree1[0].label, .property(name: "count"))
-        XCTAssertEqual(tree1[1].label, .property(name: "bytes"))
-        
-        
-        
-        guard case let .different(exp1, act1, _) = tree1[0].kind
-        else
-        {
-            XCTFail("Expected .different, got \(tree1[0].kind)")
-            return
-        }
-        
-        XCTAssertEqual(exp1.value as? Int, expected.count)
-        XCTAssertEqual(act1.value as? Int, actual.count)
-        
-        
-        
-        guard case let .different(_, _, tree2) = tree1[1].kind
-        else
-        {
-            XCTFail("Expected .different, got \(tree1[1].kind)")
-            return
-        }
-        
-        XCTAssertEqual(tree2.count, 1)
-        XCTAssertEqual(tree2[0].label, .index(2))
-        
-        
-        
-        guard case let .missing(exp) = tree2[0].kind
-        else
-        {
-            XCTFail("Expected .missing, got \(tree2[0].kind)")
-            return
-        }
-        
-        XCTAssertEqual(exp.value as? UInt8, 0x02)
+        XCTKAssertEqual(expected, actual)
     }
     
     
     
     func testDateEqualValues() throws
     {
-        let expected = Date(timeIntervalSince1970: 1_000_000)
+        let exp = Date(timeIntervalSince1970: 1_000_000)
         
-        let node: DiffNode = Comparator.computeDiff(
-            expected:   expected,
-            actual:     expected
+        let actual: DiffNode = Comparator.computeDiff(
+            expected:   exp,
+            actual:     exp
         )
         
-        guard node.kind.isSame
-        else
-        {
-            XCTFail("Expected .same, got \(node.kind)")
-            return
-        }
+        let expected = DiffNode(
+            label:  .root(typeName: typeName(of: exp)),
+            kind:   .same
+        )
+        
+        XCTKAssertEqual(expected, actual)
     }
     
     
     
     func testDateDifferentValues() throws
     {
-        let expected    = Date(timeIntervalSince1970: 1_000_000)
-        let actual      = Date(timeIntervalSince1970: 2_000_000)
+        let exp     = Date(timeIntervalSince1970: 1_000_000)
+        let act     = Date(timeIntervalSince1970: 2_000_000)
         
-        let node: DiffNode = Comparator.computeDiff(
-            expected:   expected,
-            actual:     actual
+        let actual: DiffNode = Comparator.computeDiff(
+            expected:   exp,
+            actual:     act
         )
         
-        guard case let .different(exp, act, _) = node.kind
-        else
-        {
-            XCTFail("Expected .different, got \(node.kind)")
-            return
-        }
+        let expected = DiffNode.makeRoot(
+            typeName:   typeName(of: exp),
+            expected:   exp,
+            actual:     act,
+            tree:
+            [
+                .makeLeaf(
+                    label:      .property(
+                                    name: "timeIntervalSinceReferenceDate"
+                                ),
+                    expected:   exp.timeIntervalSinceReferenceDate,
+                    actual:     act.timeIntervalSinceReferenceDate
+                )
+            ]
+        )
         
-        XCTAssertEqual(exp.value as? Date, expected)
-        XCTAssertEqual(act.value as? Date, actual)
+        XCTKAssertEqual(expected, actual)
     }
     
     
@@ -528,21 +485,19 @@ final class ComparatorMiscTests: XCTestKitCase
             static let execute  = Permissions(rawValue: 1 << 2)
         }
         
+        let exp: Permissions = [.read, .write]
         
-        
-        let expected: Permissions = [.read, .write]
-        
-        let node: DiffNode = Comparator.computeDiff(
-            expected:   expected,
-            actual:     expected
+        let actual: DiffNode = Comparator.computeDiff(
+            expected:   exp,
+            actual:     exp
         )
         
-        guard node.kind.isSame
-        else
-        {
-            XCTFail("Expected .same, got \(node.kind)")
-            return
-        }
+        let expected = DiffNode(
+            label:  .root(typeName: typeName(of: exp)),
+            kind:   .same
+        )
+        
+        XCTKAssertEqual(expected, actual)
     }
     
     
@@ -558,217 +513,166 @@ final class ComparatorMiscTests: XCTestKitCase
             static let execute  = Permissions(rawValue: 1 << 2)
         }
         
+        let exp : Permissions   = [.read, .write]
+        let act : Permissions   = [.read, .execute]
         
-        
-        let expected    : Permissions = [.read, .write]
-        let actual      : Permissions = [.read, .execute]
-        
-        let node: DiffNode = Comparator.computeDiff(
-            expected:   expected,
-            actual:     actual
+        let actual: DiffNode = Comparator.computeDiff(
+            expected:   exp,
+            actual:     act
         )
         
-        guard case let .different(_, _, tree) = node.kind
-        else
-        {
-            XCTFail("Expected .different, got \(node.kind)")
-            return
-        }
+        let expected = DiffNode.makeRoot(
+            typeName:   typeName(of: exp),
+            expected:   exp,
+            actual:     act,
+            tree:
+            [
+                .makeLeaf(
+                    label:      .property(name: "rawValue"),
+                    expected:   exp.rawValue,
+                    actual:     act.rawValue
+                )
+            ]
+        )
         
-        XCTAssertEqual(tree.count, 1)
-        XCTAssertEqual(tree[0].label, .property(name: "rawValue"))
-        
-        
-        
-        guard case let .different(exp, act, _) = tree[0].kind
-        else
-        {
-            XCTFail("Expected .different, got \(tree[0].kind)")
-            return
-        }
-        
-        XCTAssertEqual(exp.value as? Int, expected.rawValue)
-        XCTAssertEqual(act.value as? Int, actual.rawValue)
+        XCTKAssertEqual(expected, actual)
     }
     
     
     
     func testRangeEqualValues() throws
     {
-        let expected: Range<Int> = 0..<10
+        let exp: Range<Int> = 0..<10
         
-        let node: DiffNode = Comparator.computeDiff(
-            expected:   expected,
-            actual:     expected
+        let actual: DiffNode = Comparator.computeDiff(
+            expected:   exp,
+            actual:     exp
         )
         
-        guard node.kind.isSame
-        else
-        {
-            XCTFail("Expected .same, got \(node.kind)")
-            return
-        }
+        let expected = DiffNode(
+            label:  .root(typeName: typeName(of: exp)),
+            kind:   .same
+        )
+        
+        XCTKAssertEqual(expected, actual)
     }
     
     
     
     func testRangeDifferentValues() throws
     {
-        let expected    : Range<Int>    = 0..<10
-        let actual      : Range<Int>    = 0..<5
+        let exp : Range<Int>    = 0..<10
+        let act : Range<Int>    = 0..<5
         
-        let node: DiffNode = Comparator.computeDiff(
-            expected:   expected,
-            actual:     actual
+        let actual: DiffNode = Comparator.computeDiff(
+            expected:   exp,
+            actual:     act
         )
         
-        guard case let .different(_, _, tree) = node.kind
-        else
-        {
-            XCTFail("Expected .different, got \(node.kind)")
-            return
-        }
+        let expected = DiffNode.makeRoot(
+            typeName:   typeName(of: exp),
+            expected:   exp,
+            actual:     act,
+            tree:
+            [
+                .makeLeaf(
+                    label:      .property(name: "upperBound"),
+                    expected:   exp.upperBound,
+                    actual:     act.upperBound
+                )
+            ]
+        )
         
-        XCTAssertEqual(tree.count, 1)
-        XCTAssertEqual(tree[0].label, .property(name: "upperBound"))
-        
-        
-        
-        guard case let .different(exp, act, _) = tree[0].kind
-        else
-        {
-            XCTFail("Expected .different, got \(tree[0].kind)")
-            return
-        }
-        
-        XCTAssertEqual(exp.value as? Int, 10)
-        XCTAssertEqual(act.value as? Int, 5)
+        XCTKAssertEqual(expected, actual)
     }
     
     
     
     func testClosedRangeDifferentValues() throws
     {
-        let expected    : ClosedRange<Int>  = 0...10
-        let actual      : ClosedRange<Int>  = 5...10
+        let exp : ClosedRange<Int>  = 0...10
+        let act : ClosedRange<Int>  = 5...10
         
-        let node: DiffNode = Comparator.computeDiff(
-            expected:   expected,
-            actual:     actual
+        let actual: DiffNode = Comparator.computeDiff(
+            expected:   exp,
+            actual:     act
         )
         
-        guard case let .different(_, _, tree) = node.kind
-        else
-        {
-            XCTFail("Expected .different, got \(node.kind)")
-            return
-        }
+        let expected = DiffNode.makeRoot(
+            typeName:   typeName(of: exp),
+            expected:   exp,
+            actual:     act,
+            tree:
+            [
+                .makeLeaf(
+                    label:      .property(name: "lowerBound"),
+                    expected:   exp.lowerBound,
+                    actual:     act.lowerBound
+                )
+            ]
+        )
         
-        XCTAssertEqual(tree.count, 1)
-        XCTAssertEqual(tree[0].label, .property(name: "lowerBound"))
-        
-        
-        
-        guard case let .different(exp, act, _) = tree[0].kind
-        else
-        {
-            XCTFail("Expected .different, got \(tree[0].kind)")
-            return
-        }
-        
-        XCTAssertEqual(exp.value as? Int, 0)
-        XCTAssertEqual(act.value as? Int, 5)
+        XCTKAssertEqual(expected, actual)
     }
     
     
     
     func testURLEqualValues() throws
     {
-        let expected = URL(string: "https://example.com/page")!
+        let exp = URL(string: "https://example.com/page")!
         
-        let node: DiffNode = Comparator.computeDiff(
-            expected:   expected,
-            actual:     expected
+        let actual: DiffNode = Comparator.computeDiff(
+            expected:   exp,
+            actual:     exp
         )
         
-        guard node.kind.isSame
-        else
-        {
-            XCTFail("Expected .same, got \(node.kind)")
-            return
-        }
-    }
-    
-    
-    
-    func testURLDifferentValues() throws
-    {
-        let expected    = URL(string: "https://example.com/page1")!
-        let actual      = URL(string: "https://example.com/page2")!
-        
-        let node: DiffNode = Comparator.computeDiff(
-            expected:   expected,
-            actual:     actual
+        let expected = DiffNode(
+            label:  .root(typeName: typeName(of: exp)),
+            kind:   .same
         )
         
-        guard case let .different(exp, act, _) = node.kind
-        else
-        {
-            XCTFail("Expected .different, got \(node.kind)")
-            return
-        }
-        
-        XCTAssertEqual(exp.value as? URL, expected)
-        XCTAssertEqual(act.value as? URL, actual)
+        XCTKAssertEqual(expected, actual)
     }
     
     
     
     func testUUIDEqualValues() throws
     {
-        let expected = UUID(
-            uuidString: "00000000-0000-0000-0000-000000000001"
-        )!
+        let exp = UUID(uuidString: "00000000-0000-0000-0000-000000000001")!
         
-        let node: DiffNode = Comparator.computeDiff(
-            expected:   expected,
-            actual:     expected
+        let actual: DiffNode = Comparator.computeDiff(
+            expected:   exp,
+            actual:     exp
         )
         
-        guard node.kind.isSame
-        else
-        {
-            XCTFail("Expected .same, got \(node.kind)")
-            return
-        }
+        let expected = DiffNode(
+            label:  .root(typeName: typeName(of: exp)),
+            kind:   .same
+        )
+        
+        XCTKAssertEqual(expected, actual)
     }
     
     
     
     func testUUIDDifferentValues() throws
     {
-        let expected = UUID(
-            uuidString: "00000000-0000-0000-0000-000000000001"
-        )!
+        let exp     = UUID(uuidString: "00000000-0000-0000-0000-000000000001")!
+        let act     = UUID(uuidString: "00000000-0000-0000-0000-000000000002")!
         
-        let actual = UUID(
-            uuidString: "00000000-0000-0000-0000-000000000002"
-        )!
-        
-        let node: DiffNode = Comparator.computeDiff(
-            expected:   expected,
-            actual:     actual
+        let actual: DiffNode = Comparator.computeDiff(
+            expected:   exp,
+            actual:     act
         )
         
-        guard case let .different(exp, act, _) = node.kind
-        else
-        {
-            XCTFail("Expected .different, got \(node.kind)")
-            return
-        }
+        let expected = DiffNode.makeRoot(
+            typeName:   typeName(of: exp),
+            expected:   exp,
+            actual:     act,
+            tree:       []
+        )
         
-        XCTAssertEqual(exp.value as? UUID, expected)
-        XCTAssertEqual(act.value as? UUID, actual)
+        XCTKAssertEqual(expected, actual)
     }
     
     
@@ -777,118 +681,161 @@ final class ComparatorMiscTests: XCTestKitCase
     
     func testLargeArraySingleDifference() throws
     {
-        let expected    : [Int]     = Array(0..<10_000)
-        var actual      : [Int]     = Array(0..<10_000)
+        let exp : [Int]     = Array(0..<10_000)
+        var act : [Int]     = Array(0..<10_000)
         
-        actual[5000] = -1
+        act[5000] = -1
         
-        let node: DiffNode = Comparator.computeDiff(
-            expected:   expected,
-            actual:     actual
+        let actual: DiffNode = Comparator.computeDiff(
+            expected:   exp,
+            actual:     act
         )
         
-        guard case let .different(_, _, tree) = node.kind
-        else
-        {
-            XCTFail("Expected .different, got \(node.kind)")
-            return
-        }
+        let expected = DiffNode.makeRoot(
+            typeName:   typeName(of: exp),
+            expected:   exp,
+            actual:     act,
+            tree:
+            [
+                .makeLeaf(
+                    label:      .index(5000),
+                    expected:   exp[5000],
+                    actual:     act[5000]
+                )
+            ]
+        )
         
-        XCTAssertEqual(tree.count, 1)
-        XCTAssertEqual(tree[0].label, .index(5000))
+        XCTKAssertEqual(expected, actual)
     }
     
     
     
     func testLargeArrayManyDifferences() throws
     {
-        let expected    : [Int]     = Array(0..<10_000)
-        var actual      : [Int]     = Array(0..<10_000)
+        let exp : [Int]     = Array(0..<10_000)
+        var act : [Int]     = Array(0..<10_000)
         
         for i in stride(from: 0, to: 10_000, by: 100)
         {
-            actual[i] = -1
+            act[i] = -1
         }
         
-        let node: DiffNode = Comparator.computeDiff(
-            expected:   expected,
-            actual:     actual
+        let actual: DiffNode = Comparator.computeDiff(
+            expected:   exp,
+            actual:     act
         )
         
-        guard case let .different(_, _, tree) = node.kind
-        else
-        {
-            XCTFail("Expected .different, got \(node.kind)")
-            return
-        }
+        let expected = DiffNode.makeRoot(
+            typeName:   typeName(of: exp),
+            expected:   exp,
+            actual:     act,
+            tree:       stride(from: 0, to: 10_000, by: 100).map
+            {
+                i in
+                
+                .makeLeaf(
+                    label:      .index(i),
+                    expected:   exp[i],
+                    actual:     act[i]
+                )
+            }
+        )
         
-        XCTAssertEqual(tree.count, 100)
+        XCTKAssertEqual(expected, actual)
     }
     
     
     
     func testLargeDictionarySingleDifference() throws
     {
-        var expected    : [Int : Int]   = [:]
-        var actual      : [Int : Int]   = [:]
+        var exp : [Int : Int]   = [:]
+        var act : [Int : Int]   = [:]
         
         for i in 0..<10_000
         {
-            expected[i]     = i
-            actual[i]       = i
+            exp[i]  = i
+            act[i]  = i
         }
         
-        actual[5000] = -1
+        act[5000] = -1
         
-        let node: DiffNode = Comparator.computeDiff(
-            expected:   expected,
-            actual:     actual
+        let actual: DiffNode = Comparator.computeDiff(
+            expected:   exp,
+            actual:     act
         )
         
-        guard case let .different(_, _, tree) = node.kind
-        else
-        {
-            XCTFail("Expected .different, got \(node.kind)")
-            return
-        }
-        
-        XCTAssertEqual(tree.count, 1)
-        
-        XCTAssertEqual(
-            tree[0].label,
-            .key(description: "5000", typeName: "Int")
+        let expected = DiffNode.makeRoot(
+            typeName:   typeName(of: exp),
+            expected:   exp,
+            actual:     act,
+            tree:
+            [
+                .makeLeaf(
+                    label:      .key("5000", typeName: "Int"),
+                    expected:   5000,
+                    actual:     -1
+                )
+            ]
         )
+        
+        XCTKAssertEqual(expected, actual)
     }
     
     
     
     func testLargeSetManyDifferences() throws
     {
-        let expected    : Set<Int>  = Set(0..<10_000)
-        let actual      : Set<Int>  = Set(500..<10_500)
+        let exp : Set<Int>  = .init(0..<10_000)
+        let act : Set<Int>  = .init(500..<10_500)
         
-        let node: DiffNode = Comparator.computeDiff(
-            expected:   expected,
-            actual:     actual
-        )
-        
-        guard case let .different(_, _, tree) = node.kind
-        else
+        let missingNodes: [DiffNode] = (0..<500).map
         {
-            XCTFail("Expected .different, got \(node.kind)")
-            return
+            return .makeMissing(
+                label:      .member,
+                expected:   $0
+            )
         }
         
+        let unexpectedNodes: [DiffNode] = (10_000..<10_500).map
+        {
+            return .makeUnexpected(
+                label:      .member,
+                actual:     $0
+            )
+        }
         
+        let actual: DiffNode = Comparator.computeDiff(
+            expected:   exp,
+            actual:     act
+        )
         
-        let missingCount: Int = tree.filter { $0.kind.isMissing }.count
+        let expected = DiffNode.makeRoot(
+            typeName:   typeName(of: exp),
+            expected:   exp,
+            actual:     act,
+            tree:       (missingNodes + unexpectedNodes).sorted
+            {
+                let lhs : String
+                let rhs : String
+                
+                switch $0.kind
+                {
+                    case let .missing(exp)      : lhs = String(describing: exp)
+                    case let .unexpected(act)   : lhs = String(describing: act)
+                    default                     : lhs = ""
+                }
+                
+                switch $1.kind
+                {
+                    case let .missing(exp)      : rhs = String(describing: exp)
+                    case let .unexpected(act)   : rhs = String(describing: act)
+                    default                     : rhs = ""
+                }
+                
+                return lhs < rhs
+            }
+        )
         
-        XCTAssertEqual(missingCount, 500)
-        
-        
-        
-        let unexpectedCount: Int = tree.filter { $0.kind.isUnexpected }.count
-        
-        XCTAssertEqual(unexpectedCount, 500)
+        XCTKAssertEqual(expected, actual)
     }
 }

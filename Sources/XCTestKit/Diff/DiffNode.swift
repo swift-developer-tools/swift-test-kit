@@ -16,81 +16,29 @@
 /// its position within its parent (for example, the label may be a property
 /// name or an array index), and a kind describing the comparison result at
 /// that position.
-///
-/// Consider the follow type and values:
-///
-/// ```swift
-/// struct User: Equatable
-/// {
-///     let name    : String
-///     let age     : Int
-///     let tags    : [String]
-/// }
-///
-/// let expected    = User(name: "Someone", age: 30, tags: ["a", "b", "c"])
-/// let actual      = User(name: "Someone", age: 20, tags: ["a", "x"])
-/// ```
-///
-/// The resulting diff tree would be:
-///
-/// ```swift
-/// DiffNode(label: .root, kind: .different(
-///     expected:   User(...),
-///     actual:     User(...),
-///     tree:
-///     [
-///         DiffNode(
-///             label:  .property(name: "age"),
-///             kind:   .different(
-///                         expected:   30,
-///                         actual:     20,
-///                         tree:       []
-///                     )
-///         ),
-///
-///         DiffNode(
-///             label:  .property(name: "tags"),
-///             kind:   .different(
-///                         expected:   ["a", "b", "c"],
-///                         actual:     ["a", "x"],
-///                         tree:
-///                         [
-///                             DiffNode(
-///                                 label:  .index(1),
-///                                 kind:   .different(
-///                                             expected:   "b",
-///                                             actual:     "x",
-///                                             tree:       []
-///                                         )
-///                             ),
-///
-///                             DiffNode(
-///                                 label:  .index(2),
-///                                 kind:   .missing(expected: "c")
-///                             )
-///                         ]
-///                     )
-///         )
-///     ]
-/// ))
-/// ```
-///
-/// Note that in the diff tree:
-/// - Equal values like `name` and `tags[0]` are not included in the diff tree,
-/// since only the differences are reported.
-/// - The `age` comparison is a leaf node (`tree` is empty), since integers
-/// and other primitive values cannot be further decomposed.
-/// - The `tags` comparison is a structural node (`tree` is non-empty), since
-/// arrays can be further decomposed.
-/// - The `tags[2]` element uses ``DiffNodeKind/missingexpected:)``, since it
-/// exists in `expected` but not in `actual`.
-internal struct DiffNode
+internal struct DiffNode: Equatable
 {
     /// The node label.
     let label   : DiffNodeLabel
     
     /// The kind of diff node.
     let kind    : DiffNodeKind
+    
+    
+    
+    /// Checks whether the given nodes are equal.
+    /// - Parameters:
+    ///   - lhs: The left-hand side node to compare.
+    ///   - rhs: The right-hand side node to compare.
+    /// - Returns: Whether the given nodes are equal.
+    static func == (
+        lhs : DiffNode,
+        rhs : DiffNode
+    ) -> Bool
+    {
+        return lhs.label == rhs.label
+            && lhs.kind == rhs.kind
+    }
 }
 
 
@@ -98,7 +46,7 @@ internal struct DiffNode
 // MARK: - CycleLocation
 
 /// The location where a cycle was detected.
-internal enum CycleLocation: CustomStringConvertible
+internal enum CycleLocation: Equatable, CustomStringConvertible
 {
     /// A cycle was detected in the expected value.
     case expected
@@ -137,7 +85,7 @@ internal enum CycleLocation: CustomStringConvertible
 
 /// The kind of diff computed between by comparing an expected value to an
 /// actual value.
-internal enum DiffNodeKind
+internal enum DiffNodeKind: Equatable
 {
     /// A cycle was detected during comparison.
     ///
@@ -194,14 +142,14 @@ internal enum DiffNodeKind
     /// the actual value.
     /// - Parameter expected: The expected value.
     case missing(
-        expected: DiffValue
+        _ expected: DiffValue
     )
     
     /// An element or key was present in the actual value, but was not in the
     /// expected value.
     /// - Parameter actual: The actual value.
     case unexpected(
-        actual: DiffValue
+        _ actual: DiffValue
     )
     
     
@@ -304,7 +252,7 @@ internal enum DiffNodeLabel: Equatable, Sendable
     ///   - description: The string representation of the key.
     ///   - typeName: The string representation of the key's type.
     case key(
-        description:    String,
+        _ description:  String,
         typeName:       String
     )
     
@@ -440,8 +388,8 @@ internal enum DiffNodeLabel: Equatable, Sendable
         let unwrapped: Any = (key as AnyHashable).base
         
         return .key(
-            description:    String(describing: unwrapped),
-            typeName:       String(describing: type(of: unwrapped))
+            String(describing: unwrapped),
+            typeName: String(describing: type(of: unwrapped))
         )
     }
 }
