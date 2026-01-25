@@ -23,26 +23,22 @@ final class ComparatorEnumTests: XCTestKitCase
             case failure(error: String, code: Int)
         }
         
+        let exp : Status    = .success(data: "hello")
+        let act : Status    = .failure(error: "goodbye", code: 418)
         
-        
-        let expected    : Status    = .success(data: "hello")
-        let actual      : Status    = .failure(error: "goodbye", code: 418)
-        
-        let node: DiffNode = Comparator.computeDiff(
-            expected:   expected,
-            actual:     actual
+        let actual: DiffNode = Comparator.computeDiff(
+            expected:   exp,
+            actual:     act
         )
         
-        guard case let .different(exp, act, tree) = node.kind
-        else
-        {
-            XCTFail("Expected .different, got \(node.kind)")
-            return
-        }
+        let expected = DiffNode.makeRoot(
+            typeName:   typeName(of: exp),
+            expected:   exp,
+            actual:     act,
+            tree:       []
+        )
         
-        XCTAssertEqual(exp.value as? Status, expected)
-        XCTAssertEqual(act.value as? Status, actual)
-        XCTAssertTrue(tree.isEmpty)
+        XCTKAssertEqual(expected, actual)
     }
     
     
@@ -55,21 +51,19 @@ final class ComparatorEnumTests: XCTestKitCase
             case failure(error: String)
         }
         
+        let exp: Status = .success(data: "hello")
         
-        
-        let expected: Status = .success(data: "hello")
-        
-        let node: DiffNode = Comparator.computeDiff(
-            expected:   expected,
-            actual:     expected
+        let actual: DiffNode = Comparator.computeDiff(
+            expected:   exp,
+            actual:     exp
         )
         
-        guard node.kind.isSame
-        else
-        {
-            XCTFail("Expected .same, got \(node.kind)")
-            return
-        }
+        let expected = DiffNode(
+            label:  .root(typeName: typeName(of: exp)),
+            kind:   .same
+        )
+        
+        XCTKAssertEqual(expected, actual)
     }
     
     
@@ -82,37 +76,42 @@ final class ComparatorEnumTests: XCTestKitCase
             case failure(error: String)
         }
         
+        let exp : Status    = .success(data: "hello")
+        let act : Status    = .success(data: "goodbye")
         
-        
-        let expected    : Status    = .success(data: "hello")
-        let actual      : Status    = .success(data: "goodbye")
-        
-        let node: DiffNode = Comparator.computeDiff(
-            expected:   expected,
-            actual:     actual
+        let actual: DiffNode = Comparator.computeDiff(
+            expected:   exp,
+            actual:     act
         )
         
-        guard case let .different(_, _, tree) = node.kind
-        else
-        {
-            XCTFail("Expected .different, got \(node.kind)")
-            return
-        }
+        let expected = DiffNode.makeRoot(
+            typeName:   typeName(of: exp),
+            expected:   exp,
+            actual:     act,
+            tree:
+            [
+                .makeStructural(
+                    label:      .property(name: "data"),
+                    expected:   "hello",
+                    actual:     "goodbye",
+                    tree:
+                    [
+                        .makeLeaf(
+                            label:      .character(index: 0, count: 4),
+                            expected:   "hell",
+                            actual:     "g"
+                        ),
+                        
+                        .makeUnexpected(
+                            label:      .character(index: 5, count: 5),
+                            actual:     "odbye"
+                        )
+                    ]
+                )
+            ]
+        )
         
-        XCTAssertEqual(tree.count, 1)
-        XCTAssertEqual(tree[0].label, .property(name: "data"))
-        
-        
-        
-        guard case let .different(exp, act, _) = tree[0].kind
-        else
-        {
-            XCTFail("Expected .different, got \(tree[0].kind)")
-            return
-        }
-        
-        XCTAssertEqual(exp.value as? String, "hello")
-        XCTAssertEqual(act.value as? String, "goodbye")
+        XCTKAssertEqual(expected, actual)
     }
     
     
@@ -126,26 +125,22 @@ final class ComparatorEnumTests: XCTestKitCase
             case error
         }
         
+        let exp : State     = .loading
+        let act : State     = .error
         
-        
-        let expected    : State     = .loading
-        let actual      : State     = .error
-        
-        let node: DiffNode = Comparator.computeDiff(
-            expected:   expected,
-            actual:     actual
+        let actual: DiffNode = Comparator.computeDiff(
+            expected:   exp,
+            actual:     act
         )
         
-        guard case let .different(exp, act, tree) = node.kind
-        else
-        {
-            XCTFail("Expected .different, got \(node.kind)")
-            return
-        }
+        let expected = DiffNode.makeRoot(
+            typeName:   typeName(of: exp),
+            expected:   exp,
+            actual:     act,
+            tree:       []
+        )
         
-        XCTAssertEqual(exp.value as? State, expected)
-        XCTAssertEqual(act.value as? State, actual)
-        XCTAssertTrue(tree.isEmpty)
+        XCTKAssertEqual(expected, actual)
     }
     
     
@@ -158,21 +153,19 @@ final class ComparatorEnumTests: XCTestKitCase
             case ready
         }
         
+        let exp: State = .loading
         
-        
-        let expected: State = .loading
-        
-        let node: DiffNode = Comparator.computeDiff(
-            expected:   expected,
-            actual:     expected
+        let actual: DiffNode = Comparator.computeDiff(
+            expected:   exp,
+            actual:     exp
         )
         
-        guard node.kind.isSame
-        else
-        {
-            XCTFail("Expected .same, got \(node.kind)")
-            return
-        }
+        let expected = DiffNode(
+            label:  .root(typeName: typeName(of: exp)),
+            kind:   .same
+        )
+        
+        XCTKAssertEqual(expected, actual)
     }
     
     
@@ -185,26 +178,22 @@ final class ComparatorEnumTests: XCTestKitCase
             case loaded(data: String)
         }
         
+        let exp : State     = .loaded(data: "hello")
+        let act : State     = .loading
         
-        
-        let expected    : State     = .loaded(data: "hello")
-        let actual      : State     = .loading
-        
-        let node: DiffNode = Comparator.computeDiff(
-            expected:   expected,
-            actual:     actual
+        let actual: DiffNode = Comparator.computeDiff(
+            expected:   exp,
+            actual:     act
         )
         
-        guard case let .different(exp, act, tree) = node.kind
-        else
-        {
-            XCTFail("Expected .different, got \(node.kind)")
-            return
-        }
+        let expected = DiffNode.makeRoot(
+            typeName:   typeName(of: exp),
+            expected:   exp,
+            actual:     act,
+            tree:       []
+        )
         
-        XCTAssertEqual(exp.value as? State, expected)
-        XCTAssertEqual(act.value as? State, actual)
-        XCTAssertTrue(tree.isEmpty)
+        XCTKAssertEqual(expected, actual)
     }
     
     
@@ -217,26 +206,22 @@ final class ComparatorEnumTests: XCTestKitCase
             case loaded(data: String)
         }
         
+        let exp : State     = .loading
+        let act : State     = .loaded(data: "hello")
         
-        
-        let expected    : State     = .loading
-        let actual      : State     = .loaded(data: "hello")
-        
-        let node: DiffNode = Comparator.computeDiff(
-            expected:   expected,
-            actual:     actual
+        let actual: DiffNode = Comparator.computeDiff(
+            expected:   exp,
+            actual:     act
         )
         
-        guard case let .different(exp, act, tree) = node.kind
-        else
-        {
-            XCTFail("Expected .different, got \(node.kind)")
-            return
-        }
+        let expected = DiffNode.makeRoot(
+            typeName:   typeName(of: exp),
+            expected:   exp,
+            actual:     act,
+            tree:       []
+        )
         
-        XCTAssertEqual(exp.value as? State, expected)
-        XCTAssertEqual(act.value as? State, actual)
-        XCTAssertTrue(tree.isEmpty)
+        XCTKAssertEqual(expected, actual)
     }
     
     
@@ -248,37 +233,37 @@ final class ComparatorEnumTests: XCTestKitCase
             case success(a: Int, b: String, c: Int)
         }
         
+        let exp : Result    = .success(a: 1, b: "x", c: 2)
+        let act : Result    = .success(a: 1, b: "y", c: 2)
         
-        
-        let expected    : Result    = .success(a: 1, b: "x", c: 2)
-        let actual      : Result    = .success(a: 1, b: "y", c: 2)
-        
-        let node: DiffNode = Comparator.computeDiff(
-            expected:   expected,
-            actual:     actual
+        let actual: DiffNode = Comparator.computeDiff(
+            expected:   exp,
+            actual:     act
         )
         
-        guard case let .different(_, _, tree) = node.kind
-        else
-        {
-            XCTFail("Expected .different, got \(node.kind)")
-            return
-        }
+        let expected = DiffNode.makeRoot(
+            typeName:   typeName(of: exp),
+            expected:   exp,
+            actual:     act,
+            tree:
+            [
+                .makeStructural(
+                    label:      .property(name: "b"),
+                    expected:   "x",
+                    actual:     "y",
+                    tree:
+                    [
+                        .makeLeaf(
+                            label:      .character(index: 0, count: 1),
+                            expected:   "x",
+                            actual:     "y"
+                        )
+                    ]
+                )
+            ]
+        )
         
-        XCTAssertEqual(tree.count, 1)
-        XCTAssertEqual(tree[0].label, .property(name: "b"))
-        
-        
-        
-        guard case let .different(exp, act, _) = tree[0].kind
-        else
-        {
-            XCTFail("Expected .different, got \(tree[0].kind)")
-            return
-        }
-        
-        XCTAssertEqual(exp.value as? String, "x")
-        XCTAssertEqual(act.value as? String, "y")
+        XCTKAssertEqual(expected, actual)
     }
     
     
@@ -290,27 +275,49 @@ final class ComparatorEnumTests: XCTestKitCase
             case success(a: Int, b: String, c: Int)
         }
         
+        let exp : Result    = .success(a: 1, b: "x", c: 2)
+        let act : Result    = .success(a: 3, b: "y", c: 4)
         
-        
-        let expected    : Result    = .success(a: 1, b: "x", c: 2)
-        let actual      : Result    = .success(a: 3, b: "y", c: 4)
-        
-        let node: DiffNode = Comparator.computeDiff(
-            expected:   expected,
-            actual:     actual
+        let actual: DiffNode = Comparator.computeDiff(
+            expected:   exp,
+            actual:     act
         )
         
-        guard case let .different(_, _, tree) = node.kind
-        else
-        {
-            XCTFail("Expected .different, got \(node.kind)")
-            return
-        }
+        let expected = DiffNode.makeRoot(
+            typeName:   typeName(of: exp),
+            expected:   exp,
+            actual:     act,
+            tree:
+            [
+                .makeLeaf(
+                    label:      .property(name: "a"),
+                    expected:   1,
+                    actual:     3
+                ),
+                
+                .makeStructural(
+                    label:      .property(name: "b"),
+                    expected:   "x",
+                    actual:     "y",
+                    tree:
+                    [
+                        .makeLeaf(
+                            label:      .character(index: 0, count: 1),
+                            expected:   "x",
+                            actual:     "y"
+                        )
+                    ]
+                ),
+                
+                .makeLeaf(
+                    label:      .property(name: "c"),
+                    expected:   2,
+                    actual:     4
+                )
+            ]
+        )
         
-        XCTAssertEqual(tree.count, 3)
-        XCTAssertEqual(tree[0].label, .property(name: "a"))
-        XCTAssertEqual(tree[1].label, .property(name: "b"))
-        XCTAssertEqual(tree[2].label, .property(name: "c"))
+        XCTKAssertEqual(expected, actual)
     }
     
     
@@ -322,37 +329,29 @@ final class ComparatorEnumTests: XCTestKitCase
             case pair(Int, Int)
         }
         
+        let exp : Wrapper   = .pair(1, 2)
+        let act : Wrapper   = .pair(1, 4)
         
-        
-        let expected    : Wrapper    = .pair(1, 2)
-        let actual      : Wrapper    = .pair(1, 4)
-        
-        let node: DiffNode = Comparator.computeDiff(
-            expected:   expected,
-            actual:     actual
+        let actual: DiffNode = Comparator.computeDiff(
+            expected:   exp,
+            actual:     act
         )
         
-        guard case let .different(_, _, tree) = node.kind
-        else
-        {
-            XCTFail("Expected .different, got \(node.kind)")
-            return
-        }
+        let expected = DiffNode.makeRoot(
+            typeName:   typeName(of: exp),
+            expected:   exp,
+            actual:     act,
+            tree:
+            [
+                .makeLeaf(
+                    label:      .property(name: ".1"),
+                    expected:   2,
+                    actual:     4
+                )
+            ]
+        )
         
-        XCTAssertEqual(tree.count, 1)
-        XCTAssertEqual(tree[0].label, .property(name: ".1"))
-        
-        
-        
-        guard case let .different(exp, act, _) = tree[0].kind
-        else
-        {
-            XCTFail("Expected .different, got \(tree[0].kind)")
-            return
-        }
-        
-        XCTAssertEqual(exp.value as? Int, 2)
-        XCTAssertEqual(act.value as? Int, 4)
+        XCTKAssertEqual(expected, actual)
     }
     
     
@@ -364,39 +363,29 @@ final class ComparatorEnumTests: XCTestKitCase
             case value(Int)
         }
         
+        let exp : Wrapper   = .value(1)
+        let act : Wrapper   = .value(2)
         
-        
-        let expected    : Wrapper    = .value(1)
-        let actual      : Wrapper    = .value(2)
-        
-        let node: DiffNode = Comparator.computeDiff(
-            expected:   expected,
-            actual:     actual
+        let actual: DiffNode = Comparator.computeDiff(
+            expected:   exp,
+            actual:     act
         )
         
-        guard case let .different(exp1, act1, tree) = node.kind
-        else
-        {
-            XCTFail("Expected .different, got \(node.kind)")
-            return
-        }
+        let expected = DiffNode.makeRoot(
+            typeName:   typeName(of: exp),
+            expected:   exp,
+            actual:     act,
+            tree:
+            [
+                .makeLeaf(
+                    label:      .index(0),
+                    expected:   1,
+                    actual:     2
+                )
+            ]
+        )
         
-        XCTAssertEqual(exp1.value as? Wrapper, expected)
-        XCTAssertEqual(act1.value as? Wrapper, actual)
-        XCTAssertEqual(tree.count, 1)
-        XCTAssertEqual(tree[0].label, .index(0))
-        
-        
-        
-        guard case let .different(exp2, act2, _) = tree[0].kind
-        else
-        {
-            XCTFail("Expected .different, got \(tree[0].kind)")
-            return
-        }
-        
-        XCTAssertEqual(exp2.value as? Int, 1)
-        XCTAssertEqual(act2.value as? Int, 2)
+        XCTKAssertEqual(expected, actual)
     }
     
     
@@ -410,26 +399,22 @@ final class ComparatorEnumTests: XCTestKitCase
             case high       = 3
         }
         
+        let exp : Priority  = .low
+        let act : Priority  = .high
         
-        
-        let expected    : Priority  = .low
-        let actual      : Priority  = .high
-        
-        let node: DiffNode = Comparator.computeDiff(
-            expected:   expected,
-            actual:     actual
+        let actual: DiffNode = Comparator.computeDiff(
+            expected:   exp,
+            actual:     act
         )
         
-        guard case let .different(exp, act, tree) = node.kind
-        else
-        {
-            XCTFail("Expected .different, got \(node.kind)")
-            return
-        }
+        let expected = DiffNode.makeRoot(
+            typeName:   typeName(of: exp),
+            expected:   exp,
+            actual:     act,
+            tree:       []
+        )
         
-        XCTAssertEqual(exp.value as? Priority, expected)
-        XCTAssertEqual(act.value as? Priority, actual)
-        XCTAssertTrue(tree.isEmpty)
+        XCTKAssertEqual(expected, actual)
     }
     
     
@@ -443,21 +428,19 @@ final class ComparatorEnumTests: XCTestKitCase
             case high       = 3
         }
         
+        let exp: Priority = .low
         
-        
-        let expected: Priority = .low
-        
-        let node: DiffNode = Comparator.computeDiff(
-            expected:   expected,
-            actual:     expected
+        let actual: DiffNode = Comparator.computeDiff(
+            expected:   exp,
+            actual:     exp
         )
         
-        guard node.kind.isSame
-        else
-        {
-            XCTFail("Expected .same, got \(node.kind)")
-            return
-        }
+        let expected = DiffNode(
+            label:  .root(typeName: typeName(of: exp)),
+            kind:   .same
+        )
+        
+        XCTKAssertEqual(expected, actual)
     }
     
     
@@ -469,21 +452,19 @@ final class ComparatorEnumTests: XCTestKitCase
             case failed
         }
         
+        let exp: Result<String, TestError> = .success("hello")
         
-        
-        let expected: Result<String, TestError> = .success("hello")
-        
-        let node: DiffNode = Comparator.computeDiff(
-            expected:   expected,
-            actual:     expected
+        let actual: DiffNode = Comparator.computeDiff(
+            expected:   exp,
+            actual:     exp
         )
         
-        guard node.kind.isSame
-        else
-        {
-            XCTFail("Expected .same, got \(node.kind)")
-            return
-        }
+        let expected = DiffNode(
+            label:  .root(typeName: typeName(of: exp)),
+            kind:   .same
+        )
+        
+        XCTKAssertEqual(expected, actual)
     }
     
     
@@ -495,37 +476,42 @@ final class ComparatorEnumTests: XCTestKitCase
             case failed
         }
         
+        let exp : Result<String, TestError>     = .success("hello")
+        let act : Result<String, TestError>     = .success("goodbye")
         
-        
-        let expected    : Result<String, TestError>     = .success("hello")
-        let actual      : Result<String, TestError>     = .success("goodbye")
-        
-        let node: DiffNode = Comparator.computeDiff(
-            expected:   expected,
-            actual:     actual
+        let actual: DiffNode = Comparator.computeDiff(
+            expected:   exp,
+            actual:     act
         )
         
-        guard case let .different(_, _, tree) = node.kind
-        else
-        {
-            XCTFail("Expected .different, got \(node.kind)")
-            return
-        }
+        let expected = DiffNode.makeRoot(
+            typeName:   typeName(of: exp),
+            expected:   exp,
+            actual:     act,
+            tree:
+            [
+                .makeStructural(
+                    label:      .index(0),
+                    expected:   "hello",
+                    actual:     "goodbye",
+                    tree:
+                    [
+                        .makeLeaf(
+                            label:      .character(index: 0, count: 4),
+                            expected:   "hell",
+                            actual:     "g"
+                        ),
+                        
+                        .makeUnexpected(
+                            label:      .character(index: 5, count: 5),
+                            actual:     "odbye"
+                        )
+                    ]
+                )
+            ]
+        )
         
-        XCTAssertEqual(tree.count, 1)
-        XCTAssertEqual(tree[0].label, .index(0))
-        
-        
-        
-        guard case let .different(exp, act, _) = tree[0].kind
-        else
-        {
-            XCTFail("Expected .different, got \(tree[0].kind)")
-            return
-        }
-        
-        XCTAssertEqual(exp.value as? String, "hello")
-        XCTAssertEqual(act.value as? String, "goodbye")
+        XCTKAssertEqual(expected, actual)
     }
     
     
@@ -538,41 +524,22 @@ final class ComparatorEnumTests: XCTestKitCase
             case errorB
         }
         
+        let exp : Result<String, TestError>     = .success("data")
+        let act : Result<String, TestError>     = .failure(.errorA)
         
-        
-        let expected    : Result<String, TestError>     = .success("data")
-        let actual      : Result<String, TestError>     = .failure(.errorA)
-        
-        let node: DiffNode = Comparator.computeDiff(
-            expected:   expected,
-            actual:     actual
+        let actual: DiffNode = Comparator.computeDiff(
+            expected:   exp,
+            actual:     act
         )
         
-        guard case let .different(exp, act, tree) = node.kind
-        else
-        {
-            XCTFail("Expected .different, got \(node.kind)")
-            return
-        }
+        let expected = DiffNode.makeRoot(
+            typeName:   typeName(of: exp),
+            expected:   exp,
+            actual:     act,
+            tree:       []
+        )
         
-        XCTAssertTrue(tree.isEmpty)
-        
-        
-        
-        guard
-            case .success(let expValue)
-                = exp.value as? Result<String, TestError>,
-            
-            case .failure(let actValue)
-                = act.value as? Result<String, TestError>
-        else
-        {
-            XCTFail("Unexpected types in diff")
-            return
-        }
-        
-        XCTAssertEqual(expValue, "data")
-        XCTAssertEqual(actValue, .errorA)
+        XCTKAssertEqual(expected, actual)
     }
     
     
@@ -581,54 +548,31 @@ final class ComparatorEnumTests: XCTestKitCase
     {
         enum TestError: Error, Equatable
         {
-            case someError(code: Int)
+            case someError(Int)
         }
         
+        let exp : Result<String, TestError> = .failure(.someError(404))
+        let act : Result<String, TestError> = .failure(.someError(418))
         
-        
-        let expected: Result<String, TestError>
-            = .failure(.someError(code: 404))
-        
-        let actual: Result<String, TestError>
-            = .failure(.someError(code: 418))
-        
-        let node: DiffNode = Comparator.computeDiff(
-            expected:   expected,
-            actual:     actual
+        let actual: DiffNode = Comparator.computeDiff(
+            expected:   exp,
+            actual:     act
         )
         
-        guard case let .different(_, _, tree1) = node.kind
-        else
-        {
-            XCTFail("Expected .different, got \(node.kind)")
-            return
-        }
+        let expected = DiffNode.makeRoot(
+            typeName:   typeName(of: exp),
+            expected:   exp,
+            actual:     act,
+            tree:
+            [
+                .makeLeaf(
+                    label:      .property(name: "someError"),
+                    expected:   404,
+                    actual:     418
+                )
+            ]
+        )
         
-        XCTAssertEqual(tree1.count, 1)
-        XCTAssertEqual(tree1[0].label, .property(name: "someError"))
-        
-        
-        
-        guard case let .different(_, _, tree2) = tree1[0].kind
-        else
-        {
-            XCTFail("Expected .different, got \(tree1[0].kind)")
-            return
-        }
-        
-        XCTAssertEqual(tree2.count, 1)
-        XCTAssertEqual(tree2[0].label, .property(name: "code"))
-        
-        
-        
-        guard case let .different(exp, act, _) = tree2[0].kind
-        else
-        {
-            XCTFail("Expected .different, got \(tree2[0].kind)")
-            return
-        }
-        
-        XCTAssertEqual(exp.value as? Int, 404)
-        XCTAssertEqual(act.value as? Int, 418)
+        XCTKAssertEqual(expected, actual)
     }
 }
