@@ -17,115 +17,87 @@ final class StringComparatorCharCoalescingTests: XCTestKitCase
 {
     func testCharCoalescingAdjacentRemovals() throws
     {
-        let expected    : String    = "abcdef"
-        let actual      : String    = "adef"
+        let exp : String    = "abcdef"
+        let act : String    = "adef"
         
-        let kind: DiffNodeKind = StringComparator.compare(
-            expected:   expected,
-            actual:     actual
+        let actual: DiffNodeKind = StringComparator.compare(
+            expected:   exp,
+            actual:     act
         )
         
-        guard case let .different(_, _, tree) = kind
-        else
-        {
-            XCTFail("Expected .different, got \(kind)")
-            return
-        }
+        let expected: DiffNodeKind = .different(
+            expected:   DiffValue(exp),
+            actual:     DiffValue(act),
+            tree:
+            [
+                .makeMissing(
+                    label:      .character(index: 1, count: 2),
+                    expected:   "bc"
+                )
+            ]
+        )
         
-        XCTAssertEqual(tree.count, 1)
-        XCTAssertEqual(tree[0].label, .character(index: 1, count: 2))
-        
-        
-        
-        guard case let .missing(exp) = tree[0].kind
-        else
-        {
-            XCTFail("Expected .missing, got \(tree[0].kind)")
-            return
-        }
-        
-        XCTAssertEqual(exp.value as? String, "bc")
+        XCTKAssertEqual(expected, actual)
     }
     
     
     
     func testCharCoalescingAdjacentInsertions() throws
     {
-        let expected    : String    = "adef"
-        let actual      : String    = "abcdef"
+        let exp : String    = "adef"
+        let act : String    = "abcdef"
         
-        let kind: DiffNodeKind = StringComparator.compare(
-            expected:   expected,
-            actual:     actual
+        let actual: DiffNodeKind = StringComparator.compare(
+            expected:   exp,
+            actual:     act
         )
         
-        guard case let .different(_, _, tree) = kind
-        else
-        {
-            XCTFail("Expected .different, got \(kind)")
-            return
-        }
+        let expected: DiffNodeKind = .different(
+            expected:   DiffValue(exp),
+            actual:     DiffValue(act),
+            tree:
+            [
+                .makeUnexpected(
+                    label:      .character(index: 1, count: 2),
+                    actual:     "bc"
+                )
+            ]
+        )
         
-        XCTAssertEqual(tree.count, 1)
-        XCTAssertEqual(tree[0].label, .character(index: 1, count: 2))
-        
-        
-        
-        guard case let .unexpected(act) = tree[0].kind
-        else
-        {
-            XCTFail("Expected .unexpected, got \(tree[0].kind)")
-            return
-        }
-        
-        XCTAssertEqual(act.value as? String, "bc")
+        XCTKAssertEqual(expected, actual)
     }
     
     
     
     func testCharCoalescingMixedChanges() throws
     {
-        let expected    : String    = "abcdef"
-        let actual      : String    = "aXXcYYf"
+        let exp : String    = "abcdef"
+        let act : String    = "aXXcYYf"
         
-        let kind: DiffNodeKind = StringComparator.compare(
-            expected:   expected,
-            actual:     actual
+        let actual: DiffNodeKind = StringComparator.compare(
+            expected:   exp,
+            actual:     act
         )
         
-        guard case let .different(_, _, tree) = kind
-        else
-        {
-            XCTFail("Expected .different, got \(kind)")
-            return
-        }
+        let expected: DiffNodeKind = .different(
+            expected:   DiffValue(exp),
+            actual:     DiffValue(act),
+            tree:
+            [
+                .makeLeaf(
+                    label:      .character(index: 1, count: 1),
+                    expected:   "b",
+                    actual:     "XX"
+                ),
+                
+                .makeLeaf(
+                    label:      .character(index: 3, count: 2),
+                    expected:   "de",
+                    actual:     "YY"
+                )
+            ]
+        )
         
-        XCTAssertEqual(tree.count, 2)
-        XCTAssertEqual(tree[0].label, .character(index: 1, count: 1))
-        XCTAssertEqual(tree[1].label, .character(index: 3, count: 2))
-        
-        print(tree)
-        
-        guard case let .different(exp1, act1, _) = tree[0].kind
-        else
-        {
-            XCTFail("Expected .different, got \(tree[0].kind)")
-            return
-        }
-        
-        XCTAssertEqual(exp1.value as? String, "b")
-        XCTAssertEqual(act1.value as? String, "XX")
-        
-        
-        
-        guard case let .different(exp2, act2, _) = tree[1].kind
-        else
-        {
-            XCTFail("Expected .different, got \(tree[1].kind)")
-            return
-        }
-        
-        XCTAssertEqual(exp2.value as? String, "de")
-        XCTAssertEqual(act2.value as? String, "YY")
+        XCTKAssertEqual(expected, actual)
     }
 }

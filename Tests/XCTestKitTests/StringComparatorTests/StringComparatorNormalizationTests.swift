@@ -17,79 +17,67 @@ final class StringComparatorNormalizationTests: XCTestKitCase
 {
     func testNewlineNormalizationCRLF() throws
     {
-        let expected    : String    = "line0\r\nline1"
-        let actual      : String    = "line0\nline1"
+        let exp : String    = "line0\r\nline1"
+        let act : String    = "line0\nline1"
         
-        let kind: DiffNodeKind = StringComparator.compare(
-            expected:   expected,
-            actual:     actual
+        let actual: DiffNodeKind = StringComparator.compare(
+            expected:   exp,
+            actual:     act
         )
         
-        guard kind.isSame
-        else
-        {
-            XCTFail("Expected .same, got \(kind)")
-            return
-        }
+        let expected: DiffNodeKind = .same
+        
+        XCTKAssertEqual(expected, actual)
     }
     
     
     
     func testNewlineNormalizationCR() throws
     {
-        let expected    : String    = "line0\rline1"
-        let actual      : String    = "line0\nline1"
+        let exp : String    = "line0\rline1"
+        let act : String    = "line0\nline1"
         
-        let kind: DiffNodeKind = StringComparator.compare(
-            expected:   expected,
-            actual:     actual
+        let actual: DiffNodeKind = StringComparator.compare(
+            expected:   exp,
+            actual:     act
         )
         
-        guard kind.isSame
-        else
-        {
-            XCTFail("Expected .same, got \(kind)")
-            return
-        }
+        let expected: DiffNodeKind = .same
+        
+        XCTKAssertEqual(expected, actual)
     }
     
     
     
     func testMixedNewlineNormalization() throws
     {
-        let expected    : String    = "line0\r\nline1\r\nline3"
-        let actual      : String    = "line0\nline1\nline3"
+        let exp : String    = "line0\r\nline1\r\nline3"
+        let act : String    = "line0\nline1\nline3"
         
-        let kind: DiffNodeKind = StringComparator.compare(
-            expected:   expected,
-            actual:     actual
+        let actual: DiffNodeKind = StringComparator.compare(
+            expected:   exp,
+            actual:     act
         )
         
-        guard kind.isSame
-        else
-        {
-            XCTFail("Expected .same, got \(kind)")
-            return
-        }
+        let expected: DiffNodeKind = .same
+        
+        XCTKAssertEqual(expected, actual)
     }
     
     
     
     func testMixedCRLFAndCRNormalization() throws
     {
-        let expected    : String    = "line0\r\nline1\rline3"
-        let actual      : String    = "line0\nline1\nline3"
+        let exp : String    = "line0\r\nline1\rline3"
+        let act : String    = "line0\nline1\nline3"
         
-        let kind: DiffNodeKind = StringComparator.compare(
-            expected:   expected,
-            actual:     actual
+        let actual: DiffNodeKind = StringComparator.compare(
+            expected:   exp,
+            actual:     act
         )
         
-        guard kind.isSame
-        else
-        {
-            XCTFail("Expected .same, got \(kind)")
-            return
-        }
+        let expected: DiffNodeKind = .same
+        
+        XCTKAssertEqual(expected, actual)
     }
 }
