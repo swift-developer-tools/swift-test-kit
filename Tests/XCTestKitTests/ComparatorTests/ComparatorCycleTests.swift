@@ -374,19 +374,24 @@ final class ComparatorCycleTests: XCTestKitCase
     
     func testSameObjectAsExpectedAndActual() throws
     {
-        let expected    = Node(value: 1)
-        expected.next   = expected
+        let exp     = Node(value: 1)
+        exp.next    = exp
         
         let actual: DiffNode = Comparator.computeDiff(
-            expected:   expected,
-            actual:     expected,
+            expected:   exp,
+            actual:     exp,
             options:    XCTKDiffOptions(maxRecursionDepth: nil)
+        )
+        
+        let expected = DiffNode(
+            label:  .root(typeName: typeName(of: exp)),
+            kind:   .same
         )
         
         /// ``Node`` uses identity-based equality (`===`), so the same object
         /// compared to itself is equal. The comparison should not traverse
         /// into the cycle.
-        XCTKAssertTrue(actual.kind.isSame)
+        XCTKAssertEqual(expected, actual)
     }
     
     
