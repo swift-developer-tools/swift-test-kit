@@ -579,7 +579,7 @@ internal struct Comparator
             }
             else if let insertion
             {
-                kind = .unexpected(actual: DiffValue(insertion))
+                kind = .unexpected(DiffValue(insertion))
             }
             else
             {
@@ -634,7 +634,6 @@ internal struct Comparator
                 i < expected.count,
                 i < actual.count
             {
-                /// Both arrays have this element.
                 kind = compareAny(
                     expected:       expected[i],
                     actual:         actual[i],
@@ -643,13 +642,11 @@ internal struct Comparator
             }
             else if i < expected.count
             {
-                /// Only the expected array has this element.
                 kind = .missing(DiffValue(expected[i]))
             }
             else
             {
-                /// Only the actual array has this element.
-                kind = .unexpected(actual: DiffValue(actual[i]))
+                kind = .unexpected(DiffValue(actual[i]))
             }
             
             
@@ -759,7 +756,7 @@ internal struct Comparator
             
             let node = DiffNode(
                 label:  .makeKey(key),
-                kind:   .unexpected(actual: DiffValue(actualValue))
+                kind:   .unexpected(DiffValue(actualValue))
             )
             
             tree.append(node)
@@ -812,7 +809,7 @@ internal struct Comparator
         {
             let node = DiffNode(
                 label:  .member,
-                kind:   .unexpected(actual: DiffValue(element))
+                kind:   .unexpected(DiffValue(element))
             )
             
             tree.append(node)
@@ -921,7 +918,7 @@ internal struct Comparator
                     index:  i
                 )
                 
-                kind = .unexpected(actual: DiffValue(actualChild.value))
+                kind = .unexpected(DiffValue(actualChild.value))
             }
             
             
@@ -1148,7 +1145,7 @@ internal struct Comparator
                     [
                         DiffNode(
                             label:  .property(name: "some"),
-                            kind:   .unexpected(actual: DiffValue(act.value))
+                            kind:   .unexpected(DiffValue(act.value))
                         )
                     ]
                 )

@@ -173,7 +173,7 @@ extension DiffNode
     {
         return DiffNode(
             label:  label,
-            kind:   .unexpected(actual: DiffValue(actual))
+            kind:   .unexpected(DiffValue(actual))
         )
     }
 }

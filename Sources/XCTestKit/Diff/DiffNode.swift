@@ -149,7 +149,7 @@ internal enum DiffNodeKind: Equatable
     /// expected value.
     /// - Parameter actual: The actual value.
     case unexpected(
-        actual: DiffValue
+        _ actual: DiffValue
     )
     
     

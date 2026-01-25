@@ -206,7 +206,7 @@ internal struct StringComparator
             }
             else if let insertion
             {
-                kind = .unexpected(actual: DiffValue(insertion))
+                kind = .unexpected(DiffValue(insertion))
             }
             else
             {
@@ -438,7 +438,7 @@ internal struct StringComparator
             else if !insertedChars.isEmpty
             {
                 count   = insertedChars.count
-                kind    = .unexpected(actual: DiffValue(String(insertedChars)))
+                kind    = .unexpected(DiffValue(String(insertedChars)))
             }
             else
             {
