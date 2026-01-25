@@ -142,7 +142,7 @@ internal enum DiffNodeKind: Equatable
     /// the actual value.
     /// - Parameter expected: The expected value.
     case missing(
-        expected: DiffValue
+        _ expected: DiffValue
     )
     
     /// An element or key was present in the actual value, but was not in the

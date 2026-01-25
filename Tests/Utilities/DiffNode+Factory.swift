@@ -155,7 +155,7 @@ extension DiffNode
     {
         return DiffNode(
             label:  label,
-            kind:   .missing(expected: DiffValue(expected))
+            kind:   .missing(DiffValue(expected))
         )
     }
     

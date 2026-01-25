@@ -575,7 +575,7 @@ internal struct Comparator
             }
             else if let removal
             {
-                kind = .missing(expected: DiffValue(removal))
+                kind = .missing(DiffValue(removal))
             }
             else if let insertion
             {
@@ -644,7 +644,7 @@ internal struct Comparator
             else if i < expected.count
             {
                 /// Only the expected array has this element.
-                kind = .missing(expected: DiffValue(expected[i]))
+                kind = .missing(DiffValue(expected[i]))
             }
             else
             {
@@ -741,7 +741,7 @@ internal struct Comparator
             
             let node = DiffNode(
                 label:  .makeKey(key),
-                kind:   .missing(expected: DiffValue(expectedValue))
+                kind:   .missing(DiffValue(expectedValue))
             )
             
             tree.append(node)
@@ -800,7 +800,7 @@ internal struct Comparator
         {
             let node = DiffNode(
                 label:  .member,
-                kind:   .missing(expected: DiffValue(element))
+                kind:   .missing(DiffValue(element))
             )
             
             tree.append(node)
@@ -909,7 +909,7 @@ internal struct Comparator
                     index:  i
                 )
                 
-                kind = .missing(expected: DiffValue(expectedChild.value))
+                kind = .missing(DiffValue(expectedChild.value))
             }
             else
             {
@@ -1134,7 +1134,7 @@ internal struct Comparator
                     [
                         DiffNode(
                             label:  .property(name: "some"),
-                            kind:   .missing(expected: DiffValue(exp.value))
+                            kind:   .missing(DiffValue(exp.value))
                         )
                     ]
                 )
