@@ -52,7 +52,7 @@ final class FormatterNodeKindTests: XCTestKitCase
             kind:   .same
         )
         
-        XCTAssertEqual(Formatter.format(node), "")
+        XCTKAssertEqual(Formatter.format(node), "")
     }
     
     
@@ -77,7 +77,7 @@ final class FormatterNodeKindTests: XCTestKitCase
 \(LK.actual.rawValue)\(act)
 """
         
-        XCTAssertEqual(Formatter.format(node), expected)
+        XCTKAssertEqual(Formatter.format(node), expected)
     }
     
     
@@ -100,7 +100,7 @@ final class FormatterNodeKindTests: XCTestKitCase
 \(LK.actual.rawValue)\(act)
 """
         
-        XCTAssertEqual(Formatter.format(node), expected)
+        XCTKAssertEqual(Formatter.format(node), expected)
     }
     
     
@@ -123,7 +123,7 @@ final class FormatterNodeKindTests: XCTestKitCase
 \(LK.actual.rawValue)\(act)
 """
         
-        XCTAssertEqual(Formatter.format(node), expected)
+        XCTKAssertEqual(Formatter.format(node), expected)
     }
     
     
@@ -146,7 +146,7 @@ final class FormatterNodeKindTests: XCTestKitCase
 \(LK.actual.rawValue)\(quote(act))
 """
         
-        XCTAssertEqual(Formatter.format(node), expected)
+        XCTKAssertEqual(Formatter.format(node), expected)
     }
     
     
@@ -169,7 +169,7 @@ final class FormatterNodeKindTests: XCTestKitCase
 \(LK.actual.rawValue)\(quote(act))
 """
         
-        XCTAssertEqual(Formatter.format(node), expected)
+        XCTKAssertEqual(Formatter.format(node), expected)
     }
     
     
@@ -192,7 +192,7 @@ final class FormatterNodeKindTests: XCTestKitCase
 \(LK.actual.rawValue)\(quote(act))
 """
         
-        XCTAssertEqual(Formatter.format(node), expected)
+        XCTKAssertEqual(Formatter.format(node), expected)
     }
     
     
@@ -215,7 +215,7 @@ final class FormatterNodeKindTests: XCTestKitCase
 \(LK.actual.rawValue)\(quote(act))
 """
         
-        XCTAssertEqual(Formatter.format(node), expected)
+        XCTKAssertEqual(Formatter.format(node), expected)
     }
     
     
@@ -238,7 +238,7 @@ final class FormatterNodeKindTests: XCTestKitCase
 \(LK.actual.rawValue)\(quote(act))
 """
         
-        XCTAssertEqual(Formatter.format(node), expected)
+        XCTKAssertEqual(Formatter.format(node), expected)
     }
     
     
@@ -261,7 +261,7 @@ final class FormatterNodeKindTests: XCTestKitCase
 \(LK.actual.rawValue)\(quote(act))
 """
         
-        XCTAssertEqual(Formatter.format(node), expected)
+        XCTKAssertEqual(Formatter.format(node), expected)
     }
     
     
@@ -284,7 +284,7 @@ final class FormatterNodeKindTests: XCTestKitCase
 \(LK.actual.rawValue)\(quote(act))
 """
         
-        XCTAssertEqual(Formatter.format(node), expected)
+        XCTKAssertEqual(Formatter.format(node), expected)
     }
     
     
@@ -307,7 +307,7 @@ final class FormatterNodeKindTests: XCTestKitCase
 \(LK.actual.rawValue)\(quote(act))
 """
         
-        XCTAssertEqual(Formatter.format(node), expected)
+        XCTKAssertEqual(Formatter.format(node), expected)
     }
     
     
@@ -341,7 +341,7 @@ final class FormatterNodeKindTests: XCTestKitCase
         \(LK.missing.rawValue)\(exp[2])
 """
         
-        XCTAssertEqual(Formatter.format(node), expected)
+        XCTKAssertEqual(Formatter.format(node), expected)
     }
     
     
@@ -373,7 +373,7 @@ final class FormatterNodeKindTests: XCTestKitCase
         \(LK.missing.rawValue)\(quote(exp[0]))
 """
         
-        XCTAssertEqual(Formatter.format(node), expected)
+        XCTKAssertEqual(Formatter.format(node), expected)
     }
     
     
@@ -407,7 +407,7 @@ final class FormatterNodeKindTests: XCTestKitCase
         \(LK.unexpected.rawValue)\(act[2])
 """
         
-        XCTAssertEqual(Formatter.format(node), expected)
+        XCTKAssertEqual(Formatter.format(node), expected)
     }
     
     
@@ -439,7 +439,7 @@ final class FormatterNodeKindTests: XCTestKitCase
         \(LK.unexpected.rawValue)\(quote(act[1]))
 """
         
-        XCTAssertEqual(Formatter.format(node), expected)
+        XCTKAssertEqual(Formatter.format(node), expected)
     }
 }
 
@@ -482,6 +482,6 @@ private extension FormatterNodeKindTests
         \(location.description)
 """
         
-        XCTAssertEqual(Formatter.format(node), expected)
+        XCTKAssertEqual(Formatter.format(node), expected)
     }
 }

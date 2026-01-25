@@ -55,7 +55,7 @@ final class FormatterPathTests: XCTestKitCase
         \(LK.actual.rawValue)\(act.age)
 """
         
-        XCTAssertEqual(Formatter.format(node), expected)
+        XCTKAssertEqual(Formatter.format(node), expected)
     }
     
     
@@ -109,7 +109,7 @@ final class FormatterPathTests: XCTestKitCase
         \(LK.actual.rawValue)\(act.inner.value)
 """
         
-        XCTAssertEqual(Formatter.format(node), expected)
+        XCTKAssertEqual(Formatter.format(node), expected)
     }
     
     
@@ -158,7 +158,7 @@ final class FormatterPathTests: XCTestKitCase
         \(LK.actual.rawValue)\(quote(act[0].name))
 """
         
-        XCTAssertEqual(Formatter.format(node), expected)
+        XCTKAssertEqual(Formatter.format(node), expected)
     }
     
     
@@ -224,7 +224,7 @@ final class FormatterPathTests: XCTestKitCase
         \(LK.actual.rawValue)\(act.l2.l3.l4.val)
 """
         
-        XCTAssertEqual(Formatter.format(node), expected)
+        XCTKAssertEqual(Formatter.format(node), expected)
     }
     
     
@@ -258,7 +258,7 @@ final class FormatterPathTests: XCTestKitCase
         \(LK.actual.rawValue)\(act[1])
 """
         
-        XCTAssertEqual(Formatter.format(node), expected)
+        XCTKAssertEqual(Formatter.format(node), expected)
     }
     
     
@@ -292,7 +292,7 @@ final class FormatterPathTests: XCTestKitCase
         \(LK.actual.rawValue)\(act["a"]!)
 """
         
-        XCTAssertEqual(Formatter.format(node), expected)
+        XCTKAssertEqual(Formatter.format(node), expected)
     }
     
     
@@ -341,7 +341,7 @@ final class FormatterPathTests: XCTestKitCase
         \(LK.actual.rawValue)\(act["key"]!.count)
 """
         
-        XCTAssertEqual(Formatter.format(node), expected)
+        XCTKAssertEqual(Formatter.format(node), expected)
     }
     
     
@@ -375,7 +375,7 @@ final class FormatterPathTests: XCTestKitCase
         \(LK.actual.rawValue)"changed"
 """
         
-        XCTAssertEqual(Formatter.format(node), expected)
+        XCTKAssertEqual(Formatter.format(node), expected)
     }
     
     
@@ -409,7 +409,7 @@ final class FormatterPathTests: XCTestKitCase
         \(LK.actual.rawValue)"a"
 """
         
-        XCTAssertEqual(Formatter.format(node), expected)
+        XCTKAssertEqual(Formatter.format(node), expected)
     }
     
     
@@ -443,7 +443,7 @@ final class FormatterPathTests: XCTestKitCase
         \(LK.actual.rawValue)"hallo"
 """
         
-        XCTAssertEqual(Formatter.format(node), expected)
+        XCTKAssertEqual(Formatter.format(node), expected)
     }
     
     
@@ -495,7 +495,7 @@ final class FormatterPathTests: XCTestKitCase
         \(LK.actual.rawValue)\(act.age)
 """
         
-        XCTAssertEqual(Formatter.format(node), expected)
+        XCTKAssertEqual(Formatter.format(node), expected)
     }
     
     
@@ -537,6 +537,6 @@ final class FormatterPathTests: XCTestKitCase
         \(LK.actual.rawValue)\(act[1][1])
 """
         
-        XCTAssertEqual(Formatter.format(node), expected)
+        XCTKAssertEqual(Formatter.format(node), expected)
     }
 }
