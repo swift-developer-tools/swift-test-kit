@@ -423,10 +423,7 @@ final class ComparatorArrayTests: XCTestKitCase
                     tree:
                     [
                         .makeLeaf(
-                            label:      .key(
-                                            description:    "d",
-                                            typeName:       "String"
-                                        ),
+                            label:      .key("d", typeName: "String"),
                             expected:   exp[1]["d"]!,
                             actual:     act[1]["d"]!
                         )

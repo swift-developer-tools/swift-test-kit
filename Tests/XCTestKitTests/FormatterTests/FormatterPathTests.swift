@@ -276,7 +276,7 @@ final class FormatterPathTests: XCTestKitCase
             tree:
             [
                 .makeLeaf(
-                    label:      .key(description: "a", typeName: "String"),
+                    label:      .key("a", typeName: "String"),
                     expected:   exp["a"]!,
                     actual:     act["a"]!
                 )
@@ -317,7 +317,7 @@ final class FormatterPathTests: XCTestKitCase
             tree:
             [
                 .makeStructural(
-                    label:      .key(description: "key", typeName: "String"),
+                    label:      .key("key", typeName: "String"),
                     expected:   exp["key"]!,
                     actual:     act["key"]!,
                     tree:

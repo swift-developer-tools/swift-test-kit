@@ -856,7 +856,7 @@ final class ComparatorMiscTests: XCTestKitCase
         
         XCTAssertEqual(
             tree[0].label,
-            .key(description: "5000", typeName: "Int")
+            .key("5000", typeName: "Int")
         )
     }
     

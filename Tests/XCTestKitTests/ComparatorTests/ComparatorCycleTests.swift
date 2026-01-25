@@ -973,14 +973,10 @@ private extension ComparatorCycleTests
                     options:    XCTKDiffOptions(maxRecursionDepth: nil)
                 )
                 
-                rootTypeName    = typeName(of: exp)
-                expCollection   = exp
-                actCollection   = act
-                
-                collectionLabel = .key(
-                    description:    "key",
-                    typeName:       "String"
-                )
+                rootTypeName        = typeName(of: exp)
+                collectionLabel     = .key("key", typeName: "String")
+                expCollection       = exp
+                actCollection       = act
         }
         
         let expected = DiffNode(

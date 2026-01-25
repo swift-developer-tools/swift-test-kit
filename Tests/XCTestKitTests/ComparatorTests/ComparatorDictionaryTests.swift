@@ -55,7 +55,7 @@ final class ComparatorDictionaryTests: XCTestKitCase
         
         XCTAssertEqual(
             tree1[0].label,
-            .key(description: "b", typeName: "String")
+            .key("b", typeName: "String")
         )
         
         
@@ -95,12 +95,12 @@ final class ComparatorDictionaryTests: XCTestKitCase
         
         XCTAssertEqual(
             tree[0].label,
-            .key(description: "b", typeName: "String")
+            .key("b", typeName: "String")
         )
         
         XCTAssertEqual(
             tree[1].label,
-            .key(description: "c", typeName: "String")
+            .key("c", typeName: "String")
         )
     }
     
@@ -127,7 +127,7 @@ final class ComparatorDictionaryTests: XCTestKitCase
         
         XCTAssertEqual(
             tree[0].label,
-            .key(description: "b", typeName: "String")
+            .key("b", typeName: "String")
         )
         
         
@@ -165,17 +165,17 @@ final class ComparatorDictionaryTests: XCTestKitCase
         
         XCTAssertEqual(
             tree[0].label,
-            .key(description: "b", typeName: "String")
+            .key("b", typeName: "String")
         )
         
         XCTAssertEqual(
             tree[1].label,
-            .key(description: "c", typeName: "String")
+            .key("c", typeName: "String")
         )
         
         XCTAssertEqual(
             tree[2].label,
-            .key(description: "d", typeName: "String")
+            .key("d", typeName: "String")
         )
         
         
@@ -214,7 +214,7 @@ final class ComparatorDictionaryTests: XCTestKitCase
         
         XCTAssertEqual(
             tree[0].label,
-            .key(description: "b", typeName: "String")
+            .key("b", typeName: "String")
         )
         
         
@@ -252,17 +252,17 @@ final class ComparatorDictionaryTests: XCTestKitCase
         
         XCTAssertEqual(
             tree[0].label,
-            .key(description: "b", typeName: "String")
+            .key("b", typeName: "String")
         )
         
         XCTAssertEqual(
             tree[1].label,
-            .key(description: "c", typeName: "String")
+            .key("c", typeName: "String")
         )
         
         XCTAssertEqual(
             tree[2].label,
-            .key(description: "d", typeName: "String")
+            .key("d", typeName: "String")
         )
         
         
@@ -301,17 +301,17 @@ final class ComparatorDictionaryTests: XCTestKitCase
         
         XCTAssertEqual(
             tree[0].label,
-            .key(description: "b", typeName: "String")
+            .key("b", typeName: "String")
         )
         
         XCTAssertEqual(
             tree[1].label,
-            .key(description: "c", typeName: "String")
+            .key("c", typeName: "String")
         )
         
         XCTAssertEqual(
             tree[2].label,
-            .key(description: "d", typeName: "String")
+            .key("d", typeName: "String")
         )
         
         
@@ -375,17 +375,17 @@ final class ComparatorDictionaryTests: XCTestKitCase
         
         XCTAssertEqual(
             tree[0].label,
-            .key(description: "10", typeName: "Int")
+            .key("10", typeName: "Int")
         )
         
         XCTAssertEqual(
             tree[1].label,
-            .key(description: "2", typeName: "Int")
+            .key("2", typeName: "Int")
         )
         
         XCTAssertEqual(
             tree[2].label,
-            .key(description: "20", typeName: "Int")
+            .key("20", typeName: "Int")
         )
     }
     
@@ -412,12 +412,12 @@ final class ComparatorDictionaryTests: XCTestKitCase
         
         XCTAssertEqual(
             tree[0].label,
-            .key(description: "a", typeName: "String")
+            .key("a", typeName: "String")
         )
         
         XCTAssertEqual(
             tree[1].label,
-            .key(description: "b", typeName: "String")
+            .key("b", typeName: "String")
         )
         
         
@@ -466,12 +466,12 @@ final class ComparatorDictionaryTests: XCTestKitCase
         
         XCTAssertEqual(
             tree[0].label,
-            .key(description: "a", typeName: "String")
+            .key("a", typeName: "String")
         )
         
         XCTAssertEqual(
             tree[1].label,
-            .key(description: "b", typeName: "String")
+            .key("b", typeName: "String")
         )
         
         
@@ -539,7 +539,7 @@ final class ComparatorDictionaryTests: XCTestKitCase
         
         XCTAssertEqual(
             tree1[0].label,
-            .key(description: "b", typeName: "String")
+            .key("b", typeName: "String")
         )
         
         
@@ -598,7 +598,7 @@ final class ComparatorDictionaryTests: XCTestKitCase
         
         XCTAssertEqual(
             tree1[0].label,
-            .key(description: "odds", typeName: "String")
+            .key("odds", typeName: "String")
         )
         
         
@@ -658,7 +658,7 @@ final class ComparatorDictionaryTests: XCTestKitCase
         
         XCTAssertEqual(
             tree1[0].label,
-            .key(description: "evens", typeName: "String")
+            .key("evens", typeName: "String")
         )
         
         
@@ -736,7 +736,7 @@ final class ComparatorDictionaryTests: XCTestKitCase
         
         XCTAssertEqual(
             tree[0].label,
-            .key(description: "UserID(id: 2)", typeName: "UserID")
+            .key("UserID(id: 2)", typeName: "UserID")
         )
         
         
@@ -791,7 +791,7 @@ final class ComparatorDictionaryTests: XCTestKitCase
         
         XCTAssertEqual(
             tree[0].label,
-            .key(description: "Point(x: 1, y: 1)", typeName: "Point")
+            .key("Point(x: 1, y: 1)", typeName: "Point")
         )
         
         
@@ -849,7 +849,7 @@ final class ComparatorDictionaryTests: XCTestKitCase
         
         XCTAssertEqual(
             tree[0].label,
-            .key(description: "east", typeName: "Direction")
+            .key("east", typeName: "Direction")
         )
         
         

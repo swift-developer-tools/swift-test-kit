@@ -320,7 +320,7 @@ internal enum DiffNodeLabel: Equatable, Sendable
     ///   - description: The string representation of the key.
     ///   - typeName: The string representation of the key's type.
     case key(
-        description:    String,
+        _ description:  String,
         typeName:       String
     )
     
@@ -456,8 +456,8 @@ internal enum DiffNodeLabel: Equatable, Sendable
         let unwrapped: Any = (key as AnyHashable).base
         
         return .key(
-            description:    String(describing: unwrapped),
-            typeName:       String(describing: type(of: unwrapped))
+            String(describing: unwrapped),
+            typeName: String(describing: type(of: unwrapped))
         )
     }
 }
