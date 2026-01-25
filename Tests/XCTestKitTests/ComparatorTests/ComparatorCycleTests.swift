@@ -386,7 +386,7 @@ final class ComparatorCycleTests: XCTestKitCase
         /// ``Node`` uses identity-based equality (`===`), so the same object
         /// compared to itself is equal. The comparison should not traverse
         /// into the cycle.
-        XCTAssertTrue(actual.kind.isSame)
+        XCTKAssertTrue(actual.kind.isSame)
     }
     
     
