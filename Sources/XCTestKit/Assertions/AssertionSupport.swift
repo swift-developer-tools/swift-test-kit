@@ -160,6 +160,48 @@ internal func failAssertion(
 
 
 
+/// Reports a macro assertion failure.
+/// - Parameters:
+///   - kind: The assertion kind.
+///   - expressionText: The expression source text.
+///   - actual: The string representation of the actual value, or `nil` to omit.
+///   - message: The description of a failure.
+///   - file: The file where the failure occurs.
+///   - line: The line where the failure occurs.
+internal func failAssertion(
+    kind            : AssertionKind,
+    expressionText  : String,
+    actual          : String?,
+    message         : () -> String?,
+    file            : StaticString,
+    line            : UInt
+)
+{
+    var text: String = "\(kind.macroDisplayName) failed"
+    
+    if
+        let msg: String = message(),
+        !msg.isEmpty
+    {
+        text += " - \(msg)"
+    }
+    
+    text += "\n\nExpression: \(expressionText)"
+    
+    if let actual
+    {
+        text += "\nActual:     \(actual)"
+    }
+    
+    XCTKFail(
+        text,
+        file:   file,
+        line:   line
+    )
+}
+
+
+
 // MARK: - XCTKUnwrapError
 
 /// The error thrown by ``XCTKUnwrap(_:_:file:line:)`` when the unwrapped
