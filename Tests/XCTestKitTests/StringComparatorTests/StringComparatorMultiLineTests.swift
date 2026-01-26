@@ -13,7 +13,7 @@ import XCTest
 
 
 
-final class StringComparatorMultiLineTests: XCTestKitCase
+internal final class StringComparatorMultiLineTests: XCTestKitCase
 {
     func testMultiLineEqualStrings() throws
     {

@@ -20,7 +20,7 @@ import XCTest
 ///   - kind: The assertion to use.
 ///   - useFloats: Whether to use floating-point numbers when testing for
 ///   equality with accuracy. Otherwise, integers will be used.
-func testAssertionMessageNotEvaluatedOnSuccess(
+internal func testAssertionMessageNotEvaluatedOnSuccess(
     _ kind      : AssertionKind,
     useFloats   : Bool          = false
 )
@@ -145,7 +145,7 @@ func testAssertionMessageNotEvaluatedOnSuccess(
 ///   - kind: The assertion to use.
 ///   - useFloats: Whether to use floating-point numbers when testing for
 ///   equality with accuracy. Otherwise, integers will be used.
-func testAssertionMessageEvaluatedOnceOnFailure(
+internal func testAssertionMessageEvaluatedOnceOnFailure(
     _ kind      : AssertionKind,
     useFloats   : Bool          = false
 )

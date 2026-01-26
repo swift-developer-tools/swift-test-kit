@@ -13,7 +13,7 @@ import XCTest
 
 
 
-final class StringComparatorCharCoalescingTests: XCTestKitCase
+internal final class StringComparatorCharCoalescingTests: XCTestKitCase
 {
     func testCharCoalescingAdjacentRemovals() throws
     {

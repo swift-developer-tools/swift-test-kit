@@ -8,7 +8,7 @@
 //===----------------------------------------------------------------------===//
 
 /// An error used to test assertions that accept a throwing expression.
-struct TestError: Error
+internal struct TestError: Error
 {
     /// Throws a ``TestError``.
     static func throwError<T>() throws -> T

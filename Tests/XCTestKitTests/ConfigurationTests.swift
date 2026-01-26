@@ -13,7 +13,7 @@ import XCTest
 
 
 
-final class ConfigurationTests: XCTestKitCase
+internal final class ConfigurationTests: XCTestKitCase
 {
     func testGlobalConfigAssignment() throws
     {

@@ -13,7 +13,7 @@ import XCTest
 
 
 
-final class FormatterSpecialCaseTests: XCTestKitCase
+internal final class FormatterSpecialCaseTests: XCTestKitCase
 {
     typealias LK = XCTestKit.Formatter.LabelKind
     

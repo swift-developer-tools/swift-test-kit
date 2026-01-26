@@ -16,7 +16,7 @@ import XCTest
 ///
 /// This resets the global XCTestKit configuration between test cases and
 /// disables continuation after failure.
-class XCTestKitCase: XCTestCase
+internal class XCTestKitCase: XCTestCase
 {
     override func setUp()
     {

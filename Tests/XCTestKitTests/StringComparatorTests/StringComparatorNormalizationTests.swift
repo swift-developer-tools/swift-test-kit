@@ -13,7 +13,7 @@ import XCTest
 
 
 
-final class StringComparatorNormalizationTests: XCTestKitCase
+internal final class StringComparatorNormalizationTests: XCTestKitCase
 {
     func testNewlineNormalizationCRLF() throws
     {

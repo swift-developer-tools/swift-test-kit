@@ -13,7 +13,7 @@ import XCTest
 
 
 
-final class FailFunctionAssertionTests: XCTestKitCase
+internal final class FailFunctionAssertionTests: XCTestKitCase
 {
     typealias AK = AssertionKind
     

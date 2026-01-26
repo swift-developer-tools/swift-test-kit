@@ -13,7 +13,7 @@ import XCTest
 
 
 
-final class ComparatorCycleTests: XCTestKitCase
+internal final class ComparatorCycleTests: XCTestKitCase
 {
     func testSelfCycleInExpected() throws
     {
@@ -589,7 +589,7 @@ final class ComparatorCycleTests: XCTestKitCase
 
 // MARK: - Extensions
 
-extension ComparatorCycleTests
+internal extension ComparatorCycleTests
 {
     // MARK: - Node
     

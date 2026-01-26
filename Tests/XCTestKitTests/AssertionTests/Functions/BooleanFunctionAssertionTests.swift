@@ -13,7 +13,7 @@ import XCTest
 
 
 
-final class BooleanFunctionAssertionTests: XCTestKitCase
+internal final class BooleanFunctionAssertionTests: XCTestKitCase
 {
     typealias AK = AssertionKind
     

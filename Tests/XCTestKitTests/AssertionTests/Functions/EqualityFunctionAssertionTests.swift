@@ -13,7 +13,7 @@ import XCTest
 
 
 
-final class EqualityFunctionAssertionTests: XCTestKitCase
+internal final class EqualityFunctionAssertionTests: XCTestKitCase
 {
     typealias AK = AssertionKind
     
