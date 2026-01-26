@@ -80,7 +80,7 @@ internal func evaluateExpression<T>(
 
 // MARK: - Fail assertions
 
-/// Reports an assertion failure.
+/// Reports a function assertion failure.
 /// - Parameters:
 ///   - kind: The assertion kind.
 ///   - reason: The optional failure reason.
@@ -118,7 +118,7 @@ internal func failAssertion(
 
 
 
-/// Reports an assertion failure.
+/// Reports a function assertion failure.
 /// - Parameters:
 ///   - kind: The assertion kind.
 ///   - diff: The computed diff.
