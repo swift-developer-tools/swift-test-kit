@@ -16,10 +16,8 @@
 //
 //===----------------------------------------------------------------------===//
 
-// MARK: - AssertionKind
-
 /// The kind of an assertion.
-public enum AssertionKind
+public enum AssertionKind: Equatable, Sendable
 {
     case assert
     case equal
