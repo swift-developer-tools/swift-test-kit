@@ -64,7 +64,7 @@ public enum AssertionKind: Equatable, Sendable
             case .`false`               : return "XCTKAssertFalse"
             case .throwsError           : return "XCTKAssertThrowsError"
             case .noThrow               : return "XCTKAssertNoThrow"
-            case .fail                  : return "XCTKAssertion"
+            case .fail                  : return "XCTKFail"
         }
     }
     
