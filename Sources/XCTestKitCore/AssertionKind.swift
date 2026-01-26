@@ -75,4 +75,12 @@ public enum AssertionKind: Equatable, Sendable
     {
         return "_\(name)Macro"
     }
+    
+    
+    
+    /// The macro display name.
+    public var macroDisplayName: String
+    {
+        return "#\(name)"
+    }
 }
