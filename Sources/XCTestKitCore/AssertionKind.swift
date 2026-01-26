@@ -67,4 +67,12 @@ public enum AssertionKind: Equatable, Sendable
             case .fail                  : return "XCTKAssertion"
         }
     }
+    
+    
+    
+    /// The macro name.
+    public var macroName: String
+    {
+        return "_\(name)Macro"
+    }
 }
