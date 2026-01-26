@@ -70,8 +70,8 @@ public enum AssertionKind: Equatable, Sendable
     
     
     
-    /// The macro name.
-    public var macroName: String
+    /// The internal macro name.
+    public var macroInternalName: String
     {
         return "_\(name)Macro"
     }
