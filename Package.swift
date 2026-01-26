@@ -37,10 +37,17 @@ let package = Package(
     ],
     targets:
     [
+        .target(
+            name:           "XCTestKitCore",
+            dependencies:   []
+        ),
+        
         .macro(
             name: "XCTestKitMacros",
             dependencies:
             [
+                "XCTestKitCore",
+                
                 .product(
                     name:       "SwiftSyntax",
                     package:    "swift-syntax"
@@ -59,8 +66,12 @@ let package = Package(
         ),
         
         .target(
-            name:           "XCTestKit",
-            dependencies:   ["XCTestKitMacros"]
+            name: "XCTestKit",
+            dependencies:
+            [
+                "XCTestKitCore",
+                "XCTestKitMacros"
+            ]
         ),
         
         .target(

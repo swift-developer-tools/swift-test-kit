@@ -16,60 +16,7 @@
 //
 //===----------------------------------------------------------------------===//
 
-// MARK: - AssertionKind
-
-/// The kind of an assertion.
-internal enum AssertionKind
-{
-    case assert
-    case equal
-    case notEqual
-    case equalWithAccuracy
-    case notEqualWithAccuracy
-    case identical
-    case notIdentical
-    case greaterThan
-    case greaterThanOrEqual
-    case lessThan
-    case lessThanOrEqual
-    case `nil`
-    case notNil
-    case unwrap
-    case `true`
-    case `false`
-    case fail
-    case throwsError
-    case noThrow
-    
-    
-    
-    /// The assertion name.
-    var name: String
-    {
-        switch self
-        {
-            case .assert                : return "XCTKAssert"
-            case .equal                 : return "XCTKAssertEqual"
-            case .notEqual              : return "XCTKAssertNotEqual"
-            case .equalWithAccuracy     : return "XCTKAssertEqual"
-            case .notEqualWithAccuracy  : return "XCTKAssertNotEqual"
-            case .identical             : return "XCTKAssertIdentical"
-            case .notIdentical          : return "XCTKAssertNotIdentical"
-            case .greaterThan           : return "XCTKAssertGreaterThan"
-            case .greaterThanOrEqual    : return "XCTKAssertGreaterThanOrEqual"
-            case .lessThan              : return "XCTKAssertLessThan"
-            case .lessThanOrEqual       : return "XCTKAssertLessThanOrEqual"
-            case .`nil`                 : return "XCTKAssertNil"
-            case .notNil                : return "XCTKAssertNotNil"
-            case .unwrap                : return "XCTKUnwrap"
-            case .`true`                : return "XCTKAssertTrue"
-            case .`false`               : return "XCTKAssertFalse"
-            case .throwsError           : return "XCTKAssertThrowsError"
-            case .noThrow               : return "XCTKAssertNoThrow"
-            case .fail                  : return "XCTKAssertion"
-        }
-    }
-}
+import XCTestKitCore
 
 
 
