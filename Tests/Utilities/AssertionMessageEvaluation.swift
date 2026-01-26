@@ -17,6 +17,7 @@ import XCTest
 ///
 /// - Note: This does nothing for ``AssertionKind/fail``.
 ///
+/// - Parameters:
 ///   - kind: The assertion to use.
 ///   - useFloats: Whether to use floating-point numbers when testing for
 ///   equality with accuracy. Otherwise, integers will be used.
