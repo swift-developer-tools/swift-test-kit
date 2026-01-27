@@ -156,60 +156,55 @@ internal enum DiffNodeKind: Equatable
     
     var isCycle: Bool
     {
-        if case .cycle = self
+        switch self
         {
-            return true
+            case .cycle : return true
+            default     : return false
         }
-        
-        return false
     }
     
     
     
     var isSame: Bool
     {
-        if case .same = self
+        switch self
         {
-            return true
+            case .same  : return true
+            default     : return false
         }
-        
-        return false
     }
     
     
     
     var isDifferent: Bool
     {
-        if case .different = self
+        switch self
         {
-            return true
+            case .different : return true
+            default         : return false
         }
-        
-        return false
     }
     
     
     
     var isMissing: Bool
     {
-        if case .missing = self
+        switch self
         {
-            return true
+            case .missing   : return true
+            default         : return false
         }
-        
-        return false
     }
     
     
     
     var isUnexpected: Bool
     {
-        if case .unexpected = self
+        switch self
         {
-            return true
+            case .unexpected    : return true
+            default             : return false
         }
-        
-        return false
     }
 }
 
