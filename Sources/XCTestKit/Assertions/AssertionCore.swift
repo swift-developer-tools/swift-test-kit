@@ -257,7 +257,7 @@ internal func evaluateXCTKAssertNil(
             
             failAssertion(
                 kind:       assertionKind,
-                reason:     nil, // TODO: "got (\(quote(value!)))"
+                reason:     nil,
                 message:    message,
                 file:       file,
                 line:       line
