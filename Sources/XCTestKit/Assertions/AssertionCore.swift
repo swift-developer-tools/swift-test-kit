@@ -1551,15 +1551,13 @@ internal func evaluateXCTKAssertNoThrow<T>(
     }
     catch
     {
-        let reason: String = "threw error \(quote(error))"
-        
         switch captureKind
         {
             case .none:
                 
                 failAssertion(
                     kind:       assertionKind,
-                    reason:     reason,
+                    reason:     "threw error \(quote(error))",
                     message:    message,
                     file:       file,
                     line:       line
@@ -1570,7 +1568,7 @@ internal func evaluateXCTKAssertNoThrow<T>(
                 failAssertion(
                     kind:       assertionKind,
                     exprText:   text,
-                    actual:     reason,
+                    actual:     String(describing: error),
                     message:    message,
                     file:       file,
                     line:       line
