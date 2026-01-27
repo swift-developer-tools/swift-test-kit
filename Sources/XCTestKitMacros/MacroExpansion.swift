@@ -100,7 +100,12 @@ extension SingleExprMacro
                 
                 let errorHandler: ExprSyntax
                 
-                if
+                if let trailingClosure: ClosureExprSyntax
+                    = node.trailingClosure
+                {
+                    errorHandler = ExprSyntax(trailingClosure)
+                }
+                else if
                     positionalArgs.count > 2,
                     positionalArgs[2].is(ClosureExprSyntax.self)
                 {
