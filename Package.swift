@@ -85,7 +85,13 @@ let package = Package(
             dependencies:
             [
                 "XCTestKit",
-                "XCTestKitTestUtilities"
+                "XCTestKitMacros",
+                "XCTestKitTestUtilities",
+                
+                .product(
+                    name:       "SwiftSyntaxMacrosTestSupport",
+                    package:    "swift-syntax"
+                )
             ]
         )
     ]
