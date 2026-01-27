@@ -160,7 +160,7 @@ internal func failAssertion(
 
 
 
-/// Reports a macro assertion failure.
+/// Reports a macro assertion failure for single-expression assertions.
 /// - Parameters:
 ///   - kind: The assertion kind.
 ///   - expressionText: The expression source text.
@@ -192,6 +192,96 @@ internal func failAssertion(
     {
         text += "\nActual:     \(actual)"
     }
+    
+    XCTKFail(
+        text,
+        file:   file,
+        line:   line
+    )
+}
+
+
+
+/// Reports a macro assertion failure for double-expression assertions.
+/// - Parameters:
+///   - kind: The assertion kind.
+///   - expr1Text: The source text of the first expression.
+///   - expr2Text: The source text of the second expression.
+///   - reason: The failure reason describing the comparison result.
+///   - message: The description of a failure.
+///   - file: The file where the failure occurs.
+///   - line: The line where the failure occurs.
+internal func failAssertion(
+    kind        : AssertionKind,
+    expr1Text   : String,
+    expr2Text   : String,
+    reason      : String,
+    message     : () -> String?,
+    file        : StaticString,
+    line        : UInt
+)
+{
+    var text: String = "\(kind.macroDisplayName) failed"
+    
+    if
+        let msg: String = message(),
+        !msg.isEmpty
+    {
+        text += " - \(msg)"
+    }
+    
+    text += "\n\nExpression 1: \(expr1Text)"
+    text += "\nExpression 2: \(expr2Text)"
+    text += "\n\n\(reason)"
+    
+    XCTKFail(
+        text,
+        file:   file,
+        line:   line
+    )
+}
+
+
+
+/// Reports a macro assertion failure for double-expression equality assertions
+/// with diff output.
+/// - Parameters:
+///   - kind: The assertion kind.
+///   - expectedText: The source text of the expected expression.
+///   - actualText: The source text of the actual expression.
+///   - diff: The computed diff.
+///   - options: The options for formatting diffs.
+///   - message: The description of a failure.
+///   - file: The file where the failure occurs.
+///   - line: The line where the failure occurs.
+internal func failAssertion(
+    kind            : AssertionKind,
+    expectedText    : String,
+    actualText      : String,
+    diff            : DiffNode,
+    options         : XCTKFormatOptions,
+    message         : () -> String?,
+    file            : StaticString,
+    line            : UInt
+)
+{
+    let diffOutput: String = Formatter.format(
+        diff,
+        options: options
+    )
+    
+    var text: String = "\(kind.macroDisplayName) failed"
+    
+    if
+        let msg: String = message(),
+        !msg.isEmpty
+    {
+        text += " - \(msg)"
+    }
+    
+    text += "\n\nExpected: \(expectedText)"
+    text += "\nActual:   \(actualText)"
+    text += "\n\n\(diffOutput)"
     
     XCTKFail(
         text,
