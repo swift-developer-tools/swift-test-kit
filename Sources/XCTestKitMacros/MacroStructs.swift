@@ -13,17 +13,17 @@ import XCTestKitCore
 
 // MARK: - Boolean
 
-public struct AssertMacro: SingleExprMacro
+internal struct AssertMacro: SingleExprMacro
 {
     static let kind: AssertionKind = .assert
 }
 
-public struct AssertTrueMacro: SingleExprMacro
+internal struct AssertTrueMacro: SingleExprMacro
 {
     static let kind: AssertionKind = .`true`
 }
 
-public struct AssertFalseMacro: SingleExprMacro
+internal struct AssertFalseMacro: SingleExprMacro
 {
     static let kind: AssertionKind = .`false`
 }
@@ -32,17 +32,17 @@ public struct AssertFalseMacro: SingleExprMacro
 
 // MARK: - Nil and non-nil
 
-public struct AssertNilMacro: SingleExprMacro
+internal struct AssertNilMacro: SingleExprMacro
 {
     static let kind: AssertionKind = .`nil`
 }
 
-public struct AssertNotNilMacro: SingleExprMacro
+internal struct AssertNotNilMacro: SingleExprMacro
 {
     static let kind: AssertionKind = .notNil
 }
 
-public struct UnwrapMacro: SingleExprMacro
+internal struct UnwrapMacro: SingleExprMacro
 {
     static let kind: AssertionKind = .unwrap
 }
@@ -51,32 +51,32 @@ public struct UnwrapMacro: SingleExprMacro
 
 // MARK: - Equality and inequality
 
-public struct AssertEqualMacro: DoubleExprMacro
+internal struct AssertEqualMacro: DoubleExprMacro
 {
     static let kind: AssertionKind = .equal
 }
 
-public struct AssertNotEqualMacro: DoubleExprMacro
+internal struct AssertNotEqualMacro: DoubleExprMacro
 {
     static let kind: AssertionKind = .notEqual
 }
 
-public struct AssertIdenticalMacro: DoubleExprMacro
+internal struct AssertIdenticalMacro: DoubleExprMacro
 {
     static let kind: AssertionKind = .identical
 }
 
-public struct AssertNotIdenticalMacro: DoubleExprMacro
+internal struct AssertNotIdenticalMacro: DoubleExprMacro
 {
     static let kind: AssertionKind = .notIdentical
 }
 
-public struct AssertEqualWithAccuracyMacro: DoubleExprMacro
+internal struct AssertEqualWithAccuracyMacro: DoubleExprMacro
 {
     static let kind: AssertionKind = .equalWithAccuracy
 }
 
-public struct AssertNotEqualWithAccuracyMacro: DoubleExprMacro
+internal struct AssertNotEqualWithAccuracyMacro: DoubleExprMacro
 {
     static let kind: AssertionKind = .notEqualWithAccuracy
 }
@@ -85,22 +85,22 @@ public struct AssertNotEqualWithAccuracyMacro: DoubleExprMacro
 
 // MARK: - Comparable
 
-public struct AssertGreaterThanMacro: DoubleExprMacro
+internal struct AssertGreaterThanMacro: DoubleExprMacro
 {
     static let kind: AssertionKind = .greaterThan
 }
 
-public struct AssertGreaterThanOrEqualMacro: DoubleExprMacro
+internal struct AssertGreaterThanOrEqualMacro: DoubleExprMacro
 {
     static let kind: AssertionKind = .greaterThanOrEqual
 }
 
-public struct AssertLessThanOrEqualMacro: DoubleExprMacro
+internal struct AssertLessThanOrEqualMacro: DoubleExprMacro
 {
     static let kind: AssertionKind = .lessThanOrEqual
 }
 
-public struct AssertLessThanMacro: DoubleExprMacro
+internal struct AssertLessThanMacro: DoubleExprMacro
 {
     static let kind: AssertionKind = .lessThan
 }
@@ -109,12 +109,12 @@ public struct AssertLessThanMacro: DoubleExprMacro
 
 // MARK: - Error
 
-public struct AssertThrowsErrorMacro: SingleExprMacro
+internal struct AssertThrowsErrorMacro: SingleExprMacro
 {
     static let kind: AssertionKind = .throwsError
 }
 
-public struct AssertNoThrowMacro: SingleExprMacro
+internal struct AssertNoThrowMacro: SingleExprMacro
 {
     static let kind: AssertionKind = .noThrow
 }
@@ -123,7 +123,7 @@ public struct AssertNoThrowMacro: SingleExprMacro
 
 // MARK: - Fail
 
-public struct FailMacro: NoExprMacro
+internal struct FailMacro: NoExprMacro
 {
     static let kind: AssertionKind = .fail
 }
