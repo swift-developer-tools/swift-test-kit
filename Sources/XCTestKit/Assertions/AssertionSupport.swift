@@ -190,7 +190,9 @@ internal func failAssertion(
     
     if let actual
     {
-        text += "\nActual:     \(actual)"
+        text += kind == .noThrow
+            ? "\nThrew:      \(actual)"
+            : "\nActual:     \(actual)"
     }
     
     XCTKFail(
