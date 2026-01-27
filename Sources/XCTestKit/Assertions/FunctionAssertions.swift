@@ -41,7 +41,7 @@ public func XCTKAssert(
     line            : UInt                              = #line
 )
 {
-    let result: Result<Bool, Error> = evaluateExpression(
+    let result: Result<Bool, Error> = evaluateExpr(
         expression,
         assertion:  .assert,
         message:    message,
@@ -88,7 +88,7 @@ public func XCTKAssertTrue(
     line            : UInt                              = #line
 )
 {
-    let result: Result<Bool, Error> = evaluateExpression(
+    let result: Result<Bool, Error> = evaluateExpr(
         expression,
         assertion:  .`true`,
         message:    message,
@@ -134,7 +134,7 @@ public func XCTKAssertFalse(
     line            : UInt                              = #line
 )
 {
-    let result: Result<Bool, Error> = evaluateExpression(
+    let result: Result<Bool, Error> = evaluateExpr(
         expression,
         assertion:  .`false`,
         message:    message,
@@ -182,7 +182,7 @@ public func XCTKAssertNil(
     line            : UInt                              = #line
 )
 {
-    let result: Result<Any?, Error> = evaluateExpression(
+    let result: Result<Any?, Error> = evaluateExpr(
         expression,
         assertion:  .`nil`,
         message:    message,
@@ -228,7 +228,7 @@ public func XCTKAssertNotNil(
     line            : UInt                              = #line
 )
 {
-    let result: Result<Any?, Error> = evaluateExpression(
+    let result: Result<Any?, Error> = evaluateExpr(
         expression,
         assertion:  .notNil,
         message:    message,
@@ -280,7 +280,7 @@ public func XCTKUnwrap<T>(
     line            : UInt                          = #line
 ) throws -> T
 {
-    let result: Result<T?, Error> = evaluateExpression(
+    let result: Result<T?, Error> = evaluateExpr(
         expression,
         assertion:  .unwrap,
         message:    message,
@@ -338,7 +338,7 @@ public func XCTKAssertEqual<T>(
     options     : XCTKOptions?                  = nil
 ) where T : Equatable
 {
-    let expResult: Result<T, Error> = evaluateExpression(
+    let expResult: Result<T, Error> = evaluateExpr(
         expected,
         assertion:  .equal,
         message:    message,
@@ -354,7 +354,7 @@ public func XCTKAssertEqual<T>(
     
     
     
-    let actResult: Result<T, Error> = evaluateExpression(
+    let actResult: Result<T, Error> = evaluateExpr(
         actual,
         assertion:  .equal,
         message:    message,
@@ -428,7 +428,7 @@ public func XCTKAssertNotEqual<T>(
     line            : UInt                          = #line
 ) where T : Equatable
 {
-    let result1: Result<T, Error> = evaluateExpression(
+    let result1: Result<T, Error> = evaluateExpr(
         expression1,
         assertion:  .notEqual,
         message:    message,
@@ -444,7 +444,7 @@ public func XCTKAssertNotEqual<T>(
     
     
     
-    let result2: Result<T, Error> = evaluateExpression(
+    let result2: Result<T, Error> = evaluateExpr(
         expression2,
         assertion:  .notEqual,
         message:    message,
@@ -653,7 +653,7 @@ public func XCTKAssertEqual<T>(
     line            : UInt                          = #line
 ) where T : FloatingPoint
 {
-    let result1: Result<T, Error> = evaluateExpression(
+    let result1: Result<T, Error> = evaluateExpr(
         expression1,
         assertion:  .equalWithAccuracy,
         message:    message,
@@ -669,7 +669,7 @@ public func XCTKAssertEqual<T>(
     
     
     
-    let result2: Result<T, Error> = evaluateExpression(
+    let result2: Result<T, Error> = evaluateExpr(
         expression2,
         assertion:  .equalWithAccuracy,
         message:    message,
@@ -728,7 +728,7 @@ public func XCTKAssertEqual<T>(
     line            : UInt                          = #line
 ) where T : Numeric
 {
-    let result1: Result<T, Error> = evaluateExpression(
+    let result1: Result<T, Error> = evaluateExpr(
         expression1,
         assertion:  .equalWithAccuracy,
         message:    message,
@@ -744,7 +744,7 @@ public func XCTKAssertEqual<T>(
     
     
     
-    let result2: Result<T, Error> = evaluateExpression(
+    let result2: Result<T, Error> = evaluateExpr(
         expression2,
         assertion:  .equalWithAccuracy,
         message:    message,
@@ -804,7 +804,7 @@ public func XCTKAssertNotEqual<T>(
     line            : UInt                          = #line
 ) where T : FloatingPoint
 {
-    let result1: Result<T, Error> = evaluateExpression(
+    let result1: Result<T, Error> = evaluateExpr(
         expression1,
         assertion:  .notEqualWithAccuracy,
         message:    message,
@@ -820,7 +820,7 @@ public func XCTKAssertNotEqual<T>(
     
     
     
-    let result2: Result<T, Error> = evaluateExpression(
+    let result2: Result<T, Error> = evaluateExpr(
         expression2,
         assertion:  .notEqualWithAccuracy,
         message:    message,
@@ -880,7 +880,7 @@ public func XCTKAssertNotEqual<T>(
     line            : UInt                          = #line
 ) where T : Numeric
 {
-    let result1: Result<T, Error> = evaluateExpression(
+    let result1: Result<T, Error> = evaluateExpr(
         expression1,
         assertion:  .notEqualWithAccuracy,
         message:    message,
@@ -896,7 +896,7 @@ public func XCTKAssertNotEqual<T>(
     
     
     
-    let result2: Result<T, Error> = evaluateExpression(
+    let result2: Result<T, Error> = evaluateExpr(
         expression2,
         assertion:  .notEqualWithAccuracy,
         message:    message,
@@ -955,7 +955,7 @@ public func XCTKAssertGreaterThan<T>(
     line            : UInt                          = #line
 ) where T : Comparable
 {
-    let result1: Result<T, Error> = evaluateExpression(
+    let result1: Result<T, Error> = evaluateExpr(
         expression1,
         assertion:  .greaterThan,
         message:    message,
@@ -971,7 +971,7 @@ public func XCTKAssertGreaterThan<T>(
     
     
     
-    let result2: Result<T, Error> = evaluateExpression(
+    let result2: Result<T, Error> = evaluateExpr(
         expression2,
         assertion:  .greaterThan,
         message:    message,
@@ -1020,7 +1020,7 @@ public func XCTKAssertGreaterThanOrEqual<T>(
     line            : UInt                          = #line
 ) where T : Comparable
 {
-    let result1: Result<T, Error> = evaluateExpression(
+    let result1: Result<T, Error> = evaluateExpr(
         expression1,
         assertion:  .greaterThanOrEqual,
         message:    message,
@@ -1036,7 +1036,7 @@ public func XCTKAssertGreaterThanOrEqual<T>(
     
     
     
-    let result2: Result<T, Error> = evaluateExpression(
+    let result2: Result<T, Error> = evaluateExpr(
         expression2,
         assertion:  .greaterThanOrEqual,
         message:    message,
@@ -1085,7 +1085,7 @@ public func XCTKAssertLessThanOrEqual<T>(
     line            : UInt                          = #line
 ) where T : Comparable
 {
-    let result1: Result<T, Error> = evaluateExpression(
+    let result1: Result<T, Error> = evaluateExpr(
         expression1,
         assertion:  .lessThanOrEqual,
         message:    message,
@@ -1101,7 +1101,7 @@ public func XCTKAssertLessThanOrEqual<T>(
     
     
     
-    let result2: Result<T, Error> = evaluateExpression(
+    let result2: Result<T, Error> = evaluateExpr(
         expression2,
         assertion:  .lessThanOrEqual,
         message:    message,
@@ -1150,7 +1150,7 @@ public func XCTKAssertLessThan<T>(
     line            : UInt                          = #line
 ) where T : Comparable
 {
-    let result1: Result<T, Error> = evaluateExpression(
+    let result1: Result<T, Error> = evaluateExpr(
         expression1,
         assertion:  .lessThan,
         message:    message,
@@ -1166,7 +1166,7 @@ public func XCTKAssertLessThan<T>(
     
     
     
-    let result2: Result<T, Error> = evaluateExpression(
+    let result2: Result<T, Error> = evaluateExpr(
         expression2,
         assertion:  .lessThan,
         message:    message,
@@ -1216,7 +1216,7 @@ public func XCTKAssertThrowsError<T>(
     _ errorHandler  : (any Error) -> Void           = { _ in }
 )
 {
-    let result: Result<T, Error> = evaluateExpression(
+    let result: Result<T, Error> = evaluateExpr(
         expression,
         assertion:      .throwsError,
         message:        message,
@@ -1254,7 +1254,7 @@ public func XCTKAssertNoThrow<T>(
     line            : UInt                          = #line
 )
 {
-    _ = evaluateExpression(
+    _ = evaluateExpr(
         expression,
         assertion:  .noThrow,
         message:    message,

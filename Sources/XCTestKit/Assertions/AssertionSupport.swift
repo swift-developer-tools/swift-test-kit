@@ -32,18 +32,18 @@ import XCTestKitCore
 /// the assertion failed.
 ///
 /// - Parameters:
-///   - expression: The expression to evaluate.
+///   - expr: The expression to evaluate.
 ///   - assertion: The assertion kind.
 ///   - message: The description of a failure.
 ///   - file: The file where the failure occurs. The default value is the
 ///   filename of the test case in which this function was called.
 ///   - line: The line where the failure occurs. The default value is the line
 ///   number where this function was called.
-///   - errorHandler: An optional handler for errors thrown by `expression`.
+///   - errorHandler: An optional handler for errors thrown by `expr`.
 /// - Returns: A `Result` containing the value or error produced by evaluating
 /// the given expression.
-internal func evaluateExpression<T>(
-    _ expression    : () throws -> T,
+internal func evaluateExpr<T>(
+    _ expr          : () throws -> T,
     assertion       : AssertionKind,
     message         : () -> String?,
     file            : StaticString,
@@ -53,7 +53,7 @@ internal func evaluateExpression<T>(
 {
     do
     {
-        return .success(try expression())
+        return .success(try expr())
     }
     catch
     {
@@ -163,18 +163,18 @@ internal func failAssertion(
 /// Reports a macro assertion failure for single-expression assertions.
 /// - Parameters:
 ///   - kind: The assertion kind.
-///   - expressionText: The expression source text.
+///   - exprText: The expression source text.
 ///   - actual: The string representation of the actual value, or `nil` to omit.
 ///   - message: The description of a failure.
 ///   - file: The file where the failure occurs.
 ///   - line: The line where the failure occurs.
 internal func failAssertion(
-    kind            : AssertionKind,
-    expressionText  : String,
-    actual          : String?,
-    message         : () -> String?,
-    file            : StaticString,
-    line            : UInt
+    kind        : AssertionKind,
+    exprText    : String,
+    actual      : String?,
+    message     : () -> String?,
+    file        : StaticString,
+    line        : UInt
 )
 {
     var text: String = "\(kind.macroDisplayName) failed"
@@ -186,7 +186,7 @@ internal func failAssertion(
         text += " - \(msg)"
     }
     
-    text += "\n\nExpression: \(expressionText)"
+    text += "\n\nExpression: \(exprText)"
     
     if let actual
     {
@@ -310,21 +310,21 @@ public struct XCTKUnwrapError: Error, CustomStringConvertible
 // MARK: - Numeric equality
 
 internal func areEqual<T>(
-    _ expression1   : T,
-    _ expression2   : T,
-    accuracy        : T
+    _ expr1     : T,
+    _ expr2     : T,
+    accuracy    : T
 ) -> Bool where T : Numeric
 {
-    if expression1 == expression2
+    if expr1 == expr2
     {
         return true
     }
     
     /// `NaN` values are handled implicitly, since the `<=` operator returns
     /// `false` when comparing any value to `NaN`.
-    let difference: T = expression1.magnitude > expression2.magnitude
-        ? expression1 - expression2
-        : expression2 - expression1
+    let difference: T = expr1.magnitude > expr2.magnitude
+        ? expr1 - expr2
+        : expr2 - expr1
     
     return difference.magnitude <= accuracy.magnitude
 }
