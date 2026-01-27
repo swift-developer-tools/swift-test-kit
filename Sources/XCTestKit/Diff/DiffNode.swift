@@ -290,84 +290,77 @@ internal enum DiffNodeLabel: Equatable, Sendable
     
     var isRoot: Bool
     {
-        if case .root = self
+        switch self
         {
-            return true
+            case .root  : return true
+            default     : return false
         }
-        
-        return false
     }
     
     
     
     var isProperty: Bool
     {
-        if case .property = self
+        switch self
         {
-            return true
+            case .property  : return true
+            default         : return false
         }
-        
-        return false
     }
     
     
     
     var isIndex: Bool
     {
-        if case .index = self
+        switch self
         {
-            return true
+            case .index : return true
+            default     : return false
         }
-        
-        return false
     }
     
     
     
     var isKey: Bool
     {
-        if case .key = self
+        switch self
         {
-            return true
+            case .key   : return true
+            default     : return false
         }
-        
-        return false
     }
     
     
     
     var isMember: Bool
     {
-        if case .member = self
+        switch self
         {
-            return true
+            case .member    : return true
+            default         : return false
         }
-        
-        return false
     }
     
     
     
     var isLine: Bool
     {
-        if case .line = self
+        switch self
         {
-            return true
+            case .line  : return true
+            default     : return false
         }
-        
-        return false
     }
     
     
     
     var isCharacter: Bool
     {
-        if case .character = self
+        switch self
         {
-            return true
+            case .character : return true
+            default         : return false
         }
-        
-        return false
     }
     
     
