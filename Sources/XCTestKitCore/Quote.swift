@@ -12,7 +12,7 @@
 /// - Parameter value: The value to convert.
 /// - Returns: The string representation of the given value, wrapped in double
 /// quotes.
-internal func quote<T>(
+public func quote<T>(
     _ value: T
 ) -> String
 {

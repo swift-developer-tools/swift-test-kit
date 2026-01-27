@@ -7,6 +7,10 @@
 //
 //===----------------------------------------------------------------------===//
 
+import XCTestKitCore
+
+
+
 //  MARK: - RenderedValueKind
 
 /// The kind of a rendered value.

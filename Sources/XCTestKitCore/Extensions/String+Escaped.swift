@@ -7,7 +7,11 @@
 //
 //===----------------------------------------------------------------------===//
 
-internal extension String
+import Foundation
+
+
+
+public extension String
 {
     /// The string with special characters escaped.
     var escaped: String

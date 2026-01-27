@@ -7,6 +7,10 @@
 //
 //===----------------------------------------------------------------------===//
 
+import XCTestKitCore
+
+
+
 // MARK: - FormattedLine
 
 /// A formatted diff line.
