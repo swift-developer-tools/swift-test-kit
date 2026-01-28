@@ -657,6 +657,12 @@ internal struct Formatter
         {
             let remaining: Int = totalDiffCount - context.emittedDiffCount
             
+            guard remaining > 0
+            else
+            {
+                return
+            }
+            
             message = "... and \(remaining) more"
                     + " \(noun)\(remaining == 1 ? "" : "s")"
         }
