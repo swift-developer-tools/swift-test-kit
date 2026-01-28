@@ -160,6 +160,54 @@ internal func failAssertion(
 
 
 
+/// Reports a macro assertion failure for boolean assertions.
+/// - Parameters:
+///   - kind: The assertion kind.
+///   - exprText: The expression source text.
+///   - evaluated: The evaluated boolean expressions.
+///   - notEvaluated: The number of unevaluated boolean expressions.
+///   - message: The description of a failure.
+///   - file: The file where the failure occurs.
+///   - line: The line where the failure occurs.
+internal func failAssertion(
+    kind            : AssertionKind,
+    exprText        : String,
+    evaluated       : [XCTKBooleanExpr],
+    notEvaluated    : Int,
+    message         : () -> String?,
+    file            : StaticString,
+    line            : UInt
+)
+{
+    // TODO: All assertions accept options? Or is formatting only global?
+    let output: String = Formatter.formatBooleanDecomposition(
+        exprText:       exprText,
+        evaluated:      evaluated,
+        notEvaluated:   notEvaluated,
+        expectedValue:  kind == .`false` ? false : true,
+        options:        XCTKConfig.global.formatOptions
+    )
+    
+    var text: String = "\(kind.macroDisplayName) failed"
+    
+    if
+        let msg: String = message(),
+        !msg.isEmpty
+    {
+        text += " - \(msg)"
+    }
+    
+    text += "\n\n\(output)"
+    
+    XCTKFail(
+        text,
+        file:   file,
+        line:   line
+    )
+}
+
+
+
 /// Reports a macro assertion failure for single-expression assertions.
 /// - Parameters:
 ///   - kind: The assertion kind.
