@@ -18,8 +18,6 @@ where the values differ. Other assertions do not produce diffs, since they
 assert conditions where a diff is not meaningful (for example, 
 ``XCTKAssertTrue(_:_:file:line:)-func`` asserts a binary condition).
 
-See <doc:Configuration> for information on configuring diffs.
-
 ## Topics
 
 ### Articles
