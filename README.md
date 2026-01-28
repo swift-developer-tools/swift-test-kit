@@ -108,6 +108,68 @@ XCTKAssertEqual(expected, actual)
 ///     Unexpected: "f"
 ```
 
+### Expression Capture
+
+Macro assertions capture the literal source text of expressions for use in 
+failure output. For boolean macro assertions, compound expressions using `&&` 
+and `||` are decomposed to show the value of each sub-expression and identify 
+which caused the assertion failure, respecting short-circuit evaluation so only 
+evaluated operands appear in the output. Other macro assertions capture the 
+expression text without decomposition.
+
+**Boolean Decomposition**
+
+```swift
+#XCTKAssertTrue(isValid() && hasAccess && count >= 10)
+/// where isValid() -> true, hasAccess == false, count == 20
+
+/// #XCTKAssertTrue failed
+/// 
+/// Expression: isValid() && hasAccess && count >= 10
+/// 
+///     isValid() = true
+///     hasAccess = false ←
+/// 
+///     (1 expression not evaluated)
+```
+
+**Nested Expressions**
+
+```swift
+#XCTKAssertFalse((a || b) && (c || d))
+/// where a == true, b == false, c == true, d == false
+
+/// #XCTKAssertFalse failed
+/// 
+/// Expression: (a || b) && (c || d)
+/// 
+///     a = true ←
+///     c = true ←
+/// 
+///     (2 expressions not evaluated)
+```
+
+**Non-Boolean Assertions**
+
+```swift
+#XCTKAssertNoThrow(try getValue())
+
+/// #XCTKAssertNoThrow failed
+/// 
+/// Expression: try getValue()
+/// Threw:      RequestError.timeout
+```
+
+```swift
+#XCTKAssertNil(result.error)
+/// where result.error == RequestError.timeout
+
+/// #XCTKAssertNil failed
+/// 
+/// Expression: result.error
+/// Actual:     RequestError.timeout
+```
+
 
 
 ## Documentation
