@@ -95,14 +95,15 @@ internal struct Formatter
     ///   - evaluated: The evaluated boolean expressions.
     ///   - notEvaluated: The number of unevaluated boolean expressions.
     ///   - expectedValue: The value expected by the assertion.
-    ///   - options: The formatting options to use.
+    ///   - options: The formatting options to use. The default value is a
+    ///   default-initialized ``XCTKFormatOptions`` instance.
     /// - Returns: The formatted decomposition.
     static func formatBooleanDecomposition(
         exprText        : String,
         evaluated       : [XCTKBooleanExpr],
         notEvaluated    : Int,
         expectedValue   : Bool,
-        options         : XCTKFormatOptions
+        options         : XCTKFormatOptions     = .init()
     ) -> String
     {
         let exprsToShow: [XCTKBooleanExpr] = options.showAllEvaluated
