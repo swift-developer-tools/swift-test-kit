@@ -89,6 +89,49 @@ internal struct Formatter
     
     
     
+    /// Formats the decomposition of a boolean expression.
+    /// - Parameters:
+    ///   - exprText: The expression source text.
+    ///   - evaluated: The evaluated boolean expressions.
+    ///   - notEvaluated: The number of unevaluated boolean expressions.
+    ///   - expectedValue: The value expected by the assertion.
+    ///   - options: The formatting options to use.
+    /// - Returns: The formatted decomposition.
+    static func formatBooleanDecomposition(
+        exprText        : String,
+        evaluated       : [XCTKBooleanExpr],
+        notEvaluated    : Int,
+        expectedValue   : Bool,
+        options         : XCTKFormatOptions
+    ) -> String
+    {
+        let exprsToShow: [XCTKBooleanExpr] = options.showAllEvaluated
+            ? evaluated
+            : evaluated.filter { $0.value != expectedValue }
+        
+        let totalDiffCount: Int? = options.countDiffs
+            ? exprsToShow.count
+            : nil
+        
+        let context = FormatterContext(
+            options:            options,
+            totalDiffCount:     totalDiffCount
+        )
+        
+        let formatter = Formatter(context: context)
+        
+        formatter.emitBooleanDecomposition(
+            exprText:       exprText,
+            exprsToShow:    exprsToShow,
+            notEvaluated:   notEvaluated,
+            expectedValue:  expectedValue
+        )
+        
+        return formatter.render()
+    }
+    
+    
+    
     // MARK: - Core
     
     /// Visits the given node, accumulating the path and emitting output at
@@ -626,6 +669,86 @@ internal struct Formatter
         }
         
         emitLine(message, 1)
+    }
+    
+    
+    
+    /// Emits a decomposed boolean expression.
+    /// - Parameters:
+    ///   - exprText: The expression source text.
+    ///   - exprsToShow: The boolean expressions to show in the output.
+    ///   - notEvaluated: The number of unevaluated boolean expressions.
+    ///   - expectedValue: The expression value expected for the boolean
+    ///   assertion to succeed.
+    private func emitBooleanDecomposition(
+        exprText        : String,
+        exprsToShow     : [XCTKBooleanExpr],
+        notEvaluated    : Int,
+        expectedValue   : Bool
+    )
+    {
+        let headerPrefix: String = "Expression: "
+        
+        let availableWidth: Int = computeAvailableWidth(
+            indent:         0,
+            labelWidth:     headerPrefix.count
+        )
+        
+        let truncatedExprText: String = Self.truncateText(
+            exprText,
+            maxLength: availableWidth
+        )
+        
+        emitLine("\(headerPrefix)\(truncatedExprText)", 0)
+        emitBlankLine()
+        
+        
+        
+        let limit: Int = context.options.maxDiffs ?? exprsToShow.count
+        
+        for expr in exprsToShow.prefix(limit)
+        {
+            let marker  : String    = expr.value != expectedValue ? " ←" : ""
+            let suffix  : String    = " = \(expr.value)\(marker)"
+            
+            let availableWidth: Int = computeAvailableWidth(
+                indent:         1,
+                labelWidth:     suffix.count
+            )
+            
+            let truncatedText: String = Self.truncateText(
+                expr.text,
+                maxLength: availableWidth
+            )
+            
+            emitLine("\(truncatedText)\(suffix)", 1)
+            
+            context.emittedDiffCount += 1
+        }
+        
+        
+        
+        if exprsToShow.count > limit
+        {
+            context.isTruncated = true
+        }
+        
+        emitTruncationMessage(forBooleanDecomposition: true)
+        
+        
+        
+        if
+            context.options.showNotEvaluatedCount,
+            notEvaluated > 0
+        {
+            emitBlankLine()
+            
+            let noun: String = notEvaluated == 1
+                ? "expression"
+                : "expressions"
+            
+            emitLine("(\(notEvaluated) \(noun) not evaluated)", 1)
+        }
     }
     
     
