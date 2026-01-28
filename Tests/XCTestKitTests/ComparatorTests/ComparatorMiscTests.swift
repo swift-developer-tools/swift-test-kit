@@ -7,7 +7,7 @@
 //
 //===----------------------------------------------------------------------===//
 
-import XCTest
+import Foundation
 @testable import XCTestKit
 @testable import XCTestKitTestUtilities
 
