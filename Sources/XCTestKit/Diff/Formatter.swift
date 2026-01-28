@@ -229,24 +229,14 @@ internal struct Formatter
         _ rendered: RenderedValue
     ) -> String
     {
-        var display: String = rendered.description
+        let displayText: String = Self.truncateText(
+            rendered.description,
+            maxLength: computeAvailableWidth()
+        )
         
-        let availableWidth: Int = computeAvailableWidth()
-        
-        if display.count > availableWidth
-        {
-            /// Subtract 3 to account for the ellipsis.
-            let endIndex: String.Index = display.index(
-                display.startIndex,
-                offsetBy: availableWidth - 3
-            )
-            
-            display = String(display[..<endIndex]) + "..."
-        }
-            
         return rendered.kind == .string
-            ? quote(display)
-            : display
+            ? quote(displayText)
+            : displayText
     }
     
     
@@ -701,5 +691,37 @@ internal struct Formatter
             - labelWidth
         
         return max(availableWidth, 20)
+    }
+    
+    
+    
+    /// Truncates the given text to the given maximum length.
+    /// - Parameters:
+    ///   - text: The text to truncate.
+    ///   - maxLength: The maximum length.
+    /// - Returns: The truncated text, or the original text if no truncation
+    /// is needed.
+    private static func truncateText(
+        _ text      : String,
+        maxLength   : Int
+    ) -> String
+    {
+        guard text.count > maxLength
+        else
+        {
+            return text
+        }
+        
+        var result: String = text
+        
+        /// Subtract 3 to account for the ellipsis.
+        let endIndex: String.Index = result.index(
+            result.startIndex,
+            offsetBy: maxLength - 3
+        )
+        
+        result = String(result[..<endIndex]) + "..."
+        
+        return result
     }
 }
