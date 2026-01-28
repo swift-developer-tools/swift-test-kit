@@ -180,7 +180,7 @@ internal func failAssertion(
 )
 {
     // TODO: All assertions accept options? Or is formatting only global?
-    let output: String = Formatter.formatBooleanDecomposition(
+    let output: String = Formatter.formatBooleanExpr(
         exprText:       exprText,
         evaluated:      evaluated,
         notEvaluated:   notEvaluated,

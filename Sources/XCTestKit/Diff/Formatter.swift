@@ -98,7 +98,7 @@ internal struct Formatter
     ///   - options: The formatting options to use. The default value is a
     ///   default-initialized ``XCTKFormatOptions`` instance.
     /// - Returns: The formatted decomposition.
-    static func formatBooleanDecomposition(
+    static func formatBooleanExpr(
         exprText        : String,
         evaluated       : [XCTKBooleanExpr],
         notEvaluated    : Int,
