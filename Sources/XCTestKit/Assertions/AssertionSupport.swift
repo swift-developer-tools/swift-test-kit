@@ -309,6 +309,20 @@ public struct XCTKUnwrapError: Error, CustomStringConvertible
 
 
 
+// MARK: - XCTKBooleanExpr
+
+/// A boolean expression evaluated during macro expression decomposition.
+public struct XCTKBooleanExpr: Equatable, Sendable
+{
+    /// The source text of the expression.
+    public let text     : String
+    
+    /// The evaluated boolean value.
+    public let value    : Bool
+}
+
+
+
 // MARK: - Numeric equality
 
 internal func areEqual<T>(
