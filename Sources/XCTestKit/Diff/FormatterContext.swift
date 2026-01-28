@@ -72,6 +72,23 @@ internal final class FormatterContext
     
     
     
+    /// Initializes a ``FormatterContext`` instance from the given values.
+    init(
+        options         : XCTKFormatOptions,
+        totalDiffCount  : Int?              = nil
+    )
+    {
+        self.lines              = []
+        self.currentPath        = []
+        self.currentIndent      = 0
+        self.emittedDiffCount   = 0
+        self.isTruncated        = false
+        self.options            = options
+        self.totalDiffCount     = totalDiffCount
+    }
+    
+    
+    
     /// Whether the maximum number of diffs has been reached.
     var isAtMaxDiffs: Bool
     {
