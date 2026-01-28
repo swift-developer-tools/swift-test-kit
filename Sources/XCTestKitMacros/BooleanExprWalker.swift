@@ -166,7 +166,7 @@ internal struct BooleanExprWalker
             return shouldDecompose(wrappedExpr)
         }
         
-        return expr.isBooleanBinaryOperator
+        return expr.isLogicalBinaryOperation
     }
     
     
@@ -188,7 +188,7 @@ internal struct BooleanExprWalker
             return .leaf(expr)
         }
         
-        if let kind: BinaryOperatorKind = expr.booleanBinaryOperatorKind
+        if let kind: LogicalOperatorKind = expr.logicalOperatorKind
         {
             switch kind
             {
@@ -401,8 +401,8 @@ internal struct BooleanExprWalker
     
     // MARK: - Support
     
-    /// Boolean binary operators.
-    enum BinaryOperatorKind: CustomStringConvertible
+    /// Logical operators.
+    enum LogicalOperatorKind: CustomStringConvertible
     {
         /// A logical AND operator.
         /// - Parameter infix: The infix operator expression.

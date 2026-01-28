@@ -13,9 +13,9 @@ import SwiftSyntax
 
 internal extension ExprSyntax
 {
-    /// The binary operator, or `nil` if the expression is not a recognized
-    /// binary operator expression.
-    var booleanBinaryOperatorKind: BooleanExprWalker.BinaryOperatorKind?
+    /// The kind of logical operator used in the expression, or `nil` if this
+    /// is not an infix expression with a logical operator (`&&` or `||`).
+    var logicalOperatorKind: BooleanExprWalker.LogicalOperatorKind?
     {
         guard
             let infix       = self.as(InfixOperatorExprSyntax.self),
@@ -25,7 +25,7 @@ internal extension ExprSyntax
             return nil
         }
         
-        return BooleanExprWalker.BinaryOperatorKind(
+        return BooleanExprWalker.LogicalOperatorKind(
             text:   binaryOp.operator.text,
             infix:  infix
         )
@@ -33,10 +33,10 @@ internal extension ExprSyntax
     
     
     
-    /// Whether the expression is a recognized boolean binary operator
-    /// expression.
-    var isBooleanBinaryOperator: Bool
+    /// Whether the expression is an infix expression with a logical operator
+    /// (`&&` or `||`).
+    var isLogicalBinaryOperation: Bool
     {
-        return self.booleanBinaryOperatorKind != nil
+        return self.logicalOperatorKind != nil
     }
 }
