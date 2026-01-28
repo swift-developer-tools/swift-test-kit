@@ -56,15 +56,15 @@ internal final class MacroAssertionOutputTests: XCTestKitCase
         }
         
         let expected: String =
-"""
-\(AK.assert.macroDisplayName) failed - \(Self.message)
+        """
+        \(AK.assert.macroDisplayName) failed - \(Self.message)
 
-Expression: \(exprText)
+        Expression: \(exprText)
 
-    a = false ←
+            a = false ←
 
-    (1 expression not evaluated)
-"""
+            (1 expression not evaluated)
+        """
         
         XCTAssertEqual(expected, actual)
     }
@@ -95,14 +95,14 @@ Expression: \(exprText)
         }
         
         let expected: String =
-"""
-\(AK.`true`.macroDisplayName) failed - \(Self.message)
+        """
+        \(AK.`true`.macroDisplayName) failed - \(Self.message)
 
-Expression: \(exprText)
+        Expression: \(exprText)
 
-    a = false ←
-    b = false ←
-"""
+            a = false ←
+            b = false ←
+        """
         
         XCTAssertEqual(expected, actual)
     }
@@ -133,14 +133,14 @@ Expression: \(exprText)
         }
         
         let expected: String =
-"""
-\(AK.`false`.macroDisplayName) failed - \(Self.message)
+        """
+        \(AK.`false`.macroDisplayName) failed - \(Self.message)
 
-Expression: \(exprText)
+        Expression: \(exprText)
 
-    a = true ←
-    b = true ←
-"""
+            a = true ←
+            b = true ←
+        """
         
         XCTAssertEqual(expected, actual)
     }
@@ -166,12 +166,12 @@ Expression: \(exprText)
         }
         
         let expected: String =
-"""
-\(AK.`nil`.macroDisplayName) failed - \(Self.message)
+        """
+        \(AK.`nil`.macroDisplayName) failed - \(Self.message)
 
-Expression: \(exprText)
-Actual:     \(expr)
-"""
+        Expression: \(exprText)
+        Actual:     \(expr)
+        """
         
         XCTAssertEqual(expected, actual)
     }
@@ -195,11 +195,11 @@ Actual:     \(expr)
         }
         
         let expected: String =
-"""
-\(AK.notNil.macroDisplayName) failed - \(Self.message)
+        """
+        \(AK.notNil.macroDisplayName) failed - \(Self.message)
 
-Expression: \(exprText)
-"""
+        Expression: \(exprText)
+        """
         
         XCTAssertEqual(expected, actual)
     }
@@ -223,11 +223,11 @@ Expression: \(exprText)
         }
         
         let expected: String =
-"""
-\(AK.unwrap.macroDisplayName) failed - \(Self.message)
+        """
+        \(AK.unwrap.macroDisplayName) failed - \(Self.message)
 
-Expression: \(exprText)
-"""
+        Expression: \(exprText)
+        """
         
         XCTAssertEqual(expected, actual)
     }
@@ -263,18 +263,18 @@ Expression: \(exprText)
         }
         
         let expected: String =
-"""
-\(AK.equal.macroDisplayName) failed - \(Self.message)
+        """
+        \(AK.equal.macroDisplayName) failed - \(Self.message)
 
-Expected: \(expText)
-Actual:   \(actText)
+        Expected: \(expText)
+        Actual:   \(actText)
 
-\(typeName(of: exp)) differs at:
+        \(typeName(of: exp)) differs at:
 
-    .name, character 1
-        Expected:   \(quote(exp.name))
-        Actual:     \(quote(act.name))
-"""
+            .name, character 1
+                Expected:   \(quote(exp.name))
+                Actual:     \(quote(act.name))
+        """
         
         XCTAssertEqual(expected, actual)
     }
@@ -301,14 +301,14 @@ Actual:   \(actText)
         }
         
         let expected: String =
-"""
-\(AK.notEqual.macroDisplayName) failed - \(Self.message)
+        """
+        \(AK.notEqual.macroDisplayName) failed - \(Self.message)
 
-Expression 1: \(expr1Text)
-Expression 2: \(expr2Text)
+        Expression 1: \(expr1Text)
+        Expression 2: \(expr2Text)
 
-both values equal (\(quote(expr)))
-"""
+        both values equal (\(quote(expr)))
+        """
         
         XCTAssertEqual(expected, actual)
     }
@@ -405,14 +405,14 @@ both values equal (\(quote(expr)))
         }
         
         let expected: String =
-"""
-\(AK.equalWithAccuracy.macroDisplayName) failed - \(Self.message)
+    """
+    \(AK.equalWithAccuracy.macroDisplayName) failed - \(Self.message)
 
-Expression 1: \(expr1Text)
-Expression 2: \(expr2Text)
+    Expression 1: \(expr1Text)
+    Expression 2: \(expr2Text)
 
-(\(quote(expr1))) is not equal to (\(quote(expr2))) +/- (\(quote(accuracy)))
-"""
+    (\(quote(expr1))) is not equal to (\(quote(expr2))) +/- (\(quote(accuracy)))
+    """
         
         XCTAssertEqual(expected, actual)
     }
@@ -442,14 +442,14 @@ Expression 2: \(expr2Text)
         }
         
         let expected: String =
-"""
-\(AK.equalWithAccuracy.macroDisplayName) failed - \(Self.message)
+    """
+    \(AK.equalWithAccuracy.macroDisplayName) failed - \(Self.message)
 
-Expression 1: \(expr1Text)
-Expression 2: \(expr2Text)
+    Expression 1: \(expr1Text)
+    Expression 2: \(expr2Text)
 
-(\(quote(expr1))) is not equal to (\(quote(expr2))) +/- (\(quote(accuracy)))
-"""
+    (\(quote(expr1))) is not equal to (\(quote(expr2))) +/- (\(quote(accuracy)))
+    """
         
         XCTAssertEqual(expected, actual)
     }
@@ -479,14 +479,14 @@ Expression 2: \(expr2Text)
         }
         
         let expected: String =
-"""
-\(AK.notEqualWithAccuracy.macroDisplayName) failed - \(Self.message)
+        """
+        \(AK.notEqualWithAccuracy.macroDisplayName) failed - \(Self.message)
 
-Expression 1: \(expr1Text)
-Expression 2: \(expr2Text)
+        Expression 1: \(expr1Text)
+        Expression 2: \(expr2Text)
 
-both values equal (\(quote(expr1))) +/- (\(quote(accuracy)))
-"""
+        both values equal (\(quote(expr1))) +/- (\(quote(accuracy)))
+        """
         
         XCTAssertEqual(expected, actual)
     }
@@ -516,14 +516,14 @@ both values equal (\(quote(expr1))) +/- (\(quote(accuracy)))
         }
         
         let expected: String =
-"""
-\(AK.notEqualWithAccuracy.macroDisplayName) failed - \(Self.message)
+        """
+        \(AK.notEqualWithAccuracy.macroDisplayName) failed - \(Self.message)
 
-Expression 1: \(expr1Text)
-Expression 2: \(expr2Text)
+        Expression 1: \(expr1Text)
+        Expression 2: \(expr2Text)
 
-both values equal (\(quote(expr1))) +/- (\(quote(accuracy)))
-"""
+        both values equal (\(quote(expr1))) +/- (\(quote(accuracy)))
+        """
         
         XCTAssertEqual(expected, actual)
     }
@@ -553,14 +553,14 @@ both values equal (\(quote(expr1))) +/- (\(quote(accuracy)))
         }
         
         let expected: String =
-"""
-\(AK.greaterThan.macroDisplayName) failed - \(Self.message)
+        """
+        \(AK.greaterThan.macroDisplayName) failed - \(Self.message)
 
-Expression 1: \(expr1Text)
-Expression 2: \(expr2Text)
+        Expression 1: \(expr1Text)
+        Expression 2: \(expr2Text)
 
-(\(quote(expr1))) is not greater than (\(quote(expr2)))
-"""
+        (\(quote(expr1))) is not greater than (\(quote(expr2)))
+        """
         
         XCTAssertEqual(expected, actual)
     }
@@ -588,14 +588,14 @@ Expression 2: \(expr2Text)
         }
         
         let expected: String =
-"""
-\(AK.greaterThanOrEqual.macroDisplayName) failed - \(Self.message)
+        """
+        \(AK.greaterThanOrEqual.macroDisplayName) failed - \(Self.message)
 
-Expression 1: \(expr1Text)
-Expression 2: \(expr2Text)
+        Expression 1: \(expr1Text)
+        Expression 2: \(expr2Text)
 
-(\(quote(expr1))) is not greater than or equal to (\(quote(expr2)))
-"""
+        (\(quote(expr1))) is not greater than or equal to (\(quote(expr2)))
+        """
         
         XCTAssertEqual(expected, actual)
     }
@@ -623,14 +623,14 @@ Expression 2: \(expr2Text)
         }
         
         let expected: String =
-"""
-\(AK.lessThanOrEqual.macroDisplayName) failed - \(Self.message)
+        """
+        \(AK.lessThanOrEqual.macroDisplayName) failed - \(Self.message)
 
-Expression 1: \(expr1Text)
-Expression 2: \(expr2Text)
+        Expression 1: \(expr1Text)
+        Expression 2: \(expr2Text)
 
-(\(quote(expr1))) is not less than or equal to (\(quote(expr2)))
-"""
+        (\(quote(expr1))) is not less than or equal to (\(quote(expr2)))
+        """
         
         XCTAssertEqual(expected, actual)
     }
@@ -658,14 +658,14 @@ Expression 2: \(expr2Text)
         }
         
         let expected: String =
-"""
-\(AK.lessThan.macroDisplayName) failed - \(Self.message)
+        """
+        \(AK.lessThan.macroDisplayName) failed - \(Self.message)
 
-Expression 1: \(expr1Text)
-Expression 2: \(expr2Text)
+        Expression 1: \(expr1Text)
+        Expression 2: \(expr2Text)
 
-(\(quote(expr1))) is not less than (\(quote(expr2)))
-"""
+        (\(quote(expr1))) is not less than (\(quote(expr2)))
+        """
         
         XCTAssertEqual(expected, actual)
     }
@@ -691,11 +691,11 @@ Expression 2: \(expr2Text)
         }
         
         let expected: String =
-"""
-\(AK.throwsError.macroDisplayName) failed - \(Self.message)
+        """
+        \(AK.throwsError.macroDisplayName) failed - \(Self.message)
 
-Expression: \(exprText)
-"""
+        Expression: \(exprText)
+        """
         
         XCTAssertEqual(expected, actual)
     }
@@ -719,12 +719,12 @@ Expression: \(exprText)
         }
         
         let expected: String =
-"""
-\(AK.noThrow.macroDisplayName) failed - \(Self.message)
+        """
+        \(AK.noThrow.macroDisplayName) failed - \(Self.message)
 
-Expression: \(exprText)
-Threw:      \(error)
-"""
+        Expression: \(exprText)
+        Threw:      \(error)
+        """
         
         XCTAssertEqual(expected, actual)
     }

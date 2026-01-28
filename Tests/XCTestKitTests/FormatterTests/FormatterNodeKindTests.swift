@@ -72,10 +72,10 @@ internal final class FormatterNodeKindTests: XCTestKitCase
         )
         
         let expected: String =
-"""
-\(LK.expected.rawValue)\(exp)
-\(LK.actual.rawValue)\(act)
-"""
+        """
+        \(LK.expected.rawValue)\(exp)
+        \(LK.actual.rawValue)\(act)
+        """
         
         XCTKAssertEqual(Formatter.format(node), expected)
     }
@@ -95,10 +95,10 @@ internal final class FormatterNodeKindTests: XCTestKitCase
         )
         
         let expected: String =
-"""
-\(LK.expected.rawValue)\(exp)
-\(LK.actual.rawValue)\(act)
-"""
+        """
+        \(LK.expected.rawValue)\(exp)
+        \(LK.actual.rawValue)\(act)
+        """
         
         XCTKAssertEqual(Formatter.format(node), expected)
     }
@@ -118,10 +118,10 @@ internal final class FormatterNodeKindTests: XCTestKitCase
         )
         
         let expected: String =
-"""
-\(LK.expected.rawValue)\(exp)
-\(LK.actual.rawValue)\(act)
-"""
+        """
+        \(LK.expected.rawValue)\(exp)
+        \(LK.actual.rawValue)\(act)
+        """
         
         XCTKAssertEqual(Formatter.format(node), expected)
     }
@@ -141,10 +141,10 @@ internal final class FormatterNodeKindTests: XCTestKitCase
         )
         
         let expected: String =
-"""
-\(LK.expected.rawValue)\(quote(exp))
-\(LK.actual.rawValue)\(quote(act))
-"""
+        """
+        \(LK.expected.rawValue)\(quote(exp))
+        \(LK.actual.rawValue)\(quote(act))
+        """
         
         XCTKAssertEqual(Formatter.format(node), expected)
     }
@@ -164,10 +164,10 @@ internal final class FormatterNodeKindTests: XCTestKitCase
         )
         
         let expected: String =
-"""
-\(LK.expected.rawValue)\(quote(exp))
-\(LK.actual.rawValue)\(quote(act))
-"""
+        """
+        \(LK.expected.rawValue)\(quote(exp))
+        \(LK.actual.rawValue)\(quote(act))
+        """
         
         XCTKAssertEqual(Formatter.format(node), expected)
     }
@@ -187,10 +187,10 @@ internal final class FormatterNodeKindTests: XCTestKitCase
         )
         
         let expected: String =
-"""
-\(LK.expected.rawValue)\(quote(exp.escaped))
-\(LK.actual.rawValue)\(quote(act))
-"""
+        """
+        \(LK.expected.rawValue)\(quote(exp.escaped))
+        \(LK.actual.rawValue)\(quote(act))
+        """
         
         XCTKAssertEqual(Formatter.format(node), expected)
     }
@@ -210,10 +210,10 @@ internal final class FormatterNodeKindTests: XCTestKitCase
         )
         
         let expected: String =
-"""
-\(LK.expected.rawValue)\(quote(exp.escaped))
-\(LK.actual.rawValue)\(quote(act))
-"""
+        """
+        \(LK.expected.rawValue)\(quote(exp.escaped))
+        \(LK.actual.rawValue)\(quote(act))
+        """
         
         XCTKAssertEqual(Formatter.format(node), expected)
     }
@@ -233,10 +233,10 @@ internal final class FormatterNodeKindTests: XCTestKitCase
         )
         
         let expected: String =
-"""
-\(LK.expected.rawValue)\(quote(exp.escaped))
-\(LK.actual.rawValue)\(quote(act))
-"""
+        """
+        \(LK.expected.rawValue)\(quote(exp.escaped))
+        \(LK.actual.rawValue)\(quote(act))
+        """
         
         XCTKAssertEqual(Formatter.format(node), expected)
     }
@@ -256,10 +256,10 @@ internal final class FormatterNodeKindTests: XCTestKitCase
         )
         
         let expected: String =
-"""
-\(LK.expected.rawValue)\(quote(exp.escaped))
-\(LK.actual.rawValue)\(quote(act))
-"""
+        """
+        \(LK.expected.rawValue)\(quote(exp.escaped))
+        \(LK.actual.rawValue)\(quote(act))
+        """
         
         XCTKAssertEqual(Formatter.format(node), expected)
     }
@@ -279,10 +279,10 @@ internal final class FormatterNodeKindTests: XCTestKitCase
         )
         
         let expected: String =
-"""
-\(LK.expected.rawValue)\(quote(exp.escaped))
-\(LK.actual.rawValue)\(quote(act))
-"""
+        """
+        \(LK.expected.rawValue)\(quote(exp.escaped))
+        \(LK.actual.rawValue)\(quote(act))
+        """
         
         XCTKAssertEqual(Formatter.format(node), expected)
     }
@@ -302,10 +302,10 @@ internal final class FormatterNodeKindTests: XCTestKitCase
         )
         
         let expected: String =
-"""
-\(LK.expected.rawValue)\(quote(exp.escaped))
-\(LK.actual.rawValue)\(quote(act))
-"""
+        """
+        \(LK.expected.rawValue)\(quote(exp.escaped))
+        \(LK.actual.rawValue)\(quote(act))
+        """
         
         XCTKAssertEqual(Formatter.format(node), expected)
     }
@@ -334,12 +334,12 @@ internal final class FormatterNodeKindTests: XCTestKitCase
         )
         
         let expected: String =
-"""
-\(typeName) differs at:
+        """
+        \(typeName) differs at:
 
-    [2]
-        \(LK.missing.rawValue)\(exp[2])
-"""
+            [2]
+                \(LK.missing.rawValue)\(exp[2])
+        """
         
         XCTKAssertEqual(Formatter.format(node), expected)
     }
@@ -366,12 +366,12 @@ internal final class FormatterNodeKindTests: XCTestKitCase
         )
         
         let expected: String =
-"""
-\(typeName) differs at:
+        """
+        \(typeName) differs at:
 
-    [0]
-        \(LK.missing.rawValue)\(quote(exp[0]))
-"""
+            [0]
+                \(LK.missing.rawValue)\(quote(exp[0]))
+        """
         
         XCTKAssertEqual(Formatter.format(node), expected)
     }
@@ -400,12 +400,12 @@ internal final class FormatterNodeKindTests: XCTestKitCase
         )
         
         let expected: String =
-"""
-\(typeName) differs at:
+        """
+        \(typeName) differs at:
 
-    [0]
-        \(LK.unexpected.rawValue)\(act[2])
-"""
+            [0]
+                \(LK.unexpected.rawValue)\(act[2])
+        """
         
         XCTKAssertEqual(Formatter.format(node), expected)
     }
@@ -432,12 +432,12 @@ internal final class FormatterNodeKindTests: XCTestKitCase
         )
         
         let expected: String =
-"""
-\(typeName) differs at:
+        """
+        \(typeName) differs at:
 
-    [1]
-        \(LK.unexpected.rawValue)\(quote(act[1]))
-"""
+            [1]
+                \(LK.unexpected.rawValue)\(quote(act[1]))
+        """
         
         XCTKAssertEqual(Formatter.format(node), expected)
     }
@@ -475,12 +475,12 @@ private extension FormatterNodeKindTests
         )
         
         let expected: String =
-"""
-\(typeName) differs at:
+        """
+        \(typeName) differs at:
 
-    .next
-        \(location.description)
-"""
+            .next
+                \(location.description)
+        """
         
         XCTKAssertEqual(Formatter.format(node), expected)
     }

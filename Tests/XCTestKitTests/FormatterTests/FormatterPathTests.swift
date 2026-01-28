@@ -26,8 +26,6 @@ internal final class FormatterPathTests: XCTestKitCase
             let age: Int
         }
         
-        
-        
         let exp         : User      = .init(age: 30)
         let act         : User      = .init(age: 25)
         let typeName    : String    = typeName(of: exp)
@@ -47,13 +45,13 @@ internal final class FormatterPathTests: XCTestKitCase
         )
         
         let expected: String =
-"""
-\(typeName) differs at:
+        """
+        \(typeName) differs at:
 
-    .age
-        \(LK.expected.rawValue)\(exp.age)
-        \(LK.actual.rawValue)\(act.age)
-"""
+            .age
+                \(LK.expected.rawValue)\(exp.age)
+                \(LK.actual.rawValue)\(act.age)
+        """
         
         XCTKAssertEqual(Formatter.format(node), expected)
     }
@@ -71,8 +69,6 @@ internal final class FormatterPathTests: XCTestKitCase
         {
             let inner: Inner
         }
-        
-        
         
         let exp         : Outer     = .init(inner: Inner(value: 10))
         let act         : Outer     = .init(inner: Inner(value: 20))
@@ -101,13 +97,13 @@ internal final class FormatterPathTests: XCTestKitCase
         )
         
         let expected: String =
-"""
-\(typeName) differs at:
+        """
+        \(typeName) differs at:
 
-    .inner.value
-        \(LK.expected.rawValue)\(exp.inner.value)
-        \(LK.actual.rawValue)\(act.inner.value)
-"""
+            .inner.value
+                \(LK.expected.rawValue)\(exp.inner.value)
+                \(LK.actual.rawValue)\(act.inner.value)
+        """
         
         XCTKAssertEqual(Formatter.format(node), expected)
     }
@@ -120,8 +116,6 @@ internal final class FormatterPathTests: XCTestKitCase
         {
             let name: String
         }
-        
-        
         
         let exp         : [Item]    = [Item(name: "a")]
         let act         : [Item]    = [Item(name: "b")]
@@ -150,13 +144,13 @@ internal final class FormatterPathTests: XCTestKitCase
         )
         
         let expected: String =
-"""
-\(typeName) differs at:
+        """
+        \(typeName) differs at:
 
-    [0].name
-        \(LK.expected.rawValue)\(quote(exp[0].name))
-        \(LK.actual.rawValue)\(quote(act[0].name))
-"""
+            [0].name
+                \(LK.expected.rawValue)\(quote(exp[0].name))
+                \(LK.actual.rawValue)\(quote(act[0].name))
+        """
         
         XCTKAssertEqual(Formatter.format(node), expected)
     }
@@ -169,8 +163,6 @@ internal final class FormatterPathTests: XCTestKitCase
         struct L3: Equatable { let l4   : L4 }
         struct L2: Equatable { let l3   : L3 }
         struct L1: Equatable { let l2   : L2 }
-        
-        
         
         let exp         : L1        = .init(l2: L2(l3: L3(l4: L4(val: 1))))
         let act         : L1        = .init(l2: L2(l3: L3(l4: L4(val: 2))))
@@ -216,13 +208,13 @@ internal final class FormatterPathTests: XCTestKitCase
         )
         
         let expected: String =
-"""
-\(typeName) differs at:
+        """
+        \(typeName) differs at:
 
-    .l2.l3.l4.val
-        \(LK.expected.rawValue)\(exp.l2.l3.l4.val)
-        \(LK.actual.rawValue)\(act.l2.l3.l4.val)
-"""
+            .l2.l3.l4.val
+                \(LK.expected.rawValue)\(exp.l2.l3.l4.val)
+                \(LK.actual.rawValue)\(act.l2.l3.l4.val)
+        """
         
         XCTKAssertEqual(Formatter.format(node), expected)
     }
@@ -250,13 +242,13 @@ internal final class FormatterPathTests: XCTestKitCase
         )
         
         let expected: String =
-"""
-\(typeName) differs at:
+        """
+        \(typeName) differs at:
 
-    [1]
-        \(LK.expected.rawValue)\(exp[1])
-        \(LK.actual.rawValue)\(act[1])
-"""
+            [1]
+                \(LK.expected.rawValue)\(exp[1])
+                \(LK.actual.rawValue)\(act[1])
+        """
         
         XCTKAssertEqual(Formatter.format(node), expected)
     }
@@ -284,13 +276,13 @@ internal final class FormatterPathTests: XCTestKitCase
         )
         
         let expected: String =
-"""
-\(typeName) differs at:
+        """
+        \(typeName) differs at:
 
-    ["a"]
-        \(LK.expected.rawValue)\(exp["a"]!)
-        \(LK.actual.rawValue)\(act["a"]!)
-"""
+            ["a"]
+                \(LK.expected.rawValue)\(exp["a"]!)
+                \(LK.actual.rawValue)\(act["a"]!)
+        """
         
         XCTKAssertEqual(Formatter.format(node), expected)
     }
@@ -303,8 +295,6 @@ internal final class FormatterPathTests: XCTestKitCase
         {
             let count: Int
         }
-        
-        
         
         let exp         : [String : Item]   = ["key": Item(count: 10)]
         let act         : [String : Item]   = ["key": Item(count: 20)]
@@ -333,13 +323,13 @@ internal final class FormatterPathTests: XCTestKitCase
         )
         
         let expected: String =
-"""
-\(typeName) differs at:
+        """
+        \(typeName) differs at:
 
-    ["key"].count
-        \(LK.expected.rawValue)\(exp["key"]!.count)
-        \(LK.actual.rawValue)\(act["key"]!.count)
-"""
+            ["key"].count
+                \(LK.expected.rawValue)\(exp["key"]!.count)
+                \(LK.actual.rawValue)\(act["key"]!.count)
+        """
         
         XCTKAssertEqual(Formatter.format(node), expected)
     }
@@ -367,13 +357,13 @@ internal final class FormatterPathTests: XCTestKitCase
         )
         
         let expected: String =
-"""
-\(typeName) differs at:
+        """
+        \(typeName) differs at:
 
-    line 2
-        \(LK.expected.rawValue)"line2"
-        \(LK.actual.rawValue)"changed"
-"""
+            line 2
+                \(LK.expected.rawValue)"line2"
+                \(LK.actual.rawValue)"changed"
+        """
         
         XCTKAssertEqual(Formatter.format(node), expected)
     }
@@ -401,13 +391,13 @@ internal final class FormatterPathTests: XCTestKitCase
         )
         
         let expected: String =
-"""
-\(typeName) differs at:
+        """
+        \(typeName) differs at:
 
-    character 2
-        \(LK.expected.rawValue)"e"
-        \(LK.actual.rawValue)"a"
-"""
+            character 2
+                \(LK.expected.rawValue)"e"
+                \(LK.actual.rawValue)"a"
+        """
         
         XCTKAssertEqual(Formatter.format(node), expected)
     }
@@ -435,13 +425,13 @@ internal final class FormatterPathTests: XCTestKitCase
         )
         
         let expected: String =
-"""
-\(typeName) differs at:
+        """
+        \(typeName) differs at:
 
-    line 2
-        \(LK.expected.rawValue)"hello"
-        \(LK.actual.rawValue)"hallo"
-"""
+            line 2
+                \(LK.expected.rawValue)"hello"
+                \(LK.actual.rawValue)"hallo"
+        """
         
         XCTKAssertEqual(Formatter.format(node), expected)
     }
@@ -455,8 +445,6 @@ internal final class FormatterPathTests: XCTestKitCase
             let name    : String
             let age     : Int
         }
-        
-        
         
         let exp         : User      = .init(name: "a", age: 30)
         let act         : User      = .init(name: "b", age: 25)
@@ -483,17 +471,17 @@ internal final class FormatterPathTests: XCTestKitCase
         )
         
         let expected: String =
-"""
-\(typeName) differs at:
+        """
+        \(typeName) differs at:
 
-    .name
-        \(LK.expected.rawValue)\(quote(exp.name))
-        \(LK.actual.rawValue)\(quote(act.name))
+            .name
+                \(LK.expected.rawValue)\(quote(exp.name))
+                \(LK.actual.rawValue)\(quote(act.name))
 
-    .age
-        \(LK.expected.rawValue)\(exp.age)
-        \(LK.actual.rawValue)\(act.age)
-"""
+            .age
+                \(LK.expected.rawValue)\(exp.age)
+                \(LK.actual.rawValue)\(act.age)
+        """
         
         XCTKAssertEqual(Formatter.format(node), expected)
     }
@@ -529,13 +517,13 @@ internal final class FormatterPathTests: XCTestKitCase
         )
         
         let expected: String =
-"""
-\(typeName) differs at:
+        """
+        \(typeName) differs at:
 
-    [1][1]
-        \(LK.expected.rawValue)\(exp[1][1])
-        \(LK.actual.rawValue)\(act[1][1])
-"""
+            [1][1]
+                \(LK.expected.rawValue)\(exp[1][1])
+                \(LK.actual.rawValue)\(act[1][1])
+        """
         
         XCTKAssertEqual(Formatter.format(node), expected)
     }

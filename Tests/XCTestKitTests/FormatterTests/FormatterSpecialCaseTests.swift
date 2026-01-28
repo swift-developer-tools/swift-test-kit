@@ -49,14 +49,14 @@ internal final class FormatterSpecialCaseTests: XCTestKitCase
         )
         
         let expected: String =
-"""
-\(typeName) differs at:
+        """
+        \(typeName) differs at:
 
-    line 2
-        \(LK.expected.rawValue)"hello"
-        \(LK.actual.rawValue)"hallo"
-        \(LK.changed.rawValue)character 2 ("e" → "a")
-"""
+            line 2
+                \(LK.expected.rawValue)"hello"
+                \(LK.actual.rawValue)"hallo"
+                \(LK.changed.rawValue)character 2 ("e" → "a")
+        """
         
         XCTKAssertEqual(Formatter.format(node), expected)
     }
@@ -98,15 +98,15 @@ internal final class FormatterSpecialCaseTests: XCTestKitCase
         )
         
         let expected: String =
-"""
-\(typeName) differs at:
+        """
+        \(typeName) differs at:
 
-    line 2
-        \(LK.expected.rawValue)"abcdef"
-        \(LK.actual.rawValue)"aXcYef"
-        \(LK.changed.rawValue)character 2 ("b" → "X")
-        \(LK.changed.rawValue)character 4 ("d" → "Y")
-"""
+            line 2
+                \(LK.expected.rawValue)"abcdef"
+                \(LK.actual.rawValue)"aXcYef"
+                \(LK.changed.rawValue)character 2 ("b" → "X")
+                \(LK.changed.rawValue)character 4 ("d" → "Y")
+        """
         
         XCTKAssertEqual(Formatter.format(node), expected)
     }
@@ -141,14 +141,14 @@ internal final class FormatterSpecialCaseTests: XCTestKitCase
         )
         
         let expected: String =
-"""
-\(typeName) differs at:
+        """
+        \(typeName) differs at:
 
-    line 2
-        \(LK.expected.rawValue)"hello"
-        \(LK.actual.rawValue)"heo"
-        \(LK.missing.rawValue)characters 3-4 "ll"
-"""
+            line 2
+                \(LK.expected.rawValue)"hello"
+                \(LK.actual.rawValue)"heo"
+                \(LK.missing.rawValue)characters 3-4 "ll"
+        """
         
         XCTKAssertEqual(Formatter.format(node), expected)
     }
@@ -183,14 +183,14 @@ internal final class FormatterSpecialCaseTests: XCTestKitCase
         )
         
         let expected: String =
-"""
-\(typeName) differs at:
+        """
+        \(typeName) differs at:
 
-    line 2
-        \(LK.expected.rawValue)"abc"
-        \(LK.actual.rawValue)"abcdef"
-        \(LK.missing.rawValue)characters 4-6 "def"
-"""
+            line 2
+                \(LK.expected.rawValue)"abc"
+                \(LK.actual.rawValue)"abcdef"
+                \(LK.missing.rawValue)characters 4-6 "def"
+        """
         
         XCTKAssertEqual(Formatter.format(node), expected)
     }
@@ -236,16 +236,16 @@ internal final class FormatterSpecialCaseTests: XCTestKitCase
         )
         
         let expected: String =
-"""
-\(typeName) differs at:
+        """
+        \(typeName) differs at:
 
-    line 2
-        \(LK.expected.rawValue)"abcdef"
-        \(LK.actual.rawValue)"aXefYZ"
-        \(LK.changed.rawValue)character 2 ("b" → "X")
-        \(LK.missing.rawValue)characters 3-4 "cd"
-        \(LK.unexpected.rawValue)2 characters at position 5 "YZ"
-"""
+            line 2
+                \(LK.expected.rawValue)"abcdef"
+                \(LK.actual.rawValue)"aXefYZ"
+                \(LK.changed.rawValue)character 2 ("b" → "X")
+                \(LK.missing.rawValue)characters 3-4 "cd"
+                \(LK.unexpected.rawValue)2 characters at position 5 "YZ"
+        """
         
         XCTKAssertEqual(Formatter.format(node), expected)
     }
@@ -273,13 +273,13 @@ internal final class FormatterSpecialCaseTests: XCTestKitCase
         )
         
         let expected: String =
-"""
-\(typeName) differs at:
+        """
+        \(typeName) differs at:
 
-    line 2
-        \(LK.expected.rawValue)"completely different"
-        \(LK.actual.rawValue)"xyz"
-"""
+            line 2
+                \(LK.expected.rawValue)"completely different"
+                \(LK.actual.rawValue)"xyz"
+        """
         
         XCTKAssertEqual(Formatter.format(node), expected)
     }
@@ -329,19 +329,19 @@ internal final class FormatterSpecialCaseTests: XCTestKitCase
         )
         
         let expected: String =
-"""
-\(typeName) differs at:
+        """
+        \(typeName) differs at:
 
-    line 1
-        \(LK.expected.rawValue)"aaa"
-        \(LK.actual.rawValue)"aXa"
-        \(LK.changed.rawValue)character 2 ("a" → "X")
+            line 1
+                \(LK.expected.rawValue)"aaa"
+                \(LK.actual.rawValue)"aXa"
+                \(LK.changed.rawValue)character 2 ("a" → "X")
 
-    line 3
-        \(LK.expected.rawValue)"ccc"
-        \(LK.actual.rawValue)"ccY"
-        \(LK.changed.rawValue)character 3 ("c" → "Y")
-"""
+            line 3
+                \(LK.expected.rawValue)"ccc"
+                \(LK.actual.rawValue)"ccY"
+                \(LK.changed.rawValue)character 3 ("c" → "Y")
+        """
         
         XCTKAssertEqual(Formatter.format(node), expected)
     }
@@ -369,13 +369,13 @@ internal final class FormatterSpecialCaseTests: XCTestKitCase
         )
         
         let expected: String =
-"""
-\(typeName) differs at:
+        """
+        \(typeName) differs at:
 
-    characters 2-4
-        \(LK.expected.rawValue)"ell"
-        \(LK.actual.rawValue)"ABC"
-"""
+            characters 2-4
+                \(LK.expected.rawValue)"ell"
+                \(LK.actual.rawValue)"ABC"
+        """
         
         XCTKAssertEqual(Formatter.format(node), expected)
     }
@@ -409,12 +409,12 @@ internal final class FormatterSpecialCaseTests: XCTestKitCase
         )
         
         let expected: String =
-"""
-\(typeName) differs:
+        """
+        \(typeName) differs:
 
-    \(LK.missing.rawValue)"b"
-    \(LK.missing.rawValue)"c"
-"""
+            \(LK.missing.rawValue)"b"
+            \(LK.missing.rawValue)"c"
+        """
         
         XCTKAssertEqual(Formatter.format(node), expected)
     }
@@ -446,12 +446,12 @@ internal final class FormatterSpecialCaseTests: XCTestKitCase
         )
         
         let expected: String =
-"""
-\(typeName) differs:
+        """
+        \(typeName) differs:
 
-    \(LK.unexpected.rawValue)"b"
-    \(LK.unexpected.rawValue)"c"
-"""
+            \(LK.unexpected.rawValue)"b"
+            \(LK.unexpected.rawValue)"c"
+        """
         
         XCTKAssertEqual(Formatter.format(node), expected)
     }
@@ -483,12 +483,12 @@ internal final class FormatterSpecialCaseTests: XCTestKitCase
         )
         
         let expected: String =
-"""
-\(typeName) differs:
+        """
+        \(typeName) differs:
 
-    \(LK.missing.rawValue)"b"
-    \(LK.unexpected.rawValue)"c"
-"""
+            \(LK.missing.rawValue)"b"
+            \(LK.unexpected.rawValue)"c"
+        """
         
         XCTKAssertEqual(Formatter.format(node), expected)
     }
@@ -525,13 +525,13 @@ internal final class FormatterSpecialCaseTests: XCTestKitCase
         )
         
         let expected: String =
-"""
-\(typeName) differs:
+        """
+        \(typeName) differs:
 
-    \(LK.missing.rawValue)2
-    \(LK.missing.rawValue)3
-    \(LK.unexpected.rawValue)4
-"""
+            \(LK.missing.rawValue)2
+            \(LK.missing.rawValue)3
+            \(LK.unexpected.rawValue)4
+        """
         
         XCTKAssertEqual(Formatter.format(node), expected)
     }
@@ -544,8 +544,6 @@ internal final class FormatterSpecialCaseTests: XCTestKitCase
         {
             let tags: Set<String>
         }
-        
-        
         
         let exp         : Container     = .init(tags: ["a", "b"])
         let act         : Container     = .init(tags: ["a", "c"])
@@ -578,13 +576,13 @@ internal final class FormatterSpecialCaseTests: XCTestKitCase
         )
         
         let expected: String =
-"""
-\(typeName) differs at:
+        """
+        \(typeName) differs at:
 
-    .tags
-        \(LK.missing.rawValue)"b"
-        \(LK.unexpected.rawValue)"c"
-"""
+            .tags
+                \(LK.missing.rawValue)"b"
+                \(LK.unexpected.rawValue)"c"
+        """
         
         XCTKAssertEqual(Formatter.format(node), expected)
     }
