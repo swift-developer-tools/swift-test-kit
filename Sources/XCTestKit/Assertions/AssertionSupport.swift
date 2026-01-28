@@ -359,6 +359,7 @@ public struct XCTKUnwrapError: Error, CustomStringConvertible
 
 // MARK: - XCTKBooleanExpr
 
+@_documentation(visibility: internal)
 /// A boolean expression evaluated during macro expression decomposition.
 public struct XCTKBooleanExpr: Equatable, Sendable
 {
