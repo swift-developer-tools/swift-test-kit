@@ -154,7 +154,16 @@ extension SingleExprMacro
                 """
                 
             default:
-                // TODO: Expression decomposition for boolean assertions.
+                
+                if BooleanExprWalker.shouldDecompose(expr)
+                {
+                    return BooleanExprWalker.expand(
+                        kind:       kind,
+                        expr:       expr,
+                        message:    message
+                    )
+                }
+                
                 return """
                 \(raw: kind.macroInternalName)(
                     expr:       \(expr),
