@@ -589,7 +589,11 @@ internal struct Formatter
     
     
     /// Emits a message if a diff was truncated.
-    private func emitTruncationMessage()
+    /// - Parameter forBooleanDecomposition: Whether the truncation message is
+    /// for boolean decomposition.
+    private func emitTruncationMessage(
+        forBooleanDecomposition: Bool = false
+    )
     {
         guard context.isTruncated
         else
@@ -599,22 +603,26 @@ internal struct Formatter
         
         
         
+        let noun: String = forBooleanDecomposition
+            ? "expression"
+            : "difference"
+        
         let message: String
         
         if let totalDiffCount: Int = context.totalDiffCount
         {
             let remaining: Int = totalDiffCount - context.emittedDiffCount
             
-            message = "... and \(remaining) more differences"
-
+            message = "... and \(remaining) more"
+                    + " \(noun)\(remaining == 1 ? "" : "s")"
         }
         else if let maxDiffs: Int = context.options.maxDiffs
         {
-            message = "... and more differences (limit: \(maxDiffs))"
+            message = "... and more \(noun)s (limit: \(maxDiffs))"
         }
         else
         {
-            message = "... and more differences"
+            message = "... and more \(noun)s"
         }
         
         emitLine(message, 1)
