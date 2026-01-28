@@ -25,7 +25,7 @@ import XCTest
 /// Asserts that the given expression is true.
 ///
 /// This generates a failure when `expression == false` and is equivalent to
-/// ``XCTKAssertTrue(_:_:file:line:)``.
+/// ``XCTKAssertTrue(_:_:file:line:)-func``.
 ///
 /// - Parameters:
 ///   - expression: The expression to evaluate.
@@ -54,7 +54,7 @@ public func XCTKAssert(
 /// Asserts that the given expression is true.
 ///
 /// This generates a failure when `expression == false` and is equivalent to
-/// ``XCTKAssert(_:_:file:line:)``.
+/// ``XCTKAssert(_:_:file:line:)-func``.
 ///
 /// - Parameters:
 ///   - expression: The expression to evaluate.

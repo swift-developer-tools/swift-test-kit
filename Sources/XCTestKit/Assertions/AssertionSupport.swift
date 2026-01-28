@@ -344,8 +344,8 @@ internal func failAssertion(
 
 // MARK: - XCTKUnwrapError
 
-/// The error thrown by ``XCTKUnwrap(_:_:file:line:)`` when the unwrapped
-/// value is `nil`.
+/// The error thrown by ``XCTKUnwrap(_:_:file:line:)-func`` or
+/// ``XCTKUnwrap(_:_:file:line:)-macro``when the unwrapped value is `nil`.
 public struct XCTKUnwrapError: Error, CustomStringConvertible
 {
     /// The error description.

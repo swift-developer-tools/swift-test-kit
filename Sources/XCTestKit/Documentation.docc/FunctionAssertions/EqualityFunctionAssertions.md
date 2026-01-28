@@ -6,13 +6,13 @@ Assert whether two values are equal or unequal.
 
 ### Tests for Equality and Inequality
 
-- ``XCTKAssertEqual(_:_:_:file:line:options:)``
-- ``XCTKAssertNotEqual(_:_:_:file:line:)``
+- ``XCTKAssertEqual(_:_:_:file:line:options:)-func``
+- ``XCTKAssertNotEqual(_:_:_:file:line:)-func``
 
 ### Tests for Identical Objects
 
-- ``XCTKAssertIdentical(_:_:_:file:line:)``
-- ``XCTKAssertNotIdentical(_:_:_:file:line:)``
+- ``XCTKAssertIdentical(_:_:_:file:line:)-func``
+- ``XCTKAssertNotIdentical(_:_:_:file:line:)-func``
 
 ### Tests for Equality Within a Specified Accuracy
 

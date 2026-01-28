@@ -6,7 +6,7 @@ Assert whether a value is larger or smaller than another value.
 
 ### Tests for Comparable Values
 
-- ``XCTKAssertGreaterThan(_:_:_:file:line:)``
-- ``XCTKAssertGreaterThanOrEqual(_:_:_:file:line:)``
-- ``XCTKAssertLessThanOrEqual(_:_:_:file:line:)``
-- ``XCTKAssertLessThan(_:_:_:file:line:)``
+- ``XCTKAssertGreaterThan(_:_:_:file:line:)-func``
+- ``XCTKAssertGreaterThanOrEqual(_:_:_:file:line:)-func``
+- ``XCTKAssertLessThanOrEqual(_:_:_:file:line:)-func``
+- ``XCTKAssertLessThan(_:_:_:file:line:)-func``
