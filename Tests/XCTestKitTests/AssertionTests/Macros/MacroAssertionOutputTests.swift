@@ -37,7 +37,10 @@ internal final class MacroAssertionOutputTests: XCTestKitCase
     {
         let exprText: String = "a && b"
         
-        let evaluated: [XCTKBooleanExpr] = [.init("a", false)]
+        let evaluated: [XCTKBooleanExpr] =
+        [
+            .init("a", false)
+        ]
         
         let actual: String? = captureFailureMessage
         {
