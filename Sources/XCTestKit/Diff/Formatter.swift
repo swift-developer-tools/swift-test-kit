@@ -669,6 +669,13 @@ internal struct Formatter
             message = "... and more \(noun)s"
         }
         
+        
+        
+        if forBooleanDecomposition
+        {
+            emitBlankLine()
+        }
+        
         emitLine(message, 1)
     }
     
