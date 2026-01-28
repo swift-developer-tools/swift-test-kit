@@ -32,7 +32,115 @@ internal final class MacroAssertionOutputTests: XCTestKitCase
     
     
     // MARK: - Boolean
-    // TODO: Add boolean tests once expressions decomposed.
+
+    func testAssertFailureMessage() throws
+    {
+        let exprText: String = "a && b"
+        
+        let evaluated: [XCTKBooleanExpr] = [.init("a", false)]
+        
+        let actual: String? = captureFailureMessage
+        {
+            _XCTKAssertMacro(
+                result:         false,
+                exprText:       exprText,
+                evaluated:      evaluated,
+                notEvaluated:   1,
+                message:        Self.message,
+                file:           #filePath,
+                line:           #line
+            )
+        }
+        
+        let expected: String =
+"""
+\(AK.assert.macroDisplayName) failed - \(Self.message)
+
+Expression: \(exprText)
+
+    a = false ←
+
+    (1 expression not evaluated)
+"""
+        
+        XCTAssertEqual(expected, actual)
+    }
+    
+    
+    
+    func testAssertTrueFailureMessage() throws
+    {
+        let exprText: String = "a || b"
+        
+        let evaluated: [XCTKBooleanExpr] =
+        [
+            .init("a", false),
+            .init("b", false)
+        ]
+        
+        let actual: String? = captureFailureMessage
+        {
+            _XCTKAssertTrueMacro(
+                result:         false,
+                exprText:       exprText,
+                evaluated:      evaluated,
+                notEvaluated:   0,
+                message:        Self.message,
+                file:           #filePath,
+                line:           #line
+            )
+        }
+        
+        let expected: String =
+"""
+\(AK.`true`.macroDisplayName) failed - \(Self.message)
+
+Expression: \(exprText)
+
+    a = false ←
+    b = false ←
+"""
+        
+        XCTAssertEqual(expected, actual)
+    }
+    
+    
+    
+    func testAssertFalseFailureMessage() throws
+    {
+        let exprText: String = "a && b"
+        
+        let evaluated: [XCTKBooleanExpr] =
+        [
+            .init("a", true),
+            .init("b", true)
+        ]
+        
+        let actual: String? = captureFailureMessage
+        {
+            _XCTKAssertFalseMacro(
+                result:         true,
+                exprText:       exprText,
+                evaluated:      evaluated,
+                notEvaluated:   0,
+                message:        Self.message,
+                file:           #filePath,
+                line:           #line
+            )
+        }
+        
+        let expected: String =
+"""
+\(AK.`false`.macroDisplayName) failed - \(Self.message)
+
+Expression: \(exprText)
+
+    a = true ←
+    b = true ←
+"""
+        
+        XCTAssertEqual(expected, actual)
+    }
     
     
     
