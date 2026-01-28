@@ -14,58 +14,140 @@ import SwiftSyntax
 
 internal struct BooleanExprWalker
 {
-    // MARK: - Node
+    // MARK: - Expansion
     
-    /// A node in the boolean expression tree.
-    indirect enum Node
+    /// Generates the macro expansion for the specified boolean assertion.
+    /// - Parameters:
+    ///   - kind: The assertion kind.
+    ///   - expr: The expression.
+    ///   - message: An optional description of a failure.
+    /// - Returns: The expanded macro expression.
+    static func expand(
+        kind    : AssertionKind,
+        expr    : ExprSyntax,
+        message : ExprSyntax
+    ) -> ExprSyntax
     {
-        /// A leaf expression that is not further decomposed.
-        /// - Parameter expr: The expression.
-        case leaf(
-            _ expr: ExprSyntax
-        )
-        
-        /// A logical AND (`&&`) of two sub-expressions.
-        /// - Parameters:
-        ///   - lhs: The left-hand side operand.
-        ///   - rhs: The right-hand side operand.
-        case and(
-            lhs:    Node,
-            rhs:    Node
-        )
-        
-        /// A logical OR (`||`) of two sub-expressions.
-        /// - Parameters:
-        ///   - lhs: The left-hand side operand.
-        ///   - rhs: The right-hand side operand.
-        case or(
-            lhs:    Node,
-            rhs:    Node
-        )
-        
-        
-        
-        /// The number of leaf nodes in this subtree.
-        var leafCount: Int
+        if shouldDecompose(expr)
         {
-            switch self
-            {
-                case .leaf:
-                    
-                    return 1
-                    
-                case
-                    let .and(lhs, rhs),
-                    let .or(lhs, rhs):
-                    
-                    return lhs.leafCount + rhs.leafCount
-            }
+            return expandDecomposable(
+                kind:       kind,
+                expr:       expr,
+                message:    message
+            )
+        }
+        
+        return expandSimple(
+            kind:       kind,
+            expr:       expr,
+            message:    message
+        )
+    }
+    
+    
+    
+    /// Generates the macro expansion for the given non-decomposable expression.
+    /// - Parameters:
+    ///   - kind: The assertion kind.
+    ///   - expr: The expression.
+    ///   - message: An optional description of a failure.
+    /// - Returns: The expanded macro expression.
+    private static func expandSimple(
+        kind    : AssertionKind,
+        expr    : ExprSyntax,
+        message : ExprSyntax
+    ) -> ExprSyntax
+    {
+        let exprText: String = expr.trimmedDescription
+        
+        return """
+        {
+            let _v0: Bool = \(expr)
+        
+            let evaluated = XCTKBooleanExpr(
+                text:   \(literal: exprText),
+                value:  _v0
+            )
+        
+            \(raw: kind.macroInternalName)(
+                result:         _v0,
+                exprText:       \(literal: exprText),
+                evaluated:      [evaluated],
+                notEvaluated:   0,
+                message:        \(message),
+                file:           #filePath,
+                line:           #line
+            )
+        }()
+        """
+    }
+    
+    
+    
+    /// Generates the macro expansion for the given expression containing
+    /// logical operators.
+    /// - Parameters:
+    ///   - kind: The assertion kind.
+    ///   - expr: The expression.
+    ///   - message: An optional description of a failure.
+    /// - Returns: The expanded macro expression.
+    private static func expandDecomposable(
+        kind    : AssertionKind,
+        expr    : ExprSyntax,
+        message : ExprSyntax
+    ) -> ExprSyntax
+    {
+        let node    : Node              = parse(expr)
+        let context : CodeGenContext    = .init()
+        
+        let evaluationResult = EvaluationResult.makeEvaluation(
+            node,
+            context: context
+        )
+        
+        return """
+        {
+            var _evaluated      : [XCTKBooleanExpr]     = []
+            var _notEvaluated   : Int                   = 0
+            
+            \(raw: evaluationResult.code)
+            
+            \(raw: kind.macroInternalName)(
+                result:         \(raw: evaluationResult.varName),
+                exprText:       \(literal: expr.trimmedDescription),
+                evaluated:      _evaluated,
+                notEvaluated:   _notEvaluated,
+                message:        \(message),
+                file:           #filePath,
+                line:           #line
+            )
+        }()
+        """
+    }
+    
+    
+    
+    /// Context for tracking state during code generation.
+    private final class CodeGenContext
+    {
+        /// Counter for generating unique variable names.
+        private var varCounter: Int = 0
+        
+        /// Generates the next unique variable name.
+        /// - Returns: The next unique variable name.
+        func nextVar() -> String
+        {
+            let name: String = "_v\(varCounter)"
+            
+            varCounter += 1
+            
+            return name
         }
     }
     
     
     
-    // MARK: - Analysis
+    // MARK: - Evaluation
     
     /// Checks whether the given expression contains decomposable logical
     /// operators (`&&` or `||`) at the top level.
@@ -75,7 +157,7 @@ internal struct BooleanExprWalker
     ///
     /// - Parameter expr: The expression to check.
     /// - Returns: Whether the given expression should be decomposed.
-    static func shouldDecompose(
+    private static func shouldDecompose(
         _ expr: ExprSyntax
     ) -> Bool
     {
@@ -89,12 +171,10 @@ internal struct BooleanExprWalker
     
     
     
-    // MARK: - Parsing
-    
     /// Parses the given expression.
     /// - Parameter expr: The expression to parse.
     /// - Returns: The parsed tree.
-    static func parse(
+    private static func parse(
         _ expr: ExprSyntax
     ) -> Node
     {
@@ -129,71 +209,6 @@ internal struct BooleanExprWalker
         }
         
         return .leaf(expr)
-    }
-    
-    
-    
-    // MARK: - Code generation
-    
-    /// Context for tracking state during code generation.
-    private final class CodeGenContext
-    {
-        /// Counter for generating unique variable names.
-        private var varCounter: Int = 0
-        
-        /// Generates the next unique variable name.
-        /// - Returns: The next unique variable name.
-        func nextVar() -> String
-        {
-            let name: String = "_v\(varCounter)"
-            
-            varCounter += 1
-            
-            return name
-        }
-    }
-    
-    
-    
-    /// Generates the macro expansion for the specified boolean assertion,
-    /// and decomposes the given expression.
-    /// - Parameters:
-    ///   - kind: The assertion kind.
-    ///   - expr: The expression.
-    ///   - message: An optional description of a failure.
-    /// - Returns: The expanded macro expression.
-    static func expand(
-        kind    : AssertionKind,
-        expr    : ExprSyntax,
-        message : ExprSyntax
-    ) -> ExprSyntax
-    {
-        let node    : Node              = parse(expr)
-        let context : CodeGenContext    = .init()
-        
-        let evaluationResult = EvaluationResult.makeEvaluation(
-            node,
-            context: context
-        )
-        
-        return """
-        {
-            var _evaluated      : [XCTKBooleanExpr]     = []
-            var _notEvaluated   : Int                   = 0
-            
-            \(raw: evaluationResult.code)
-            
-            \(raw: kind.macroInternalName)(
-                result:         \(raw: evaluationResult.varName),
-                exprText:       \(literal: expr.trimmedDescription),
-                evaluated:      _evaluated,
-                notEvaluated:   _notEvaluated,
-                message:        \(message),
-                file:           #filePath,
-                line:           #line
-            )
-        }()
-        """
     }
     
     
@@ -386,26 +401,6 @@ internal struct BooleanExprWalker
     
     // MARK: - Support
     
-    /// Removes parentheses from the given expressions and returns the wrapped
-    /// expression.
-    /// - Parameter expr: The expression to unwrap.
-    /// - Returns: The wrapped expression, or `nil` if the given expression is
-    /// not wrapped in parentheses.
-    private static func unwrap(
-        _ expr: ExprSyntax
-    ) -> ExprSyntax?
-    {
-        guard let tuple = expr.as(TupleExprSyntax.self)
-        else
-        {
-            return nil
-        }
-        
-        return tuple.elements.first?.expression
-    }
-    
-    
-    
     /// Boolean binary operators.
     enum BinaryOperatorKind: CustomStringConvertible
     {
@@ -450,6 +445,75 @@ internal struct BooleanExprWalker
             {
                 case .and   : return "&&"
                 case .or    : return "||"
+            }
+        }
+    }
+    
+    
+    
+    /// Removes parentheses from the given expressions and returns the wrapped
+    /// expression.
+    /// - Parameter expr: The expression to unwrap.
+    /// - Returns: The wrapped expression, or `nil` if the given expression is
+    /// not wrapped in parentheses.
+    private static func unwrap(
+        _ expr: ExprSyntax
+    ) -> ExprSyntax?
+    {
+        guard let tuple = expr.as(TupleExprSyntax.self)
+        else
+        {
+            return nil
+        }
+        
+        return tuple.elements.first?.expression
+    }
+    
+    
+    
+    /// A node in the boolean expression tree.
+    private indirect enum Node
+    {
+        /// A leaf expression that is not further decomposed.
+        /// - Parameter expr: The expression.
+        case leaf(
+            _ expr: ExprSyntax
+        )
+        
+        /// A logical AND (`&&`) of two sub-expressions.
+        /// - Parameters:
+        ///   - lhs: The left-hand side operand.
+        ///   - rhs: The right-hand side operand.
+        case and(
+            lhs:    Node,
+            rhs:    Node
+        )
+        
+        /// A logical OR (`||`) of two sub-expressions.
+        /// - Parameters:
+        ///   - lhs: The left-hand side operand.
+        ///   - rhs: The right-hand side operand.
+        case or(
+            lhs:    Node,
+            rhs:    Node
+        )
+        
+        
+        
+        /// The number of leaf nodes in this subtree.
+        var leafCount: Int
+        {
+            switch self
+            {
+                case .leaf:
+                    
+                    return 1
+                    
+                case
+                    let .and(lhs, rhs),
+                    let .or(lhs, rhs):
+                    
+                    return lhs.leafCount + rhs.leafCount
             }
         }
     }

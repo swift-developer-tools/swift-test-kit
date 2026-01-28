@@ -96,6 +96,17 @@ extension SingleExprMacro
         
         switch kind
         {
+            case
+                .assert,
+                .`true`,
+                .`false`:
+                
+                return BooleanExprWalker.expand(
+                    kind:       kind,
+                    expr:       expr,
+                    message:    message
+                )
+                
             case .throwsError:
                 
                 let errorHandler: ExprSyntax
@@ -154,15 +165,6 @@ extension SingleExprMacro
                 """
                 
             default:
-                
-                if BooleanExprWalker.shouldDecompose(expr)
-                {
-                    return BooleanExprWalker.expand(
-                        kind:       kind,
-                        expr:       expr,
-                        message:    message
-                    )
-                }
                 
                 return """
                 \(raw: kind.macroInternalName)(

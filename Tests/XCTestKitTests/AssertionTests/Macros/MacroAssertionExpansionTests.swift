@@ -233,6 +233,23 @@ private extension MacroAssertionExpansionTests
         
         switch kind
         {
+            case
+                .assert,
+                .`true`,
+                .`false`:
+                
+                originalSource =
+                """
+                \(kind.macroDisplayName)(expr, "msg")
+                """
+                
+                expandedSource = BooleanExprWalker.expand(
+                    kind:       kind,
+                    expr:       "expr",
+                    message:    .makeStringLiteral("msg")
+                ).description
+                
+                
             case .throwsError:
                 
                 originalSource =
