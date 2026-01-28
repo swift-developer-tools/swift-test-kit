@@ -38,14 +38,13 @@ internal enum ExprCaptureKind: Equatable, Sendable
 
 
 
-// MARK: - Boolean
+// MARK: - Boolean (functions)
 
 internal func evaluateXCTKAssert(
-    captureKind : ExprCaptureKind,
-    expr        : () throws -> Bool,
-    message     : () -> String,
-    file        : StaticString,
-    line        : UInt
+    expr    : () throws -> Bool,
+    message : () -> String,
+    file    : StaticString,
+    line    : UInt
 )
 {
     let assertionKind: AssertionKind = .assert
@@ -69,43 +68,22 @@ internal func evaluateXCTKAssert(
         return
     }
     
-    switch captureKind
-    {
-        case .none:
-            
-            failAssertion(
-                kind:       assertionKind,
-                reason:     nil,
-                message:    message,
-                file:       file,
-                line:       line
-            )
-            
-        case let .single(text):
-            
-            failAssertion(
-                kind:       assertionKind,
-                exprText:   text,
-                actual:     nil,
-                message:    message,
-                file:       file,
-                line:       line
-            )
-            
-        case .double:
-            
-            break
-    }
+    failAssertion(
+        kind:       assertionKind,
+        reason:     nil,
+        message:    message,
+        file:       file,
+        line:       line
+    )
 }
 
 
 
 internal func evaluateXCTKAssertTrue(
-    captureKind : ExprCaptureKind,
-    expr        : () throws -> Bool,
-    message     : () -> String,
-    file        : StaticString,
-    line        : UInt
+    expr    : () throws -> Bool,
+    message : () -> String,
+    file    : StaticString,
+    line    : UInt
 )
 {
     let assertionKind: AssertionKind = .`true`
@@ -129,43 +107,22 @@ internal func evaluateXCTKAssertTrue(
         return
     }
     
-    switch captureKind
-    {
-        case .none:
-            
-            failAssertion(
-                kind:       assertionKind,
-                reason:     nil,
-                message:    message,
-                file:       file,
-                line:       line
-            )
-            
-        case let .single(text):
-            
-            failAssertion(
-                kind:       assertionKind,
-                exprText:   text,
-                actual:     nil,
-                message:    message,
-                file:       file,
-                line:       line
-            )
-            
-        case .double:
-            
-            break
-    }
+    failAssertion(
+        kind:       assertionKind,
+        reason:     nil,
+        message:    message,
+        file:       file,
+        line:       line
+    )
 }
 
 
 
 internal func evaluateXCTKAssertFalse(
-    captureKind : ExprCaptureKind,
-    expr        : () throws -> Bool,
-    message     : () -> String,
-    file        : StaticString,
-    line        : UInt
+    expr    : () throws -> Bool,
+    message : () -> String,
+    file    : StaticString,
+    line    : UInt
 )
 {
     let assertionKind: AssertionKind = .`false`
@@ -189,33 +146,99 @@ internal func evaluateXCTKAssertFalse(
         return
     }
     
-    switch captureKind
+    failAssertion(
+        kind:       assertionKind,
+        reason:     nil,
+        message:    message,
+        file:       file,
+        line:       line
+    )
+}
+
+
+
+// MARK: - Boolean (macros)
+
+internal func evaluateXCTKAssert(
+    result          : Bool,
+    exprText        : String,
+    evaluated       : [XCTKBooleanExpr],
+    notEvaluated    : Int,
+    message         : () -> String,
+    file            : StaticString,
+    line            : UInt
+)
+{
+    if result
     {
-        case .none:
-            
-            failAssertion(
-                kind:       assertionKind,
-                reason:     nil,
-                message:    message,
-                file:       file,
-                line:       line
-            )
-            
-        case let .single(text):
-            
-            failAssertion(
-                kind:       assertionKind,
-                exprText:   text,
-                actual:     nil,
-                message:    message,
-                file:       file,
-                line:       line
-            )
-            
-        case .double:
-            
-            break
+        return
     }
+    
+    failAssertion(
+        kind:           .assert,
+        exprText:       exprText,
+        evaluated:      evaluated,
+        notEvaluated:   notEvaluated,
+        message:        message,
+        file:           file,
+        line:           line
+    )
+}
+
+
+
+internal func evaluateXCTKAssertTrue(
+    result          : Bool,
+    exprText        : String,
+    evaluated       : [XCTKBooleanExpr],
+    notEvaluated    : Int,
+    message         : () -> String,
+    file            : StaticString,
+    line            : UInt
+)
+{
+    if result
+    {
+        return
+    }
+    
+    failAssertion(
+        kind:           .`true`,
+        exprText:       exprText,
+        evaluated:      evaluated,
+        notEvaluated:   notEvaluated,
+        message:        message,
+        file:           file,
+        line:           line
+    )
+}
+
+
+
+internal func evaluateXCTKAssertFalse(
+    result          : Bool,
+    exprText        : String,
+    evaluated       : [XCTKBooleanExpr],
+    notEvaluated    : Int,
+    message         : () -> String,
+    file            : StaticString,
+    line            : UInt
+)
+{
+    if !result
+    {
+        return
+    }
+    
+    failAssertion(
+        kind:           .`false`,
+        exprText:       exprText,
+        evaluated:      evaluated,
+        notEvaluated:   notEvaluated,
+        message:        message,
+        file:           file,
+        line:           line
+    )
 }
 
 

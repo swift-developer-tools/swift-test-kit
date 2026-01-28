@@ -42,11 +42,10 @@ public func XCTKAssert(
 )
 {
     evaluateXCTKAssert(
-        captureKind:    .none,
-        expr:           expression,
-        message:        message,
-        file:           file,
-        line:           line
+        expr:       expression,
+        message:    message,
+        file:       file,
+        line:       line
     )
 }
 
@@ -72,11 +71,10 @@ public func XCTKAssertTrue(
 )
 {
     evaluateXCTKAssertTrue(
-        captureKind:    .none,
-        expr:           expression,
-        message:        message,
-        file:           file,
-        line:           line
+        expr:       expression,
+        message:    message,
+        file:       file,
+        line:       line
     )
 }
 
@@ -101,11 +99,10 @@ public func XCTKAssertFalse(
 )
 {
     evaluateXCTKAssertFalse(
-        captureKind:    .none,
-        expr:           expression,
-        message:        message,
-        file:           file,
-        line:           line
+        expr:       expression,
+        message:    message,
+        file:       file,
+        line:       line
     )
 }
 

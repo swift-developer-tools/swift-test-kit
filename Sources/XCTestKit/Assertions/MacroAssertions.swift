@@ -14,16 +14,20 @@ import XCTest
 // MARK: - Boolean
 
 internal func _XCTKAssertMacro(
-    expr        : @autoclosure () throws -> Bool,
-    exprText    : String,
-    message     : @autoclosure () -> String,
-    file        : StaticString,
-    line        : UInt
+    result          : Bool,
+    exprText        : String,
+    evaluated       : [XCTKBooleanExpr],
+    notEvaluated    : Int,
+    message         : @autoclosure () -> String,
+    file            : StaticString,
+    line            : UInt
 )
 {
     evaluateXCTKAssert(
-        captureKind:    .single(exprText),
-        expr:           expr,
+        result:         result,
+        exprText:       exprText,
+        evaluated:      evaluated,
+        notEvaluated:   notEvaluated,
         message:        message,
         file:           file,
         line:           line
@@ -33,16 +37,20 @@ internal func _XCTKAssertMacro(
 
 
 internal func _XCTKAssertTrueMacro(
-    expr        : @autoclosure () throws -> Bool,
-    exprText    : String,
-    message     : @autoclosure () -> String,
-    file        : StaticString,
-    line        : UInt
+    result          : Bool,
+    exprText        : String,
+    evaluated       : [XCTKBooleanExpr],
+    notEvaluated    : Int,
+    message         : @autoclosure () -> String,
+    file            : StaticString,
+    line            : UInt
 )
 {
     evaluateXCTKAssertTrue(
-        captureKind:    .single(exprText),
-        expr:           expr,
+        result:         result,
+        exprText:       exprText,
+        evaluated:      evaluated,
+        notEvaluated:   notEvaluated,
         message:        message,
         file:           file,
         line:           line
@@ -52,16 +60,20 @@ internal func _XCTKAssertTrueMacro(
 
 
 internal func _XCTKAssertFalseMacro(
-    expr        : @autoclosure () throws -> Bool,
-    exprText    : String,
-    message     : @autoclosure () -> String,
-    file        : StaticString,
-    line        : UInt
+    result          : Bool,
+    exprText        : String,
+    evaluated       : [XCTKBooleanExpr],
+    notEvaluated    : Int,
+    message         : @autoclosure () -> String,
+    file            : StaticString,
+    line            : UInt
 )
 {
     evaluateXCTKAssertFalse(
-        captureKind:    .single(exprText),
-        expr:           expr,
+        result:         result,
+        exprText:       exprText,
+        evaluated:      evaluated,
+        notEvaluated:   notEvaluated,
         message:        message,
         file:           file,
         line:           line
