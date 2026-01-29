@@ -16,7 +16,7 @@ import XCTestKitCore
 
 internal final class MacroAssertionOutputTests: XCTestKitCase
 {
-    typealias AK = AssertionKind
+    private typealias AK = AssertionKind
     
     /// A description of a failure.
     private static let message: String = "hello world"

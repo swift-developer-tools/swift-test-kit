@@ -14,7 +14,7 @@
 
 internal final class FormatterSpecialCaseTests: XCTestKitCase
 {
-    typealias LK = XCTestKit.Formatter.LabelKind
+    private typealias LK = XCTestKit.Formatter.LabelKind
     
     
     

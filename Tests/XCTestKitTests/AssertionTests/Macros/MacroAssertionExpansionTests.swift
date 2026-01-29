@@ -19,7 +19,7 @@ import SwiftSyntaxMacrosTestSupport
 
 internal final class MacroAssertionExpansionTests: XCTestKitCase
 {
-    typealias AK = AssertionKind
+    private typealias AK = AssertionKind
     
     
     
@@ -185,7 +185,7 @@ internal final class MacroAssertionExpansionTests: XCTestKitCase
 private extension MacroAssertionExpansionTests
 {
     /// Assertion kinds and their associated macro types.
-    static let macros: [AK : any Macro.Type] =
+    private static let macros: [AK : any Macro.Type] =
     [
         .assert                 : AssertMacro.self,
         .`true`                 : AssertTrueMacro.self,
@@ -217,7 +217,7 @@ private extension MacroAssertionExpansionTests
     
     /// Tests the expansion of macros with one evaluated expression.
     /// - Parameter kind: The kind of macro to test.
-    func testSingleExprExpansion(
+    private func testSingleExprExpansion(
         _ kind: AK
     )
     {
@@ -323,7 +323,7 @@ private extension MacroAssertionExpansionTests
     
     /// Tests the expansion of macros with two evaluated expressions.
     /// - Parameter kind: The kind of macro to test.
-    func testDoubleExprExpansion(
+    private func testDoubleExprExpansion(
         _ kind: AK
     )
     {

@@ -15,7 +15,7 @@ import XCTestKitCore
 
 internal final class FormatterPathTests: XCTestKitCase
 {
-    typealias LK = XCTestKit.Formatter.LabelKind
+    private typealias LK = XCTestKit.Formatter.LabelKind
     
     
     
