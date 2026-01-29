@@ -15,7 +15,7 @@ import XCTest
 /// - Parameter body: The closure to call.
 /// - Returns: The failure message of the given closure.
 internal func captureFailureMessage(
-    _ body: () -> Void
+    _ body: () throws -> Void
 ) -> String?
 {
     var captured            : String?   = nil
@@ -57,7 +57,7 @@ internal func captureFailureMessage(
     }
     
     isInsideBodyClosure = true
-    body()
+    try? body()
     isInsideBodyClosure = false
     
     return captured
