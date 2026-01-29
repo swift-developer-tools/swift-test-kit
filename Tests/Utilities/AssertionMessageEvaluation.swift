@@ -87,19 +87,19 @@ internal func testAssertionMessageNotEvaluatedOnSuccess(
             
         case .greaterThan:
             
-            XCTKAssertGreaterThan(1, 0)
+            XCTKAssertGreaterThan(1, 0, message())
             
         case .greaterThanOrEqual:
             
-            XCTKAssertGreaterThanOrEqual(1, 0)
+            XCTKAssertGreaterThanOrEqual(1, 0, message())
             
         case .lessThan:
             
-            XCTKAssertLessThan(0, 1)
+            XCTKAssertLessThan(0, 1, message())
             
         case .lessThanOrEqual:
             
-            XCTKAssertLessThanOrEqual(0, 1)
+            XCTKAssertLessThanOrEqual(0, 1, message())
             
         case .nil:
             
@@ -133,7 +133,9 @@ internal func testAssertionMessageNotEvaluatedOnSuccess(
             
         case .noThrow:
             
-            XCTKAssertNoThrow({ }, message())
+            let expr: () throws -> Int = { return 0 }
+            
+            XCTKAssertNoThrow(try expr(), message())
     }
     
     XCTAssertEqual(count, 0)
@@ -219,19 +221,19 @@ internal func testAssertionMessageEvaluatedOnceOnFailure(
                 
             case .greaterThan:
                 
-                XCTKAssertGreaterThan(0, 1)
+                XCTKAssertGreaterThan(0, 1, message())
                 
             case .greaterThanOrEqual:
                 
-                XCTKAssertGreaterThanOrEqual(0, 1)
+                XCTKAssertGreaterThanOrEqual(0, 1, message())
                 
             case .lessThan:
                 
-                XCTKAssertLessThan(1, 0)
+                XCTKAssertLessThan(1, 0, message())
                 
             case .lessThanOrEqual:
                 
-                XCTKAssertLessThanOrEqual(1, 0)
+                XCTKAssertLessThanOrEqual(1, 0, message())
                 
             case .nil:
                 
@@ -259,7 +261,9 @@ internal func testAssertionMessageEvaluatedOnceOnFailure(
                 
             case .throwsError:
                 
-                XCTKAssertThrowsError({ }, message())
+                let expr: () throws -> Int = { return 0 }
+                
+                XCTKAssertThrowsError(try expr(), message())
                 
             case .noThrow:
                 
