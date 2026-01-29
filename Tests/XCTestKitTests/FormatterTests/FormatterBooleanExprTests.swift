@@ -240,6 +240,68 @@ internal final class FormatterBooleanExprTests: XCTestKitCase
     
     
     
+    func testParenthesizedSingleExprUnwrapping() throws
+    {
+        let exprText: String = "(a)"
+        
+        let evaluated: [XCTKBooleanExpr] =
+        [
+            .init("a", false)
+        ]
+        
+        let actual: String = Formatter.formatBooleanExpr(
+            exprText:       exprText,
+            evaluated:      evaluated,
+            notEvaluated:   0,
+            expectedValue:  true
+        )
+        
+        let expected: String =
+        """
+        Expression: \(exprText)
+
+            a = false ←
+        """
+        
+        XCTKAssertEqual(expected, actual)
+    }
+    
+    
+    
+    func testDeeplyNestedExpr() throws
+    {
+        let exprText: String = "((a && (b)) || c) && d"
+        
+        let evaluated: [XCTKBooleanExpr] =
+        [
+            .init("a", true),
+            .init("b", false),
+            .init("c", false)
+        ]
+        
+        let actual: String = Formatter.formatBooleanExpr(
+            exprText:       exprText,
+            evaluated:      evaluated,
+            notEvaluated:   1,
+            expectedValue:  true
+        )
+        
+        let expected: String =
+        """
+        Expression: \(exprText)
+
+            a = true
+            b = false ←
+            c = false ←
+        
+            (1 expression not evaluated)
+        """
+        
+        XCTKAssertEqual(expected, actual)
+    }
+    
+    
+    
     // MARK: - Single expression
     
     func testSingleExprAssertTrueWhenFalse() throws
@@ -331,6 +393,70 @@ internal final class FormatterBooleanExprTests: XCTestKitCase
     
     
     // MARK: - Other expressions
+    
+    func testNegation() throws
+    {
+        let exprText: String = "(!a || !(!b)) && !(!(!c))"
+        
+        let evaluated: [XCTKBooleanExpr] =
+        [
+            .init("!a", false),
+            .init("!!b", false)
+        ]
+        
+        let actual: String = Formatter.formatBooleanExpr(
+            exprText:       exprText,
+            evaluated:      evaluated,
+            notEvaluated:   1,
+            expectedValue:  true
+        )
+        
+        let expected: String =
+        """
+        Expression: \(exprText)
+
+            !a = false ←
+            !!b = false ←
+        
+            (1 expression not evaluated)
+        """
+        
+        XCTKAssertEqual(expected, actual)
+    }
+    
+    
+    
+    func testOperatorPrecedence() throws
+    {
+        let exprText: String = "a || b && c"
+        
+        let evaluated: [XCTKBooleanExpr] =
+        [
+            .init("a", false),
+            .init("b", true),
+            .init("c", false)
+        ]
+        
+        let actual: String = Formatter.formatBooleanExpr(
+            exprText:       exprText,
+            evaluated:      evaluated,
+            notEvaluated:   0,
+            expectedValue:  true
+        )
+        
+        let expected: String =
+        """
+        Expression: \(exprText)
+
+            a = false ←
+            b = true
+            c = false ←
+        """
+        
+        XCTKAssertEqual(expected, actual)
+    }
+    
+    
     
     func testPropertyAccessExprs() throws
     {
