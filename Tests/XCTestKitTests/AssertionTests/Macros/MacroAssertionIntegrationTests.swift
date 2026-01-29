@@ -448,6 +448,94 @@ internal final class MacroAssertionIntegrationTests: XCTestKitCase
     
     
     
+    func testAssertThrowsCallsHandler() throws
+    {
+        var handlerCalled: Bool = false
+        
+        let expr: () throws -> Int = { try TestError.throwError() }
+        
+        #XCTKAssertThrowsError(try expr())
+        {
+            _ in
+            
+            handlerCalled = true
+        }
+        
+        XCTAssertTrue(handlerCalled)
+    }
+    
+    
+    
+    func testAssertThrowsDoesNotCallHandlerOnNoThrow() throws
+    {
+        continueAfterFailure = true
+        
+        defer
+        {
+            continueAfterFailure = false
+        }
+        
+        var handlerCalled: Bool = false
+        
+        let expr: () throws -> Int = { return 0 }
+        
+        withOneExpectedFailure
+        {
+            #XCTKAssertThrowsError(try expr())
+            {
+                _ in
+                
+                handlerCalled = true
+            }
+            
+            XCTAssertFalse(handlerCalled)
+        }
+    }
+    
+    
+    
+    func testAssertThrowsHandlerReceivesErrorWithData() throws
+    {
+        enum SomeError: Error, Equatable
+        {
+            case invalid(
+                _ code:     Int,
+                _ domain:   String
+            )
+        }
+        
+        let error   : SomeError         = .invalid(10, "a")
+        let expr    : () throws -> Int  = { throw error }
+        
+        #XCTKAssertThrowsError(try expr())
+        {
+            guard let someError = $0 as? SomeError
+            else
+            {
+                XCTFail("Expected SomeError, got \(type(of: $0))")
+                return
+            }
+            
+            XCTAssertEqual(someError, error)
+        }
+    }
+    
+    
+    
+    func testAssertThrowsHandlerCanAssert() throws
+    {
+        let expr: () throws -> Int = { try TestError.throwError() }
+        
+        #XCTKAssertThrowsError(try expr())
+        {
+            error in
+            
+            XCTAssertTrue(error is TestError)
+        }
+    }
+    
+    
+    
     // MARK: - Fail
     
     func testFail() throws
