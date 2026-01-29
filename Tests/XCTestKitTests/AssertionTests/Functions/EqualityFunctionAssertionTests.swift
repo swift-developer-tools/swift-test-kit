@@ -80,14 +80,14 @@ internal final class EqualityFunctionAssertionTests: XCTestKitCase
     
     func testAssertEqualMessageNotEvaluatedOnSuccess() throws
     {
-        testAssertionMessageNotEvaluatedOnSuccess(.equal)
+        testFunctionAssertionMessageNotEvalOnSuccess(.equal)
     }
     
     
     
     func testAssertEqualMessageEvaluatedOnlyOnceOnFailure() throws
     {
-        testAssertionMessageEvaluatedOnceOnFailure(.equal)
+        testFunctionAssertionMessageEvalOnceOnFailure(.equal)
     }
     
     
@@ -156,14 +156,14 @@ internal final class EqualityFunctionAssertionTests: XCTestKitCase
     
     func testAssertNotEqualMessageNotEvaluatedOnSuccess() throws
     {
-        testAssertionMessageNotEvaluatedOnSuccess(.notEqual)
+        testFunctionAssertionMessageNotEvalOnSuccess(.notEqual)
     }
     
     
     
     func testAssertNotEqualMessageEvaluatedOnlyOnceOnFailure() throws
     {
-        testAssertionMessageEvaluatedOnceOnFailure(.notEqual)
+        testFunctionAssertionMessageEvalOnceOnFailure(.notEqual)
     }
     
     
@@ -247,14 +247,14 @@ internal final class EqualityFunctionAssertionTests: XCTestKitCase
     
     func testAssertIdenticalMessageNotEvaluatedOnSuccess() throws
     {
-        testAssertionMessageNotEvaluatedOnSuccess(.identical)
+        testFunctionAssertionMessageNotEvalOnSuccess(.identical)
     }
     
     
     
     func testAssertIdenticalMessageEvaluatedOnlyOnceOnFailure() throws
     {
-        testAssertionMessageEvaluatedOnceOnFailure(.identical)
+        testFunctionAssertionMessageEvalOnceOnFailure(.identical)
     }
     
     
@@ -336,14 +336,14 @@ internal final class EqualityFunctionAssertionTests: XCTestKitCase
     
     func testAssertNotIdenticalMessageNotEvaluatedOnSuccess() throws
     {
-        testAssertionMessageNotEvaluatedOnSuccess(.notIdentical)
+        testFunctionAssertionMessageNotEvalOnSuccess(.notIdentical)
     }
     
     
     
     func testAssertNotIdenticalMessageEvaluatedOnlyOnceOnFailure() throws
     {
-        testAssertionMessageEvaluatedOnceOnFailure(.notIdentical)
+        testFunctionAssertionMessageEvalOnceOnFailure(.notIdentical)
     }
     
     
@@ -415,7 +415,7 @@ internal final class EqualityFunctionAssertionTests: XCTestKitCase
     
     func testAssertEqualFloatAccMessageNotEvaluatedOnSuccess() throws
     {
-        testAssertionMessageNotEvaluatedOnSuccess(
+        testFunctionAssertionMessageNotEvalOnSuccess(
             .equalWithAccuracy,
             useFloats: true
         )
@@ -425,7 +425,7 @@ internal final class EqualityFunctionAssertionTests: XCTestKitCase
     
     func testAssertEqualFloatAccMessageEvaluatedOnlyOnceOnFailure() throws
     {
-        testAssertionMessageEvaluatedOnceOnFailure(
+        testFunctionAssertionMessageEvalOnceOnFailure(
             .equalWithAccuracy,
             useFloats: true
         )
@@ -515,7 +515,7 @@ internal final class EqualityFunctionAssertionTests: XCTestKitCase
     
     func testAssertEqualIntAccMessageNotEvaluatedOnSuccess() throws
     {
-        testAssertionMessageNotEvaluatedOnSuccess(
+        testFunctionAssertionMessageNotEvalOnSuccess(
             .equalWithAccuracy,
             useFloats: false
         )
@@ -525,7 +525,7 @@ internal final class EqualityFunctionAssertionTests: XCTestKitCase
     
     func testAssertEqualIntAccMessageEvaluatedOnlyOnceOnFailure() throws
     {
-        testAssertionMessageEvaluatedOnceOnFailure(
+        testFunctionAssertionMessageEvalOnceOnFailure(
             .equalWithAccuracy,
             useFloats: false
         )
@@ -600,7 +600,7 @@ internal final class EqualityFunctionAssertionTests: XCTestKitCase
     
     func testAssertNotEqualFloatAccMessageNotEvaluatedOnSuccess() throws
     {
-        testAssertionMessageNotEvaluatedOnSuccess(
+        testFunctionAssertionMessageNotEvalOnSuccess(
             .notEqualWithAccuracy,
             useFloats: true
         )
@@ -610,7 +610,7 @@ internal final class EqualityFunctionAssertionTests: XCTestKitCase
     
     func testAssertNotEqualFloatAccMessageEvaluatedOnlyOnceOnFailure() throws
     {
-        testAssertionMessageEvaluatedOnceOnFailure(
+        testFunctionAssertionMessageEvalOnceOnFailure(
             .notEqualWithAccuracy,
             useFloats: true
         )
@@ -699,7 +699,7 @@ internal final class EqualityFunctionAssertionTests: XCTestKitCase
     
     func testAssertNotEqualIntAccMessageNotEvaluatedOnSuccess() throws
     {
-        testAssertionMessageNotEvaluatedOnSuccess(
+        testFunctionAssertionMessageNotEvalOnSuccess(
             .notEqualWithAccuracy,
             useFloats: false
         )
@@ -709,7 +709,7 @@ internal final class EqualityFunctionAssertionTests: XCTestKitCase
     
     func testAssertNotEqualIntAccMessageEvaluatedOnlyOnceOnFailure() throws
     {
-        testAssertionMessageEvaluatedOnceOnFailure(
+        testFunctionAssertionMessageEvalOnceOnFailure(
             .notEqualWithAccuracy,
             useFloats: false
         )

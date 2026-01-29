@@ -87,14 +87,14 @@ internal final class ComparableFunctionAssertionTests: XCTestKitCase
     
     func testAssertGreaterMessageNotEvaluatedOnSuccess() throws
     {
-        testAssertionMessageNotEvaluatedOnSuccess(.greaterThan)
+        testFunctionAssertionMessageNotEvalOnSuccess(.greaterThan)
     }
     
     
     
     func testAssertGreaterMessageEvaluatedOnlyOnceOnFailure() throws
     {
-        testAssertionMessageEvaluatedOnceOnFailure(.greaterThan)
+        testFunctionAssertionMessageEvalOnceOnFailure(.greaterThan)
     }
     
     
@@ -166,14 +166,14 @@ internal final class ComparableFunctionAssertionTests: XCTestKitCase
     
     func testAssertGreaterEqualMessageNotEvaluatedOnSuccess() throws
     {
-        testAssertionMessageNotEvaluatedOnSuccess(.greaterThanOrEqual)
+        testFunctionAssertionMessageNotEvalOnSuccess(.greaterThanOrEqual)
     }
     
     
     
     func testAssertGreaterEqualMessageEvaluatedOnlyOnceOnFailure() throws
     {
-        testAssertionMessageEvaluatedOnceOnFailure(.greaterThanOrEqual)
+        testFunctionAssertionMessageEvalOnceOnFailure(.greaterThanOrEqual)
     }
     
     
@@ -245,14 +245,14 @@ internal final class ComparableFunctionAssertionTests: XCTestKitCase
     
     func testAssertLessEqualMessageNotEvaluatedOnSuccess() throws
     {
-        testAssertionMessageNotEvaluatedOnSuccess(.lessThanOrEqual)
+        testFunctionAssertionMessageNotEvalOnSuccess(.lessThanOrEqual)
     }
     
     
     
     func testAssertLessEqualMessageEvaluatedOnlyOnceOnFailure() throws
     {
-        testAssertionMessageEvaluatedOnceOnFailure(.lessThanOrEqual)
+        testFunctionAssertionMessageEvalOnceOnFailure(.lessThanOrEqual)
     }
     
     
@@ -324,13 +324,13 @@ internal final class ComparableFunctionAssertionTests: XCTestKitCase
     
     func testAssertLessMessageNotEvaluatedOnSuccess() throws
     {
-        testAssertionMessageNotEvaluatedOnSuccess(.lessThan)
+        testFunctionAssertionMessageNotEvalOnSuccess(.lessThan)
     }
     
     
     
     func testAssertLessMessageEvaluatedOnlyOnceOnFailure() throws
     {
-        testAssertionMessageEvaluatedOnceOnFailure(.lessThan)
+        testFunctionAssertionMessageEvalOnceOnFailure(.lessThan)
     }
 }

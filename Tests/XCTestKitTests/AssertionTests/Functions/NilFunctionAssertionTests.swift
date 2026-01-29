@@ -80,14 +80,14 @@ internal final class NilFunctionAssertionTests: XCTestKitCase
     
     func testAssertNilMessageNotEvaluatedOnSuccess() throws
     {
-        testAssertionMessageNotEvaluatedOnSuccess(.`nil`)
+        testFunctionAssertionMessageNotEvalOnSuccess(.`nil`)
     }
     
     
     
     func testAssertNilMessageEvaluatedOnlyOnceOnFailure() throws
     {
-        testAssertionMessageEvaluatedOnceOnFailure(.`nil`)
+        testFunctionAssertionMessageEvalOnceOnFailure(.`nil`)
     }
     
     
@@ -153,14 +153,14 @@ internal final class NilFunctionAssertionTests: XCTestKitCase
     
     func testAssertNotNilMessageNotEvaluatedOnSuccess() throws
     {
-        testAssertionMessageNotEvaluatedOnSuccess(.notNil)
+        testFunctionAssertionMessageNotEvalOnSuccess(.notNil)
     }
     
     
     
     func testAssertNotNilMessageEvaluatedOnlyOnceOnFailure() throws
     {
-        testAssertionMessageEvaluatedOnceOnFailure(.notNil)
+        testFunctionAssertionMessageEvalOnceOnFailure(.notNil)
     }
     
     
@@ -288,13 +288,13 @@ internal final class NilFunctionAssertionTests: XCTestKitCase
     
     func testUnwrapMessageNotEvaluatedOnSuccess() throws
     {
-        testAssertionMessageNotEvaluatedOnSuccess(.unwrap)
+        testFunctionAssertionMessageNotEvalOnSuccess(.unwrap)
     }
     
     
     
     func testUnwrapMessageEvaluatedOnlyOnceOnFailure() throws
     {
-        testAssertionMessageEvaluatedOnceOnFailure(.unwrap)
+        testFunctionAssertionMessageEvalOnceOnFailure(.unwrap)
     }
 }

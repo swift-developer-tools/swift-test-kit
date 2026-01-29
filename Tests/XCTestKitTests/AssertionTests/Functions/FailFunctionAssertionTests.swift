@@ -56,6 +56,6 @@ internal final class FailFunctionAssertionTests: XCTestKitCase
     
     func testFailMessageEvaluatedOnlyOnceOnFailure() throws
     {
-        testAssertionMessageEvaluatedOnceOnFailure(.fail)
+        testFunctionAssertionMessageEvalOnceOnFailure(.fail)
     }
 }

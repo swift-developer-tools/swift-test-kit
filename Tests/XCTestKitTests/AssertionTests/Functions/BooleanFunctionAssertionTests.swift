@@ -68,14 +68,14 @@ internal final class BooleanFunctionAssertionTests: XCTestKitCase
     
     func testAssertMessageNotEvaluatedOnSuccess() throws
     {
-        testAssertionMessageNotEvaluatedOnSuccess(.assert)
+        testFunctionAssertionMessageNotEvalOnSuccess(.assert)
     }
     
     
     
     func testAssertMessageEvaluatedOnlyOnceOnFailure() throws
     {
-        testAssertionMessageEvaluatedOnceOnFailure(.assert)
+        testFunctionAssertionMessageEvalOnceOnFailure(.assert)
     }
     
     
@@ -141,14 +141,14 @@ internal final class BooleanFunctionAssertionTests: XCTestKitCase
     
     func testAssertTrueMessageNotEvaluatedOnSuccess() throws
     {
-        testAssertionMessageNotEvaluatedOnSuccess(.`true`)
+        testFunctionAssertionMessageNotEvalOnSuccess(.`true`)
     }
     
     
     
     func testAssertTrueMessageEvaluatedOnlyOnceOnFailure() throws
     {
-        testAssertionMessageEvaluatedOnceOnFailure(.`true`)
+        testFunctionAssertionMessageEvalOnceOnFailure(.`true`)
     }
     
     
@@ -214,13 +214,13 @@ internal final class BooleanFunctionAssertionTests: XCTestKitCase
     
     func testAssertFalseMessageNotEvaluatedOnSuccess() throws
     {
-        testAssertionMessageNotEvaluatedOnSuccess(.`false`)
+        testFunctionAssertionMessageNotEvalOnSuccess(.`false`)
     }
     
     
     
     func testAssertFalseMessageEvaluatedOnlyOnceOnFailure() throws
     {
-        testAssertionMessageEvaluatedOnceOnFailure(.`false`)
+        testFunctionAssertionMessageEvalOnceOnFailure(.`false`)
     }
 }

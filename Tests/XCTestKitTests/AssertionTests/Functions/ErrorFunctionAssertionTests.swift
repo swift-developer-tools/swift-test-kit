@@ -71,14 +71,14 @@ internal final class ErrorFunctionAssertionTests: XCTestKitCase
     
     func testAssertThrowsMessageNotEvaluatedOnSuccess() throws
     {
-        testAssertionMessageNotEvaluatedOnSuccess(.throwsError)
+        testFunctionAssertionMessageNotEvalOnSuccess(.throwsError)
     }
     
     
     
     func testAssertThrowsMessageEvaluatedOnlyOnceOnFailure() throws
     {
-        testAssertionMessageEvaluatedOnceOnFailure(.throwsError)
+        testFunctionAssertionMessageEvalOnceOnFailure(.throwsError)
     }
     
     
@@ -139,13 +139,13 @@ internal final class ErrorFunctionAssertionTests: XCTestKitCase
     
     func testAssertNoThrowMessageNotEvaluatedOnSuccess() throws
     {
-        testAssertionMessageNotEvaluatedOnSuccess(.noThrow)
+        testFunctionAssertionMessageNotEvalOnSuccess(.noThrow)
     }
     
     
     
     func testAssertNoThrowMessageEvaluatedOnlyOnceOnFailure() throws
     {
-        testAssertionMessageEvaluatedOnceOnFailure(.noThrow)
+        testFunctionAssertionMessageEvalOnceOnFailure(.noThrow)
     }
 }
