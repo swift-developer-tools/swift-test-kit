@@ -302,7 +302,7 @@ private extension MacroAssertionExpansionTests
                 
                 expandedSource =
                 """
-                \(kind == .unwrap ? "try " : "")\(kind.macroInternalName)(
+                \(kind.macroInternalName)(
                     expr:       expr,
                     exprText:   "expr",
                     message:    "msg",

@@ -165,18 +165,6 @@ extension SingleExprMacro
                 )
                 """
                 
-            case .unwrap:
-                
-                return """
-                try \(raw: kind.macroInternalName)(
-                    expr:       \(expr),
-                    exprText:   \(literal: exprText),
-                    message:    \(message),
-                    file:       #filePath,
-                    line:       #line
-                )
-                """
-                
             default:
                 
                 return """
