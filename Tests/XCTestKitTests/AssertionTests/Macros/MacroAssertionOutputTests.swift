@@ -703,12 +703,13 @@ internal final class MacroAssertionOutputTests: XCTestKitCase
     
     func testAssertThrowsErrorFailureMessage() throws
     {
-        let exprText: String = "something"
+        let expr        : () throws -> Int  = { return 0 }
+        let exprText    : String            = "something"
         
         let actual: String? = captureFailureMessage
         {
             _XCTKAssertThrowsErrorMacro(
-                expr:           { },
+                expr:           expr,
                 exprText:       exprText,
                 message:        Self.message,
                 file:           #filePath,
