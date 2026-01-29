@@ -144,7 +144,7 @@ extension SingleExprMacro
                 
                 return """
                 \(raw: kind.macroInternalName)(
-                    expr:           { try \(expr) },
+                    expr:           { \(expr) },
                     exprText:       \(literal: exprText),
                     message:        \(message),
                     file:           #filePath,
@@ -157,7 +157,7 @@ extension SingleExprMacro
                 
                 return """
                 \(raw: kind.macroInternalName)(
-                    expr:       { try \(expr) },
+                    expr:       { \(expr) },
                     exprText:   \(literal: exprText),
                     message:    \(message),
                     file:       #filePath,

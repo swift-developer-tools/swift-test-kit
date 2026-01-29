@@ -261,7 +261,7 @@ private extension MacroAssertionExpansionTests
                 """
                 \(kind.macroInternalName)(
                     expr:           {
-                        try expr
+                        expr
                     },
                     exprText:       "expr",
                     message:        "msg",
@@ -284,7 +284,7 @@ private extension MacroAssertionExpansionTests
                 """
                 \(kind.macroInternalName)(
                     expr:       {
-                        try expr
+                        expr
                     },
                     exprText:   "expr",
                     message:    "msg",
