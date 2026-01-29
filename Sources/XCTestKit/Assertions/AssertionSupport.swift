@@ -78,7 +78,49 @@ internal func evaluateExpr<T>(
 
 
 
-// MARK: - Fail assertions
+// MARK: - Fail function assertions
+
+@_documentation(visibility: internal)
+/// Reports a function assertion failure.
+///
+/// - Note: This is public since it is used in boolean macro expansions.
+///
+/// - Parameters:
+///   - kindName: The assertion kind name.
+///   - reason: The optional failure reason.
+///   - message: The description of a failure.
+///   - file: The file where the failure occurs.
+///   - line: The line where the failure occurs.
+public func failAssertion(
+    kindName    : String,
+    reason      : String?,
+    message     : String?,
+    file        : StaticString,
+    line        : UInt
+)
+{
+    var text: String = "\(kindName) failed"
+    
+    if let reason
+    {
+        text += ": \(reason)"
+    }
+    
+    if
+        let message,
+        !message.isEmpty
+    {
+        text += " - \(message)"
+    }
+    
+    XCTKFail(
+        text,
+        file:   file,
+        line:   line
+    )
+}
+
+
 
 /// Reports a function assertion failure.
 /// - Parameters:
@@ -159,6 +201,8 @@ internal func failAssertion(
 }
 
 
+
+// MARK: - Fail macro assertions
 
 /// Reports a macro assertion failure for boolean assertions.
 /// - Parameters:
