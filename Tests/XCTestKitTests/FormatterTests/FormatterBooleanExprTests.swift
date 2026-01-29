@@ -338,8 +338,8 @@ internal final class FormatterBooleanExprTests: XCTestKitCase
         
         let evaluated: [XCTKBooleanExpr] =
         [
-            .init("object.isActive", true),
-            .init("object.isValid", false)
+            .init("obj.isActive", true),
+            .init("obj.isValid", false)
         ]
         
         let actual: String = Formatter.formatBooleanExpr(
@@ -353,8 +353,8 @@ internal final class FormatterBooleanExprTests: XCTestKitCase
         """
         Expression: \(exprText)
 
-            object.isActive = true
-            object.isValid = false ←
+            obj.isActive = true
+            obj.isValid = false ←
         
             (1 expression not evaluated)
         """
