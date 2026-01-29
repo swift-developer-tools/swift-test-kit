@@ -60,8 +60,8 @@ internal struct BooleanExprWalker
     {
         let exprText: String = expr.trimmedDescription
         
-        return """
-        {
+        let code: ExprSyntax =
+        """
             let _v0: Bool = \(expr)
         
             let evaluated = XCTKBooleanExpr(
@@ -78,8 +78,14 @@ internal struct BooleanExprWalker
                 file:           #filePath,
                 line:           #line
             )
-        }()
         """
+        
+        return wrapWithErrorHandling(
+            code:       code,
+            kind:       kind,
+            expr:       expr,
+            message:    message
+        )
     }
     
     
@@ -105,8 +111,8 @@ internal struct BooleanExprWalker
             context: context
         )
         
-        return """
-        {
+        let code: ExprSyntax =
+        """
             var _evaluated      : [XCTKBooleanExpr]     = []
             var _notEvaluated   : Int                   = 0
             
@@ -121,6 +127,63 @@ internal struct BooleanExprWalker
                 file:           #filePath,
                 line:           #line
             )
+        """
+        
+        return wrapWithErrorHandling(
+            code:       code,
+            kind:       kind,
+            expr:       expr,
+            message:    message
+        )
+    }
+    
+    
+    
+    /// Wraps the given code in an immediately-invoked closure, with error
+    /// handling if the given expression can throw.
+    ///
+    /// If the given expression contains a `try` expression, the given code is
+    /// wrapped in a `do`/`catch` statement that reports thrown errors as
+    /// assertion failures. Otherwise, the code is wrapped in plain closure.
+    ///
+    /// - Parameters:
+    ///   - code: The code to wrap.
+    ///   - kind: The assertion kind.
+    ///   - expr: The expression.
+    ///   - message: An optional description of a failure.
+    /// - Returns: The expanded macro expression.
+    private static func wrapWithErrorHandling(
+        code    : ExprSyntax,
+        kind    : AssertionKind,
+        expr    : ExprSyntax,
+        message : ExprSyntax
+    ) -> ExprSyntax
+    {
+        if expr.containsTry
+        {
+            return """
+            {
+                do
+                {
+                    \(raw: code)
+                }
+                catch
+                {
+                    failAssertion(
+                        kindName:   \(literal: kind.macroDisplayName),
+                        reason:     "threw error \\\"\\(error)\\\"",
+                        message:    \(message),
+                        file:        #filePath,
+                        line:       #line
+                    )
+                }
+            }()
+            """
+        }
+        
+        return """
+        {
+            \(raw: code)
         }()
         """
     }
