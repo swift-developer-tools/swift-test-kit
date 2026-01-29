@@ -38,7 +38,7 @@ let actual      = Outer(tag: "a", inner: Inner(id: 1, value: 200, label: "x"))
 
 XCTKAssertEqual(expected, actual)
 
-/// XCTKAssertEqual failed:
+/// XCTKAssertEqual failed
 ///
 /// Outer differs at:
 ///
@@ -57,7 +57,7 @@ let options = XCTKOptions(formatOptions: .init(maxDiffs: 2))
 
 XCTKAssertEqual(expected, actual, options: options)
 
-/// XCTKAssertEqual failed:
+/// XCTKAssertEqual failed
 ///
 /// Array<Int> differs at:
 ///
@@ -80,7 +80,7 @@ let actual      = "Line 1\nLine X\nLine 3"
 
 XCTKAssertEqual(expected, actual)
 
-/// XCTKAssertEqual failed:
+/// XCTKAssertEqual failed
 ///
 /// String differs at:
 ///
@@ -98,7 +98,7 @@ let actual      : Set<String>   = ["a", "e", "f"]
 
 XCTKAssertEqual(expected, actual)
 
-/// XCTKAssertEqual failed:
+/// XCTKAssertEqual failed
 ///
 /// Set<String> differs:
 ///

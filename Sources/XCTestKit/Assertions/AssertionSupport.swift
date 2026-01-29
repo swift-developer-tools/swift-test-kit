@@ -149,7 +149,7 @@ internal func failAssertion(
         fullOutput += " - \(msg)"
     }
     
-    fullOutput += ":\n\n\(diffOutput)"
+    fullOutput += "\n\n\(diffOutput)"
     
     XCTKFail(
         fullOutput,
