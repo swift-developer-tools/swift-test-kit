@@ -18,6 +18,9 @@ internal final class MacroAssertionOutputTests: XCTestKitCase
 {
     typealias AK = AssertionKind
     
+    /// A description of a failure.
+    private static let message: String = "hello world"
+    
     
     
     override func setUp()
@@ -745,69 +748,5 @@ internal final class MacroAssertionOutputTests: XCTestKitCase
         }
         
         XCTAssertEqual(Self.message, actual)
-    }
-}
-
-
-
-// MARK: - Extensions
-
-private extension MacroAssertionOutputTests
-{
-    /// A description of a failure.
-    static let message: String = "hello world"
-    
-    
-    
-    /// Captures the failure message of the given closure.
-    /// - Parameter body: The closure to call.
-    /// - Returns: The failure message of the given closure.
-    func captureFailureMessage(
-        _ body: () -> Void
-    ) -> String?
-    {
-        var captured            : String?   = nil
-        var isInsideBodyClosure : Bool      = false
-        
-        XCTExpectFailure
-        {
-            guard
-                isInsideBodyClosure,
-                captured == nil
-            else
-            {
-                /// Only mark failures as expected when the failure occurs
-                /// inside the `body` closure, and it is the first failure.
-                ///
-                /// This ensures that the only expected failure is that of the
-                /// underlying macro, which prevents tests from incorrectly
-                /// passing when written incorrectly.
-                ///
-                /// For example, if the `body` closure does not fail as
-                /// expected, the output-validating assertion outside the
-                /// closure would fail. Without this guard, that failure would
-                /// be incorrectly marked as expected.
-                return false
-            }
-            
-            var message : String    = $0.compactDescription
-            let prefix  : String    = "failed - "
-            
-            if message.hasPrefix(prefix)
-            {
-                /// Remove XCTest's prefix so only XCTestKit's output is tested.
-                message = String(message.dropFirst(prefix.count))
-            }
-            
-            captured = message
-            
-            return true
-        }
-        
-        isInsideBodyClosure = true
-        body()
-        isInsideBodyClosure = false
-        
-        return captured
     }
 }
