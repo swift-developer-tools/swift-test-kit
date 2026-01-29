@@ -27,7 +27,7 @@ internal func testFunctionAssertionFailsOnThrow(
 {
     let expr: () throws -> Int = { try TestError.throwError() }
     
-    let message: String? = captureFailureMessage
+    let message: String? = withOneExpectedFailure
     {
         switch kind
         {
@@ -134,7 +134,7 @@ internal func testMacroAssertionFailsOnThrow(
 {
     let expr: () throws -> Int = { try TestError.throwError() }
     
-    let message: String? = captureFailureMessage
+    let message: String? = withOneExpectedFailure
     {
         switch kind
         {

@@ -38,7 +38,7 @@ internal final class FunctionAssertionOutputTests: XCTestKitCase
     
     func testAssertFailureMessage() throws
     {
-        let actual: String? = captureFailureMessage
+        let actual: String? = withOneExpectedFailure
         {
             XCTKAssert(
                 false,
@@ -58,7 +58,7 @@ internal final class FunctionAssertionOutputTests: XCTestKitCase
     
     func testAssertTrueFailureMessage() throws
     {
-        let actual: String? = captureFailureMessage
+        let actual: String? = withOneExpectedFailure
         {
             XCTKAssertTrue(
                 false,
@@ -78,7 +78,7 @@ internal final class FunctionAssertionOutputTests: XCTestKitCase
     
     func testAssertFalseFailureMessage() throws
     {
-        let actual: String? = captureFailureMessage
+        let actual: String? = withOneExpectedFailure
         {
             XCTKAssertFalse(
                 true,
@@ -100,7 +100,7 @@ internal final class FunctionAssertionOutputTests: XCTestKitCase
     
     func testAssertNilFailureMessage() throws
     {
-        let actual: String? = captureFailureMessage
+        let actual: String? = withOneExpectedFailure
         {
             XCTKAssertNil(
                 10,
@@ -120,7 +120,7 @@ internal final class FunctionAssertionOutputTests: XCTestKitCase
     
     func testAssertNotNilFailureMessage() throws
     {
-        let actual: String? = captureFailureMessage
+        let actual: String? = withOneExpectedFailure
         {
             XCTKAssertNotNil(
                 Optional<Int>(nil),
@@ -140,7 +140,7 @@ internal final class FunctionAssertionOutputTests: XCTestKitCase
     
     func testUnwrapFailureMessage() throws
     {
-        let actual: String? = captureFailureMessage
+        let actual: String? = withOneExpectedFailure
         {
             _ = try? XCTKUnwrap(
                 Optional<Int>(nil),
@@ -170,7 +170,7 @@ internal final class FunctionAssertionOutputTests: XCTestKitCase
         let exp : User  = .init(name: "a")
         let act : User  = .init(name: "b")
         
-        let actual: String? = captureFailureMessage
+        let actual: String? = withOneExpectedFailure
         {
             XCTKAssertEqual(
                 exp,
@@ -199,7 +199,7 @@ internal final class FunctionAssertionOutputTests: XCTestKitCase
     {
         let expr: Int = 10
         
-        let actual: String? = captureFailureMessage
+        let actual: String? = withOneExpectedFailure
         {
             XCTKAssertNotEqual(
                 expr,
@@ -225,7 +225,7 @@ internal final class FunctionAssertionOutputTests: XCTestKitCase
         let expr1   : NSObject  = .init()
         let expr2   : NSObject  = .init()
         
-        let actual: String? = captureFailureMessage
+        let actual: String? = withOneExpectedFailure
         {
             XCTKAssertIdentical(
                 expr1,
@@ -248,7 +248,7 @@ internal final class FunctionAssertionOutputTests: XCTestKitCase
     {
         let expr: NSObject = .init()
         
-        let actual: String? = captureFailureMessage
+        let actual: String? = withOneExpectedFailure
         {
             XCTKAssertNotIdentical(
                 expr,
@@ -273,7 +273,7 @@ internal final class FunctionAssertionOutputTests: XCTestKitCase
         let expr2       : Double    = 2.0
         let accuracy    : Double    = 0.5
         
-        let actual: String? = captureFailureMessage
+        let actual: String? = withOneExpectedFailure
         {
             XCTKAssertEqual(
                 expr1,
@@ -302,7 +302,7 @@ internal final class FunctionAssertionOutputTests: XCTestKitCase
         let expr2       : Int   = 2
         let accuracy    : Int   = 1
         
-        let actual: String? = captureFailureMessage
+        let actual: String? = withOneExpectedFailure
         {
             XCTKAssertEqual(
                 expr1,
@@ -331,7 +331,7 @@ internal final class FunctionAssertionOutputTests: XCTestKitCase
         let expr2       : Double    = 1.0
         let accuracy    : Double    = 1.0
         
-        let actual: String? = captureFailureMessage
+        let actual: String? = withOneExpectedFailure
         {
             XCTKAssertNotEqual(
                 expr1,
@@ -360,7 +360,7 @@ internal final class FunctionAssertionOutputTests: XCTestKitCase
         let expr2       : Int   = 1
         let accuracy    : Int   = 1
         
-        let actual: String? = captureFailureMessage
+        let actual: String? = withOneExpectedFailure
         {
             XCTKAssertNotEqual(
                 expr1,
@@ -390,7 +390,7 @@ internal final class FunctionAssertionOutputTests: XCTestKitCase
         let expr1   : Int   = 0
         let expr2   : Int   = 1
         
-        let actual: String? = captureFailureMessage
+        let actual: String? = withOneExpectedFailure
         {
             XCTKAssertGreaterThan(
                 expr1,
@@ -417,7 +417,7 @@ internal final class FunctionAssertionOutputTests: XCTestKitCase
         let expr1   : Int   = 0
         let expr2   : Int   = 1
         
-        let actual: String? = captureFailureMessage
+        let actual: String? = withOneExpectedFailure
         {
             XCTKAssertGreaterThanOrEqual(
                 expr1,
@@ -444,7 +444,7 @@ internal final class FunctionAssertionOutputTests: XCTestKitCase
         let expr1   : Int   = 1
         let expr2   : Int   = 0
         
-        let actual: String? = captureFailureMessage
+        let actual: String? = withOneExpectedFailure
         {
             XCTKAssertLessThanOrEqual(
                 expr1,
@@ -471,7 +471,7 @@ internal final class FunctionAssertionOutputTests: XCTestKitCase
         let expr1   : Int   = 1
         let expr2   : Int   = 0
         
-        let actual: String? = captureFailureMessage
+        let actual: String? = withOneExpectedFailure
         {
             XCTKAssertLessThan(
                 expr1,
@@ -499,7 +499,7 @@ internal final class FunctionAssertionOutputTests: XCTestKitCase
     {
         let expr: () throws -> Int = { return 0 }
         
-        let actual: String? = captureFailureMessage
+        let actual: String? = withOneExpectedFailure
         {
             XCTKAssertThrowsError(
                 expr,
@@ -522,7 +522,7 @@ internal final class FunctionAssertionOutputTests: XCTestKitCase
         let error   : TestError         = .init()
         let expr    : () throws -> Int  = { throw error }
         
-        let actual: String? = captureFailureMessage
+        let actual: String? = withOneExpectedFailure
         {
             XCTKAssertNoThrow(
                 try expr(),
@@ -546,7 +546,7 @@ internal final class FunctionAssertionOutputTests: XCTestKitCase
     
     func testFailFailureMessage() throws
     {
-        let actual: String? = captureFailureMessage
+        let actual: String? = withOneExpectedFailure
         {
             XCTKFail(
                 Self.message,

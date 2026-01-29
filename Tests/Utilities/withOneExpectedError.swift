@@ -11,21 +11,27 @@ import XCTest
 
 
 
-/// Captures the failure message of the given closure.
+/// Expects exactly one test failure in the given closure, and captures the
+/// failure message.
+///
+/// Only the first failure is expected. Any subsequent failures will fail the
+/// test.
+///
 /// - Parameter body: The closure to call.
 /// - Returns: The failure message of the given closure.
-internal func captureFailureMessage(
+@discardableResult
+internal func withOneExpectedFailure(
     _ body: () throws -> Void
 ) -> String?
 {
-    var captured            : String?   = nil
+    var capturedMessage     : String?   = nil
     var isInsideBodyClosure : Bool      = false
     
     XCTExpectFailure
     {
         guard
             isInsideBodyClosure,
-            captured == nil
+            capturedMessage == nil
         else
         {
             /// Only mark failures as expected when the failure occurs
@@ -51,7 +57,7 @@ internal func captureFailureMessage(
             message = String(message.dropFirst(prefix.count))
         }
         
-        captured = message
+        capturedMessage = message
         
         return true
     }
@@ -60,5 +66,5 @@ internal func captureFailureMessage(
     try? body()
     isInsideBodyClosure = false
     
-    return captured
+    return capturedMessage
 }

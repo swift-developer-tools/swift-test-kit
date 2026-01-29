@@ -45,7 +45,7 @@ internal final class MacroAssertionOutputTests: XCTestKitCase
             .init("a", false)
         ]
         
-        let actual: String? = captureFailureMessage
+        let actual: String? = withOneExpectedFailure
         {
             _XCTKAssertMacro(
                 result:         false,
@@ -84,7 +84,7 @@ internal final class MacroAssertionOutputTests: XCTestKitCase
             .init("b", false)
         ]
         
-        let actual: String? = captureFailureMessage
+        let actual: String? = withOneExpectedFailure
         {
             _XCTKAssertTrueMacro(
                 result:         false,
@@ -122,7 +122,7 @@ internal final class MacroAssertionOutputTests: XCTestKitCase
             .init("b", true)
         ]
         
-        let actual: String? = captureFailureMessage
+        let actual: String? = withOneExpectedFailure
         {
             _XCTKAssertFalseMacro(
                 result:         true,
@@ -157,7 +157,7 @@ internal final class MacroAssertionOutputTests: XCTestKitCase
         let expr        : Int       = 10
         let exprText    : String    = "something"
         
-        let actual: String? = captureFailureMessage
+        let actual: String? = withOneExpectedFailure
         {
             _XCTKAssertNilMacro(
                 expr:       expr,
@@ -186,7 +186,7 @@ internal final class MacroAssertionOutputTests: XCTestKitCase
         let expr        : Int?      = nil
         let exprText    : String    = "something"
         
-        let actual: String? = captureFailureMessage
+        let actual: String? = withOneExpectedFailure
         {
             _XCTKAssertNotNilMacro(
                 expr:       expr,
@@ -214,7 +214,7 @@ internal final class MacroAssertionOutputTests: XCTestKitCase
         let expr        : Int?      = nil
         let exprText    : String    = "something"
         
-        let actual: String? = captureFailureMessage
+        let actual: String? = withOneExpectedFailure
         {
             _ = try? _XCTKUnwrapMacro(
                 expr:       expr,
@@ -251,7 +251,7 @@ internal final class MacroAssertionOutputTests: XCTestKitCase
         let expText : String    = "something"
         let actText : String    = "anything"
         
-        let actual: String? = captureFailureMessage
+        let actual: String? = withOneExpectedFailure
         {
             _XCTKAssertEqualMacro(
                 expected:       exp,
@@ -290,7 +290,7 @@ internal final class MacroAssertionOutputTests: XCTestKitCase
         let expr1Text   : String    = "something"
         let expr2Text   : String    = "anything"
         
-        let actual: String? = captureFailureMessage
+        let actual: String? = withOneExpectedFailure
         {
             _XCTKAssertNotEqualMacro(
                 expr1:      expr,
@@ -325,7 +325,7 @@ internal final class MacroAssertionOutputTests: XCTestKitCase
         let expr1Text   : String    = "something"
         let expr2Text   : String    = "anything"
         
-        let actual: String? = captureFailureMessage
+        let actual: String? = withOneExpectedFailure
         {
             _XCTKAssertIdenticalMacro(
                 expr1:      expr1,
@@ -358,7 +358,7 @@ internal final class MacroAssertionOutputTests: XCTestKitCase
         let expr1Text   : String    = "something"
         let expr2Text   : String    = "anything"
         
-        let actual: String? = captureFailureMessage
+        let actual: String? = withOneExpectedFailure
         {
             _XCTKAssertNotIdenticalMacro(
                 expr1:      expr,
@@ -393,7 +393,7 @@ internal final class MacroAssertionOutputTests: XCTestKitCase
         let expr1Text   : String    = "something"
         let expr2Text   : String    = "anything"
         
-        let actual: String? = captureFailureMessage
+        let actual: String? = withOneExpectedFailure
         {
             _XCTKAssertEqualMacro(
                 expr1:      expr1,
@@ -433,7 +433,7 @@ internal final class MacroAssertionOutputTests: XCTestKitCase
         let expr1Text   : String    = "something"
         let expr2Text   : String    = "anything"
         
-        let actual: String? = captureFailureMessage
+        let actual: String? = withOneExpectedFailure
         {
             _XCTKAssertEqualMacro(
                 expr1:      expr1,
@@ -473,7 +473,7 @@ internal final class MacroAssertionOutputTests: XCTestKitCase
         let expr1Text   : String    = "something"
         let expr2Text   : String    = "anything"
         
-        let actual: String? = captureFailureMessage
+        let actual: String? = withOneExpectedFailure
         {
             _XCTKAssertNotEqualMacro(
                 expr1:      expr1,
@@ -513,7 +513,7 @@ internal final class MacroAssertionOutputTests: XCTestKitCase
         let expr1Text   : String    = "something"
         let expr2Text   : String    = "anything"
         
-        let actual: String? = captureFailureMessage
+        let actual: String? = withOneExpectedFailure
         {
             _XCTKAssertNotEqualMacro(
                 expr1:      expr1,
@@ -554,7 +554,7 @@ internal final class MacroAssertionOutputTests: XCTestKitCase
         let expr1Text   : String    = "something"
         let expr2Text   : String    = "anything"
         
-        let actual: String? = captureFailureMessage
+        let actual: String? = withOneExpectedFailure
         {
             _XCTKAssertGreaterThanMacro(
                 expr1:      expr1,
@@ -592,7 +592,7 @@ internal final class MacroAssertionOutputTests: XCTestKitCase
         let expr1Text   : String    = "something"
         let expr2Text   : String    = "anything"
         
-        let actual: String? = captureFailureMessage
+        let actual: String? = withOneExpectedFailure
         {
             _XCTKAssertGreaterThanOrEqualMacro(
                 expr1:      expr1,
@@ -630,7 +630,7 @@ internal final class MacroAssertionOutputTests: XCTestKitCase
         let expr1Text   : String    = "something"
         let expr2Text   : String    = "anything"
         
-        let actual: String? = captureFailureMessage
+        let actual: String? = withOneExpectedFailure
         {
             _XCTKAssertLessThanOrEqualMacro(
                 expr1:      expr1,
@@ -668,7 +668,7 @@ internal final class MacroAssertionOutputTests: XCTestKitCase
         let expr1Text   : String    = "something"
         let expr2Text   : String    = "anything"
         
-        let actual: String? = captureFailureMessage
+        let actual: String? = withOneExpectedFailure
         {
             _XCTKAssertLessThanMacro(
                 expr1:      expr1,
@@ -706,7 +706,7 @@ internal final class MacroAssertionOutputTests: XCTestKitCase
         let expr        : () throws -> Int  = { return 0 }
         let exprText    : String            = "something"
         
-        let actual: String? = captureFailureMessage
+        let actual: String? = withOneExpectedFailure
         {
             _XCTKAssertThrowsErrorMacro(
                 expr:           expr,
@@ -736,7 +736,7 @@ internal final class MacroAssertionOutputTests: XCTestKitCase
         let expr        : () throws -> Int  = { throw error }
         let exprText    : String            = "something"
         
-        let actual: String? = captureFailureMessage
+        let actual: String? = withOneExpectedFailure
         {
             _XCTKAssertNoThrowMacro(
                 expr:       expr,
@@ -764,7 +764,7 @@ internal final class MacroAssertionOutputTests: XCTestKitCase
     
     func testFailFailureMessage() throws
     {
-        let actual: String? = captureFailureMessage
+        let actual: String? = withOneExpectedFailure
         {
             _XCTKFailMacro(
                 message:    Self.message,
