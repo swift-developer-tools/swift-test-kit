@@ -420,15 +420,19 @@ internal final class FunctionAssertionIntegrationTests: XCTestKitCase
     
     func testAssertThrowsWithNonThrowingExpr() throws
     {
+        let expr: () throws -> Int = { return 0 }
+        
         XCTExpectFailure()
-        XCTKAssertThrowsError({ })
+        XCTKAssertThrowsError(expr)
     }
     
     
     
     func testAssertNoThrowWithNonThrowingExpr() throws
     {
-        XCTKAssertNoThrow({ })
+        let expr: () throws -> Int = { return 0 }
+        
+        XCTKAssertNoThrow(expr)
     }
     
     
