@@ -20,12 +20,12 @@ internal struct AssertMacro: SingleExprMacro
 
 internal struct AssertTrueMacro: SingleExprMacro
 {
-    static let kind: AssertionKind = .`true`
+    static let kind: AssertionKind = .true
 }
 
 internal struct AssertFalseMacro: SingleExprMacro
 {
-    static let kind: AssertionKind = .`false`
+    static let kind: AssertionKind = .false
 }
 
 
@@ -34,7 +34,7 @@ internal struct AssertFalseMacro: SingleExprMacro
 
 internal struct AssertNilMacro: SingleExprMacro
 {
-    static let kind: AssertionKind = .`nil`
+    static let kind: AssertionKind = .nil
 }
 
 internal struct AssertNotNilMacro: SingleExprMacro

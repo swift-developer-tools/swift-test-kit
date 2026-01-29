@@ -31,28 +31,28 @@ internal final class MacroAssertionMessageTests: XCTestKitCase
     
     func testAssertTrueMessageNotEvaluatedOnSuccess() throws
     {
-        testMacroAssertionMessageNotEvalOnSuccess(.`true`)
+        testMacroAssertionMessageNotEvalOnSuccess(.true)
     }
     
     
     
     func testAssertTrueMessageEvaluatedOnlyOnceOnFailure() throws
     {
-        testMacroAssertionMessageEvalOnceOnFailure(.`true`)
+        testMacroAssertionMessageEvalOnceOnFailure(.true)
     }
     
     
     
     func testAssertFalseMessageNotEvaluatedOnSuccess() throws
     {
-        testMacroAssertionMessageNotEvalOnSuccess(.`false`)
+        testMacroAssertionMessageNotEvalOnSuccess(.false)
     }
     
     
     
     func testAssertFalseMessageEvaluatedOnlyOnceOnFailure() throws
     {
-        testMacroAssertionMessageEvalOnceOnFailure(.`false`)
+        testMacroAssertionMessageEvalOnceOnFailure(.false)
     }
     
     
@@ -61,14 +61,14 @@ internal final class MacroAssertionMessageTests: XCTestKitCase
     
     func testAssertNilMessageNotEvaluatedOnSuccess() throws
     {
-        testMacroAssertionMessageNotEvalOnSuccess(.`nil`)
+        testMacroAssertionMessageNotEvalOnSuccess(.nil)
     }
     
     
     
     func testAssertNilMessageEvaluatedOnlyOnceOnFailure() throws
     {
-        testMacroAssertionMessageEvalOnceOnFailure(.`nil`)
+        testMacroAssertionMessageEvalOnceOnFailure(.nil)
     }
     
     

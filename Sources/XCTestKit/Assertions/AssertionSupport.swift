@@ -228,7 +228,7 @@ internal func failAssertion(
         exprText:       exprText,
         evaluated:      evaluated,
         notEvaluated:   notEvaluated,
-        expectedValue:  kind == .`false` ? false : true,
+        expectedValue:  kind == .false ? false : true,
         options:        XCTKConfig.global.formatOptions
     )
     

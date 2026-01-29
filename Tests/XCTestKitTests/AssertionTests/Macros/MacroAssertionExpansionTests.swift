@@ -34,14 +34,14 @@ internal final class MacroAssertionExpansionTests: XCTestKitCase
     
     func testAssertTrueExpansion() throws
     {
-        testSingleExprExpansion(.`true`)
+        testSingleExprExpansion(.true)
     }
     
     
     
     func testAssertFalseExpansion() throws
     {
-        testSingleExprExpansion(.`false`)
+        testSingleExprExpansion(.false)
     }
     
     
@@ -50,7 +50,7 @@ internal final class MacroAssertionExpansionTests: XCTestKitCase
     
     func testAssertNilExpansion() throws
     {
-        testSingleExprExpansion(.`nil`)
+        testSingleExprExpansion(.nil)
     }
     
     
@@ -188,10 +188,10 @@ private extension MacroAssertionExpansionTests
     private static let macros: [AK : any Macro.Type] =
     [
         .assert                 : AssertMacro.self,
-        .`true`                 : AssertTrueMacro.self,
-        .`false`                : AssertFalseMacro.self,
+        .true                 : AssertTrueMacro.self,
+        .false                : AssertFalseMacro.self,
         
-        .`nil`                  : AssertNilMacro.self,
+        .nil                  : AssertNilMacro.self,
         .notNil                 : AssertNotNilMacro.self,
         .unwrap                 : UnwrapMacro.self,
         
@@ -235,8 +235,8 @@ private extension MacroAssertionExpansionTests
         {
             case
                 .assert,
-                .`true`,
-                .`false`:
+                .true,
+                .false:
                 
                 originalSource =
                 """

@@ -24,14 +24,14 @@ internal final class MacroAssertionThrowingTests: XCTestKitCase
     
     func testAssertTrueFailsOnThrow() throws
     {
-        testMacroAssertionFailsOnThrow(.`true`)
+        testMacroAssertionFailsOnThrow(.true)
     }
     
     
     
     func testAssertFalseFailsOnThrow() throws
     {
-        testMacroAssertionFailsOnThrow(.`false`)
+        testMacroAssertionFailsOnThrow(.false)
     }
     
     
@@ -40,7 +40,7 @@ internal final class MacroAssertionThrowingTests: XCTestKitCase
     
     func testAssertNilFailsOnThrow() throws
     {
-        testMacroAssertionFailsOnThrow(.`nil`)
+        testMacroAssertionFailsOnThrow(.nil)
     }
     
     

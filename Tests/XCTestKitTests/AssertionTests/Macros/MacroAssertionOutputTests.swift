@@ -99,7 +99,7 @@ internal final class MacroAssertionOutputTests: XCTestKitCase
         
         let expected: String =
         """
-        \(AK.`true`.macroDisplayName) failed - \(Self.message)
+        \(AK.true.macroDisplayName) failed - \(Self.message)
 
         Expression: \(exprText)
 
@@ -137,7 +137,7 @@ internal final class MacroAssertionOutputTests: XCTestKitCase
         
         let expected: String =
         """
-        \(AK.`false`.macroDisplayName) failed - \(Self.message)
+        \(AK.false.macroDisplayName) failed - \(Self.message)
 
         Expression: \(exprText)
 
@@ -170,7 +170,7 @@ internal final class MacroAssertionOutputTests: XCTestKitCase
         
         let expected: String =
         """
-        \(AK.`nil`.macroDisplayName) failed - \(Self.message)
+        \(AK.nil.macroDisplayName) failed - \(Self.message)
 
         Expression: \(exprText)
         Actual:     \(expr)

@@ -68,7 +68,7 @@ internal final class FunctionAssertionOutputTests: XCTestKitCase
         
         let expected: String =
         """
-        \(AK.`true`.name) failed - \(Self.message)
+        \(AK.true.name) failed - \(Self.message)
         """
         
         XCTAssertEqual(expected, actual)
@@ -88,7 +88,7 @@ internal final class FunctionAssertionOutputTests: XCTestKitCase
         
         let expected: String =
         """
-        \(AK.`false`.name) failed - \(Self.message)
+        \(AK.false.name) failed - \(Self.message)
         """
         
         XCTAssertEqual(expected, actual)
@@ -110,7 +110,7 @@ internal final class FunctionAssertionOutputTests: XCTestKitCase
         
         let expected: String =
         """
-        \(AK.`nil`.name) failed - \(Self.message)
+        \(AK.nil.name) failed - \(Self.message)
         """
         
         XCTAssertEqual(expected, actual)

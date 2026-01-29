@@ -98,8 +98,8 @@ extension SingleExprMacro
         {
             case
                 .assert,
-                .`true`,
-                .`false`:
+                .true,
+                .false:
                 
                 return BooleanExprWalker.expand(
                     kind:       kind,

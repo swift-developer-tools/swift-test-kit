@@ -24,14 +24,14 @@ internal final class FunctionAssertionThrowingTests: XCTestKitCase
     
     func testAssertTrueFailsOnThrow() throws
     {
-        testFunctionAssertionFailsOnThrow(.`true`)
+        testFunctionAssertionFailsOnThrow(.true)
     }
     
     
     
     func testAssertFalseFailsOnThrow() throws
     {
-        testFunctionAssertionFailsOnThrow(.`false`)
+        testFunctionAssertionFailsOnThrow(.false)
     }
     
     
@@ -40,7 +40,7 @@ internal final class FunctionAssertionThrowingTests: XCTestKitCase
     
     func testAssertNilFailsOnThrow() throws
     {
-        testFunctionAssertionFailsOnThrow(.`nil`)
+        testFunctionAssertionFailsOnThrow(.nil)
     }
     
     

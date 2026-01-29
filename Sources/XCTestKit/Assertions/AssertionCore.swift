@@ -86,7 +86,7 @@ internal func evaluateXCTKAssertTrue(
     line    : UInt
 )
 {
-    let assertionKind: AssertionKind = .`true`
+    let assertionKind: AssertionKind = .true
     
     let result: Result<Bool, Error> = evaluateExpr(
         expr,
@@ -125,7 +125,7 @@ internal func evaluateXCTKAssertFalse(
     line    : UInt
 )
 {
-    let assertionKind: AssertionKind = .`false`
+    let assertionKind: AssertionKind = .false
     
     let result: Result<Bool, Error> = evaluateExpr(
         expr,
@@ -203,7 +203,7 @@ internal func evaluateXCTKAssertTrue(
     }
     
     failAssertion(
-        kind:           .`true`,
+        kind:           .true,
         exprText:       exprText,
         evaluated:      evaluated,
         notEvaluated:   notEvaluated,
@@ -231,7 +231,7 @@ internal func evaluateXCTKAssertFalse(
     }
     
     failAssertion(
-        kind:           .`false`,
+        kind:           .false,
         exprText:       exprText,
         evaluated:      evaluated,
         notEvaluated:   notEvaluated,
@@ -253,7 +253,7 @@ internal func evaluateXCTKAssertNil(
     line        : UInt
 )
 {
-    let assertionKind: AssertionKind = .`nil`
+    let assertionKind: AssertionKind = .nil
     
     let result: Result<Any?, Error> = evaluateExpr(
         expr,
