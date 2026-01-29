@@ -124,9 +124,22 @@ extension SingleExprMacro
                 }
                 else
                 {
-                    errorHandler = ExprSyntax(ClosureExprSyntax(
-                        statements: CodeBlockItemListSyntax([])
-                    ))
+                    errorHandler = ExprSyntax(
+                        ClosureExprSyntax(
+                            signature: ClosureSignatureSyntax(
+                                parameterClause: .simpleInput(
+                                    ClosureShorthandParameterListSyntax([
+                                        ClosureShorthandParameterSyntax(
+                                            name: .wildcardToken(
+                                                trailingTrivia: .space
+                                            )
+                                        )
+                                    ])
+                                )
+                            ),
+                            statements: CodeBlockItemListSyntax([])
+                        )
+                    )
                 }
                 
                 return """
