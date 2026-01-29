@@ -11,7 +11,7 @@
 
 
 
-internal final class MacroMessageEvaluationTests: XCTestKitCase
+internal final class MacroAssertionMessageTests: XCTestKitCase
 {
     // MARK: - Boolean
     
