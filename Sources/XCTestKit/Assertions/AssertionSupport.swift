@@ -271,7 +271,7 @@ internal func failAssertion(
     line        : UInt
 )
 {
-    var text: String = "\(kind.macroDisplayName) failed"
+    var text: String = "\(kind.macroDisplayName) failed: \(reason)"
     
     if
         let msg: String = message(),
@@ -282,7 +282,6 @@ internal func failAssertion(
     
     text += "\n\nExpression 1: \(expr1Text)"
     text += "\nExpression 2: \(expr2Text)"
-    text += "\n\n\(reason)"
     
     XCTKFail(
         text,

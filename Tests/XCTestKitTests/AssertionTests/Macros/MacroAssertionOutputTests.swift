@@ -303,14 +303,14 @@ internal final class MacroAssertionOutputTests: XCTestKitCase
             )
         }
         
+        let reason: String = "both values equal (\(quote(expr)))"
+        
         let expected: String =
         """
-        \(AK.notEqual.macroDisplayName) failed - \(Self.message)
+        \(AK.notEqual.macroDisplayName) failed: \(reason) - \(Self.message)
 
         Expression 1: \(expr1Text)
         Expression 2: \(expr2Text)
-
-        both values equal (\(quote(expr)))
         """
         
         XCTAssertEqual(expected, actual)
@@ -338,16 +338,16 @@ internal final class MacroAssertionOutputTests: XCTestKitCase
             )
         }
         
-        let header: String
-            = "\(AK.identical.macroDisplayName) failed - \(Self.message)"
+        let header: String = "\(AK.identical.macroDisplayName) failed:"
         
         /// The failure reason includes memory addresses which vary, so this
         /// test only checks the structure instead of the exact output.
         XCTAssertNotNil(actual)
         XCTAssertTrue(actual!.contains(header))
+        XCTAssertTrue(actual!.contains(" is not identical to"))
+        XCTAssertTrue(actual!.contains(" - \(Self.message)"))
         XCTAssertTrue(actual!.contains("Expression 1: \(expr1Text)"))
         XCTAssertTrue(actual!.contains("Expression 2: \(expr2Text)"))
-        XCTAssertTrue(actual!.contains("is not identical to"))
     }
     
     
@@ -371,16 +371,16 @@ internal final class MacroAssertionOutputTests: XCTestKitCase
             )
         }
         
-        let header: String
-            = "\(AK.notIdentical.macroDisplayName) failed - \(Self.message)"
+        let header: String = "\(AK.notIdentical.macroDisplayName) failed:"
         
         /// The failure reason includes memory addresses which vary, so this
         /// test only checks the structure instead of the exact output.
         XCTAssertNotNil(actual)
         XCTAssertTrue(actual!.contains(header))
+        XCTAssertTrue(actual!.contains(" both values are identical"))
+        XCTAssertTrue(actual!.contains(" - \(Self.message)"))
         XCTAssertTrue(actual!.contains("Expression 1: \(expr1Text)"))
         XCTAssertTrue(actual!.contains("Expression 2: \(expr2Text)"))
-        XCTAssertTrue(actual!.contains("both values are identical"))
     }
     
     
@@ -407,15 +407,18 @@ internal final class MacroAssertionOutputTests: XCTestKitCase
             )
         }
         
+        let reason: String = "(\(quote(expr1))) is not equal to"
+            + " (\(quote(expr2))) +/- (\(quote(accuracy)))"
+        
+        let header: String = "\(reason) - \(Self.message)"
+        
         let expected: String =
-    """
-    \(AK.equalWithAccuracy.macroDisplayName) failed - \(Self.message)
+        """
+        \(AK.equalWithAccuracy.macroDisplayName) failed: \(header)
 
-    Expression 1: \(expr1Text)
-    Expression 2: \(expr2Text)
-
-    (\(quote(expr1))) is not equal to (\(quote(expr2))) +/- (\(quote(accuracy)))
-    """
+        Expression 1: \(expr1Text)
+        Expression 2: \(expr2Text)
+        """
         
         XCTAssertEqual(expected, actual)
     }
@@ -444,15 +447,18 @@ internal final class MacroAssertionOutputTests: XCTestKitCase
             )
         }
         
+        let reason: String = "(\(quote(expr1))) is not equal to"
+            + " (\(quote(expr2))) +/- (\(quote(accuracy)))"
+        
+        let header: String = "\(reason) - \(Self.message)"
+        
         let expected: String =
-    """
-    \(AK.equalWithAccuracy.macroDisplayName) failed - \(Self.message)
+        """
+        \(AK.equalWithAccuracy.macroDisplayName) failed: \(header)
 
-    Expression 1: \(expr1Text)
-    Expression 2: \(expr2Text)
-
-    (\(quote(expr1))) is not equal to (\(quote(expr2))) +/- (\(quote(accuracy)))
-    """
+        Expression 1: \(expr1Text)
+        Expression 2: \(expr2Text)
+        """
         
         XCTAssertEqual(expected, actual)
     }
@@ -481,14 +487,17 @@ internal final class MacroAssertionOutputTests: XCTestKitCase
             )
         }
         
+        let reason: String = "both values equal (\(quote(expr1)))"
+            + " +/- (\(quote(accuracy)))"
+        
+        let header: String = "\(reason) - \(Self.message)"
+        
         let expected: String =
         """
-        \(AK.notEqualWithAccuracy.macroDisplayName) failed - \(Self.message)
+        \(AK.notEqualWithAccuracy.macroDisplayName) failed: \(header)
 
         Expression 1: \(expr1Text)
         Expression 2: \(expr2Text)
-
-        both values equal (\(quote(expr1))) +/- (\(quote(accuracy)))
         """
         
         XCTAssertEqual(expected, actual)
@@ -518,14 +527,17 @@ internal final class MacroAssertionOutputTests: XCTestKitCase
             )
         }
         
+        let reason: String = "both values equal (\(quote(expr1)))"
+            + " +/- (\(quote(accuracy)))"
+        
+        let header: String = "\(reason) - \(Self.message)"
+        
         let expected: String =
         """
-        \(AK.notEqualWithAccuracy.macroDisplayName) failed - \(Self.message)
+        \(AK.notEqualWithAccuracy.macroDisplayName) failed: \(header)
 
         Expression 1: \(expr1Text)
         Expression 2: \(expr2Text)
-
-        both values equal (\(quote(expr1))) +/- (\(quote(accuracy)))
         """
         
         XCTAssertEqual(expected, actual)
@@ -555,14 +567,17 @@ internal final class MacroAssertionOutputTests: XCTestKitCase
             )
         }
         
+        let reason: String = "(\(quote(expr1))) is not greater than"
+            + " (\(quote(expr2)))"
+        
+        let header: String = "\(reason) - \(Self.message)"
+        
         let expected: String =
         """
-        \(AK.greaterThan.macroDisplayName) failed - \(Self.message)
+        \(AK.greaterThan.macroDisplayName) failed: \(header)
 
         Expression 1: \(expr1Text)
         Expression 2: \(expr2Text)
-
-        (\(quote(expr1))) is not greater than (\(quote(expr2)))
         """
         
         XCTAssertEqual(expected, actual)
@@ -590,14 +605,17 @@ internal final class MacroAssertionOutputTests: XCTestKitCase
             )
         }
         
+        let reason: String = "(\(quote(expr1))) is not greater than or equal"
+            + " to (\(quote(expr2)))"
+        
+        let header: String = "\(reason) - \(Self.message)"
+        
         let expected: String =
         """
-        \(AK.greaterThanOrEqual.macroDisplayName) failed - \(Self.message)
+        \(AK.greaterThanOrEqual.macroDisplayName) failed: \(header)
 
         Expression 1: \(expr1Text)
         Expression 2: \(expr2Text)
-
-        (\(quote(expr1))) is not greater than or equal to (\(quote(expr2)))
         """
         
         XCTAssertEqual(expected, actual)
@@ -625,14 +643,17 @@ internal final class MacroAssertionOutputTests: XCTestKitCase
             )
         }
         
+        let reason: String = "(\(quote(expr1))) is not less than or equal"
+            + " to (\(quote(expr2)))"
+        
+        let header: String = "\(reason) - \(Self.message)"
+        
         let expected: String =
         """
-        \(AK.lessThanOrEqual.macroDisplayName) failed - \(Self.message)
+        \(AK.lessThanOrEqual.macroDisplayName) failed: \(header)
 
         Expression 1: \(expr1Text)
         Expression 2: \(expr2Text)
-
-        (\(quote(expr1))) is not less than or equal to (\(quote(expr2)))
         """
         
         XCTAssertEqual(expected, actual)
@@ -660,14 +681,17 @@ internal final class MacroAssertionOutputTests: XCTestKitCase
             )
         }
         
+        let reason: String = "(\(quote(expr1))) is not less than"
+            + " (\(quote(expr2)))"
+        
+        let header: String = "\(reason) - \(Self.message)"
+        
         let expected: String =
         """
-        \(AK.lessThan.macroDisplayName) failed - \(Self.message)
+        \(AK.lessThan.macroDisplayName) failed: \(header)
 
         Expression 1: \(expr1Text)
         Expression 2: \(expr2Text)
-
-        (\(quote(expr1))) is not less than (\(quote(expr2)))
         """
         
         XCTAssertEqual(expected, actual)
