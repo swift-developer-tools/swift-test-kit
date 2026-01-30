@@ -27,8 +27,6 @@ internal final class MacroAssertionOutputTests: XCTestKitCase
     {
         super.setUp()
         
-        /// Enable continuation after failure since all tests expect the
-        /// internal macro call to fail, so its output can be tested.
         continueAfterFailure = true
     }
     
