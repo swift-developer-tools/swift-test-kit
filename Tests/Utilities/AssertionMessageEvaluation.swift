@@ -239,6 +239,11 @@ extension XCTestKitCase
                     message(),
                     options: options
                 )
+                
+            default:
+                
+                // TODO: Add predicate cases
+                return
         }
         
         XCTAssertEqual(count, 0)
@@ -444,6 +449,11 @@ extension XCTestKitCase
                         try expr(),
                         message()
                     )
+                    
+                default:
+                    
+                    // TODO: Add predicate cases
+                    return
             }
         }
         
@@ -676,6 +686,11 @@ extension XCTestKitCase
                     message(),
                     options: options
                 )
+                
+            default:
+                
+                // TODO: Add predicate cases
+                return
         }
         
         XCTAssertEqual(count, 0)
@@ -881,6 +896,11 @@ extension XCTestKitCase
                         try expr(),
                         message()
                     )
+                    
+                default:
+                    
+                    // TODO: Add predicate cases
+                    return
             }
         }
         

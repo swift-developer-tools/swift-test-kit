@@ -80,6 +80,11 @@ extension XCTestKitCase
                 
                 return
                 
+            default:
+                
+                // TODO: Add predicate cases
+                return
+                
         }
         
         let output1 : String?   = withOneExpectedFailure { body1() }
@@ -234,6 +239,11 @@ extension XCTestKitCase
                 .throwsError,
                 .noThrow:
                 
+                return
+                
+            default:
+                
+                // TODO: Add predicate cases
                 return
                 
         }

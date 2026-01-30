@@ -140,6 +140,11 @@ extension XCTestKitCase
                 case .noThrow:
                     
                     XCTKAssertNoThrow(try expr())
+                    
+                default:
+                    
+                    // TODO: Add predicate cases
+                    return
             }
         }
         
@@ -275,6 +280,11 @@ extension XCTestKitCase
                 case .noThrow:
                     
                     #XCTKAssertNoThrow(try expr())
+                    
+                default:
+                    
+                    // TODO: Add predicate cases
+                    return
             }
         }
         

@@ -296,6 +296,7 @@ private extension MacroAssertionExpansionTests
                 )
                 """
                 
+            // TODO: Add predicate cases
             default:
                 
                 originalSource =
@@ -388,6 +389,7 @@ private extension MacroAssertionExpansionTests
                 )
                 """
                 
+            // TODO: Add predicate cases
             default:
                 
                 originalSource =
