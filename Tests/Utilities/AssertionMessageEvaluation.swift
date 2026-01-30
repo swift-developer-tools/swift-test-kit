@@ -20,6 +20,8 @@ import XCTestKitCore
 ///
 /// - Note: This does nothing for ``AssertionKind/fail``.
 ///
+/// - Note: This also tests the options path for all assertions.
+///
 /// - Parameters:
 ///   - kind: The assertion to use.
 ///   - useFloats: Whether to use floating-point numbers when testing for
@@ -31,97 +33,186 @@ internal func testFunctionAssertionMessageNotEvalOnSuccess(
 {
     var count   : Int           = 0
     let message : () -> String  = { count += 1; return "msg" }
+    let options : XCTKOptions   = .init()
     
     switch kind
     {
         case .assert:
             
-            XCTKAssert(true, message())
+            XCTKAssert(
+                true,
+                message(),
+                options: options
+            )
             
         case .equal:
             
-            XCTKAssertEqual(1, 1, message())
+            XCTKAssertEqual(
+                1,
+                1,
+                message(),
+                options: options
+            )
             
         case .notEqual:
             
-            XCTKAssertNotEqual(0, 1, message())
+            XCTKAssertNotEqual(
+                0,
+                1,
+                message(),
+                options: options
+            )
             
         case .equalWithAccuracy:
             
             if useFloats
             {
-                XCTKAssertEqual(1.0, 1.0, accuracy: 0.5, message())
+                XCTKAssertEqual(
+                    1.0,
+                    1.0,
+                    accuracy: 0.5,
+                    message(),
+                    options: options
+                )
             }
             else
             {
                 let expr1   : Int   = 1
                 let expr2   : Int   = 1
                 
-                XCTKAssertEqual(expr1, expr2, accuracy: 1, message())
+                XCTKAssertEqual(
+                    expr1,
+                    expr2,
+                    accuracy: 1,
+                    message(),
+                    options: options
+                )
             }
             
         case .notEqualWithAccuracy:
             
             if useFloats
             {
-                XCTKAssertNotEqual(0.0, 1.0, accuracy: 0.0, message())
+                XCTKAssertNotEqual(
+                    0.0,
+                    1.0,
+                    accuracy: 0.0,
+                    message(),
+                    options: options
+                )
             }
             else
             {
                 let expr1   : Int   = 0
                 let expr2   : Int   = 1
                 
-                XCTKAssertNotEqual(expr1, expr2, accuracy: 0, message())
+                XCTKAssertNotEqual(
+                    expr1,
+                    expr2,
+                    accuracy: 0,
+                    message(),
+                    options: options
+                )
             }
             
         case .identical:
             
             let object = TestError() as AnyObject
             
-            XCTKAssertIdentical(object, object, message())
+            XCTKAssertIdentical(
+                object,
+                object,
+                message(),
+                options: options
+            )
             
         case .notIdentical:
             
             let object1     = TestError() as AnyObject
             let object2     = TestError() as AnyObject
             
-            XCTKAssertNotIdentical(object1, object2, message())
+            XCTKAssertNotIdentical(
+                object1,
+                object2,
+                message(),
+                options: options
+            )
             
         case .greaterThan:
             
-            XCTKAssertGreaterThan(1, 0, message())
+            XCTKAssertGreaterThan(
+                1,
+                0,
+                message(),
+                options: options
+            )
             
         case .greaterThanOrEqual:
             
-            XCTKAssertGreaterThanOrEqual(1, 0, message())
+            XCTKAssertGreaterThanOrEqual(
+                1,
+                0,
+                message(),
+                options: options
+            )
             
         case .lessThan:
             
-            XCTKAssertLessThan(0, 1, message())
+            XCTKAssertLessThan(
+                0,
+                1,
+                message(),
+                options: options
+            )
             
         case .lessThanOrEqual:
             
-            XCTKAssertLessThanOrEqual(0, 1, message())
+            XCTKAssertLessThanOrEqual(
+                0,
+                1,
+                message(),
+                options: options
+            )
             
         case .nil:
             
-            XCTKAssertNil(nil, message())
+            XCTKAssertNil(
+                nil,
+                message(),
+                options: options
+            )
             
         case .notNil:
             
-            XCTKAssertNotNil(Optional<Int>(1), message())
+            XCTKAssertNotNil(
+                Optional<Int>(1),
+                message(),
+                options: options
+            )
             
         case .unwrap:
             
-            _ = try? XCTKUnwrap(Optional<Int>(1), message())
+            _ = try? XCTKUnwrap(
+                Optional<Int>(1),
+                message(),
+                options: options
+            )
             
         case .true:
             
-            XCTKAssertTrue(true, message())
+            XCTKAssertTrue(
+                true,
+                message(),
+                options: options
+            )
             
         case .false:
             
-            XCTKAssertFalse(false, message())
+            XCTKAssertFalse(
+                false,
+                message(),
+                options: options
+            )
             
         case .fail:
             
@@ -131,13 +222,21 @@ internal func testFunctionAssertionMessageNotEvalOnSuccess(
             
             let expr: () throws -> Int = { try TestError.throwError() }
             
-            XCTKAssertThrowsError(try expr(), message())
+            XCTKAssertThrowsError(
+                try expr(),
+                message(),
+                options: options
+            )
             
         case .noThrow:
             
             let expr: () throws -> Int = { return 0 }
             
-            XCTKAssertNoThrow(try expr(), message())
+            XCTKAssertNoThrow(
+                try expr(),
+                message(),
+                options: options
+            )
     }
     
     XCTAssertEqual(count, 0)
@@ -287,6 +386,8 @@ internal func testFunctionAssertionMessageEvalOnceOnFailure(
 ///
 /// - Note: This does nothing for ``AssertionKind/fail``.
 ///
+/// - Note: This also tests the options path for all assertions.
+///
 /// - Parameters:
 ///   - kind: The assertion to use.
 ///   - useFloats: Whether to use floating-point numbers when testing for
@@ -298,97 +399,186 @@ internal func testMacroAssertionMessageNotEvalOnSuccess(
 {
     var count   : Int           = 0
     let message : () -> String  = { count += 1; return "msg" }
+    let options : XCTKOptions   = .init()
     
     switch kind
     {
         case .assert:
             
-            #XCTKAssert(true, message())
+            #XCTKAssert(
+                true,
+                message(),
+                options: options
+            )
             
         case .equal:
             
-            #XCTKAssertEqual(1, 1, message())
+            #XCTKAssertEqual(
+                1,
+                1,
+                message(),
+                options: options
+            )
             
         case .notEqual:
             
-            #XCTKAssertNotEqual(0, 1, message())
+            #XCTKAssertNotEqual(
+                0,
+                1,
+                message(),
+                options: options
+            )
             
         case .equalWithAccuracy:
             
             if useFloats
             {
-                #XCTKAssertEqual(1.0, 1.0, accuracy: 0.5, message())
+                #XCTKAssertEqual(
+                    1.0,
+                    1.0,
+                    accuracy: 0.5,
+                    message(),
+                    options: options
+                )
             }
             else
             {
                 let expr1   : Int   = 1
                 let expr2   : Int   = 1
                 
-                #XCTKAssertEqual(expr1, expr2, accuracy: 1, message())
+                #XCTKAssertEqual(
+                    expr1,
+                    expr2,
+                    accuracy: 1,
+                    message(),
+                    options: options
+                )
             }
             
         case .notEqualWithAccuracy:
             
             if useFloats
             {
-                #XCTKAssertNotEqual(0.0, 1.0, accuracy: 0.0, message())
+                #XCTKAssertNotEqual(
+                    0.0,
+                    1.0,
+                    accuracy: 0.0,
+                    message(),
+                    options: options
+                )
             }
             else
             {
                 let expr1   : Int   = 0
                 let expr2   : Int   = 1
                 
-                #XCTKAssertNotEqual(expr1, expr2, accuracy: 0, message())
+                #XCTKAssertNotEqual(
+                    expr1,
+                    expr2,
+                    accuracy: 0,
+                    message(),
+                    options: options
+                )
             }
             
         case .identical:
             
             let object = TestError() as AnyObject
             
-            #XCTKAssertIdentical(object, object, message())
+            #XCTKAssertIdentical(
+                object,
+                object,
+                message(),
+                options: options
+            )
             
         case .notIdentical:
             
             let object1     = TestError() as AnyObject
             let object2     = TestError() as AnyObject
             
-            #XCTKAssertNotIdentical(object1, object2, message())
+            #XCTKAssertNotIdentical(
+                object1,
+                object2,
+                message(),
+                options: options
+            )
             
         case .greaterThan:
             
-            #XCTKAssertGreaterThan(1, 0, message())
+            #XCTKAssertGreaterThan(
+                1,
+                0,
+                message(),
+                options: options
+            )
             
         case .greaterThanOrEqual:
             
-            #XCTKAssertGreaterThanOrEqual(1, 0, message())
+            #XCTKAssertGreaterThanOrEqual(
+                1,
+                0,
+                message(),
+                options: options
+            )
             
         case .lessThan:
             
-            #XCTKAssertLessThan(0, 1, message())
+            #XCTKAssertLessThan(
+                0,
+                1,
+                message(),
+                options: options
+            )
             
         case .lessThanOrEqual:
             
-            #XCTKAssertLessThanOrEqual(0, 1, message())
+            #XCTKAssertLessThanOrEqual(
+                0,
+                1,
+                message(),
+                options: options
+            )
             
         case .nil:
             
-            #XCTKAssertNil(nil, message())
+            #XCTKAssertNil(
+                nil,
+                message(),
+                options: options
+            )
             
         case .notNil:
             
-            #XCTKAssertNotNil(Optional<Int>(1), message())
+            #XCTKAssertNotNil(
+                Optional<Int>(1),
+                message(),
+                options: options
+            )
             
         case .unwrap:
             
-            _ = try? #XCTKUnwrap(Optional<Int>(1), message())
+            _ = try? #XCTKUnwrap(
+                Optional<Int>(1),
+                message(),
+                options: options
+            )
             
         case .true:
             
-            #XCTKAssertTrue(true, message())
+            #XCTKAssertTrue(
+                true,
+                message(),
+                options: options
+            )
             
         case .false:
             
-            #XCTKAssertFalse(false, message())
+            #XCTKAssertFalse(
+                false,
+                message(),
+                options: options
+            )
             
         case .fail:
             
@@ -398,13 +588,21 @@ internal func testMacroAssertionMessageNotEvalOnSuccess(
             
             let expr: () throws -> Int = { try TestError.throwError() }
             
-            #XCTKAssertThrowsError(try expr(), message())
+            #XCTKAssertThrowsError(
+                try expr(),
+                message(),
+                options: options
+            )
             
         case .noThrow:
             
             let expr: () throws -> Int = { return 0 }
             
-            #XCTKAssertNoThrow(try expr(), message())
+            #XCTKAssertNoThrow(
+                try expr(),
+                message(),
+                options: options
+            )
     }
     
     XCTAssertEqual(count, 0)
