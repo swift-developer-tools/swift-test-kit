@@ -106,14 +106,28 @@ internal final class ConfigurationTests: XCTestKitCase
     
     func testAssertionOptionsOverridePrecedence() throws
     {
-        XCTKConfig.global.diffEnabled = true
+        continueAfterFailure = true
         
-        XCTExpectFailure
+        defer
         {
-            return !$0.compactDescription.contains("differs at:")
+            continueAfterFailure = false
         }
         
-        XCTKAssertEqual(1, 2, options: XCTKOptions(diffEnabled: false))
+        XCTKConfig.global.diffEnabled = true
+        
+        let output1: String? = withOneExpectedFailure
+        {
+            XCTKAssertEqual(1, 2)
+        }
+        
+        let output2: String? = withOneExpectedFailure
+        {
+            XCTKAssertEqual(1, 2, options: .init(diffEnabled: false))
+        }
+        
+        XCTKAssertNotNil(output1)
+        XCTKAssertNotNil(output2)
+        XCTKAssertNotEqual(output1, output2)
     }
     
     
