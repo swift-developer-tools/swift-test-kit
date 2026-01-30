@@ -7,13 +7,12 @@
 //
 //===----------------------------------------------------------------------===//
 
-import XCTest
 @testable import XCTestKit
 @testable import XCTestKitTestUtilities
 
 
 
-final class StringComparatorSingleLineTests: XCTestKitCase
+internal final class StringComparatorSingleLineTests: XCTestKitCase
 {
     func testSingleLineEqualStrings() throws
     {

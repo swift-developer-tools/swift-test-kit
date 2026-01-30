@@ -38,7 +38,7 @@ let actual      = Outer(tag: "a", inner: Inner(id: 1, value: 200, label: "x"))
 
 XCTKAssertEqual(expected, actual)
 
-/// XCTKAssertEqual failed:
+/// XCTKAssertEqual failed
 ///
 /// Outer differs at:
 ///
@@ -57,7 +57,7 @@ let options = XCTKOptions(formatOptions: .init(maxDiffs: 2))
 
 XCTKAssertEqual(expected, actual, options: options)
 
-/// XCTKAssertEqual failed:
+/// XCTKAssertEqual failed
 ///
 /// Array<Int> differs at:
 ///
@@ -80,7 +80,7 @@ let actual      = "Line 1\nLine X\nLine 3"
 
 XCTKAssertEqual(expected, actual)
 
-/// XCTKAssertEqual failed:
+/// XCTKAssertEqual failed
 ///
 /// String differs at:
 ///
@@ -98,7 +98,7 @@ let actual      : Set<String>   = ["a", "e", "f"]
 
 XCTKAssertEqual(expected, actual)
 
-/// XCTKAssertEqual failed:
+/// XCTKAssertEqual failed
 ///
 /// Set<String> differs:
 ///
@@ -106,6 +106,68 @@ XCTKAssertEqual(expected, actual)
 ///     Missing:    "c"
 ///     Unexpected: "e"
 ///     Unexpected: "f"
+```
+
+### Expression Capture
+
+Macro assertions capture the literal source text of expressions for use in 
+failure output. For boolean macro assertions, compound expressions using `&&` 
+and `||` are decomposed to show the value of each sub-expression and identify 
+which caused the assertion failure, respecting short-circuit evaluation so only 
+evaluated operands appear in the output. Other macro assertions capture the 
+expression text without decomposition.
+
+**Boolean Decomposition**
+
+```swift
+#XCTKAssertTrue(isValid() && hasAccess && count >= 10)
+/// where isValid() -> true, hasAccess == false, count == 20
+
+/// #XCTKAssertTrue failed
+/// 
+/// Expression: isValid() && hasAccess && count >= 10
+/// 
+///     isValid() = true
+///     hasAccess = false ←
+/// 
+///     (1 expression not evaluated)
+```
+
+**Nested Expressions**
+
+```swift
+#XCTKAssertFalse((a || b) && (c || d))
+/// where a == true, b == false, c == true, d == false
+
+/// #XCTKAssertFalse failed
+/// 
+/// Expression: (a || b) && (c || d)
+/// 
+///     a = true ←
+///     c = true ←
+/// 
+///     (2 expressions not evaluated)
+```
+
+**Non-Boolean Assertions**
+
+```swift
+#XCTKAssertNoThrow(try getValue())
+
+/// #XCTKAssertNoThrow failed
+/// 
+/// Expression: try getValue()
+/// Threw:      RequestError.timeout
+```
+
+```swift
+#XCTKAssertNil(result.error)
+/// where result.error == RequestError.timeout
+
+/// #XCTKAssertNil failed
+/// 
+/// Expression: result.error
+/// Actual:     RequestError.timeout
 ```
 
 
@@ -184,3 +246,4 @@ for the list of Swift project authors.
 
 - <doc:Configuration>
 - <doc:FunctionAssertions>
+- <doc:MacroAssertions>

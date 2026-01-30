@@ -7,13 +7,18 @@
 //
 //===----------------------------------------------------------------------===//
 
-internal extension String
+import Foundation
+
+
+
+public extension String
 {
     /// The string with special characters escaped.
     var escaped: String
     {
         return self
             .replacingOccurrences(of: "\\", with: "\\\\")
+            .replacingOccurrences(of: "\"", with: "\\\"")
             .replacingOccurrences(of: "\n", with: "\\n")
             .replacingOccurrences(of: "\t", with: "\\t")
             .replacingOccurrences(of: "\r", with: "\\r")

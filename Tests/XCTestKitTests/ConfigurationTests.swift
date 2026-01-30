@@ -13,7 +13,7 @@ import XCTest
 
 
 
-final class ConfigurationTests: XCTestKitCase
+internal final class ConfigurationTests: XCTestKitCase
 {
     func testGlobalConfigAssignment() throws
     {
@@ -145,5 +145,8 @@ final class ConfigurationTests: XCTestKitCase
         XCTKAssertEqual(options.indentationSpaces, 4)
         XCTKAssertEqual(options.maxLineLength, 80)
         XCTKAssertEqual(options.maxDiffs, nil)
+        XCTKAssertEqual(options.countDiffs, false)
+        XCTKAssertEqual(options.showAllEvaluated, true)
+        XCTKAssertEqual(options.showNotEvaluatedCount, true)
     }
 }

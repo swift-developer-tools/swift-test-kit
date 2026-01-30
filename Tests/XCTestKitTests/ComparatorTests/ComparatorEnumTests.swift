@@ -7,13 +7,12 @@
 //
 //===----------------------------------------------------------------------===//
 
-import XCTest
 @testable import XCTestKit
 @testable import XCTestKitTestUtilities
 
 
 
-final class ComparatorEnumTests: XCTestKitCase
+internal final class ComparatorEnumTests: XCTestKitCase
 {
     func testEnumDifferentCases() throws
     {

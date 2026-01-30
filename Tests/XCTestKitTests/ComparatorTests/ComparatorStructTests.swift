@@ -7,13 +7,12 @@
 //
 //===----------------------------------------------------------------------===//
 
-import XCTest
 @testable import XCTestKit
 @testable import XCTestKitTestUtilities
 
 
 
-final class ComparatorStructTests: XCTestKitCase
+internal final class ComparatorStructTests: XCTestKitCase
 {
     func testNestedStructs() throws
     {

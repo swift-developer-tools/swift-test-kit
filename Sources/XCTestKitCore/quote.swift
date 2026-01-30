@@ -7,12 +7,14 @@
 //
 //===----------------------------------------------------------------------===//
 
-/// Gets the string description of the dynamic type of the given value.
+/// Converts the given value to its string representation, wrapped in double
+/// quotes.
 /// - Parameter value: The value to convert.
-/// - Returns: The string description of the dynamic type of the given value.
-func typeName<T>(
-    of value: borrowing T
-) -> String where T : ~Copyable, T : ~Escapable
+/// - Returns: The string representation of the given value, wrapped in double
+/// quotes.
+public func quote<T>(
+    _ value: T
+) -> String
 {
-    return String(describing: type(of: value))
+    return "\"\(String(describing: value))\""
 }

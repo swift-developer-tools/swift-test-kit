@@ -16,60 +16,7 @@
 //
 //===----------------------------------------------------------------------===//
 
-// MARK: - AssertionKind
-
-/// The kind of an assertion.
-internal enum AssertionKind
-{
-    case assert
-    case equal
-    case notEqual
-    case equalWithAccuracy
-    case notEqualWithAccuracy
-    case identical
-    case notIdentical
-    case greaterThan
-    case greaterThanOrEqual
-    case lessThan
-    case lessThanOrEqual
-    case `nil`
-    case notNil
-    case unwrap
-    case `true`
-    case `false`
-    case fail
-    case throwsError
-    case noThrow
-    
-    
-    
-    /// The assertion name.
-    var name: String
-    {
-        switch self
-        {
-            case .assert                : return "XCTKAssert"
-            case .equal                 : return "XCTKAssertEqual"
-            case .notEqual              : return "XCTKAssertNotEqual"
-            case .equalWithAccuracy     : return "XCTKAssertEqual"
-            case .notEqualWithAccuracy  : return "XCTKAssertNotEqual"
-            case .identical             : return "XCTKAssertIdentical"
-            case .notIdentical          : return "XCTKAssertNotIdentical"
-            case .greaterThan           : return "XCTKAssertGreaterThan"
-            case .greaterThanOrEqual    : return "XCTKAssertGreaterThanOrEqual"
-            case .lessThan              : return "XCTKAssertLessThan"
-            case .lessThanOrEqual       : return "XCTKAssertLessThanOrEqual"
-            case .`nil`                 : return "XCTKAssertNil"
-            case .notNil                : return "XCTKAssertNotNil"
-            case .unwrap                : return "XCTKUnwrap"
-            case .`true`                : return "XCTKAssertTrue"
-            case .`false`               : return "XCTKAssertFalse"
-            case .throwsError           : return "XCTKAssertThrowsError"
-            case .noThrow               : return "XCTKAssertNoThrow"
-            case .fail                  : return "XCTKAssertion"
-        }
-    }
-}
+import XCTestKitCore
 
 
 
@@ -85,18 +32,18 @@ internal enum AssertionKind
 /// the assertion failed.
 ///
 /// - Parameters:
-///   - expression: The expression to evaluate.
+///   - expr: The expression to evaluate.
 ///   - assertion: The assertion kind.
 ///   - message: The description of a failure.
 ///   - file: The file where the failure occurs. The default value is the
 ///   filename of the test case in which this function was called.
 ///   - line: The line where the failure occurs. The default value is the line
 ///   number where this function was called.
-///   - errorHandler: An optional handler for errors thrown by `expression`.
+///   - errorHandler: An optional handler for errors thrown by `expr`.
 /// - Returns: A `Result` containing the value or error produced by evaluating
 /// the given expression.
-internal func evaluateExpression<T>(
-    _ expression    : () throws -> T,
+internal func evaluateExpr<T>(
+    _ expr          : () throws -> T,
     assertion       : AssertionKind,
     message         : () -> String?,
     file            : StaticString,
@@ -106,7 +53,7 @@ internal func evaluateExpression<T>(
 {
     do
     {
-        return .success(try expression())
+        return .success(try expr())
     }
     catch
     {
@@ -131,9 +78,51 @@ internal func evaluateExpression<T>(
 
 
 
-// MARK: - Fail assertions
+// MARK: - Fail function assertions
 
-/// Reports an assertion failure.
+@_documentation(visibility: internal)
+/// Reports a function assertion failure.
+///
+/// - Note: This is public since it is used in boolean macro expansions.
+///
+/// - Parameters:
+///   - kindName: The assertion kind name.
+///   - reason: The optional failure reason.
+///   - message: The description of a failure.
+///   - file: The file where the failure occurs.
+///   - line: The line where the failure occurs.
+public func failAssertion(
+    kindName    : String,
+    reason      : String?,
+    message     : String?,
+    file        : StaticString,
+    line        : UInt
+)
+{
+    var text: String = "\(kindName) failed"
+    
+    if let reason
+    {
+        text += ": \(reason)"
+    }
+    
+    if
+        let message,
+        !message.isEmpty
+    {
+        text += " - \(message)"
+    }
+    
+    XCTKFail(
+        text,
+        file:   file,
+        line:   line
+    )
+}
+
+
+
+/// Reports a function assertion failure.
 /// - Parameters:
 ///   - kind: The assertion kind.
 ///   - reason: The optional failure reason.
@@ -171,7 +160,7 @@ internal func failAssertion(
 
 
 
-/// Reports an assertion failure.
+/// Reports a function assertion failure.
 /// - Parameters:
 ///   - kind: The assertion kind.
 ///   - diff: The computed diff.
@@ -202,7 +191,7 @@ internal func failAssertion(
         fullOutput += " - \(msg)"
     }
     
-    fullOutput += ":\n\n\(diffOutput)"
+    fullOutput += "\n\n\(diffOutput)"
     
     XCTKFail(
         fullOutput,
@@ -213,10 +202,193 @@ internal func failAssertion(
 
 
 
+// MARK: - Fail macro assertions
+
+/// Reports a macro assertion failure for boolean assertions.
+/// - Parameters:
+///   - kind: The assertion kind.
+///   - exprText: The expression source text.
+///   - evaluated: The evaluated boolean expressions.
+///   - notEvaluated: The number of unevaluated boolean expressions.
+///   - message: The description of a failure.
+///   - file: The file where the failure occurs.
+///   - line: The line where the failure occurs.
+internal func failAssertion(
+    kind            : AssertionKind,
+    exprText        : String,
+    evaluated       : [XCTKBooleanExpr],
+    notEvaluated    : Int,
+    message         : () -> String?,
+    file            : StaticString,
+    line            : UInt
+)
+{
+    // TODO: All assertions accept options? Or is formatting only global?
+    let output: String = Formatter.formatBooleanExpr(
+        exprText:       exprText,
+        evaluated:      evaluated,
+        notEvaluated:   notEvaluated,
+        expectedValue:  kind == .false ? false : true,
+        options:        XCTKConfig.global.formatOptions
+    )
+    
+    var text: String = "\(kind.macroDisplayName) failed"
+    
+    if
+        let msg: String = message(),
+        !msg.isEmpty
+    {
+        text += " - \(msg)"
+    }
+    
+    text += "\n\n\(output)"
+    
+    XCTKFail(
+        text,
+        file:   file,
+        line:   line
+    )
+}
+
+
+
+/// Reports a macro assertion failure for single-expression assertions.
+/// - Parameters:
+///   - kind: The assertion kind.
+///   - exprText: The expression source text.
+///   - actual: The string representation of the actual value, or `nil` to omit.
+///   - message: The description of a failure.
+///   - file: The file where the failure occurs.
+///   - line: The line where the failure occurs.
+internal func failAssertion(
+    kind        : AssertionKind,
+    exprText    : String,
+    actual      : String?,
+    message     : () -> String?,
+    file        : StaticString,
+    line        : UInt
+)
+{
+    var text: String = "\(kind.macroDisplayName) failed"
+    
+    if
+        let msg: String = message(),
+        !msg.isEmpty
+    {
+        text += " - \(msg)"
+    }
+    
+    text += "\n\nExpression: \(exprText)"
+    
+    if let actual
+    {
+        text += kind == .noThrow
+            ? "\nThrew:      \(actual)"
+            : "\nActual:     \(actual)"
+    }
+    
+    XCTKFail(
+        text,
+        file:   file,
+        line:   line
+    )
+}
+
+
+
+/// Reports a macro assertion failure for double-expression assertions.
+/// - Parameters:
+///   - kind: The assertion kind.
+///   - expr1Text: The source text of the first expression.
+///   - expr2Text: The source text of the second expression.
+///   - reason: The failure reason describing the comparison result.
+///   - message: The description of a failure.
+///   - file: The file where the failure occurs.
+///   - line: The line where the failure occurs.
+internal func failAssertion(
+    kind        : AssertionKind,
+    expr1Text   : String,
+    expr2Text   : String,
+    reason      : String,
+    message     : () -> String?,
+    file        : StaticString,
+    line        : UInt
+)
+{
+    var text: String = "\(kind.macroDisplayName) failed: \(reason)"
+    
+    if
+        let msg: String = message(),
+        !msg.isEmpty
+    {
+        text += " - \(msg)"
+    }
+    
+    text += "\n\nExpression 1: \(expr1Text)"
+    text += "\nExpression 2: \(expr2Text)"
+    
+    XCTKFail(
+        text,
+        file:   file,
+        line:   line
+    )
+}
+
+
+
+/// Reports a macro assertion failure for double-expression equality assertions
+/// with diff output.
+/// - Parameters:
+///   - kind: The assertion kind.
+///   - expectedText: The source text of the expected expression.
+///   - actualText: The source text of the actual expression.
+///   - diff: The computed diff.
+///   - options: The options for formatting diffs.
+///   - message: The description of a failure.
+///   - file: The file where the failure occurs.
+///   - line: The line where the failure occurs.
+internal func failAssertion(
+    kind            : AssertionKind,
+    expectedText    : String,
+    actualText      : String,
+    diff            : DiffNode,
+    options         : XCTKFormatOptions,
+    message         : () -> String?,
+    file            : StaticString,
+    line            : UInt
+)
+{
+    let diffOutput: String = Formatter.format(
+        diff,
+        options: options
+    )
+    
+    var text: String = "\(kind.macroDisplayName) failed"
+    
+    if
+        let msg: String = message(),
+        !msg.isEmpty
+    {
+        text += " - \(msg)"
+    }
+    
+    text += "\n\nExpected: \(expectedText)"
+    text += "\nActual:   \(actualText)"
+    text += "\n\n\(diffOutput)"
+    
+    XCTKFail(
+        text,
+        file:   file,
+        line:   line
+    )
+}
+
+
+
 // MARK: - XCTKUnwrapError
 
-/// The error thrown by ``XCTKUnwrap(_:_:file:line:)`` when the unwrapped
-/// value is `nil`.
+/// The error thrown by ``XCTKUnwrap(_:_:file:line:)-func`` or
+/// ``XCTKUnwrap(_:_:file:line:)-macro``when the unwrapped value is `nil`.
 public struct XCTKUnwrapError: Error, CustomStringConvertible
 {
     /// The error description.
@@ -228,24 +400,39 @@ public struct XCTKUnwrapError: Error, CustomStringConvertible
 
 
 
+// MARK: - XCTKBooleanExpr
+
+@_documentation(visibility: internal)
+/// A boolean expression evaluated during macro expression decomposition.
+public struct XCTKBooleanExpr: Equatable, Sendable
+{
+    /// The source text of the expression.
+    public let text     : String
+    
+    /// The evaluated boolean value.
+    public let value    : Bool
+}
+
+
+
 // MARK: - Numeric equality
 
 internal func areEqual<T>(
-    _ expression1   : T,
-    _ expression2   : T,
-    accuracy        : T
+    _ expr1     : T,
+    _ expr2     : T,
+    accuracy    : T
 ) -> Bool where T : Numeric
 {
-    if expression1 == expression2
+    if expr1 == expr2
     {
         return true
     }
     
     /// `NaN` values are handled implicitly, since the `<=` operator returns
     /// `false` when comparing any value to `NaN`.
-    let difference: T = expression1.magnitude > expression2.magnitude
-        ? expression1 - expression2
-        : expression2 - expression1
+    let difference: T = expr1.magnitude > expr2.magnitude
+        ? expr1 - expr2
+        : expr2 - expr1
     
     return difference.magnitude <= accuracy.magnitude
 }

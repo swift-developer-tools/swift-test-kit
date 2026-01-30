@@ -11,7 +11,7 @@
 
 
 
-extension DiffNode
+internal extension DiffNode
 {
     /// Creates a root node from the given values.
     /// - Parameters:

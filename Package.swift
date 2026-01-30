@@ -1,6 +1,7 @@
 // swift-tools-version: 6.1
 
 import PackageDescription
+import CompilerPluginSupport
 
 
 
@@ -27,12 +28,50 @@ let package = Package(
         .package(
             url:        "https://github.com/swiftlang/swift-docc-plugin",
             branch:     "main"
+        ),
+        
+        .package(
+            url:    "https://github.com/swiftlang/swift-syntax",
+            from:   "602.0.0"
         )
     ],
     targets:
     [
         .target(
-            name: "XCTestKit"
+            name:           "XCTestKitCore",
+            dependencies:   []
+        ),
+        
+        .macro(
+            name: "XCTestKitMacros",
+            dependencies:
+            [
+                "XCTestKitCore",
+                
+                .product(
+                    name:       "SwiftSyntax",
+                    package:    "swift-syntax"
+                ),
+                
+                .product(
+                    name:       "SwiftSyntaxMacros",
+                    package:    "swift-syntax"
+                ),
+                
+                .product(
+                    name:       "SwiftCompilerPlugin",
+                    package:    "swift-syntax"
+                )
+            ]
+        ),
+        
+        .target(
+            name: "XCTestKit",
+            dependencies:
+            [
+                "XCTestKitCore",
+                "XCTestKitMacros"
+            ]
         ),
         
         .target(
@@ -46,7 +85,13 @@ let package = Package(
             dependencies:
             [
                 "XCTestKit",
-                "XCTestKitTestUtilities"
+                "XCTestKitMacros",
+                "XCTestKitTestUtilities",
+                
+                .product(
+                    name:       "SwiftSyntaxMacrosTestSupport",
+                    package:    "swift-syntax"
+                )
             ]
         )
     ]

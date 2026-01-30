@@ -7,13 +7,13 @@
 //
 //===----------------------------------------------------------------------===//
 
-import XCTest
+import Foundation
 @testable import XCTestKit
 @testable import XCTestKitTestUtilities
 
 
 
-final class ComparatorMiscTests: XCTestKitCase
+internal final class ComparatorMiscTests: XCTestKitCase
 {
     // MARK: - Primitive types
     

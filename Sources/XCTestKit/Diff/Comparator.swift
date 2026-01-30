@@ -7,6 +7,10 @@
 //
 //===----------------------------------------------------------------------===//
 
+import XCTestKitCore
+
+
+
 /// The entry point for computing diffs between various data types.
 internal struct Comparator
 {

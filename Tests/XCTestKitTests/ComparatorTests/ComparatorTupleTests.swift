@@ -7,13 +7,12 @@
 //
 //===----------------------------------------------------------------------===//
 
-import XCTest
 @testable import XCTestKit
 @testable import XCTestKitTestUtilities
 
 
 
-final class ComparatorTupleTests: XCTestKitCase
+internal final class ComparatorTupleTests: XCTestKitCase
 {
     func testNestedTupleEqualValues() throws
     {

@@ -133,17 +133,17 @@ public struct XCTKFormatOptions: Equatable, Sendable
     /// The number of spaces used for each indent.
     ///
     /// The default value is `4`.
-    public var indentationSpaces    : Int
+    public var indentationSpaces        : Int
     
     /// The maximum number of characters per line, before the line is truncated.
     ///
     /// The default value is `80`.
-    public var maxLineLength        : Int
+    public var maxLineLength            : Int
     
     /// The maximum number of diffs shown, before truncating the output.
     ///
     /// The default value is `nil`. Pass `nil` to show all diffs.
-    public var maxDiffs             : Int?
+    public var maxDiffs                 : Int?
     
     /// Whether to count the total number of diffs to display when output
     /// is truncated by ``maxDiffs``.
@@ -156,17 +156,35 @@ public struct XCTKFormatOptions: Equatable, Sendable
     ///
     /// - Note: Enabling this requires traversing the entire diff tree, which
     /// may impact performance for large diffs.
-    public var countDiffs           : Bool
+    public var countDiffs               : Bool
+    
+    /// Whether to show all evaluated expressions, or only those that failed.
+    ///
+    /// The default value is `true`. Pass `false` to to show only expressions
+    /// that contributed to failing the assertion.
+    ///
+    /// - Note: This option is only applicable to macro assertions.
+    public var showAllEvaluated         : Bool
+    
+    /// Whether to show the count of expressions not evaluated due to
+    /// short-circuit evaluation.
+    ///
+    /// The default value is `true`.
+    ///
+    /// - Note: This option is only applicable to macro assertions.
+    public var showNotEvaluatedCount    : Bool
     
     
     
     /// Initializes an ``XCTKFormatOptions`` instance, optionally specifying
     /// values for its properties.
     public init(
-        indentationSpaces   : Int   = 4,
-        maxLineLength       : Int   = 80,
-        maxDiffs            : Int?  = nil,
-        countDiffs          : Bool  = false
+        indentationSpaces       : Int   = 4,
+        maxLineLength           : Int   = 80,
+        maxDiffs                : Int?  = nil,
+        countDiffs              : Bool  = false,
+        showAllEvaluated        : Bool  = true,
+        showNotEvaluatedCount   : Bool  = true
     )
     {
         precondition(
@@ -185,9 +203,11 @@ public struct XCTKFormatOptions: Equatable, Sendable
             "maxDiffs must be positive or nil"
         )
         
-        self.indentationSpaces  = indentationSpaces
-        self.maxLineLength      = maxLineLength
-        self.maxDiffs           = maxDiffs
-        self.countDiffs         = countDiffs
+        self.indentationSpaces      = indentationSpaces
+        self.maxLineLength          = maxLineLength
+        self.maxDiffs               = maxDiffs
+        self.countDiffs             = countDiffs
+        self.showAllEvaluated       = showAllEvaluated
+        self.showNotEvaluatedCount  = showNotEvaluatedCount
     }
 }

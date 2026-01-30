@@ -7,13 +7,12 @@
 //
 //===----------------------------------------------------------------------===//
 
-import XCTest
 @testable import XCTestKit
 @testable import XCTestKitTestUtilities
 
 
 
-final class ComparatorArrayTests: XCTestKitCase
+internal final class ComparatorArrayTests: XCTestKitCase
 {
     func testArrayHashableMissingElement() throws
     {

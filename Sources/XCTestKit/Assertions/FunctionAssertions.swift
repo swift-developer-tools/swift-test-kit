@@ -25,7 +25,7 @@ import XCTest
 /// Asserts that the given expression is true.
 ///
 /// This generates a failure when `expression == false` and is equivalent to
-/// ``XCTKAssertTrue(_:_:file:line:)``.
+/// ``XCTKAssertTrue(_:_:file:line:)-func``.
 ///
 /// - Parameters:
 ///   - expression: The expression to evaluate.
@@ -41,30 +41,12 @@ public func XCTKAssert(
     line            : UInt                              = #line
 )
 {
-    let result: Result<Bool, Error> = evaluateExpression(
-        expression,
-        assertion:  .assert,
+    evaluateXCTKAssert(
+        expr:       expression,
         message:    message,
         file:       file,
         line:       line
     )
-    
-    guard case let .success(value) = result
-    else
-    {
-        return
-    }
-    
-    if !value
-    {
-        failAssertion(
-            kind:       .assert,
-            reason:     nil,
-            message:    message,
-            file:       file,
-            line:       line
-        )
-    }
 }
 
 
@@ -72,7 +54,7 @@ public func XCTKAssert(
 /// Asserts that the given expression is true.
 ///
 /// This generates a failure when `expression == false` and is equivalent to
-/// ``XCTKAssert(_:_:file:line:)``.
+/// ``XCTKAssert(_:_:file:line:)-func``.
 ///
 /// - Parameters:
 ///   - expression: The expression to evaluate.
@@ -88,30 +70,12 @@ public func XCTKAssertTrue(
     line            : UInt                              = #line
 )
 {
-    let result: Result<Bool, Error> = evaluateExpression(
-        expression,
-        assertion:  .`true`,
+    evaluateXCTKAssertTrue(
+        expr:       expression,
         message:    message,
         file:       file,
         line:       line
     )
-    
-    guard case let .success(value) = result
-    else
-    {
-        return
-    }
-    
-    if !value
-    {
-        failAssertion(
-            kind:       .`true`,
-            reason:     nil,
-            message:    message,
-            file:       file,
-            line:       line
-        )
-    }
 }
 
 
@@ -134,30 +98,12 @@ public func XCTKAssertFalse(
     line            : UInt                              = #line
 )
 {
-    let result: Result<Bool, Error> = evaluateExpression(
-        expression,
-        assertion:  .`false`,
+    evaluateXCTKAssertFalse(
+        expr:       expression,
         message:    message,
         file:       file,
         line:       line
     )
-    
-    guard case let .success(value) = result
-    else
-    {
-        return
-    }
-    
-    if value
-    {
-        failAssertion(
-            kind:       .`false`,
-            reason:     nil,
-            message:    message,
-            file:       file,
-            line:       line
-        )
-    }
 }
 
 
@@ -182,30 +128,13 @@ public func XCTKAssertNil(
     line            : UInt                              = #line
 )
 {
-    let result: Result<Any?, Error> = evaluateExpression(
-        expression,
-        assertion:  .`nil`,
-        message:    message,
-        file:       file,
-        line:       line
+    evaluateXCTKAssertNil(
+        captureKind:    .none,
+        expr:           expression,
+        message:        message,
+        file:           file,
+        line:           line
     )
-    
-    guard case let .success(value) = result
-    else
-    {
-        return
-    }
-    
-    if value != nil
-    {
-        failAssertion(
-            kind:       .`nil`,
-            reason:     nil,
-            message:    message,
-            file:       file,
-            line:       line
-        )
-    }
 }
 
 
@@ -228,30 +157,13 @@ public func XCTKAssertNotNil(
     line            : UInt                              = #line
 )
 {
-    let result: Result<Any?, Error> = evaluateExpression(
-        expression,
-        assertion:  .notNil,
-        message:    message,
-        file:       file,
-        line:       line
+    evaluateXCTKAssertNotNil(
+        captureKind:    .none,
+        expr:           expression,
+        message:        message,
+        file:           file,
+        line:           line
     )
-    
-    guard case let .success(value) = result
-    else
-    {
-        return
-    }
-    
-    if value == nil
-    {
-        failAssertion(
-            kind:       .notNil,
-            reason:     nil,
-            message:    message,
-            file:       file,
-            line:       line
-        )
-    }
 }
 
 
@@ -280,38 +192,13 @@ public func XCTKUnwrap<T>(
     line            : UInt                          = #line
 ) throws -> T
 {
-    let result: Result<T?, Error> = evaluateExpression(
-        expression,
-        assertion:  .unwrap,
-        message:    message,
-        file:       file,
-        line:       line
+    return try evaluateXCTKUnwrap(
+        captureKind:    .none,
+        expr:           expression,
+        message:        message,
+        file:           file,
+        line:           line
     )
-    
-    switch result
-    {
-        case let .success(value):
-            
-            guard let value
-            else
-            {
-                failAssertion(
-                    kind:       .unwrap,
-                    reason:     nil,
-                    message:    message,
-                    file:       file,
-                    line:       line
-                )
-                
-                throw XCTKUnwrapError()
-            }
-            
-            return value
-            
-        case let .failure(error):
-            
-            throw error
-    }
 }
 
 
@@ -338,74 +225,14 @@ public func XCTKAssertEqual<T>(
     options     : XCTKOptions?                  = nil
 ) where T : Equatable
 {
-    let expResult: Result<T, Error> = evaluateExpression(
-        expected,
-        assertion:  .equal,
-        message:    message,
-        file:       file,
-        line:       line
-    )
-    
-    guard case let .success(exp) = expResult
-    else
-    {
-        return
-    }
-    
-    
-    
-    let actResult: Result<T, Error> = evaluateExpression(
-        actual,
-        assertion:  .equal,
-        message:    message,
-        file:       file,
-        line:       line
-    )
-    
-    guard case let .success(act) = actResult
-    else
-    {
-        return
-    }
-    
-    
-    
-    if exp == act
-    {
-        return
-    }
-    
-    
-    
-    let opts: XCTKOptions = options ?? XCTKConfig.global
-    
-    guard opts.diffEnabled
-    else
-    {
-        failAssertion(
-            kind:       .equal,
-            reason:     "(\(quote(exp))) is not equal to (\(quote(act)))",
-            message:    message,
-            file:       file,
-            line:       line
-        )
-        
-        return
-    }
-    
-    let diff: DiffNode = Comparator.computeDiff(
-        expected:   exp,
-        actual:     act,
-        options:    opts.diffOptions
-    )
-    
-    failAssertion(
-        kind:       .equal,
-        diff:       diff,
-        options:    opts.formatOptions,
-        message:    message,
-        file:       file,
-        line:       line
+    evaluateXCTKAssertEqual(
+        captureKind:    .none,
+        expected:       expected,
+        actual:         actual,
+        message:        message,
+        file:           file,
+        line:           line,
+        options:        options
     )
 }
 
@@ -428,49 +255,13 @@ public func XCTKAssertNotEqual<T>(
     line            : UInt                          = #line
 ) where T : Equatable
 {
-    let result1: Result<T, Error> = evaluateExpression(
-        expression1,
-        assertion:  .notEqual,
-        message:    message,
-        file:       file,
-        line:       line
-    )
-    
-    guard case let .success(value1) = result1
-    else
-    {
-        return
-    }
-    
-    
-    
-    let result2: Result<T, Error> = evaluateExpression(
-        expression2,
-        assertion:  .notEqual,
-        message:    message,
-        file:       file,
-        line:       line
-    )
-    
-    guard case let .success(value2) = result2
-    else
-    {
-        return
-    }
-    
-    
-    
-    if value1 != value2
-    {
-        return
-    }
-    
-    failAssertion(
-        kind:       .notEqual,
-        reason:     "both values equal (\(quote(value1)))",
-        message:    message,
-        file:       file,
-        line:       line
+    evaluateXCTKAssertNotEqual(
+        captureKind:    .none,
+        expr1:          expression1,
+        expr2:          expression2,
+        message:        message,
+        file:           file,
+        line:           line
     )
 }
 
@@ -496,59 +287,13 @@ public func XCTKAssertIdentical(
     line            : UInt                                  = #line
 )
 {
-    let value1: AnyObject?
-    
-    do
-    {
-        value1 = try expression1()
-    }
-    catch
-    {
-        failAssertion(
-            kind:       .identical,
-            reason:     "threw error \(quote(error))",
-            message:    message,
-            file:       file,
-            line:       line
-        )
-        
-        return
-    }
-    
-    
-    
-    let value2: AnyObject?
-    
-    do
-    {
-        value2 = try expression2()
-    }
-    catch
-    {
-        failAssertion(
-            kind:       .identical,
-            reason:     "threw error \(quote(error))",
-            message:    message,
-            file:       file,
-            line:       line
-        )
-        
-        return
-    }
-    
-    
-    
-    if value1 === value2
-    {
-        return
-    }
-    
-    failAssertion(
-        kind:       .identical,
-        reason:     "(\(quote(value1))) is not identical to (\(quote(value2)))",
-        message:    message,
-        file:       file,
-        line:       line
+    evaluateXCTKAssertIdentical(
+        captureKind:    .none,
+        expr1:          expression1,
+        expr2:          expression2,
+        message:        message,
+        file:           file,
+        line:           line
     )
 }
 
@@ -574,59 +319,13 @@ public func XCTKAssertNotIdentical(
     line            : UInt                                  = #line
 )
 {
-    let value1: AnyObject?
-    
-    do
-    {
-        value1 = try expression1()
-    }
-    catch
-    {
-        failAssertion(
-            kind:       .notIdentical,
-            reason:     "threw error \(quote(error))",
-            message:    message,
-            file:       file,
-            line:       line
-        )
-        
-        return
-    }
-    
-    
-    
-    let value2: AnyObject?
-    
-    do
-    {
-        value2 = try expression2()
-    }
-    catch
-    {
-        failAssertion(
-            kind:       .notIdentical,
-            reason:     "threw error \(quote(error))",
-            message:    message,
-            file:       file,
-            line:       line
-        )
-        
-        return
-    }
-    
-    
-    
-    if value1 !== value2
-    {
-        return
-    }
-    
-    failAssertion(
-        kind:       .notIdentical,
-        reason:     "both values are identical (\(quote(value1)))",
-        message:    message,
-        file:       file,
-        line:       line
+    evaluateXCTKAssertNotIdentical(
+        captureKind:    .none,
+        expr1:          expression1,
+        expr2:          expression2,
+        message:        message,
+        file:           file,
+        line:           line
     )
 }
 
@@ -653,56 +352,14 @@ public func XCTKAssertEqual<T>(
     line            : UInt                          = #line
 ) where T : FloatingPoint
 {
-    let result1: Result<T, Error> = evaluateExpression(
-        expression1,
-        assertion:  .equalWithAccuracy,
-        message:    message,
-        file:       file,
-        line:       line
-    )
-    
-    guard case let .success(value1) = result1
-    else
-    {
-        return
-    }
-    
-    
-    
-    let result2: Result<T, Error> = evaluateExpression(
-        expression2,
-        assertion:  .equalWithAccuracy,
-        message:    message,
-        file:       file,
-        line:       line
-    )
-    
-    guard case let .success(value2) = result2
-    else
-    {
-        return
-    }
-    
-    
-    
-    let equal: Bool = areEqual(
-        value1,
-        value2,
-        accuracy: accuracy
-    )
-    
-    if equal
-    {
-        return
-    }
-    
-    failAssertion(
-        kind:       .equalWithAccuracy,
-        reason:     "(\(quote(value1))) is not equal to (\(quote(value2)))"
-                    + " +/- (\(quote(accuracy)))",
-        message:    message,
-        file:       file,
-        line:       line
+    evaluateXCTKAssertEqual(
+        captureKind:    .none,
+        expr1:          expression1,
+        expr2:          expression2,
+        accuracy:       accuracy,
+        message:        message,
+        file:           file,
+        line:           line
     )
 }
 
@@ -728,56 +385,14 @@ public func XCTKAssertEqual<T>(
     line            : UInt                          = #line
 ) where T : Numeric
 {
-    let result1: Result<T, Error> = evaluateExpression(
-        expression1,
-        assertion:  .equalWithAccuracy,
-        message:    message,
-        file:       file,
-        line:       line
-    )
-    
-    guard case let .success(value1) = result1
-    else
-    {
-        return
-    }
-    
-    
-    
-    let result2: Result<T, Error> = evaluateExpression(
-        expression2,
-        assertion:  .equalWithAccuracy,
-        message:    message,
-        file:       file,
-        line:       line
-    )
-    
-    guard case let .success(value2) = result2
-    else
-    {
-        return
-    }
-    
-    
-    
-    let equal: Bool = areEqual(
-        value1,
-        value2,
-        accuracy: accuracy
-    )
-    
-    if equal
-    {
-        return
-    }
-    
-    failAssertion(
-        kind:       .equalWithAccuracy,
-        reason:     "(\(quote(value1))) is not equal to (\(quote(value2)))"
-                    + " +/- (\(quote(accuracy)))",
-        message:    message,
-        file:       file,
-        line:       line
+    evaluateXCTKAssertEqual(
+        captureKind:    .none,
+        expr1:          expression1,
+        expr2:          expression2,
+        accuracy:       accuracy,
+        message:        message,
+        file:           file,
+        line:           line
     )
 }
 
@@ -804,56 +419,14 @@ public func XCTKAssertNotEqual<T>(
     line            : UInt                          = #line
 ) where T : FloatingPoint
 {
-    let result1: Result<T, Error> = evaluateExpression(
-        expression1,
-        assertion:  .notEqualWithAccuracy,
-        message:    message,
-        file:       file,
-        line:       line
-    )
-    
-    guard case let .success(value1) = result1
-    else
-    {
-        return
-    }
-    
-    
-    
-    let result2: Result<T, Error> = evaluateExpression(
-        expression2,
-        assertion:  .notEqualWithAccuracy,
-        message:    message,
-        file:       file,
-        line:       line
-    )
-    
-    guard case let .success(value2) = result2
-    else
-    {
-        return
-    }
-    
-    
-    
-    let equal: Bool = areEqual(
-        value1,
-        value2,
-        accuracy: accuracy
-    )
-    
-    if !equal
-    {
-        return
-    }
-    
-    failAssertion(
-        kind:       .notEqualWithAccuracy,
-        reason:     "both values equal (\(quote(value1)))"
-                    + " +/- (\(quote(accuracy)))",
-        message:    message,
-        file:       file,
-        line:       line
+    evaluateXCTKAssertNotEqual(
+        captureKind:    .none,
+        expr1:          expression1,
+        expr2:          expression2,
+        accuracy:       accuracy,
+        message:        message,
+        file:           file,
+        line:           line
     )
 }
 
@@ -880,56 +453,14 @@ public func XCTKAssertNotEqual<T>(
     line            : UInt                          = #line
 ) where T : Numeric
 {
-    let result1: Result<T, Error> = evaluateExpression(
-        expression1,
-        assertion:  .notEqualWithAccuracy,
-        message:    message,
-        file:       file,
-        line:       line
-    )
-    
-    guard case let .success(value1) = result1
-    else
-    {
-        return
-    }
-    
-    
-    
-    let result2: Result<T, Error> = evaluateExpression(
-        expression2,
-        assertion:  .notEqualWithAccuracy,
-        message:    message,
-        file:       file,
-        line:       line
-    )
-    
-    guard case let .success(value2) = result2
-    else
-    {
-        return
-    }
-    
-    
-    
-    let equal: Bool = areEqual(
-        value1,
-        value2,
-        accuracy: accuracy
-    )
-    
-    if !equal
-    {
-        return
-    }
-    
-    failAssertion(
-        kind:       .notEqualWithAccuracy,
-        reason:     "both values equal (\(quote(value1)))"
-                    + " +/- (\(quote(accuracy)))",
-        message:    message,
-        file:       file,
-        line:       line
+    evaluateXCTKAssertNotEqual(
+        captureKind:    .none,
+        expr1:          expression1,
+        expr2:          expression2,
+        accuracy:       accuracy,
+        message:        message,
+        file:           file,
+        line:           line
     )
 }
 
@@ -955,49 +486,14 @@ public func XCTKAssertGreaterThan<T>(
     line            : UInt                          = #line
 ) where T : Comparable
 {
-    let result1: Result<T, Error> = evaluateExpression(
-        expression1,
-        assertion:  .greaterThan,
-        message:    message,
-        file:       file,
-        line:       line
+    evaluateXCTKAssertGreaterThan(
+        captureKind:    .none,
+        expr1:          expression1,
+        expr2:          expression2,
+        message:        message,
+        file:           file,
+        line:           line
     )
-    
-    guard case let .success(value1) = result1
-    else
-    {
-        return
-    }
-    
-    
-    
-    let result2: Result<T, Error> = evaluateExpression(
-        expression2,
-        assertion:  .greaterThan,
-        message:    message,
-        file:       file,
-        line:       line
-    )
-    
-    guard case let .success(value2) = result2
-    else
-    {
-        return
-    }
-    
-    
-    
-    if value1 <= value2
-    {
-        failAssertion(
-            kind:       .greaterThan,
-            reason:     "(\(quote(value1))) is not greater than"
-                        + " (\(quote(value2)))",
-            message:    message,
-            file:       file,
-            line:       line
-        )
-    }
 }
 
 
@@ -1020,49 +516,14 @@ public func XCTKAssertGreaterThanOrEqual<T>(
     line            : UInt                          = #line
 ) where T : Comparable
 {
-    let result1: Result<T, Error> = evaluateExpression(
-        expression1,
-        assertion:  .greaterThanOrEqual,
-        message:    message,
-        file:       file,
-        line:       line
+    evaluateXCTKAssertGreaterThanOrEqual(
+        captureKind:    .none,
+        expr1:          expression1,
+        expr2:          expression2,
+        message:        message,
+        file:           file,
+        line:           line
     )
-    
-    guard case let .success(value1) = result1
-    else
-    {
-        return
-    }
-    
-    
-    
-    let result2: Result<T, Error> = evaluateExpression(
-        expression2,
-        assertion:  .greaterThanOrEqual,
-        message:    message,
-        file:       file,
-        line:       line
-    )
-    
-    guard case let .success(value2) = result2
-    else
-    {
-        return
-    }
-    
-    
-    
-    if value1 < value2
-    {
-        failAssertion(
-            kind:       .greaterThanOrEqual,
-            reason:     "(\(quote(value1))) is not greater than or equal to"
-                        + " (\(quote(value2)))",
-            message:    message,
-            file:       file,
-            line:       line
-        )
-    }
 }
 
 
@@ -1085,49 +546,14 @@ public func XCTKAssertLessThanOrEqual<T>(
     line            : UInt                          = #line
 ) where T : Comparable
 {
-    let result1: Result<T, Error> = evaluateExpression(
-        expression1,
-        assertion:  .lessThanOrEqual,
-        message:    message,
-        file:       file,
-        line:       line
+    evaluateXCTKAssertLessThanOrEqual(
+        captureKind:    .none,
+        expr1:          expression1,
+        expr2:          expression2,
+        message:        message,
+        file:           file,
+        line:           line
     )
-    
-    guard case let .success(value1) = result1
-    else
-    {
-        return
-    }
-    
-    
-    
-    let result2: Result<T, Error> = evaluateExpression(
-        expression2,
-        assertion:  .lessThanOrEqual,
-        message:    message,
-        file:       file,
-        line:       line
-    )
-    
-    guard case let .success(value2) = result2
-    else
-    {
-        return
-    }
-    
-    
-    
-    if value1 > value2
-    {
-        failAssertion(
-            kind:       .lessThanOrEqual,
-            reason:     "(\(quote(value1))) is not less than or equal to"
-                        + " (\(quote(value2)))",
-            message:    message,
-            file:       file,
-            line:       line
-        )
-    }
 }
 
 
@@ -1150,49 +576,14 @@ public func XCTKAssertLessThan<T>(
     line            : UInt                          = #line
 ) where T : Comparable
 {
-    let result1: Result<T, Error> = evaluateExpression(
-        expression1,
-        assertion:  .lessThan,
-        message:    message,
-        file:       file,
-        line:       line
+    evaluateXCTKAssertLessThan(
+        captureKind:    .none,
+        expr1:          expression1,
+        expr2:          expression2,
+        message:        message,
+        file:           file,
+        line:           line
     )
-    
-    guard case let .success(value1) = result1
-    else
-    {
-        return
-    }
-    
-    
-    
-    let result2: Result<T, Error> = evaluateExpression(
-        expression2,
-        assertion:  .lessThan,
-        message:    message,
-        file:       file,
-        line:       line
-    )
-    
-    guard case let .success(value2) = result2
-    else
-    {
-        return
-    }
-    
-    
-    
-    if value1 >= value2
-    {
-        failAssertion(
-            kind:       .lessThan,
-            reason:     "(\(quote(value1))) is not less than"
-                        + " (\(quote(value2)))",
-            message:    message,
-            file:       file,
-            line:       line
-        )
-    }
 }
 
 
@@ -1216,25 +607,14 @@ public func XCTKAssertThrowsError<T>(
     _ errorHandler  : (any Error) -> Void           = { _ in }
 )
 {
-    let result: Result<T, Error> = evaluateExpression(
-        expression,
-        assertion:      .throwsError,
+    evaluateXCTKAssertThrowsError(
+        captureKind:    .none,
+        expr:           expression,
         message:        message,
         file:           file,
         line:           line,
         errorHandler:   errorHandler
     )
-    
-    if case .success = result
-    {
-        failAssertion(
-            kind:       .throwsError,
-            reason:     "did not throw an error",
-            message:    message,
-            file:       file,
-            line:       line
-        )
-    }
 }
 
 
@@ -1254,12 +634,12 @@ public func XCTKAssertNoThrow<T>(
     line            : UInt                          = #line
 )
 {
-    _ = evaluateExpression(
-        expression,
-        assertion:  .noThrow,
-        message:    message,
-        file:       file,
-        line:       line
+    evaluateXCTKAssertNoThrow(
+        captureKind:    .none,
+        expr:           expression,
+        message:        message,
+        file:           file,
+        line:           line
     )
 }
 

@@ -7,13 +7,12 @@
 //
 //===----------------------------------------------------------------------===//
 
-import XCTest
 @testable import XCTestKit
 @testable import XCTestKitTestUtilities
 
 
 
-final class ComparatorSetTests: XCTestKitCase
+internal final class ComparatorSetTests: XCTestKitCase
 {
     func testSetEqualValues() throws
     {

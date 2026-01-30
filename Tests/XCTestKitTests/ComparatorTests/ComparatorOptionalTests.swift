@@ -7,13 +7,12 @@
 //
 //===----------------------------------------------------------------------===//
 
-import XCTest
 @testable import XCTestKit
 @testable import XCTestKitTestUtilities
 
 
 
-final class ComparatorOptionalTests: XCTestKitCase
+internal final class ComparatorOptionalTests: XCTestKitCase
 {
     func testOptionalBothNone() throws
     {

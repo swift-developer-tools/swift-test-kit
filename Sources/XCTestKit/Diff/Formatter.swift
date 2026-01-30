@@ -7,6 +7,10 @@
 //
 //===----------------------------------------------------------------------===//
 
+import XCTestKitCore
+
+
+
 // MARK: - FormattedLine
 
 /// A formatted diff line.
@@ -79,6 +83,50 @@ internal struct Formatter
         
         formatter.visit(node)
         formatter.emitTruncationMessage()
+        
+        return formatter.render()
+    }
+    
+    
+    
+    /// Formats the decomposition of a boolean expression.
+    /// - Parameters:
+    ///   - exprText: The expression source text.
+    ///   - evaluated: The evaluated boolean expressions.
+    ///   - notEvaluated: The number of unevaluated boolean expressions.
+    ///   - expectedValue: The value expected by the assertion.
+    ///   - options: The formatting options to use. The default value is a
+    ///   default-initialized ``XCTKFormatOptions`` instance.
+    /// - Returns: The formatted decomposition.
+    static func formatBooleanExpr(
+        exprText        : String,
+        evaluated       : [XCTKBooleanExpr],
+        notEvaluated    : Int,
+        expectedValue   : Bool,
+        options         : XCTKFormatOptions     = .init()
+    ) -> String
+    {
+        let exprsToShow: [XCTKBooleanExpr] = options.showAllEvaluated
+            ? evaluated
+            : evaluated.filter { $0.value != expectedValue }
+        
+        let totalDiffCount: Int? = options.countDiffs
+            ? exprsToShow.count
+            : nil
+        
+        let context = FormatterContext(
+            options:            options,
+            totalDiffCount:     totalDiffCount
+        )
+        
+        let formatter = Formatter(context: context)
+        
+        formatter.emitBooleanDecomposition(
+            exprText:       exprText,
+            exprsToShow:    exprsToShow,
+            notEvaluated:   notEvaluated,
+            expectedValue:  expectedValue
+        )
         
         return formatter.render()
     }
@@ -225,24 +273,14 @@ internal struct Formatter
         _ rendered: RenderedValue
     ) -> String
     {
-        var display: String = rendered.description
+        let displayText: String = Self.truncateText(
+            rendered.description,
+            maxLength: computeAvailableWidth()
+        )
         
-        let availableWidth: Int = computeAvailableWidth()
-        
-        if display.count > availableWidth
-        {
-            /// Subtract 3 to account for the ellipsis.
-            let endIndex: String.Index = display.index(
-                display.startIndex,
-                offsetBy: availableWidth - 3
-            )
-            
-            display = String(display[..<endIndex]) + "..."
-        }
-            
         return rendered.kind == .string
-            ? quote(display)
-            : display
+            ? quote(displayText)
+            : displayText
     }
     
     
@@ -595,7 +633,11 @@ internal struct Formatter
     
     
     /// Emits a message if a diff was truncated.
-    private func emitTruncationMessage()
+    /// - Parameter forBooleanDecomposition: Whether the truncation message is
+    /// for boolean decomposition.
+    private func emitTruncationMessage(
+        forBooleanDecomposition: Bool = false
+    )
     {
         guard context.isTruncated
         else
@@ -605,25 +647,122 @@ internal struct Formatter
         
         
         
+        let noun: String = forBooleanDecomposition
+            ? "expression"
+            : "difference"
+        
         let message: String
         
         if let totalDiffCount: Int = context.totalDiffCount
         {
             let remaining: Int = totalDiffCount - context.emittedDiffCount
             
-            message = "... and \(remaining) more differences"
-
+            guard remaining > 0
+            else
+            {
+                return
+            }
+            
+            message = "... and \(remaining) more"
+                    + " \(noun)\(remaining == 1 ? "" : "s")"
         }
         else if let maxDiffs: Int = context.options.maxDiffs
         {
-            message = "... and more differences (limit: \(maxDiffs))"
+            message = "... and more \(noun)s (limit: \(maxDiffs))"
         }
         else
         {
-            message = "... and more differences"
+            message = "... and more \(noun)s"
+        }
+        
+        
+        
+        if forBooleanDecomposition
+        {
+            emitBlankLine()
         }
         
         emitLine(message, 1)
+    }
+    
+    
+    
+    /// Emits a decomposed boolean expression.
+    /// - Parameters:
+    ///   - exprText: The expression source text.
+    ///   - exprsToShow: The boolean expressions to show in the output.
+    ///   - notEvaluated: The number of unevaluated boolean expressions.
+    ///   - expectedValue: The expression value expected for the boolean
+    ///   assertion to succeed.
+    private func emitBooleanDecomposition(
+        exprText        : String,
+        exprsToShow     : [XCTKBooleanExpr],
+        notEvaluated    : Int,
+        expectedValue   : Bool
+    )
+    {
+        let headerPrefix: String = "Expression: "
+        
+        let availableWidth: Int = computeAvailableWidth(
+            indent:         0,
+            labelWidth:     headerPrefix.count
+        )
+        
+        let truncatedExprText: String = Self.truncateText(
+            exprText,
+            maxLength: availableWidth
+        )
+        
+        emitLine("\(headerPrefix)\(truncatedExprText)", 0)
+        emitBlankLine()
+        
+        
+        
+        let limit: Int = context.options.maxDiffs ?? exprsToShow.count
+        
+        for expr in exprsToShow.prefix(limit)
+        {
+            let marker  : String    = expr.value != expectedValue ? " ←" : ""
+            let suffix  : String    = " = \(expr.value)\(marker)"
+            
+            let availableWidth: Int = computeAvailableWidth(
+                indent:         1,
+                labelWidth:     suffix.count
+            )
+            
+            let truncatedText: String = Self.truncateText(
+                expr.text,
+                maxLength: availableWidth
+            )
+            
+            emitLine("\(truncatedText)\(suffix)", 1)
+            
+            context.emittedDiffCount += 1
+        }
+        
+        
+        
+        if exprsToShow.count > limit
+        {
+            context.isTruncated = true
+        }
+        
+        emitTruncationMessage(forBooleanDecomposition: true)
+        
+        
+        
+        if
+            context.options.showNotEvaluatedCount,
+            notEvaluated > 0
+        {
+            emitBlankLine()
+            
+            let noun: String = notEvaluated == 1
+                ? "expression"
+                : "expressions"
+            
+            emitLine("(\(notEvaluated) \(noun) not evaluated)", 1)
+        }
     }
     
     
@@ -697,5 +836,37 @@ internal struct Formatter
             - labelWidth
         
         return max(availableWidth, 20)
+    }
+    
+    
+    
+    /// Truncates the given text to the given maximum length.
+    /// - Parameters:
+    ///   - text: The text to truncate.
+    ///   - maxLength: The maximum length.
+    /// - Returns: The truncated text, or the original text if no truncation
+    /// is needed.
+    private static func truncateText(
+        _ text      : String,
+        maxLength   : Int
+    ) -> String
+    {
+        guard text.count > maxLength
+        else
+        {
+            return text
+        }
+        
+        var result: String = text
+        
+        /// Subtract 3 to account for the ellipsis.
+        let endIndex: String.Index = result.index(
+            result.startIndex,
+            offsetBy: maxLength - 3
+        )
+        
+        result = String(result[..<endIndex]) + "..."
+        
+        return result
     }
 }
