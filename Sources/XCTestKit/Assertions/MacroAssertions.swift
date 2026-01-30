@@ -20,7 +20,8 @@ internal func _XCTKAssertMacro(
     notEvaluated    : Int,
     message         : @autoclosure () -> String,
     file            : StaticString,
-    line            : UInt
+    line            : UInt,
+    options         : XCTKOptions?
 )
 {
     evaluateXCTKAssert(
@@ -30,7 +31,8 @@ internal func _XCTKAssertMacro(
         notEvaluated:   notEvaluated,
         message:        message,
         file:           file,
-        line:           line
+        line:           line,
+        options:        options
     )
 }
 
@@ -43,7 +45,8 @@ internal func _XCTKAssertTrueMacro(
     notEvaluated    : Int,
     message         : @autoclosure () -> String,
     file            : StaticString,
-    line            : UInt
+    line            : UInt,
+    options         : XCTKOptions?
 )
 {
     evaluateXCTKAssertTrue(
@@ -53,7 +56,8 @@ internal func _XCTKAssertTrueMacro(
         notEvaluated:   notEvaluated,
         message:        message,
         file:           file,
-        line:           line
+        line:           line,
+        options:        options
     )
 }
 
@@ -66,7 +70,8 @@ internal func _XCTKAssertFalseMacro(
     notEvaluated    : Int,
     message         : @autoclosure () -> String,
     file            : StaticString,
-    line            : UInt
+    line            : UInt,
+    options         : XCTKOptions?
 )
 {
     evaluateXCTKAssertFalse(
@@ -76,7 +81,8 @@ internal func _XCTKAssertFalseMacro(
         notEvaluated:   notEvaluated,
         message:        message,
         file:           file,
-        line:           line
+        line:           line,
+        options:        options
     )
 }
 
@@ -89,7 +95,8 @@ internal func _XCTKAssertNilMacro(
     exprText    : String,
     message     : @autoclosure () -> String,
     file        : StaticString,
-    line        : UInt
+    line        : UInt,
+    options     : XCTKOptions?
 )
 {
     evaluateXCTKAssertNil(
@@ -97,7 +104,8 @@ internal func _XCTKAssertNilMacro(
         expr:           expr,
         message:        message,
         file:           file,
-        line:           line
+        line:           line,
+        options:        options
     )
 }
 
@@ -108,7 +116,8 @@ internal func _XCTKAssertNotNilMacro(
     exprText    : String,
     message     : @autoclosure () -> String,
     file        : StaticString,
-    line        : UInt
+    line        : UInt,
+    options     : XCTKOptions?
 )
 {
     evaluateXCTKAssertNotNil(
@@ -116,7 +125,8 @@ internal func _XCTKAssertNotNilMacro(
         expr:           expr,
         message:        message,
         file:           file,
-        line:           line
+        line:           line,
+        options:        options
     )
 }
 
@@ -127,7 +137,8 @@ internal func _XCTKUnwrapMacro<T>(
     exprText    : String,
     message     : @autoclosure () -> String,
     file        : StaticString,
-    line        : UInt
+    line        : UInt,
+    options     : XCTKOptions?
 ) throws -> T
 {
     return try evaluateXCTKUnwrap(
@@ -135,7 +146,8 @@ internal func _XCTKUnwrapMacro<T>(
         expr:           expr,
         message:        message,
         file:           file,
-        line:           line
+        line:           line,
+        options:        options
     )
 }
 
@@ -174,7 +186,8 @@ internal func _XCTKAssertNotEqualMacro<T>(
     expr2Text   : String,
     message     : @autoclosure () -> String,
     file        : StaticString,
-    line        : UInt
+    line        : UInt,
+    options     : XCTKOptions?
 ) where T : Equatable
 {
     evaluateXCTKAssertNotEqual(
@@ -183,7 +196,8 @@ internal func _XCTKAssertNotEqualMacro<T>(
         expr2:          expr2,
         message:        message,
         file:           file,
-        line:           line
+        line:           line,
+        options:        options
     )
 }
 
@@ -196,7 +210,8 @@ internal func _XCTKAssertIdenticalMacro(
     expr2Text   : String,
     message     : @autoclosure () -> String,
     file        : StaticString,
-    line        : UInt
+    line        : UInt,
+    options     : XCTKOptions?
 )
 {
     evaluateXCTKAssertIdentical(
@@ -205,7 +220,8 @@ internal func _XCTKAssertIdenticalMacro(
         expr2:          expr2,
         message:        message,
         file:           file,
-        line:           line
+        line:           line,
+        options:        options
     )
 }
 
@@ -218,7 +234,8 @@ internal func _XCTKAssertNotIdenticalMacro(
     expr2Text   : String,
     message     : @autoclosure () -> String,
     file        : StaticString,
-    line        : UInt
+    line        : UInt,
+    options     : XCTKOptions?
 )
 {
     evaluateXCTKAssertNotIdentical(
@@ -227,7 +244,8 @@ internal func _XCTKAssertNotIdenticalMacro(
         expr2:          expr2,
         message:        message,
         file:           file,
-        line:           line
+        line:           line,
+        options:        options
     )
 }
 
@@ -241,7 +259,8 @@ internal func _XCTKAssertEqualMacro<T>(
     accuracy    : T,
     message     : @autoclosure () -> String,
     file        : StaticString,
-    line        : UInt
+    line        : UInt,
+    options     : XCTKOptions?
 ) where T : FloatingPoint
 {
     evaluateXCTKAssertEqual(
@@ -251,7 +270,8 @@ internal func _XCTKAssertEqualMacro<T>(
         accuracy:       accuracy,
         message:        message,
         file:           file,
-        line:           line
+        line:           line,
+        options:        options
     )
 }
 
@@ -265,7 +285,8 @@ internal func _XCTKAssertEqualMacro<T>(
     accuracy    : T,
     message     : @autoclosure () -> String,
     file        : StaticString,
-    line        : UInt
+    line        : UInt,
+    options     : XCTKOptions?
 ) where T : Numeric
 {
     evaluateXCTKAssertEqual(
@@ -275,7 +296,8 @@ internal func _XCTKAssertEqualMacro<T>(
         accuracy:       accuracy,
         message:        message,
         file:           file,
-        line:           line
+        line:           line,
+        options:        options
     )
 }
 
@@ -289,7 +311,8 @@ internal func _XCTKAssertNotEqualMacro<T>(
     accuracy    : T,
     message     : @autoclosure () -> String,
     file        : StaticString,
-    line        : UInt
+    line        : UInt,
+    options     : XCTKOptions?
 ) where T : FloatingPoint
 {
     evaluateXCTKAssertNotEqual(
@@ -299,7 +322,8 @@ internal func _XCTKAssertNotEqualMacro<T>(
         accuracy:       accuracy,
         message:        message,
         file:           file,
-        line:           line
+        line:           line,
+        options:        options
     )
 }
 
@@ -313,7 +337,8 @@ internal func _XCTKAssertNotEqualMacro<T>(
     accuracy    : T,
     message     : @autoclosure () -> String,
     file        : StaticString,
-    line        : UInt
+    line        : UInt,
+    options     : XCTKOptions?
 ) where T : Numeric
 {
     evaluateXCTKAssertNotEqual(
@@ -323,7 +348,8 @@ internal func _XCTKAssertNotEqualMacro<T>(
         accuracy:       accuracy,
         message:        message,
         file:           file,
-        line:           line
+        line:           line,
+        options:        options
     )
 }
 
@@ -338,7 +364,8 @@ internal func _XCTKAssertGreaterThanMacro<T>(
     expr2Text   : String,
     message     : @autoclosure () -> String,
     file        : StaticString,
-    line        : UInt
+    line        : UInt,
+    options     : XCTKOptions?
 ) where T : Comparable
 {
     evaluateXCTKAssertGreaterThan(
@@ -347,7 +374,8 @@ internal func _XCTKAssertGreaterThanMacro<T>(
         expr2:          expr2,
         message:        message,
         file:           file,
-        line:           line
+        line:           line,
+        options:        options
     )
 }
 
@@ -360,7 +388,8 @@ internal func _XCTKAssertGreaterThanOrEqualMacro<T>(
     expr2Text   : String,
     message     : @autoclosure () -> String,
     file        : StaticString,
-    line        : UInt
+    line        : UInt,
+    options     : XCTKOptions?
 ) where T : Comparable
 {
     evaluateXCTKAssertGreaterThanOrEqual(
@@ -369,7 +398,8 @@ internal func _XCTKAssertGreaterThanOrEqualMacro<T>(
         expr2:          expr2,
         message:        message,
         file:           file,
-        line:           line
+        line:           line,
+        options:        options
     )
 }
 
@@ -382,7 +412,8 @@ internal func _XCTKAssertLessThanOrEqualMacro<T>(
     expr2Text   : String,
     message     : @autoclosure () -> String,
     file        : StaticString,
-    line        : UInt
+    line        : UInt,
+    options     : XCTKOptions?
 ) where T : Comparable
 {
     evaluateXCTKAssertLessThanOrEqual(
@@ -391,7 +422,8 @@ internal func _XCTKAssertLessThanOrEqualMacro<T>(
         expr2:          expr2,
         message:        message,
         file:           file,
-        line:           line
+        line:           line,
+        options:        options
     )
 }
 
@@ -404,7 +436,8 @@ internal func _XCTKAssertLessThanMacro<T>(
     expr2Text   : String,
     message     : @autoclosure () -> String,
     file        : StaticString,
-    line        : UInt
+    line        : UInt,
+    options     : XCTKOptions?
 ) where T : Comparable
 {
     evaluateXCTKAssertLessThan(
@@ -413,7 +446,8 @@ internal func _XCTKAssertLessThanMacro<T>(
         expr2:          expr2,
         message:        message,
         file:           file,
-        line:           line
+        line:           line,
+        options:        options
     )
 }
 
@@ -427,6 +461,7 @@ internal func _XCTKAssertThrowsErrorMacro<T>(
     message         : @autoclosure () -> String,
     file            : StaticString,
     line            : UInt,
+    options         : XCTKOptions?,
     errorHandler    : (any Error) -> Void
 )
 {
@@ -436,6 +471,7 @@ internal func _XCTKAssertThrowsErrorMacro<T>(
         message:        message,
         file:           file,
         line:           line,
+        options:        options,
         errorHandler:   errorHandler
     )
 }
@@ -447,7 +483,8 @@ internal func _XCTKAssertNoThrowMacro<T>(
     exprText    : String,
     message     : @autoclosure () -> String,
     file        : StaticString,
-    line        : UInt
+    line        : UInt,
+    options     : XCTKOptions?
 )
 {
     evaluateXCTKAssertNoThrow(
@@ -455,7 +492,8 @@ internal func _XCTKAssertNoThrowMacro<T>(
         expr:           expr,
         message:        message,
         file:           file,
-        line:           line
+        line:           line,
+        options:        options
     )
 }
 

@@ -21,7 +21,7 @@
 /// Asserts that the given expression is true.
 ///
 /// This generates a failure when `expression == false` and is equivalent to
-/// ``XCTKAssertTrue(_:_:file:line:)-macro``.
+/// ``XCTKAssertTrue(_:_:file:line:options:)-macro``.
 ///
 /// - Parameters:
 ///   - expression: The expression to evaluate.
@@ -30,12 +30,15 @@
 ///   filename of the test case in which this macro was called.
 ///   - line: The line where the failure occurs. The default value is the line
 ///   number where this macro was called.
+///   - options: The options for testing. The default value is `nil`, which
+///   falls back to using global options.
 @freestanding(expression)
 public macro XCTKAssert(
     _ expression    : @autoclosure () throws -> Bool,
     _ message       : @autoclosure () -> String         = "",
     file            : StaticString                      = #filePath,
-    line            : UInt                              = #line
+    line            : UInt                              = #line,
+    options         : XCTKOptions?                      = nil
 ) = #externalMacro(
     module:     "XCTestKitMacros",
     type:       "AssertMacro"
@@ -46,7 +49,7 @@ public macro XCTKAssert(
 /// Asserts that the given expression is true.
 ///
 /// This generates a failure when `expression == false` and is equivalent to
-/// ``XCTKAssert(_:_:file:line:)-macro``.
+/// ``XCTKAssert(_:_:file:line:options:)-macro``.
 ///
 /// - Parameters:
 ///   - expression: The expression to evaluate.
@@ -55,12 +58,15 @@ public macro XCTKAssert(
 ///   filename of the test case in which this macro was called.
 ///   - line: The line where the failure occurs. The default value is the line
 ///   number where this macro was called.
+///   - options: The options for testing. The default value is `nil`, which
+///   falls back to using global options.
 @freestanding(expression)
 public macro XCTKAssertTrue(
     _ expression    : @autoclosure () throws -> Bool,
     _ message       : @autoclosure () -> String         = "",
     file            : StaticString                      = #filePath,
-    line            : UInt                              = #line
+    line            : UInt                              = #line,
+    options         : XCTKOptions?                      = nil
 ) = #externalMacro(
     module:     "XCTestKitMacros",
     type:       "AssertTrueMacro"
@@ -79,12 +85,15 @@ public macro XCTKAssertTrue(
 ///   filename of the test case in which this macro was called.
 ///   - line: The line where the failure occurs. The default value is the line
 ///   number where this macro was called.
+///   - options: The options for testing. The default value is `nil`, which
+///   falls back to using global options.
 @freestanding(expression)
 public macro XCTKAssertFalse(
     _ expression    : @autoclosure () throws -> Bool,
     _ message       : @autoclosure () -> String         = "",
     file            : StaticString                      = #filePath,
-    line            : UInt                              = #line
+    line            : UInt                              = #line,
+    options         : XCTKOptions?                      = nil
 ) = #externalMacro(
     module:     "XCTestKitMacros",
     type:       "AssertFalseMacro"
@@ -105,12 +114,15 @@ public macro XCTKAssertFalse(
 ///   filename of the test case in which this macro was called.
 ///   - line: The line where the failure occurs. The default value is the line
 ///   number where this macro was called.
+///   - options: The options for testing. The default value is `nil`, which
+///   falls back to using global options.
 @freestanding(expression)
 public macro XCTKAssertNil(
     _ expression    : @autoclosure () throws -> Any?,
     _ message       : @autoclosure () -> String         = "",
     file            : StaticString                      = #filePath,
-    line            : UInt                              = #line
+    line            : UInt                              = #line,
+    options         : XCTKOptions?                      = nil
 ) = #externalMacro(
     module:     "XCTestKitMacros",
     type:       "AssertNilMacro"
@@ -129,12 +141,15 @@ public macro XCTKAssertNil(
 ///   filename of the test case in which this macro was called.
 ///   - line: The line where the failure occurs. The default value is the line
 ///   number where this macro was called.
+///   - options: The options for testing. The default value is `nil`, which
+///   falls back to using global options.
 @freestanding(expression)
 public macro XCTKAssertNotNil(
     _ expression    : @autoclosure () throws -> Any?,
     _ message       : @autoclosure () -> String         = "",
     file            : StaticString                      = #filePath,
-    line            : UInt                              = #line
+    line            : UInt                              = #line,
+    options         : XCTKOptions?                      = nil
 ) = #externalMacro(
     module:     "XCTestKitMacros",
     type:       "AssertNotNilMacro"
@@ -155,6 +170,8 @@ public macro XCTKAssertNotNil(
 ///   filename of the test case in which this macro was called.
 ///   - line: The line where the failure occurs. The default value is the line
 ///   number where this macro was called.
+///   - options: The options for testing. The default value is `nil`, which
+///   falls back to using global options.
 /// - Returns: The result of evaluating and unwrapped the given expression.
 /// This only returns a value if the unwrapped value is not `nil`.
 /// - Throws: An ``XCTKUnwrapError`` if the unwrapped value is `nil`, or an
@@ -164,7 +181,8 @@ public macro XCTKUnwrap<T>(
     _ expression    : @autoclosure () throws -> T?,
     _ message       : @autoclosure () -> String     = "",
     file            : StaticString                  = #filePath,
-    line            : UInt                          = #line
+    line            : UInt                          = #line,
+    options         : XCTKOptions?                  = nil
 ) -> T = #externalMacro(
             module:     "XCTestKitMacros",
             type:       "UnwrapMacro"
@@ -209,13 +227,16 @@ public macro XCTKAssertEqual<T>(
 ///   filename of the test case in which this macro was called.
 ///   - line: The line where the failure occurs. The default value is the line
 ///   number where this macro was called.
+///   - options: The options for testing. The default value is `nil`, which
+///   falls back to using global options.
 @freestanding(expression)
 public macro XCTKAssertNotEqual<T>(
     _ expression1   : @autoclosure () throws -> T,
     _ expression2   : @autoclosure () throws -> T,
     _ message       : @autoclosure () -> String     = "",
     file            : StaticString                  = #filePath,
-    line            : UInt                          = #line
+    line            : UInt                          = #line,
+    options         : XCTKOptions?                  = nil
 ) = #externalMacro(
     module:     "XCTestKitMacros",
     type:       "AssertNotEqualMacro"
@@ -235,13 +256,16 @@ public macro XCTKAssertNotEqual<T>(
 ///   filename of the test case in which this macro was called.
 ///   - line: The line where the failure occurs. The default value is the line
 ///   number where this macro was called.
+///   - options: The options for testing. The default value is `nil`, which
+///   falls back to using global options.
 @freestanding(expression)
 public macro XCTKAssertIdentical(
     _ expression1   : @autoclosure () throws -> AnyObject?,
     _ expression2   : @autoclosure () throws -> AnyObject?,
     _ message       : @autoclosure () -> String             = "",
     file            : StaticString                          = #filePath,
-    line            : UInt                                  = #line
+    line            : UInt                                  = #line,
+    options         : XCTKOptions?                          = nil
 ) = #externalMacro(
     module:     "XCTestKitMacros",
     type:       "AssertIdenticalMacro"
@@ -261,13 +285,16 @@ public macro XCTKAssertIdentical(
 ///   filename of the test case in which this macro was called.
 ///   - line: The line where the failure occurs. The default value is the line
 ///   number where this macro was called.
+///   - options: The options for testing. The default value is `nil`, which
+///   falls back to using global options.
 @freestanding(expression)
 public macro XCTKAssertNotIdentical(
     _ expression1   : @autoclosure () throws -> AnyObject?,
     _ expression2   : @autoclosure () throws -> AnyObject?,
     _ message       : @autoclosure () -> String             = "",
     file            : StaticString                          = #filePath,
-    line            : UInt                                  = #line
+    line            : UInt                                  = #line,
+    options         : XCTKOptions?                          = nil
 ) = #externalMacro(
     module:     "XCTestKitMacros",
     type:       "AssertNotIdenticalMacro"
@@ -287,6 +314,8 @@ public macro XCTKAssertNotIdentical(
 ///   filename of the test case in which this macro was called.
 ///   - line: The line where the failure occurs. The default value is the line
 ///   number where this macro was called.
+///   - options: The options for testing. The default value is `nil`, which
+///   falls back to using global options.
 @freestanding(expression)
 public macro XCTKAssertEqual<T>(
     _ expression1   : @autoclosure () throws -> T,
@@ -294,7 +323,8 @@ public macro XCTKAssertEqual<T>(
     accuracy        : T,
     _ message       : @autoclosure () -> String     = "",
     file            : StaticString                  = #filePath,
-    line            : UInt                          = #line
+    line            : UInt                          = #line,
+    options         : XCTKOptions?                  = nil
 ) = #externalMacro(
     module:     "XCTestKitMacros",
     type:       "AssertEqualWithAccuracyMacro"
@@ -313,6 +343,8 @@ public macro XCTKAssertEqual<T>(
 ///   filename of the test case in which this macro was called.
 ///   - line: The line where the failure occurs. The default value is the line
 ///   number where this macro was called.
+///   - options: The options for testing. The default value is `nil`, which
+///   falls back to using global options.
 @freestanding(expression)
 public macro XCTKAssertEqual<T>(
     _ expression1   : @autoclosure () throws -> T,
@@ -320,7 +352,8 @@ public macro XCTKAssertEqual<T>(
     accuracy        : T,
     _ message       : @autoclosure () -> String     = "",
     file            : StaticString                  = #filePath,
-    line            : UInt                          = #line
+    line            : UInt                          = #line,
+    options         : XCTKOptions?                  = nil
 ) = #externalMacro(
     module:     "XCTestKitMacros",
     type:       "AssertEqualWithAccuracyMacro"
@@ -340,6 +373,8 @@ public macro XCTKAssertEqual<T>(
 ///   filename of the test case in which this macro was called.
 ///   - line: The line where the failure occurs. The default value is the line
 ///   number where this macro was called.
+///   - options: The options for testing. The default value is `nil`, which
+///   falls back to using global options.
 @freestanding(expression)
 public macro XCTKAssertNotEqual<T>(
     _ expression1   : @autoclosure () throws -> T,
@@ -347,7 +382,8 @@ public macro XCTKAssertNotEqual<T>(
     accuracy        : T,
     _ message       : @autoclosure () -> String     = "",
     file            : StaticString                  = #filePath,
-    line            : UInt                          = #line
+    line            : UInt                          = #line,
+    options         : XCTKOptions?                  = nil
 ) = #externalMacro(
     module:     "XCTestKitMacros",
     type:       "AssertNotEqualWithAccuracyMacro"
@@ -367,6 +403,8 @@ public macro XCTKAssertNotEqual<T>(
 ///   filename of the test case in which this macro was called.
 ///   - line: The line where the failure occurs. The default value is the line
 ///   number where this macro was called.
+///   - options: The options for testing. The default value is `nil`, which
+///   falls back to using global options.
 @freestanding(expression)
 public macro XCTKAssertNotEqual<T>(
     _ expression1   : @autoclosure () throws -> T,
@@ -374,7 +412,8 @@ public macro XCTKAssertNotEqual<T>(
     accuracy        : T,
     _ message       : @autoclosure () -> String     = "",
     file            : StaticString                  = #filePath,
-    line            : UInt                          = #line
+    line            : UInt                          = #line,
+    options         : XCTKOptions?                  = nil
 ) = #externalMacro(
     module:     "XCTestKitMacros",
     type:       "AssertNotEqualWithAccuracyMacro"
@@ -394,13 +433,16 @@ public macro XCTKAssertNotEqual<T>(
 ///   filename of the test case in which this macro was called.
 ///   - line: The line where the failure occurs. The default value is the line
 ///   number where this macro was called.
+///   - options: The options for testing. The default value is `nil`, which
+///   falls back to using global options.
 @freestanding(expression)
 public macro XCTKAssertGreaterThan<T>(
     _ expression1   : @autoclosure () throws -> T,
     _ expression2   : @autoclosure () throws -> T,
     _ message       : @autoclosure () -> String     = "",
     file            : StaticString                  = #filePath,
-    line            : UInt                          = #line
+    line            : UInt                          = #line,
+    options         : XCTKOptions?                  = nil
 ) = #externalMacro(
     module:     "XCTestKitMacros",
     type:       "AssertGreaterThanMacro"
@@ -418,13 +460,16 @@ public macro XCTKAssertGreaterThan<T>(
 ///   filename of the test case in which this macro was called.
 ///   - line: The line where the failure occurs. The default value is the line
 ///   number where this macro was called.
+///   - options: The options for testing. The default value is `nil`, which
+///   falls back to using global options.
 @freestanding(expression)
 public macro XCTKAssertGreaterThanOrEqual<T>(
     _ expression1   : @autoclosure () throws -> T,
     _ expression2   : @autoclosure () throws -> T,
     _ message       : @autoclosure () -> String     = "",
     file            : StaticString                  = #filePath,
-    line            : UInt                          = #line
+    line            : UInt                          = #line,
+    options         : XCTKOptions?                  = nil
 ) = #externalMacro(
     module:     "XCTestKitMacros",
     type:       "AssertGreaterThanOrEqualMacro"
@@ -442,13 +487,16 @@ public macro XCTKAssertGreaterThanOrEqual<T>(
 ///   filename of the test case in which this macro was called.
 ///   - line: The line where the failure occurs. The default value is the line
 ///   number where this macro was called.
+///   - options: The options for testing. The default value is `nil`, which
+///   falls back to using global options.
 @freestanding(expression)
 public macro XCTKAssertLessThanOrEqual<T>(
     _ expression1   : @autoclosure () throws -> T,
     _ expression2   : @autoclosure () throws -> T,
     _ message       : @autoclosure () -> String     = "",
     file            : StaticString                  = #filePath,
-    line            : UInt                          = #line
+    line            : UInt                          = #line,
+    options         : XCTKOptions?                  = nil
 ) = #externalMacro(
     module:     "XCTestKitMacros",
     type:   "AssertLessThanOrEqualMacro"
@@ -466,13 +514,16 @@ public macro XCTKAssertLessThanOrEqual<T>(
 ///   filename of the test case in which this macro was called.
 ///   - line: The line where the failure occurs. The default value is the line
 ///   number where this macro was called.
+///   - options: The options for testing. The default value is `nil`, which
+///   falls back to using global options.
 @freestanding(expression)
 public macro XCTKAssertLessThan<T>(
     _ expression1   : @autoclosure () throws -> T,
     _ expression2   : @autoclosure () throws -> T,
     _ message       : @autoclosure () -> String     = "",
     file            : StaticString                  = #filePath,
-    line            : UInt                          = #line
+    line            : UInt                          = #line,
+    options         : XCTKOptions?                  = nil
 ) = #externalMacro(
     module:     "XCTestKitMacros",
     type:       "AssertLessThanMacro"
@@ -490,6 +541,8 @@ public macro XCTKAssertLessThan<T>(
 ///   filename of the test case in which this macro was called.
 ///   - line: The line where the failure occurs. The default value is the line
 ///   number where this macro was called.
+///   - options: The options for testing. The default value is `nil`, which
+///   falls back to using global options.
 ///   - errorHandler: An optional handler for errors thrown by `expression`.
 @freestanding(expression)
 public macro XCTKAssertThrowsError<T>(
@@ -497,6 +550,7 @@ public macro XCTKAssertThrowsError<T>(
     _ message       : @autoclosure () -> String     = "",
     file            : StaticString                  = #filePath,
     line            : UInt                          = #line,
+    options         : XCTKOptions?                  = nil,
     _ errorHandler  : (any Error) -> Void           = { _ in }
 ) = #externalMacro(
     module:     "XCTestKitMacros",
@@ -513,12 +567,15 @@ public macro XCTKAssertThrowsError<T>(
 ///   filename of the test case in which this macro was called.
 ///   - line: The line where the failure occurs. The default value is the line
 ///   number where this macro was called.
+///   - options: The options for testing. The default value is `nil`, which
+///   falls back to using global options.
 @freestanding(expression)
 public macro XCTKAssertNoThrow<T>(
     _ expression    : @autoclosure () throws -> T,
     _ message       : @autoclosure () -> String     = "",
     file            : StaticString                  = #filePath,
-    line            : UInt                          = #line
+    line            : UInt                          = #line,
+    options         : XCTKOptions?                  = nil
 ) = #externalMacro(
     module:     "XCTestKitMacros",
     type:       "AssertNoThrowMacro"

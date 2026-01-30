@@ -8,6 +8,7 @@
 //===----------------------------------------------------------------------===//
 
 import XCTest
+import XCTestKitCore
 @testable import XCTestKit
 @testable import XCTestKitTestUtilities
 
@@ -15,22 +16,27 @@ import XCTest
 
 internal final class MacroAssertionBooleanExprTests: XCTestKitCase
 {
+    private typealias AK = AssertionKind
+    
+    
+    
     // MARK: - AND chains
     
     func testAndChainFirstFalseShortCircuits() throws
     {
-        let a       : Bool  = false
-        let b       : Bool  = true
-        let c       : Bool  = true
-        let expr    : Bool  = a && b && c
+        let a   : Bool  = false
+        let b   : Bool  = true
+        let c   : Bool  = true
         
         let actual: String? = withOneExpectedFailure
         {
-            #XCTKAssert(expr)
+            #XCTKAssert(a && b && c)
         }
         
         let expected: String =
         """
+        \(AK.assert.macroDisplayName) failed
+        
         Expression: a && b && c
 
             a = false ←
@@ -45,18 +51,19 @@ internal final class MacroAssertionBooleanExprTests: XCTestKitCase
     
     func testAndChainMiddleFalseShortCircuits() throws
     {
-        let a       : Bool  = true
-        let b       : Bool  = false
-        let c       : Bool  = true
-        let expr    : Bool  = a && b && c
+        let a   : Bool  = true
+        let b   : Bool  = false
+        let c   : Bool  = true
         
         let actual: String? = withOneExpectedFailure
         {
-            #XCTKAssert(expr)
+            #XCTKAssert(a && b && c)
         }
         
         let expected: String =
         """
+        \(AK.assert.macroDisplayName) failed
+        
         Expression: a && b && c
 
             a = true
@@ -72,18 +79,19 @@ internal final class MacroAssertionBooleanExprTests: XCTestKitCase
     
     func testAndChainLastFalseNoShortCircuit() throws
     {
-        let a       : Bool  = true
-        let b       : Bool  = true
-        let c       : Bool  = false
-        let expr    : Bool  = a && b && c
+        let a   : Bool  = true
+        let b   : Bool  = true
+        let c   : Bool  = false
         
         let actual: String? = withOneExpectedFailure
         {
-            #XCTKAssert(expr)
+            #XCTKAssert(a && b && c)
         }
         
         let expected: String =
         """
+        \(AK.assert.macroDisplayName) failed
+        
         Expression: a && b && c
 
             a = true
@@ -100,18 +108,19 @@ internal final class MacroAssertionBooleanExprTests: XCTestKitCase
     
     func testOrChainFirstTrueShortCircuits() throws
     {
-        let a       : Bool  = true
-        let b       : Bool  = false
-        let c       : Bool  = true
-        let expr    : Bool  = a || b || c
+        let a   : Bool  = true
+        let b   : Bool  = false
+        let c   : Bool  = true
         
         let actual: String? = withOneExpectedFailure
         {
-            #XCTKAssertFalse(expr)
+            #XCTKAssertFalse(a || b || c)
         }
         
         let expected: String =
         """
+        \(AK.false.macroDisplayName) failed
+        
         Expression: a || b || c
 
             a = true ←
@@ -126,18 +135,19 @@ internal final class MacroAssertionBooleanExprTests: XCTestKitCase
     
     func testOrChainAllFalseNoShortCircuit() throws
     {
-        let a       : Bool  = false
-        let b       : Bool  = false
-        let c       : Bool  = false
-        let expr    : Bool  = a || b || c
+        let a   : Bool  = false
+        let b   : Bool  = false
+        let c   : Bool  = false
         
         let actual: String? = withOneExpectedFailure
         {
-            #XCTKAssertTrue(expr)
+            #XCTKAssertTrue(a || b || c)
         }
         
         let expected: String =
         """
+        \(AK.true.macroDisplayName) failed
+        
         Expression: a || b || c
 
             a = false ←
@@ -154,18 +164,19 @@ internal final class MacroAssertionBooleanExprTests: XCTestKitCase
     
     func testNestedOrInAndExprWithFalseLHS() throws
     {
-        let a       : Bool  = false
-        let b       : Bool  = false
-        let c       : Bool  = false
-        let expr    : Bool  = (a || b) && c
+        let a   : Bool  = false
+        let b   : Bool  = false
+        let c   : Bool  = false
         
         let actual: String? = withOneExpectedFailure
         {
-            #XCTKAssertTrue(expr)
+            #XCTKAssertTrue((a || b) && c)
         }
         
         let expected: String =
         """
+        \(AK.true.macroDisplayName) failed
+        
         Expression: (a || b) && c
 
             a = false ←
@@ -181,18 +192,19 @@ internal final class MacroAssertionBooleanExprTests: XCTestKitCase
     
     func testNestedOrInAndExprWithTrueLHS() throws
     {
-        let a       : Bool  = true
-        let b       : Bool  = false
-        let c       : Bool  = false
-        let expr    : Bool  = (a || b) && c
+        let a   : Bool  = true
+        let b   : Bool  = false
+        let c   : Bool  = false
         
         let actual: String? = withOneExpectedFailure
         {
-            #XCTKAssertTrue(expr)
+            #XCTKAssertTrue((a || b) && c)
         }
         
         let expected: String =
         """
+        \(AK.true.macroDisplayName) failed
+        
         Expression: (a || b) && c
 
             a = true
@@ -208,19 +220,20 @@ internal final class MacroAssertionBooleanExprTests: XCTestKitCase
     
     func testParenthesizedSingleExprUnwrapping() throws
     {
-        let a       : Bool  = false
-        let expr    : Bool  = (a)
+        let a: Bool = false
         
         let actual: String? = withOneExpectedFailure
         {
-            #XCTKAssertTrue(expr)
+            #XCTKAssertTrue((a))
         }
         
         let expected: String =
         """
-        Expression: a
+        \(AK.true.macroDisplayName) failed
+        
+        Expression: (a)
 
-            a = false ←
+            (a) = false ←
         """
         
         XCTAssertEqual(expected, actual)
@@ -230,19 +243,20 @@ internal final class MacroAssertionBooleanExprTests: XCTestKitCase
     
     func testDeeplyNestedExpr() throws
     {
-        let a       : Bool  = true
-        let b       : Bool  = false
-        let c       : Bool  = false
-        let d       : Bool  = true
-        let expr    : Bool  = ((a && (b)) || c) && d
+        let a   : Bool  = true
+        let b   : Bool  = false
+        let c   : Bool  = false
+        let d   : Bool  = true
         
         let actual: String? = withOneExpectedFailure
         {
-            #XCTKAssertTrue(expr)
+            #XCTKAssertTrue(((a && (b)) || c) && d)
         }
         
         let expected: String =
         """
+        \(AK.true.macroDisplayName) failed
+        
         Expression: ((a && (b)) || c) && d
 
             a = true
@@ -259,18 +273,19 @@ internal final class MacroAssertionBooleanExprTests: XCTestKitCase
     
     func testOperatorPrecedence() throws
     {
-        let a       : Bool  = false
-        let b       : Bool  = true
-        let c       : Bool  = false
-        let expr    : Bool  = a || b && c
+        let a   : Bool  = false
+        let b   : Bool  = true
+        let c   : Bool  = false
         
         let actual: String? = withOneExpectedFailure
         {
-            #XCTKAssertTrue(expr)
+            #XCTKAssertTrue(a || b && c)
         }
         
         let expected: String =
         """
+        \(AK.true.macroDisplayName) failed
+        
         Expression: a || b && c
 
             a = false ←
@@ -296,6 +311,8 @@ internal final class MacroAssertionBooleanExprTests: XCTestKitCase
         
         let expected: String =
         """
+        \(AK.true.macroDisplayName) failed
+        
         Expression: isValid
 
             isValid = false ←
@@ -317,6 +334,8 @@ internal final class MacroAssertionBooleanExprTests: XCTestKitCase
         
         let expected: String =
         """
+        \(AK.false.macroDisplayName) failed
+        
         Expression: isValid
 
             isValid = true ←
@@ -342,6 +361,8 @@ internal final class MacroAssertionBooleanExprTests: XCTestKitCase
         
         let expected: String =
         """
+        \(AK.true.macroDisplayName) failed
+        
         Expression: isValid() && isEnabled
 
             isValid() = false ←
@@ -358,22 +379,23 @@ internal final class MacroAssertionBooleanExprTests: XCTestKitCase
     
     func testNegation() throws
     {
-        let a       : Bool  = true
-        let b       : Bool  = false
-        let c       : Bool  = false
-        let expr    : Bool  = (!a || !(!b)) && !(!(!c))
+        let a   : Bool  = true
+        let b   : Bool  = false
+        let c   : Bool  = false
         
         let actual: String? = withOneExpectedFailure
         {
-            #XCTKAssertTrue(expr)
+            #XCTKAssertTrue((!a || !(!b)) && !(!(!c)))
         }
         
         let expected: String =
         """
+        \(AK.true.macroDisplayName) failed
+        
         Expression: (!a || !(!b)) && !(!(!c))
 
             !a = false ←
-            !!b = false ←
+            !(!b) = false ←
         
             (1 expression not evaluated)
         """
@@ -405,6 +427,8 @@ internal final class MacroAssertionBooleanExprTests: XCTestKitCase
         
         let expected: String =
         """
+        \(AK.true.macroDisplayName) failed
+        
         Expression: obj.isActive && obj.isValid && obj.value >= 30
 
             obj.isActive = true
@@ -439,10 +463,13 @@ internal final class MacroAssertionBooleanExprTests: XCTestKitCase
         
         let expected: String =
         """
+        \(AK.true.macroDisplayName) failed
+        
         Expression: obj.contains(key) && value.isValid()
 
             obj.contains(key) = false ←
-            value.isValid() = false ←
+
+            (1 expression not evaluated)
         """
         
         XCTAssertEqual(expected, actual)

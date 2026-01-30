@@ -122,28 +122,22 @@ internal final class FunctionAssertionIntegrationTests: XCTestKitCase
     
     func testUnwrapThrowsXCTKUnwrapErrorOnNil() throws
     {
-        XCTExpectFailure()
-        
-        continueAfterFailure = true
-        
-        defer
+        withOneExpectedFailure
         {
-            continueAfterFailure = false
-        }
-        
-        do
-        {
-            _ = try XCTKUnwrap(Optional<Int>(nil))
-            
-            XCTFail("Expected XCTKUnwrapError to be thrown")
-        }
-        catch is XCTKUnwrapError
-        {
-            /// Expected.
-        }
-        catch
-        {
-            XCTFail("Expected XCTKUnwrapError, got \(type(of: error))")
+            do
+            {
+                _ = try XCTKUnwrap(Optional<Int>(nil))
+                
+                XCTFail("Expected XCTKUnwrapError to be thrown")
+            }
+            catch is XCTKUnwrapError
+            {
+                /// Expected.
+            }
+            catch
+            {
+                XCTFail("Expected XCTKUnwrapError, got \(type(of: error))")
+            }
         }
     }
     
@@ -151,30 +145,24 @@ internal final class FunctionAssertionIntegrationTests: XCTestKitCase
     
     func testUnwrapRethrowsOriginalError() throws
     {
-        XCTExpectFailure()
-        
-        continueAfterFailure = true
-        
-        defer
+        withOneExpectedFailure
         {
-            continueAfterFailure = false
-        }
-        
-        do
-        {
-            let expr: () throws -> Bool = { try TestError.throwError() }
-            
-            _ = try XCTKUnwrap(try expr())
-            
-            XCTFail("Expected TestError to be thrown")
-        }
-        catch is TestError
-        {
-            /// Expected.
-        }
-        catch
-        {
-            XCTFail("Expected TestError, got \(type(of: error))")
+            do
+            {
+                let expr: () throws -> Bool = { try TestError.throwError() }
+                
+                _ = try XCTKUnwrap(try expr())
+                
+                XCTFail("Expected TestError to be thrown")
+            }
+            catch is TestError
+            {
+                /// Expected.
+            }
+            catch
+            {
+                XCTFail("Expected TestError, got \(type(of: error))")
+            }
         }
     }
     
@@ -468,13 +456,6 @@ internal final class FunctionAssertionIntegrationTests: XCTestKitCase
     
     func testAssertThrowsDoesNotCallHandlerOnNoThrow() throws
     {
-        continueAfterFailure = true
-        
-        defer
-        {
-            continueAfterFailure = false
-        }
-        
         var handlerCalled: Bool = false
         
         let expr: () throws -> Int = { return 0 }

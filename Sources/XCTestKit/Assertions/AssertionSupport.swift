@@ -39,6 +39,7 @@ import XCTestKitCore
 ///   filename of the test case in which this function was called.
 ///   - line: The line where the failure occurs. The default value is the line
 ///   number where this function was called.
+///   - options: The options for testing.
 ///   - errorHandler: An optional handler for errors thrown by `expr`.
 /// - Returns: A `Result` containing the value or error produced by evaluating
 /// the given expression.
@@ -48,6 +49,7 @@ internal func evaluateExpr<T>(
     message         : () -> String?,
     file            : StaticString,
     line            : UInt,
+    options         : XCTKOptions?,
     errorHandler    : (any Error) -> Void   = { _ in }
 ) -> Result<T, Error>
 {
@@ -68,7 +70,8 @@ internal func evaluateExpr<T>(
                 reason:     "threw error \(quote(error))",
                 message:    message,
                 file:       file,
-                line:       line
+                line:       line,
+                options:    options
             )
         }
         
@@ -91,12 +94,14 @@ internal func evaluateExpr<T>(
 ///   - message: The description of a failure.
 ///   - file: The file where the failure occurs.
 ///   - line: The line where the failure occurs.
+///   - options: The options for testing.
 public func failAssertion(
     kindName    : String,
     reason      : String?,
     message     : String?,
     file        : StaticString,
-    line        : UInt
+    line        : UInt,
+    options     : XCTKOptions?
 )
 {
     var text: String = "\(kindName) failed"
@@ -129,12 +134,14 @@ public func failAssertion(
 ///   - message: The description of a failure.
 ///   - file: The file where the failure occurs.
 ///   - line: The line where the failure occurs.
+///   - options: The options for testing.
 internal func failAssertion(
     kind    : AssertionKind,
     reason  : String?,
     message : () -> String?,
     file    : StaticString,
-    line    : UInt
+    line    : UInt,
+    options : XCTKOptions?
 )
 {
     var text: String = "\(kind.name) failed"
@@ -168,18 +175,19 @@ internal func failAssertion(
 ///   - message: The description of a failure.
 ///   - file: The file where the failure occurs.
 ///   - line: The line where the failure occurs.
+///   - options: The options for testing.
 internal func failAssertion(
     kind    : AssertionKind,
     diff    : DiffNode,
-    options : XCTKFormatOptions,
     message : () -> String?,
     file    : StaticString,
-    line    : UInt
+    line    : UInt,
+    options : XCTKOptions?
 )
 {
     let diffOutput: String = Formatter.format(
         diff,
-        options: options
+        options: options?.formatOptions
     )
     
     var fullOutput: String = "\(kind.name) failed"
@@ -213,6 +221,7 @@ internal func failAssertion(
 ///   - message: The description of a failure.
 ///   - file: The file where the failure occurs.
 ///   - line: The line where the failure occurs.
+///   - options: The options for testing.
 internal func failAssertion(
     kind            : AssertionKind,
     exprText        : String,
@@ -220,16 +229,16 @@ internal func failAssertion(
     notEvaluated    : Int,
     message         : () -> String?,
     file            : StaticString,
-    line            : UInt
+    line            : UInt,
+    options         : XCTKOptions?
 )
 {
-    // TODO: All assertions accept options? Or is formatting only global?
     let output: String = Formatter.formatBooleanExpr(
         exprText:       exprText,
         evaluated:      evaluated,
         notEvaluated:   notEvaluated,
         expectedValue:  kind == .false ? false : true,
-        options:        XCTKConfig.global.formatOptions
+        options:        options?.formatOptions
     )
     
     var text: String = "\(kind.macroDisplayName) failed"
@@ -260,13 +269,15 @@ internal func failAssertion(
 ///   - message: The description of a failure.
 ///   - file: The file where the failure occurs.
 ///   - line: The line where the failure occurs.
+///   - options: The options for testing.
 internal func failAssertion(
     kind        : AssertionKind,
     exprText    : String,
     actual      : String?,
     message     : () -> String?,
     file        : StaticString,
-    line        : UInt
+    line        : UInt,
+    options     : XCTKOptions?
 )
 {
     var text: String = "\(kind.macroDisplayName) failed"
@@ -305,6 +316,7 @@ internal func failAssertion(
 ///   - message: The description of a failure.
 ///   - file: The file where the failure occurs.
 ///   - line: The line where the failure occurs.
+///   - options: The options for testing.
 internal func failAssertion(
     kind        : AssertionKind,
     expr1Text   : String,
@@ -312,7 +324,8 @@ internal func failAssertion(
     reason      : String,
     message     : () -> String?,
     file        : StaticString,
-    line        : UInt
+    line        : UInt,
+    options     : XCTKOptions?
 )
 {
     var text: String = "\(kind.macroDisplayName) failed: \(reason)"
@@ -347,20 +360,21 @@ internal func failAssertion(
 ///   - message: The description of a failure.
 ///   - file: The file where the failure occurs.
 ///   - line: The line where the failure occurs.
+///   - options: The options for testing.
 internal func failAssertion(
     kind            : AssertionKind,
     expectedText    : String,
     actualText      : String,
     diff            : DiffNode,
-    options         : XCTKFormatOptions,
     message         : () -> String?,
     file            : StaticString,
-    line            : UInt
+    line            : UInt,
+    options         : XCTKOptions?
 )
 {
     let diffOutput: String = Formatter.format(
         diff,
-        options: options
+        options: options?.formatOptions
     )
     
     var text: String = "\(kind.macroDisplayName) failed"
@@ -387,8 +401,9 @@ internal func failAssertion(
 
 // MARK: - XCTKUnwrapError
 
-/// The error thrown by ``XCTKUnwrap(_:_:file:line:)-func`` or
-/// ``XCTKUnwrap(_:_:file:line:)-macro``when the unwrapped value is `nil`.
+/// The error thrown by ``XCTKUnwrap(_:_:file:line:options:)-func`` or
+/// ``XCTKUnwrap(_:_:file:line:options:)-macro``when the unwrapped value
+/// is `nil`.
 public struct XCTKUnwrapError: Error, CustomStringConvertible
 {
     /// The error description.

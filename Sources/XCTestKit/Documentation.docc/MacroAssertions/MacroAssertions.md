@@ -16,7 +16,7 @@ are not equal, XCTestKit computes a structural diff and formats it as a
 path-based summary, providing clear and actionable insight into where the 
 values differ. Other assertions do not produce diffs, since they assert 
 conditions where a diff is not meaningful (for example, 
-``XCTKAssertTrue(_:_:file:line:)-macro`` asserts a binary condition).
+``XCTKAssertTrue(_:_:file:line:options:)-macro`` asserts a binary condition).
 
 Additionally, macro assertions capture the literal source text of expressions 
 for use in failure output. For boolean macro assertions, compound expressions 

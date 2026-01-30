@@ -44,7 +44,8 @@ internal func evaluateXCTKAssert(
     expr    : () throws -> Bool,
     message : () -> String,
     file    : StaticString,
-    line    : UInt
+    line    : UInt,
+    options : XCTKOptions?
 )
 {
     let assertionKind: AssertionKind = .assert
@@ -54,7 +55,8 @@ internal func evaluateXCTKAssert(
         assertion:  assertionKind,
         message:    message,
         file:       file,
-        line:       line
+        line:       line,
+        options:    options
     )
     
     guard case let .success(value) = result
@@ -73,7 +75,8 @@ internal func evaluateXCTKAssert(
         reason:     nil,
         message:    message,
         file:       file,
-        line:       line
+        line:       line,
+        options:    options
     )
 }
 
@@ -83,7 +86,8 @@ internal func evaluateXCTKAssertTrue(
     expr    : () throws -> Bool,
     message : () -> String,
     file    : StaticString,
-    line    : UInt
+    line    : UInt,
+    options : XCTKOptions?
 )
 {
     let assertionKind: AssertionKind = .true
@@ -93,7 +97,8 @@ internal func evaluateXCTKAssertTrue(
         assertion:  assertionKind,
         message:    message,
         file:       file,
-        line:       line
+        line:       line,
+        options:    options
     )
     
     guard case let .success(value) = result
@@ -112,7 +117,8 @@ internal func evaluateXCTKAssertTrue(
         reason:     nil,
         message:    message,
         file:       file,
-        line:       line
+        line:       line,
+        options:    options
     )
 }
 
@@ -122,7 +128,8 @@ internal func evaluateXCTKAssertFalse(
     expr    : () throws -> Bool,
     message : () -> String,
     file    : StaticString,
-    line    : UInt
+    line    : UInt,
+    options : XCTKOptions?
 )
 {
     let assertionKind: AssertionKind = .false
@@ -132,7 +139,8 @@ internal func evaluateXCTKAssertFalse(
         assertion:  assertionKind,
         message:    message,
         file:       file,
-        line:       line
+        line:       line,
+        options:    options
     )
     
     guard case let .success(value) = result
@@ -151,7 +159,8 @@ internal func evaluateXCTKAssertFalse(
         reason:     nil,
         message:    message,
         file:       file,
-        line:       line
+        line:       line,
+        options:    options
     )
 }
 
@@ -166,7 +175,8 @@ internal func evaluateXCTKAssert(
     notEvaluated    : Int,
     message         : () -> String,
     file            : StaticString,
-    line            : UInt
+    line            : UInt,
+    options         : XCTKOptions?
 )
 {
     if result
@@ -181,7 +191,8 @@ internal func evaluateXCTKAssert(
         notEvaluated:   notEvaluated,
         message:        message,
         file:           file,
-        line:           line
+        line:           line,
+        options:        options
     )
 }
 
@@ -194,7 +205,8 @@ internal func evaluateXCTKAssertTrue(
     notEvaluated    : Int,
     message         : () -> String,
     file            : StaticString,
-    line            : UInt
+    line            : UInt,
+    options         : XCTKOptions?
 )
 {
     if result
@@ -209,7 +221,8 @@ internal func evaluateXCTKAssertTrue(
         notEvaluated:   notEvaluated,
         message:        message,
         file:           file,
-        line:           line
+        line:           line,
+        options:        options
     )
 }
 
@@ -222,7 +235,8 @@ internal func evaluateXCTKAssertFalse(
     notEvaluated    : Int,
     message         : () -> String,
     file            : StaticString,
-    line            : UInt
+    line            : UInt,
+    options         : XCTKOptions?
 )
 {
     if !result
@@ -237,7 +251,8 @@ internal func evaluateXCTKAssertFalse(
         notEvaluated:   notEvaluated,
         message:        message,
         file:           file,
-        line:           line
+        line:           line,
+        options:        options
     )
 }
 
@@ -250,7 +265,8 @@ internal func evaluateXCTKAssertNil(
     expr        : () throws -> Any?,
     message     : () -> String,
     file        : StaticString,
-    line        : UInt
+    line        : UInt,
+    options     : XCTKOptions?
 )
 {
     let assertionKind: AssertionKind = .nil
@@ -260,7 +276,8 @@ internal func evaluateXCTKAssertNil(
         assertion:  assertionKind,
         message:    message,
         file:       file,
-        line:       line
+        line:       line,
+        options:    options
     )
     
     guard case let .success(value) = result
@@ -283,7 +300,8 @@ internal func evaluateXCTKAssertNil(
                 reason:     nil,
                 message:    message,
                 file:       file,
-                line:       line
+                line:       line,
+                options:    options
             )
             
         case let .single(text):
@@ -294,7 +312,8 @@ internal func evaluateXCTKAssertNil(
                 actual:     String(describing: value!),
                 message:    message,
                 file:       file,
-                line:       line
+                line:       line,
+                options:    options
             )
             
         case .double:
@@ -310,7 +329,8 @@ internal func evaluateXCTKAssertNotNil(
     expr        : () throws -> Any?,
     message     : () -> String,
     file        : StaticString,
-    line        : UInt
+    line        : UInt,
+    options     : XCTKOptions?
 )
 {
     let assertionKind: AssertionKind = .notNil
@@ -320,7 +340,8 @@ internal func evaluateXCTKAssertNotNil(
         assertion:  assertionKind,
         message:    message,
         file:       file,
-        line:       line
+        line:       line,
+        options:    options
     )
     
     guard case let .success(value) = result
@@ -343,7 +364,8 @@ internal func evaluateXCTKAssertNotNil(
                 reason:     nil,
                 message:    message,
                 file:       file,
-                line:       line
+                line:       line,
+                options:    options
             )
             
         case let .single(text):
@@ -354,7 +376,8 @@ internal func evaluateXCTKAssertNotNil(
                 actual:     nil,
                 message:    message,
                 file:       file,
-                line:       line
+                line:       line,
+                options:    options
             )
             
         case .double:
@@ -370,7 +393,8 @@ internal func evaluateXCTKUnwrap<T>(
     expr        : () throws -> T?,
     message     : () -> String,
     file        : StaticString,
-    line        : UInt
+    line        : UInt,
+    options     : XCTKOptions?
 ) throws -> T
 {
     let assertionKind: AssertionKind = .unwrap
@@ -380,7 +404,8 @@ internal func evaluateXCTKUnwrap<T>(
         assertion:  assertionKind,
         message:    message,
         file:       file,
-        line:       line
+        line:       line,
+        options:    options
     )
     
     switch result
@@ -401,7 +426,8 @@ internal func evaluateXCTKUnwrap<T>(
                         reason:     nil,
                         message:    message,
                         file:       file,
-                        line:       line
+                        line:       line,
+                        options:    options
                     )
                     
                 case let .single(text):
@@ -412,7 +438,8 @@ internal func evaluateXCTKUnwrap<T>(
                         actual:     nil,
                         message:    message,
                         file:       file,
-                        line:       line
+                        line:       line,
+                        options:    options
                     )
                     
                 case .double:
@@ -449,7 +476,8 @@ internal func evaluateXCTKAssertEqual<T>(
         assertion:  assertionKind,
         message:    message,
         file:       file,
-        line:       line
+        line:       line,
+        options:    options
     )
     
     guard case let .success(exp) = expResult
@@ -465,7 +493,8 @@ internal func evaluateXCTKAssertEqual<T>(
         assertion:  assertionKind,
         message:    message,
         file:       file,
-        line:       line
+        line:       line,
+        options:    options
     )
     
     guard case let .success(act) = actResult
@@ -493,7 +522,8 @@ internal func evaluateXCTKAssertEqual<T>(
             reason:     "(\(quote(exp))) is not equal to (\(quote(act)))",
             message:    message,
             file:       file,
-            line:       line
+            line:       line,
+            options:    options
         )
         
         return
@@ -512,10 +542,10 @@ internal func evaluateXCTKAssertEqual<T>(
             failAssertion(
                 kind:       assertionKind,
                 diff:       diff,
-                options:    opts.formatOptions,
                 message:    message,
                 file:       file,
-                line:       line
+                line:       line,
+                options:    options
             )
             
         case .single:
@@ -529,10 +559,10 @@ internal func evaluateXCTKAssertEqual<T>(
                 expectedText:   expText,
                 actualText:     actText,
                 diff:           diff,
-                options:        opts.formatOptions,
                 message:        message,
                 file:           file,
-                line:           line
+                line:           line,
+                options:        options
             )
     }
 }
@@ -545,7 +575,8 @@ internal func evaluateXCTKAssertNotEqual<T>(
     expr2       : () throws -> T,
     message     : () -> String,
     file        : StaticString,
-    line        : UInt
+    line        : UInt,
+    options     : XCTKOptions?
 ) where T : Equatable
 {
     let assertionKind: AssertionKind = .notEqual
@@ -555,7 +586,8 @@ internal func evaluateXCTKAssertNotEqual<T>(
         assertion:  assertionKind,
         message:    message,
         file:       file,
-        line:       line
+        line:       line,
+        options:    options
     )
     
     guard case let .success(value1) = result1
@@ -571,7 +603,8 @@ internal func evaluateXCTKAssertNotEqual<T>(
         assertion:  assertionKind,
         message:    message,
         file:       file,
-        line:       line
+        line:       line,
+        options:    options
     )
     
     guard case let .success(value2) = result2
@@ -598,7 +631,8 @@ internal func evaluateXCTKAssertNotEqual<T>(
                 reason:     reason,
                 message:    message,
                 file:       file,
-                line:       line
+                line:       line,
+                options:    options
             )
             
         case .single:
@@ -614,7 +648,8 @@ internal func evaluateXCTKAssertNotEqual<T>(
                 reason:     reason,
                 message:    message,
                 file:       file,
-                line:       line
+                line:       line,
+                options:    options
             )
     }
 }
@@ -627,7 +662,8 @@ internal func evaluateXCTKAssertIdentical(
     expr2       : () throws -> AnyObject?,
     message     : () -> String,
     file        : StaticString,
-    line        : UInt
+    line        : UInt,
+    options     : XCTKOptions?
 )
 {
     let assertionKind   : AssertionKind     = .identical
@@ -644,7 +680,8 @@ internal func evaluateXCTKAssertIdentical(
             reason:     "threw error \(quote(error))",
             message:    message,
             file:       file,
-            line:       line
+            line:       line,
+            options:    options
         )
         
         return
@@ -665,7 +702,8 @@ internal func evaluateXCTKAssertIdentical(
             reason:     "threw error \(quote(error))",
             message:    message,
             file:       file,
-            line:       line
+            line:       line,
+            options:    options
         )
         
         return
@@ -690,7 +728,8 @@ internal func evaluateXCTKAssertIdentical(
                 reason:     reason,
                 message:    message,
                 file:       file,
-                line:       line
+                line:       line,
+                options:    options
             )
             
         case .single:
@@ -706,7 +745,8 @@ internal func evaluateXCTKAssertIdentical(
                 reason:     reason,
                 message:    message,
                 file:       file,
-                line:       line
+                line:       line,
+                options:    options
             )
     }
 }
@@ -719,7 +759,8 @@ internal func evaluateXCTKAssertNotIdentical(
     expr2       : () throws -> AnyObject?,
     message     : () -> String,
     file        : StaticString,
-    line        : UInt
+    line        : UInt,
+    options     : XCTKOptions?
 )
 {
     let assertionKind   : AssertionKind     = .notIdentical
@@ -736,7 +777,8 @@ internal func evaluateXCTKAssertNotIdentical(
             reason:     "threw error \(quote(error))",
             message:    message,
             file:       file,
-            line:       line
+            line:       line,
+            options:    options
         )
         
         return
@@ -757,7 +799,8 @@ internal func evaluateXCTKAssertNotIdentical(
             reason:     "threw error \(quote(error))",
             message:    message,
             file:       file,
-            line:       line
+            line:       line,
+            options:    options
         )
         
         return
@@ -781,7 +824,8 @@ internal func evaluateXCTKAssertNotIdentical(
                 reason:     reason,
                 message:    message,
                 file:       file,
-                line:       line
+                line:       line,
+                options:    options
             )
             
         case .single:
@@ -797,7 +841,8 @@ internal func evaluateXCTKAssertNotIdentical(
                 reason:     reason,
                 message:    message,
                 file:       file,
-                line:       line
+                line:       line,
+                options:    options
             )
     }
 }
@@ -811,7 +856,8 @@ internal func evaluateXCTKAssertEqual<T>(
     accuracy    : T,
     message     : () -> String,
     file        : StaticString,
-    line        : UInt
+    line        : UInt,
+    options     : XCTKOptions?
 ) where T : FloatingPoint
 {
     let assertionKind: AssertionKind = .equalWithAccuracy
@@ -821,7 +867,8 @@ internal func evaluateXCTKAssertEqual<T>(
         assertion:  assertionKind,
         message:    message,
         file:       file,
-        line:       line
+        line:       line,
+        options:    options
     )
     
     guard case let .success(value1) = result1
@@ -837,7 +884,8 @@ internal func evaluateXCTKAssertEqual<T>(
         assertion:  assertionKind,
         message:    message,
         file:       file,
-        line:       line
+        line:       line,
+        options:    options
     )
     
     guard case let .success(value2) = result2
@@ -872,7 +920,8 @@ internal func evaluateXCTKAssertEqual<T>(
                 reason:     reason,
                 message:    message,
                 file:       file,
-                line:       line
+                line:       line,
+                options:    options
             )
             
         case .single:
@@ -888,7 +937,8 @@ internal func evaluateXCTKAssertEqual<T>(
                 reason:     reason,
                 message:    message,
                 file:       file,
-                line:       line
+                line:       line,
+                options:    options
             )
     }
 }
@@ -902,7 +952,8 @@ internal func evaluateXCTKAssertEqual<T>(
     accuracy    : T,
     message     : () -> String,
     file        : StaticString,
-    line        : UInt
+    line        : UInt,
+    options     : XCTKOptions?
 ) where T : Numeric
 {
     let assertionKind: AssertionKind = .equalWithAccuracy
@@ -912,7 +963,8 @@ internal func evaluateXCTKAssertEqual<T>(
         assertion:  assertionKind,
         message:    message,
         file:       file,
-        line:       line
+        line:       line,
+        options:    options
     )
     
     guard case let .success(value1) = result1
@@ -928,7 +980,8 @@ internal func evaluateXCTKAssertEqual<T>(
         assertion:  assertionKind,
         message:    message,
         file:       file,
-        line:       line
+        line:       line,
+        options:    options
     )
     
     guard case let .success(value2) = result2
@@ -963,7 +1016,8 @@ internal func evaluateXCTKAssertEqual<T>(
                 reason:     reason,
                 message:    message,
                 file:       file,
-                line:       line
+                line:       line,
+                options:    options
             )
             
         case .single:
@@ -979,7 +1033,8 @@ internal func evaluateXCTKAssertEqual<T>(
                 reason:     reason,
                 message:    message,
                 file:       file,
-                line:       line
+                line:       line,
+                options:    options
             )
     }
 }
@@ -993,7 +1048,8 @@ internal func evaluateXCTKAssertNotEqual<T>(
     accuracy    : T,
     message     : () -> String,
     file        : StaticString,
-    line        : UInt
+    line        : UInt,
+    options     : XCTKOptions?
 ) where T : FloatingPoint
 {
     let assertionKind: AssertionKind = .notEqualWithAccuracy
@@ -1003,7 +1059,8 @@ internal func evaluateXCTKAssertNotEqual<T>(
         assertion:  assertionKind,
         message:    message,
         file:       file,
-        line:       line
+        line:       line,
+        options:    options
     )
     
     guard case let .success(value1) = result1
@@ -1019,7 +1076,8 @@ internal func evaluateXCTKAssertNotEqual<T>(
         assertion:  assertionKind,
         message:    message,
         file:       file,
-        line:       line
+        line:       line,
+        options:    options
     )
     
     guard case let .success(value2) = result2
@@ -1053,7 +1111,8 @@ internal func evaluateXCTKAssertNotEqual<T>(
                 reason:     reason,
                 message:    message,
                 file:       file,
-                line:       line
+                line:       line,
+                options:    options
             )
             
         case .single:
@@ -1069,7 +1128,8 @@ internal func evaluateXCTKAssertNotEqual<T>(
                 reason:     reason,
                 message:    message,
                 file:       file,
-                line:       line
+                line:       line,
+                options:    options
             )
     }
 }
@@ -1083,7 +1143,8 @@ internal func evaluateXCTKAssertNotEqual<T>(
     accuracy    : T,
     message     : () -> String,
     file        : StaticString,
-    line        : UInt
+    line        : UInt,
+    options     : XCTKOptions?
 ) where T : Numeric
 {
     let assertionKind: AssertionKind = .notEqualWithAccuracy
@@ -1093,7 +1154,8 @@ internal func evaluateXCTKAssertNotEqual<T>(
         assertion:  assertionKind,
         message:    message,
         file:       file,
-        line:       line
+        line:       line,
+        options:    options
     )
     
     guard case let .success(value1) = result1
@@ -1109,7 +1171,8 @@ internal func evaluateXCTKAssertNotEqual<T>(
         assertion:  assertionKind,
         message:    message,
         file:       file,
-        line:       line
+        line:       line,
+        options:    options
     )
     
     guard case let .success(value2) = result2
@@ -1143,7 +1206,8 @@ internal func evaluateXCTKAssertNotEqual<T>(
                 reason:     reason,
                 message:    message,
                 file:       file,
-                line:       line
+                line:       line,
+                options:    options
             )
             
         case .single:
@@ -1159,7 +1223,8 @@ internal func evaluateXCTKAssertNotEqual<T>(
                 reason:     reason,
                 message:    message,
                 file:       file,
-                line:       line
+                line:       line,
+                options:    options
             )
     }
 }
@@ -1174,7 +1239,8 @@ internal func evaluateXCTKAssertGreaterThan<T>(
     expr2       : () throws -> T,
     message     : () -> String,
     file        : StaticString,
-    line        : UInt
+    line        : UInt,
+    options     : XCTKOptions?
 ) where T : Comparable
 {
     let assertionKind: AssertionKind = .greaterThan
@@ -1184,7 +1250,8 @@ internal func evaluateXCTKAssertGreaterThan<T>(
         assertion:  assertionKind,
         message:    message,
         file:       file,
-        line:       line
+        line:       line,
+        options:    options
     )
     
     guard case let .success(value1) = result1
@@ -1200,7 +1267,8 @@ internal func evaluateXCTKAssertGreaterThan<T>(
         assertion:  assertionKind,
         message:    message,
         file:       file,
-        line:       line
+        line:       line,
+        options:    options
     )
     
     guard case let .success(value2) = result2
@@ -1228,7 +1296,8 @@ internal func evaluateXCTKAssertGreaterThan<T>(
                 reason:     reason,
                 message:    message,
                 file:       file,
-                line:       line
+                line:       line,
+                options:    options
             )
             
         case .single:
@@ -1244,7 +1313,8 @@ internal func evaluateXCTKAssertGreaterThan<T>(
                 reason:     reason,
                 message:    message,
                 file:       file,
-                line:       line
+                line:       line,
+                options:    options
             )
     }
 }
@@ -1257,7 +1327,8 @@ internal func evaluateXCTKAssertGreaterThanOrEqual<T>(
     expr2       : () throws -> T,
     message     : () -> String,
     file        : StaticString,
-    line        : UInt
+    line        : UInt,
+    options     : XCTKOptions?
 ) where T : Comparable
 {
     let assertionKind: AssertionKind = .greaterThanOrEqual
@@ -1267,7 +1338,8 @@ internal func evaluateXCTKAssertGreaterThanOrEqual<T>(
         assertion:  assertionKind,
         message:    message,
         file:       file,
-        line:       line
+        line:       line,
+        options:    options
     )
     
     guard case let .success(value1) = result1
@@ -1283,7 +1355,8 @@ internal func evaluateXCTKAssertGreaterThanOrEqual<T>(
         assertion:  assertionKind,
         message:    message,
         file:       file,
-        line:       line
+        line:       line,
+        options:    options
     )
     
     guard case let .success(value2) = result2
@@ -1311,7 +1384,8 @@ internal func evaluateXCTKAssertGreaterThanOrEqual<T>(
                 reason:     reason,
                 message:    message,
                 file:       file,
-                line:       line
+                line:       line,
+                options:    options
             )
             
         case .single:
@@ -1327,7 +1401,8 @@ internal func evaluateXCTKAssertGreaterThanOrEqual<T>(
                 reason:     reason,
                 message:    message,
                 file:       file,
-                line:       line
+                line:       line,
+                options:    options
             )
     }
 }
@@ -1340,7 +1415,8 @@ internal func evaluateXCTKAssertLessThanOrEqual<T>(
     expr2       : () throws -> T,
     message     : () -> String,
     file        : StaticString,
-    line        : UInt
+    line        : UInt,
+    options     : XCTKOptions?
 ) where T : Comparable
 {
     let assertionKind: AssertionKind = .lessThanOrEqual
@@ -1350,7 +1426,8 @@ internal func evaluateXCTKAssertLessThanOrEqual<T>(
         assertion:  assertionKind,
         message:    message,
         file:       file,
-        line:       line
+        line:       line,
+        options:    options
     )
     
     guard case let .success(value1) = result1
@@ -1366,7 +1443,8 @@ internal func evaluateXCTKAssertLessThanOrEqual<T>(
         assertion:  assertionKind,
         message:    message,
         file:       file,
-        line:       line
+        line:       line,
+        options:    options
     )
     
     guard case let .success(value2) = result2
@@ -1394,7 +1472,8 @@ internal func evaluateXCTKAssertLessThanOrEqual<T>(
                 reason:     reason,
                 message:    message,
                 file:       file,
-                line:       line
+                line:       line,
+                options:    options
             )
             
         case .single:
@@ -1410,7 +1489,8 @@ internal func evaluateXCTKAssertLessThanOrEqual<T>(
                 reason:     reason,
                 message:    message,
                 file:       file,
-                line:       line
+                line:       line,
+                options:    options
             )
     }
 }
@@ -1423,7 +1503,8 @@ internal func evaluateXCTKAssertLessThan<T>(
     expr2       : () throws -> T,
     message     : () -> String,
     file        : StaticString,
-    line        : UInt
+    line        : UInt,
+    options     : XCTKOptions?
 ) where T : Comparable
 {
     let assertionKind: AssertionKind = .lessThan
@@ -1433,7 +1514,8 @@ internal func evaluateXCTKAssertLessThan<T>(
         assertion:  assertionKind,
         message:    message,
         file:       file,
-        line:       line
+        line:       line,
+        options:    options
     )
     
     guard case let .success(value1) = result1
@@ -1449,7 +1531,8 @@ internal func evaluateXCTKAssertLessThan<T>(
         assertion:  assertionKind,
         message:    message,
         file:       file,
-        line:       line
+        line:       line,
+        options:    options
     )
     
     guard case let .success(value2) = result2
@@ -1477,7 +1560,8 @@ internal func evaluateXCTKAssertLessThan<T>(
                 reason:     reason,
                 message:    message,
                 file:       file,
-                line:       line
+                line:       line,
+                options:    options
             )
             
         case .single:
@@ -1493,7 +1577,8 @@ internal func evaluateXCTKAssertLessThan<T>(
                 reason:     reason,
                 message:    message,
                 file:       file,
-                line:       line
+                line:       line,
+                options:    options
             )
     }
 }
@@ -1508,6 +1593,7 @@ internal func evaluateXCTKAssertThrowsError<T>(
     message         : () -> String,
     file            : StaticString,
     line            : UInt,
+    options         : XCTKOptions?,
     errorHandler    : (any Error) -> Void
 )
 {
@@ -1519,6 +1605,7 @@ internal func evaluateXCTKAssertThrowsError<T>(
         message:        message,
         file:           file,
         line:           line,
+        options:        options,
         errorHandler:   errorHandler
     )
     
@@ -1536,7 +1623,8 @@ internal func evaluateXCTKAssertThrowsError<T>(
                 reason:     nil,
                 message:    message,
                 file:       file,
-                line:       line
+                line:       line,
+                options:    options
             )
             
         case let .single(text):
@@ -1547,7 +1635,8 @@ internal func evaluateXCTKAssertThrowsError<T>(
                 actual:     nil,
                 message:    message,
                 file:       file,
-                line:       line
+                line:       line,
+                options:    options
             )
             
         case .double:
@@ -1563,7 +1652,8 @@ internal func evaluateXCTKAssertNoThrow<T>(
     expr        : () throws -> T,
     message     : () -> String,
     file        : StaticString,
-    line        : UInt
+    line        : UInt,
+    options     : XCTKOptions?
 )
 {
     let assertionKind: AssertionKind = .noThrow
@@ -1583,7 +1673,8 @@ internal func evaluateXCTKAssertNoThrow<T>(
                     reason:     "threw error \(quote(error))",
                     message:    message,
                     file:       file,
-                    line:       line
+                    line:       line,
+                    options:    options
                 )
                 
             case let .single(text):
@@ -1594,7 +1685,8 @@ internal func evaluateXCTKAssertNoThrow<T>(
                     actual:     String(describing: error),
                     message:    message,
                     file:       file,
-                    line:       line
+                    line:       line,
+                    options:    options
                 )
                 
             case .double:

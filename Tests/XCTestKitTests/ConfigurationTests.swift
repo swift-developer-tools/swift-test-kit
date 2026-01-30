@@ -108,12 +108,19 @@ internal final class ConfigurationTests: XCTestKitCase
     {
         XCTKConfig.global.diffEnabled = true
         
-        XCTExpectFailure
+        let output1: String? = withOneExpectedFailure
         {
-            return !$0.compactDescription.contains("differs at:")
+            XCTKAssertEqual(1, 2)
         }
         
-        XCTKAssertEqual(1, 2, options: XCTKOptions(diffEnabled: false))
+        let output2: String? = withOneExpectedFailure
+        {
+            XCTKAssertEqual(1, 2, options: .init(diffEnabled: false))
+        }
+        
+        XCTKAssertNotNil(output1)
+        XCTKAssertNotNil(output2)
+        XCTKAssertNotEqual(output1, output2)
     }
     
     

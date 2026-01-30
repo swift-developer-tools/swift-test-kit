@@ -66,17 +66,20 @@ internal struct Formatter
     /// Formats the given root diff node into a string.
     /// - Parameters:
     ///   - node: The root diff node to format.
-    ///   - options: The formatting options to use. The default value is a
-    ///   default-initialized ``XCTKFormatOptions`` instance.
+    ///   - options: The options for testing. The default value is `nil`, which
+    ///   falls back to using global options.
     /// - Returns: The formatting string.
     static func format(
         _ node  : DiffNode,
-        options : XCTKFormatOptions     = .init()
+        options : XCTKFormatOptions?    = nil
     ) -> String
     {
+        let opts: XCTKFormatOptions = options
+            ?? XCTKConfig.global.formatOptions
+        
         let context = FormatterContext(
             node:       node,
-            options:    options
+            options:    opts
         )
         
         let formatter = Formatter(context: context)
@@ -95,27 +98,30 @@ internal struct Formatter
     ///   - evaluated: The evaluated boolean expressions.
     ///   - notEvaluated: The number of unevaluated boolean expressions.
     ///   - expectedValue: The value expected by the assertion.
-    ///   - options: The formatting options to use. The default value is a
-    ///   default-initialized ``XCTKFormatOptions`` instance.
+    ///   - options: The options for testing. The default value is `nil`, which
+    ///   falls back to using global options.
     /// - Returns: The formatted decomposition.
     static func formatBooleanExpr(
         exprText        : String,
         evaluated       : [XCTKBooleanExpr],
         notEvaluated    : Int,
         expectedValue   : Bool,
-        options         : XCTKFormatOptions     = .init()
+        options         : XCTKFormatOptions?    = nil
     ) -> String
     {
-        let exprsToShow: [XCTKBooleanExpr] = options.showAllEvaluated
+        let opts: XCTKFormatOptions = options
+            ?? XCTKConfig.global.formatOptions
+        
+        let exprsToShow: [XCTKBooleanExpr] = opts.showAllEvaluated
             ? evaluated
             : evaluated.filter { $0.value != expectedValue }
         
-        let totalDiffCount: Int? = options.countDiffs
+        let totalDiffCount: Int? = opts.countDiffs
             ? exprsToShow.count
             : nil
         
         let context = FormatterContext(
-            options:            options,
+            options:            opts,
             totalDiffCount:     totalDiffCount
         )
         

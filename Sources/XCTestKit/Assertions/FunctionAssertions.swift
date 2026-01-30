@@ -25,7 +25,7 @@ import XCTest
 /// Asserts that the given expression is true.
 ///
 /// This generates a failure when `expression == false` and is equivalent to
-/// ``XCTKAssertTrue(_:_:file:line:)-func``.
+/// ``XCTKAssertTrue(_:_:file:line:options:)-func``.
 ///
 /// - Parameters:
 ///   - expression: The expression to evaluate.
@@ -34,18 +34,22 @@ import XCTest
 ///   filename of the test case in which this function was called.
 ///   - line: The line where the failure occurs. The default value is the line
 ///   number where this function was called.
+///   - options: The options for testing. The default value is `nil`, which
+///   falls back to using global options.
 public func XCTKAssert(
     _ expression    : @autoclosure () throws -> Bool,
     _ message       : @autoclosure () -> String         = "",
     file            : StaticString                      = #filePath,
-    line            : UInt                              = #line
+    line            : UInt                              = #line,
+    options         : XCTKOptions?                      = nil
 )
 {
     evaluateXCTKAssert(
         expr:       expression,
         message:    message,
         file:       file,
-        line:       line
+        line:       line,
+        options:    options
     )
 }
 
@@ -54,7 +58,7 @@ public func XCTKAssert(
 /// Asserts that the given expression is true.
 ///
 /// This generates a failure when `expression == false` and is equivalent to
-/// ``XCTKAssert(_:_:file:line:)-func``.
+/// ``XCTKAssert(_:_:file:line:options:)-func``.
 ///
 /// - Parameters:
 ///   - expression: The expression to evaluate.
@@ -63,18 +67,22 @@ public func XCTKAssert(
 ///   filename of the test case in which this function was called.
 ///   - line: The line where the failure occurs. The default value is the line
 ///   number where this function was called.
+///   - options: The options for testing. The default value is `nil`, which
+///   falls back to using global options.
 public func XCTKAssertTrue(
     _ expression    : @autoclosure () throws -> Bool,
     _ message       : @autoclosure () -> String         = "",
     file            : StaticString                      = #filePath,
-    line            : UInt                              = #line
+    line            : UInt                              = #line,
+    options         : XCTKOptions?                      = nil
 )
 {
     evaluateXCTKAssertTrue(
         expr:       expression,
         message:    message,
         file:       file,
-        line:       line
+        line:       line,
+        options:    options
     )
 }
 
@@ -91,18 +99,22 @@ public func XCTKAssertTrue(
 ///   filename of the test case in which this function was called.
 ///   - line: The line where the failure occurs. The default value is the line
 ///   number where this function was called.
+///   - options: The options for testing. The default value is `nil`, which
+///   falls back to using global options.
 public func XCTKAssertFalse(
     _ expression    : @autoclosure () throws -> Bool,
     _ message       : @autoclosure () -> String         = "",
     file            : StaticString                      = #filePath,
-    line            : UInt                              = #line
+    line            : UInt                              = #line,
+    options         : XCTKOptions?                      = nil
 )
 {
     evaluateXCTKAssertFalse(
         expr:       expression,
         message:    message,
         file:       file,
-        line:       line
+        line:       line,
+        options:    options
     )
 }
 
@@ -121,11 +133,14 @@ public func XCTKAssertFalse(
 ///   filename of the test case in which this function was called.
 ///   - line: The line where the failure occurs. The default value is the line
 ///   number where this function was called.
+///   - options: The options for testing. The default value is `nil`, which
+///   falls back to using global options.
 public func XCTKAssertNil(
     _ expression    : @autoclosure () throws -> Any?,
     _ message       : @autoclosure () -> String         = "",
     file            : StaticString                      = #filePath,
-    line            : UInt                              = #line
+    line            : UInt                              = #line,
+    options         : XCTKOptions?                      = nil
 )
 {
     evaluateXCTKAssertNil(
@@ -133,7 +148,8 @@ public func XCTKAssertNil(
         expr:           expression,
         message:        message,
         file:           file,
-        line:           line
+        line:           line,
+        options:        options
     )
 }
 
@@ -150,11 +166,14 @@ public func XCTKAssertNil(
 ///   filename of the test case in which this function was called.
 ///   - line: The line where the failure occurs. The default value is the line
 ///   number where this function was called.
+///   - options: The options for testing. The default value is `nil`, which
+///   falls back to using global options.
 public func XCTKAssertNotNil(
     _ expression    : @autoclosure () throws -> Any?,
     _ message       : @autoclosure () -> String         = "",
     file            : StaticString                      = #filePath,
-    line            : UInt                              = #line
+    line            : UInt                              = #line,
+    options         : XCTKOptions?                      = nil
 )
 {
     evaluateXCTKAssertNotNil(
@@ -162,7 +181,8 @@ public func XCTKAssertNotNil(
         expr:           expression,
         message:        message,
         file:           file,
-        line:           line
+        line:           line,
+        options:        options
     )
 }
 
@@ -181,6 +201,8 @@ public func XCTKAssertNotNil(
 ///   filename of the test case in which this function was called.
 ///   - line: The line where the failure occurs. The default value is the line
 ///   number where this function was called.
+///   - options: The options for testing. The default value is `nil`, which
+///   falls back to using global options.
 /// - Returns: The result of evaluating and unwrapped the given expression.
 /// This only returns a value if the unwrapped value is not `nil`.
 /// - Throws: An ``XCTKUnwrapError`` if the unwrapped value is `nil`, or an
@@ -189,7 +211,8 @@ public func XCTKUnwrap<T>(
     _ expression    : @autoclosure () throws -> T?,
     _ message       : @autoclosure () -> String     = "",
     file            : StaticString                  = #filePath,
-    line            : UInt                          = #line
+    line            : UInt                          = #line,
+    options         : XCTKOptions?                  = nil
 ) throws -> T
 {
     return try evaluateXCTKUnwrap(
@@ -197,7 +220,8 @@ public func XCTKUnwrap<T>(
         expr:           expression,
         message:        message,
         file:           file,
-        line:           line
+        line:           line,
+        options:        options
     )
 }
 
@@ -247,12 +271,15 @@ public func XCTKAssertEqual<T>(
 ///   filename of the test case in which this function was called.
 ///   - line: The line where the failure occurs. The default value is the line
 ///   number where this function was called.
+///   - options: The options for testing. The default value is `nil`, which
+///   falls back to using global options.
 public func XCTKAssertNotEqual<T>(
     _ expression1   : @autoclosure () throws -> T,
     _ expression2   : @autoclosure () throws -> T,
     _ message       : @autoclosure () -> String     = "",
     file            : StaticString                  = #filePath,
-    line            : UInt                          = #line
+    line            : UInt                          = #line,
+    options         : XCTKOptions?                  = nil
 ) where T : Equatable
 {
     evaluateXCTKAssertNotEqual(
@@ -261,7 +288,8 @@ public func XCTKAssertNotEqual<T>(
         expr2:          expression2,
         message:        message,
         file:           file,
-        line:           line
+        line:           line,
+        options:        options
     )
 }
 
@@ -279,12 +307,15 @@ public func XCTKAssertNotEqual<T>(
 ///   filename of the test case in which this function was called.
 ///   - line: The line where the failure occurs. The default value is the line
 ///   number where this function was called.
+///   - options: The options for testing. The default value is `nil`, which
+///   falls back to using global options.
 public func XCTKAssertIdentical(
     _ expression1   : @autoclosure () throws -> AnyObject?,
     _ expression2   : @autoclosure () throws -> AnyObject?,
     _ message       : @autoclosure () -> String             = "",
     file            : StaticString                          = #filePath,
-    line            : UInt                                  = #line
+    line            : UInt                                  = #line,
+    options         : XCTKOptions?                          = nil
 )
 {
     evaluateXCTKAssertIdentical(
@@ -293,7 +324,8 @@ public func XCTKAssertIdentical(
         expr2:          expression2,
         message:        message,
         file:           file,
-        line:           line
+        line:           line,
+        options:        options
     )
 }
 
@@ -311,12 +343,15 @@ public func XCTKAssertIdentical(
 ///   filename of the test case in which this function was called.
 ///   - line: The line where the failure occurs. The default value is the line
 ///   number where this function was called.
+///   - options: The options for testing. The default value is `nil`, which
+///   falls back to using global options.
 public func XCTKAssertNotIdentical(
     _ expression1   : @autoclosure () throws -> AnyObject?,
     _ expression2   : @autoclosure () throws -> AnyObject?,
     _ message       : @autoclosure () -> String             = "",
     file            : StaticString                          = #filePath,
-    line            : UInt                                  = #line
+    line            : UInt                                  = #line,
+    options         : XCTKOptions?                          = nil
 )
 {
     evaluateXCTKAssertNotIdentical(
@@ -325,7 +360,8 @@ public func XCTKAssertNotIdentical(
         expr2:          expression2,
         message:        message,
         file:           file,
-        line:           line
+        line:           line,
+        options:        options
     )
 }
 
@@ -343,13 +379,16 @@ public func XCTKAssertNotIdentical(
 ///   filename of the test case in which this function was called.
 ///   - line: The line where the failure occurs. The default value is the line
 ///   number where this function was called.
+///   - options: The options for testing. The default value is `nil`, which
+///   falls back to using global options.
 public func XCTKAssertEqual<T>(
     _ expression1   : @autoclosure () throws -> T,
     _ expression2   : @autoclosure () throws -> T,
     accuracy        : T,
     _ message       : @autoclosure () -> String     = "",
     file            : StaticString                  = #filePath,
-    line            : UInt                          = #line
+    line            : UInt                          = #line,
+    options         : XCTKOptions?                  = nil
 ) where T : FloatingPoint
 {
     evaluateXCTKAssertEqual(
@@ -359,7 +398,8 @@ public func XCTKAssertEqual<T>(
         accuracy:       accuracy,
         message:        message,
         file:           file,
-        line:           line
+        line:           line,
+        options:        options
     )
 }
 
@@ -376,13 +416,16 @@ public func XCTKAssertEqual<T>(
 ///   filename of the test case in which this function was called.
 ///   - line: The line where the failure occurs. The default value is the line
 ///   number where this function was called.
+///   - options: The options for testing. The default value is `nil`, which
+///   falls back to using global options.
 public func XCTKAssertEqual<T>(
     _ expression1   : @autoclosure () throws -> T,
     _ expression2   : @autoclosure () throws -> T,
     accuracy        : T,
     _ message       : @autoclosure () -> String     = "",
     file            : StaticString                  = #filePath,
-    line            : UInt                          = #line
+    line            : UInt                          = #line,
+    options         : XCTKOptions?                  = nil
 ) where T : Numeric
 {
     evaluateXCTKAssertEqual(
@@ -392,7 +435,8 @@ public func XCTKAssertEqual<T>(
         accuracy:       accuracy,
         message:        message,
         file:           file,
-        line:           line
+        line:           line,
+        options:        options
     )
 }
 
@@ -410,13 +454,16 @@ public func XCTKAssertEqual<T>(
 ///   filename of the test case in which this function was called.
 ///   - line: The line where the failure occurs. The default value is the line
 ///   number where this function was called.
+///   - options: The options for testing. The default value is `nil`, which
+///   falls back to using global options.
 public func XCTKAssertNotEqual<T>(
     _ expression1   : @autoclosure () throws -> T,
     _ expression2   : @autoclosure () throws -> T,
     accuracy        : T,
     _ message       : @autoclosure () -> String     = "",
     file            : StaticString                  = #filePath,
-    line            : UInt                          = #line
+    line            : UInt                          = #line,
+    options         : XCTKOptions?                  = nil
 ) where T : FloatingPoint
 {
     evaluateXCTKAssertNotEqual(
@@ -426,7 +473,8 @@ public func XCTKAssertNotEqual<T>(
         accuracy:       accuracy,
         message:        message,
         file:           file,
-        line:           line
+        line:           line,
+        options:        options
     )
 }
 
@@ -444,13 +492,16 @@ public func XCTKAssertNotEqual<T>(
 ///   filename of the test case in which this function was called.
 ///   - line: The line where the failure occurs. The default value is the line
 ///   number where this function was called.
+///   - options: The options for testing. The default value is `nil`, which
+///   falls back to using global options.
 public func XCTKAssertNotEqual<T>(
     _ expression1   : @autoclosure () throws -> T,
     _ expression2   : @autoclosure () throws -> T,
     accuracy        : T,
     _ message       : @autoclosure () -> String     = "",
     file            : StaticString                  = #filePath,
-    line            : UInt                          = #line
+    line            : UInt                          = #line,
+    options         : XCTKOptions?                  = nil
 ) where T : Numeric
 {
     evaluateXCTKAssertNotEqual(
@@ -460,7 +511,8 @@ public func XCTKAssertNotEqual<T>(
         accuracy:       accuracy,
         message:        message,
         file:           file,
-        line:           line
+        line:           line,
+        options:        options
     )
 }
 
@@ -478,12 +530,15 @@ public func XCTKAssertNotEqual<T>(
 ///   filename of the test case in which this function was called.
 ///   - line: The line where the failure occurs. The default value is the line
 ///   number where this function was called.
+///   - options: The options for testing. The default value is `nil`, which
+///   falls back to using global options.
 public func XCTKAssertGreaterThan<T>(
     _ expression1   : @autoclosure () throws -> T,
     _ expression2   : @autoclosure () throws -> T,
     _ message       : @autoclosure () -> String     = "",
     file            : StaticString                  = #filePath,
-    line            : UInt                          = #line
+    line            : UInt                          = #line,
+    options         : XCTKOptions?                  = nil
 ) where T : Comparable
 {
     evaluateXCTKAssertGreaterThan(
@@ -492,7 +547,8 @@ public func XCTKAssertGreaterThan<T>(
         expr2:          expression2,
         message:        message,
         file:           file,
-        line:           line
+        line:           line,
+        options:        options
     )
 }
 
@@ -508,12 +564,15 @@ public func XCTKAssertGreaterThan<T>(
 ///   filename of the test case in which this function was called.
 ///   - line: The line where the failure occurs. The default value is the line
 ///   number where this function was called.
+///   - options: The options for testing. The default value is `nil`, which
+///   falls back to using global options.
 public func XCTKAssertGreaterThanOrEqual<T>(
     _ expression1   : @autoclosure () throws -> T,
     _ expression2   : @autoclosure () throws -> T,
     _ message       : @autoclosure () -> String     = "",
     file            : StaticString                  = #filePath,
-    line            : UInt                          = #line
+    line            : UInt                          = #line,
+    options         : XCTKOptions?                  = nil
 ) where T : Comparable
 {
     evaluateXCTKAssertGreaterThanOrEqual(
@@ -522,7 +581,8 @@ public func XCTKAssertGreaterThanOrEqual<T>(
         expr2:          expression2,
         message:        message,
         file:           file,
-        line:           line
+        line:           line,
+        options:        options
     )
 }
 
@@ -538,12 +598,15 @@ public func XCTKAssertGreaterThanOrEqual<T>(
 ///   filename of the test case in which this function was called.
 ///   - line: The line where the failure occurs. The default value is the line
 ///   number where this function was called.
+///   - options: The options for testing. The default value is `nil`, which
+///   falls back to using global options.
 public func XCTKAssertLessThanOrEqual<T>(
     _ expression1   : @autoclosure () throws -> T,
     _ expression2   : @autoclosure () throws -> T,
     _ message       : @autoclosure () -> String     = "",
     file            : StaticString                  = #filePath,
-    line            : UInt                          = #line
+    line            : UInt                          = #line,
+    options         : XCTKOptions?                  = nil
 ) where T : Comparable
 {
     evaluateXCTKAssertLessThanOrEqual(
@@ -552,7 +615,8 @@ public func XCTKAssertLessThanOrEqual<T>(
         expr2:          expression2,
         message:        message,
         file:           file,
-        line:           line
+        line:           line,
+        options:        options
     )
 }
 
@@ -568,12 +632,15 @@ public func XCTKAssertLessThanOrEqual<T>(
 ///   filename of the test case in which this function was called.
 ///   - line: The line where the failure occurs. The default value is the line
 ///   number where this function was called.
+///   - options: The options for testing. The default value is `nil`, which
+///   falls back to using global options.
 public func XCTKAssertLessThan<T>(
     _ expression1   : @autoclosure () throws -> T,
     _ expression2   : @autoclosure () throws -> T,
     _ message       : @autoclosure () -> String     = "",
     file            : StaticString                  = #filePath,
-    line            : UInt                          = #line
+    line            : UInt                          = #line,
+    options         : XCTKOptions?                  = nil
 ) where T : Comparable
 {
     evaluateXCTKAssertLessThan(
@@ -582,7 +649,8 @@ public func XCTKAssertLessThan<T>(
         expr2:          expression2,
         message:        message,
         file:           file,
-        line:           line
+        line:           line,
+        options:        options
     )
 }
 
@@ -598,12 +666,15 @@ public func XCTKAssertLessThan<T>(
 ///   filename of the test case in which this function was called.
 ///   - line: The line where the failure occurs. The default value is the line
 ///   number where this function was called.
+///   - options: The options for testing. The default value is `nil`, which
+///   falls back to using global options.
 ///   - errorHandler: An optional handler for errors thrown by `expression`.
 public func XCTKAssertThrowsError<T>(
     _ expression    : @autoclosure () throws -> T,
     _ message       : @autoclosure () -> String     = "",
     file            : StaticString                  = #filePath,
     line            : UInt                          = #line,
+    options         : XCTKOptions?                  = nil,
     _ errorHandler  : (any Error) -> Void           = { _ in }
 )
 {
@@ -613,6 +684,7 @@ public func XCTKAssertThrowsError<T>(
         message:        message,
         file:           file,
         line:           line,
+        options:        options,
         errorHandler:   errorHandler
     )
 }
@@ -627,11 +699,14 @@ public func XCTKAssertThrowsError<T>(
 ///   filename of the test case in which this function was called.
 ///   - line: The line where the failure occurs. The default value is the line
 ///   number where this function was called.
+///   - options: The options for testing. The default value is `nil`, which
+///   falls back to using global options.
 public func XCTKAssertNoThrow<T>(
     _ expression    : @autoclosure () throws -> T,
     _ message       : @autoclosure () -> String     = "",
     file            : StaticString                  = #filePath,
-    line            : UInt                          = #line
+    line            : UInt                          = #line,
+    options         : XCTKOptions?                  = nil
 )
 {
     evaluateXCTKAssertNoThrow(
@@ -639,7 +714,8 @@ public func XCTKAssertNoThrow<T>(
         expr:           expression,
         message:        message,
         file:           file,
-        line:           line
+        line:           line,
+        options:        options
     )
 }
 

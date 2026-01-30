@@ -246,7 +246,8 @@ private extension MacroAssertionExpansionTests
                 expandedSource = BooleanExprWalker.expand(
                     kind:       kind,
                     expr:       "expr",
-                    message:    .makeStringLiteral("msg")
+                    message:    .makeStringLiteral("msg"),
+                    options:    .makeNilLiteral()
                 ).description
                 
                 
@@ -267,6 +268,7 @@ private extension MacroAssertionExpansionTests
                     message:        "msg",
                     file:           #filePath,
                     line:           #line,
+                    options:        nil,
                     errorHandler:   { error in
                         print(error)
                     }
@@ -289,7 +291,8 @@ private extension MacroAssertionExpansionTests
                     exprText:   "expr",
                     message:    "msg",
                     file:       #filePath,
-                    line:       #line
+                    line:       #line,
+                    options:    nil
                 )
                 """
                 
@@ -307,7 +310,8 @@ private extension MacroAssertionExpansionTests
                     exprText:   "expr",
                     message:    "msg",
                     file:       #filePath,
-                    line:       #line
+                    line:       #line,
+                    options:    nil
                 )
                 """
         }
@@ -379,7 +383,8 @@ private extension MacroAssertionExpansionTests
                     accuracy:   0.1,
                     message:    "msg",
                     file:       #filePath,
-                    line:       #line
+                    line:       #line,
+                    options:    nil
                 )
                 """
                 
@@ -399,7 +404,8 @@ private extension MacroAssertionExpansionTests
                     expr2Text:  "expr2",
                     message:    "msg",
                     file:       #filePath,
-                    line:       #line
+                    line:       #line,
+                    options:    nil
                 )
                 """
         }

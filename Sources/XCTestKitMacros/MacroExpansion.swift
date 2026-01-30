@@ -76,13 +76,8 @@ extension SingleExprMacro
         in  context : some MacroExpansionContext
     ) throws -> ExprSyntax
     {
-        let positionalArgs: [ExprSyntax] = node.arguments.positionalArgs
-        
-        let message: ExprSyntax = positionalArgs.count > 1
-            ? positionalArgs[1]
-            : .makeStringLiteral("")
-        
-        
+        let args            : LabeledExprListSyntax     = node.arguments
+        let positionalArgs  : [ExprSyntax]              = args.positionalArgs
         
         guard let expr: ExprSyntax = positionalArgs.first
         else
@@ -91,6 +86,13 @@ extension SingleExprMacro
         }
         
         let exprText: String = expr.trimmedDescription
+        
+        let message: ExprSyntax = positionalArgs.count > 1
+            ? positionalArgs[1]
+            : .makeStringLiteral("")
+        
+        let options: ExprSyntax = args.getArg(labeled: "options")
+            ?? .makeNilLiteral()
         
         
         
@@ -104,7 +106,8 @@ extension SingleExprMacro
                 return BooleanExprWalker.expand(
                     kind:       kind,
                     expr:       expr,
-                    message:    message
+                    message:    message,
+                    options:    options
                 )
                 
             case .throwsError:
@@ -149,6 +152,7 @@ extension SingleExprMacro
                     message:        \(message),
                     file:           #filePath,
                     line:           #line,
+                    options:        \(options),
                     errorHandler:   \(errorHandler)
                 )
                 """
@@ -161,7 +165,8 @@ extension SingleExprMacro
                     exprText:   \(literal: exprText),
                     message:    \(message),
                     file:       #filePath,
-                    line:       #line
+                    line:       #line,
+                    options:    \(options)
                 )
                 """
                 
@@ -173,7 +178,8 @@ extension SingleExprMacro
                     exprText:   \(literal: exprText),
                     message:    \(message),
                     file:       #filePath,
-                    line:       #line
+                    line:       #line,
+                    options:    \(options)
                 )
                 """
         }
@@ -220,14 +226,12 @@ extension DoubleExprMacro
             ? positionalArgs[2]
             : .makeStringLiteral("")
         
-        
+        let options: ExprSyntax = args.getArg(labeled: "options")
+            ?? .makeNilLiteral()
         
         switch kind
         {
             case .equal:
-                
-                let options: ExprSyntax = args.getArg(labeled: "options")
-                    ?? .makeNilLiteral()
                 
                 return """
                 \(raw: kind.macroInternalName)(
@@ -264,7 +268,8 @@ extension DoubleExprMacro
                     accuracy:   \(accuracy),
                     message:    \(message),
                     file:       #filePath,
-                    line:       #line
+                    line:       #line,
+                    options:    \(options)
                 )
                 """
                 
@@ -278,7 +283,8 @@ extension DoubleExprMacro
                     expr2Text:  \(literal: expr2Text),
                     message:    \(message),
                     file:       #filePath,
-                    line:       #line
+                    line:       #line,
+                    options:    \(options)
                 )
                 """
         }
