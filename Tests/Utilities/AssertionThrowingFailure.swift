@@ -15,7 +15,7 @@ import XCTestKitCore
 
 // MARK: - Functions
 
-/// Asserts that specified function assertion fails when an error is thrown.
+/// Asserts that specified assertion fails when an error is thrown.
 ///
 /// - Note: This does nothing for ``AssertionKind/fail`` or
 /// ``AssertionKind/throwsError``.
@@ -122,7 +122,7 @@ internal func testFunctionAssertionFailsOnThrow(
 
 // MARK: - Macros
 
-/// Asserts that specified macro assertion fails when an error is thrown.
+/// Asserts that specified assertion fails when an error is thrown.
 ///
 /// - Note: This does nothing for ``AssertionKind/fail`` or
 /// ``AssertionKind/throwsError``.
