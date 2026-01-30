@@ -18,17 +18,7 @@ internal final class MacroAssertionOutputTests: XCTestKitCase
 {
     private typealias AK = AssertionKind
     
-    /// A description of a failure.
     private static let message: String = "hello world"
-    
-    
-    
-    override func setUp()
-    {
-        super.setUp()
-        
-        continueAfterFailure = true
-    }
     
     
     
@@ -219,7 +209,7 @@ internal final class MacroAssertionOutputTests: XCTestKitCase
         
         let actual: String? = withOneExpectedFailure
         {
-            _ = try? _XCTKUnwrapMacro(
+            _ = try _XCTKUnwrapMacro(
                 expr:       expr,
                 exprText:   exprText,
                 message:    Self.message,

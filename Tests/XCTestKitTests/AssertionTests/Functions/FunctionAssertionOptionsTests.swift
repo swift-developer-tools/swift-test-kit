@@ -13,15 +13,6 @@
 
 internal final class FunctionAssertionOptionsTests: XCTestKitCase
 {
-    override func setUp()
-    {
-        super.setUp()
-        
-        continueAfterFailure = true
-    }
-    
-    
-    
     func testAssertEqualOptionsBehavior() throws
     {
         testFunctionAssertionOptionsBehavior(.equal)

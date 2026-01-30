@@ -13,15 +13,6 @@
 
 internal final class MacroAssertionOptionsTests: XCTestKitCase
 {
-    override func setUp()
-    {
-        super.setUp()
-        
-        continueAfterFailure = true
-    }
-    
-    
-    
     func testAssertOptionsBehavior() throws
     {
         testMacroAssertionOptionsBehavior(.assert)

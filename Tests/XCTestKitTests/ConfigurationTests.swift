@@ -106,13 +106,6 @@ internal final class ConfigurationTests: XCTestKitCase
     
     func testAssertionOptionsOverridePrecedence() throws
     {
-        continueAfterFailure = true
-        
-        defer
-        {
-            continueAfterFailure = false
-        }
-        
         XCTKConfig.global.diffEnabled = true
         
         let output1: String? = withOneExpectedFailure
