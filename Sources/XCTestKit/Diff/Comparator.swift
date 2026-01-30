@@ -23,16 +23,18 @@ internal struct Comparator
     /// - Parameters:
     ///   - expected: The expected value.
     ///   - actual: The actual value.
-    ///   - options: The diff options to use. The default value is a default-
-    ///   initialized ``XCTKDiffOptions`` instance.
+    ///   - options: The options for testing. The default value is `nil`, which
+    ///   falls back to using global options.
     /// - Returns: The diff node.
     static func computeDiff<T>(
         expected    : T,
         actual      : T,
-        options     : XCTKDiffOptions   = .init()
+        options     : XCTKDiffOptions?  = nil
     ) -> DiffNode where T : Equatable
     {
-        let context     = ComparatorContext(options: options)
+        let opts: XCTKDiffOptions = options ?? XCTKConfig.global.diffOptions
+        
+        let context     = ComparatorContext(options: opts)
         let comparator  = Comparator(context: context)
         
         

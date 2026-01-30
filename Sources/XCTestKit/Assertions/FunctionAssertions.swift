@@ -48,7 +48,8 @@ public func XCTKAssert(
         expr:       expression,
         message:    message,
         file:       file,
-        line:       line
+        line:       line,
+        options:    options
     )
 }
 
@@ -80,7 +81,8 @@ public func XCTKAssertTrue(
         expr:       expression,
         message:    message,
         file:       file,
-        line:       line
+        line:       line,
+        options:    options
     )
 }
 
@@ -111,7 +113,8 @@ public func XCTKAssertFalse(
         expr:       expression,
         message:    message,
         file:       file,
-        line:       line
+        line:       line,
+        options:    options
     )
 }
 
@@ -145,7 +148,8 @@ public func XCTKAssertNil(
         expr:           expression,
         message:        message,
         file:           file,
-        line:           line
+        line:           line,
+        options:        options
     )
 }
 
@@ -177,7 +181,8 @@ public func XCTKAssertNotNil(
         expr:           expression,
         message:        message,
         file:           file,
-        line:           line
+        line:           line,
+        options:        options
     )
 }
 
@@ -215,7 +220,8 @@ public func XCTKUnwrap<T>(
         expr:           expression,
         message:        message,
         file:           file,
-        line:           line
+        line:           line,
+        options:        options
     )
 }
 
@@ -282,7 +288,8 @@ public func XCTKAssertNotEqual<T>(
         expr2:          expression2,
         message:        message,
         file:           file,
-        line:           line
+        line:           line,
+        options:        options
     )
 }
 
@@ -317,7 +324,8 @@ public func XCTKAssertIdentical(
         expr2:          expression2,
         message:        message,
         file:           file,
-        line:           line
+        line:           line,
+        options:        options
     )
 }
 
@@ -352,7 +360,8 @@ public func XCTKAssertNotIdentical(
         expr2:          expression2,
         message:        message,
         file:           file,
-        line:           line
+        line:           line,
+        options:        options
     )
 }
 
@@ -389,7 +398,8 @@ public func XCTKAssertEqual<T>(
         accuracy:       accuracy,
         message:        message,
         file:           file,
-        line:           line
+        line:           line,
+        options:        options
     )
 }
 
@@ -425,7 +435,8 @@ public func XCTKAssertEqual<T>(
         accuracy:       accuracy,
         message:        message,
         file:           file,
-        line:           line
+        line:           line,
+        options:        options
     )
 }
 
@@ -462,7 +473,8 @@ public func XCTKAssertNotEqual<T>(
         accuracy:       accuracy,
         message:        message,
         file:           file,
-        line:           line
+        line:           line,
+        options:        options
     )
 }
 
@@ -499,7 +511,8 @@ public func XCTKAssertNotEqual<T>(
         accuracy:       accuracy,
         message:        message,
         file:           file,
-        line:           line
+        line:           line,
+        options:        options
     )
 }
 
@@ -534,7 +547,8 @@ public func XCTKAssertGreaterThan<T>(
         expr2:          expression2,
         message:        message,
         file:           file,
-        line:           line
+        line:           line,
+        options:        options
     )
 }
 
@@ -567,7 +581,8 @@ public func XCTKAssertGreaterThanOrEqual<T>(
         expr2:          expression2,
         message:        message,
         file:           file,
-        line:           line
+        line:           line,
+        options:        options
     )
 }
 
@@ -600,7 +615,8 @@ public func XCTKAssertLessThanOrEqual<T>(
         expr2:          expression2,
         message:        message,
         file:           file,
-        line:           line
+        line:           line,
+        options:        options
     )
 }
 
@@ -633,7 +649,8 @@ public func XCTKAssertLessThan<T>(
         expr2:          expression2,
         message:        message,
         file:           file,
-        line:           line
+        line:           line,
+        options:        options
     )
 }
 
@@ -667,6 +684,7 @@ public func XCTKAssertThrowsError<T>(
         message:        message,
         file:           file,
         line:           line,
+        options:        options,
         errorHandler:   errorHandler
     )
 }
@@ -696,7 +714,8 @@ public func XCTKAssertNoThrow<T>(
         expr:           expression,
         message:        message,
         file:           file,
-        line:           line
+        line:           line,
+        options:        options
     )
 }
 

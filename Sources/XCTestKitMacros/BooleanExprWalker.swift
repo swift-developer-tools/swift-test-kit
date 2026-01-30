@@ -21,11 +21,13 @@ internal struct BooleanExprWalker
     ///   - kind: The assertion kind.
     ///   - expr: The expression.
     ///   - message: An optional description of a failure.
+    ///   - options: The options for testing.
     /// - Returns: The expanded macro expression.
     static func expand(
         kind    : AssertionKind,
         expr    : ExprSyntax,
-        message : ExprSyntax
+        message : ExprSyntax,
+        options : ExprSyntax
     ) -> ExprSyntax
     {
         if shouldDecompose(expr)
@@ -33,14 +35,16 @@ internal struct BooleanExprWalker
             return expandDecomposable(
                 kind:       kind,
                 expr:       expr,
-                message:    message
+                message:    message,
+                options:    options
             )
         }
         
         return expandSimple(
             kind:       kind,
             expr:       expr,
-            message:    message
+            message:    message,
+            options:    options
         )
     }
     
@@ -51,11 +55,13 @@ internal struct BooleanExprWalker
     ///   - kind: The assertion kind.
     ///   - expr: The expression.
     ///   - message: An optional description of a failure.
+    ///   - options: The options for testing.
     /// - Returns: The expanded macro expression.
     private static func expandSimple(
         kind    : AssertionKind,
         expr    : ExprSyntax,
-        message : ExprSyntax
+        message : ExprSyntax,
+        options : ExprSyntax
     ) -> ExprSyntax
     {
         let exprText: String = expr.trimmedDescription
@@ -76,7 +82,8 @@ internal struct BooleanExprWalker
                 notEvaluated:   0,
                 message:        \(message),
                 file:           #filePath,
-                line:           #line
+                line:           #line,
+                options:        \(options)
             )
         """
         
@@ -84,7 +91,8 @@ internal struct BooleanExprWalker
             code:       code,
             kind:       kind,
             expr:       expr,
-            message:    message
+            message:    message,
+            options:    options
         )
     }
     
@@ -96,11 +104,13 @@ internal struct BooleanExprWalker
     ///   - kind: The assertion kind.
     ///   - expr: The expression.
     ///   - message: An optional description of a failure.
+    ///   - options: The options for testing.
     /// - Returns: The expanded macro expression.
     private static func expandDecomposable(
         kind    : AssertionKind,
         expr    : ExprSyntax,
-        message : ExprSyntax
+        message : ExprSyntax,
+        options : ExprSyntax
     ) -> ExprSyntax
     {
         let node    : Node              = parse(expr)
@@ -125,7 +135,8 @@ internal struct BooleanExprWalker
                 notEvaluated:   _notEvaluated,
                 message:        \(message),
                 file:           #filePath,
-                line:           #line
+                line:           #line,
+                options:        \(options)
             )
         """
         
@@ -133,7 +144,8 @@ internal struct BooleanExprWalker
             code:       code,
             kind:       kind,
             expr:       expr,
-            message:    message
+            message:    message,
+            options:    options
         )
     }
     
@@ -151,12 +163,14 @@ internal struct BooleanExprWalker
     ///   - kind: The assertion kind.
     ///   - expr: The expression.
     ///   - message: An optional description of a failure.
+    ///   - options: The options for testing.
     /// - Returns: The expanded macro expression.
     private static func wrapWithErrorHandling(
         code    : ExprSyntax,
         kind    : AssertionKind,
         expr    : ExprSyntax,
-        message : ExprSyntax
+        message : ExprSyntax,
+        options : ExprSyntax
     ) -> ExprSyntax
     {
         if expr.containsTry
@@ -173,8 +187,9 @@ internal struct BooleanExprWalker
                         kindName:   \(literal: kind.macroDisplayName),
                         reason:     "threw error \\\"\\(error)\\\"",
                         message:    \(message),
-                        file:        #filePath,
-                        line:       #line
+                        file:       #filePath,
+                        line:       #line,
+                        options:    \(options)
                     )
                 }
             }()

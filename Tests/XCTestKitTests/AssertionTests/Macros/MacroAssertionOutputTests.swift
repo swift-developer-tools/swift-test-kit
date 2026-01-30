@@ -54,7 +54,8 @@ internal final class MacroAssertionOutputTests: XCTestKitCase
                 notEvaluated:   1,
                 message:        Self.message,
                 file:           #filePath,
-                line:           #line
+                line:           #line,
+                options:        nil
             )
         }
         
@@ -93,7 +94,8 @@ internal final class MacroAssertionOutputTests: XCTestKitCase
                 notEvaluated:   0,
                 message:        Self.message,
                 file:           #filePath,
-                line:           #line
+                line:           #line,
+                options:        nil
             )
         }
         
@@ -131,7 +133,8 @@ internal final class MacroAssertionOutputTests: XCTestKitCase
                 notEvaluated:   0,
                 message:        Self.message,
                 file:           #filePath,
-                line:           #line
+                line:           #line,
+                options:        nil
             )
         }
         
@@ -164,7 +167,8 @@ internal final class MacroAssertionOutputTests: XCTestKitCase
                 exprText:   exprText,
                 message:    Self.message,
                 file:       #filePath,
-                line:       #line
+                line:       #line,
+                options:    nil
             )
         }
         
@@ -193,7 +197,8 @@ internal final class MacroAssertionOutputTests: XCTestKitCase
                 exprText:   exprText,
                 message:    Self.message,
                 file:       #filePath,
-                line:       #line
+                line:       #line,
+                options:    nil
             )
         }
         
@@ -221,7 +226,8 @@ internal final class MacroAssertionOutputTests: XCTestKitCase
                 exprText:   exprText,
                 message:    Self.message,
                 file:       #filePath,
-                line:       #line
+                line:       #line,
+                options:    nil
             )
         }
         
@@ -299,7 +305,8 @@ internal final class MacroAssertionOutputTests: XCTestKitCase
                 expr2Text:  expr2Text,
                 message:    Self.message,
                 file:       #filePath,
-                line:       #line
+                line:       #line,
+                options:    nil
             )
         }
         
@@ -334,7 +341,8 @@ internal final class MacroAssertionOutputTests: XCTestKitCase
                 expr2Text:  expr2Text,
                 message:    Self.message,
                 file:       #filePath,
-                line:       #line
+                line:       #line,
+                options:    nil
             )
         }
         
@@ -367,7 +375,8 @@ internal final class MacroAssertionOutputTests: XCTestKitCase
                 expr2Text:  expr2Text,
                 message:    Self.message,
                 file:       #filePath,
-                line:       #line
+                line:       #line,
+                options:    nil
             )
         }
         
@@ -403,7 +412,8 @@ internal final class MacroAssertionOutputTests: XCTestKitCase
                 accuracy:   accuracy,
                 message:    Self.message,
                 file:       #filePath,
-                line:       #line
+                line:       #line,
+                options:    nil
             )
         }
         
@@ -443,7 +453,8 @@ internal final class MacroAssertionOutputTests: XCTestKitCase
                 accuracy:   accuracy,
                 message:    Self.message,
                 file:       #filePath,
-                line:       #line
+                line:       #line,
+                options:    nil
             )
         }
         
@@ -483,7 +494,8 @@ internal final class MacroAssertionOutputTests: XCTestKitCase
                 accuracy:   accuracy,
                 message:    Self.message,
                 file:       #filePath,
-                line:       #line
+                line:       #line,
+                options:    nil
             )
         }
         
@@ -523,7 +535,8 @@ internal final class MacroAssertionOutputTests: XCTestKitCase
                 accuracy:   accuracy,
                 message:    Self.message,
                 file:       #filePath,
-                line:       #line
+                line:       #line,
+                options:    nil
             )
         }
         
@@ -563,7 +576,8 @@ internal final class MacroAssertionOutputTests: XCTestKitCase
                 expr2Text:  expr2Text,
                 message:    Self.message,
                 file:       #filePath,
-                line:       #line
+                line:       #line,
+                options:    nil
             )
         }
         
@@ -601,7 +615,8 @@ internal final class MacroAssertionOutputTests: XCTestKitCase
                 expr2Text:  expr2Text,
                 message:    Self.message,
                 file:       #filePath,
-                line:       #line
+                line:       #line,
+                options:    nil
             )
         }
         
@@ -639,7 +654,8 @@ internal final class MacroAssertionOutputTests: XCTestKitCase
                 expr2Text:  expr2Text,
                 message:    Self.message,
                 file:       #filePath,
-                line:       #line
+                line:       #line,
+                options:    nil
             )
         }
         
@@ -677,7 +693,8 @@ internal final class MacroAssertionOutputTests: XCTestKitCase
                 expr2Text:  expr2Text,
                 message:    Self.message,
                 file:       #filePath,
-                line:       #line
+                line:       #line,
+                options:    nil
             )
         }
         
@@ -714,6 +731,7 @@ internal final class MacroAssertionOutputTests: XCTestKitCase
                 message:        Self.message,
                 file:           #filePath,
                 line:           #line,
+                options:        nil,
                 errorHandler:   { _ in }
             )
         }
@@ -743,7 +761,8 @@ internal final class MacroAssertionOutputTests: XCTestKitCase
                 exprText:   exprText,
                 message:    Self.message,
                 file:       #filePath,
-                line:       #line
+                line:       #line,
+                options:    nil
             )
         }
         
