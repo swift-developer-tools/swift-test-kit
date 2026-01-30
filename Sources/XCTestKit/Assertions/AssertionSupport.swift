@@ -238,7 +238,7 @@ internal func failAssertion(
         evaluated:      evaluated,
         notEvaluated:   notEvaluated,
         expectedValue:  kind == .false ? false : true,
-        options:        XCTKConfig.global.formatOptions
+        options:        options?.formatOptions
     )
     
     var text: String = "\(kind.macroDisplayName) failed"
