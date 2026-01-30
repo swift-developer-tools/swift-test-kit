@@ -258,12 +258,7 @@ internal func testFunctionAssertionMessageEvalOnceOnFailure(
     var count   : Int           = 0
     let message : () -> String  = { count += 1; return "msg" }
     
-    /// The compiler infers a throwing closure due to `try` in the `.noThrow`
-    /// case, even though the assertion function catches the error internally.
-    /// If `do`/`catch` is used, then the compiler correctly infers that no
-    /// error is thrown, but emits a warning. Using `try?` at the assertion
-    /// level interferes with the test. Use `try?` here to silence the issue.
-    try? XCTExpectFailure()
+    withOneExpectedFailure
     {
         switch kind
         {
@@ -346,7 +341,7 @@ internal func testFunctionAssertionMessageEvalOnceOnFailure(
                 
             case .unwrap:
                 
-                _ = try? XCTKUnwrap(Optional<Int>(nil), message())
+                _ = try XCTKUnwrap(Optional<Int>(nil), message())
                 
             case .true:
                 
@@ -624,7 +619,7 @@ internal func testMacroAssertionMessageEvalOnceOnFailure(
     var count   : Int           = 0
     let message : () -> String  = { count += 1; return "msg" }
     
-    XCTExpectFailure()
+    withOneExpectedFailure
     {
         switch kind
         {
@@ -707,7 +702,7 @@ internal func testMacroAssertionMessageEvalOnceOnFailure(
                 
             case .unwrap:
                 
-                _ = try? #XCTKUnwrap(Optional<Int>(nil), message())
+                _ = try #XCTKUnwrap(Optional<Int>(nil), message())
                 
             case .true:
                 
