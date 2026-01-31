@@ -81,6 +81,54 @@ internal func evaluateExpr<T>(
 
 
 
+// MARK: - Evaluate collections
+
+/// Evaluates the given collection.
+///
+/// - Important: This fails the assertion if the given collection expression
+/// throws an error when called.
+///
+/// - Parameters:
+///   - collection: The collection to evaluate.
+///   - assertion: The assertion kind.
+///   - message: The description of a failure.
+///   - file: The file where the failure occurs. The default value is the
+///   filename of the test case in which this function was called.
+///   - line: The line where the failure occurs. The default value is the line
+///   number where this function was called.
+///   - options: The options for testing.
+/// - Returns: A `Result` containing the value or error produced by evaluating
+/// the given collection expression.
+internal func evaluateCollection<C>(
+    _ collection    : () throws -> C,
+    assertion       : AssertionKind,
+    message         : () -> String?,
+    file            : StaticString,
+    line            : UInt,
+    options         : XCTKOptions?
+) -> Result<C, Error> where C : Collection
+{
+    do
+    {
+        return .success(try collection())
+    }
+    catch
+    {
+        failAssertion(
+            kind:       assertion,
+            reason:     "threw error \(quote(error))",
+            message:    message,
+            file:       file,
+            line:       line,
+            options:    options
+        )
+        
+        return .failure(error)
+    }
+}
+
+
+
 // MARK: - Fail function assertions
 
 @_documentation(visibility: internal)
