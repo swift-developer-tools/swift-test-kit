@@ -18,6 +18,8 @@ import SwiftSyntaxMacros
 /// A macro expression.
 internal protocol AssertionMacro: ExpressionMacro
 {
+    typealias ExpansionError = MacroExpansionErrorMessage
+    
     /// The underlying assertion kind.
     static var kind: AssertionKind { get }
 }
@@ -82,7 +84,7 @@ extension SingleExprMacro
         guard let expr: ExprSyntax = positionalArgs.first
         else
         {
-            throw MacroExpansionErrorMessage("Missing expression argument")
+            throw ExpansionError("Missing expression argument")
         }
         
         let exprText: String = expr.trimmedDescription
@@ -212,7 +214,7 @@ extension DoubleExprMacro
                 ? "Missing expected and actual value arguments"
                 : "Missing expression arguments"
             
-            throw MacroExpansionErrorMessage(errorMessage)
+            throw ExpansionError(errorMessage)
         }
         
         
@@ -254,9 +256,7 @@ extension DoubleExprMacro
                         = args.getArg(labeled: "accuracy")
                 else
                 {
-                    throw MacroExpansionErrorMessage(
-                        "Missing accuracy argument"
-                    )
+                    throw ExpansionError("Missing accuracy argument")
                 }
                 
                 return """
