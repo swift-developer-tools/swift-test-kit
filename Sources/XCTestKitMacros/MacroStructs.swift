@@ -177,7 +177,7 @@ internal struct AssertSortedMacro: DoubleExprMacro
     static let kind: AssertionKind = .sorted
 }
 
-internal struct AssertUniqueMacro: DoubleExprMacro
+internal struct AssertUniqueMacro: SingleExprMacro
 {
     static let kind: AssertionKind = .unique
 }
