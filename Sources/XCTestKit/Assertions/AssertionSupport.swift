@@ -171,7 +171,6 @@ internal func failAssertion(
 /// - Parameters:
 ///   - kind: The assertion kind.
 ///   - diff: The computed diff.
-///   - options: The options for formatting diffs.
 ///   - message: The description of a failure.
 ///   - file: The file where the failure occurs.
 ///   - line: The line where the failure occurs.
@@ -356,7 +355,6 @@ internal func failAssertion(
 ///   - expectedText: The source text of the expected expression.
 ///   - actualText: The source text of the actual expression.
 ///   - diff: The computed diff.
-///   - options: The options for formatting diffs.
 ///   - message: The description of a failure.
 ///   - file: The file where the failure occurs.
 ///   - line: The line where the failure occurs.
