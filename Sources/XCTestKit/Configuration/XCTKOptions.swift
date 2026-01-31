@@ -127,7 +127,7 @@ public struct XCTKDiffOptions: Equatable, Sendable
 
 // MARK: - XCTKFormatOptions
 
-/// The options for formatting diffs.
+/// The options for formatting assertion failures.
 public struct XCTKFormatOptions: Equatable, Sendable
 {
     /// The number of spaces used for each indent.
