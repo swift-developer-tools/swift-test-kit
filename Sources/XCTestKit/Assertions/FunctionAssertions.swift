@@ -877,6 +877,11 @@ public func XCTKAssertSatisfy<C>(
     options         : XCTKOptions?                  = nil
 ) where C : Collection
 {
+    precondition(
+        atLeast >= 0,
+        "atLeast must be non-negative"
+    )
+    
     evaluateXCTKAssertSatisfy(
         captureKind:    .none,
         collection:     collection,
@@ -916,6 +921,11 @@ public func XCTKAssertSatisfy<C>(
     options         : XCTKOptions?                  = nil
 ) where C : Collection
 {
+    precondition(
+        atMost >= 0,
+        "atMost must be non-negative"
+    )
+    
     evaluateXCTKAssertSatisfy(
         captureKind:    .none,
         collection:     collection,
@@ -954,6 +964,16 @@ public func XCTKAssertSatisfy<C>(
     options         : XCTKOptions?                  = nil
 ) where C : Collection
 {
+    precondition(
+        range.lowerBound <= range.upperBound,
+        "range.lowerBound must be less than or equal to range.upperBound"
+    )
+    
+    precondition(
+        range.lowerBound >= 0,
+        "range.lowerBound must be non-negative"
+    )
+    
     evaluateXCTKAssertSatisfy(
         captureKind:    .none,
         collection:     collection,
@@ -993,6 +1013,11 @@ public func XCTKAssertExactly<C>(
     options         : XCTKOptions?                  = nil
 ) where C : Collection
 {
+    precondition(
+        count >= 0,
+        "count must be non-negative"
+    )
+    
     evaluateXCTKAssertExactly(
         captureKind:    .none,
         collection:     collection,
