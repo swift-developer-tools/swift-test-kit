@@ -35,6 +35,24 @@ internal protocol DoubleExprMacro   : AssertionMacro { }
 
 
 
+extension AssertionMacro
+{
+    /// Creates an error for an unhandled assertion kind during macro expansion.
+    ///
+    /// This indicates an internal bug where an ``AssertionKind`` was routed
+    /// to a protocol extension that does not handle it.
+    public static func makeUnhandledKindError() -> ExpansionError
+    {
+        return ExpansionError(
+            "Unhandled assertion kind \"\(kind.macroDisplayName)\""
+            + " during macro expansion. Please submit an XCTestKit bug report"
+            + " (https://github.com/swift-developer-tools/XCTestKit)."
+        )
+    }
+}
+
+
+
 // MARK: - No expression
 
 extension NoExprMacro
@@ -112,6 +130,22 @@ extension SingleExprMacro
                     options:    options
                 )
                 
+            case
+                .nil,
+                .notNil,
+                .unwrap:
+                
+                return """
+                \(raw: kind.macroInternalName)(
+                    expr:       \(expr),
+                    exprText:   \(literal: exprText),
+                    message:    \(message),
+                    file:       #filePath,
+                    line:       #line,
+                    options:    \(options)
+                )
+                """
+                
             case .throwsError:
                 
                 let errorHandler: ExprSyntax
@@ -171,19 +205,10 @@ extension SingleExprMacro
                     options:    \(options)
                 )
                 """
-                
+            
             default:
                 
-                return """
-                \(raw: kind.macroInternalName)(
-                    expr:       \(expr),
-                    exprText:   \(literal: exprText),
-                    message:    \(message),
-                    file:       #filePath,
-                    line:       #line,
-                    options:    \(options)
-                )
-                """
+                throw makeUnhandledKindError()
         }
     }
 }
@@ -249,6 +274,28 @@ extension DoubleExprMacro
                 """
                 
             case
+                .notEqual,
+                .identical,
+                .notIdentical,
+                .greaterThan,
+                .greaterThanOrEqual,
+                .lessThanOrEqual,
+                .lessThan:
+                
+                return """
+                \(raw: kind.macroInternalName)(
+                    expr1:      \(expr1),
+                    expr2:      \(expr2),
+                    expr1Text:  \(literal: expr1Text),
+                    expr2Text:  \(literal: expr2Text),
+                    message:    \(message),
+                    file:       #filePath,
+                    line:       #line,
+                    options:    \(options)
+                )
+                """
+                
+            case
                 .equalWithAccuracy,
                 .notEqualWithAccuracy:
                 
@@ -275,18 +322,7 @@ extension DoubleExprMacro
                 
             default:
                 
-                return """
-                \(raw: kind.macroInternalName)(
-                    expr1:      \(expr1),
-                    expr2:      \(expr2),
-                    expr1Text:  \(literal: expr1Text),
-                    expr2Text:  \(literal: expr2Text),
-                    message:    \(message),
-                    file:       #filePath,
-                    line:       #line,
-                    options:    \(options)
-                )
-                """
+                throw makeUnhandledKindError()
         }
     }
 }
