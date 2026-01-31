@@ -38,12 +38,12 @@ public enum AssertionKind: Equatable, Sendable
     case fail
     case throwsError
     case noThrow
-    case allSatisfy
-    case anySatisfy
-    case noneSatisfy
-    case atLeastSatisfy
-    case atMostSatisfy
-    case rangeSatisfy
+    case satisfyAll
+    case satisfyAny
+    case satisfyNone
+    case satisfyAtLeast
+    case satisfyAtMost
+    case satisfyRange
     case exactly
     case exactlyOne
     case sorted
@@ -76,12 +76,12 @@ public enum AssertionKind: Equatable, Sendable
             case .throwsError           : return "XCTKAssertThrowsError"
             case .noThrow               : return "XCTKAssertNoThrow"
             case .fail                  : return "XCTKFail"
-            case .allSatisfy            : return "XCTKAssertAllSatisfy"
-            case .anySatisfy            : return "XCTKAssertAnySatisfy"
-            case .noneSatisfy           : return "XCTKAssertNoneSatisfy"
-            case .atLeastSatisfy        : return "XCTKAssertSatisfy"
-            case .atMostSatisfy         : return "XCTKAssertSatisfy"
-            case .rangeSatisfy          : return "XCTKAssertSatisfy"
+            case .satisfyAll            : return "XCTKAssertAllSatisfy"
+            case .satisfyAny            : return "XCTKAssertAnySatisfy"
+            case .satisfyNone           : return "XCTKAssertNoneSatisfy"
+            case .satisfyAtLeast        : return "XCTKAssertSatisfy"
+            case .satisfyAtMost         : return "XCTKAssertSatisfy"
+            case .satisfyRange          : return "XCTKAssertSatisfy"
             case .exactly               : return "XCTKAssertExactly"
             case .exactlyOne            : return "XCTKAssertExactlyOne"
             case .sorted                : return "XCTKAssertSorted"
