@@ -69,7 +69,7 @@ internal struct Formatter
     ///   - options: The options for testing. The default value is `nil`, which
     ///   falls back to using global options.
     /// - Returns: The formatting string.
-    static func format(
+    static func formatDiff(
         _ node  : DiffNode,
         options : XCTKFormatOptions?    = nil
     ) -> String

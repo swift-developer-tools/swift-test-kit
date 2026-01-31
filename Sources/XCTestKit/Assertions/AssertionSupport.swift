@@ -185,7 +185,7 @@ internal func failAssertion(
     options : XCTKOptions?
 )
 {
-    let diffOutput: String = Formatter.format(
+    let diffOutput: String = Formatter.formatDiff(
         diff,
         options: options?.formatOptions
     )
@@ -372,7 +372,7 @@ internal func failAssertion(
     options         : XCTKOptions?
 )
 {
-    let diffOutput: String = Formatter.format(
+    let diffOutput: String = Formatter.formatDiff(
         diff,
         options: options?.formatOptions
     )

@@ -46,6 +46,11 @@ internal final class FormatterTruncationTests: XCTestKitCase
             }
         )
         
+        let actual: String = Formatter.formatDiff(
+            node,
+            options: options
+        )
+        
         let expected: String =
         """
         \(typeName) differs at:
@@ -61,7 +66,7 @@ internal final class FormatterTruncationTests: XCTestKitCase
             ... and more differences (limit: 2)
         """
         
-        XCTKAssertEqual(Formatter.format(node, options: options), expected)
+        XCTKAssertEqual(expected, actual)
     }
     
     
@@ -91,6 +96,11 @@ internal final class FormatterTruncationTests: XCTestKitCase
             }
         )
         
+        let actual: String = Formatter.formatDiff(
+            node,
+            options: options
+        )
+        
         let expected: String =
         """
         \(typeName) differs at:
@@ -106,7 +116,7 @@ internal final class FormatterTruncationTests: XCTestKitCase
             ... and 3 more differences
         """
         
-        XCTKAssertEqual(Formatter.format(node, options: options), expected)
+        XCTKAssertEqual(expected, actual)
     }
     
     
@@ -133,6 +143,11 @@ internal final class FormatterTruncationTests: XCTestKitCase
             }
         )
         
+        let actual: String = Formatter.formatDiff(
+            node,
+            options: options
+        )
+        
         let expected: String =
         """
         \(typeName) differs at:
@@ -150,7 +165,7 @@ internal final class FormatterTruncationTests: XCTestKitCase
                 \(LK.actual.rawValue)\(act[2])
         """
         
-        XCTKAssertEqual(Formatter.format(node, options: options), expected)
+        XCTKAssertEqual(expected, actual)
     }
     
     
@@ -179,6 +194,11 @@ internal final class FormatterTruncationTests: XCTestKitCase
             }
         )
         
+        let actual: String = Formatter.formatDiff(
+            node,
+            options: options
+        )
+        
         let expected: String =
         """
         \(typeName) differs:
@@ -190,7 +210,7 @@ internal final class FormatterTruncationTests: XCTestKitCase
             ... and 7 more differences
         """
         
-        XCTKAssertEqual(Formatter.format(node, options: options), expected)
+        XCTKAssertEqual(expected, actual)
     }
     
     
@@ -230,6 +250,11 @@ internal final class FormatterTruncationTests: XCTestKitCase
             }
         )
         
+        let actual: String = Formatter.formatDiff(
+            node,
+            options: options
+        )
+        
         let expected: String =
         """
         \(typeName) differs at:
@@ -247,7 +272,7 @@ internal final class FormatterTruncationTests: XCTestKitCase
             ... and 3 more differences
         """
         
-        XCTKAssertEqual(Formatter.format(node, options: options), expected)
+        XCTKAssertEqual(expected, actual)
     }
     
     
@@ -277,6 +302,11 @@ internal final class FormatterTruncationTests: XCTestKitCase
             }
         )
         
+        let actual: String = Formatter.formatDiff(
+            node,
+            options: options
+        )
+        
         let expected: String =
         """
         \(typeName) differs at:
@@ -288,7 +318,7 @@ internal final class FormatterTruncationTests: XCTestKitCase
             ... and 2 more differences
         """
         
-        XCTKAssertEqual(Formatter.format(node, options: options), expected)
+        XCTKAssertEqual(expected, actual)
     }
     
     
@@ -365,6 +395,11 @@ internal final class FormatterTruncationTests: XCTestKitCase
             ]
         )
         
+        let actual: String = Formatter.formatDiff(
+            node,
+            options: options
+        )
+        
         let expected: String =
         """
         \(typeName) differs at:
@@ -380,7 +415,7 @@ internal final class FormatterTruncationTests: XCTestKitCase
             ... and 2 more differences
         """
         
-        XCTKAssertEqual(Formatter.format(node, options: options), expected)
+        XCTKAssertEqual(expected, actual)
     }
     
     
@@ -463,6 +498,11 @@ internal final class FormatterTruncationTests: XCTestKitCase
             ]
         )
         
+        let actual: String = Formatter.formatDiff(
+            node,
+            options: options
+        )
+        
         let expected: String =
         """
         \(typeName) differs at:
@@ -472,7 +512,7 @@ internal final class FormatterTruncationTests: XCTestKitCase
                 \(LK.actual.rawValue)\(act.l2.l3.l4.l5.l6.l7.l8.l9.l10.val)
         """
         
-        XCTKAssertEqual(Formatter.format(node, options: options), expected)
+        XCTKAssertEqual(expected, actual)
     }
     
     
@@ -497,13 +537,18 @@ internal final class FormatterTruncationTests: XCTestKitCase
             actual:     act
         )
         
+        let actual: String = Formatter.formatDiff(
+            node,
+            options: options
+        )
+        
         let expected: String =
         """
         \(LK.expected.rawValue)\(quote(truncatedExp + "..."))
         \(LK.actual.rawValue)\(quote(act))
         """
         
-        XCTKAssertEqual(Formatter.format(node, options: options), expected)
+        XCTKAssertEqual(expected, actual)
     }
     
     
@@ -526,13 +571,18 @@ internal final class FormatterTruncationTests: XCTestKitCase
             actual:     act
         )
         
+        let actual: String = Formatter.formatDiff(
+            node,
+            options: options
+        )
+        
         let expected: String =
         """
         \(LK.expected.rawValue)\(quote(shortExp + "..."))
         \(LK.actual.rawValue)\(quote(act))
         """
         
-        XCTKAssertEqual(Formatter.format(node, options: options), expected)
+        XCTKAssertEqual(expected, actual)
     }
     
     
@@ -569,6 +619,11 @@ internal final class FormatterTruncationTests: XCTestKitCase
             ]
         )
         
+        let actual: String = Formatter.formatDiff(
+            node,
+            options: options
+        )
+        
         let expected: String =
         """
         \(typeName) differs at:
@@ -578,7 +633,7 @@ internal final class FormatterTruncationTests: XCTestKitCase
                 \(LK.actual.rawValue)\(quote(act.data))
         """
         
-        XCTKAssertEqual(Formatter.format(node, options: options), expected)
+        XCTKAssertEqual(expected, actual)
     }
     
     
@@ -630,6 +685,11 @@ internal final class FormatterTruncationTests: XCTestKitCase
             ]
         )
         
+        let actual: String = Formatter.formatDiff(
+            node,
+            options: options
+        )
+        
         let expected: String =
         """
         \(typeName) differs at:
@@ -639,7 +699,7 @@ internal final class FormatterTruncationTests: XCTestKitCase
                 \(LK.actual.rawValue)\(quote(act.l2.l3.data))
         """
         
-        XCTKAssertEqual(Formatter.format(node, options: options), expected)
+        XCTKAssertEqual(expected, actual)
     }
     
     
@@ -673,6 +733,11 @@ internal final class FormatterTruncationTests: XCTestKitCase
             ]
         )
         
+        let actual: String = Formatter.formatDiff(
+            node,
+            options: options
+        )
+        
         let expected: String =
         """
         \(typeName) differs at:
@@ -682,7 +747,7 @@ internal final class FormatterTruncationTests: XCTestKitCase
         \(LK.actual.rawValue)\(act.age)
         """
         
-        XCTKAssertEqual(Formatter.format(node, options: options), expected)
+        XCTKAssertEqual(expected, actual)
     }
     
     
@@ -714,6 +779,11 @@ internal final class FormatterTruncationTests: XCTestKitCase
             ]
         )
         
+        let actual: String = Formatter.formatDiff(
+            node,
+            options: options
+        )
+        
         let expected: String =
         """
         \(typeName) differs at:
@@ -723,7 +793,7 @@ internal final class FormatterTruncationTests: XCTestKitCase
             \(LK.actual.rawValue)\(act.age)
         """
         
-        XCTKAssertEqual(Formatter.format(node, options: options), expected)
+        XCTKAssertEqual(expected, actual)
     }
     
     
@@ -742,12 +812,17 @@ internal final class FormatterTruncationTests: XCTestKitCase
             actual:     act
         )
         
+        let actual: String = Formatter.formatDiff(
+            node,
+            options: options
+        )
+        
         let expected: String =
         """
         \(LK.expected.rawValue)[1, 2, 3, 4, 5, 6...
         \(LK.actual.rawValue)\(act)
         """
         
-        XCTKAssertEqual(Formatter.format(node, options: options), expected)
+        XCTKAssertEqual(expected, actual)
     }
 }
