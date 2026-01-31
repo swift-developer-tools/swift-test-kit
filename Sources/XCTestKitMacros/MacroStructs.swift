@@ -127,3 +127,62 @@ internal struct FailMacro: NoExprMacro
 {
     static let kind: AssertionKind = .fail
 }
+
+
+
+// MARK: - Predicate
+
+internal struct AssertSatisfyAllMacro: DoubleExprMacro
+{
+    static let kind: AssertionKind = .satisfyAll
+}
+
+internal struct AssertSatisfyAnyMacro: DoubleExprMacro
+{
+    static let kind: AssertionKind = .satisfyAny
+}
+
+internal struct AssertSatisfyNoneMacro: DoubleExprMacro
+{
+    static let kind: AssertionKind = .satisfyNone
+}
+
+internal struct AssertSatisfyAtLeastMacro: DoubleExprMacro
+{
+    static let kind: AssertionKind = .satisfyAtLeast
+}
+
+internal struct AssertSatisfyAtMostMacro: DoubleExprMacro
+{
+    static let kind: AssertionKind = .satisfyAtMost
+}
+
+internal struct AssertSatisfyRangeMacro: DoubleExprMacro
+{
+    static let kind: AssertionKind = .satisfyRange
+}
+
+internal struct AssertExactlyMacro: DoubleExprMacro
+{
+    static let kind: AssertionKind = .exactly
+}
+
+internal struct AssertExactlyOneMacro: DoubleExprMacro
+{
+    static let kind: AssertionKind = .exactlyOne
+}
+
+internal struct AssertSortedMacro: DoubleExprMacro
+{
+    static let kind: AssertionKind = .sorted
+}
+
+internal struct AssertUniqueMacro: DoubleExprMacro
+{
+    static let kind: AssertionKind = .unique
+}
+
+internal struct AssertUniqueByKeyMacro: DoubleExprMacro
+{
+    static let kind: AssertionKind = .uniqueByKey
+}

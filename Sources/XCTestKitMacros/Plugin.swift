@@ -40,6 +40,18 @@ struct XCTestKitMacroPlugin: CompilerPlugin
         AssertThrowsErrorMacro.self,
         AssertNoThrowMacro.self,
         
-        FailMacro.self
+        FailMacro.self,
+        
+        AssertSatisfyAllMacro.self,
+        AssertSatisfyAnyMacro.self,
+        AssertSatisfyNoneMacro.self,
+        AssertSatisfyAtLeastMacro.self,
+        AssertSatisfyAtMostMacro.self,
+        AssertSatisfyRangeMacro.self,
+        AssertExactlyMacro.self,
+        AssertExactlyOneMacro.self,
+        AssertSortedMacro.self,
+        AssertUniqueMacro.self,
+        AssertUniqueByKeyMacro.self
     ]
 }
