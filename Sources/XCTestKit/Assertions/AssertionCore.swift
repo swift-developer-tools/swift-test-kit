@@ -1918,6 +1918,11 @@ internal func evaluateXCTKAssertSatisfy<C>(
     options     : XCTKOptions?
 ) where C : Collection
 {
+    precondition(
+        atLeast >= 0,
+        "atLeast must be non-negative"
+    )
+    
     let assertionKind: AssertionKind = .satisfyAtLeast
     
     let collectionResult: Result<C, Error> = evaluateCollection(
@@ -1987,6 +1992,11 @@ internal func evaluateXCTKAssertSatisfy<C>(
     options     : XCTKOptions?
 ) where C : Collection
 {
+    precondition(
+        atMost >= 0,
+        "atMost must be non-negative"
+    )
+    
     let assertionKind: AssertionKind = .satisfyAtMost
     
     let collectionResult: Result<C, Error> = evaluateCollection(
@@ -2056,6 +2066,16 @@ internal func evaluateXCTKAssertSatisfy<C>(
     options     : XCTKOptions?
 ) where C : Collection
 {
+    precondition(
+        range.lowerBound <= range.upperBound,
+        "range.lowerBound must be less than or equal to range.upperBound"
+    )
+    
+    precondition(
+        range.lowerBound >= 0,
+        "range.lowerBound must be non-negative"
+    )
+    
     let assertionKind: AssertionKind = .satisfyRange
     
     let collectionResult: Result<C, Error> = evaluateCollection(
@@ -2126,6 +2146,11 @@ internal func evaluateXCTKAssertExactly<C>(
     options     : XCTKOptions?
 ) where C : Collection
 {
+    precondition(
+        count >= 0,
+        "count must be non-negative"
+    )
+    
     let assertionKind: AssertionKind = .exactly
     
     let collectionResult: Result<C, Error> = evaluateCollection(
