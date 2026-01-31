@@ -63,12 +63,12 @@ internal struct Formatter
     
     
     
-    /// Formats the given root diff node into a string.
+    /// Formats the given diff.
     /// - Parameters:
-    ///   - node: The root diff node to format.
-    ///   - options: The options for testing. The default value is `nil`, which
+    ///   - node: The root diff node.
+    ///   - options: The formatting options. The default value is `nil`, which
     ///   falls back to using global options.
-    /// - Returns: The formatting string.
+    /// - Returns: The formatted failure.
     static func formatDiff(
         _ node  : DiffNode,
         options : XCTKFormatOptions?    = nil
@@ -98,9 +98,9 @@ internal struct Formatter
     ///   - evaluated: The evaluated boolean expressions.
     ///   - notEvaluated: The number of unevaluated boolean expressions.
     ///   - expectedValue: The value expected by the assertion.
-    ///   - options: The options for testing. The default value is `nil`, which
+    ///   - options: The formatting options. The default value is `nil`, which
     ///   falls back to using global options.
-    /// - Returns: The formatted decomposition.
+    /// - Returns: The formatted failure.
     static func formatBooleanExpr(
         exprText        : String,
         evaluated       : [XCTKBooleanExpr],
