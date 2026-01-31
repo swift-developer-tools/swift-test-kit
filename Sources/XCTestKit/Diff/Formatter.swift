@@ -843,7 +843,7 @@ internal struct Formatter
     ///   - collectionText: The collection expression source text, or `nil` for
     ///   function assertions.
     ///   - predicateText: The predicate expression source text, or `nil` for
-    ///   function assertions.
+    ///   function assertions or macro assertions without a predicate.
     private func emitPredicateHeader(
         for failure     : PredicateFailure,
         collectionText  : String?,
@@ -851,32 +851,36 @@ internal struct Formatter
     )
     {
         emitLine("Collection count: \(failure.collectionCount)", 0)
+        emitBlankLine()
         
-        if
-            let collectionText,
-            let predicateText
+        guard let collectionText
+        else
         {
-            emitBlankLine()
-            
-            let collectionLabel : String    = "Collection: "
-            let predicateLabel  : String    = "Predicate:  "
-            
-            let availableWidth: Int = computeAvailableWidth(
-                indent:         0,
-                labelWidth:     collectionLabel.count
-            )
-            
-            let truncatedCollectionText: String = Self.truncateText(
-                collectionText,
-                maxLength: availableWidth
-            )
-            
+            return
+        }
+        
+        let collectionLabel : String    = "Collection: "
+        let predicateLabel  : String    = "Predicate:  "
+        
+        let availableWidth: Int = computeAvailableWidth(
+            indent:         0,
+            labelWidth:     collectionLabel.count
+        )
+        
+        let truncatedCollectionText: String = Self.truncateText(
+            collectionText,
+            maxLength: availableWidth
+        )
+        
+        emitLine("\(collectionLabel)\(truncatedCollectionText)", 0)
+        
+        if let predicateText
+        {
             let truncatedPredicateText: String = Self.truncateText(
                 predicateText,
                 maxLength: availableWidth
             )
             
-            emitLine("\(collectionLabel)\(truncatedCollectionText)", 0)
             emitLine("\(predicateLabel)\(truncatedPredicateText)", 0)
         }
         

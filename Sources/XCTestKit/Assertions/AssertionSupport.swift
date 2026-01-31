@@ -536,9 +536,18 @@ internal func failPredicateAssertion(
                 options:    options
             )
             
-        case .single:
+        case let .single(collectionText):
             
-            break
+            failPredicateAssertion(
+                kind:               kind,
+                collectionText:     collectionText,
+                predicateText:      nil,
+                failure:            failure,
+                message:            message,
+                file:               file,
+                line:               line,
+                options:            options
+            )
             
         case let .double(collectionText, predicateText):
             
@@ -609,8 +618,8 @@ private func failPredicateAssertion(
 ///   - options: The options for testing.
 private func failPredicateAssertion(
     kind            : AssertionKind,
-    collectionText  : String,
-    predicateText   : String,
+    collectionText  : String?,
+    predicateText   : String?,
     failure         : PredicateFailure,
     message         : () -> String?,
     file            : StaticString,
