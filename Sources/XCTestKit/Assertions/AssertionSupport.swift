@@ -502,6 +502,149 @@ internal func failAssertion(
 
 
 
+// MARK: - Fail predicate assertions
+
+/// Reports a predicate assertion failure.
+/// - Parameters:
+///   - kind: The assertion kind.
+///   - captureKind: The kind of captured assertion expression.
+///   - failure: Information about the failed predicate.
+///   - message: The description of a failure.
+///   - file: The file where the failure occurs.
+///   - line: The line where the failure occurs.
+///   - options: The options for testing.
+internal func failPredicateAssertion(
+    kind        : AssertionKind,
+    captureKind : ExprCaptureKind,
+    failure     : PredicateFailure,
+    message     : () -> String?,
+    file        : StaticString,
+    line        : UInt,
+    options     : XCTKOptions?
+)
+{
+    switch captureKind
+    {
+        case .none:
+            
+            failPredicateAssertion(
+                kind:       kind,
+                failure:    failure,
+                message:    message,
+                file:       file,
+                line:       line,
+                options:    options
+            )
+            
+        case .single:
+            
+            break
+            
+        case let .double(collectionText, predicateText):
+            
+            failPredicateAssertion(
+                kind:               kind,
+                collectionText:     collectionText,
+                predicateText:      predicateText,
+                failure:            failure,
+                message:            message,
+                file:               file,
+                line:               line,
+                options:            options
+            )
+    }
+}
+
+
+
+/// Reports a function predicate assertion failure.
+/// - Parameters:
+///   - kind: The assertion kind.
+///   - failure: Information about the failed predicate.
+///   - message: The description of a failure.
+///   - file: The file where the failure occurs.
+///   - line: The line where the failure occurs.
+///   - options: The options for testing.
+private func failPredicateAssertion(
+    kind        : AssertionKind,
+    failure     : PredicateFailure,
+    message     : () -> String?,
+    file        : StaticString,
+    line        : UInt,
+    options     : XCTKOptions?
+)
+{
+    let output: String = Formatter.formatPredicate(
+        failure,
+        options: options?.formatOptions
+    )
+    
+    var text: String = "\(kind.name) failed"
+    
+    if
+        let msg: String = message(),
+        !msg.isEmpty
+    {
+        text += " - \(msg)"
+    }
+    
+    text += "\n\n\(output)"
+    
+    XCTKFail(
+        text,
+        file:   file,
+        line:   line
+    )
+}
+
+
+
+/// Reports a macro predicate assertion failure.
+/// - Parameters:
+///   - kind: The assertion kind.
+///   - failure: Information about the failed predicate.
+///   - message: The description of a failure.
+///   - file: The file where the failure occurs.
+///   - line: The line where the failure occurs.
+///   - options: The options for testing.
+private func failPredicateAssertion(
+    kind            : AssertionKind,
+    collectionText  : String,
+    predicateText   : String,
+    failure         : PredicateFailure,
+    message         : () -> String?,
+    file            : StaticString,
+    line            : UInt,
+    options         : XCTKOptions?
+)
+{
+    let output: String = Formatter.formatPredicate(
+        failure,
+        collectionText:     collectionText,
+        predicateText:      predicateText,
+        options:            options?.formatOptions
+    )
+    
+    var text: String = "\(kind.macroDisplayName) failed"
+    
+    if
+        let msg: String = message(),
+        !msg.isEmpty
+    {
+        text += " - \(msg)"
+    }
+    
+    text += "\n\n\(output)"
+    
+    XCTKFail(
+        text,
+        file:   file,
+        line:   line
+    )
+}
+
+
+
 // MARK: - XCTKUnwrapError
 
 /// The error thrown by ``XCTKUnwrap(_:_:file:line:options:)-func`` or
