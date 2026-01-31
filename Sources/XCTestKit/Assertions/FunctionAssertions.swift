@@ -1145,14 +1145,14 @@ public func XCTKAssertUnique<C>(
 ///   number where this function was called.
 ///   - options: The options for testing. The default value is `nil`, which
 ///   falls back to using global options.
-public func XCTKAssertUnique<C, T>(
+public func XCTKAssertUnique<C, K>(
     _ collection    : @autoclosure () throws -> C,
-    by key          : (C.Element) throws -> T,
+    by key          : (C.Element) throws -> K,
     _ message       : @autoclosure () -> String     = "",
     file            : StaticString                  = #filePath,
     line            : UInt                          = #line,
     options         : XCTKOptions?                  = nil
-) where C : Collection, T : Hashable
+) where C : Collection, K : Hashable
 {
     evaluateXCTKAssertUnique(
         captureKind:    .none,
