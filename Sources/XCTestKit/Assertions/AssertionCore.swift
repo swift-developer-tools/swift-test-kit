@@ -1695,3 +1695,196 @@ internal func evaluateXCTKAssertNoThrow<T>(
         }
     }
 }
+
+
+
+// MARK: - Predicate
+
+internal func evaluateXCTKAssertAllSatisfy<C>(
+    captureKind : ExprCaptureKind,
+    collection  : () throws -> C,
+    predicate   : (C.Element) throws -> Bool,
+    message     : () -> String,
+    file        : StaticString,
+    line        : UInt,
+    options     : XCTKOptions?
+) where C : Collection
+{
+    let assertionKind: AssertionKind = .satisfyAll
+    
+    // TODO: Implement
+}
+
+
+
+internal func evaluateXCTKAssertAnySatisfy<C>(
+    captureKind : ExprCaptureKind,
+    collection  : () throws -> C,
+    predicate   : (C.Element) throws -> Bool,
+    message     : () -> String,
+    file        : StaticString,
+    line        : UInt,
+    options     : XCTKOptions?
+) where C : Collection
+{
+    let assertionKind: AssertionKind = .satisfyAny
+    
+    // TODO: Implement
+}
+
+
+
+internal func evaluateXCTKAssertNoneSatisfy<C>(
+    captureKind : ExprCaptureKind,
+    collection  : () throws -> C,
+    predicate   : (C.Element) throws -> Bool,
+    message     : () -> String,
+    file        : StaticString,
+    line        : UInt,
+    options     : XCTKOptions?
+) where C : Collection
+{
+    let assertionKind: AssertionKind = .satisfyNone
+    
+    // TODO: Implement
+}
+
+
+
+internal func evaluateXCTKAssertSatisfy<C>(
+    captureKind : ExprCaptureKind,
+    collection  : () throws -> C,
+    atLeast     : Int,
+    predicate   : (C.Element) throws -> Bool,
+    message     : () -> String,
+    file        : StaticString,
+    line        : UInt,
+    options     : XCTKOptions?
+) where C : Collection
+{
+    let assertionKind: AssertionKind = .satisfyAtLeast
+    
+    // TODO: Implement
+}
+
+
+
+internal func evaluateXCTKAssertSatisfy<C>(
+    captureKind : ExprCaptureKind,
+    collection  : () throws -> C,
+    atMost      : Int,
+    predicate   : (C.Element) throws -> Bool,
+    message     : () -> String,
+    file        : StaticString,
+    line        : UInt,
+    options     : XCTKOptions?
+) where C : Collection
+{
+    let assertionKind: AssertionKind = .satisfyAtMost
+    
+    // TODO: Implement
+}
+
+
+
+internal func evaluateXCTKAssertSatisfy<C>(
+    captureKind : ExprCaptureKind,
+    collection  : () throws -> C,
+    range       : ClosedRange<Int>,
+    predicate   : (C.Element) throws -> Bool,
+    message     : () -> String,
+    file        : StaticString,
+    line        : UInt,
+    options     : XCTKOptions?
+) where C : Collection
+{
+    let assertionKind: AssertionKind = .satisfyRange
+    
+    // TODO: Implement
+}
+
+
+
+internal func evaluateXCTKAssertExactly<C>(
+    captureKind : ExprCaptureKind,
+    collection  : () throws -> C,
+    count       : Int,
+    predicate   : (C.Element) throws -> Bool,
+    message     : () -> String,
+    file        : StaticString,
+    line        : UInt,
+    options     : XCTKOptions?
+) where C : Collection
+{
+    let assertionKind: AssertionKind = .exactly
+    
+    // TODO: Implement
+}
+
+
+
+internal func evaluateXCTKAssertExactlyOne<C>(
+    captureKind : ExprCaptureKind,
+    collection  : () throws -> C,
+    predicate   : (C.Element) throws -> Bool,
+    message     : () -> String,
+    file        : StaticString,
+    line        : UInt,
+    options     : XCTKOptions?
+) where C : Collection
+{
+    let assertionKind: AssertionKind = .exactlyOne
+    
+    // TODO: Implement
+}
+
+
+
+internal func evaluateXCTKAssertSorted<C>(
+    captureKind : ExprCaptureKind,
+    collection  : () throws -> C,
+    predicate   : (C.Element, C.Element) throws -> Bool,
+    message     : () -> String,
+    file        : StaticString,
+    line        : UInt,
+    options     : XCTKOptions?
+) where C : Collection
+{
+    let assertionKind: AssertionKind = .sorted
+    
+    // TODO: Implement
+}
+
+
+
+internal func evaluateXCTKAssertUnique<C>(
+    captureKind : ExprCaptureKind,
+    collection  : () throws -> C,
+    message     : () -> String,
+    file        : StaticString,
+    line        : UInt,
+    options     : XCTKOptions?
+) where C : Collection, C.Element : Hashable
+{
+    let assertionKind: AssertionKind = .unique
+    
+    // TODO: Implement
+}
+
+
+
+internal func evaluateXCTKAssertUnique<C, T>(
+    captureKind : ExprCaptureKind,
+    collection  : () throws -> C,
+    key         : (C.Element) throws -> T,
+    message     : () -> String,
+    file        : StaticString,
+    line        : UInt,
+    options     : XCTKOptions?
+) where C : Collection, T : Hashable
+{
+    let assertionKind: AssertionKind = .uniqueByKey
+    
+    // TODO: Implement
+}
+
