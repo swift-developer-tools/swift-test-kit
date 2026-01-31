@@ -1108,11 +1108,11 @@ public func XCTKAssertUnique<C>(
 
 
 /// Asserts that each element of the given collection is unique, based on a
-/// key extracted by the given closure.
+/// key extracted by the given predicate.
 /// - Parameters:
 ///   - collection: The collection to evaluate.
-///   - key: A closure that extracts a key from an element of the collection.
-///   Two elements are considered duplicates if they produce equal keys.
+///   - predicate: A closure that extracts a key from an element of the
+///   collection. Elements are duplicates if they produce equal keys.
 ///   - message: An optional description of a failure.
 ///   - file: The file where the failure occurs. The default value is the
 ///   filename of the test case in which this function was called.
@@ -1122,7 +1122,7 @@ public func XCTKAssertUnique<C>(
 ///   falls back to using global options.
 public func XCTKAssertUnique<C, K>(
     _ collection    : @autoclosure () throws -> C,
-    by key          : (C.Element) throws -> K,
+    by predicate    : (C.Element) throws -> K,
     _ message       : @autoclosure () -> String     = "",
     file            : StaticString                  = #filePath,
     line            : UInt                          = #line,
@@ -1132,7 +1132,7 @@ public func XCTKAssertUnique<C, K>(
     evaluateXCTKAssertUnique(
         captureKind:    .none,
         collection:     collection,
-        key:            key,
+        predicate:      predicate,
         message:        message,
         file:           file,
         line:           line,

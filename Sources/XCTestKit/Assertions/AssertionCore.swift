@@ -2497,7 +2497,7 @@ internal func evaluateXCTKAssertUnique<C>(
 internal func evaluateXCTKAssertUnique<C, K>(
     captureKind : ExprCaptureKind,
     collection  : () throws -> C,
-    key         : (C.Element) throws -> K,
+    predicate   : (C.Element) throws -> K,
     message     : () -> String,
     file        : StaticString,
     line        : UInt,
@@ -2535,18 +2535,17 @@ internal func evaluateXCTKAssertUnique<C, K>(
     
     for (index, element) in elements.enumerated()
     {
-        let extractedKey: K
+        let key: K
         
         do
         {
-            extractedKey = try key(element)
+            key = try predicate(element)
         }
         catch
         {
             failAssertion(
                 kind:       assertionKind,
-                reason:     "key extractor threw error \(quote(error))"
-                            + " at index \(index)",
+                reason:     "threw error \(quote(error)) at index \(index)",
                 message:    message,
                 file:       file,
                 line:       line,
@@ -2561,7 +2560,7 @@ internal func evaluateXCTKAssertUnique<C, K>(
             value:  DiffValue(element)
         )
         
-        elementsByKey[extractedKey, default: []].append(indexedElement)
+        elementsByKey[key, default: []].append(indexedElement)
     }
     
     
