@@ -769,7 +769,15 @@ public func XCTKAssertAllSatisfy<C>(
     options         : XCTKOptions?                  = nil
 ) where C : Collection
 {
-    // TODO: Call evaluate
+    evaluateXCTKAssertAllSatisfy(
+        captureKind:    .none,
+        collection:     collection,
+        predicate:      predicate,
+        message:        message,
+        file:           file,
+        line:           line,
+        options:        options
+    )
 }
 
 
@@ -796,7 +804,15 @@ public func XCTKAssertAnySatisfy<C>(
     options         : XCTKOptions?                  = nil
 ) where C : Collection
 {
-    // TODO: Call evaluate
+    evaluateXCTKAssertAnySatisfy(
+        captureKind:    .none,
+        collection:     collection,
+        predicate:      predicate,
+        message:        message,
+        file:           file,
+        line:           line,
+        options:        options
+    )
 }
 
 
@@ -823,7 +839,15 @@ public func XCTKAssertNoneSatisfy<C>(
     options         : XCTKOptions?                  = nil
 ) where C : Collection
 {
-    // TODO: Call evaluate
+    evaluateXCTKAssertNoneSatisfy(
+        captureKind:    .none,
+        collection:     collection,
+        predicate:      predicate,
+        message:        message,
+        file:           file,
+        line:           line,
+        options:        options
+    )
 }
 
 
@@ -853,7 +877,16 @@ public func XCTKAssertSatisfy<C>(
     options         : XCTKOptions?                  = nil
 ) where C : Collection
 {
-    // TODO: Call evaluate
+    evaluateXCTKAssertSatisfy(
+        captureKind:    .none,
+        collection:     collection,
+        atLeast:        atLeast,
+        predicate:      predicate,
+        message:        message,
+        file:           file,
+        line:           line,
+        options:        options
+    )
 }
 
 
@@ -883,7 +916,16 @@ public func XCTKAssertSatisfy<C>(
     options         : XCTKOptions?                  = nil
 ) where C : Collection
 {
-    // TODO: Call evaluate
+    evaluateXCTKAssertSatisfy(
+        captureKind:    .none,
+        collection:     collection,
+        atMost:         atMost,
+        predicate:      predicate,
+        message:        message,
+        file:           file,
+        line:           line,
+        options:        options
+    )
 }
 
 
@@ -912,7 +954,16 @@ public func XCTKAssertSatisfy<C>(
     options         : XCTKOptions?                  = nil
 ) where C : Collection
 {
-    // TODO: Call evaluate
+    evaluateXCTKAssertSatisfy(
+        captureKind:    .none,
+        collection:     collection,
+        range:          range,
+        predicate:      predicate,
+        message:        message,
+        file:           file,
+        line:           line,
+        options:        options
+    )
 }
 
 
@@ -942,7 +993,16 @@ public func XCTKAssertExactly<C>(
     options         : XCTKOptions?                  = nil
 ) where C : Collection
 {
-    // TODO: Call evaluate
+    evaluateXCTKAssertExactly(
+        captureKind:    .none,
+        collection:     collection,
+        count:          count,
+        predicate:      predicate,
+        message:        message,
+        file:           file,
+        line:           line,
+        options:        options
+    )
 }
 
 
@@ -969,7 +1029,15 @@ public func XCTKAssertExactlyOne<C>(
     options         : XCTKOptions?                  = nil
 ) where C : Collection
 {
-    // TODO: Call evaluate
+    evaluateXCTKAssertExactlyOne(
+        captureKind:    .none,
+        collection:     collection,
+        predicate:      predicate,
+        message:        message,
+        file:           file,
+        line:           line,
+        options:        options
+    )
 }
 
 
@@ -996,7 +1064,15 @@ public func XCTKAssertSorted<C>(
     options         : XCTKOptions?                          = nil
 ) where C : Collection
 {
-    // TODO: Call evaluate
+    evaluateXCTKAssertSorted(
+        captureKind:    .none,
+        collection:     collection,
+        predicate:      predicate,
+        message:        message,
+        file:           file,
+        line:           line,
+        options:        options
+    )
 }
 
 
@@ -1019,7 +1095,14 @@ public func XCTKAssertUnique<C>(
     options         : XCTKOptions?                  = nil
 ) where C : Collection, C.Element : Hashable
 {
-    // TODO: Call evaluate
+    evaluateXCTKAssertUnique(
+        captureKind:    .none,
+        collection:     collection,
+        message:        message,
+        file:           file,
+        line:           line,
+        options:        options
+    )
 }
 
 
@@ -1046,5 +1129,13 @@ public func XCTKAssertUnique<C, T>(
     options         : XCTKOptions?                  = nil
 ) where C : Collection, T : Hashable
 {
-    // TODO: Call evaluate
+    evaluateXCTKAssertUnique(
+        captureKind:    .none,
+        collection:     collection,
+        key:            key,
+        message:        message,
+        file:           file,
+        line:           line,
+        options:        options
+    )
 }
