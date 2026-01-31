@@ -16,7 +16,7 @@
 //
 //===----------------------------------------------------------------------===//
 
-/// The kind of an assertion.
+/// The kind of assertion.
 public enum AssertionKind: Equatable, Sendable
 {
     case assert
