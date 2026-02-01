@@ -29,6 +29,8 @@ extension XCTestKitCase
     {
         let expr: () throws -> Int = { try TestError.throwError() }
         
+        let collection: () throws -> [String] = { try TestError.throwError() }
+        
         let message: String? = withOneExpectedFailure
         {
             switch kind
@@ -133,16 +135,89 @@ extension XCTestKitCase
                     
                     XCTKAssertNoThrow(try expr())
                     
+                case .satisfyAll:
+                    
+                    XCTKAssertAllSatisfy(
+                        try collection(),
+                        { $0.isEmpty }
+                    )
+                    
+                case .satisfyAny:
+                    
+                    XCTKAssertAnySatisfy(
+                        try collection(),
+                        { $0.isEmpty }
+                    )
+                    
+                case .satisfyNone:
+                    
+                    XCTKAssertNoneSatisfy(
+                        try collection(),
+                        { $0.isEmpty }
+                    )
+                    
+                case .satisfyAtLeast:
+                    
+                    XCTKAssertSatisfy(
+                        try collection(),
+                        atLeast: 1,
+                        { $0.isEmpty }
+                    )
+                    
+                case .satisfyAtMost:
+                    
+                    XCTKAssertSatisfy(
+                        try collection(),
+                        atMost: 1,
+                        { $0.isEmpty }
+                    )
+                    
+                case .satisfyRange:
+                    
+                    XCTKAssertSatisfy(
+                        try collection(),
+                        range: 1...3,
+                        { $0.isEmpty }
+                    )
+                    
+                case .exactly:
+                    
+                    XCTKAssertExactly(
+                        try collection(),
+                        count: 1,
+                        { $0.isEmpty }
+                    )
+                    
+                case .exactlyOne:
+                    
+                    XCTKAssertExactlyOne(
+                        try collection(),
+                        { $0.isEmpty }
+                    )
+                    
+                case .sorted:
+                    
+                    XCTKAssertSorted(
+                        try collection(),
+                        by: { $0 < $1 }
+                    )
+                    
+                case .unique:
+                    
+                    XCTKAssertUnique(try collection())
+                    
+                case .uniqueByKey:
+                    
+                    XCTKAssertUnique(
+                        try collection(),
+                        by: { $0.first }
+                    )
+                    
                 case
                     .fail,
                     .throwsError:
                     
                     XCTFail("Invalid assertion: \(kind.name)")
-                    return
-                    
-                default:
-                    
-                    // TODO: Add predicate cases
                     return
             }
         }
@@ -167,6 +242,8 @@ extension XCTestKitCase
     )
     {
         let expr: () throws -> Int = { try TestError.throwError() }
+        
+        let collection: () throws -> [String] = { try TestError.throwError() }
         
         let message: String? = withOneExpectedFailure
         {
@@ -271,17 +348,90 @@ extension XCTestKitCase
                 case .noThrow:
                     
                     #XCTKAssertNoThrow(try expr())
+                 
+                case .satisfyAll:
+                                
+                    #XCTKAssertAllSatisfy(
+                        try collection(),
+                        { $0.isEmpty }
+                    )
+                    
+                case .satisfyAny:
+                    
+                    #XCTKAssertAnySatisfy(
+                        try collection(),
+                        { $0.isEmpty }
+                    )
+                    
+                case .satisfyNone:
+                    
+                    #XCTKAssertNoneSatisfy(
+                        try collection(),
+                        { $0.isEmpty }
+                    )
+                    
+                case .satisfyAtLeast:
+                    
+                    #XCTKAssertSatisfy(
+                        try collection(),
+                        atLeast: 1,
+                        { $0.isEmpty }
+                    )
+                    
+                case .satisfyAtMost:
+                    
+                    #XCTKAssertSatisfy(
+                        try collection(),
+                        atMost: 1,
+                        { $0.isEmpty }
+                    )
+                    
+                case .satisfyRange:
+                    
+                    #XCTKAssertSatisfy(
+                        try collection(),
+                        range: 1...3,
+                        { $0.isEmpty }
+                    )
+                    
+                case .exactly:
+                    
+                    #XCTKAssertExactly(
+                        try collection(),
+                        count: 1,
+                        { $0.isEmpty }
+                    )
+                    
+                case .exactlyOne:
+                    
+                    #XCTKAssertExactlyOne(
+                        try collection(),
+                        { $0.isEmpty }
+                    )
+                    
+                case .sorted:
+                    
+                    #XCTKAssertSorted(
+                        try collection(),
+                        by: { $0 < $1 }
+                    )
+                    
+                case .unique:
+                    
+                    #XCTKAssertUnique(try collection())
+                    
+                case .uniqueByKey:
+                    
+                    #XCTKAssertUnique(
+                        try collection(),
+                        by: { $0.first }
+                    )
                     
                 case
                     .fail,
                     .throwsError:
                     
                     XCTFail("Invalid assertion: \(kind.macroDisplayName)")
-                    return
-                    
-                default:
-                    
-                    // TODO: Add predicate cases
                     return
             }
         }
