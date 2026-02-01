@@ -27,9 +27,8 @@ extension XCTestKitCase
         _ kind: AssertionKind
     )
     {
-        let expr: () throws -> Int = { try TestError.throwError() }
-        
-        let collection: () throws -> [String] = { try TestError.throwError() }
+        let expr        : () throws -> Int          = { throw TestError() }
+        let collection  : () throws -> [String]     = { throw TestError() }
         
         let message: String? = withOneExpectedFailure
         {
@@ -241,9 +240,8 @@ extension XCTestKitCase
         _ kind: AssertionKind
     )
     {
-        let expr: () throws -> Int = { try TestError.throwError() }
-        
-        let collection: () throws -> [String] = { try TestError.throwError() }
+        let expr        : () throws -> Int          = { throw TestError() }
+        let collection  : () throws -> [String]     = { throw TestError() }
         
         let message: String? = withOneExpectedFailure
         {

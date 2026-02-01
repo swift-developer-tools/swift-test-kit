@@ -218,7 +218,7 @@ extension XCTestKitCase
                 
             case .throwsError:
                 
-                let expr: () throws -> Int = { try TestError.throwError() }
+                let expr: () throws -> Int = { throw TestError() }
                 
                 XCTKAssertThrowsError(
                     try expr(),
@@ -541,7 +541,7 @@ extension XCTestKitCase
                     
                 case .noThrow:
                     
-                    let expr: () throws -> Int = { try TestError.throwError() }
+                    let expr: () throws -> Int = { throw TestError() }
                     
                     XCTKAssertNoThrow(
                         try expr(),
@@ -849,7 +849,7 @@ extension XCTestKitCase
                 
             case .throwsError:
                 
-                let expr: () throws -> Int = { try TestError.throwError() }
+                let expr: () throws -> Int = { throw TestError() }
                 
                 #XCTKAssertThrowsError(
                     try expr(),
@@ -1173,7 +1173,7 @@ extension XCTestKitCase
                     
                 case .noThrow:
                     
-                    let expr: () throws -> Int = { try TestError.throwError() }
+                    let expr: () throws -> Int = { throw TestError() }
                     
                     #XCTKAssertNoThrow(
                         try expr(),

@@ -149,7 +149,7 @@ internal final class MacroAssertionIntegrationTests: XCTestKitCase
         {
             do
             {
-                let expr: () throws -> Bool = { try TestError.throwError() }
+                let expr: () throws -> Bool = { throw TestError() }
                 
                 _ = try #XCTKUnwrap(try expr())
                 
@@ -399,7 +399,7 @@ internal final class MacroAssertionIntegrationTests: XCTestKitCase
     
     func testAssertThrowsWithThrowingExpr() throws
     {
-        let expr: () throws -> Int = { try TestError.throwError() }
+        let expr: () throws -> Int = { throw TestError() }
         
         #XCTKAssertThrowsError(try expr())
     }
@@ -429,7 +429,7 @@ internal final class MacroAssertionIntegrationTests: XCTestKitCase
     {
         XCTExpectFailure()
 
-        let expr: () throws -> Int = { try TestError.throwError() }
+        let expr: () throws -> Int = { throw TestError() }
         
         #XCTKAssertNoThrow(try expr())
     }
@@ -440,7 +440,7 @@ internal final class MacroAssertionIntegrationTests: XCTestKitCase
     {
         var handlerCalled: Bool = false
         
-        let expr: () throws -> Int = { try TestError.throwError() }
+        let expr: () throws -> Int = { throw TestError() }
         
         #XCTKAssertThrowsError(try expr())
         {
@@ -505,7 +505,7 @@ internal final class MacroAssertionIntegrationTests: XCTestKitCase
     
     func testAssertThrowsHandlerCanAssert() throws
     {
-        let expr: () throws -> Int = { try TestError.throwError() }
+        let expr: () throws -> Int = { throw TestError() }
         
         #XCTKAssertThrowsError(try expr())
         {
