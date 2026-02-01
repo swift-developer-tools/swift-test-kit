@@ -524,4 +524,186 @@ internal final class MacroAssertionIntegrationTests: XCTestKitCase
         XCTExpectFailure()
         #XCTKFail()
     }
+    
+    
+    
+    // MARK: - Predicate
+    
+    func testAssertAllSatisfyWithPassingExpr() throws
+    {
+        #XCTKAssertAllSatisfy([2, 4, 6]) { $0 % 2 == 0 }
+        #XCTKAssertAllSatisfy([Int]()) { $0 > 0 }
+    }
+    
+    
+    
+    func testAssertAllSatisfyWithFailingExpr() throws
+    {
+        XCTExpectFailure()
+        #XCTKAssertAllSatisfy([2, 3, 6]) { $0 % 2 == 0 }
+    }
+    
+    
+    
+    func testAssertAnySatisfyWithPassingExpr() throws
+    {
+        #XCTKAssertAnySatisfy([1, 2, 3]) { $0 == 2 }
+        #XCTKAssertAnySatisfy([1, 3, 5]) { $0 % 3 == 0 }
+    }
+    
+    
+    
+    func testAssertAnySatisfyWithFailingExpr() throws
+    {
+        XCTExpectFailure()
+        #XCTKAssertAnySatisfy([1, 3, 5]) { $0 % 2 == 0 }
+    }
+    
+    
+    
+    func testAssertNoneSatisfyWithPassingExpr() throws
+    {
+        #XCTKAssertNoneSatisfy([1, 3, 5]) { $0 % 2 == 0 }
+        #XCTKAssertNoneSatisfy([Int]()) { $0 > 0 }
+    }
+    
+    
+    
+    func testAssertNoneSatisfyWithFailingExpr() throws
+    {
+        XCTExpectFailure()
+        #XCTKAssertNoneSatisfy([1, 2, 3]) { $0 % 2 == 0 }
+    }
+    
+    
+    
+    func testAssertSatisfyAtLeastWithPassingExpr() throws
+    {
+        #XCTKAssertSatisfy([1, 2, 3, 4], atLeast: 2) { $0 % 2 == 0 }
+        #XCTKAssertSatisfy([1, 2, 3, 4], atLeast: 0) { $0 > 10 }
+    }
+    
+    
+    
+    func testAssertSatisfyAtLeastWithFailingExpr() throws
+    {
+        XCTExpectFailure()
+        #XCTKAssertSatisfy([1, 2, 3, 4], atLeast: 3) { $0 > 2 }
+    }
+    
+    
+    
+    func testAssertSatisfyAtMostWithPassingExpr() throws
+    {
+        #XCTKAssertSatisfy([1, 2, 3, 4], atMost: 2) { $0 > 2 }
+        #XCTKAssertSatisfy([1, 2, 3, 4], atMost: 4) { $0 > 0 }
+    }
+    
+    
+    
+    func testAssertSatisfyAtMostWithFailingExpr() throws
+    {
+        XCTExpectFailure()
+        #XCTKAssertSatisfy([1, 2, 3, 4], atMost: 1) { $0 > 2 }
+    }
+    
+    
+    
+    func testAssertSatisfyRangeWithPassingExpr() throws
+    {
+        #XCTKAssertSatisfy([1, 2, 3, 4, 5], range: 2...3) { $0 > 2 }
+        #XCTKAssertSatisfy([1, 2, 3], range: 0...0) { $0 > 10 }
+    }
+    
+    
+    
+    func testAssertSatisfyRangeWithFailingExpr() throws
+    {
+        XCTExpectFailure()
+        #XCTKAssertSatisfy([1, 2, 3, 4, 5], range: 0...1) { $0 > 2 }
+    }
+    
+    
+    
+    func testAssertExactlyWithPassingExpr() throws
+    {
+        #XCTKAssertExactly([1, 2, 3, 4], count: 2) { $0 > 2 }
+        #XCTKAssertExactly([1, 2, 3], count: 0) { $0 > 10 }
+    }
+    
+    
+    
+    func testAssertExactlyWithFailingExpr() throws
+    {
+        XCTExpectFailure()
+        #XCTKAssertExactly([1, 2, 3, 4], count: 3) { $0 > 2 }
+    }
+    
+    
+    
+    func testAssertExactlyOneWithPassingExpr() throws
+    {
+        #XCTKAssertExactlyOne([1, 2, 3]) { $0 == 2 }
+        #XCTKAssertExactlyOne([1, 2, 3]) { $0 > 2 }
+    }
+    
+    
+    
+    func testAssertExactlyOneWithFailingExpr() throws
+    {
+        XCTExpectFailure()
+        #XCTKAssertExactlyOne([1, 2, 3]) { $0 > 1 }
+    }
+    
+    
+    
+    func testAssertSortedWithPassingExpr() throws
+    {
+        #XCTKAssertSorted([1, 2, 3, 4], by: <)
+        #XCTKAssertSorted([4, 3, 2, 1], by: >)
+        #XCTKAssertSorted([Int](), by: <)
+        #XCTKAssertSorted([1], by: <)
+    }
+    
+    
+    
+    func testAssertSortedWithFailingExpr() throws
+    {
+        XCTExpectFailure()
+        #XCTKAssertSorted([1, 3, 2, 4], by: <)
+    }
+    
+    
+    
+    func testAssertUniqueWithPassingExpr() throws
+    {
+        #XCTKAssertUnique([1, 2, 3, 4])
+        #XCTKAssertUnique([Int]())
+        #XCTKAssertUnique([1])
+    }
+    
+    
+    
+    func testAssertUniqueWithFailingExpr() throws
+    {
+        XCTExpectFailure()
+        #XCTKAssertUnique([1, 2, 3, 2])
+    }
+    
+    
+    
+    func testAssertUniqueByKeyWithPassingExpr() throws
+    {
+        #XCTKAssertUnique(["a", "bb", "ccc"], by: { $0.count })
+        #XCTKAssertUnique([1, 2, 3], by: { $0 })
+        #XCTKAssertUnique([1, 2, 3], by: { $0 * 2 })
+    }
+    
+    
+    
+    func testAssertUniqueByKeyWithFailingExpr() throws
+    {
+        XCTExpectFailure()
+        #XCTKAssertUnique(["a", "b", "cc"], by: { $0.count })
+    }
 }
