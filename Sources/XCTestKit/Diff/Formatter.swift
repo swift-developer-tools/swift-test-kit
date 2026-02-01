@@ -1068,7 +1068,7 @@ internal struct Formatter
         if !mismatch.errorElements.isEmpty
         {
             emitBlankLine()
-            emitLine("Thrown errors: ", 1)
+            emitLine("Thrown errors:", 1)
             
             for element in mismatch.errorElements
             {
@@ -1082,7 +1082,7 @@ internal struct Formatter
                 
                 let valueText   : String = renderText(element.value.rendered)
                 let errorText   : String = element.error ?? "unknown error"
-                let errorLabel  : String = "(threw error: \(quote(errorText)))"
+                let errorLabel  : String = "(threw error \(quote(errorText)))"
                 
                 var line: String
                 
