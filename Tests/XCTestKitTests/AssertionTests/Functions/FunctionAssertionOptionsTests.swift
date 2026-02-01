@@ -13,12 +13,16 @@
 
 internal final class FunctionAssertionOptionsTests: XCTestKitCase
 {
+    // MARK: - Equality and inequality
+    
     func testAssertEqualOptionsBehavior() throws
     {
         testFunctionAssertionOptionsBehavior(.equal)
     }
     
     
+    
+    // MARK: - Predicate
     
     func testAssertSatisfyAllOptionsBehavior() throws
     {

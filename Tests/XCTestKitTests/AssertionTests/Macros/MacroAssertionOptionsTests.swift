@@ -13,6 +13,8 @@
 
 internal final class MacroAssertionOptionsTests: XCTestKitCase
 {
+    // MARK: - Boolean
+    
     func testAssertOptionsBehavior() throws
     {
         testMacroAssertionOptionsBehavior(.assert)
@@ -34,12 +36,16 @@ internal final class MacroAssertionOptionsTests: XCTestKitCase
     
     
     
+    // MARK: - Equality and inequality
+    
     func testAssertEqualOptionsBehavior() throws
     {
         testMacroAssertionOptionsBehavior(.equal)
     }
     
     
+    
+    // MARK: - Predicate
     
     func testAssertSatisfyAllOptionsBehavior() throws
     {
