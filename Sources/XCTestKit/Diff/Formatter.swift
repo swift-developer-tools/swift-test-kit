@@ -1077,7 +1077,7 @@ internal struct Formatter
         if !mismatch.errorElements.isEmpty
         {
             emitBlankLine()
-            emitLine("Thrown errors:", 1)
+            emitLine("Threw errors:", 1)
             
             for element in mismatch.errorElements
             {
