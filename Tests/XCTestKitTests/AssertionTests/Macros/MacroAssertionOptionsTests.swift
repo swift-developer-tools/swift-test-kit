@@ -38,4 +38,74 @@ internal final class MacroAssertionOptionsTests: XCTestKitCase
     {
         testMacroAssertionOptionsBehavior(.equal)
     }
+    
+    
+    
+    func testAssertSatisfyAllOptionsBehavior() throws
+    {
+        testMacroAssertionOptionsBehavior(.satisfyAll)
+    }
+    
+    
+    
+    func testAssertSatisfyAnyOptionsBehavior() throws
+    {
+        testMacroAssertionOptionsBehavior(.satisfyAny)
+    }
+    
+    
+    
+    func testAssertSatisfyNoneOptionsBehavior() throws
+    {
+        testMacroAssertionOptionsBehavior(.satisfyNone)
+    }
+    
+    
+    
+    func testAssertSatisfyAtLeastOptionsBehavior() throws
+    {
+        testMacroAssertionOptionsBehavior(.satisfyAtLeast)
+    }
+    
+    
+    
+    func testAssertSatisfyAtMostOptionsBehavior() throws
+    {
+        testMacroAssertionOptionsBehavior(.satisfyAtMost)
+    }
+    
+    
+    
+    func testAssertSatisfyRangeOptionsBehavior() throws
+    {
+        testMacroAssertionOptionsBehavior(.satisfyRange)
+    }
+    
+    
+    
+    func testAssertExactlyOptionsBehavior() throws
+    {
+        testMacroAssertionOptionsBehavior(.exactly)
+    }
+    
+    
+    
+    func testAssertExactlyOneOptionsBehavior() throws
+    {
+        testMacroAssertionOptionsBehavior(.exactlyOne)
+    }
+    
+    
+    
+    func testAssertUniqueBehavior() throws
+    {
+        testMacroAssertionOptionsBehavior(.unique)
+    }
+    
+    
+    
+    func testAssertUniqueByKeyBehavior() throws
+    {
+        testMacroAssertionOptionsBehavior(.uniqueByKey)
+    }
 }
