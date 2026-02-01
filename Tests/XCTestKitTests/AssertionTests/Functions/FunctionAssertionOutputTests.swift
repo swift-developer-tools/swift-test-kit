@@ -545,4 +545,313 @@ internal final class FunctionAssertionOutputTests: XCTestKitCase
         
         XCTAssertEqual(Self.message, actual)
     }
+    
+    
+    
+    // MARK: - Predicate
+    
+    func testAssertAllSatisfyFailureMessage() throws
+    {
+        let actual: String? = withOneExpectedFailure
+        {
+            XCTKAssertAllSatisfy(
+                [2, 3, 6],
+                { $0 % 2 == 0 },
+                Self.message
+            )
+        }
+        
+        let expected: String =
+        """
+        \(AK.satisfyAll.name) failed - \(Self.message)
+        
+        Collection count: 3
+        
+        Failed: 1 of 3
+        
+            [1]: 3
+        """
+        
+        XCTAssertEqual(expected, actual)
+    }
+    
+    
+    
+    func testAssertAnySatisfyFailureMessage() throws
+    {
+        let actual: String? = withOneExpectedFailure
+        {
+            XCTKAssertAnySatisfy(
+                [1, 3, 5],
+                { $0 % 2 == 0 },
+                Self.message
+            )
+        }
+        
+        let expected: String =
+        """
+        \(AK.satisfyAny.name) failed - \(Self.message)
+        
+        Collection count: 3
+        
+        Expected: at least 1 match
+        Actual:   0 matched
+        """
+        
+        XCTAssertEqual(expected, actual)
+    }
+    
+    
+    
+    func testAssertNoneSatisfyFailureMessage() throws
+    {
+        let actual: String? = withOneExpectedFailure
+        {
+            XCTKAssertNoneSatisfy(
+                [1, 2, 3],
+                { $0 % 2 == 0 },
+                Self.message
+            )
+        }
+        
+        let expected: String =
+        """
+        \(AK.satisfyNone.name) failed - \(Self.message)
+        
+        Collection count: 3
+        
+        Matched: 1 of 3
+        
+            [1]: 2
+        """
+        
+        XCTAssertEqual(expected, actual)
+    }
+    
+    
+    
+    func testAssertSatisfyAtLeastFailureMessage() throws
+    {
+        let actual: String? = withOneExpectedFailure
+        {
+            XCTKAssertSatisfy(
+                [1, 2, 3, 4],
+                atLeast: 3,
+                { $0 > 2 },
+                Self.message
+            )
+        }
+        
+        let expected: String =
+        """
+        \(AK.satisfyAtLeast.name) failed - \(Self.message)
+        
+        Collection count: 4
+        
+        Expected: at least 3 matches
+        Actual:   2 matched
+        
+            Matched: [2-3]
+        """
+        
+        XCTAssertEqual(expected, actual)
+    }
+    
+    
+    
+    func testAssertSatisfyAtMostFailureMessage() throws
+    {
+        let actual: String? = withOneExpectedFailure
+        {
+            XCTKAssertSatisfy(
+                [1, 2, 3, 4],
+                atMost: 1,
+                { $0 > 2 },
+                Self.message
+            )
+        }
+        
+        let expected: String =
+        """
+        \(AK.satisfyAtMost.name) failed - \(Self.message)
+        
+        Collection count: 4
+        
+        Expected: up to 1 match
+        Actual:   2 matched
+        
+            Matched: [2-3]
+        """
+        
+        XCTAssertEqual(expected, actual)
+    }
+    
+    
+    
+    func testAssertSatisfyRangeFailureMessage() throws
+    {
+        let actual: String? = withOneExpectedFailure
+        {
+            XCTKAssertSatisfy(
+                [3, 2, 1, 4, 5],
+                range: 0...1,
+                { $0 > 2 },
+                Self.message
+            )
+        }
+        
+        let expected: String =
+        """
+        \(AK.satisfyRange.name) failed - \(Self.message)
+        
+        Collection count: 5
+        
+        Expected: 0-1 matches
+        Actual:   3 matched
+        
+            Matched: [0], [3-4]
+        """
+        
+        XCTAssertEqual(expected, actual)
+    }
+    
+    
+    
+    func testAssertExactlyFailureMessage() throws
+    {
+        let actual: String? = withOneExpectedFailure
+        {
+            XCTKAssertExactly(
+                [1, 2, 3, 4],
+                count: 3,
+                { $0 > 2 },
+                Self.message
+            )
+        }
+        
+        let expected: String =
+        """
+        \(AK.exactly.name) failed - \(Self.message)
+        
+        Collection count: 4
+        
+        Expected: exactly 3 matches
+        Actual:   2 matched
+        
+            Matched: [2-3]
+        """
+        
+        XCTAssertEqual(expected, actual)
+    }
+    
+    
+    
+    func testAssertExactlyOneFailureMessage() throws
+    {
+        let actual: String? = withOneExpectedFailure
+        {
+            XCTKAssertExactlyOne(
+                [1, 2, 3],
+                { $0 > 1 },
+                Self.message
+            )
+        }
+        
+        let expected: String =
+        """
+        \(AK.exactlyOne.name) failed - \(Self.message)
+        
+        Collection count: 3
+        
+        Expected: exactly 1 match
+        Actual:   2 matched
+        
+            Matched: [1-2]
+        """
+        
+        XCTAssertEqual(expected, actual)
+    }
+    
+    
+    
+    func testAssertSortedFailureMessage() throws
+    {
+        let actual: String? = withOneExpectedFailure
+        {
+            XCTKAssertSorted(
+                [1, 3, 2, 4],
+                by: <,
+                Self.message
+            )
+        }
+        
+        let expected: String =
+        """
+        \(AK.sorted.name) failed - \(Self.message)
+        
+        Collection count: 4
+        
+        Not sorted at:
+        
+            [1]: 3
+            [2]: 2
+        """
+        
+        XCTAssertEqual(expected, actual)
+    }
+    
+    
+    
+    func testAssertUniqueFailureMessage() throws
+    {
+        let actual: String? = withOneExpectedFailure
+        {
+            XCTKAssertUnique(
+                [1, 2, 3, 2],
+                Self.message
+            )
+        }
+        
+        let expected: String =
+        """
+        \(AK.unique.name) failed - \(Self.message)
+        
+        Collection count: 4
+        
+        Duplicates: 1 value
+        
+            2: [1], [3]
+        """
+        
+        XCTAssertEqual(expected, actual)
+    }
+    
+    
+    
+    func testAssertUniqueByKeyFailureMessage() throws
+    {
+        let actual: String? = withOneExpectedFailure
+        {
+            XCTKAssertUnique(
+                ["a", "b", "cc"],
+                by: { $0.count },
+                Self.message
+            )
+        }
+        
+        let expected: String =
+        """
+        \(AK.uniqueByKey.name) failed - \(Self.message)
+        
+        Collection count: 3
+        
+        Duplicates: 1 key
+        
+            Key 1:
+                [0]: \(quote("a"))
+                [1]: \(quote("b"))
+        """
+        
+        XCTAssertEqual(expected, actual)
+    }
 }
