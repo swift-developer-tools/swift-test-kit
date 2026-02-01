@@ -21,6 +21,14 @@ internal struct FormattedLine
     
     /// The text content.
     let text    : String
+    
+    
+    
+    /// Whether the line is blank.
+    var isBlank: Bool
+    {
+        return text.isEmpty
+    }
 }
 
 
@@ -714,8 +722,6 @@ internal struct Formatter
             return
         }
         
-        
-        
         let noun    : String    = kind.rawValue
         let message : String
         
@@ -743,7 +749,10 @@ internal struct Formatter
         
         
         
-        if kind != .diff
+        if
+            kind != .diff,
+            let previousLine: FormattedLine = context.lines.last,
+            !previousLine.isBlank
         {
             emitBlankLine()
         }
