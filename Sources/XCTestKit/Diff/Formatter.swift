@@ -1206,7 +1206,7 @@ internal struct Formatter
         emitLine("Duplicates: \(groups.count) \(noun)", 0)
         emitBlankLine()
         
-        for group in groups
+        for (index, group) in groups.enumerated()
         {
             guard !context.isAtMaxDiffs
             else
@@ -1236,6 +1236,11 @@ internal struct Formatter
                     : "elements"
                 
                 emitLine("\(group.elements.count) \(noun)", 2)
+            }
+            
+            if index < groups.count - 1
+            {
+                emitBlankLine()
             }
             
             context.emittedDiffCount += 1
