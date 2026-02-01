@@ -1203,7 +1203,7 @@ internal struct Formatter
             ? "key"
             : "keys"
         
-        emitLine("Duplicate \(noun): \(groups.count)", 0)
+        emitLine("Duplicates: \(groups.count) \(noun)", 0)
         emitBlankLine()
         
         for group in groups
