@@ -19,10 +19,10 @@ extension XCTestKitCase
 
     /// Asserts that specified assertion fails when an error is thrown.
     ///
-    /// - Note: This does nothing for ``AssertionKind/fail`` or
+    /// - Note: This immediately fails ``AssertionKind/fail`` and
     /// ``AssertionKind/throwsError``.
     ///
-    /// - Parameter kind: The assertion to use.
+    /// - Parameter kind: The assertion to test.
     internal func testFunctionAssertionFailsOnThrow(
         _ kind: AssertionKind
     )
@@ -128,18 +128,17 @@ extension XCTestKitCase
                 case .false:
                     
                     XCTKAssertFalse(try expr() == 1)
-                    
-                case .fail:
-                    
-                    return
-                    
-                case .throwsError:
-                    
-                    return
-                    
+                                        
                 case .noThrow:
                     
                     XCTKAssertNoThrow(try expr())
+                    
+                case
+                    .fail,
+                    .throwsError:
+                    
+                    XCTFail("Invalid assertion: \(kind.name)")
+                    return
                     
                 default:
                     
@@ -159,10 +158,10 @@ extension XCTestKitCase
 
     /// Asserts that specified assertion fails when an error is thrown.
     ///
-    /// - Note: This does nothing for ``AssertionKind/fail`` or
+    /// - Note: This immediately fails ``AssertionKind/fail`` and
     /// ``AssertionKind/throwsError``.
     ///
-    /// - Parameter kind: The assertion to use.
+    /// - Parameter kind: The assertion to test.
     internal func testMacroAssertionFailsOnThrow(
         _ kind: AssertionKind
     )
@@ -269,17 +268,16 @@ extension XCTestKitCase
                     
                     #XCTKAssertFalse(try expr() == 1)
                     
-                case .fail:
-                    
-                    return
-                    
-                case .throwsError:
-                    
-                    return
-                    
                 case .noThrow:
                     
                     #XCTKAssertNoThrow(try expr())
+                    
+                case
+                    .fail,
+                    .throwsError:
+                    
+                    XCTFail("Invalid assertion: \(kind.macroDisplayName)")
+                    return
                     
                 default:
                     

@@ -20,12 +20,12 @@ extension XCTestKitCase
     /// Asserts that the message of the specified assertion is not evaluated
     /// when the assertion succeeds.
     ///
-    /// - Note: This does nothing for ``AssertionKind/fail``.
+    /// - Note: This immediately fails ``AssertionKind/fail``.
     ///
     /// - Note: This also tests the options path for all assertions.
     ///
     /// - Parameters:
-    ///   - kind: The assertion to use.
+    ///   - kind: The assertion to test.
     ///   - useFloats: Whether to use floating-point numbers when testing for
     ///   equality with accuracy. Otherwise, integers will be used.
     internal func testFunctionAssertionMessageNotEvalOnSuccess(
@@ -216,10 +216,6 @@ extension XCTestKitCase
                     options: options
                 )
                 
-            case .fail:
-                
-                return
-                
             case .throwsError:
                 
                 let expr: () throws -> Int = { try TestError.throwError() }
@@ -240,6 +236,11 @@ extension XCTestKitCase
                     options: options
                 )
                 
+            case .fail:
+                
+                XCTFail("Invalid assertion: \(kind.name)")
+                return
+                
             default:
                 
                 // TODO: Add predicate cases
@@ -254,7 +255,7 @@ extension XCTestKitCase
     /// Asserts that the message of the specified assertion is evaluated only
     /// once when the assertion fails.
     /// - Parameters:
-    ///   - kind: The assertion to use.
+    ///   - kind: The assertion to test.
     ///   - useFloats: Whether to use floating-point numbers when testing for
     ///   equality with accuracy. Otherwise, integers will be used.
     internal func testFunctionAssertionMessageEvalOnceOnFailure(
@@ -467,12 +468,12 @@ extension XCTestKitCase
     /// Asserts that the message of the specified assertion is not evaluated
     /// when the assertion succeeds.
     ///
-    /// - Note: This does nothing for ``AssertionKind/fail``.
+    /// - Note: This immediately fails ``AssertionKind/fail``.
     ///
     /// - Note: This also tests the options path for all assertions.
     ///
     /// - Parameters:
-    ///   - kind: The assertion to use.
+    ///   - kind: The assertion to test.
     ///   - useFloats: Whether to use floating-point numbers when testing for
     ///   equality with accuracy. Otherwise, integers will be used.
     internal func testMacroAssertionMessageNotEvalOnSuccess(
@@ -663,10 +664,6 @@ extension XCTestKitCase
                     options: options
                 )
                 
-            case .fail:
-                
-                return
-                
             case .throwsError:
                 
                 let expr: () throws -> Int = { try TestError.throwError() }
@@ -687,6 +684,11 @@ extension XCTestKitCase
                     options: options
                 )
                 
+            case .fail:
+                
+                XCTFail("Invalid assertion: \(kind.macroDisplayName)")
+                return
+                
             default:
                 
                 // TODO: Add predicate cases
@@ -701,7 +703,7 @@ extension XCTestKitCase
     /// Asserts that the message of the specified assertion is evaluated only
     /// once when the assertion fails.
     /// - Parameters:
-    ///   - kind: The assertion to use.
+    ///   - kind: The assertion to test.
     ///   - useFloats: Whether to use floating-point numbers when testing for
     ///   equality with accuracy. Otherwise, integers will be used.
     internal func testMacroAssertionMessageEvalOnceOnFailure(

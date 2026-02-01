@@ -386,7 +386,7 @@ extension XCTestKitCase
                 .noThrow,
                 .sorted:
                 
-                XCTFail("Inapplicable assertion: \(kind.name)")
+                XCTFail("Invalid assertion: \(kind.name)")
                 return
                 
         }
@@ -850,7 +850,7 @@ extension XCTestKitCase
                 .noThrow,
                 .sorted:
                 
-                XCTFail("Inapplicable assertion: \(kind.macroDisplayName)")
+                XCTFail("Invalid assertion: \(kind.macroDisplayName)")
                 return
                 
         }
