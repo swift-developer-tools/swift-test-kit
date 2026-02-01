@@ -1014,7 +1014,7 @@ internal struct Formatter
             
             if let error: String = element.error
             {
-                line += " (threw error: \(quote(error)))"
+                line += " (threw error \(quote(error)))"
             }
             
             emitLine(line, 1)
