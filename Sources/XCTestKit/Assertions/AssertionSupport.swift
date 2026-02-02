@@ -33,7 +33,7 @@ import XCTestKitCore
 ///
 /// - Parameters:
 ///   - expr: The expression to evaluate.
-///   - assertion: The assertion kind.
+///   - assertionKind: The assertion kind.
 ///   - captureKind: The kind of captured assertion expression.
 ///   - message: The description of a failure.
 ///   - file: The file where the failure occurs. The default value is the
@@ -46,7 +46,7 @@ import XCTestKitCore
 /// the given expression.
 internal func evaluateExpr<T>(
     _ expr          : () throws -> T,
-    assertion       : AssertionKind,
+    assertionKind   : AssertionKind,
     captureKind     : ExprCaptureKind,
     message         : () -> String?,
     file            : StaticString,
@@ -61,13 +61,13 @@ internal func evaluateExpr<T>(
     }
     catch
     {
-        if assertion == .throwsError
+        if assertionKind == .throwsError
         {
             errorHandler(error)
         }
         else
         {
-            assertion.fail(
+            assertionKind.fail(
                 captureKind:    captureKind,
                 reason:         "threw error \(quote(error))",
                 message:        message,
@@ -92,7 +92,7 @@ internal func evaluateExpr<T>(
 ///
 /// - Parameters:
 ///   - collection: The collection to evaluate.
-///   - assertion: The assertion kind.
+///   - assertionKind: The assertion kind.
 ///   - captureKind: The kind of captured assertion expression.
 ///   - message: The description of a failure.
 ///   - file: The file where the failure occurs. The default value is the
@@ -104,7 +104,7 @@ internal func evaluateExpr<T>(
 /// the given collection expression.
 internal func evaluateCollection<C>(
     _ collection    : () throws -> C,
-    assertion       : AssertionKind,
+    assertionKind   : AssertionKind,
     captureKind     : ExprCaptureKind,
     message         : () -> String?,
     file            : StaticString,
@@ -118,7 +118,7 @@ internal func evaluateCollection<C>(
     }
     catch
     {
-        assertion.fail(
+        assertionKind.fail(
             captureKind:    captureKind,
             reason:         "threw error \(quote(error))",
             message:        message,

@@ -52,7 +52,7 @@ internal func evaluateXCTKAssert(
     
     let result: Result<Bool, Error> = evaluateExpr(
         expr,
-        assertion:      assertionKind,
+        assertionKind:  assertionKind,
         captureKind:    .none,
         message:        message,
         file:           file,
@@ -95,7 +95,7 @@ internal func evaluateXCTKAssertTrue(
     
     let result: Result<Bool, Error> = evaluateExpr(
         expr,
-        assertion:      assertionKind,
+        assertionKind:  assertionKind,
         captureKind:    .none,
         message:        message,
         file:           file,
@@ -138,7 +138,7 @@ internal func evaluateXCTKAssertFalse(
     
     let result: Result<Bool, Error> = evaluateExpr(
         expr,
-        assertion:      assertionKind,
+        assertionKind:  assertionKind,
         captureKind:    .none,
         message:        message,
         file:           file,
@@ -273,7 +273,7 @@ internal func evaluateXCTKAssertNil(
     
     let result: Result<Any?, Error> = evaluateExpr(
         expr,
-        assertion:      assertionKind,
+        assertionKind:  assertionKind,
         captureKind:    captureKind,
         message:        message,
         file:           file,
@@ -335,7 +335,7 @@ internal func evaluateXCTKAssertNotNil(
     
     let result: Result<Any?, Error> = evaluateExpr(
         expr,
-        assertion:      assertionKind,
+        assertionKind:  assertionKind,
         captureKind:    captureKind,
         message:        message,
         file:           file,
@@ -397,7 +397,7 @@ internal func evaluateXCTKUnwrap<T>(
     
     let result: Result<T?, Error> = evaluateExpr(
         expr,
-        assertion:      assertionKind,
+        assertionKind:  assertionKind,
         captureKind:    captureKind,
         message:        message,
         file:           file,
@@ -467,7 +467,7 @@ internal func evaluateXCTKAssertEqual<T>(
     
     let expResult: Result<T, Error> = evaluateExpr(
         expected,
-        assertion:      assertionKind,
+        assertionKind:  assertionKind,
         captureKind:    captureKind,
         message:        message,
         file:           file,
@@ -485,7 +485,7 @@ internal func evaluateXCTKAssertEqual<T>(
     
     let actResult: Result<T, Error> = evaluateExpr(
         actual,
-        assertion:      assertionKind,
+        assertionKind:  assertionKind,
         captureKind:    captureKind,
         message:        message,
         file:           file,
@@ -557,7 +557,7 @@ internal func evaluateXCTKAssertNotEqual<T>(
     
     let result1: Result<T, Error> = evaluateExpr(
         expr1,
-        assertion:      assertionKind,
+        assertionKind:  assertionKind,
         captureKind:    captureKind,
         message:        message,
         file:           file,
@@ -575,7 +575,7 @@ internal func evaluateXCTKAssertNotEqual<T>(
     
     let result2: Result<T, Error> = evaluateExpr(
         expr2,
-        assertion:      assertionKind,
+        assertionKind:  assertionKind,
         captureKind:    captureKind,
         message:        message,
         file:           file,
@@ -768,7 +768,7 @@ internal func evaluateXCTKAssertEqual<T>(
     
     let result1: Result<T, Error> = evaluateExpr(
         expr1,
-        assertion:      assertionKind,
+        assertionKind:  assertionKind,
         captureKind:    captureKind,
         message:        message,
         file:           file,
@@ -786,7 +786,7 @@ internal func evaluateXCTKAssertEqual<T>(
     
     let result2: Result<T, Error> = evaluateExpr(
         expr2,
-        assertion:      assertionKind,
+        assertionKind:  assertionKind,
         captureKind:    captureKind,
         message:        message,
         file:           file,
@@ -841,7 +841,7 @@ internal func evaluateXCTKAssertEqual<T>(
     
     let result1: Result<T, Error> = evaluateExpr(
         expr1,
-        assertion:      assertionKind,
+        assertionKind:  assertionKind,
         captureKind:    captureKind,
         message:        message,
         file:           file,
@@ -859,7 +859,7 @@ internal func evaluateXCTKAssertEqual<T>(
     
     let result2: Result<T, Error> = evaluateExpr(
         expr2,
-        assertion:      assertionKind,
+        assertionKind:  assertionKind,
         captureKind:    captureKind,
         message:        message,
         file:           file,
@@ -914,7 +914,7 @@ internal func evaluateXCTKAssertNotEqual<T>(
     
     let result1: Result<T, Error> = evaluateExpr(
         expr1,
-        assertion:      assertionKind,
+        assertionKind:  assertionKind,
         captureKind:    captureKind,
         message:        message,
         file:           file,
@@ -932,7 +932,7 @@ internal func evaluateXCTKAssertNotEqual<T>(
     
     let result2: Result<T, Error> = evaluateExpr(
         expr2,
-        assertion:      assertionKind,
+        assertionKind:  assertionKind,
         captureKind:    captureKind,
         message:        message,
         file:           file,
@@ -987,7 +987,7 @@ internal func evaluateXCTKAssertNotEqual<T>(
     
     let result1: Result<T, Error> = evaluateExpr(
         expr1,
-        assertion:      assertionKind,
+        assertionKind:  assertionKind,
         captureKind:    captureKind,
         message:        message,
         file:           file,
@@ -1005,7 +1005,7 @@ internal func evaluateXCTKAssertNotEqual<T>(
     
     let result2: Result<T, Error> = evaluateExpr(
         expr2,
-        assertion:      assertionKind,
+        assertionKind:  assertionKind,
         captureKind:    captureKind,
         message:        message,
         file:           file,
@@ -1061,7 +1061,7 @@ internal func evaluateXCTKAssertGreaterThan<T>(
     
     let result1: Result<T, Error> = evaluateExpr(
         expr1,
-        assertion:      assertionKind,
+        assertionKind:  assertionKind,
         captureKind:    captureKind,
         message:        message,
         file:           file,
@@ -1079,7 +1079,7 @@ internal func evaluateXCTKAssertGreaterThan<T>(
     
     let result2: Result<T, Error> = evaluateExpr(
         expr2,
-        assertion:      assertionKind,
+        assertionKind:  assertionKind,
         captureKind:    captureKind,
         message:        message,
         file:           file,
@@ -1127,7 +1127,7 @@ internal func evaluateXCTKAssertGreaterThanOrEqual<T>(
     
     let result1: Result<T, Error> = evaluateExpr(
         expr1,
-        assertion:      assertionKind,
+        assertionKind:  assertionKind,
         captureKind:    captureKind,
         message:        message,
         file:           file,
@@ -1145,7 +1145,7 @@ internal func evaluateXCTKAssertGreaterThanOrEqual<T>(
     
     let result2: Result<T, Error> = evaluateExpr(
         expr2,
-        assertion:      assertionKind,
+        assertionKind:  assertionKind,
         captureKind:    captureKind,
         message:        message,
         file:           file,
@@ -1193,7 +1193,7 @@ internal func evaluateXCTKAssertLessThanOrEqual<T>(
     
     let result1: Result<T, Error> = evaluateExpr(
         expr1,
-        assertion:      assertionKind,
+        assertionKind:  assertionKind,
         captureKind:    captureKind,
         message:        message,
         file:           file,
@@ -1211,7 +1211,7 @@ internal func evaluateXCTKAssertLessThanOrEqual<T>(
     
     let result2: Result<T, Error> = evaluateExpr(
         expr2,
-        assertion:      assertionKind,
+        assertionKind:  assertionKind,
         captureKind:    captureKind,
         message:        message,
         file:           file,
@@ -1259,7 +1259,7 @@ internal func evaluateXCTKAssertLessThan<T>(
     
     let result1: Result<T, Error> = evaluateExpr(
         expr1,
-        assertion:      assertionKind,
+        assertionKind:  assertionKind,
         captureKind:    captureKind,
         message:        message,
         file:           file,
@@ -1277,7 +1277,7 @@ internal func evaluateXCTKAssertLessThan<T>(
     
     let result2: Result<T, Error> = evaluateExpr(
         expr2,
-        assertion:      assertionKind,
+        assertionKind:  assertionKind,
         captureKind:    captureKind,
         message:        message,
         file:           file,
@@ -1327,7 +1327,7 @@ internal func evaluateXCTKAssertThrowsError<T>(
     
     let result: Result<T, Error> = evaluateExpr(
         expr,
-        assertion:      assertionKind,
+        assertionKind:  assertionKind,
         captureKind:    captureKind,
         message:        message,
         file:           file,
@@ -1435,7 +1435,7 @@ internal func evaluateXCTKAssertAllSatisfy<C>(
     
     let collectionResult: Result<C, Error> = evaluateCollection(
         collection,
-        assertion:      assertionKind,
+        assertionKind:  assertionKind,
         captureKind:    captureKind,
         message:        message,
         file:           file,
@@ -1495,7 +1495,7 @@ internal func evaluateXCTKAssertAnySatisfy<C>(
     
     let collectionResult: Result<C, Error> = evaluateCollection(
         collection,
-        assertion:      assertionKind,
+        assertionKind:  assertionKind,
         captureKind:    captureKind,
         message:        message,
         file:           file,
@@ -1563,7 +1563,7 @@ internal func evaluateXCTKAssertNoneSatisfy<C>(
     
     let collectionResult: Result<C, Error> = evaluateCollection(
         collection,
-        assertion:      assertionKind,
+        assertionKind:  assertionKind,
         captureKind:    captureKind,
         message:        message,
         file:           file,
@@ -1648,7 +1648,7 @@ internal func evaluateXCTKAssertSatisfy<C>(
     
     let collectionResult: Result<C, Error> = evaluateCollection(
         collection,
-        assertion:      assertionKind,
+        assertionKind:  assertionKind,
         captureKind:    captureKind,
         message:        message,
         file:           file,
@@ -1722,7 +1722,7 @@ internal func evaluateXCTKAssertSatisfy<C>(
     
     let collectionResult: Result<C, Error> = evaluateCollection(
         collection,
-        assertion:      assertionKind,
+        assertionKind:  assertionKind,
         captureKind:    captureKind,
         message:        message,
         file:           file,
@@ -1801,7 +1801,7 @@ internal func evaluateXCTKAssertSatisfy<C>(
     
     let collectionResult: Result<C, Error> = evaluateCollection(
         collection,
-        assertion:      assertionKind,
+        assertionKind:  assertionKind,
         captureKind:    captureKind,
         message:        message,
         file:           file,
@@ -1876,7 +1876,7 @@ internal func evaluateXCTKAssertExactly<C>(
     
     let collectionResult: Result<C, Error> = evaluateCollection(
         collection,
-        assertion:      assertionKind,
+        assertionKind:  assertionKind,
         captureKind:    captureKind,
         message:        message,
         file:           file,
@@ -1944,7 +1944,7 @@ internal func evaluateXCTKAssertExactlyOne<C>(
     
     let collectionResult: Result<C, Error> = evaluateCollection(
         collection,
-        assertion:      assertionKind,
+        assertionKind:  assertionKind,
         captureKind:    captureKind,
         message:        message,
         file:           file,
@@ -2012,7 +2012,7 @@ internal func evaluateXCTKAssertSorted<C>(
     
     let collectionResult: Result<C, Error> = evaluateCollection(
         collection,
-        assertion:      assertionKind,
+        assertionKind:  assertionKind,
         captureKind:    captureKind,
         message:        message,
         file:           file,
@@ -2137,7 +2137,7 @@ internal func evaluateXCTKAssertUnique<C>(
     
     let collectionResult: Result<C, Error> = evaluateCollection(
         collection,
-        assertion:      assertionKind,
+        assertionKind:  assertionKind,
         captureKind:    captureKind,
         message:        message,
         file:           file,
@@ -2228,7 +2228,7 @@ internal func evaluateXCTKAssertUnique<C, K>(
     
     let collectionResult: Result<C, Error> = evaluateCollection(
         collection,
-        assertion:      assertionKind,
+        assertionKind:  assertionKind,
         captureKind:    captureKind,
         message:        message,
         file:           file,
