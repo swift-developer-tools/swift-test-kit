@@ -51,20 +51,6 @@ internal struct RenderedValue: Equatable, Sendable, CustomStringConvertible
     
     
     
-    /// Initializes a ``RenderedValue`` instance from the given values.
-    init(
-        description : String,
-        typeName    : String,
-        kind        : RenderedValueKind
-    )
-    {
-        self.description    = description
-        self.typeName       = typeName
-        self.kind           = kind
-    }
-    
-    
-    
     /// Initializes a ``RenderedValue`` instance from the given value.
     /// - Parameter value: The value to use.
     init(
