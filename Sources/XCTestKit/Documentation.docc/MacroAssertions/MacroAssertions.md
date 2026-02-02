@@ -36,5 +36,6 @@ reviewing CI/CD logs without immediate access to the source code.
 - <doc:NilMacroAssertions>
 - <doc:EqualityMacroAssertions>
 - <doc:ComparableMacroAssertions>
+- <doc:PredicateMacroAssertions>
 - <doc:ErrorMacroAssertions>
 - <doc:FailMacroAssertions>
