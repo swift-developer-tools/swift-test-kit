@@ -110,6 +110,8 @@ XCTKAssertEqual(expected, actual)
 ///     Unexpected: "f"
 ```
 
+
+
 ## Expression Capture
 
 Macro assertions capture the literal source text of expressions for use in 
@@ -118,6 +120,10 @@ and `||` are decomposed to show the value of each sub-expression and identify
 which caused the assertion failure, respecting short-circuit evaluation so only 
 evaluated operands appear in the output. Other macro assertions capture the 
 expression text without decomposition.
+
+Below are examples of expression capture output for several common scenarios. 
+The expression evaluation, short-circuiting behavior, and other formatting 
+options may be configured at the global or assertion level.
 
 ### Boolean Decomposition
 
