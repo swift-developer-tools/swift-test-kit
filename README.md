@@ -8,7 +8,9 @@ XCTestKit Summary
 
 XCTestKit Overview
 
-### Diff Output
+
+
+## Diff Output
 
 XCTestKit produces path-based diff output for assertion failures, providing 
 clear insight into where values differ within complex data structures.
@@ -17,7 +19,7 @@ Below are examples of diff output for several common data types. The number
 of diffs shown, truncation behavior, and other formatting options may be 
 configured at the global or assertion level.
 
-**Nested Structs**
+### Nested Structs
 
 ```swift
 struct Inner: Equatable
@@ -47,7 +49,7 @@ XCTKAssertEqual(expected, actual)
 ///         Actual:     200
 ```
 
-**Arrays**
+### Arrays
 
 ```swift
 let expected    = [1, 2, 3, 4, 5, 6, 7, 8]
@@ -72,7 +74,7 @@ XCTKAssertEqual(expected, actual, options: options)
 ///     ... and 1 more difference
 ```
 
-**Multi-Line Strings**
+### Multi-Line Strings
 
 ```swift
 let expected    = "Line 1\nLine 2\nLine 3"
@@ -90,7 +92,7 @@ XCTKAssertEqual(expected, actual)
 ///         Changed:    character 6 ("2" → "X")
 ```
 
-**Sets**
+### Sets
 
 ```swift
 let expected    : Set<String>   = ["a", "b", "c"]
@@ -108,7 +110,7 @@ XCTKAssertEqual(expected, actual)
 ///     Unexpected: "f"
 ```
 
-### Expression Capture
+## Expression Capture
 
 Macro assertions capture the literal source text of expressions for use in 
 failure output. For boolean macro assertions, compound expressions using `&&` 
@@ -117,7 +119,7 @@ which caused the assertion failure, respecting short-circuit evaluation so only
 evaluated operands appear in the output. Other macro assertions capture the 
 expression text without decomposition.
 
-**Boolean Decomposition**
+### Boolean Decomposition
 
 ```swift
 #XCTKAssertTrue(isValid() && hasAccess && count >= 10)
@@ -133,7 +135,7 @@ expression text without decomposition.
 ///     (1 expression not evaluated)
 ```
 
-**Nested Expressions**
+### Nested Expressions
 
 ```swift
 #XCTKAssertFalse((a || b) && (c || d))
@@ -149,7 +151,7 @@ expression text without decomposition.
 ///     (2 expressions not evaluated)
 ```
 
-**Non-Boolean Assertions**
+### Non-Boolean Assertions
 
 ```swift
 #XCTKAssertNoThrow(try getValue())
