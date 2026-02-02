@@ -21,6 +21,14 @@ internal struct FormattedLine
     
     /// The text content.
     let text    : String
+    
+    
+    
+    /// Whether the line is blank.
+    var isBlank: Bool
+    {
+        return text.isEmpty
+    }
 }
 
 
@@ -63,13 +71,13 @@ internal struct Formatter
     
     
     
-    /// Formats the given root diff node into a string.
+    /// Formats the given diff.
     /// - Parameters:
-    ///   - node: The root diff node to format.
-    ///   - options: The options for testing. The default value is `nil`, which
+    ///   - node: The root diff node.
+    ///   - options: The formatting options. The default value is `nil`, which
     ///   falls back to using global options.
-    /// - Returns: The formatting string.
-    static func format(
+    /// - Returns: The formatted failure.
+    static func formatDiff(
         _ node  : DiffNode,
         options : XCTKFormatOptions?    = nil
     ) -> String
@@ -85,7 +93,7 @@ internal struct Formatter
         let formatter = Formatter(context: context)
         
         formatter.visit(node)
-        formatter.emitTruncationMessage()
+        formatter.emitTruncationMessage(for: .diff)
         
         return formatter.render()
     }
@@ -98,9 +106,9 @@ internal struct Formatter
     ///   - evaluated: The evaluated boolean expressions.
     ///   - notEvaluated: The number of unevaluated boolean expressions.
     ///   - expectedValue: The value expected by the assertion.
-    ///   - options: The options for testing. The default value is `nil`, which
+    ///   - options: The formatting options. The default value is `nil`, which
     ///   falls back to using global options.
-    /// - Returns: The formatted decomposition.
+    /// - Returns: The formatted failure.
     static func formatBooleanExpr(
         exprText        : String,
         evaluated       : [XCTKBooleanExpr],
@@ -133,6 +141,51 @@ internal struct Formatter
             notEvaluated:   notEvaluated,
             expectedValue:  expectedValue
         )
+        
+        return formatter.render()
+    }
+    
+    
+    
+    /// Formats the given predicate failure.
+    /// - Parameters:
+    ///   - failure: The predicate failure.
+    ///   - collectionText: The collection expression source text, or `nil` for
+    ///   function assertions.
+    ///   - predicateText: The predicate expression source text, or `nil` for
+    ///   function assertions.
+    ///   - options: The options for testing. The default value is `nil`, which
+    ///   falls back to using global options.
+    /// - Returns: The formatted predicate failure.
+    static func formatPredicate(
+        _ failure       : PredicateFailure,
+        collectionText  : String?               = nil,
+        predicateText   : String?               = nil,
+        options         : XCTKFormatOptions?    = nil
+    ) -> String
+    {
+        let opts: XCTKFormatOptions = options
+            ?? XCTKConfig.global.formatOptions
+        
+        let totalDiffCount: Int? = opts.countDiffs
+            ? countPredicateDiffs(in: failure, options: opts)
+            : nil
+        
+        let context = FormatterContext(
+            options:            opts,
+            totalDiffCount:     totalDiffCount
+        )
+        
+        let formatter = Formatter(context: context)
+        
+        formatter.emitPredicateHeader(
+            for:                failure,
+            collectionText:     collectionText,
+            predicateText:      predicateText
+        )
+        
+        formatter.emitPredicateBody(for: failure)
+        formatter.emitTruncationMessage(for: .element)
         
         return formatter.render()
     }
@@ -291,7 +344,7 @@ internal struct Formatter
     
     
     
-    // MARK: - Emission
+    // MARK: - Line emission
     
     /// Emits a line with the given indentation level and text content.
     /// - Parameters:
@@ -324,6 +377,8 @@ internal struct Formatter
     }
     
     
+    
+    // MARK: - Path emission
     
     /// Builds a path string from the current path, and emits it as a line if
     /// it is not empty.
@@ -438,6 +493,8 @@ internal struct Formatter
     
     
     
+    // MARK: - Header emission
+    
     /// Emits the diff header for structural diffs.
     /// - Parameter typeName: The type name to include in the header.
     private func emitHeader(
@@ -450,6 +507,8 @@ internal struct Formatter
     }
     
     
+    
+    // MARK: - DiffNodeKind emission
     
     /// Emits a cycle indicator.
     /// - Parameter location: The location where the cycle was detected.
@@ -514,6 +573,8 @@ internal struct Formatter
     }
     
     
+    
+    // MARK: - Diff emission
     
     /// Emits a line diff with inline character summary.
     /// - Parameters:
@@ -638,11 +699,21 @@ internal struct Formatter
     
     
     
+    // MARK: - Truncation emission
+    
+    private enum TruncationKind: String
+    {
+        case diff           = "difference"
+        case expression     = "expression"
+        case element        = "element"
+    }
+    
+    
+    
     /// Emits a message if a diff was truncated.
-    /// - Parameter forBooleanDecomposition: Whether the truncation message is
-    /// for boolean decomposition.
+    /// - Parameter kind: The kind of truncation message to emit.
     private func emitTruncationMessage(
-        forBooleanDecomposition: Bool = false
+        for kind: TruncationKind
     )
     {
         guard context.isTruncated
@@ -651,13 +722,8 @@ internal struct Formatter
             return
         }
         
-        
-        
-        let noun: String = forBooleanDecomposition
-            ? "expression"
-            : "difference"
-        
-        let message: String
+        let noun    : String    = kind.rawValue
+        let message : String
         
         if let totalDiffCount: Int = context.totalDiffCount
         {
@@ -683,7 +749,10 @@ internal struct Formatter
         
         
         
-        if forBooleanDecomposition
+        if
+            kind != .diff,
+            let previousLine: FormattedLine = context.lines.last,
+            !previousLine.isBlank
         {
             emitBlankLine()
         }
@@ -692,6 +761,8 @@ internal struct Formatter
     }
     
     
+    
+    // MARK: - Expression emission
     
     /// Emits a decomposed boolean expression.
     /// - Parameters:
@@ -753,7 +824,7 @@ internal struct Formatter
             context.isTruncated = true
         }
         
-        emitTruncationMessage(forBooleanDecomposition: true)
+        emitTruncationMessage(for: .expression)
         
         
         
@@ -768,6 +839,420 @@ internal struct Formatter
                 : "expressions"
             
             emitLine("(\(notEvaluated) \(noun) not evaluated)", 1)
+        }
+    }
+    
+    
+    
+    // MARK: - Predicate emission
+    
+    /// Emits the header for the given predicate failure.
+    /// - Parameters:
+    ///   - failure: The predicate failure.
+    ///   - collectionText: The collection expression source text, or `nil` for
+    ///   function assertions.
+    ///   - predicateText: The predicate expression source text, or `nil` for
+    ///   function assertions or macro assertions without a predicate.
+    private func emitPredicateHeader(
+        for failure     : PredicateFailure,
+        collectionText  : String?,
+        predicateText   : String?
+    )
+    {
+        emitLine("Collection count: \(failure.collectionCount)", 0)
+        emitBlankLine()
+        
+        guard let collectionText
+        else
+        {
+            return
+        }
+        
+        let collectionLabel : String    = "Collection: "
+        let predicateLabel  : String    = "Predicate:  "
+        
+        let availableWidth: Int = computeAvailableWidth(
+            indent:         0,
+            labelWidth:     collectionLabel.count
+        )
+        
+        let truncatedCollectionText: String = Self.truncateText(
+            collectionText,
+            maxLength: availableWidth
+        )
+        
+        emitLine("\(collectionLabel)\(truncatedCollectionText)", 0)
+        
+        if let predicateText
+        {
+            let truncatedPredicateText: String = Self.truncateText(
+                predicateText,
+                maxLength: availableWidth
+            )
+            
+            emitLine("\(predicateLabel)\(truncatedPredicateText)", 0)
+        }
+        
+        emitBlankLine()
+    }
+    
+    
+    
+    /// Emits the body of the given predicate failure.
+    /// - Parameter failure: The predicate failure.
+    private func emitPredicateBody(
+        for failure: PredicateFailure
+    )
+    {
+        switch failure.kind
+        {
+            case let .elementsFailed(elements):
+                
+                emitElementsFailed(
+                    elements,
+                    failure: failure
+                )
+                
+            case let .elementsMatched(elements):
+                
+                emitElementsMatched(
+                    elements,
+                    failure: failure
+                )
+                
+            case let .countMismatch(mismatch):
+                
+                emitCountMismatch(
+                    mismatch,
+                    failure: failure
+                )
+                
+            case let .orderingViolation(violation):
+                
+                emitOrderingViolation(violation)
+                
+            case let .duplicates(groups):
+                
+                emitDuplicates(
+                    groups:     groups,
+                    failure:    failure
+                )
+                
+            case let .duplicateKeys(groups):
+                
+                emitDuplicateKeys(
+                    groups:     groups,
+                    failure:    failure
+                )
+        }
+    }
+    
+    
+    
+    /// Emits the body for the given `elementsFailed` predicate failure.
+    /// - Parameters:
+    ///   - elements: The elements that failed.
+    ///   - failure: The predicate failure.
+    private func emitElementsFailed(
+        _ elements  : [ElementResult],
+        failure     : PredicateFailure
+    )
+    {
+        emitLine("Failed: \(elements.count) of \(failure.collectionCount)", 0)
+        emitBlankLine()
+        
+        emitElementResults(
+            elements,
+            failure: failure
+        )
+    }
+    
+    
+    
+    /// Emits the body for the given `elementsMatched` predicate failure.
+    /// - Parameters:
+    ///   - elements: The elements that failed.
+    ///   - failure: The predicate failure.
+    private func emitElementsMatched(
+        _ elements  : [ElementResult],
+        failure     : PredicateFailure
+    )
+    {
+        emitLine("Matched: \(elements.count) of \(failure.collectionCount)", 0)
+        emitBlankLine()
+        
+        emitElementResults(
+            elements,
+            failure: failure
+        )
+    }
+    
+    
+    
+    /// Emits the given elements results.
+    /// - Parameters:
+    ///   - elements: The elements to emit.
+    ///   - failure: The predicate failure.
+    private func emitElementResults(
+        _ elements  : [ElementResult],
+        failure     : PredicateFailure
+    )
+    {
+        for element in elements
+        {
+            guard !context.isAtMaxDiffs
+            else
+            {
+                context.isTruncated = true
+                
+                break
+            }
+            
+            let valueText: String = renderText(element.value.rendered)
+            
+            var line: String
+            
+            if failure.isOrdered
+            {
+                line = "[\(element.index)]: \(valueText)"
+            }
+            else
+            {
+                line = valueText
+            }
+            
+            if let error: String = element.error
+            {
+                line += " (threw error \(quote(error)))"
+            }
+            
+            emitLine(line, 1)
+            
+            context.emittedDiffCount += 1
+        }
+    }
+    
+    
+    
+    /// Emits the body for the given `countMismatch` predicate failure.
+    /// - Parameters:
+    ///   - mismatch: The count mismatch.
+    ///   - failure: The predicate failure.
+    private func emitCountMismatch(
+        _ mismatch  : CountMismatch,
+        failure     : PredicateFailure
+    )
+    {
+        let expectedText: String = formatCountExpectation(mismatch.expected)
+        
+        emitLine("Expected: \(expectedText)", 0)
+        
+        
+        
+        var actualText: String = "\(mismatch.matchedIndices.count) matched"
+        
+        if !mismatch.errorElements.isEmpty
+        {
+            actualText += ", \(mismatch.errorElements.count) threw errors"
+        }
+        
+        emitLine("Actual:   \(actualText)", 0)
+        
+        
+        
+        if
+            failure.isOrdered,
+            !mismatch.matchedIndices.isEmpty
+        {
+            emitBlankLine()
+            
+            let coalescedIndices: String
+                = coalesceIndices(mismatch.matchedIndices)
+            
+            emitLine("Matched: \(coalescedIndices)", 1)
+        }
+        
+        
+        
+        if !mismatch.errorElements.isEmpty
+        {
+            emitBlankLine()
+            emitLine("Threw errors:", 1)
+            
+            for element in mismatch.errorElements
+            {
+                guard !context.isAtMaxDiffs
+                else
+                {
+                    context.isTruncated = true
+                    
+                    break
+                }
+                
+                let valueText   : String = renderText(element.value.rendered)
+                let errorText   : String = element.error ?? "unknown error"
+                let errorLabel  : String = "(threw error \(quote(errorText)))"
+                
+                var line: String
+                
+                if failure.isOrdered
+                {
+                    line = "[\(element.index)]: \(valueText) \(errorLabel)"
+                }
+                else
+                {
+                    line = "\(valueText) \(errorLabel)"
+                }
+                
+                emitLine(line, 2)
+                
+                context.emittedDiffCount += 1
+            }
+        }
+    }
+    
+    
+    
+    /// Emits the body for the given `orderingViolation` predicate failure.
+    /// - Parameter violation: The ordering violation.
+    private func emitOrderingViolation(
+        _ violation: OrderingViolation
+    )
+    {
+        if violation.error == nil
+        {
+            emitLine("Not sorted at:", 0)
+        }
+        else
+        {
+            emitLine("Threw error at:", 0)
+        }
+        
+        emitBlankLine()
+        
+        let firstText   : String    = renderText(violation.first.rendered)
+        let secondText  : String    = renderText(violation.second.rendered)
+        
+        emitLine("[\(violation.index)]: \(firstText)", 1)
+        emitLine("[\(violation.index + 1)]: \(secondText)", 1)
+        
+        if let error: String = violation.error
+        {
+            emitLine("Error: \(quote(error))", 1)
+        }
+        
+        context.emittedDiffCount += 1
+    }
+    
+    
+    
+    /// Emits the body for the given `duplicates` predicate failure.
+    /// - Parameters:
+    ///   - groups: The duplicate groups.
+    ///   - failure: The predicate failure.
+    private func emitDuplicates(
+        groups  : [DuplicateGroup],
+        failure : PredicateFailure
+    )
+    {
+        let noun: String = groups.count == 1
+            ? "value"
+            : "values"
+        
+        emitLine("Duplicates: \(groups.count) \(noun)", 0)
+        emitBlankLine()
+        
+        for group in groups
+        {
+            guard !context.isAtMaxDiffs
+            else
+            {
+                context.isTruncated = true
+                
+                break
+            }
+            
+            let valueText: String = renderText(group.value.rendered)
+            
+            let line: String
+            
+            if failure.isOrdered
+            {
+                let coalescedIndices: String = coalesceIndices(group.indices)
+                
+                line = "\(valueText): \(coalescedIndices)"
+            }
+            else
+            {
+                let noun: String = group.indices.count == 1
+                    ? "occurrence"
+                    : "occurrences"
+                
+                line = "\(valueText): \(group.indices.count) \(noun)"
+            }
+            
+            emitLine(line, 1)
+            
+            context.emittedDiffCount += 1
+        }
+    }
+    
+    
+    
+    /// Emits the body for the given `duplicateKeys` predicate failure.
+    /// - Parameters:
+    ///   - groups: The duplicate key groups.
+    ///   - failure: The predicate failure.
+    private func emitDuplicateKeys(
+        groups  : [DuplicateKeyGroup],
+        failure : PredicateFailure
+    )
+    {
+        let noun: String = groups.count == 1
+            ? "key"
+            : "keys"
+        
+        emitLine("Duplicates: \(groups.count) \(noun)", 0)
+        emitBlankLine()
+        
+        for (index, group) in groups.enumerated()
+        {
+            guard !context.isAtMaxDiffs
+            else
+            {
+                context.isTruncated = true
+                
+                break
+            }
+            
+            let keyText: String = renderText(group.key.rendered)
+            
+            emitLine("Key \(keyText):", 1)
+            
+            if failure.isOrdered
+            {
+                for element in group.elements
+                {
+                    let valueText: String = renderText(element.value.rendered)
+                    
+                    emitLine("[\(element.index)]: \(valueText)", 2)
+                }
+            }
+            else
+            {
+                let noun: String = group.elements.count == 1
+                    ? "element"
+                    : "elements"
+                
+                emitLine("\(group.elements.count) \(noun)", 2)
+            }
+            
+            if index < groups.count - 1
+            {
+                emitBlankLine()
+            }
+            
+            context.emittedDiffCount += 1
         }
     }
     
@@ -874,5 +1359,141 @@ internal struct Formatter
         result = String(result[..<endIndex]) + "..."
         
         return result
+    }
+    
+    
+    
+    /// Counts the number of diffs in the given predicate failure.
+    /// - Parameters:
+    ///   - failure: The predicate failure.
+    ///   - options: The formatting options.
+    /// - Returns: The number of diffs in the given predicate failure.
+    private static func countPredicateDiffs(
+        in failure  : PredicateFailure,
+        options     : XCTKFormatOptions
+    ) -> Int
+    {
+        switch failure.kind
+        {
+            case let .elementsFailed(elements):
+                
+                return elements.count
+                
+            case let .elementsMatched(elements):
+                
+                return elements.count
+                
+            case let .countMismatch(mismatch):
+                
+                /// The mismatch itself is structural and does not count
+                /// toward the maximum diffs limit.
+                return mismatch.errorElements.count
+                
+            case .orderingViolation:
+                
+                return 1
+                
+            case let .duplicates(groups):
+                
+                return groups.count
+                
+            case let .duplicateKeys(groups):
+                
+                return groups.count
+        }
+    }
+    
+    
+    
+    /// Formats the given count expectation.
+    /// - Parameter expectation: The count expectation.
+    /// - Returns: The formatted count expectation.
+    private func formatCountExpectation(
+        _ expectation: CountExpectationKind
+    ) -> String
+    {
+        let noun: String = "match"
+        
+        switch expectation
+        {
+            case .any:
+                
+                return "at least 1 match"
+                
+            case let .atLeast(count):
+                
+                return "at least \(count) \(noun)\(count == 1 ? "" : "es")"
+                
+            case let .atMost(count):
+                
+                return "up to \(count) \(noun)\(count == 1 ? "" : "es")"
+                
+            case let .range(range):
+                
+                return "\(range.lowerBound)-\(range.upperBound) matches"
+                
+            case let .exactly(count):
+                
+                return "exactly \(count) \(noun)\(count == 1 ? "" : "es")"
+        }
+    }
+    
+    
+    
+    /// Coalesces consecutive indices into ranges for display.
+    ///
+    /// For example, `[0, 1, 2, 5, 7, 8, 9]` becomes `"[0-2], [5], [7-9]"`.
+    ///
+    /// - Parameter indices: The indices to coalesce.
+    /// - Returns: The formatted string.
+    private func coalesceIndices(
+        _ indices: [Int]
+    ) -> String
+    {
+        guard !indices.isEmpty
+        else
+        {
+            return ""
+        }
+        
+        let sorted  : [Int]                     = indices.sorted()
+        var ranges  : [(start: Int, end: Int)]  = []
+        var start   : Int                       = sorted[0]
+        var end     : Int                       = sorted[0]
+        
+        for i in 1..<sorted.count
+        {
+            let current: Int = sorted[i]
+            
+            if current == end + 1
+            {
+                end = current
+            }
+            else
+            {
+                ranges.append((start, end))
+                
+                start   = current
+                end     = current
+            }
+        }
+        
+        ranges.append((start, end))
+        
+        
+        
+        let formatted: [String] = ranges.map
+        {
+            range in
+            
+            if range.start == range.end
+            {
+                return "[\(range.start)]"
+            }
+            
+            return "[\(range.start)-\(range.end)]"
+        }
+        
+        return formatted.joined(separator: ", ")
     }
 }

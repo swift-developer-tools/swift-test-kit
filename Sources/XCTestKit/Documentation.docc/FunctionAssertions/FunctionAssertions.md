@@ -26,5 +26,6 @@ conditions where a diff is not meaningful (for example,
 - <doc:NilFunctionAssertions>
 - <doc:EqualityFunctionAssertions>
 - <doc:ComparableFunctionAssertions>
+- <doc:PredicateFunctionAssertions>
 - <doc:ErrorFunctionAssertions>
 - <doc:FailFunctionAssertions>

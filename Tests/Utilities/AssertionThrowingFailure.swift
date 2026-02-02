@@ -19,15 +19,16 @@ extension XCTestKitCase
 
     /// Asserts that specified assertion fails when an error is thrown.
     ///
-    /// - Note: This does nothing for ``AssertionKind/fail`` or
+    /// - Note: This immediately fails ``AssertionKind/fail`` and
     /// ``AssertionKind/throwsError``.
     ///
-    /// - Parameter kind: The assertion to use.
+    /// - Parameter kind: The assertion to test.
     internal func testFunctionAssertionFailsOnThrow(
         _ kind: AssertionKind
     )
     {
-        let expr: () throws -> Int = { try TestError.throwError() }
+        let expr        : () throws -> Int          = { throw TestError() }
+        let collection  : () throws -> [String]     = { throw TestError() }
         
         let message: String? = withOneExpectedFailure
         {
@@ -128,18 +129,95 @@ extension XCTestKitCase
                 case .false:
                     
                     XCTKAssertFalse(try expr() == 1)
-                    
-                case .fail:
-                    
-                    return
-                    
-                case .throwsError:
-                    
-                    return
-                    
+                                        
                 case .noThrow:
                     
                     XCTKAssertNoThrow(try expr())
+                    
+                case .satisfyAll:
+                    
+                    XCTKAssertAllSatisfy(
+                        try collection(),
+                        { $0.isEmpty }
+                    )
+                    
+                case .satisfyAny:
+                    
+                    XCTKAssertAnySatisfy(
+                        try collection(),
+                        { $0.isEmpty }
+                    )
+                    
+                case .satisfyNone:
+                    
+                    XCTKAssertNoneSatisfy(
+                        try collection(),
+                        { $0.isEmpty }
+                    )
+                    
+                case .satisfyAtLeast:
+                    
+                    XCTKAssertSatisfy(
+                        try collection(),
+                        atLeast: 1,
+                        { $0.isEmpty }
+                    )
+                    
+                case .satisfyAtMost:
+                    
+                    XCTKAssertSatisfy(
+                        try collection(),
+                        atMost: 1,
+                        { $0.isEmpty }
+                    )
+                    
+                case .satisfyRange:
+                    
+                    XCTKAssertSatisfy(
+                        try collection(),
+                        range: 1...3,
+                        { $0.isEmpty }
+                    )
+                    
+                case .exactly:
+                    
+                    XCTKAssertExactly(
+                        try collection(),
+                        count: 1,
+                        { $0.isEmpty }
+                    )
+                    
+                case .exactlyOne:
+                    
+                    XCTKAssertExactlyOne(
+                        try collection(),
+                        { $0.isEmpty }
+                    )
+                    
+                case .sorted:
+                    
+                    XCTKAssertSorted(
+                        try collection(),
+                        by: { $0 < $1 }
+                    )
+                    
+                case .unique:
+                    
+                    XCTKAssertUnique(try collection())
+                    
+                case .uniqueByKey:
+                    
+                    XCTKAssertUnique(
+                        try collection(),
+                        by: { $0.first }
+                    )
+                    
+                case
+                    .fail,
+                    .throwsError:
+                    
+                    XCTFail("Invalid assertion: \(kind.name)")
+                    return
             }
         }
         
@@ -154,15 +232,16 @@ extension XCTestKitCase
 
     /// Asserts that specified assertion fails when an error is thrown.
     ///
-    /// - Note: This does nothing for ``AssertionKind/fail`` or
+    /// - Note: This immediately fails ``AssertionKind/fail`` and
     /// ``AssertionKind/throwsError``.
     ///
-    /// - Parameter kind: The assertion to use.
+    /// - Parameter kind: The assertion to test.
     internal func testMacroAssertionFailsOnThrow(
         _ kind: AssertionKind
     )
     {
-        let expr: () throws -> Int = { try TestError.throwError() }
+        let expr        : () throws -> Int          = { throw TestError() }
+        let collection  : () throws -> [String]     = { throw TestError() }
         
         let message: String? = withOneExpectedFailure
         {
@@ -264,17 +343,94 @@ extension XCTestKitCase
                     
                     #XCTKAssertFalse(try expr() == 1)
                     
-                case .fail:
-                    
-                    return
-                    
-                case .throwsError:
-                    
-                    return
-                    
                 case .noThrow:
                     
                     #XCTKAssertNoThrow(try expr())
+                 
+                case .satisfyAll:
+                                
+                    #XCTKAssertAllSatisfy(
+                        try collection(),
+                        { $0.isEmpty }
+                    )
+                    
+                case .satisfyAny:
+                    
+                    #XCTKAssertAnySatisfy(
+                        try collection(),
+                        { $0.isEmpty }
+                    )
+                    
+                case .satisfyNone:
+                    
+                    #XCTKAssertNoneSatisfy(
+                        try collection(),
+                        { $0.isEmpty }
+                    )
+                    
+                case .satisfyAtLeast:
+                    
+                    #XCTKAssertSatisfy(
+                        try collection(),
+                        atLeast: 1,
+                        { $0.isEmpty }
+                    )
+                    
+                case .satisfyAtMost:
+                    
+                    #XCTKAssertSatisfy(
+                        try collection(),
+                        atMost: 1,
+                        { $0.isEmpty }
+                    )
+                    
+                case .satisfyRange:
+                    
+                    #XCTKAssertSatisfy(
+                        try collection(),
+                        range: 1...3,
+                        { $0.isEmpty }
+                    )
+                    
+                case .exactly:
+                    
+                    #XCTKAssertExactly(
+                        try collection(),
+                        count: 1,
+                        { $0.isEmpty }
+                    )
+                    
+                case .exactlyOne:
+                    
+                    #XCTKAssertExactlyOne(
+                        try collection(),
+                        { $0.isEmpty }
+                    )
+                    
+                case .sorted:
+                    
+                    #XCTKAssertSorted(
+                        try collection(),
+                        by: { $0 < $1 }
+                    )
+                    
+                case .unique:
+                    
+                    #XCTKAssertUnique(try collection())
+                    
+                case .uniqueByKey:
+                    
+                    #XCTKAssertUnique(
+                        try collection(),
+                        by: { $0.first }
+                    )
+                    
+                case
+                    .fail,
+                    .throwsError:
+                    
+                    XCTFail("Invalid assertion: \(kind.macroDisplayName)")
+                    return
             }
         }
         

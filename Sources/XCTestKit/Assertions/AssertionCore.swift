@@ -1695,3 +1695,911 @@ internal func evaluateXCTKAssertNoThrow<T>(
         }
     }
 }
+
+
+
+// MARK: - Predicate
+
+internal func evaluateXCTKAssertAllSatisfy<C>(
+    captureKind : ExprCaptureKind,
+    collection  : () throws -> C,
+    predicate   : (C.Element) throws -> Bool,
+    message     : () -> String,
+    file        : StaticString,
+    line        : UInt,
+    options     : XCTKOptions?
+) where C : Collection
+{
+    let assertionKind: AssertionKind = .satisfyAll
+    
+    let collectionResult: Result<C, Error> = evaluateCollection(
+        collection,
+        assertion:  assertionKind,
+        message:    message,
+        file:       file,
+        line:       line,
+        options:    options
+    )
+    
+    guard case let .success(elements) = collectionResult
+    else
+    {
+        return
+    }
+    
+    
+    
+    let iterationResult: PredicateIterationResult = iteratePredicate(
+        predicate,
+        over: elements
+    )
+    
+    if iterationResult.allFailedCount == 0
+    {
+        return
+    }
+    
+    
+    
+    let failure = PredicateFailure(
+        collectionCount : elements.count,
+        kind            : .elementsFailed(iterationResult.allFailed),
+        isOrdered       : elements.isOrdered
+    )
+    
+    failPredicateAssertion(
+        kind:           assertionKind,
+        captureKind:    captureKind,
+        failure:        failure,
+        message:        message,
+        file:           file,
+        line:           line,
+        options:        options
+    )
+}
+
+
+
+internal func evaluateXCTKAssertAnySatisfy<C>(
+    captureKind : ExprCaptureKind,
+    collection  : () throws -> C,
+    predicate   : (C.Element) throws -> Bool,
+    message     : () -> String,
+    file        : StaticString,
+    line        : UInt,
+    options     : XCTKOptions?
+) where C : Collection
+{
+    let assertionKind: AssertionKind = .satisfyAny
+    
+    let collectionResult: Result<C, Error> = evaluateCollection(
+        collection,
+        assertion:  assertionKind,
+        message:    message,
+        file:       file,
+        line:       line,
+        options:    options
+    )
+    
+    guard case let .success(elements) = collectionResult
+    else
+    {
+        return
+    }
+    
+    
+    
+    let iterationResult: PredicateIterationResult = iteratePredicate(
+        predicate,
+        over: elements
+    )
+    
+    if
+        iterationResult.matchedCount > 0,
+        iterationResult.errorCount == 0
+    {
+        return
+    }
+    
+    
+    
+    let countMismatch = CountMismatch(
+        expected:           .any,
+        matchedIndices:     iterationResult.matchedIndices,
+        errorElements:      iterationResult.errorElements
+    )
+    
+    let failure = PredicateFailure(
+        collectionCount : elements.count,
+        kind            : .countMismatch(countMismatch),
+        isOrdered       : elements.isOrdered
+    )
+    
+    failPredicateAssertion(
+        kind:           assertionKind,
+        captureKind:    captureKind,
+        failure:        failure,
+        message:        message,
+        file:           file,
+        line:           line,
+        options:        options
+    )
+}
+
+
+
+internal func evaluateXCTKAssertNoneSatisfy<C>(
+    captureKind : ExprCaptureKind,
+    collection  : () throws -> C,
+    predicate   : (C.Element) throws -> Bool,
+    message     : () -> String,
+    file        : StaticString,
+    line        : UInt,
+    options     : XCTKOptions?
+) where C : Collection
+{
+    let assertionKind: AssertionKind = .satisfyNone
+    
+    let collectionResult: Result<C, Error> = evaluateCollection(
+        collection,
+        assertion:  assertionKind,
+        message:    message,
+        file:       file,
+        line:       line,
+        options:    options
+    )
+    
+    guard case let .success(elements) = collectionResult
+    else
+    {
+        return
+    }
+    
+    
+    
+    let iterationResult: PredicateIterationResult = iteratePredicate(
+        predicate,
+        over: elements
+    )
+    
+    if
+        iterationResult.matchedCount == 0,
+        iterationResult.errorCount == 0
+    {
+        return
+    }
+    
+    
+    
+    let failureKind: PredicateFailureKind
+    
+    if iterationResult.matchedCount > 0
+    {
+        failureKind = .elementsMatched(iterationResult.matchedElements)
+    }
+    else
+    {
+        let countMismatch = CountMismatch(
+            expected:           .exactly(0),
+            matchedIndices:     iterationResult.matchedIndices,
+            errorElements:      iterationResult.errorElements
+        )
+        
+        failureKind = .countMismatch(countMismatch)
+    }
+    
+    let failure = PredicateFailure(
+        collectionCount : elements.count,
+        kind            : failureKind,
+        isOrdered       : elements.isOrdered
+    )
+    
+    failPredicateAssertion(
+        kind:           assertionKind,
+        captureKind:    captureKind,
+        failure:        failure,
+        message:        message,
+        file:           file,
+        line:           line,
+        options:        options
+    )
+}
+
+
+
+internal func evaluateXCTKAssertSatisfy<C>(
+    captureKind : ExprCaptureKind,
+    collection  : () throws -> C,
+    atLeast     : Int,
+    predicate   : (C.Element) throws -> Bool,
+    message     : () -> String,
+    file        : StaticString,
+    line        : UInt,
+    options     : XCTKOptions?
+) where C : Collection
+{
+    precondition(
+        atLeast >= 0,
+        "atLeast must be non-negative"
+    )
+    
+    let assertionKind: AssertionKind = .satisfyAtLeast
+    
+    let collectionResult: Result<C, Error> = evaluateCollection(
+        collection,
+        assertion:  assertionKind,
+        message:    message,
+        file:       file,
+        line:       line,
+        options:    options
+    )
+    
+    guard case let .success(elements) = collectionResult
+    else
+    {
+        return
+    }
+    
+    
+    
+    let iterationResult: PredicateIterationResult = iteratePredicate(
+        predicate,
+        over: elements
+    )
+    
+    if
+        iterationResult.matchedCount >= atLeast,
+        iterationResult.errorCount == 0
+    {
+        return
+    }
+    
+    
+    
+    let countMismatch = CountMismatch(
+        expected:           .atLeast(atLeast),
+        matchedIndices:     iterationResult.matchedIndices,
+        errorElements:      iterationResult.errorElements
+    )
+    
+    let failure = PredicateFailure(
+        collectionCount : elements.count,
+        kind            : .countMismatch(countMismatch),
+        isOrdered       : elements.isOrdered
+    )
+    
+    failPredicateAssertion(
+        kind:           assertionKind,
+        captureKind:    captureKind,
+        failure:        failure,
+        message:        message,
+        file:           file,
+        line:           line,
+        options:        options
+    )
+}
+
+
+
+internal func evaluateXCTKAssertSatisfy<C>(
+    captureKind : ExprCaptureKind,
+    collection  : () throws -> C,
+    atMost      : Int,
+    predicate   : (C.Element) throws -> Bool,
+    message     : () -> String,
+    file        : StaticString,
+    line        : UInt,
+    options     : XCTKOptions?
+) where C : Collection
+{
+    precondition(
+        atMost >= 0,
+        "atMost must be non-negative"
+    )
+    
+    let assertionKind: AssertionKind = .satisfyAtMost
+    
+    let collectionResult: Result<C, Error> = evaluateCollection(
+        collection,
+        assertion:  assertionKind,
+        message:    message,
+        file:       file,
+        line:       line,
+        options:    options
+    )
+    
+    guard case let .success(elements) = collectionResult
+    else
+    {
+        return
+    }
+    
+    
+    
+    let iterationResult: PredicateIterationResult = iteratePredicate(
+        predicate,
+        over: elements
+    )
+    
+    if
+        iterationResult.matchedCount <= atMost,
+        iterationResult.errorCount == 0
+    {
+        return
+    }
+    
+    
+    
+    let countMismatch = CountMismatch(
+        expected:           .atMost(atMost),
+        matchedIndices:     iterationResult.matchedIndices,
+        errorElements:      iterationResult.errorElements
+    )
+    
+    let failure = PredicateFailure(
+        collectionCount : elements.count,
+        kind            : .countMismatch(countMismatch),
+        isOrdered       : elements.isOrdered
+    )
+    
+    failPredicateAssertion(
+        kind:           assertionKind,
+        captureKind:    captureKind,
+        failure:        failure,
+        message:        message,
+        file:           file,
+        line:           line,
+        options:        options
+    )
+}
+
+
+
+internal func evaluateXCTKAssertSatisfy<C>(
+    captureKind : ExprCaptureKind,
+    collection  : () throws -> C,
+    range       : ClosedRange<Int>,
+    predicate   : (C.Element) throws -> Bool,
+    message     : () -> String,
+    file        : StaticString,
+    line        : UInt,
+    options     : XCTKOptions?
+) where C : Collection
+{
+    precondition(
+        range.lowerBound <= range.upperBound,
+        "range.lowerBound must be less than or equal to range.upperBound"
+    )
+    
+    precondition(
+        range.lowerBound >= 0,
+        "range.lowerBound must be non-negative"
+    )
+    
+    let assertionKind: AssertionKind = .satisfyRange
+    
+    let collectionResult: Result<C, Error> = evaluateCollection(
+        collection,
+        assertion:  assertionKind,
+        message:    message,
+        file:       file,
+        line:       line,
+        options:    options
+    )
+    
+    guard case let .success(elements) = collectionResult
+    else
+    {
+        return
+    }
+    
+    
+    
+    let iterationResult: PredicateIterationResult = iteratePredicate(
+        predicate,
+        over: elements
+    )
+    
+    if
+        iterationResult.matchedCount >= range.lowerBound,
+        iterationResult.matchedCount <= range.upperBound,
+        iterationResult.errorCount == 0
+    {
+        return
+    }
+    
+    
+    
+    let countMismatch = CountMismatch(
+        expected:           .range(range),
+        matchedIndices:     iterationResult.matchedIndices,
+        errorElements:      iterationResult.errorElements
+    )
+    
+    let failure = PredicateFailure(
+        collectionCount : elements.count,
+        kind            : .countMismatch(countMismatch),
+        isOrdered       : elements.isOrdered
+    )
+    
+    failPredicateAssertion(
+        kind:           assertionKind,
+        captureKind:    captureKind,
+        failure:        failure,
+        message:        message,
+        file:           file,
+        line:           line,
+        options:        options
+    )
+}
+
+
+
+internal func evaluateXCTKAssertExactly<C>(
+    captureKind : ExprCaptureKind,
+    collection  : () throws -> C,
+    count       : Int,
+    predicate   : (C.Element) throws -> Bool,
+    message     : () -> String,
+    file        : StaticString,
+    line        : UInt,
+    options     : XCTKOptions?
+) where C : Collection
+{
+    precondition(
+        count >= 0,
+        "count must be non-negative"
+    )
+    
+    let assertionKind: AssertionKind = .exactly
+    
+    let collectionResult: Result<C, Error> = evaluateCollection(
+        collection,
+        assertion:  assertionKind,
+        message:    message,
+        file:       file,
+        line:       line,
+        options:    options
+    )
+    
+    guard case let .success(elements) = collectionResult
+    else
+    {
+        return
+    }
+    
+    
+    
+    let iterationResult: PredicateIterationResult = iteratePredicate(
+        predicate,
+        over: elements
+    )
+    
+    if
+        iterationResult.matchedCount == count,
+        iterationResult.errorCount == 0
+    {
+        return
+    }
+    
+    
+    
+    let countMismatch = CountMismatch(
+        expected:           .exactly(count),
+        matchedIndices:     iterationResult.matchedIndices,
+        errorElements:      iterationResult.errorElements
+    )
+    
+    let failure = PredicateFailure(
+        collectionCount : elements.count,
+        kind            : .countMismatch(countMismatch),
+        isOrdered       : elements.isOrdered
+    )
+    
+    failPredicateAssertion(
+        kind:           assertionKind,
+        captureKind:    captureKind,
+        failure:        failure,
+        message:        message,
+        file:           file,
+        line:           line,
+        options:        options
+    )
+}
+
+
+
+internal func evaluateXCTKAssertExactlyOne<C>(
+    captureKind : ExprCaptureKind,
+    collection  : () throws -> C,
+    predicate   : (C.Element) throws -> Bool,
+    message     : () -> String,
+    file        : StaticString,
+    line        : UInt,
+    options     : XCTKOptions?
+) where C : Collection
+{
+    let assertionKind: AssertionKind = .exactlyOne
+    
+    let collectionResult: Result<C, Error> = evaluateCollection(
+        collection,
+        assertion:  assertionKind,
+        message:    message,
+        file:       file,
+        line:       line,
+        options:    options
+    )
+    
+    guard case let .success(elements) = collectionResult
+    else
+    {
+        return
+    }
+    
+    
+    
+    let iterationResult: PredicateIterationResult = iteratePredicate(
+        predicate,
+        over: elements
+    )
+    
+    if
+        iterationResult.matchedCount == 1,
+        iterationResult.errorCount == 0
+    {
+        return
+    }
+    
+    
+    
+    let countMismatch = CountMismatch(
+        expected:           .exactly(1),
+        matchedIndices:     iterationResult.matchedIndices,
+        errorElements:      iterationResult.errorElements
+    )
+    
+    let failure = PredicateFailure(
+        collectionCount : elements.count,
+        kind            : .countMismatch(countMismatch),
+        isOrdered       : elements.isOrdered
+    )
+    
+    failPredicateAssertion(
+        kind:           assertionKind,
+        captureKind:    captureKind,
+        failure:        failure,
+        message:        message,
+        file:           file,
+        line:           line,
+        options:        options
+    )
+}
+
+
+
+internal func evaluateXCTKAssertSorted<C>(
+    captureKind : ExprCaptureKind,
+    collection  : () throws -> C,
+    predicate   : (C.Element, C.Element) throws -> Bool,
+    message     : () -> String,
+    file        : StaticString,
+    line        : UInt,
+    options     : XCTKOptions?
+) where C : Collection
+{
+    let assertionKind: AssertionKind = .sorted
+    
+    let collectionResult: Result<C, Error> = evaluateCollection(
+        collection,
+        assertion:  assertionKind,
+        message:    message,
+        file:       file,
+        line:       line,
+        options:    options
+    )
+    
+    guard case let .success(elements) = collectionResult
+    else
+    {
+        return
+    }
+    
+    
+    
+    if !elements.isOrdered
+    {
+        let typeName = String(describing: type(of: elements))
+        
+        failAssertion(
+            kind:       assertionKind,
+            reason:     "unordered collection type (\(typeName))",
+            message:    message,
+            file:       file,
+            line:       line,
+            options:    options
+        )
+        
+        return
+    }
+    
+    
+    
+    var iterator = elements.makeIterator()
+    
+    guard var previous: C.Element = iterator.next()
+    else
+    {
+        /// Empty arrays are sorted.
+        return
+    }
+    
+    var index: Int = 0
+    
+    while let current: C.Element = iterator.next()
+    {
+        do
+        {
+            let inOrder: Bool = try predicate(previous, current)
+            
+            if !inOrder
+            {
+                let violation = OrderingViolation(
+                    index:      index,
+                    first:      DiffValue(previous),
+                    second:     DiffValue(current),
+                    error:      nil
+                )
+                
+                let failure = PredicateFailure(
+                    collectionCount : elements.count,
+                    kind            : .orderingViolation(violation),
+                    isOrdered       : true
+                )
+                
+                failPredicateAssertion(
+                    kind:           assertionKind,
+                    captureKind:    captureKind,
+                    failure:        failure,
+                    message:        message,
+                    file:           file,
+                    line:           line,
+                    options:        options
+                )
+                
+                return
+            }
+        }
+        catch
+        {
+            let violation = OrderingViolation(
+                index:      index,
+                first:      DiffValue(previous),
+                second:     DiffValue(current),
+                error:      error.localizedDescription
+            )
+            
+            let failure = PredicateFailure(
+                collectionCount : elements.count,
+                kind            : .orderingViolation(violation),
+                isOrdered       : true
+            )
+            
+            failPredicateAssertion(
+                kind:           assertionKind,
+                captureKind:    captureKind,
+                failure:        failure,
+                message:        message,
+                file:           file,
+                line:           line,
+                options:        options
+            )
+            
+            return
+        }
+        
+        previous = current
+        index += 1
+    }
+}
+
+
+
+internal func evaluateXCTKAssertUnique<C>(
+    captureKind : ExprCaptureKind,
+    collection  : () throws -> C,
+    message     : () -> String,
+    file        : StaticString,
+    line        : UInt,
+    options     : XCTKOptions?
+) where C : Collection, C.Element : Hashable
+{
+    let assertionKind: AssertionKind = .unique
+    
+    let collectionResult: Result<C, Error> = evaluateCollection(
+        collection,
+        assertion:  assertionKind,
+        message:    message,
+        file:       file,
+        line:       line,
+        options:    options
+    )
+    
+    guard case let .success(elements) = collectionResult
+    else
+    {
+        return
+    }
+    
+    
+    
+    if
+        !elements.isOrdered
+        || elements.isEmpty
+    {
+        /// Sets are unique by definition. Dictionary elements are key-value
+        /// pairs, and since dictionary keys are unique, so are the elements.
+        /// Empty arrays have unique elements.
+        return
+    }
+    
+    
+    
+    var indicesByElement: [C.Element : [Int]] = [:]
+    
+    for (index, element) in elements.enumerated()
+    {
+        indicesByElement[element, default: []].append(index)
+    }
+    
+    
+    
+    var duplicateGroups: [DuplicateGroup] = []
+    
+    for (element, indices) in indicesByElement
+    {
+        if indices.count > 1
+        {
+            let group = DuplicateGroup(
+                value:      DiffValue(element),
+                indices:    indices
+            )
+            
+            duplicateGroups.append(group)
+        }
+    }
+    
+    if duplicateGroups.isEmpty
+    {
+        return
+    }
+    
+    
+    
+    let failure = PredicateFailure(
+        collectionCount : elements.count,
+        kind            : .duplicates(duplicateGroups),
+        isOrdered       : true
+    )
+    
+    failPredicateAssertion(
+        kind:           assertionKind,
+        captureKind:    captureKind,
+        failure:        failure,
+        message:        message,
+        file:           file,
+        line:           line,
+        options:        options
+    )
+}
+
+
+
+internal func evaluateXCTKAssertUnique<C, K>(
+    captureKind : ExprCaptureKind,
+    collection  : () throws -> C,
+    predicate   : (C.Element) throws -> K,
+    message     : () -> String,
+    file        : StaticString,
+    line        : UInt,
+    options     : XCTKOptions?
+) where C : Collection, K : Hashable
+{
+    let assertionKind: AssertionKind = .uniqueByKey
+    
+    let collectionResult: Result<C, Error> = evaluateCollection(
+        collection,
+        assertion:  assertionKind,
+        message:    message,
+        file:       file,
+        line:       line,
+        options:    options
+    )
+    
+    guard case let .success(elements) = collectionResult
+    else
+    {
+        return
+    }
+    
+    
+    
+    if elements.isEmpty
+    {
+        /// Empty collections have unique elements.
+        return
+    }
+    
+    
+    
+    var elementsByKey: [K : [IndexedElement]] = [:]
+    
+    for (index, element) in elements.enumerated()
+    {
+        let key: K
+        
+        do
+        {
+            key = try predicate(element)
+        }
+        catch
+        {
+            failAssertion(
+                kind:       assertionKind,
+                reason:     "threw error \(quote(error)) at index \(index)",
+                message:    message,
+                file:       file,
+                line:       line,
+                options:    options
+            )
+            
+            return
+        }
+        
+        let indexedElement = IndexedElement(
+            index:  index,
+            value:  DiffValue(element)
+        )
+        
+        elementsByKey[key, default: []].append(indexedElement)
+    }
+    
+    
+    
+    var duplicateGroups: [DuplicateKeyGroup] = []
+    
+    for (extractedKey, indexedElements) in elementsByKey
+    {
+        if indexedElements.count > 1
+        {
+            let group = DuplicateKeyGroup(
+                key:        DiffValue(extractedKey),
+                elements:   indexedElements
+            )
+            
+            duplicateGroups.append(group)
+        }
+    }
+    
+    if duplicateGroups.isEmpty
+    {
+        return
+    }
+    
+    
+    
+    let failure = PredicateFailure(
+        collectionCount : elements.count,
+        kind            : .duplicateKeys(duplicateGroups),
+        isOrdered       : elements.isOrdered
+    )
+    
+    failPredicateAssertion(
+        kind:           assertionKind,
+        captureKind:    captureKind,
+        failure:        failure,
+        message:        message,
+        file:           file,
+        line:           line,
+        options:        options
+    )
+}

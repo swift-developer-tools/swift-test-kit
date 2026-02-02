@@ -15,42 +15,42 @@ internal final class MacroAssertionMessageTests: XCTestKitCase
 {
     // MARK: - Boolean
     
-    func testAssertMessageNotEvaluatedOnSuccess() throws
+    func testAssertMessageNotEvalOnSuccess() throws
     {
         testMacroAssertionMessageNotEvalOnSuccess(.assert)
     }
     
     
     
-    func testAssertMessageEvaluatedOnlyOnceOnFailure() throws
+    func testAssertMessageEvalOnlyOnceOnFailure() throws
     {
         testMacroAssertionMessageEvalOnceOnFailure(.assert)
     }
     
     
     
-    func testAssertTrueMessageNotEvaluatedOnSuccess() throws
+    func testAssertTrueMessageNotEvalOnSuccess() throws
     {
         testMacroAssertionMessageNotEvalOnSuccess(.true)
     }
     
     
     
-    func testAssertTrueMessageEvaluatedOnlyOnceOnFailure() throws
+    func testAssertTrueMessageEvalOnlyOnceOnFailure() throws
     {
         testMacroAssertionMessageEvalOnceOnFailure(.true)
     }
     
     
     
-    func testAssertFalseMessageNotEvaluatedOnSuccess() throws
+    func testAssertFalseMessageNotEvalOnSuccess() throws
     {
         testMacroAssertionMessageNotEvalOnSuccess(.false)
     }
     
     
     
-    func testAssertFalseMessageEvaluatedOnlyOnceOnFailure() throws
+    func testAssertFalseMessageEvalOnlyOnceOnFailure() throws
     {
         testMacroAssertionMessageEvalOnceOnFailure(.false)
     }
@@ -59,42 +59,42 @@ internal final class MacroAssertionMessageTests: XCTestKitCase
     
     // MARK: - Nil and non-nil
     
-    func testAssertNilMessageNotEvaluatedOnSuccess() throws
+    func testAssertNilMessageNotEvalOnSuccess() throws
     {
         testMacroAssertionMessageNotEvalOnSuccess(.nil)
     }
     
     
     
-    func testAssertNilMessageEvaluatedOnlyOnceOnFailure() throws
+    func testAssertNilMessageEvalOnlyOnceOnFailure() throws
     {
         testMacroAssertionMessageEvalOnceOnFailure(.nil)
     }
     
     
     
-    func testAssertNotNilMessageNotEvaluatedOnSuccess() throws
+    func testAssertNotNilMessageNotEvalOnSuccess() throws
     {
         testMacroAssertionMessageNotEvalOnSuccess(.notNil)
     }
     
     
     
-    func testAssertNotNilMessageEvaluatedOnlyOnceOnFailure() throws
+    func testAssertNotNilMessageEvalOnlyOnceOnFailure() throws
     {
         testMacroAssertionMessageEvalOnceOnFailure(.notNil)
     }
     
     
     
-    func testUnwrapMessageNotEvaluatedOnSuccess() throws
+    func testUnwrapMessageNotEvalOnSuccess() throws
     {
         testMacroAssertionMessageNotEvalOnSuccess(.unwrap)
     }
     
     
     
-    func testUnwrapMessageEvaluatedOnlyOnceOnFailure() throws
+    func testUnwrapMessageEvalOnlyOnceOnFailure() throws
     {
         testMacroAssertionMessageEvalOnceOnFailure(.unwrap)
     }
@@ -103,63 +103,63 @@ internal final class MacroAssertionMessageTests: XCTestKitCase
     
     // MARK: - Equality and inequality
     
-    func testAssertEqualMessageNotEvaluatedOnSuccess() throws
+    func testAssertEqualMessageNotEvalOnSuccess() throws
     {
         testMacroAssertionMessageNotEvalOnSuccess(.equal)
     }
     
     
     
-    func testAssertEqualMessageEvaluatedOnlyOnceOnFailure() throws
+    func testAssertEqualMessageEvalOnlyOnceOnFailure() throws
     {
         testMacroAssertionMessageEvalOnceOnFailure(.equal)
     }
     
     
     
-    func testAssertNotEqualMessageNotEvaluatedOnSuccess() throws
+    func testAssertNotEqualMessageNotEvalOnSuccess() throws
     {
         testMacroAssertionMessageNotEvalOnSuccess(.notEqual)
     }
     
     
     
-    func testAssertNotEqualMessageEvaluatedOnlyOnceOnFailure() throws
+    func testAssertNotEqualMessageEvalOnlyOnceOnFailure() throws
     {
         testMacroAssertionMessageEvalOnceOnFailure(.notEqual)
     }
     
     
     
-    func testAssertIdenticalMessageNotEvaluatedOnSuccess() throws
+    func testAssertIdenticalMessageNotEvalOnSuccess() throws
     {
         testMacroAssertionMessageNotEvalOnSuccess(.identical)
     }
     
     
     
-    func testAssertIdenticalMessageEvaluatedOnlyOnceOnFailure() throws
+    func testAssertIdenticalMessageEvalOnlyOnceOnFailure() throws
     {
         testMacroAssertionMessageEvalOnceOnFailure(.identical)
     }
     
     
     
-    func testAssertNotIdenticalMessageNotEvaluatedOnSuccess() throws
+    func testAssertNotIdenticalMessageNotEvalOnSuccess() throws
     {
         testMacroAssertionMessageNotEvalOnSuccess(.notIdentical)
     }
     
     
     
-    func testAssertNotIdenticalMessageEvaluatedOnlyOnceOnFailure() throws
+    func testAssertNotIdenticalMessageEvalOnlyOnceOnFailure() throws
     {
         testMacroAssertionMessageEvalOnceOnFailure(.notIdentical)
     }
     
     
     
-    func testAssertEqualFloatAccMessageNotEvaluatedOnSuccess() throws
+    func testAssertEqualFloatAccMessageNotEvalOnSuccess() throws
     {
         testMacroAssertionMessageNotEvalOnSuccess(
             .equalWithAccuracy,
@@ -169,7 +169,7 @@ internal final class MacroAssertionMessageTests: XCTestKitCase
     
     
     
-    func testAssertEqualFloatAccMessageEvaluatedOnlyOnceOnFailure() throws
+    func testAssertEqualFloatAccMessageEvalOnlyOnceOnFailure() throws
     {
         testMacroAssertionMessageEvalOnceOnFailure(
             .equalWithAccuracy,
@@ -179,7 +179,7 @@ internal final class MacroAssertionMessageTests: XCTestKitCase
     
     
     
-    func testAssertEqualIntAccMessageNotEvaluatedOnSuccess() throws
+    func testAssertEqualIntAccMessageNotEvalOnSuccess() throws
     {
         testMacroAssertionMessageNotEvalOnSuccess(
             .equalWithAccuracy,
@@ -189,7 +189,7 @@ internal final class MacroAssertionMessageTests: XCTestKitCase
     
     
     
-    func testAssertEqualIntAccMessageEvaluatedOnlyOnceOnFailure() throws
+    func testAssertEqualIntAccMessageEvalOnlyOnceOnFailure() throws
     {
         testMacroAssertionMessageEvalOnceOnFailure(
             .equalWithAccuracy,
@@ -199,7 +199,7 @@ internal final class MacroAssertionMessageTests: XCTestKitCase
     
     
     
-    func testAssertNotEqualFloatAccMessageNotEvaluatedOnSuccess() throws
+    func testAssertNotEqualFloatAccMessageNotEvalOnSuccess() throws
     {
         testMacroAssertionMessageNotEvalOnSuccess(
             .notEqualWithAccuracy,
@@ -209,7 +209,7 @@ internal final class MacroAssertionMessageTests: XCTestKitCase
     
     
     
-    func testAssertNotEqualFloatAccMessageEvaluatedOnlyOnceOnFailure() throws
+    func testAssertNotEqualFloatAccMessageEvalOnlyOnceOnFailure() throws
     {
         testMacroAssertionMessageEvalOnceOnFailure(
             .notEqualWithAccuracy,
@@ -219,7 +219,7 @@ internal final class MacroAssertionMessageTests: XCTestKitCase
     
     
     
-    func testAssertNotEqualIntAccMessageNotEvaluatedOnSuccess() throws
+    func testAssertNotEqualIntAccMessageNotEvalOnSuccess() throws
     {
         testMacroAssertionMessageNotEvalOnSuccess(
             .notEqualWithAccuracy,
@@ -229,7 +229,7 @@ internal final class MacroAssertionMessageTests: XCTestKitCase
     
     
     
-    func testAssertNotEqualIntAccMessageEvaluatedOnlyOnceOnFailure() throws
+    func testAssertNotEqualIntAccMessageEvalOnlyOnceOnFailure() throws
     {
         testMacroAssertionMessageEvalOnceOnFailure(
             .notEqualWithAccuracy,
@@ -241,56 +241,56 @@ internal final class MacroAssertionMessageTests: XCTestKitCase
     
     // MARK: - Comparable
     
-    func testAssertGreaterMessageNotEvaluatedOnSuccess() throws
+    func testAssertGreaterMessageNotEvalOnSuccess() throws
     {
         testMacroAssertionMessageNotEvalOnSuccess(.greaterThan)
     }
     
     
     
-    func testAssertGreaterMessageEvaluatedOnlyOnceOnFailure() throws
+    func testAssertGreaterMessageEvalOnlyOnceOnFailure() throws
     {
         testMacroAssertionMessageEvalOnceOnFailure(.greaterThan)
     }
     
     
     
-    func testAssertGreaterEqualMessageNotEvaluatedOnSuccess() throws
+    func testAssertGreaterEqualMessageNotEvalOnSuccess() throws
     {
         testMacroAssertionMessageNotEvalOnSuccess(.greaterThanOrEqual)
     }
     
     
     
-    func testAssertGreaterEqualMessageEvaluatedOnlyOnceOnFailure() throws
+    func testAssertGreaterEqualMessageEvalOnlyOnceOnFailure() throws
     {
         testMacroAssertionMessageEvalOnceOnFailure(.greaterThanOrEqual)
     }
     
     
     
-    func testAssertLessEqualMessageNotEvaluatedOnSuccess() throws
+    func testAssertLessEqualMessageNotEvalOnSuccess() throws
     {
         testMacroAssertionMessageNotEvalOnSuccess(.lessThanOrEqual)
     }
     
     
     
-    func testAssertLessEqualMessageEvaluatedOnlyOnceOnFailure() throws
+    func testAssertLessEqualMessageEvalOnlyOnceOnFailure() throws
     {
         testMacroAssertionMessageEvalOnceOnFailure(.lessThanOrEqual)
     }
     
     
     
-    func testAssertLessMessageNotEvaluatedOnSuccess() throws
+    func testAssertLessMessageNotEvalOnSuccess() throws
     {
         testMacroAssertionMessageNotEvalOnSuccess(.lessThan)
     }
     
     
     
-    func testAssertLessMessageEvaluatedOnlyOnceOnFailure() throws
+    func testAssertLessMessageEvalOnlyOnceOnFailure() throws
     {
         testMacroAssertionMessageEvalOnceOnFailure(.lessThan)
     }
@@ -299,28 +299,28 @@ internal final class MacroAssertionMessageTests: XCTestKitCase
     
     // MARK: - Error
     
-    func testAssertThrowsMessageNotEvaluatedOnSuccess() throws
+    func testAssertThrowsMessageNotEvalOnSuccess() throws
     {
         testMacroAssertionMessageNotEvalOnSuccess(.throwsError)
     }
     
     
     
-    func testAssertThrowsMessageEvaluatedOnlyOnceOnFailure() throws
+    func testAssertThrowsMessageEvalOnlyOnceOnFailure() throws
     {
         testMacroAssertionMessageEvalOnceOnFailure(.throwsError)
     }
     
     
     
-    func testAssertNoThrowMessageNotEvaluatedOnSuccess() throws
+    func testAssertNoThrowMessageNotEvalOnSuccess() throws
     {
         testMacroAssertionMessageNotEvalOnSuccess(.noThrow)
     }
     
     
     
-    func testAssertNoThrowMessageEvaluatedOnlyOnceOnFailure() throws
+    func testAssertNoThrowMessageEvalOnlyOnceOnFailure() throws
     {
         testMacroAssertionMessageEvalOnceOnFailure(.noThrow)
     }
@@ -329,8 +329,164 @@ internal final class MacroAssertionMessageTests: XCTestKitCase
     
     // MARK: - Fail
     
-    func testFailMessageEvaluatedOnlyOnceOnFailure() throws
+    func testFailMessageEvalOnlyOnceOnFailure() throws
     {
         testMacroAssertionMessageEvalOnceOnFailure(.fail)
+    }
+    
+    
+    
+    // MARK: - Predicate
+    
+    func testAssertSatisfyAllMessageNotEvalOnSuccess() throws
+    {
+        testMacroAssertionMessageNotEvalOnSuccess(.satisfyAll)
+    }
+    
+    
+    
+    func testAssertSatisfyAllMessageEvalOnlyOnceOnFailure() throws
+    {
+        testMacroAssertionMessageEvalOnceOnFailure(.satisfyAll)
+    }
+    
+    
+    
+    func testAssertSatisfyAnyMessageNotEvalOnSuccess() throws
+    {
+        testMacroAssertionMessageNotEvalOnSuccess(.satisfyAny)
+    }
+    
+    
+    
+    func testAssertSatisfyAnyMessageEvalOnlyOnceOnFailure() throws
+    {
+        testMacroAssertionMessageEvalOnceOnFailure(.satisfyAny)
+    }
+    
+    
+    
+    func testAssertSatisfyNoneMessageNotEvalOnSuccess() throws
+    {
+        testMacroAssertionMessageNotEvalOnSuccess(.satisfyNone)
+    }
+    
+    
+    
+    func testAssertSatisfyNoneMessageEvalOnlyOnceOnFailure() throws
+    {
+        testMacroAssertionMessageEvalOnceOnFailure(.satisfyNone)
+    }
+    
+    
+    
+    func testAssertSatisfyAtLeastMessageNotEvalOnSuccess() throws
+    {
+        testMacroAssertionMessageNotEvalOnSuccess(.satisfyAtLeast)
+    }
+    
+    
+    
+    func testAssertSatisfyAtLeastMessageEvalOnlyOnceOnFailure() throws
+    {
+        testMacroAssertionMessageEvalOnceOnFailure(.satisfyAtLeast)
+    }
+    
+    
+    
+    func testAssertSatisfyAtMostMessageNotEvalOnSuccess() throws
+    {
+        testMacroAssertionMessageNotEvalOnSuccess(.satisfyAtMost)
+    }
+    
+    
+    
+    func testAssertSatisfyAtMostMessageEvalOnlyOnceOnFailure() throws
+    {
+        testMacroAssertionMessageEvalOnceOnFailure(.satisfyAtMost)
+    }
+    
+    
+    
+    func testAssertSatisfyRangeMessageNotEvalOnSuccess() throws
+    {
+        testMacroAssertionMessageNotEvalOnSuccess(.satisfyRange)
+    }
+    
+    
+    
+    func testAssertSatisfyRangeMessageEvalOnlyOnceOnFailure() throws
+    {
+        testMacroAssertionMessageEvalOnceOnFailure(.satisfyRange)
+    }
+    
+    
+    
+    func testAssertExactlyMessageNotEvalOnSuccess() throws
+    {
+        testMacroAssertionMessageNotEvalOnSuccess(.exactly)
+    }
+    
+    
+    
+    func testAssertExactlyMessageEvalOnlyOnceOnFailure() throws
+    {
+        testMacroAssertionMessageEvalOnceOnFailure(.exactly)
+    }
+    
+    
+    
+    func testAssertExactlyOneMessageNotEvalOnSuccess() throws
+    {
+        testMacroAssertionMessageNotEvalOnSuccess(.exactlyOne)
+    }
+    
+    
+    
+    func testAssertExactlyOneMessageEvalOnlyOnceOnFailure() throws
+    {
+        testMacroAssertionMessageEvalOnceOnFailure(.exactlyOne)
+    }
+    
+    
+    
+    func testAssertSortedMessageNotEvalOnSuccess() throws
+    {
+        testMacroAssertionMessageNotEvalOnSuccess(.sorted)
+    }
+    
+    
+    
+    func testAssertSortedMessageEvalOnlyOnceOnFailure() throws
+    {
+        testMacroAssertionMessageEvalOnceOnFailure(.sorted)
+    }
+    
+    
+    
+    func testAssertUniqueMessageNotEvalOnSuccess() throws
+    {
+        testMacroAssertionMessageNotEvalOnSuccess(.unique)
+    }
+    
+    
+    
+    func testAssertUniqueMessageEvalOnlyOnceOnFailure() throws
+    {
+        testMacroAssertionMessageEvalOnceOnFailure(.unique)
+    }
+    
+    
+    
+    func testAssertUniqueByKeyMessageNotEvalOnSuccess() throws
+    {
+        testMacroAssertionMessageNotEvalOnSuccess(.uniqueByKey)
+    }
+    
+    
+    
+    func testAssertUniqueByKeyMessageEvalOnlyOnceOnFailure() throws
+    {
+        testMacroAssertionMessageEvalOnceOnFailure(.uniqueByKey)
     }
 }

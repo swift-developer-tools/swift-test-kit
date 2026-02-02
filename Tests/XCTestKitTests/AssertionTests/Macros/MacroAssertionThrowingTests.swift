@@ -153,4 +153,83 @@ internal final class MacroAssertionThrowingTests: XCTestKitCase
     {
         testMacroAssertionFailsOnThrow(.noThrow)
     }
+    
+    
+    
+    // MARK: - Predicate
+    
+    func testAssertSatisfyAllFailsOnThrow() throws
+    {
+        testMacroAssertionFailsOnThrow(.satisfyAll)
+    }
+    
+    
+    
+    func testAssertSatisfyAnyFailsOnThrow() throws
+    {
+        testMacroAssertionFailsOnThrow(.satisfyAny)
+    }
+    
+    
+    
+    func testAssertSatisfyNoneFailsOnThrow() throws
+    {
+        testMacroAssertionFailsOnThrow(.satisfyNone)
+    }
+    
+    
+    
+    func testAssertSatisfyAtLeastFailsOnThrow() throws
+    {
+        testMacroAssertionFailsOnThrow(.satisfyAtLeast)
+    }
+    
+    
+    
+    func testAssertSatisfyAtMostFailsOnThrow() throws
+    {
+        testMacroAssertionFailsOnThrow(.satisfyAtMost)
+    }
+    
+    
+    
+    func testAssertSatisfyRangeFailsOnThrow() throws
+    {
+        testMacroAssertionFailsOnThrow(.satisfyRange)
+    }
+    
+    
+    
+    func testAssertExactlyFailsOnThrow() throws
+    {
+        testMacroAssertionFailsOnThrow(.exactly)
+    }
+    
+    
+    
+    func testAssertExactlyOneFailsOnThrow() throws
+    {
+        testMacroAssertionFailsOnThrow(.exactlyOne)
+    }
+    
+    
+    
+    func testAssertSortedFailsOnThrow() throws
+    {
+        testMacroAssertionFailsOnThrow(.sorted)
+    }
+    
+    
+    
+    func testAssertUniqueFailsOnThrow() throws
+    {
+        testMacroAssertionFailsOnThrow(.unique)
+    }
+    
+    
+    
+    func testAssertUniqueByKeyFailsOnThrow() throws
+    {
+        testMacroAssertionFailsOnThrow(.uniqueByKey)
+    }
 }

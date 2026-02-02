@@ -18,18 +18,41 @@ import SwiftSyntaxMacros
 /// A macro expression.
 internal protocol AssertionMacro: ExpressionMacro
 {
+    typealias ExpansionError = MacroExpansionErrorMessage
+    
     /// The underlying assertion kind.
     static var kind: AssertionKind { get }
 }
 
 /// A macro expression with no evaluated expression.
-internal protocol NoExprMacro       : AssertionMacro { }
+internal protocol NoExprMacro               : AssertionMacro { }
 
 /// A macro expression with one evaluated expression.
-internal protocol SingleExprMacro   : AssertionMacro { }
+internal protocol SingleExprMacro           : AssertionMacro { }
 
 /// A macro expression with two evaluated expressions.
-internal protocol DoubleExprMacro   : AssertionMacro { }
+internal protocol DoubleExprMacro           : AssertionMacro { }
+
+/// A macro expression for a predicate assertion.
+internal protocol DoubleExprPredicateMacro  : AssertionMacro { }
+
+
+
+extension AssertionMacro
+{
+    /// Creates an error for an unhandled assertion kind during macro expansion.
+    ///
+    /// This indicates an internal bug where an ``AssertionKind`` was routed
+    /// to a protocol extension that does not handle it.
+    public static func makeUnhandledKindError() -> ExpansionError
+    {
+        return ExpansionError(
+            "Unhandled assertion kind \"\(kind.macroDisplayName)\""
+            + " during macro expansion. Please submit an XCTestKit bug report"
+            + " (https://github.com/swift-developer-tools/XCTestKit)."
+        )
+    }
+}
 
 
 
@@ -82,7 +105,7 @@ extension SingleExprMacro
         guard let expr: ExprSyntax = positionalArgs.first
         else
         {
-            throw MacroExpansionErrorMessage("Missing expression argument")
+            throw ExpansionError("Missing expression argument")
         }
         
         let exprText: String = expr.trimmedDescription
@@ -109,6 +132,22 @@ extension SingleExprMacro
                     message:    message,
                     options:    options
                 )
+                
+            case
+                .nil,
+                .notNil,
+                .unwrap:
+                
+                return """
+                \(raw: kind.macroInternalName)(
+                    expr:       \(expr),
+                    exprText:   \(literal: exprText),
+                    message:    \(message),
+                    file:       #filePath,
+                    line:       #line,
+                    options:    \(options)
+                )
+                """
                 
             case .throwsError:
                 
@@ -170,18 +209,22 @@ extension SingleExprMacro
                 )
                 """
                 
-            default:
+            case .unique:
                 
                 return """
                 \(raw: kind.macroInternalName)(
-                    expr:       \(expr),
-                    exprText:   \(literal: exprText),
-                    message:    \(message),
-                    file:       #filePath,
-                    line:       #line,
-                    options:    \(options)
+                    collection:         \(expr),
+                    collectionText:     \(literal: exprText),
+                    message:            \(message),
+                    file:               #filePath,
+                    line:               #line,
+                    options:            \(options)
                 )
                 """
+            
+            default:
+                
+                throw makeUnhandledKindError()
         }
     }
 }
@@ -212,7 +255,7 @@ extension DoubleExprMacro
                 ? "Missing expected and actual value arguments"
                 : "Missing expression arguments"
             
-            throw MacroExpansionErrorMessage(errorMessage)
+            throw ExpansionError(errorMessage)
         }
         
         
@@ -247,6 +290,28 @@ extension DoubleExprMacro
                 """
                 
             case
+                .notEqual,
+                .identical,
+                .notIdentical,
+                .greaterThan,
+                .greaterThanOrEqual,
+                .lessThanOrEqual,
+                .lessThan:
+                
+                return """
+                \(raw: kind.macroInternalName)(
+                    expr1:      \(expr1),
+                    expr2:      \(expr2),
+                    expr1Text:  \(literal: expr1Text),
+                    expr2Text:  \(literal: expr2Text),
+                    message:    \(message),
+                    file:       #filePath,
+                    line:       #line,
+                    options:    \(options)
+                )
+                """
+                
+            case
                 .equalWithAccuracy,
                 .notEqualWithAccuracy:
                 
@@ -254,9 +319,7 @@ extension DoubleExprMacro
                         = args.getArg(labeled: "accuracy")
                 else
                 {
-                    throw MacroExpansionErrorMessage(
-                        "Missing accuracy argument"
-                    )
+                    throw ExpansionError("Missing accuracy argument")
                 }
                 
                 return """
@@ -275,18 +338,198 @@ extension DoubleExprMacro
                 
             default:
                 
+                throw makeUnhandledKindError()
+        }
+    }
+}
+
+
+
+// MARK: - Predicate
+
+/// The predicate and message of a predicate macro assertion.
+private struct PredicateExtractionResult
+{
+    /// The predicate expression.
+    let predicate   : ExprSyntax
+
+    /// The message expression.
+    let message : ExprSyntax
+}
+
+
+
+extension DoubleExprPredicateMacro
+{
+    /// Expands the macro.
+    /// - Parameters:
+    ///   - node: The AST node.
+    ///   - context: The context in which the macro appears.
+    /// - Returns: The expanded macro expression.
+    public static func expansion(
+        of  node    : some FreestandingMacroExpansionSyntax,
+        in  context : some MacroExpansionContext
+    ) throws -> ExprSyntax
+    {
+        let args            : LabeledExprListSyntax     = node.arguments
+        let positionalArgs  : [ExprSyntax]              = args.positionalArgs
+        
+        guard !positionalArgs.isEmpty
+        else
+        {
+            throw ExpansionError("Missing collection argument")
+        }
+        
+        
+        
+        let collection      : ExprSyntax    = positionalArgs[0]
+        let collectionText  : String        = collection.trimmedDescription
+        
+        let options: ExprSyntax = args.getArg(labeled: "options")
+            ?? .makeNilLiteral()
+        
+        
+        
+        var predicateLabel: String? = nil
+        
+        if
+            kind == .sorted
+            || kind == .uniqueByKey
+        {
+            predicateLabel = "by"
+        }
+        
+        let extractionResult: PredicateExtractionResult
+            = try extractPredicateAndMessage(
+                from:               node,
+                args:               args,
+                positionalArgs:     positionalArgs,
+                predicateLabel:     predicateLabel
+            )
+        
+        let predicate       : ExprSyntax    = extractionResult.predicate
+        let predicateText   : String        = predicate.trimmedDescription
+        let message         : ExprSyntax    = extractionResult.message
+        
+        let boundNames: [AssertionKind : String] =
+        [
+            .satisfyAtLeast : "atLeast",
+            .satisfyAtMost  : "atMost",
+            .satisfyRange   : "range",
+            .exactly        : "count"
+        ]
+        
+        
+        
+        switch kind
+        {
+            case
+                .satisfyAll,
+                .satisfyAny,
+                .satisfyNone,
+                .exactlyOne,
+                .sorted,
+                .uniqueByKey:
+                
                 return """
                 \(raw: kind.macroInternalName)(
-                    expr1:      \(expr1),
-                    expr2:      \(expr2),
-                    expr1Text:  \(literal: expr1Text),
-                    expr2Text:  \(literal: expr2Text),
-                    message:    \(message),
-                    file:       #filePath,
-                    line:       #line,
-                    options:    \(options)
+                    collection:         \(collection),
+                    predicate:          \(predicate),
+                    collectionText:     \(literal: collectionText),
+                    predicateText:      \(literal: predicateText),
+                    message:            \(message),
+                    file:               #filePath,
+                    line:               #line,
+                    options:            \(options)
                 )
                 """
+                
+            case
+                .satisfyAtLeast,
+                .satisfyAtMost,
+                .satisfyRange,
+                .exactly:
+                
+                guard let boundName: String = boundNames[kind]
+                else
+                {
+                    throw makeUnhandledKindError()
+                }
+                
+                guard let bound: ExprSyntax = args.getArg(labeled: boundName)
+                else
+                {
+                    throw ExpansionError("Missing \(boundName) argument")
+                }
+                
+                return """
+                \(raw: kind.macroInternalName)(
+                    collection:         \(collection),
+                    \(raw: boundName):  \(bound),
+                    predicate:          \(predicate),
+                    collectionText:     \(literal: collectionText),
+                    predicateText:      \(literal: predicateText),
+                    message:            \(message),
+                    file:               #filePath,
+                    line:               #line,
+                    options:            \(options)
+                )
+                """
+                
+            default:
+                
+                throw makeUnhandledKindError()
         }
+    }
+    
+    
+    
+    /// Extracts the predicate and message from the given node.
+    /// - Parameters:
+    ///   - node: The AST node.
+    ///   - args: The predicate assertion arguments.
+    ///   - positionalArgs: The predicate assertion position arugments.
+    ///   - predicateLabel: The predicate parameter label.
+    /// - Returns: The predicate and message of the predicate assertion.
+    private static func extractPredicateAndMessage(
+        from node       : some FreestandingMacroExpansionSyntax,
+        args            : LabeledExprListSyntax,
+        positionalArgs  : [ExprSyntax],
+        predicateLabel  : String?
+    ) throws -> PredicateExtractionResult
+    {
+        let predicate       : ExprSyntax
+        let messageIndex    : Int
+        
+        if let trailingClosure: ClosureExprSyntax = node.trailingClosure
+        {
+            predicate       = ExprSyntax(trailingClosure)
+            messageIndex    = 1
+        }
+        else if
+            let label       : String        = predicateLabel,
+            let labeledArg  : ExprSyntax    = args.getArg(labeled: label)
+        {
+            predicate       = labeledArg
+            messageIndex    = 1
+        }
+        else if positionalArgs.count > 1
+        {
+            predicate       = positionalArgs[1]
+            messageIndex    = 2
+        }
+        else
+        {
+            throw ExpansionError("Missing predicate argument")
+        }
+        
+        let message: ExprSyntax = positionalArgs.count > messageIndex
+            ? positionalArgs[messageIndex]
+            : .makeStringLiteral("")
+        
+        return PredicateExtractionResult(
+            predicate:  predicate,
+            message:    message
+        )
     }
 }

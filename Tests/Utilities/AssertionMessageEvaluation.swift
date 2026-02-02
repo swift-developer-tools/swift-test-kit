@@ -20,12 +20,12 @@ extension XCTestKitCase
     /// Asserts that the message of the specified assertion is not evaluated
     /// when the assertion succeeds.
     ///
-    /// - Note: This does nothing for ``AssertionKind/fail``.
+    /// - Note: This immediately fails ``AssertionKind/fail``.
     ///
     /// - Note: This also tests the options path for all assertions.
     ///
     /// - Parameters:
-    ///   - kind: The assertion to use.
+    ///   - kind: The assertion to test.
     ///   - useFloats: Whether to use floating-point numbers when testing for
     ///   equality with accuracy. Otherwise, integers will be used.
     internal func testFunctionAssertionMessageNotEvalOnSuccess(
@@ -216,13 +216,9 @@ extension XCTestKitCase
                     options: options
                 )
                 
-            case .fail:
-                
-                return
-                
             case .throwsError:
                 
-                let expr: () throws -> Int = { try TestError.throwError() }
+                let expr: () throws -> Int = { throw TestError() }
                 
                 XCTKAssertThrowsError(
                     try expr(),
@@ -239,6 +235,113 @@ extension XCTestKitCase
                     message(),
                     options: options
                 )
+                
+            case .satisfyAll:
+                
+                XCTKAssertAllSatisfy(
+                    ["a", "b", "c"],
+                    { !$0.isEmpty },
+                    message(),
+                    options: options
+                )
+                
+            case .satisfyAny:
+                
+                XCTKAssertAnySatisfy(
+                    ["a", "b", "c"],
+                    { !$0.isEmpty },
+                    message(),
+                    options: options
+                )
+                
+            case .satisfyNone:
+                
+                XCTKAssertNoneSatisfy(
+                    ["a", "b", "c"],
+                    { $0.isEmpty },
+                    message(),
+                    options: options
+                )
+                
+            case .satisfyAtLeast:
+                
+                XCTKAssertSatisfy(
+                    ["a", "b", "c"],
+                    atLeast: 1,
+                    { !$0.isEmpty },
+                    message(),
+                    options: options
+                )
+                
+            case .satisfyAtMost:
+                
+                XCTKAssertSatisfy(
+                    ["a", "b", ""],
+                    atMost: 1,
+                    { $0.isEmpty },
+                    message(),
+                    options: options
+                )
+                
+            case .satisfyRange:
+                
+                XCTKAssertSatisfy(
+                    ["a", "b", "c"],
+                    range: 1...3,
+                    { !$0.isEmpty },
+                    message(),
+                    options: options
+                )
+                
+            case .exactly:
+                
+                XCTKAssertExactly(
+                    ["a", "b", ""],
+                    count: 1,
+                    { $0.isEmpty },
+                    message(),
+                    options: options
+                )
+                
+            case .exactlyOne:
+                
+                XCTKAssertExactlyOne(
+                    ["a", "b", ""],
+                    { $0.isEmpty },
+                    message(),
+                    options: options
+                )
+                
+            case .sorted:
+                
+                XCTKAssertSorted(
+                    ["a", "b", "c"],
+                    by: { $0 < $1 },
+                    message(),
+                    options: options
+                )
+                
+            case .unique:
+                
+                XCTKAssertUnique(
+                    ["a", "b", "c"],
+                    message(),
+                    options: options
+                )
+                
+            case .uniqueByKey:
+                
+                XCTKAssertUnique(
+                    ["a", "b", "c"],
+                    by: { $0.first },
+                    message(),
+                    options: options
+                )
+                
+            case .fail:
+                
+                XCTFail("Invalid assertion: \(kind.name)")
+                return
         }
         
         XCTAssertEqual(count, 0)
@@ -249,7 +352,7 @@ extension XCTestKitCase
     /// Asserts that the message of the specified assertion is evaluated only
     /// once when the assertion fails.
     /// - Parameters:
-    ///   - kind: The assertion to use.
+    ///   - kind: The assertion to test.
     ///   - useFloats: Whether to use floating-point numbers when testing for
     ///   equality with accuracy. Otherwise, integers will be used.
     internal func testFunctionAssertionMessageEvalOnceOnFailure(
@@ -438,10 +541,101 @@ extension XCTestKitCase
                     
                 case .noThrow:
                     
-                    let expr: () throws -> Int = { try TestError.throwError() }
+                    let expr: () throws -> Int = { throw TestError() }
                     
                     XCTKAssertNoThrow(
                         try expr(),
+                        message()
+                    )
+                    
+                case .satisfyAll:
+                    
+                    XCTKAssertAllSatisfy(
+                        ["a", "b", "c"],
+                        { $0.isEmpty },
+                        message()
+                    )
+                    
+                case .satisfyAny:
+                    
+                    XCTKAssertAnySatisfy(
+                        ["a", "b", "c"],
+                        { $0.isEmpty },
+                        message()
+                    )
+                    
+                case .satisfyNone:
+                    
+                    XCTKAssertNoneSatisfy(
+                        ["a", "b", "c"],
+                        { !$0.isEmpty },
+                        message()
+                    )
+                    
+                case .satisfyAtLeast:
+                    
+                    XCTKAssertSatisfy(
+                        ["a", "b", "c"],
+                        atLeast: 1,
+                        { $0.isEmpty },
+                        message()
+                    )
+                    
+                case .satisfyAtMost:
+                    
+                    XCTKAssertSatisfy(
+                        ["a", "b", "c"],
+                        atMost: 1,
+                        { !$0.isEmpty },
+                        message()
+                    )
+                    
+                case .satisfyRange:
+                    
+                    XCTKAssertSatisfy(
+                        ["a", "b", "c"],
+                        range: 1...3,
+                        { $0.isEmpty },
+                        message()
+                    )
+                    
+                case .exactly:
+                    
+                    XCTKAssertExactly(
+                        ["a", "b", "c"],
+                        count: 1,
+                        { $0.isEmpty },
+                        message()
+                    )
+                    
+                case .exactlyOne:
+                    
+                    XCTKAssertExactlyOne(
+                        ["a", "b", "c"],
+                        { $0.isEmpty },
+                        message()
+                    )
+                    
+                case .sorted:
+                    
+                    XCTKAssertSorted(
+                        ["a", "b", "c"],
+                        by: { $0 > $1 },
+                        message()
+                    )
+                    
+                case .unique:
+                    
+                    XCTKAssertUnique(
+                        ["a", "a", "a"],
+                        message()
+                    )
+                    
+                case .uniqueByKey:
+                    
+                    XCTKAssertUnique(
+                        ["a", "a", "a"],
+                        by: { $0.first },
                         message()
                     )
             }
@@ -457,12 +651,12 @@ extension XCTestKitCase
     /// Asserts that the message of the specified assertion is not evaluated
     /// when the assertion succeeds.
     ///
-    /// - Note: This does nothing for ``AssertionKind/fail``.
+    /// - Note: This immediately fails ``AssertionKind/fail``.
     ///
     /// - Note: This also tests the options path for all assertions.
     ///
     /// - Parameters:
-    ///   - kind: The assertion to use.
+    ///   - kind: The assertion to test.
     ///   - useFloats: Whether to use floating-point numbers when testing for
     ///   equality with accuracy. Otherwise, integers will be used.
     internal func testMacroAssertionMessageNotEvalOnSuccess(
@@ -653,13 +847,9 @@ extension XCTestKitCase
                     options: options
                 )
                 
-            case .fail:
-                
-                return
-                
             case .throwsError:
                 
-                let expr: () throws -> Int = { try TestError.throwError() }
+                let expr: () throws -> Int = { throw TestError() }
                 
                 #XCTKAssertThrowsError(
                     try expr(),
@@ -676,6 +866,114 @@ extension XCTestKitCase
                     message(),
                     options: options
                 )
+                
+                
+            case .satisfyAll:
+                            
+                #XCTKAssertAllSatisfy(
+                    ["a", "b", "c"],
+                    { !$0.isEmpty },
+                    message(),
+                    options: options
+                )
+                
+            case .satisfyAny:
+                
+                #XCTKAssertAnySatisfy(
+                    ["a", "b", "c"],
+                    { !$0.isEmpty },
+                    message(),
+                    options: options
+                )
+                
+            case .satisfyNone:
+                
+                #XCTKAssertNoneSatisfy(
+                    ["a", "b", "c"],
+                    { $0.isEmpty },
+                    message(),
+                    options: options
+                )
+                
+            case .satisfyAtLeast:
+                
+                #XCTKAssertSatisfy(
+                    ["a", "b", "c"],
+                    atLeast: 1,
+                    { !$0.isEmpty },
+                    message(),
+                    options: options
+                )
+                
+            case .satisfyAtMost:
+                
+                #XCTKAssertSatisfy(
+                    ["a", "b", ""],
+                    atMost: 1,
+                    { $0.isEmpty },
+                    message(),
+                    options: options
+                )
+                
+            case .satisfyRange:
+                
+                #XCTKAssertSatisfy(
+                    ["a", "b", "c"],
+                    range: 1...3,
+                    { !$0.isEmpty },
+                    message(),
+                    options: options
+                )
+                
+            case .exactly:
+                
+                #XCTKAssertExactly(
+                    ["a", "b", ""],
+                    count: 1,
+                    { $0.isEmpty },
+                    message(),
+                    options: options
+                )
+                
+            case .exactlyOne:
+                
+                #XCTKAssertExactlyOne(
+                    ["a", "b", ""],
+                    { $0.isEmpty },
+                    message(),
+                    options: options
+                )
+                
+            case .sorted:
+                
+                #XCTKAssertSorted(
+                    ["a", "b", "c"],
+                    by: { $0 < $1 },
+                    message(),
+                    options: options
+                )
+                
+            case .unique:
+                
+                #XCTKAssertUnique(
+                    ["a", "b", "c"],
+                    message(),
+                    options: options
+                )
+                
+            case .uniqueByKey:
+                
+                #XCTKAssertUnique(
+                    ["a", "b", "c"],
+                    by: { $0.first },
+                    message(),
+                    options: options
+                )
+                
+            case .fail:
+                
+                XCTFail("Invalid assertion: \(kind.macroDisplayName)")
+                return
         }
         
         XCTAssertEqual(count, 0)
@@ -686,7 +984,7 @@ extension XCTestKitCase
     /// Asserts that the message of the specified assertion is evaluated only
     /// once when the assertion fails.
     /// - Parameters:
-    ///   - kind: The assertion to use.
+    ///   - kind: The assertion to test.
     ///   - useFloats: Whether to use floating-point numbers when testing for
     ///   equality with accuracy. Otherwise, integers will be used.
     internal func testMacroAssertionMessageEvalOnceOnFailure(
@@ -875,10 +1173,101 @@ extension XCTestKitCase
                     
                 case .noThrow:
                     
-                    let expr: () throws -> Int = { try TestError.throwError() }
+                    let expr: () throws -> Int = { throw TestError() }
                     
                     #XCTKAssertNoThrow(
                         try expr(),
+                        message()
+                    )
+                    
+                case .satisfyAll:
+                                    
+                    #XCTKAssertAllSatisfy(
+                        ["a", "b", "c"],
+                        { $0.isEmpty },
+                        message()
+                    )
+                    
+                case .satisfyAny:
+                    
+                    #XCTKAssertAnySatisfy(
+                        ["a", "b", "c"],
+                        { $0.isEmpty },
+                        message()
+                    )
+                    
+                case .satisfyNone:
+                    
+                    #XCTKAssertNoneSatisfy(
+                        ["a", "b", "c"],
+                        { !$0.isEmpty },
+                        message()
+                    )
+                    
+                case .satisfyAtLeast:
+                    
+                    #XCTKAssertSatisfy(
+                        ["a", "b", "c"],
+                        atLeast: 1,
+                        { $0.isEmpty },
+                        message()
+                    )
+                    
+                case .satisfyAtMost:
+                    
+                    #XCTKAssertSatisfy(
+                        ["a", "b", "c"],
+                        atMost: 1,
+                        { !$0.isEmpty },
+                        message()
+                    )
+                    
+                case .satisfyRange:
+                    
+                    #XCTKAssertSatisfy(
+                        ["a", "b", "c"],
+                        range: 1...3,
+                        { $0.isEmpty },
+                        message()
+                    )
+                    
+                case .exactly:
+                    
+                    #XCTKAssertExactly(
+                        ["a", "b", "c"],
+                        count: 1,
+                        { $0.isEmpty },
+                        message()
+                    )
+                    
+                case .exactlyOne:
+                    
+                    #XCTKAssertExactlyOne(
+                        ["a", "b", "c"],
+                        { $0.isEmpty },
+                        message()
+                    )
+                    
+                case .sorted:
+                    
+                    #XCTKAssertSorted(
+                        ["a", "b", "c"],
+                        by: { $0 > $1 },
+                        message()
+                    )
+                    
+                case .unique:
+                    
+                    #XCTKAssertUnique(
+                        ["a", "a", "a"],
+                        message()
+                    )
+                    
+                case .uniqueByKey:
+                    
+                    #XCTKAssertUnique(
+                        ["a", "a", "a"],
+                        by: { $0.first },
                         message()
                     )
             }

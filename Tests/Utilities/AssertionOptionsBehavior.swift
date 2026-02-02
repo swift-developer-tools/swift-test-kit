@@ -18,14 +18,13 @@ extension XCTestKitCase
     // MARK: - Functions
 
     /// Asserts that specified assertion behaves differently based on the
-    /// provided options.
+    /// given options.
     ///
-    /// - Note: This does nothing other than for the diff-based equality
-    /// assertion. The remaining assertions do not have diffs or output that
-    /// would be affected by the options. The options code path is validated
-    /// for all assertions as part of the error-throwing tests.
+    /// - Note: This tests only assertions with output that would be affected
+    /// by the options. Other assertions will fail. The options code path is
+    /// validated for all assertions as part of the error-throwing tests.
     ///
-    /// - Parameter kind: The assertion to use.
+    /// - Parameter kind: The assertion to test.
     internal func testFunctionAssertionOptionsBehavior(
         _ kind: AssertionKind
     )
@@ -58,6 +57,314 @@ extension XCTestKitCase
                     )
                 }
                 
+            case .satisfyAll:
+                
+                var options1    : XCTKOptions   = .init()
+                var options2    : XCTKOptions   = .init()
+                
+                options1.formatOptions.maxDiffs     = nil
+                options2.formatOptions.maxDiffs     = 1
+                
+                let collection  : [Int]             = [1, 2, 3, 4, 5]
+                let predicate   : (Int) -> Bool     = { $0 > 10 }
+                
+                body1 =
+                {
+                    XCTKAssertAllSatisfy(
+                        collection,
+                        predicate,
+                        options: options1
+                    )
+                }
+                
+                body2 =
+                {
+                    XCTKAssertAllSatisfy(
+                        collection,
+                        predicate,
+                        options: options2
+                    )
+                }
+                
+            case .satisfyAny:
+                
+                var options1    : XCTKOptions   = .init()
+                var options2    : XCTKOptions   = .init()
+                
+                options1.formatOptions.maxDiffs     = nil
+                options2.formatOptions.maxDiffs     = 1
+                
+                let collection: [Int] = [1, 2, 3, 4, 5]
+                
+                let predicate: (Int) throws -> Bool
+                    = { _ in throw TestError() }
+                
+                body1 =
+                {
+                    XCTKAssertAnySatisfy(
+                        collection,
+                        predicate,
+                        options: options1
+                    )
+                }
+                
+                body2 =
+                {
+                    XCTKAssertAnySatisfy(
+                        collection,
+                        predicate,
+                        options: options2
+                    )
+                }
+                
+            case .satisfyNone:
+                
+                var options1    : XCTKOptions   = .init()
+                var options2    : XCTKOptions   = .init()
+                
+                options1.formatOptions.maxDiffs     = nil
+                options2.formatOptions.maxDiffs     = 1
+                
+                let collection  : [Int]             = [1, 2, 3, 4, 5]
+                let predicate   : (Int) -> Bool     = { $0 < 10 }
+                
+                body1 =
+                {
+                    XCTKAssertNoneSatisfy(
+                        collection,
+                        predicate,
+                        options: options1
+                    )
+                }
+                
+                body2 =
+                {
+                    XCTKAssertNoneSatisfy(
+                        collection,
+                        predicate,
+                        options: options2
+                    )
+                }
+                
+            case .satisfyAtLeast:
+                
+                var options1    : XCTKOptions   = .init()
+                var options2    : XCTKOptions   = .init()
+                
+                options1.formatOptions.maxDiffs     = nil
+                options2.formatOptions.maxDiffs     = 1
+                
+                let collection: [Int] = [1, 2, 3, 4, 5]
+                
+                let predicate: (Int) throws -> Bool
+                    = { _ in throw TestError() }
+                
+                body1 =
+                {
+                    XCTKAssertSatisfy(
+                        collection,
+                        atLeast: 2,
+                        predicate,
+                        options: options1
+                    )
+                }
+                
+                body2 =
+                {
+                    XCTKAssertSatisfy(
+                        collection,
+                        atLeast: 2,
+                        predicate,
+                        options: options2
+                    )
+                }
+                
+            case .satisfyAtMost:
+                
+                var options1    : XCTKOptions   = .init()
+                var options2    : XCTKOptions   = .init()
+                
+                options1.formatOptions.maxDiffs     = nil
+                options2.formatOptions.maxDiffs     = 1
+                
+                let collection: [Int] = [1, 2, 3, 4, 5]
+                
+                let predicate: (Int) throws -> Bool
+                    = { _ in throw TestError() }
+                
+                body1 =
+                {
+                    XCTKAssertSatisfy(
+                        collection,
+                        atMost: 2,
+                        predicate,
+                        options: options1
+                    )
+                }
+                
+                body2 =
+                {
+                    XCTKAssertSatisfy(
+                        collection,
+                        atMost: 2,
+                        predicate,
+                        options: options2
+                    )
+                }
+                
+            case .satisfyRange:
+                
+                var options1    : XCTKOptions   = .init()
+                var options2    : XCTKOptions   = .init()
+                
+                options1.formatOptions.maxDiffs     = nil
+                options2.formatOptions.maxDiffs     = 1
+                
+                let collection: [Int] = [1, 2, 3, 4, 5]
+                
+                let predicate: (Int) throws -> Bool
+                    = { _ in throw TestError() }
+                
+                body1 =
+                {
+                    XCTKAssertSatisfy(
+                        collection,
+                        range: 1...3,
+                        predicate,
+                        options: options1
+                    )
+                }
+                
+                body2 =
+                {
+                    XCTKAssertSatisfy(
+                        collection,
+                        range: 1...3,
+                        predicate,
+                        options: options2
+                    )
+                }
+                
+            case .exactly:
+                
+                var options1    : XCTKOptions   = .init()
+                var options2    : XCTKOptions   = .init()
+                
+                options1.formatOptions.maxDiffs     = nil
+                options2.formatOptions.maxDiffs     = 1
+                
+                let collection: [Int] = [1, 2, 3, 4, 5]
+                
+                let predicate: (Int) throws -> Bool
+                    = { _ in throw TestError() }
+                
+                body1 =
+                {
+                    XCTKAssertExactly(
+                        collection,
+                        count: 2,
+                        predicate,
+                        options: options1
+                    )
+                }
+                
+                body2 =
+                {
+                    XCTKAssertExactly(
+                        collection,
+                        count: 5,
+                        predicate,
+                        options: options2
+                    )
+                }
+                
+            case .exactlyOne:
+                
+                var options1    : XCTKOptions   = .init()
+                var options2    : XCTKOptions   = .init()
+                
+                options1.formatOptions.maxDiffs     = nil
+                options2.formatOptions.maxDiffs     = 1
+                
+                let collection: [Int] = [1, 2, 3, 4, 5]
+                
+                let predicate: (Int) throws -> Bool
+                    = { _ in throw TestError() }
+                
+                body1 =
+                {
+                    XCTKAssertExactlyOne(
+                        collection,
+                        predicate,
+                        options: options1
+                    )
+                }
+                
+                body2 =
+                {
+                    XCTKAssertExactlyOne(
+                        collection,
+                        predicate,
+                        options: options2
+                    )
+                }
+                
+            case .unique:
+                
+                var options1    : XCTKOptions   = .init()
+                var options2    : XCTKOptions   = .init()
+                
+                options1.formatOptions.maxDiffs     = nil
+                options2.formatOptions.maxDiffs     = 1
+                
+                let collection: [Int] = [1, 1, 2, 2, 3, 3]
+                
+                body1 =
+                {
+                    XCTKAssertUnique(
+                        collection,
+                        options: options1
+                    )
+                }
+                
+                body2 =
+                {
+                    XCTKAssertUnique(
+                        collection,
+                        options: options2
+                    )
+                }
+                
+            case .uniqueByKey:
+                
+                var options1    : XCTKOptions   = .init()
+                var options2    : XCTKOptions   = .init()
+                
+                options1.formatOptions.maxDiffs     = nil
+                options2.formatOptions.maxDiffs     = 1
+                
+                let collection: [String] = ["a", "ab", "b", "bc", "c", "cd"]
+                
+                let predicate: (String) -> String.Element? = { $0.first }
+                
+                body1 =
+                {
+                    XCTKAssertUnique(
+                        collection,
+                        by:         predicate,
+                        options:    options1
+                    )
+                }
+                
+                body2 =
+                {
+                    XCTKAssertUnique(
+                        collection,
+                        by:         predicate,
+                        options:    options2
+                    )
+                }
+                
             case
                 .assert,
                 .notEqual,
@@ -76,8 +383,10 @@ extension XCTestKitCase
                 .false,
                 .fail,
                 .throwsError,
-                .noThrow:
+                .noThrow,
+                .sorted:
                 
+                XCTFail("Invalid assertion: \(kind.name)")
                 return
                 
         }
@@ -94,16 +403,14 @@ extension XCTestKitCase
 
     // MARK: - Macros
 
-    /// Asserts that specified macro assertion behaves differently based on the
+    /// Asserts that specified assertion behaves differently based on the
     /// given options.
     ///
-    /// - Note: This does nothing other than for boolean assertions and the
-    /// diff-based equality assertion. The remaining assertions do not have
-    /// diffs or decomposed expressions to output that would be affected by
-    /// the options. The options code path is validated for all assertions as
-    /// part of the error-throwing tests.
+    /// - Note: This tests only assertions with output that would be affected
+    /// by the options. Other assertions will fail. The options code path is
+    /// validated for all assertions as part of the error-throwing tests.
     ///
-    /// - Parameter kind: The assertion to use.
+    /// - Parameter kind: The assertion to test.
     internal func testMacroAssertionOptionsBehavior(
         _ kind: AssertionKind
     )
@@ -217,6 +524,314 @@ extension XCTestKitCase
                     )
                 }
                 
+            case .satisfyAll:
+                            
+                var options1    : XCTKOptions   = .init()
+                var options2    : XCTKOptions   = .init()
+                
+                options1.formatOptions.maxDiffs     = nil
+                options2.formatOptions.maxDiffs     = 1
+                
+                let collection  : [Int]             = [1, 2, 3, 4, 5]
+                let predicate   : (Int) -> Bool     = { $0 > 10 }
+                
+                body1 =
+                {
+                    #XCTKAssertAllSatisfy(
+                        collection,
+                        predicate,
+                        options: options1
+                    )
+                }
+                
+                body2 =
+                {
+                    #XCTKAssertAllSatisfy(
+                        collection,
+                        predicate,
+                        options: options2
+                    )
+                }
+                
+            case .satisfyAny:
+                
+                var options1    : XCTKOptions   = .init()
+                var options2    : XCTKOptions   = .init()
+                
+                options1.formatOptions.maxDiffs     = nil
+                options2.formatOptions.maxDiffs     = 1
+                
+                let collection: [Int] = [1, 2, 3, 4, 5]
+                
+                let predicate: (Int) throws -> Bool
+                    = { _ in throw TestError() }
+                
+                body1 =
+                {
+                    #XCTKAssertAnySatisfy(
+                        collection,
+                        predicate,
+                        options: options1
+                    )
+                }
+                
+                body2 =
+                {
+                    #XCTKAssertAnySatisfy(
+                        collection,
+                        predicate,
+                        options: options2
+                    )
+                }
+                
+            case .satisfyNone:
+                
+                var options1    : XCTKOptions   = .init()
+                var options2    : XCTKOptions   = .init()
+                
+                options1.formatOptions.maxDiffs     = nil
+                options2.formatOptions.maxDiffs     = 1
+                
+                let collection  : [Int]             = [1, 2, 3, 4, 5]
+                let predicate   : (Int) -> Bool     = { $0 < 10 }
+                
+                body1 =
+                {
+                    #XCTKAssertNoneSatisfy(
+                        collection,
+                        predicate,
+                        options: options1
+                    )
+                }
+                
+                body2 =
+                {
+                    #XCTKAssertNoneSatisfy(
+                        collection,
+                        predicate,
+                        options: options2
+                    )
+                }
+                
+            case .satisfyAtLeast:
+                
+                var options1    : XCTKOptions   = .init()
+                var options2    : XCTKOptions   = .init()
+                
+                options1.formatOptions.maxDiffs     = nil
+                options2.formatOptions.maxDiffs     = 1
+                
+                let collection: [Int] = [1, 2, 3, 4, 5]
+                
+                let predicate: (Int) throws -> Bool
+                    = { _ in throw TestError() }
+                
+                body1 =
+                {
+                    #XCTKAssertSatisfy(
+                        collection,
+                        atLeast: 2,
+                        predicate,
+                        options: options1
+                    )
+                }
+                
+                body2 =
+                {
+                    #XCTKAssertSatisfy(
+                        collection,
+                        atLeast: 2,
+                        predicate,
+                        options: options2
+                    )
+                }
+                
+            case .satisfyAtMost:
+                
+                var options1    : XCTKOptions   = .init()
+                var options2    : XCTKOptions   = .init()
+                
+                options1.formatOptions.maxDiffs     = nil
+                options2.formatOptions.maxDiffs     = 1
+                
+                let collection: [Int] = [1, 2, 3, 4, 5]
+                
+                let predicate: (Int) throws -> Bool
+                    = { _ in throw TestError() }
+                
+                body1 =
+                {
+                    #XCTKAssertSatisfy(
+                        collection,
+                        atMost: 2,
+                        predicate,
+                        options: options1
+                    )
+                }
+                
+                body2 =
+                {
+                    #XCTKAssertSatisfy(
+                        collection,
+                        atMost: 2,
+                        predicate,
+                        options: options2
+                    )
+                }
+                
+            case .satisfyRange:
+                
+                var options1    : XCTKOptions   = .init()
+                var options2    : XCTKOptions   = .init()
+                
+                options1.formatOptions.maxDiffs     = nil
+                options2.formatOptions.maxDiffs     = 1
+                
+                let collection: [Int] = [1, 2, 3, 4, 5]
+                
+                let predicate: (Int) throws -> Bool
+                    = { _ in throw TestError() }
+                
+                body1 =
+                {
+                    #XCTKAssertSatisfy(
+                        collection,
+                        range: 1...3,
+                        predicate,
+                        options: options1
+                    )
+                }
+                
+                body2 =
+                {
+                    #XCTKAssertSatisfy(
+                        collection,
+                        range: 1...3,
+                        predicate,
+                        options: options2
+                    )
+                }
+                
+            case .exactly:
+                
+                var options1    : XCTKOptions   = .init()
+                var options2    : XCTKOptions   = .init()
+                
+                options1.formatOptions.maxDiffs     = nil
+                options2.formatOptions.maxDiffs     = 1
+                
+                let collection: [Int] = [1, 2, 3, 4, 5]
+                
+                let predicate: (Int) throws -> Bool
+                    = { _ in throw TestError() }
+                
+                body1 =
+                {
+                    #XCTKAssertExactly(
+                        collection,
+                        count: 2,
+                        predicate,
+                        options: options1
+                    )
+                }
+                
+                body2 =
+                {
+                    #XCTKAssertExactly(
+                        collection,
+                        count: 5,
+                        predicate,
+                        options: options2
+                    )
+                }
+                
+            case .exactlyOne:
+                
+                var options1    : XCTKOptions   = .init()
+                var options2    : XCTKOptions   = .init()
+                
+                options1.formatOptions.maxDiffs     = nil
+                options2.formatOptions.maxDiffs     = 1
+                
+                let collection: [Int] = [1, 2, 3, 4, 5]
+                
+                let predicate: (Int) throws -> Bool
+                    = { _ in throw TestError() }
+                
+                body1 =
+                {
+                    #XCTKAssertExactlyOne(
+                        collection,
+                        predicate,
+                        options: options1
+                    )
+                }
+                
+                body2 =
+                {
+                    #XCTKAssertExactlyOne(
+                        collection,
+                        predicate,
+                        options: options2
+                    )
+                }
+                
+            case .unique:
+                
+                var options1    : XCTKOptions   = .init()
+                var options2    : XCTKOptions   = .init()
+                
+                options1.formatOptions.maxDiffs     = nil
+                options2.formatOptions.maxDiffs     = 1
+                
+                let collection: [Int] = [1, 1, 2, 2, 3, 3]
+                
+                body1 =
+                {
+                    #XCTKAssertUnique(
+                        collection,
+                        options: options1
+                    )
+                }
+                
+                body2 =
+                {
+                    #XCTKAssertUnique(
+                        collection,
+                        options: options2
+                    )
+                }
+                
+            case .uniqueByKey:
+                
+                var options1    : XCTKOptions   = .init()
+                var options2    : XCTKOptions   = .init()
+                
+                options1.formatOptions.maxDiffs     = nil
+                options2.formatOptions.maxDiffs     = 1
+                
+                let collection: [String] = ["a", "ab", "b", "bc", "c", "cd"]
+                
+                let predicate: (String) -> String.Element? = { $0.first }
+                
+                body1 =
+                {
+                    #XCTKAssertUnique(
+                        collection,
+                        by:         predicate,
+                        options:    options1
+                    )
+                }
+                
+                body2 =
+                {
+                    #XCTKAssertUnique(
+                        collection,
+                        by:         predicate,
+                        options:    options2
+                    )
+                }
+                
             case
                 .notEqual,
                 .equalWithAccuracy,
@@ -232,8 +847,10 @@ extension XCTestKitCase
                 .unwrap,
                 .fail,
                 .throwsError,
-                .noThrow:
+                .noThrow,
+                .sorted:
                 
+                XCTFail("Invalid assertion: \(kind.macroDisplayName)")
                 return
                 
         }

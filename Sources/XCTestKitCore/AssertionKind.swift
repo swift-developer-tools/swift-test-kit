@@ -16,7 +16,7 @@
 //
 //===----------------------------------------------------------------------===//
 
-/// The kind of an assertion.
+/// The kind of assertion.
 public enum AssertionKind: Equatable, Sendable
 {
     case assert
@@ -38,6 +38,17 @@ public enum AssertionKind: Equatable, Sendable
     case fail
     case throwsError
     case noThrow
+    case satisfyAll
+    case satisfyAny
+    case satisfyNone
+    case satisfyAtLeast
+    case satisfyAtMost
+    case satisfyRange
+    case exactly
+    case exactlyOne
+    case sorted
+    case unique
+    case uniqueByKey
     
     
     
@@ -57,14 +68,25 @@ public enum AssertionKind: Equatable, Sendable
             case .greaterThanOrEqual    : return "XCTKAssertGreaterThanOrEqual"
             case .lessThan              : return "XCTKAssertLessThan"
             case .lessThanOrEqual       : return "XCTKAssertLessThanOrEqual"
-            case .nil                 : return "XCTKAssertNil"
+            case .nil                   : return "XCTKAssertNil"
             case .notNil                : return "XCTKAssertNotNil"
             case .unwrap                : return "XCTKUnwrap"
-            case .true                : return "XCTKAssertTrue"
-            case .false               : return "XCTKAssertFalse"
+            case .true                  : return "XCTKAssertTrue"
+            case .false                 : return "XCTKAssertFalse"
             case .throwsError           : return "XCTKAssertThrowsError"
             case .noThrow               : return "XCTKAssertNoThrow"
             case .fail                  : return "XCTKFail"
+            case .satisfyAll            : return "XCTKAssertAllSatisfy"
+            case .satisfyAny            : return "XCTKAssertAnySatisfy"
+            case .satisfyNone           : return "XCTKAssertNoneSatisfy"
+            case .satisfyAtLeast        : return "XCTKAssertSatisfy"
+            case .satisfyAtMost         : return "XCTKAssertSatisfy"
+            case .satisfyRange          : return "XCTKAssertSatisfy"
+            case .exactly               : return "XCTKAssertExactly"
+            case .exactlyOne            : return "XCTKAssertExactlyOne"
+            case .sorted                : return "XCTKAssertSorted"
+            case .unique                : return "XCTKAssertUnique"
+            case .uniqueByKey           : return "XCTKAssertUnique"
         }
     }
     

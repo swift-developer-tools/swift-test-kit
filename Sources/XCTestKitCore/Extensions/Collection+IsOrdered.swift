@@ -7,5 +7,14 @@
 //
 //===----------------------------------------------------------------------===//
 
-/// An error used to test assertions that accept a throwing expression.
-internal struct TestError: Error { }
+public extension Collection
+{
+    /// Whether the collection is ordered.
+    var isOrdered: Bool
+    {
+        let mirror = Mirror(reflecting: self)
+        
+        return mirror.displayStyle != .dictionary
+            && mirror.displayStyle != .set
+    }
+}

@@ -742,3 +742,400 @@ public func XCTKFail(
         line:   line
     )
 }
+
+
+
+// MARK: - Predicate
+
+/// Asserts that all elements of the given collection satisfy the given
+/// predicate.
+/// - Parameters:
+///   - collection: The collection to evaluate.
+///   - predicate: A closure that returns `true` if the element represents a
+///   match. Otherwise, it returns `false` or throws an error.
+///   - message: An optional description of a failure.
+///   - file: The file where the failure occurs. The default value is the
+///   filename of the test case in which this function was called.
+///   - line: The line where the failure occurs. The default value is the line
+///   number where this function was called.
+///   - options: The options for testing. The default value is `nil`, which
+///   falls back to using global options.
+public func XCTKAssertAllSatisfy<C>(
+    _ collection    : @autoclosure () throws -> C,
+    _ predicate     : (C.Element) throws -> Bool,
+    _ message       : @autoclosure () -> String     = "",
+    file            : StaticString                  = #filePath,
+    line            : UInt                          = #line,
+    options         : XCTKOptions?                  = nil
+) where C : Collection
+{
+    evaluateXCTKAssertAllSatisfy(
+        captureKind:    .none,
+        collection:     collection,
+        predicate:      predicate,
+        message:        message,
+        file:           file,
+        line:           line,
+        options:        options
+    )
+}
+
+
+
+/// Asserts that at least one element of the given collection satisfies the
+/// given predicate.
+/// - Parameters:
+///   - collection: The collection to evaluate.
+///   - predicate: A closure that returns `true` if the element represents a
+///   match. Otherwise, it returns `false` or throws an error.
+///   - message: An optional description of a failure.
+///   - file: The file where the failure occurs. The default value is the
+///   filename of the test case in which this function was called.
+///   - line: The line where the failure occurs. The default value is the line
+///   number where this function was called.
+///   - options: The options for testing. The default value is `nil`, which
+///   falls back to using global options.
+public func XCTKAssertAnySatisfy<C>(
+    _ collection    : @autoclosure () throws -> C,
+    _ predicate     : (C.Element) throws -> Bool,
+    _ message       : @autoclosure () -> String     = "",
+    file            : StaticString                  = #filePath,
+    line            : UInt                          = #line,
+    options         : XCTKOptions?                  = nil
+) where C : Collection
+{
+    evaluateXCTKAssertAnySatisfy(
+        captureKind:    .none,
+        collection:     collection,
+        predicate:      predicate,
+        message:        message,
+        file:           file,
+        line:           line,
+        options:        options
+    )
+}
+
+
+
+/// Asserts that no elements of the given collection satisfy the given
+/// predicate.
+/// - Parameters:
+///   - collection: The collection to evaluate.
+///   - predicate: A closure that returns `true` if the element represents a
+///   match. Otherwise, it returns `false` or throws an error.
+///   - message: An optional description of a failure.
+///   - file: The file where the failure occurs. The default value is the
+///   filename of the test case in which this function was called.
+///   - line: The line where the failure occurs. The default value is the line
+///   number where this function was called.
+///   - options: The options for testing. The default value is `nil`, which
+///   falls back to using global options.
+public func XCTKAssertNoneSatisfy<C>(
+    _ collection    : @autoclosure () throws -> C,
+    _ predicate     : (C.Element) throws -> Bool,
+    _ message       : @autoclosure () -> String     = "",
+    file            : StaticString                  = #filePath,
+    line            : UInt                          = #line,
+    options         : XCTKOptions?                  = nil
+) where C : Collection
+{
+    evaluateXCTKAssertNoneSatisfy(
+        captureKind:    .none,
+        collection:     collection,
+        predicate:      predicate,
+        message:        message,
+        file:           file,
+        line:           line,
+        options:        options
+    )
+}
+
+
+
+/// Asserts that at least the specified number of elements of the given
+/// collection satisfy the given predicate.
+/// - Parameters:
+///   - collection: The collection to evaluate.
+///   - atLeast: The minimum number of elements of the collection that must
+///   satisfy the predicate.
+///   - predicate: A closure that returns `true` if the element represents a
+///   match. Otherwise, it returns `false` or throws an error.
+///   - message: An optional description of a failure.
+///   - file: The file where the failure occurs. The default value is the
+///   filename of the test case in which this function was called.
+///   - line: The line where the failure occurs. The default value is the line
+///   number where this function was called.
+///   - options: The options for testing. The default value is `nil`, which
+///   falls back to using global options.
+public func XCTKAssertSatisfy<C>(
+    _ collection    : @autoclosure () throws -> C,
+    atLeast         : Int,
+    _ predicate     : (C.Element) throws -> Bool,
+    _ message       : @autoclosure () -> String     = "",
+    file            : StaticString                  = #filePath,
+    line            : UInt                          = #line,
+    options         : XCTKOptions?                  = nil
+) where C : Collection
+{
+    evaluateXCTKAssertSatisfy(
+        captureKind:    .none,
+        collection:     collection,
+        atLeast:        atLeast,
+        predicate:      predicate,
+        message:        message,
+        file:           file,
+        line:           line,
+        options:        options
+    )
+}
+
+
+
+/// Asserts that up to the specified number of elements of the given collection
+/// satisfy the given predicate.
+/// - Parameters:
+///   - collection: The collection to evaluate.
+///   - atMost: The maximum number of elements of the collection that must
+///   satisfy the predicate.
+///   - predicate: A closure that returns `true` if the element represents a
+///   match. Otherwise, it returns `false` or throws an error.
+///   - message: An optional description of a failure.
+///   - file: The file where the failure occurs. The default value is the
+///   filename of the test case in which this function was called.
+///   - line: The line where the failure occurs. The default value is the line
+///   number where this function was called.
+///   - options: The options for testing. The default value is `nil`, which
+///   falls back to using global options.
+public func XCTKAssertSatisfy<C>(
+    _ collection    : @autoclosure () throws -> C,
+    atMost          : Int,
+    _ predicate     : (C.Element) throws -> Bool,
+    _ message       : @autoclosure () -> String     = "",
+    file            : StaticString                  = #filePath,
+    line            : UInt                          = #line,
+    options         : XCTKOptions?                  = nil
+) where C : Collection
+{    
+    evaluateXCTKAssertSatisfy(
+        captureKind:    .none,
+        collection:     collection,
+        atMost:         atMost,
+        predicate:      predicate,
+        message:        message,
+        file:           file,
+        line:           line,
+        options:        options
+    )
+}
+
+
+
+/// Asserts that the number of elements of the given collection that satisfy
+/// the given predicate is within the specified range.
+/// - Parameters:
+///   - collection: The collection to evaluate.
+///   - range: The range within which the number of matching elements must fall.
+///   - predicate: A closure that returns `true` if the element represents a
+///   match. Otherwise, it returns `false` or throws an error.
+///   - message: An optional description of a failure.
+///   - file: The file where the failure occurs. The default value is the
+///   filename of the test case in which this function was called.
+///   - line: The line where the failure occurs. The default value is the line
+///   number where this function was called.
+///   - options: The options for testing. The default value is `nil`, which
+///   falls back to using global options.
+public func XCTKAssertSatisfy<C>(
+    _ collection    : @autoclosure () throws -> C,
+    range           : ClosedRange<Int>,
+    _ predicate     : (C.Element) throws -> Bool,
+    _ message       : @autoclosure () -> String     = "",
+    file            : StaticString                  = #filePath,
+    line            : UInt                          = #line,
+    options         : XCTKOptions?                  = nil
+) where C : Collection
+{    
+    evaluateXCTKAssertSatisfy(
+        captureKind:    .none,
+        collection:     collection,
+        range:          range,
+        predicate:      predicate,
+        message:        message,
+        file:           file,
+        line:           line,
+        options:        options
+    )
+}
+
+
+
+/// Asserts that exactly the specified number of elements of the given
+/// collection satisfy the given predicate.
+/// - Parameters:
+///   - collection: The collection to evaluate.
+///   - count: The exact number of elements of the collection that must satisfy
+///   the predicate.
+///   - predicate: A closure that returns `true` if the element represents a
+///   match. Otherwise, it returns `false` or throws an error.
+///   - message: An optional description of a failure.
+///   - file: The file where the failure occurs. The default value is the
+///   filename of the test case in which this function was called.
+///   - line: The line where the failure occurs. The default value is the line
+///   number where this function was called.
+///   - options: The options for testing. The default value is `nil`, which
+///   falls back to using global options.
+public func XCTKAssertExactly<C>(
+    _ collection    : @autoclosure () throws -> C,
+    count           : Int,
+    _ predicate     : (C.Element) throws -> Bool,
+    _ message       : @autoclosure () -> String     = "",
+    file            : StaticString                  = #filePath,
+    line            : UInt                          = #line,
+    options         : XCTKOptions?                  = nil
+) where C : Collection
+{    
+    evaluateXCTKAssertExactly(
+        captureKind:    .none,
+        collection:     collection,
+        count:          count,
+        predicate:      predicate,
+        message:        message,
+        file:           file,
+        line:           line,
+        options:        options
+    )
+}
+
+
+
+/// Asserts that exactly one element of the given collection satisfies the
+/// given predicate.
+/// - Parameters:
+///   - collection: The collection to evaluate.
+///   - predicate: A closure that returns `true` if the element represents a
+///   match. Otherwise, it returns `false` or throws an error.
+///   - message: An optional description of a failure.
+///   - file: The file where the failure occurs. The default value is the
+///   filename of the test case in which this function was called.
+///   - line: The line where the failure occurs. The default value is the line
+///   number where this function was called.
+///   - options: The options for testing. The default value is `nil`, which
+///   falls back to using global options.
+public func XCTKAssertExactlyOne<C>(
+    _ collection    : @autoclosure () throws -> C,
+    _ predicate     : (C.Element) throws -> Bool,
+    _ message       : @autoclosure () -> String     = "",
+    file            : StaticString                  = #filePath,
+    line            : UInt                          = #line,
+    options         : XCTKOptions?                  = nil
+) where C : Collection
+{
+    evaluateXCTKAssertExactlyOne(
+        captureKind:    .none,
+        collection:     collection,
+        predicate:      predicate,
+        message:        message,
+        file:           file,
+        line:           line,
+        options:        options
+    )
+}
+
+
+
+/// Asserts that the given collection is sorted by the given predicate.
+/// - Parameters:
+///   - collection: The collection to evaluate.
+///   - predicate: A closure that returns `true` if its first argument should
+///   be ordered before its second argument. Otherwise, it returns `false` or
+///   throws an error.
+///   - message: An optional description of a failure.
+///   - file: The file where the failure occurs. The default value is the
+///   filename of the test case in which this function was called.
+///   - line: The line where the failure occurs. The default value is the line
+///   number where this function was called.
+///   - options: The options for testing. The default value is `nil`, which
+///   falls back to using global options.
+public func XCTKAssertSorted<C>(
+    _ collection    : @autoclosure () throws -> C,
+    by predicate    : (C.Element, C.Element) throws -> Bool,
+    _ message       : @autoclosure () -> String             = "",
+    file            : StaticString                          = #filePath,
+    line            : UInt                                  = #line,
+    options         : XCTKOptions?                          = nil
+) where C : Collection
+{
+    evaluateXCTKAssertSorted(
+        captureKind:    .none,
+        collection:     collection,
+        predicate:      predicate,
+        message:        message,
+        file:           file,
+        line:           line,
+        options:        options
+    )
+}
+
+
+
+/// Asserts that each element of the given collection is unique.
+/// - Parameters:
+///   - collection: The collection to evaluate.
+///   - message: An optional description of a failure.
+///   - file: The file where the failure occurs. The default value is the
+///   filename of the test case in which this function was called.
+///   - line: The line where the failure occurs. The default value is the line
+///   number where this function was called.
+///   - options: The options for testing. The default value is `nil`, which
+///   falls back to using global options.
+public func XCTKAssertUnique<C>(
+    _ collection    : @autoclosure () throws -> C,
+    _ message       : @autoclosure () -> String     = "",
+    file            : StaticString                  = #filePath,
+    line            : UInt                          = #line,
+    options         : XCTKOptions?                  = nil
+) where C : Collection, C.Element : Hashable
+{
+    evaluateXCTKAssertUnique(
+        captureKind:    .none,
+        collection:     collection,
+        message:        message,
+        file:           file,
+        line:           line,
+        options:        options
+    )
+}
+
+
+
+/// Asserts that each element of the given collection is unique, based on a
+/// key extracted by the given predicate.
+/// - Parameters:
+///   - collection: The collection to evaluate.
+///   - predicate: A closure that extracts a key from an element of the
+///   collection. Elements are duplicates if they produce equal keys.
+///   - message: An optional description of a failure.
+///   - file: The file where the failure occurs. The default value is the
+///   filename of the test case in which this function was called.
+///   - line: The line where the failure occurs. The default value is the line
+///   number where this function was called.
+///   - options: The options for testing. The default value is `nil`, which
+///   falls back to using global options.
+public func XCTKAssertUnique<C, K>(
+    _ collection    : @autoclosure () throws -> C,
+    by predicate    : (C.Element) throws -> K,
+    _ message       : @autoclosure () -> String     = "",
+    file            : StaticString                  = #filePath,
+    line            : UInt                          = #line,
+    options         : XCTKOptions?                  = nil
+) where C : Collection, K : Hashable
+{
+    evaluateXCTKAssertUnique(
+        captureKind:    .none,
+        collection:     collection,
+        predicate:      predicate,
+        message:        message,
+        file:           file,
+        line:           line,
+        options:        options
+    )
+}

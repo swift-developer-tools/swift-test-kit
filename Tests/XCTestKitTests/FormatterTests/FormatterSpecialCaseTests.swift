@@ -48,6 +48,8 @@ internal final class FormatterSpecialCaseTests: XCTestKitCase
             ]
         )
         
+        let actual: String = Formatter.formatDiff(node)
+        
         let expected: String =
         """
         \(typeName) differs at:
@@ -58,7 +60,7 @@ internal final class FormatterSpecialCaseTests: XCTestKitCase
                 \(LK.changed.rawValue)character 2 ("e" → "a")
         """
         
-        XCTKAssertEqual(Formatter.format(node), expected)
+        XCTKAssertEqual(expected, actual)
     }
     
     
@@ -97,6 +99,8 @@ internal final class FormatterSpecialCaseTests: XCTestKitCase
             ]
         )
         
+        let actual: String = Formatter.formatDiff(node)
+        
         let expected: String =
         """
         \(typeName) differs at:
@@ -108,7 +112,7 @@ internal final class FormatterSpecialCaseTests: XCTestKitCase
                 \(LK.changed.rawValue)character 4 ("d" → "Y")
         """
         
-        XCTKAssertEqual(Formatter.format(node), expected)
+        XCTKAssertEqual(expected, actual)
     }
     
     
@@ -140,6 +144,8 @@ internal final class FormatterSpecialCaseTests: XCTestKitCase
             ]
         )
         
+        let actual: String = Formatter.formatDiff(node)
+        
         let expected: String =
         """
         \(typeName) differs at:
@@ -150,7 +156,7 @@ internal final class FormatterSpecialCaseTests: XCTestKitCase
                 \(LK.missing.rawValue)characters 3-4 "ll"
         """
         
-        XCTKAssertEqual(Formatter.format(node), expected)
+        XCTKAssertEqual(expected, actual)
     }
     
     
@@ -182,6 +188,8 @@ internal final class FormatterSpecialCaseTests: XCTestKitCase
             ]
         )
         
+        let actual: String = Formatter.formatDiff(node)
+        
         let expected: String =
         """
         \(typeName) differs at:
@@ -192,7 +200,7 @@ internal final class FormatterSpecialCaseTests: XCTestKitCase
                 \(LK.missing.rawValue)characters 4-6 "def"
         """
         
-        XCTKAssertEqual(Formatter.format(node), expected)
+        XCTKAssertEqual(expected, actual)
     }
     
     
@@ -235,6 +243,8 @@ internal final class FormatterSpecialCaseTests: XCTestKitCase
             ]
         )
         
+        let actual: String = Formatter.formatDiff(node)
+        
         let expected: String =
         """
         \(typeName) differs at:
@@ -247,7 +257,7 @@ internal final class FormatterSpecialCaseTests: XCTestKitCase
                 \(LK.unexpected.rawValue)2 characters at position 5 "YZ"
         """
         
-        XCTKAssertEqual(Formatter.format(node), expected)
+        XCTKAssertEqual(expected, actual)
     }
     
     
@@ -272,6 +282,8 @@ internal final class FormatterSpecialCaseTests: XCTestKitCase
             ]
         )
         
+        let actual: String = Formatter.formatDiff(node)
+        
         let expected: String =
         """
         \(typeName) differs at:
@@ -281,7 +293,7 @@ internal final class FormatterSpecialCaseTests: XCTestKitCase
                 \(LK.actual.rawValue)"xyz"
         """
         
-        XCTKAssertEqual(Formatter.format(node), expected)
+        XCTKAssertEqual(expected, actual)
     }
     
     
@@ -328,6 +340,8 @@ internal final class FormatterSpecialCaseTests: XCTestKitCase
             ]
         )
         
+        let actual: String = Formatter.formatDiff(node)
+        
         let expected: String =
         """
         \(typeName) differs at:
@@ -343,7 +357,7 @@ internal final class FormatterSpecialCaseTests: XCTestKitCase
                 \(LK.changed.rawValue)character 3 ("c" → "Y")
         """
         
-        XCTKAssertEqual(Formatter.format(node), expected)
+        XCTKAssertEqual(expected, actual)
     }
     
     
@@ -368,6 +382,8 @@ internal final class FormatterSpecialCaseTests: XCTestKitCase
             ]
         )
         
+        let actual: String = Formatter.formatDiff(node)
+        
         let expected: String =
         """
         \(typeName) differs at:
@@ -377,7 +393,7 @@ internal final class FormatterSpecialCaseTests: XCTestKitCase
                 \(LK.actual.rawValue)"ABC"
         """
         
-        XCTKAssertEqual(Formatter.format(node), expected)
+        XCTKAssertEqual(expected, actual)
     }
     
     
@@ -408,6 +424,8 @@ internal final class FormatterSpecialCaseTests: XCTestKitCase
             ]
         )
         
+        let actual: String = Formatter.formatDiff(node)
+        
         let expected: String =
         """
         \(typeName) differs:
@@ -416,7 +434,7 @@ internal final class FormatterSpecialCaseTests: XCTestKitCase
             \(LK.missing.rawValue)"c"
         """
         
-        XCTKAssertEqual(Formatter.format(node), expected)
+        XCTKAssertEqual(expected, actual)
     }
     
     
@@ -445,6 +463,8 @@ internal final class FormatterSpecialCaseTests: XCTestKitCase
             ]
         )
         
+        let actual: String = Formatter.formatDiff(node)
+        
         let expected: String =
         """
         \(typeName) differs:
@@ -453,7 +473,7 @@ internal final class FormatterSpecialCaseTests: XCTestKitCase
             \(LK.unexpected.rawValue)"c"
         """
         
-        XCTKAssertEqual(Formatter.format(node), expected)
+        XCTKAssertEqual(expected, actual)
     }
     
     
@@ -482,6 +502,8 @@ internal final class FormatterSpecialCaseTests: XCTestKitCase
             ]
         )
         
+        let actual: String = Formatter.formatDiff(node)
+        
         let expected: String =
         """
         \(typeName) differs:
@@ -490,7 +512,7 @@ internal final class FormatterSpecialCaseTests: XCTestKitCase
             \(LK.unexpected.rawValue)"c"
         """
         
-        XCTKAssertEqual(Formatter.format(node), expected)
+        XCTKAssertEqual(expected, actual)
     }
     
     
@@ -524,6 +546,8 @@ internal final class FormatterSpecialCaseTests: XCTestKitCase
             ]
         )
         
+        let actual: String = Formatter.formatDiff(node)
+        
         let expected: String =
         """
         \(typeName) differs:
@@ -533,7 +557,7 @@ internal final class FormatterSpecialCaseTests: XCTestKitCase
             \(LK.unexpected.rawValue)4
         """
         
-        XCTKAssertEqual(Formatter.format(node), expected)
+        XCTKAssertEqual(expected, actual)
     }
     
     
@@ -575,6 +599,8 @@ internal final class FormatterSpecialCaseTests: XCTestKitCase
             ]
         )
         
+        let actual: String = Formatter.formatDiff(node)
+        
         let expected: String =
         """
         \(typeName) differs at:
@@ -584,6 +610,6 @@ internal final class FormatterSpecialCaseTests: XCTestKitCase
                 \(LK.unexpected.rawValue)"c"
         """
         
-        XCTKAssertEqual(Formatter.format(node), expected)
+        XCTKAssertEqual(expected, actual)
     }
 }

@@ -513,3 +513,274 @@ internal func _XCTKFailMacro(
         line:   line
     )
 }
+
+
+
+// MARK: - Predicate
+
+internal func _XCTKAssertAllSatisfyMacro<C>(
+    collection      : @autoclosure () throws -> C,
+    predicate       : (C.Element) throws -> Bool,
+    collectionText  : String,
+    predicateText   : String,
+    message         : @autoclosure () -> String,
+    file            : StaticString,
+    line            : UInt,
+    options         : XCTKOptions?
+) where C : Collection
+{
+    evaluateXCTKAssertAllSatisfy(
+        captureKind:    .double(collectionText, predicateText),
+        collection:     collection,
+        predicate:      predicate,
+        message:        message,
+        file:           file,
+        line:           line,
+        options:        options
+    )
+}
+
+
+
+internal func _XCTKAssertAnySatisfyMacro<C>(
+    collection      : @autoclosure () throws -> C,
+    predicate       : (C.Element) throws -> Bool,
+    collectionText  : String,
+    predicateText   : String,
+    message         : @autoclosure () -> String,
+    file            : StaticString,
+    line            : UInt,
+    options         : XCTKOptions?
+) where C : Collection
+{
+    evaluateXCTKAssertAnySatisfy(
+        captureKind:    .double(collectionText, predicateText),
+        collection:     collection,
+        predicate:      predicate,
+        message:        message,
+        file:           file,
+        line:           line,
+        options:        options
+    )
+}
+
+
+
+internal func _XCTKAssertNoneSatisfyMacro<C>(
+    collection      : @autoclosure () throws -> C,
+    predicate       : (C.Element) throws -> Bool,
+    collectionText  : String,
+    predicateText   : String,
+    message         : @autoclosure () -> String,
+    file            : StaticString,
+    line            : UInt,
+    options         : XCTKOptions?
+) where C : Collection
+{
+    evaluateXCTKAssertNoneSatisfy(
+        captureKind:    .double(collectionText, predicateText),
+        collection:     collection,
+        predicate:      predicate,
+        message:        message,
+        file:           file,
+        line:           line,
+        options:        options
+    )
+}
+
+
+
+internal func _XCTKAssertSatisfyMacro<C>(
+    collection      : @autoclosure () throws -> C,
+    atLeast         : Int,
+    predicate       : (C.Element) throws -> Bool,
+    collectionText  : String,
+    predicateText   : String,
+    message         : @autoclosure () -> String,
+    file            : StaticString,
+    line            : UInt,
+    options         : XCTKOptions?
+) where C : Collection
+{
+    evaluateXCTKAssertSatisfy(
+        captureKind:    .double(collectionText, predicateText),
+        collection:     collection,
+        atLeast:        atLeast,
+        predicate:      predicate,
+        message:        message,
+        file:           file,
+        line:           line,
+        options:        options
+    )
+}
+
+
+
+internal func _XCTKAssertSatisfyMacro<C>(
+    collection      : @autoclosure () throws -> C,
+    atMost          : Int,
+    predicate       : (C.Element) throws -> Bool,
+    collectionText  : String,
+    predicateText   : String,
+    message         : @autoclosure () -> String,
+    file            : StaticString,
+    line            : UInt,
+    options         : XCTKOptions?
+) where C : Collection
+{
+    evaluateXCTKAssertSatisfy(
+        captureKind:    .double(collectionText, predicateText),
+        collection:     collection,
+        atMost:         atMost,
+        predicate:      predicate,
+        message:        message,
+        file:           file,
+        line:           line,
+        options:        options
+    )
+}
+
+
+
+internal func _XCTKAssertSatisfyMacro<C>(
+    collection      : @autoclosure () throws -> C,
+    range           : ClosedRange<Int>,
+    predicate       : (C.Element) throws -> Bool,
+    collectionText  : String,
+    predicateText   : String,
+    message         : @autoclosure () -> String,
+    file            : StaticString,
+    line            : UInt,
+    options         : XCTKOptions?
+) where C : Collection
+{
+    evaluateXCTKAssertSatisfy(
+        captureKind:    .double(collectionText, predicateText),
+        collection:     collection,
+        range:          range,
+        predicate:      predicate,
+        message:        message,
+        file:           file,
+        line:           line,
+        options:        options
+    )
+}
+
+
+
+internal func _XCTKAssertExactlyMacro<C>(
+    collection      : @autoclosure () throws -> C,
+    count           : Int,
+    predicate       : (C.Element) throws -> Bool,
+    collectionText  : String,
+    predicateText   : String,
+    message         : @autoclosure () -> String,
+    file            : StaticString,
+    line            : UInt,
+    options         : XCTKOptions?
+) where C : Collection
+{
+    evaluateXCTKAssertExactly(
+        captureKind:    .double(collectionText, predicateText),
+        collection:     collection,
+        count:          count,
+        predicate:      predicate,
+        message:        message,
+        file:           file,
+        line:           line,
+        options:        options
+    )
+}
+
+
+
+internal func _XCTKAssertExactlyOneMacro<C>(
+    collection      : @autoclosure () throws -> C,
+    predicate       : (C.Element) throws -> Bool,
+    collectionText  : String,
+    predicateText   : String,
+    message         : @autoclosure () -> String,
+    file            : StaticString,
+    line            : UInt,
+    options         : XCTKOptions?
+) where C : Collection
+{
+    evaluateXCTKAssertExactlyOne(
+        captureKind:    .double(collectionText, predicateText),
+        collection:     collection,
+        predicate:      predicate,
+        message:        message,
+        file:           file,
+        line:           line,
+        options:        options
+    )
+}
+
+
+
+internal func _XCTKAssertSortedMacro<C>(
+    collection      : @autoclosure () throws -> C,
+    predicate       : (C.Element, C.Element) throws -> Bool,
+    collectionText  : String,
+    predicateText   : String,
+    message         : @autoclosure () -> String,
+    file            : StaticString,
+    line            : UInt,
+    options         : XCTKOptions?        
+) where C : Collection
+{
+    evaluateXCTKAssertSorted(
+        captureKind:    .double(collectionText, predicateText),
+        collection:     collection,
+        predicate:      predicate,
+        message:        message,
+        file:           file,
+        line:           line,
+        options:        options
+    )
+}
+
+
+
+internal func _XCTKAssertUniqueMacro<C>(
+    collection      : @autoclosure () throws -> C,
+    collectionText  : String,
+    message         : @autoclosure () -> String,
+    file            : StaticString,
+    line            : UInt,
+    options         : XCTKOptions?
+) where C : Collection, C.Element : Hashable
+{
+    evaluateXCTKAssertUnique(
+        captureKind:    .single(collectionText),
+        collection:     collection,
+        message:        message,
+        file:           file,
+        line:           line,
+        options:        options
+    )
+}
+
+
+
+internal func _XCTKAssertUniqueMacro<C, K>(
+    collection      : @autoclosure () throws -> C,
+    predicate       : (C.Element) throws -> K,
+    collectionText  : String,
+    predicateText   : String,
+    message         : @autoclosure () -> String,
+    file            : StaticString,
+    line            : UInt,
+    options         : XCTKOptions?
+) where C : Collection, K : Hashable
+{
+    evaluateXCTKAssertUnique(
+        captureKind:    .double(collectionText, predicateText),
+        collection:     collection,
+        predicate:      predicate,
+        message:        message,
+        file:           file,
+        line:           line,
+        options:        options
+    )
+}

@@ -81,6 +81,111 @@ internal func evaluateExpr<T>(
 
 
 
+// MARK: - Evaluate collections
+
+/// Evaluates the given collection.
+///
+/// - Important: This fails the assertion if the given collection expression
+/// throws an error when called.
+///
+/// - Parameters:
+///   - collection: The collection to evaluate.
+///   - assertion: The assertion kind.
+///   - message: The description of a failure.
+///   - file: The file where the failure occurs. The default value is the
+///   filename of the test case in which this function was called.
+///   - line: The line where the failure occurs. The default value is the line
+///   number where this function was called.
+///   - options: The options for testing.
+/// - Returns: A `Result` containing the value or error produced by evaluating
+/// the given collection expression.
+internal func evaluateCollection<C>(
+    _ collection    : () throws -> C,
+    assertion       : AssertionKind,
+    message         : () -> String?,
+    file            : StaticString,
+    line            : UInt,
+    options         : XCTKOptions?
+) -> Result<C, Error> where C : Collection
+{
+    do
+    {
+        return .success(try collection())
+    }
+    catch
+    {
+        failAssertion(
+            kind:       assertion,
+            reason:     "threw error \(quote(error))",
+            message:    message,
+            file:       file,
+            line:       line,
+            options:    options
+        )
+        
+        return .failure(error)
+    }
+}
+
+
+
+/// Iterates the given predicate over the given collection.
+/// - Parameters:
+///   - predicate: The predicate to call with each element of the collection.
+///   - collection: The collection over which to iterate.
+/// - Returns: Information about the iteration of the given predicate over the
+/// given collection.
+internal func iteratePredicate<C>(
+    _       predicate   : (C.Element) throws -> Bool,
+    over    collection  : C
+) -> PredicateIterationResult where C : Collection
+{
+    var matchedElements : [ElementResult]   = []
+    var failedElements  : [ElementResult]   = []
+    var errorElements   : [ElementResult]   = []
+    
+    for (index, element) in collection.enumerated()
+    {
+        do
+        {
+            let success: Bool = try predicate(element)
+            
+            let result = ElementResult(
+                index:  index,
+                value:  DiffValue(element),
+                error:  nil
+            )
+            
+            if success
+            {
+                matchedElements.append(result)
+            }
+            else
+            {
+                failedElements.append(result)
+            }
+        }
+        catch
+        {
+            let result = ElementResult(
+                index:  index,
+                value:  DiffValue(element),
+                error:  error.localizedDescription
+            )
+            
+            errorElements.append(result)
+        }
+    }
+    
+    return PredicateIterationResult(
+        matchedElements:    matchedElements,
+        failedElements:     failedElements,
+        errorElements:      errorElements
+    )
+}
+
+
+
 // MARK: - Fail function assertions
 
 @_documentation(visibility: internal)
@@ -171,7 +276,6 @@ internal func failAssertion(
 /// - Parameters:
 ///   - kind: The assertion kind.
 ///   - diff: The computed diff.
-///   - options: The options for formatting diffs.
 ///   - message: The description of a failure.
 ///   - file: The file where the failure occurs.
 ///   - line: The line where the failure occurs.
@@ -185,7 +289,7 @@ internal func failAssertion(
     options : XCTKOptions?
 )
 {
-    let diffOutput: String = Formatter.format(
+    let diffOutput: String = Formatter.formatDiff(
         diff,
         options: options?.formatOptions
     )
@@ -356,7 +460,6 @@ internal func failAssertion(
 ///   - expectedText: The source text of the expected expression.
 ///   - actualText: The source text of the actual expression.
 ///   - diff: The computed diff.
-///   - options: The options for formatting diffs.
 ///   - message: The description of a failure.
 ///   - file: The file where the failure occurs.
 ///   - line: The line where the failure occurs.
@@ -372,7 +475,7 @@ internal func failAssertion(
     options         : XCTKOptions?
 )
 {
-    let diffOutput: String = Formatter.format(
+    let diffOutput: String = Formatter.formatDiff(
         diff,
         options: options?.formatOptions
     )
@@ -389,6 +492,158 @@ internal func failAssertion(
     text += "\n\nExpected: \(expectedText)"
     text += "\nActual:   \(actualText)"
     text += "\n\n\(diffOutput)"
+    
+    XCTKFail(
+        text,
+        file:   file,
+        line:   line
+    )
+}
+
+
+
+// MARK: - Fail predicate assertions
+
+/// Reports a predicate assertion failure.
+/// - Parameters:
+///   - kind: The assertion kind.
+///   - captureKind: The kind of captured assertion expression.
+///   - failure: Information about the failed predicate.
+///   - message: The description of a failure.
+///   - file: The file where the failure occurs.
+///   - line: The line where the failure occurs.
+///   - options: The options for testing.
+internal func failPredicateAssertion(
+    kind        : AssertionKind,
+    captureKind : ExprCaptureKind,
+    failure     : PredicateFailure,
+    message     : () -> String?,
+    file        : StaticString,
+    line        : UInt,
+    options     : XCTKOptions?
+)
+{
+    switch captureKind
+    {
+        case .none:
+            
+            failPredicateAssertion(
+                kind:       kind,
+                failure:    failure,
+                message:    message,
+                file:       file,
+                line:       line,
+                options:    options
+            )
+            
+        case let .single(collectionText):
+            
+            failPredicateAssertion(
+                kind:               kind,
+                collectionText:     collectionText,
+                predicateText:      nil,
+                failure:            failure,
+                message:            message,
+                file:               file,
+                line:               line,
+                options:            options
+            )
+            
+        case let .double(collectionText, predicateText):
+            
+            failPredicateAssertion(
+                kind:               kind,
+                collectionText:     collectionText,
+                predicateText:      predicateText,
+                failure:            failure,
+                message:            message,
+                file:               file,
+                line:               line,
+                options:            options
+            )
+    }
+}
+
+
+
+/// Reports a function predicate assertion failure.
+/// - Parameters:
+///   - kind: The assertion kind.
+///   - failure: Information about the failed predicate.
+///   - message: The description of a failure.
+///   - file: The file where the failure occurs.
+///   - line: The line where the failure occurs.
+///   - options: The options for testing.
+private func failPredicateAssertion(
+    kind        : AssertionKind,
+    failure     : PredicateFailure,
+    message     : () -> String?,
+    file        : StaticString,
+    line        : UInt,
+    options     : XCTKOptions?
+)
+{
+    let output: String = Formatter.formatPredicate(
+        failure,
+        options: options?.formatOptions
+    )
+    
+    var text: String = "\(kind.name) failed"
+    
+    if
+        let msg: String = message(),
+        !msg.isEmpty
+    {
+        text += " - \(msg)"
+    }
+    
+    text += "\n\n\(output)"
+    
+    XCTKFail(
+        text,
+        file:   file,
+        line:   line
+    )
+}
+
+
+
+/// Reports a macro predicate assertion failure.
+/// - Parameters:
+///   - kind: The assertion kind.
+///   - failure: Information about the failed predicate.
+///   - message: The description of a failure.
+///   - file: The file where the failure occurs.
+///   - line: The line where the failure occurs.
+///   - options: The options for testing.
+private func failPredicateAssertion(
+    kind            : AssertionKind,
+    collectionText  : String?,
+    predicateText   : String?,
+    failure         : PredicateFailure,
+    message         : () -> String?,
+    file            : StaticString,
+    line            : UInt,
+    options         : XCTKOptions?
+)
+{
+    let output: String = Formatter.formatPredicate(
+        failure,
+        collectionText:     collectionText,
+        predicateText:      predicateText,
+        options:            options?.formatOptions
+    )
+    
+    var text: String = "\(kind.macroDisplayName) failed"
+    
+    if
+        let msg: String = message(),
+        !msg.isEmpty
+    {
+        text += " - \(msg)"
+    }
+    
+    text += "\n\n\(output)"
     
     XCTKFail(
         text,
@@ -450,4 +705,266 @@ internal func areEqual<T>(
         : expr2 - expr1
     
     return difference.magnitude <= accuracy.magnitude
+}
+
+
+
+// MARK: - Predicate assertions
+
+/// Information about a failed predicate.
+internal struct PredicateFailure: Equatable
+{
+    /// The number of elements in the collection.
+    let collectionCount : Int
+    
+    /// The kind of predicate failure.
+    let kind            : PredicateFailureKind
+    
+    /// Whether the collection has meaningful indices.
+    let isOrdered       : Bool
+}
+
+
+
+/// The kind of predicate failure.
+internal enum PredicateFailureKind: Equatable
+{
+    /// Elements that failed the predicate.
+    ///
+    /// This is used for `satisfyAll` assertions.
+    ///
+    /// - Parameter elements: The elements for which the predicate returned
+    /// `false` or threw an error.
+    case elementsFailed(
+        _ elements: [ElementResult]
+    )
+    
+    /// Elements that unexpectedly matched the predicate.
+    ///
+    /// This is used for `satisfyNone` assertions.
+    ///
+    /// - Parameter elements: The elements for which the predicate unexpectedly
+    /// returned `true`.
+    case elementsMatched(
+        _ elements: [ElementResult]
+    )
+    
+    /// The count of matching elements that did not meet the expectation.
+    ///
+    /// This is used for `satisfyAny`, `satisfyAtLeast`, `satisfyAtMost`,
+    /// `satisfyRange`, `exactly`, and `exactlyOne` assertions.
+    ///
+    /// - Parameter mismatch: Information about the count mismatch failure.
+    case countMismatch(
+        _ mismatch: CountMismatch
+    )
+    
+    /// The collection is not sorted according to the predicate.
+    ///
+    /// This is used for `sorted` assertions.
+    ///
+    /// - Parameter violation: Information about the ordering violation.
+    case orderingViolation(
+        _ violation: OrderingViolation
+    )
+    
+    /// Duplicate elements were found in the collection.
+    ///
+    /// This is used for `unique` assertions.
+    ///
+    /// - Parameter groups: Information about the groups of duplicate elements.
+    case duplicates(
+        _ groups: [DuplicateGroup]
+    )
+    
+    /// Duplicate element keys were found in the collection.
+    ///
+    /// This is used for `uniqueByKey` assertions.
+    ///
+    /// - Parameter groups: Information about the groups of elements with
+    /// duplicate keys.
+    case duplicateKeys(
+        _ groups: [DuplicateKeyGroup]
+    )
+}
+
+
+
+/// Information about an element evaluated by a predicate.
+internal struct ElementResult: Equatable
+{
+    /// The index of the element in the collection.
+    let index   : Int
+    
+    /// The element value.
+    let value   : DiffValue
+    
+    /// The error description, if the predicate threw an error.
+    let error   : String?
+}
+
+
+
+/// Information about the iteration of a predicate over a collectiion.
+internal struct PredicateIterationResult
+{
+    /// The elements that matched the predicate.
+    let matchedElements : [ElementResult]
+    
+    /// The elements that failed the predicate.
+    let failedElements  : [ElementResult]
+    
+    /// The elements for which the predicate threw an error.
+    let errorElements   : [ElementResult]
+    
+    
+    
+    /// The indices of the elements that matched the predicate.
+    var matchedIndices: [Int]
+    {
+        return matchedElements.map { $0.index }
+    }
+    
+    
+    
+    /// The elements that matched the predicate or threw an error.
+    var allFailed: [ElementResult]
+    {
+        return failedElements + errorElements
+    }
+    
+    
+    
+    /// The number of elements that failed the predicate or threw an error.
+    var allFailedCount: Int
+    {
+        return allFailed.count
+    }
+    
+    
+    
+    /// The number of matched elements.
+    var matchedCount: Int
+    {
+        return matchedElements.count
+    }
+    
+    
+    
+    /// The number of failed elements.
+    var failedCount: Int
+    {
+        return failedElements.count
+    }
+    
+    
+    
+    /// The number of elements for which the predicate threw an error.
+    var errorCount: Int
+    {
+        return errorElements.count
+    }
+}
+
+
+
+/// The expected count for a predicate.
+internal enum CountExpectationKind: Equatable, Sendable
+{
+    /// Expected at least one element to match.
+    case any
+    
+    /// Expected at least the specified number of elements to match.
+    /// - Parameter count: The minimum number of matching elements.
+    case atLeast(
+        _ count: Int
+    )
+    
+    /// Expected up to the specified number of elements to match.
+    /// - Parameter count: The maximum number of matching elements.
+    case atMost(
+        _ count: Int
+    )
+    
+    /// Expected the number of matching elements to be within the specified
+    /// range.
+    /// - Parameter range: The acceptable range of matching elements.
+    case range(
+        _ range: ClosedRange<Int>
+    )
+    
+    /// Expected exactly the specified number of elements to match.
+    /// - Parameter count: The exact number of matching elements.
+    case exactly(
+        _ count: Int
+    )
+}
+
+
+
+/// Information about a count mismatch failure.
+internal struct CountMismatch: Equatable
+{
+    /// The expected count.
+    let expected        : CountExpectationKind
+    
+    /// The indices of elements that matched the predicate.
+    let matchedIndices  : [Int]
+    
+    /// Elements where the predicate threw an error.
+    let errorElements   : [ElementResult]
+}
+
+
+
+/// Information about an ordering violation in a sorted assertion.
+internal struct OrderingViolation: Equatable
+{
+    /// The index of the first element in the violating pair.
+    let index   : Int
+    
+    /// The first element in the violating pair.
+    let first   : DiffValue
+    
+    /// The second element in the violating pair.
+    let second  : DiffValue
+    
+    /// The error description, if the predicate threw an error.
+    let error   : String?
+}
+
+
+
+/// Information about a group of duplicate elements.
+internal struct DuplicateGroup: Equatable
+{
+    /// The duplicate value.
+    let value   : DiffValue
+    
+    /// The indices where the duplicate value appears.
+    var indices : [Int]
+}
+
+
+
+/// Information about a group of elements with duplicate keys.
+internal struct DuplicateKeyGroup: Equatable
+{
+    /// The duplicate key.
+    let key         : DiffValue
+    
+    /// The elements with the duplicate key, along with their indices.
+    let elements    : [IndexedElement]
+}
+
+
+
+/// An element with its index in a collection.
+internal struct IndexedElement: Equatable
+{
+    /// The index of the element in a collection.
+    let index   : Int
+    
+    /// The element value.
+    let value   : DiffValue
 }

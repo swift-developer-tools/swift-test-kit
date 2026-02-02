@@ -51,20 +51,6 @@ internal struct RenderedValue: Equatable, Sendable, CustomStringConvertible
     
     
     
-    /// Initializes a ``RenderedValue`` instance from the given values.
-    init(
-        description : String,
-        typeName    : String,
-        kind        : RenderedValueKind
-    )
-    {
-        self.description    = description
-        self.typeName       = typeName
-        self.kind           = kind
-    }
-    
-    
-    
     /// Initializes a ``RenderedValue`` instance from the given value.
     /// - Parameter value: The value to use.
     init(
@@ -87,7 +73,15 @@ internal struct RenderedValue: Equatable, Sendable, CustomStringConvertible
         }
         else
         {
-            self.description    = String(describing: unwrapped)
+            /// The string description of most Swift types is a single line,
+            /// but a `CustomStringConvertible` type might include newlines
+            /// that would break the line-based output of ``Formatter``.
+            ///
+            /// Replace newlines with a single space. Another approach is to
+            /// replace all consecutive whitespace sequences with a single
+            /// space, but that would affect spaces inside string property
+            /// values, not just structural whitespace.
+            self.description    = String(describing: unwrapped).collapseLines()
             self.kind           = .other
         }
     }
