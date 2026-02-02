@@ -33,7 +33,8 @@ import XCTestKitCore
 ///
 /// - Parameters:
 ///   - expr: The expression to evaluate.
-///   - assertion: The assertion kind.
+///   - assertionKind: The assertion kind.
+///   - captureKind: The kind of captured assertion expression.
 ///   - message: The description of a failure.
 ///   - file: The file where the failure occurs. The default value is the
 ///   filename of the test case in which this function was called.
@@ -45,7 +46,8 @@ import XCTestKitCore
 /// the given expression.
 internal func evaluateExpr<T>(
     _ expr          : () throws -> T,
-    assertion       : AssertionKind,
+    assertionKind   : AssertionKind,
+    captureKind     : ExprCaptureKind,
     message         : () -> String?,
     file            : StaticString,
     line            : UInt,
@@ -59,19 +61,19 @@ internal func evaluateExpr<T>(
     }
     catch
     {
-        if assertion == .throwsError
+        if assertionKind == .throwsError
         {
             errorHandler(error)
         }
         else
         {
-            failAssertion(
-                kind:       assertion,
-                reason:     "threw error \(quote(error))",
-                message:    message,
-                file:       file,
-                line:       line,
-                options:    options
+            assertionKind.fail(
+                captureKind:    captureKind,
+                reason:         "threw error \(quote(error))",
+                message:        message,
+                file:           file,
+                line:           line,
+                options:        options
             )
         }
         
@@ -90,7 +92,8 @@ internal func evaluateExpr<T>(
 ///
 /// - Parameters:
 ///   - collection: The collection to evaluate.
-///   - assertion: The assertion kind.
+///   - assertionKind: The assertion kind.
+///   - captureKind: The kind of captured assertion expression.
 ///   - message: The description of a failure.
 ///   - file: The file where the failure occurs. The default value is the
 ///   filename of the test case in which this function was called.
@@ -101,7 +104,8 @@ internal func evaluateExpr<T>(
 /// the given collection expression.
 internal func evaluateCollection<C>(
     _ collection    : () throws -> C,
-    assertion       : AssertionKind,
+    assertionKind   : AssertionKind,
+    captureKind     : ExprCaptureKind,
     message         : () -> String?,
     file            : StaticString,
     line            : UInt,
@@ -114,13 +118,13 @@ internal func evaluateCollection<C>(
     }
     catch
     {
-        failAssertion(
-            kind:       assertion,
-            reason:     "threw error \(quote(error))",
-            message:    message,
-            file:       file,
-            line:       line,
-            options:    options
+        assertionKind.fail(
+            captureKind:    captureKind,
+            reason:         "threw error \(quote(error))",
+            message:        message,
+            file:           file,
+            line:           line,
+            options:        options
         )
         
         return .failure(error)
@@ -181,474 +185,6 @@ internal func iteratePredicate<C>(
         matchedElements:    matchedElements,
         failedElements:     failedElements,
         errorElements:      errorElements
-    )
-}
-
-
-
-// MARK: - Fail function assertions
-
-@_documentation(visibility: internal)
-/// Reports a function assertion failure.
-///
-/// - Note: This is public since it is used in boolean macro expansions.
-///
-/// - Parameters:
-///   - kindName: The assertion kind name.
-///   - reason: The optional failure reason.
-///   - message: The description of a failure.
-///   - file: The file where the failure occurs.
-///   - line: The line where the failure occurs.
-///   - options: The options for testing.
-public func failAssertion(
-    kindName    : String,
-    reason      : String?,
-    message     : String?,
-    file        : StaticString,
-    line        : UInt,
-    options     : XCTKOptions?
-)
-{
-    var text: String = "\(kindName) failed"
-    
-    if let reason
-    {
-        text += ": \(reason)"
-    }
-    
-    if
-        let message,
-        !message.isEmpty
-    {
-        text += " - \(message)"
-    }
-    
-    XCTKFail(
-        text,
-        file:   file,
-        line:   line
-    )
-}
-
-
-
-/// Reports a function assertion failure.
-/// - Parameters:
-///   - kind: The assertion kind.
-///   - reason: The optional failure reason.
-///   - message: The description of a failure.
-///   - file: The file where the failure occurs.
-///   - line: The line where the failure occurs.
-///   - options: The options for testing.
-internal func failAssertion(
-    kind    : AssertionKind,
-    reason  : String?,
-    message : () -> String?,
-    file    : StaticString,
-    line    : UInt,
-    options : XCTKOptions?
-)
-{
-    var text: String = "\(kind.name) failed"
-    
-    if let reason
-    {
-        text += ": \(reason)"
-    }
-    
-    if
-        let msg: String = message(),
-        !msg.isEmpty
-    {
-        text += " - \(msg)"
-    }
-    
-    XCTKFail(
-        text,
-        file:   file,
-        line:   line
-    )
-}
-
-
-
-/// Reports a function assertion failure.
-/// - Parameters:
-///   - kind: The assertion kind.
-///   - diff: The computed diff.
-///   - message: The description of a failure.
-///   - file: The file where the failure occurs.
-///   - line: The line where the failure occurs.
-///   - options: The options for testing.
-internal func failAssertion(
-    kind    : AssertionKind,
-    diff    : DiffNode,
-    message : () -> String?,
-    file    : StaticString,
-    line    : UInt,
-    options : XCTKOptions?
-)
-{
-    let diffOutput: String = Formatter.formatDiff(
-        diff,
-        options: options?.formatOptions
-    )
-    
-    var fullOutput: String = "\(kind.name) failed"
-    
-    if
-        let msg: String = message(),
-        !msg.isEmpty
-    {
-        fullOutput += " - \(msg)"
-    }
-    
-    fullOutput += "\n\n\(diffOutput)"
-    
-    XCTKFail(
-        fullOutput,
-        file:   file,
-        line:   line
-    )
-}
-
-
-
-// MARK: - Fail macro assertions
-
-/// Reports a macro assertion failure for boolean assertions.
-/// - Parameters:
-///   - kind: The assertion kind.
-///   - exprText: The expression source text.
-///   - evaluated: The evaluated boolean expressions.
-///   - notEvaluated: The number of unevaluated boolean expressions.
-///   - message: The description of a failure.
-///   - file: The file where the failure occurs.
-///   - line: The line where the failure occurs.
-///   - options: The options for testing.
-internal func failAssertion(
-    kind            : AssertionKind,
-    exprText        : String,
-    evaluated       : [XCTKBooleanExpr],
-    notEvaluated    : Int,
-    message         : () -> String?,
-    file            : StaticString,
-    line            : UInt,
-    options         : XCTKOptions?
-)
-{
-    let output: String = Formatter.formatBooleanExpr(
-        exprText:       exprText,
-        evaluated:      evaluated,
-        notEvaluated:   notEvaluated,
-        expectedValue:  kind == .false ? false : true,
-        options:        options?.formatOptions
-    )
-    
-    var text: String = "\(kind.macroDisplayName) failed"
-    
-    if
-        let msg: String = message(),
-        !msg.isEmpty
-    {
-        text += " - \(msg)"
-    }
-    
-    text += "\n\n\(output)"
-    
-    XCTKFail(
-        text,
-        file:   file,
-        line:   line
-    )
-}
-
-
-
-/// Reports a macro assertion failure for single-expression assertions.
-/// - Parameters:
-///   - kind: The assertion kind.
-///   - exprText: The expression source text.
-///   - actual: The string representation of the actual value, or `nil` to omit.
-///   - message: The description of a failure.
-///   - file: The file where the failure occurs.
-///   - line: The line where the failure occurs.
-///   - options: The options for testing.
-internal func failAssertion(
-    kind        : AssertionKind,
-    exprText    : String,
-    actual      : String?,
-    message     : () -> String?,
-    file        : StaticString,
-    line        : UInt,
-    options     : XCTKOptions?
-)
-{
-    var text: String = "\(kind.macroDisplayName) failed"
-    
-    if
-        let msg: String = message(),
-        !msg.isEmpty
-    {
-        text += " - \(msg)"
-    }
-    
-    text += "\n\nExpression: \(exprText)"
-    
-    if let actual
-    {
-        text += kind == .noThrow
-            ? "\nThrew:      \(actual)"
-            : "\nActual:     \(actual)"
-    }
-    
-    XCTKFail(
-        text,
-        file:   file,
-        line:   line
-    )
-}
-
-
-
-/// Reports a macro assertion failure for double-expression assertions.
-/// - Parameters:
-///   - kind: The assertion kind.
-///   - expr1Text: The source text of the first expression.
-///   - expr2Text: The source text of the second expression.
-///   - reason: The failure reason describing the comparison result.
-///   - message: The description of a failure.
-///   - file: The file where the failure occurs.
-///   - line: The line where the failure occurs.
-///   - options: The options for testing.
-internal func failAssertion(
-    kind        : AssertionKind,
-    expr1Text   : String,
-    expr2Text   : String,
-    reason      : String,
-    message     : () -> String?,
-    file        : StaticString,
-    line        : UInt,
-    options     : XCTKOptions?
-)
-{
-    var text: String = "\(kind.macroDisplayName) failed: \(reason)"
-    
-    if
-        let msg: String = message(),
-        !msg.isEmpty
-    {
-        text += " - \(msg)"
-    }
-    
-    text += "\n\nExpression 1: \(expr1Text)"
-    text += "\nExpression 2: \(expr2Text)"
-    
-    XCTKFail(
-        text,
-        file:   file,
-        line:   line
-    )
-}
-
-
-
-/// Reports a macro assertion failure for double-expression equality assertions
-/// with diff output.
-/// - Parameters:
-///   - kind: The assertion kind.
-///   - expectedText: The source text of the expected expression.
-///   - actualText: The source text of the actual expression.
-///   - diff: The computed diff.
-///   - message: The description of a failure.
-///   - file: The file where the failure occurs.
-///   - line: The line where the failure occurs.
-///   - options: The options for testing.
-internal func failAssertion(
-    kind            : AssertionKind,
-    expectedText    : String,
-    actualText      : String,
-    diff            : DiffNode,
-    message         : () -> String?,
-    file            : StaticString,
-    line            : UInt,
-    options         : XCTKOptions?
-)
-{
-    let diffOutput: String = Formatter.formatDiff(
-        diff,
-        options: options?.formatOptions
-    )
-    
-    var text: String = "\(kind.macroDisplayName) failed"
-    
-    if
-        let msg: String = message(),
-        !msg.isEmpty
-    {
-        text += " - \(msg)"
-    }
-    
-    text += "\n\nExpected: \(expectedText)"
-    text += "\nActual:   \(actualText)"
-    text += "\n\n\(diffOutput)"
-    
-    XCTKFail(
-        text,
-        file:   file,
-        line:   line
-    )
-}
-
-
-
-// MARK: - Fail predicate assertions
-
-/// Reports a predicate assertion failure.
-/// - Parameters:
-///   - kind: The assertion kind.
-///   - captureKind: The kind of captured assertion expression.
-///   - failure: Information about the failed predicate.
-///   - message: The description of a failure.
-///   - file: The file where the failure occurs.
-///   - line: The line where the failure occurs.
-///   - options: The options for testing.
-internal func failPredicateAssertion(
-    kind        : AssertionKind,
-    captureKind : ExprCaptureKind,
-    failure     : PredicateFailure,
-    message     : () -> String?,
-    file        : StaticString,
-    line        : UInt,
-    options     : XCTKOptions?
-)
-{
-    switch captureKind
-    {
-        case .none:
-            
-            failPredicateAssertion(
-                kind:       kind,
-                failure:    failure,
-                message:    message,
-                file:       file,
-                line:       line,
-                options:    options
-            )
-            
-        case let .single(collectionText):
-            
-            failPredicateAssertion(
-                kind:               kind,
-                collectionText:     collectionText,
-                predicateText:      nil,
-                failure:            failure,
-                message:            message,
-                file:               file,
-                line:               line,
-                options:            options
-            )
-            
-        case let .double(collectionText, predicateText):
-            
-            failPredicateAssertion(
-                kind:               kind,
-                collectionText:     collectionText,
-                predicateText:      predicateText,
-                failure:            failure,
-                message:            message,
-                file:               file,
-                line:               line,
-                options:            options
-            )
-    }
-}
-
-
-
-/// Reports a function predicate assertion failure.
-/// - Parameters:
-///   - kind: The assertion kind.
-///   - failure: Information about the failed predicate.
-///   - message: The description of a failure.
-///   - file: The file where the failure occurs.
-///   - line: The line where the failure occurs.
-///   - options: The options for testing.
-private func failPredicateAssertion(
-    kind        : AssertionKind,
-    failure     : PredicateFailure,
-    message     : () -> String?,
-    file        : StaticString,
-    line        : UInt,
-    options     : XCTKOptions?
-)
-{
-    let output: String = Formatter.formatPredicate(
-        failure,
-        options: options?.formatOptions
-    )
-    
-    var text: String = "\(kind.name) failed"
-    
-    if
-        let msg: String = message(),
-        !msg.isEmpty
-    {
-        text += " - \(msg)"
-    }
-    
-    text += "\n\n\(output)"
-    
-    XCTKFail(
-        text,
-        file:   file,
-        line:   line
-    )
-}
-
-
-
-/// Reports a macro predicate assertion failure.
-/// - Parameters:
-///   - kind: The assertion kind.
-///   - failure: Information about the failed predicate.
-///   - message: The description of a failure.
-///   - file: The file where the failure occurs.
-///   - line: The line where the failure occurs.
-///   - options: The options for testing.
-private func failPredicateAssertion(
-    kind            : AssertionKind,
-    collectionText  : String?,
-    predicateText   : String?,
-    failure         : PredicateFailure,
-    message         : () -> String?,
-    file            : StaticString,
-    line            : UInt,
-    options         : XCTKOptions?
-)
-{
-    let output: String = Formatter.formatPredicate(
-        failure,
-        collectionText:     collectionText,
-        predicateText:      predicateText,
-        options:            options?.formatOptions
-    )
-    
-    var text: String = "\(kind.macroDisplayName) failed"
-    
-    if
-        let msg: String = message(),
-        !msg.isEmpty
-    {
-        text += " - \(msg)"
-    }
-    
-    text += "\n\n\(output)"
-    
-    XCTKFail(
-        text,
-        file:   file,
-        line:   line
     )
 }
 

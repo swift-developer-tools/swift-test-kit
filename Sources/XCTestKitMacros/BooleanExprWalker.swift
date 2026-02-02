@@ -183,8 +183,7 @@ internal struct BooleanExprWalker
                 }
                 catch
                 {
-                    failAssertion(
-                        kindName:   \(literal: kind.macroDisplayName),
+                    \(raw: kind.sourceExpr).failMacroExpansion(
                         reason:     "threw error \\\"\\(error)\\\"",
                         message:    \(message),
                         file:       #filePath,

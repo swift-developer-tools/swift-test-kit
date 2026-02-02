@@ -17,7 +17,7 @@
 //===----------------------------------------------------------------------===//
 
 /// The kind of assertion.
-public enum AssertionKind: Equatable, Sendable
+public enum AssertionKind: String, Equatable, Sendable
 {
     case assert
     case equal
@@ -104,5 +104,15 @@ public enum AssertionKind: Equatable, Sendable
     public var macroDisplayName: String
     {
         return "#\(name)"
+    }
+    
+    
+    
+    /// The Swift source expression.
+    ///
+    /// This is used for code generation in macro expansions.
+    public var sourceExpr: String
+    {
+        return "AssertionKind.\(rawValue)"
     }
 }
