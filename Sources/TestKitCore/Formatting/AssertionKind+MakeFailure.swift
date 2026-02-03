@@ -433,7 +433,7 @@ extension AssertionKind
         let reason: String = "Unhandled expression capture kind for"
             + " assertion \(quote(name))."
             + " Please submit an XCTestKit bug report"
-            + " (https://github.com/swift-developer-tools/XCTestKit)."
+            + " (https://github.com/swift-developer-tools/swift-test-kit)."
         
         var text: String = makeHeader(
             framework:  context.framework,

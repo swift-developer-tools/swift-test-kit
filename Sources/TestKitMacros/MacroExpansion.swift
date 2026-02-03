@@ -53,7 +53,7 @@ public extension AssertionMacro
             "Unhandled assertion kind"
             + " \"\(kind.macroDisplayName(for: framework))\""
             + " during macro expansion. Please submit an XCTestKit bug report"
-            + " (https://github.com/swift-developer-tools/XCTestKit)."
+            + " (https://github.com/swift-developer-tools/swift-test-kit)."
         )
     }
 }
