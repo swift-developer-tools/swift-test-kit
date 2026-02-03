@@ -31,7 +31,7 @@ internal final class FormatterBooleanExprTests: XCTestKitCase
             evaluated:      evaluated,
             notEvaluated:   2,
             expectedValue:  true,
-            options:        XCTKConfig.global.formatOptions
+            options:        .init()
         )
         
         let expected: String =
@@ -63,7 +63,7 @@ internal final class FormatterBooleanExprTests: XCTestKitCase
             evaluated:      evaluated,
             notEvaluated:   1,
             expectedValue:  true,
-            options:        XCTKConfig.global.formatOptions
+            options:        .init()
         )
         
         let expected: String =
@@ -97,7 +97,7 @@ internal final class FormatterBooleanExprTests: XCTestKitCase
             evaluated:      evaluated,
             notEvaluated:   0,
             expectedValue:  true,
-            options:        XCTKConfig.global.formatOptions
+            options:        .init()
         )
         
         let expected: String =
@@ -130,7 +130,7 @@ internal final class FormatterBooleanExprTests: XCTestKitCase
             evaluated:      evaluated,
             notEvaluated:   2,
             expectedValue:  false,
-            options:        XCTKConfig.global.formatOptions
+            options:        .init()
         )
         
         let expected: String =
@@ -163,7 +163,7 @@ internal final class FormatterBooleanExprTests: XCTestKitCase
             evaluated:      evaluated,
             notEvaluated:   0,
             expectedValue:  true,
-            options:        XCTKConfig.global.formatOptions
+            options:        .init()
         )
         
         let expected: String =
@@ -197,7 +197,7 @@ internal final class FormatterBooleanExprTests: XCTestKitCase
             evaluated:      evaluated,
             notEvaluated:   1,
             expectedValue:  true,
-            options:        XCTKConfig.global.formatOptions
+            options:        .init()
         )
         
         let expected: String =
@@ -230,7 +230,7 @@ internal final class FormatterBooleanExprTests: XCTestKitCase
             evaluated:      evaluated,
             notEvaluated:   1,
             expectedValue:  true,
-            options:        XCTKConfig.global.formatOptions
+            options:        .init()
         )
         
         let expected: String =
@@ -262,7 +262,7 @@ internal final class FormatterBooleanExprTests: XCTestKitCase
             evaluated:      evaluated,
             notEvaluated:   0,
             expectedValue:  true,
-            options:        XCTKConfig.global.formatOptions
+            options:        .init()
         )
         
         let expected: String =
@@ -293,7 +293,7 @@ internal final class FormatterBooleanExprTests: XCTestKitCase
             evaluated:      evaluated,
             notEvaluated:   1,
             expectedValue:  true,
-            options:        XCTKConfig.global.formatOptions
+            options:        .init()
         )
         
         let expected: String =
@@ -328,7 +328,7 @@ internal final class FormatterBooleanExprTests: XCTestKitCase
             evaluated:      evaluated,
             notEvaluated:   0,
             expectedValue:  true,
-            options:        XCTKConfig.global.formatOptions
+            options:        .init()
         )
         
         let expected: String =
@@ -357,7 +357,7 @@ internal final class FormatterBooleanExprTests: XCTestKitCase
             evaluated:      evaluated,
             notEvaluated:   0,
             expectedValue:  false,
-            options:        XCTKConfig.global.formatOptions
+            options:        .init()
         )
         
         let expected: String =
@@ -388,7 +388,7 @@ internal final class FormatterBooleanExprTests: XCTestKitCase
             evaluated:      evaluated,
             notEvaluated:   1,
             expectedValue:  true,
-            options:        XCTKConfig.global.formatOptions
+            options:        .init()
         )
         
         let expected: String =
@@ -422,7 +422,7 @@ internal final class FormatterBooleanExprTests: XCTestKitCase
             evaluated:      evaluated,
             notEvaluated:   1,
             expectedValue:  true,
-            options:        XCTKConfig.global.formatOptions
+            options:        .init()
         )
         
         let expected: String =
@@ -456,7 +456,7 @@ internal final class FormatterBooleanExprTests: XCTestKitCase
             evaluated:      evaluated,
             notEvaluated:   0,
             expectedValue:  true,
-            options:        XCTKConfig.global.formatOptions
+            options:        .init()
         )
         
         let expected: String =
@@ -488,7 +488,7 @@ internal final class FormatterBooleanExprTests: XCTestKitCase
             evaluated:      evaluated,
             notEvaluated:   1,
             expectedValue:  true,
-            options:        XCTKConfig.global.formatOptions
+            options:        .init()
         )
         
         let expected: String =
@@ -521,7 +521,7 @@ internal final class FormatterBooleanExprTests: XCTestKitCase
             evaluated:      evaluated,
             notEvaluated:   0,
             expectedValue:  true,
-            options:        XCTKConfig.global.formatOptions
+            options:        .init()
         )
         
         let expected: String =

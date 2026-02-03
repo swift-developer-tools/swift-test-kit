@@ -51,7 +51,7 @@ internal final class FormatterSpecialCaseTests: XCTestKitCase
         
         let actual: String = Formatter.formatDiff(
             node,
-            options: XCTKConfig.global.formatOptions
+            options: .init()
         )
         
         let expected: String =
@@ -105,7 +105,7 @@ internal final class FormatterSpecialCaseTests: XCTestKitCase
         
         let actual: String = Formatter.formatDiff(
             node,
-            options: XCTKConfig.global.formatOptions
+            options: .init()
         )
         
         let expected: String =
@@ -153,7 +153,7 @@ internal final class FormatterSpecialCaseTests: XCTestKitCase
         
         let actual: String = Formatter.formatDiff(
             node,
-            options: XCTKConfig.global.formatOptions
+            options: .init()
         )
         
         let expected: String =
@@ -200,7 +200,7 @@ internal final class FormatterSpecialCaseTests: XCTestKitCase
         
         let actual: String = Formatter.formatDiff(
             node,
-            options: XCTKConfig.global.formatOptions
+            options: .init()
         )
         
         let expected: String =
@@ -258,7 +258,7 @@ internal final class FormatterSpecialCaseTests: XCTestKitCase
         
         let actual: String = Formatter.formatDiff(
             node,
-            options: XCTKConfig.global.formatOptions
+            options: .init()
         )
         
         let expected: String =
@@ -300,7 +300,7 @@ internal final class FormatterSpecialCaseTests: XCTestKitCase
         
         let actual: String = Formatter.formatDiff(
             node,
-            options: XCTKConfig.global.formatOptions
+            options: .init()
         )
         
         let expected: String =
@@ -361,7 +361,7 @@ internal final class FormatterSpecialCaseTests: XCTestKitCase
         
         let actual: String = Formatter.formatDiff(
             node,
-            options: XCTKConfig.global.formatOptions
+            options: .init()
         )
         
         let expected: String =
@@ -406,7 +406,7 @@ internal final class FormatterSpecialCaseTests: XCTestKitCase
         
         let actual: String = Formatter.formatDiff(
             node,
-            options: XCTKConfig.global.formatOptions
+            options: .init()
         )
         
         let expected: String =
@@ -451,7 +451,7 @@ internal final class FormatterSpecialCaseTests: XCTestKitCase
         
         let actual: String = Formatter.formatDiff(
             node,
-            options: XCTKConfig.global.formatOptions
+            options: .init()
         )
         
         let expected: String =
@@ -493,7 +493,7 @@ internal final class FormatterSpecialCaseTests: XCTestKitCase
         
         let actual: String = Formatter.formatDiff(
             node,
-            options: XCTKConfig.global.formatOptions
+            options: .init()
         )
         
         let expected: String =
@@ -535,7 +535,7 @@ internal final class FormatterSpecialCaseTests: XCTestKitCase
         
         let actual: String = Formatter.formatDiff(
             node,
-            options: XCTKConfig.global.formatOptions
+            options: .init()
         )
         
         let expected: String =
@@ -582,7 +582,7 @@ internal final class FormatterSpecialCaseTests: XCTestKitCase
         
         let actual: String = Formatter.formatDiff(
             node,
-            options: XCTKConfig.global.formatOptions
+            options: .init()
         )
         
         let expected: String =
@@ -638,7 +638,7 @@ internal final class FormatterSpecialCaseTests: XCTestKitCase
         
         let actual: String = Formatter.formatDiff(
             node,
-            options: XCTKConfig.global.formatOptions
+            options: .init()
         )
         
         let expected: String =

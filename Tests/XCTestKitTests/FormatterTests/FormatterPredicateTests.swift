@@ -35,7 +35,7 @@ internal final class FormatterPredicateTests: XCTestKitCase
         
         let actual: String = Formatter.formatPredicate(
             failure,
-            options: XCTKConfig.global.formatOptions
+            options: .init()
         )
         
         let expected: String =
@@ -68,7 +68,7 @@ internal final class FormatterPredicateTests: XCTestKitCase
         
         let actual: String = Formatter.formatPredicate(
             failure,
-            options: XCTKConfig.global.formatOptions
+            options: .init()
         )
         
         let expected: String =
@@ -106,7 +106,7 @@ internal final class FormatterPredicateTests: XCTestKitCase
             failure,
             collectionText:     collectionText,
             predicateText:      predicateText,
-            options:            XCTKConfig.global.formatOptions
+            options:            .init()
         )
         
         let expected: String =
@@ -141,7 +141,7 @@ internal final class FormatterPredicateTests: XCTestKitCase
         
         let actual: String = Formatter.formatPredicate(
             failure,
-            options: XCTKConfig.global.formatOptions
+            options: .init()
         )
         
         let expected: String =
@@ -174,7 +174,7 @@ internal final class FormatterPredicateTests: XCTestKitCase
         
         let actual: String = Formatter.formatPredicate(
             failure,
-            options: XCTKConfig.global.formatOptions
+            options: .init()
         )
         
         let expected: String =
@@ -206,7 +206,7 @@ internal final class FormatterPredicateTests: XCTestKitCase
         
         let actual: String = Formatter.formatPredicate(
             failure,
-            options: XCTKConfig.global.formatOptions
+            options: .init()
         )
         
         let expected: String =
@@ -239,7 +239,7 @@ internal final class FormatterPredicateTests: XCTestKitCase
         
         let actual: String = Formatter.formatPredicate(
             failure,
-            options: XCTKConfig.global.formatOptions
+            options: .init()
         )
         
         let expected: String =
@@ -347,7 +347,7 @@ internal final class FormatterPredicateTests: XCTestKitCase
         let actual: String = Formatter.formatPredicate(
             failure,
             collectionText:     "[1, 2, 3]",
-            options:            XCTKConfig.global.formatOptions
+            options:            .init()
         )
         
         let expected: String =
@@ -417,7 +417,7 @@ internal final class FormatterPredicateTests: XCTestKitCase
         
         let actual: String = Formatter.formatPredicate(
             failure,
-            options: XCTKConfig.global.formatOptions
+            options: .init()
         )
         
         let expected: String =
@@ -450,7 +450,7 @@ internal final class FormatterPredicateTests: XCTestKitCase
         
         let actual: String = Formatter.formatPredicate(
             failure,
-            options: XCTKConfig.global.formatOptions
+            options: .init()
         )
         
         let expected: String =
@@ -484,7 +484,7 @@ internal final class FormatterPredicateTests: XCTestKitCase
         
         let actual: String = Formatter.formatPredicate(
             failure,
-            options: XCTKConfig.global.formatOptions
+            options: .init()
         )
         
         let expected: String =
@@ -517,7 +517,7 @@ internal final class FormatterPredicateTests: XCTestKitCase
         
         let actual: String = Formatter.formatPredicate(
             failure,
-            options: XCTKConfig.global.formatOptions
+            options: .init()
         )
         
         let expected: String =
@@ -554,7 +554,7 @@ internal final class FormatterPredicateTests: XCTestKitCase
             failure,
             collectionText:     collectionText,
             predicateText:      predicateText,
-            options:            XCTKConfig.global.formatOptions
+            options:            .init()
         )
         
         let expected: String =
@@ -663,7 +663,7 @@ internal final class FormatterPredicateTests: XCTestKitCase
         
         let actual: String = Formatter.formatPredicate(
             failure,
-            options: XCTKConfig.global.formatOptions
+            options: .init()
         )
         
         let expected: String =
@@ -696,7 +696,7 @@ internal final class FormatterPredicateTests: XCTestKitCase
         
         let actual: String = Formatter.formatPredicate(
             failure,
-            options: XCTKConfig.global.formatOptions
+            options: .init()
         )
         
         let expected: String =
@@ -730,7 +730,7 @@ internal final class FormatterPredicateTests: XCTestKitCase
         let actual: String = Formatter.formatPredicate(
             failure,
             collectionText:     "[1, 2, 3]",
-            options:            XCTKConfig.global.formatOptions
+            options:            .init()
         )
         
         let expected: String =
@@ -766,7 +766,7 @@ internal final class FormatterPredicateTests: XCTestKitCase
         
         let actual: String = Formatter.formatPredicate(
             failure,
-            options: XCTKConfig.global.formatOptions
+            options: .init()
         )
         
         let expected: String =
@@ -797,7 +797,7 @@ internal final class FormatterPredicateTests: XCTestKitCase
         
         let actual: String = Formatter.formatPredicate(
             failure,
-            options: XCTKConfig.global.formatOptions
+            options: .init()
         )
         
         let expected: String =
@@ -830,7 +830,7 @@ internal final class FormatterPredicateTests: XCTestKitCase
         
         let actual: String = Formatter.formatPredicate(
             failure,
-            options: XCTKConfig.global.formatOptions
+            options: .init()
         )
         
         let expected: String =
@@ -863,7 +863,7 @@ internal final class FormatterPredicateTests: XCTestKitCase
         
         let actual: String = Formatter.formatPredicate(
             failure,
-            options: XCTKConfig.global.formatOptions
+            options: .init()
         )
         
         let expected: String =
@@ -894,7 +894,7 @@ internal final class FormatterPredicateTests: XCTestKitCase
         
         let actual: String = Formatter.formatPredicate(
             failure,
-            options: XCTKConfig.global.formatOptions
+            options: .init()
         )
         
         let expected: String =
@@ -927,7 +927,7 @@ internal final class FormatterPredicateTests: XCTestKitCase
         
         let actual: String = Formatter.formatPredicate(
             failure,
-            options: XCTKConfig.global.formatOptions
+            options: .init()
         )
         
         let expected: String =
@@ -960,7 +960,7 @@ internal final class FormatterPredicateTests: XCTestKitCase
         
         let actual: String = Formatter.formatPredicate(
             failure,
-            options: XCTKConfig.global.formatOptions
+            options: .init()
         )
         
         let expected: String =
@@ -991,7 +991,7 @@ internal final class FormatterPredicateTests: XCTestKitCase
         
         let actual: String = Formatter.formatPredicate(
             failure,
-            options: XCTKConfig.global.formatOptions
+            options: .init()
         )
         
         let expected: String =
@@ -1027,7 +1027,7 @@ internal final class FormatterPredicateTests: XCTestKitCase
         
         let actual: String = Formatter.formatPredicate(
             failure,
-            options: XCTKConfig.global.formatOptions
+            options: .init()
         )
         
         let expected: String =
@@ -1068,7 +1068,7 @@ internal final class FormatterPredicateTests: XCTestKitCase
         
         let actual: String = Formatter.formatPredicate(
             failure,
-            options: XCTKConfig.global.formatOptions
+            options: .init()
         )
         
         let expected: String =
@@ -1235,7 +1235,7 @@ internal final class FormatterPredicateTests: XCTestKitCase
         
         let actual: String = Formatter.formatPredicate(
             failure,
-            options: XCTKConfig.global.formatOptions
+            options: .init()
         )
         
         let expected: String =
@@ -1273,7 +1273,7 @@ internal final class FormatterPredicateTests: XCTestKitCase
             failure,
             collectionText:     collectionText,
             predicateText:      predicateText,
-            options:            XCTKConfig.global.formatOptions
+            options:            .init()
         )
         
         let expected: String =
@@ -1357,7 +1357,7 @@ internal final class FormatterPredicateTests: XCTestKitCase
         
         let actual: String = Formatter.formatPredicate(
             failure,
-            options: XCTKConfig.global.formatOptions
+            options: .init()
         )
         
         let expected: String =
@@ -1392,7 +1392,7 @@ internal final class FormatterPredicateTests: XCTestKitCase
         
         let actual: String = Formatter.formatPredicate(
             failure,
-            options: XCTKConfig.global.formatOptions
+            options: .init()
         )
         
         let expected: String =
@@ -1432,7 +1432,7 @@ internal final class FormatterPredicateTests: XCTestKitCase
             failure,
             collectionText:     collectionText,
             predicateText:      predicateText,
-            options:            XCTKConfig.global.formatOptions
+            options:            .init()
         )
         
         let expected: String =
@@ -1469,7 +1469,7 @@ internal final class FormatterPredicateTests: XCTestKitCase
         
         let actual: String = Formatter.formatPredicate(
             failure,
-            options: XCTKConfig.global.formatOptions
+            options: .init()
         )
         
         let expected: String =
@@ -1503,7 +1503,7 @@ internal final class FormatterPredicateTests: XCTestKitCase
         
         let actual: String = Formatter.formatPredicate(
             failure,
-            options: XCTKConfig.global.formatOptions
+            options: .init()
         )
         
         let expected: String =
@@ -1538,7 +1538,7 @@ internal final class FormatterPredicateTests: XCTestKitCase
         
         let actual: String = Formatter.formatPredicate(
             failure,
-            options: XCTKConfig.global.formatOptions
+            options: .init()
         )
         
         let expected: String =
@@ -1574,7 +1574,7 @@ internal final class FormatterPredicateTests: XCTestKitCase
         
         let actual: String = Formatter.formatPredicate(
             failure,
-            options: XCTKConfig.global.formatOptions
+            options: .init()
         )
         
         let expected: String =
@@ -1607,7 +1607,7 @@ internal final class FormatterPredicateTests: XCTestKitCase
         
         let actual: String = Formatter.formatPredicate(
             failure,
-            options: XCTKConfig.global.formatOptions
+            options: .init()
         )
         
         let expected: String =
@@ -1641,7 +1641,7 @@ internal final class FormatterPredicateTests: XCTestKitCase
         
         let actual: String = Formatter.formatPredicate(
             failure,
-            options: XCTKConfig.global.formatOptions
+            options: .init()
         )
         
         let expected: String =
@@ -1674,7 +1674,7 @@ internal final class FormatterPredicateTests: XCTestKitCase
         
         let actual: String = Formatter.formatPredicate(
             failure,
-            options: XCTKConfig.global.formatOptions
+            options: .init()
         )
         
         let expected: String =
@@ -1707,7 +1707,7 @@ internal final class FormatterPredicateTests: XCTestKitCase
         
         let actual: String = Formatter.formatPredicate(
             failure,
-            options: XCTKConfig.global.formatOptions
+            options: .init()
         )
         
         let expected: String =
@@ -1816,7 +1816,7 @@ internal final class FormatterPredicateTests: XCTestKitCase
         let actual: String = Formatter.formatPredicate(
             failure,
             collectionText:     collectionText,
-            options:            XCTKConfig.global.formatOptions
+            options:            .init()
         )
         
         let expected: String =
@@ -1859,7 +1859,7 @@ internal final class FormatterPredicateTests: XCTestKitCase
         
         let actual: String = Formatter.formatPredicate(
             failure,
-            options: XCTKConfig.global.formatOptions
+            options: .init()
         )
         
         let expected: String =
@@ -1910,7 +1910,7 @@ internal final class FormatterPredicateTests: XCTestKitCase
         
         let actual: String = Formatter.formatPredicate(
             failure,
-            options: XCTKConfig.global.formatOptions
+            options: .init()
         )
         
         let expected: String =
@@ -1957,7 +1957,7 @@ internal final class FormatterPredicateTests: XCTestKitCase
         
         let actual: String = Formatter.formatPredicate(
             failure,
-            options: XCTKConfig.global.formatOptions
+            options: .init()
         )
         
         let expected: String =
@@ -1993,7 +1993,7 @@ internal final class FormatterPredicateTests: XCTestKitCase
         
         let actual: String = Formatter.formatPredicate(
             failure,
-            options: XCTKConfig.global.formatOptions
+            options: .init()
         )
         
         let expected: String =
@@ -2038,7 +2038,7 @@ internal final class FormatterPredicateTests: XCTestKitCase
             failure,
             collectionText:     collectionText,
             predicateText:      predicateText,
-            options:            XCTKConfig.global.formatOptions
+            options:            .init()
         )
         
         let expected: String =
@@ -2215,7 +2215,7 @@ internal final class FormatterPredicateTests: XCTestKitCase
         let actual: String = Formatter.formatPredicate(
             failure,
             collectionText:     collectionText,
-            options:            XCTKConfig.global.formatOptions
+            options:            .init()
         )
         
         let expected: String =
@@ -2254,7 +2254,7 @@ internal final class FormatterPredicateTests: XCTestKitCase
         
         let actual: String = Formatter.formatPredicate(
             failure,
-            options: XCTKConfig.global.formatOptions
+            options: .init()
         )
         
         let expected: String =
@@ -2288,7 +2288,7 @@ internal final class FormatterPredicateTests: XCTestKitCase
         
         let actual: String = Formatter.formatPredicate(
             failure,
-            options: XCTKConfig.global.formatOptions
+            options: .init()
         )
         
         let expected: String =
@@ -2324,7 +2324,7 @@ internal final class FormatterPredicateTests: XCTestKitCase
         
         let actual: String = Formatter.formatPredicate(
             failure,
-            options: XCTKConfig.global.formatOptions
+            options: .init()
         )
         
         let expected: String =
