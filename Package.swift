@@ -6,7 +6,7 @@ import CompilerPluginSupport
 
 
 let package = Package(
-    name: "XCTestKit",
+    name: "SwiftTestKit",
     platforms:
     [
         .iOS(.v18),
