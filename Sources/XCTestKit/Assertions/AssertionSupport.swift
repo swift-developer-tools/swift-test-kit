@@ -137,6 +137,8 @@ public struct XCTKUnwrapError: Error, CustomStringConvertible
     /// The error description.
     public var description: String
     {
-        return "XCTKUnwrap unwrapped a nil value"
+        let name: String = AssertionKind.unwrap.name(for: .xctk)
+        
+        return "\(name) unwrapped a nil value"
     }
 }

@@ -12,6 +12,25 @@ import XCTest
 
 
 
+// MARK: - Failure context
+
+/// The XCTestKit assertion failure context.
+internal let failureContext = FailureContext(
+    framework: .xctk,
+    emit:
+    {
+        message, file, line in
+        
+        XCTFail(
+            message,
+            file:   file,
+            line:   line
+        )
+    }
+)
+
+
+
 /// Methods for failing assertions.
 internal extension AssertionKind
 {
@@ -33,6 +52,7 @@ internal extension AssertionKind
     )
     {
         let text: String = makeReasonFailure(
+            context:        failureContext,
             captureKind:    captureKind,
             reason:         reason,
             message:        message
@@ -67,6 +87,7 @@ internal extension AssertionKind
     )
     {
         let result: Result<String, UnhandledError> = makeDiffFailure(
+            context:        failureContext,
             captureKind:    captureKind,
             diff:           diff,
             message:        message,
@@ -101,6 +122,7 @@ internal extension AssertionKind
     )
     {
         let result: Result<String, UnhandledError> = makeSingleExprFailure(
+            context:        failureContext,
             captureKind:    captureKind,
             actual:         actual,
             message:        message
@@ -137,6 +159,7 @@ internal extension AssertionKind
     )
     {
         let text: String = makeBooleanExprFailure(
+            context:        failureContext,
             exprText:       exprText,
             evaluated:      evaluated,
             notEvaluated:   notEvaluated,
@@ -173,6 +196,7 @@ internal extension AssertionKind
     )
     {
         let text: String = makePredicateFailure(
+            context:        failureContext,
             captureKind:    captureKind,
             failure:        failure,
             message:        message,

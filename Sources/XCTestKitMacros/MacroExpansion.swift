@@ -13,6 +13,12 @@ import SwiftSyntaxMacros
 
 
 
+// MARK: - Framework
+
+private let framework: FrameworkKind = .xctk
+
+
+
 // MARK: - Protocols
 
 /// A macro expression.
@@ -47,7 +53,8 @@ extension AssertionMacro
     public static func makeUnhandledKindError() -> ExpansionError
     {
         return ExpansionError(
-            "Unhandled assertion kind \"\(kind.macroDisplayName)\""
+            "Unhandled assertion kind"
+            + " \"\(kind.macroDisplayName(for: framework))\""
             + " during macro expansion. Please submit an XCTestKit bug report"
             + " (https://github.com/swift-developer-tools/XCTestKit)."
         )
@@ -74,7 +81,7 @@ extension NoExprMacro
             ?? .makeStringLiteral("")
         
         return """
-        \(raw: kind.macroInternalName)(
+        \(raw: kind.macroInternalName(for: framework))(
             message:    \(message),
             file:       #filePath,
             line:       #line
@@ -128,6 +135,7 @@ extension SingleExprMacro
                 
                 return BooleanExprWalker.expand(
                     kind:       kind,
+                    framework:  framework,
                     expr:       expr,
                     message:    message,
                     options:    options
@@ -139,7 +147,7 @@ extension SingleExprMacro
                 .unwrap:
                 
                 return """
-                \(raw: kind.macroInternalName)(
+                \(raw: kind.macroInternalName(for: framework))(
                     expr:       \(expr),
                     exprText:   \(literal: exprText),
                     message:    \(message),
@@ -185,7 +193,7 @@ extension SingleExprMacro
                 }
                 
                 return """
-                \(raw: kind.macroInternalName)(
+                \(raw: kind.macroInternalName(for: framework))(
                     expr:           { \(expr) },
                     exprText:       \(literal: exprText),
                     message:        \(message),
@@ -199,7 +207,7 @@ extension SingleExprMacro
             case .noThrow:
                 
                 return """
-                \(raw: kind.macroInternalName)(
+                \(raw: kind.macroInternalName(for: framework))(
                     expr:       { \(expr) },
                     exprText:   \(literal: exprText),
                     message:    \(message),
@@ -212,7 +220,7 @@ extension SingleExprMacro
             case .unique:
                 
                 return """
-                \(raw: kind.macroInternalName)(
+                \(raw: kind.macroInternalName(for: framework))(
                     collection:         \(expr),
                     collectionText:     \(literal: exprText),
                     message:            \(message),
@@ -277,7 +285,7 @@ extension DoubleExprMacro
             case .equal:
                 
                 return """
-                \(raw: kind.macroInternalName)(
+                \(raw: kind.macroInternalName(for: framework))(
                     expected:       \(expr1),
                     actual:         \(expr2),
                     expectedText:   \(literal: expr1Text),
@@ -299,7 +307,7 @@ extension DoubleExprMacro
                 .lessThan:
                 
                 return """
-                \(raw: kind.macroInternalName)(
+                \(raw: kind.macroInternalName(for: framework))(
                     expr1:      \(expr1),
                     expr2:      \(expr2),
                     expr1Text:  \(literal: expr1Text),
@@ -323,7 +331,7 @@ extension DoubleExprMacro
                 }
                 
                 return """
-                \(raw: kind.macroInternalName)(
+                \(raw: kind.macroInternalName(for: framework))(
                     expr1:      \(expr1),
                     expr2:      \(expr2),
                     expr1Text:  \(literal: expr1Text),
@@ -432,7 +440,7 @@ extension DoubleExprPredicateMacro
                 .uniqueByKey:
                 
                 return """
-                \(raw: kind.macroInternalName)(
+                \(raw: kind.macroInternalName(for: framework))(
                     collection:         \(collection),
                     predicate:          \(predicate),
                     collectionText:     \(literal: collectionText),
@@ -463,7 +471,7 @@ extension DoubleExprPredicateMacro
                 }
                 
                 return """
-                \(raw: kind.macroInternalName)(
+                \(raw: kind.macroInternalName(for: framework))(
                     collection:         \(collection),
                     \(raw: boundName):  \(bound),
                     predicate:          \(predicate),

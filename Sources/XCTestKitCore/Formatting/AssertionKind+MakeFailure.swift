@@ -14,11 +14,13 @@ extension AssertionKind
     
     /// Creates a reason-based failure message.
     /// - Parameters:
+    ///   - context: The assertion failure context.
     ///   - captureKind: The kind of captured assertion expression.
     ///   - reason: The optional failure reason.
     ///   - message: The description of a failure.
     /// - Returns: The reason-based failure message.
     public func makeReasonFailure(
+        context     : FailureContext,
         captureKind : ExprCaptureKind,
         reason      : String?,
         message     : () -> String?
@@ -30,14 +32,20 @@ extension AssertionKind
         {
             case .none:
                 
-                text = makeHeader(isMacro: false)
+                text = makeHeader(
+                    framework:  context.framework,
+                    isMacro:    false
+                )
                 
                 appendReason(reason, to: &text)
                 appendMessage(message, to: &text)
                 
             case let .single(exprText):
                 
-                text = makeHeader(isMacro: false)
+                text = makeHeader(
+                    framework:  context.framework,
+                    isMacro:    false
+                )
                 
                 appendReason(reason, to: &text)
                 appendMessage(message, to: &text)
@@ -46,7 +54,10 @@ extension AssertionKind
                 
             case let .double(expr1Text, expr2Text):
                 
-                text = makeHeader(isMacro: true)
+                text = makeHeader(
+                    framework:  context.framework,
+                    isMacro:    true
+                )
                 
                 appendReason(reason, to: &text)
                 appendMessage(message, to: &text)
@@ -64,6 +75,7 @@ extension AssertionKind
     
     /// Creates a diff-based failure message.
     /// - Parameters:
+    ///   - context: The assertion failure context.
     ///   - captureKind: The kind of captured assertion expression.
     ///   - diff: The computed diff.
     ///   - message: The description of a failure.
@@ -71,6 +83,7 @@ extension AssertionKind
     /// - Returns: The diff-based failure message, or an ``UnhandledError``
     /// for ``ExprCaptureKind/single``.
     public func makeDiffFailure(
+        context     : FailureContext,
         captureKind : ExprCaptureKind,
         diff        : DiffNode,
         message     : () -> String?,
@@ -86,7 +99,10 @@ extension AssertionKind
         {
             case .none:
                 
-                var text: String = makeHeader(isMacro: false)
+                var text: String = makeHeader(
+                    framework:  context.framework,
+                    isMacro:    false
+                )
                 
                 appendMessage(message, to: &text)
                 
@@ -96,7 +112,10 @@ extension AssertionKind
                 
             case let .double(expText, actText):
                 
-                var text: String = makeHeader(isMacro: true)
+                var text: String = makeHeader(
+                    framework:  context.framework,
+                    isMacro:    true
+                )
                 
                 appendMessage(message, to: &text)
                 
@@ -109,6 +128,7 @@ extension AssertionKind
             case .single:
                 
                 let error: UnhandledError = makeUnhandledError(
+                    context:        context,
                     captureKind:    captureKind,
                     message:        message
                 )
@@ -123,6 +143,7 @@ extension AssertionKind
     
     /// Creates a single-expression-based failure message.
     /// - Parameters:
+    ///   - context: The assertion failure context.
     ///   - captureKind: The kind of captured assertion expression.
     ///   - actual: The string representation of the actual value, or `nil`
     ///   to omit.
@@ -131,6 +152,7 @@ extension AssertionKind
     /// ``UnhandledError`` for ``ExprCaptureKind/none`` and
     /// ``ExprCaptureKind/double``.
     public func makeSingleExprFailure(
+        context     : FailureContext,
         captureKind : ExprCaptureKind,
         actual      : String?,
         message     : () -> String?
@@ -140,7 +162,10 @@ extension AssertionKind
         {
             case let .single(exprText):
                 
-                var text: String = makeHeader(isMacro: true)
+                var text: String = makeHeader(
+                    framework:  context.framework,
+                    isMacro:    true
+                )
                 
                 appendMessage(message, to: &text)
                 
@@ -160,6 +185,7 @@ extension AssertionKind
                 .double:
                 
                 let error: UnhandledError = makeUnhandledError(
+                    context:        context,
                     captureKind:    captureKind,
                     message:        message
                 )
@@ -174,6 +200,7 @@ extension AssertionKind
     
     /// Creates a boolean-expression-based failure message for macro assertions.
     /// - Parameters:
+    ///   - context: The assertion failure context.
     ///   - exprText: The expression source text.
     ///   - evaluated: The evaluated boolean expressions.
     ///   - notEvaluated: The number of unevaluated boolean expressions.
@@ -181,6 +208,7 @@ extension AssertionKind
     ///   - options: The options for testing.
     /// - Returns: The boolean-expression-based failure message.
     public func makeBooleanExprFailure(
+        context         : FailureContext,
         exprText        : String,
         evaluated       : [TKBooleanExpr],
         notEvaluated    : Int,
@@ -196,7 +224,10 @@ extension AssertionKind
             options:        options.formatOptions
         )
         
-        var text: String = makeHeader(isMacro: true)
+        var text: String = makeHeader(
+            framework:  context.framework,
+            isMacro:    true
+        )
         
         appendMessage(message, to: &text)
         
@@ -210,16 +241,15 @@ extension AssertionKind
     // MARK: - Predicate
     
     /// Creates a predicate-based failure message.
-    ///
-    /// - Note: This handles all ``ExprCaptureKind`` cases.
-    ///
     /// - Parameters:
+    ///   - context: The assertion failure context.
     ///   - captureKind: The kind of captured assertion expression.
     ///   - failure: Information about the failed predicate.
     ///   - message: The description of a failure.
     ///   - options: The options for testing.
     /// - Returns: The predicate-based failure message.
     public func makePredicateFailure(
+        context     : FailureContext,
         captureKind : ExprCaptureKind,
         failure     : PredicateFailure,
         message     : () -> String?,
@@ -263,7 +293,10 @@ extension AssertionKind
                 )
         }
         
-        var text: String = makeHeader(isMacro: isMacro)
+        var text: String = makeHeader(
+            framework:  context.framework,
+            isMacro:    isMacro
+        )
         
         appendMessage(message, to: &text)
 
@@ -279,15 +312,20 @@ extension AssertionKind
     /// Creates a failure message for use during macro expansion in
     /// ``BooleanExprWalker``.
     /// - Parameters:
+    ///   - framework: The framework kind.
     ///   - reason: The optional failure reason.
     ///   - message: The description of a failure.
     /// - Returns: The failure message.
     public func makeMacroExpansionFailure(
-        reason  : String?,
-        message : String?
+        framework   : FrameworkKind,
+        reason      : String?,
+        message     : String?
     ) -> String
     {
-        var text: String = makeHeader(isMacro: true)
+        var text: String = makeHeader(
+            framework:  framework,
+            isMacro:    true
+        )
         
         appendReason(reason, to: &text)
         appendMessage({ return message }, to: &text)
@@ -342,15 +380,18 @@ extension AssertionKind
     
     
     /// Creates the assertion failure header.
-    /// - Parameter isMacro: Whether the failure is from a macro assertion.
+    /// - Parameters:
+    ///   - framework: The framework kind.
+    ///   - isMacro: Whether the failure is from a macro assertion.
     /// - Returns: The assertion failure header.
     private func makeHeader(
-        isMacro: Bool
+        framework   : FrameworkKind,
+        isMacro     : Bool
     ) -> String
     {
         let displayName: String = isMacro
-            ? macroDisplayName
-            : name
+            ? macroDisplayName(for: framework)
+            : name(for: framework)
         
         return "\(displayName) failed"
     }
@@ -379,10 +420,12 @@ extension AssertionKind
     
     /// Creates an error for the given unhandled expression capture kind.
     /// - Parameters:
+    ///   - context: The assertion failure context.
     ///   - captureKind: The unhandled expression capture kind.
     ///   - message: The description of a failure.
     /// - Returns: The error for the given unhandled expression capture kind.
     private func makeUnhandledError(
+        context     : FailureContext,
         captureKind : ExprCaptureKind,
         message     : () -> String?
     ) -> UnhandledError
@@ -392,7 +435,10 @@ extension AssertionKind
             + " Please submit an XCTestKit bug report"
             + " (https://github.com/swift-developer-tools/XCTestKit)."
         
-        var text: String = makeHeader(isMacro: captureKind != .none)
+        var text: String = makeHeader(
+            framework:  context.framework,
+            isMacro:    captureKind != .none
+        )
         
         appendReason(reason, to: &text)
         appendMessage(message, to: &text)

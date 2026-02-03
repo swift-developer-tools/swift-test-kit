@@ -336,6 +336,7 @@ private extension MacroAssertionExpansionTests
                 
                 expandedSource = BooleanExprWalker.expand(
                     kind:       kind,
+                    framework:  .xctk,
                     expr:       "expr",
                     message:    .makeStringLiteral("msg"),
                     options:    .makeNilLiteral()

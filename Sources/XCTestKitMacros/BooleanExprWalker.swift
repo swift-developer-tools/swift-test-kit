@@ -19,21 +19,24 @@ internal struct BooleanExprWalker
     /// Generates the macro expansion for the specified boolean assertion.
     /// - Parameters:
     ///   - kind: The assertion kind.
+    ///   - framework: The framework kind.
     ///   - expr: The expression.
     ///   - message: An optional description of a failure.
     ///   - options: The options for testing.
     /// - Returns: The expanded macro expression.
     internal static func expand(
-        kind    : AssertionKind,
-        expr    : ExprSyntax,
-        message : ExprSyntax,
-        options : ExprSyntax
+        kind        : AssertionKind,
+        framework   : FrameworkKind,
+        expr        : ExprSyntax,
+        message     : ExprSyntax,
+        options     : ExprSyntax
     ) -> ExprSyntax
     {
         if shouldDecompose(expr)
         {
             return expandDecomposable(
                 kind:       kind,
+                framework:  framework,
                 expr:       expr,
                 message:    message,
                 options:    options
@@ -42,6 +45,7 @@ internal struct BooleanExprWalker
         
         return expandSimple(
             kind:       kind,
+            framework:  framework,
             expr:       expr,
             message:    message,
             options:    options
@@ -53,15 +57,17 @@ internal struct BooleanExprWalker
     /// Generates the macro expansion for the given non-decomposable expression.
     /// - Parameters:
     ///   - kind: The assertion kind.
+    ///   - framework: The framework kind.
     ///   - expr: The expression.
     ///   - message: An optional description of a failure.
     ///   - options: The options for testing.
     /// - Returns: The expanded macro expression.
     private static func expandSimple(
-        kind    : AssertionKind,
-        expr    : ExprSyntax,
-        message : ExprSyntax,
-        options : ExprSyntax
+        kind        : AssertionKind,
+        framework   : FrameworkKind,
+        expr        : ExprSyntax,
+        message     : ExprSyntax,
+        options     : ExprSyntax
     ) -> ExprSyntax
     {
         let exprText: String = expr.trimmedDescription
@@ -75,7 +81,7 @@ internal struct BooleanExprWalker
                 value:  _v0
             )
         
-            \(raw: kind.macroInternalName)(
+            \(raw: kind.macroInternalName(for: framework))(
                 result:         _v0,
                 exprText:       \(literal: exprText),
                 evaluated:      [evaluated],
@@ -90,6 +96,7 @@ internal struct BooleanExprWalker
         return wrapWithErrorHandling(
             code:       code,
             kind:       kind,
+            framework:  framework,
             expr:       expr,
             message:    message
         )
@@ -101,15 +108,17 @@ internal struct BooleanExprWalker
     /// logical operators.
     /// - Parameters:
     ///   - kind: The assertion kind.
+    ///   - framework: The framework kind.
     ///   - expr: The expression.
     ///   - message: An optional description of a failure.
     ///   - options: The options for testing.
     /// - Returns: The expanded macro expression.
     private static func expandDecomposable(
-        kind    : AssertionKind,
-        expr    : ExprSyntax,
-        message : ExprSyntax,
-        options : ExprSyntax
+        kind        : AssertionKind,
+        framework   : FrameworkKind,
+        expr        : ExprSyntax,
+        message     : ExprSyntax,
+        options     : ExprSyntax
     ) -> ExprSyntax
     {
         let node    : Node              = parse(expr)
@@ -127,7 +136,7 @@ internal struct BooleanExprWalker
             
             \(raw: evaluationResult.code)
             
-            \(raw: kind.macroInternalName)(
+            \(raw: kind.macroInternalName(for: framework))(
                 result:         \(raw: evaluationResult.varName),
                 exprText:       \(literal: expr.trimmedDescription),
                 evaluated:      _evaluated,
@@ -142,6 +151,7 @@ internal struct BooleanExprWalker
         return wrapWithErrorHandling(
             code:       code,
             kind:       kind,
+            framework:  framework,
             expr:       expr,
             message:    message
         )
@@ -159,14 +169,16 @@ internal struct BooleanExprWalker
     /// - Parameters:
     ///   - code: The code to wrap.
     ///   - kind: The assertion kind.
+    ///   - framework: The framework kind.
     ///   - expr: The expression.
     ///   - message: An optional description of a failure.
     /// - Returns: The expanded macro expression.
     private static func wrapWithErrorHandling(
-        code    : ExprSyntax,
-        kind    : AssertionKind,
-        expr    : ExprSyntax,
-        message : ExprSyntax
+        code        : ExprSyntax,
+        kind        : AssertionKind,
+        framework   : FrameworkKind,
+        expr        : ExprSyntax,
+        message     : ExprSyntax
     ) -> ExprSyntax
     {
         if expr.containsTry
@@ -181,6 +193,7 @@ internal struct BooleanExprWalker
                 {
                     let text: String = 
                         \(raw: kind.sourceExpr).makeMacroExpansionFailure(
+                            framework:  .\(raw: framework),
                             reason:     "threw error \\\"\\(error)\\\"",
                             message:    \(message)
                         )

@@ -53,57 +53,77 @@ public enum AssertionKind: String, Equatable, Sendable
     
     
     /// The assertion name.
-    public var name: String
+    private var baseName: String
     {
         switch self
         {
-            case .assert                : return "XCTKAssert"
-            case .equal                 : return "XCTKAssertEqual"
-            case .notEqual              : return "XCTKAssertNotEqual"
-            case .equalWithAccuracy     : return "XCTKAssertEqual"
-            case .notEqualWithAccuracy  : return "XCTKAssertNotEqual"
-            case .identical             : return "XCTKAssertIdentical"
-            case .notIdentical          : return "XCTKAssertNotIdentical"
-            case .greaterThan           : return "XCTKAssertGreaterThan"
-            case .greaterThanOrEqual    : return "XCTKAssertGreaterThanOrEqual"
-            case .lessThan              : return "XCTKAssertLessThan"
-            case .lessThanOrEqual       : return "XCTKAssertLessThanOrEqual"
-            case .nil                   : return "XCTKAssertNil"
-            case .notNil                : return "XCTKAssertNotNil"
-            case .unwrap                : return "XCTKUnwrap"
-            case .true                  : return "XCTKAssertTrue"
-            case .false                 : return "XCTKAssertFalse"
-            case .throwsError           : return "XCTKAssertThrowsError"
-            case .noThrow               : return "XCTKAssertNoThrow"
-            case .fail                  : return "XCTKFail"
-            case .satisfyAll            : return "XCTKAssertAllSatisfy"
-            case .satisfyAny            : return "XCTKAssertAnySatisfy"
-            case .satisfyNone           : return "XCTKAssertNoneSatisfy"
-            case .satisfyAtLeast        : return "XCTKAssertSatisfy"
-            case .satisfyAtMost         : return "XCTKAssertSatisfy"
-            case .satisfyRange          : return "XCTKAssertSatisfy"
-            case .exactly               : return "XCTKAssertExactly"
-            case .exactlyOne            : return "XCTKAssertExactlyOne"
-            case .sorted                : return "XCTKAssertSorted"
-            case .unique                : return "XCTKAssertUnique"
-            case .uniqueByKey           : return "XCTKAssertUnique"
+            case .assert                : return "Assert"
+            case .equal                 : return "AssertEqual"
+            case .notEqual              : return "AssertNotEqual"
+            case .equalWithAccuracy     : return "AssertEqual"
+            case .notEqualWithAccuracy  : return "AssertNotEqual"
+            case .identical             : return "AssertIdentical"
+            case .notIdentical          : return "AssertNotIdentical"
+            case .greaterThan           : return "AssertGreaterThan"
+            case .greaterThanOrEqual    : return "AssertGreaterThanOrEqual"
+            case .lessThan              : return "AssertLessThan"
+            case .lessThanOrEqual       : return "AssertLessThanOrEqual"
+            case .nil                   : return "AssertNil"
+            case .notNil                : return "AssertNotNil"
+            case .unwrap                : return "Unwrap"
+            case .true                  : return "AssertTrue"
+            case .false                 : return "AssertFalse"
+            case .throwsError           : return "AssertThrowsError"
+            case .noThrow               : return "AssertNoThrow"
+            case .fail                  : return "Fail"
+            case .satisfyAll            : return "AssertAllSatisfy"
+            case .satisfyAny            : return "AssertAnySatisfy"
+            case .satisfyNone           : return "AssertNoneSatisfy"
+            case .satisfyAtLeast        : return "AssertSatisfy"
+            case .satisfyAtMost         : return "AssertSatisfy"
+            case .satisfyRange          : return "AssertSatisfy"
+            case .exactly               : return "AssertExactly"
+            case .exactlyOne            : return "AssertExactlyOne"
+            case .sorted                : return "AssertSorted"
+            case .unique                : return "AssertUnique"
+            case .uniqueByKey           : return "AssertUnique"
         }
     }
     
     
     
-    /// The internal macro name.
-    public var macroInternalName: String
+    /// Gets the framework-specific assertion name.
+    /// - Parameter framework: The framework kind.
+    /// - Returns: The framework-specific assertion name.
+    public func name(
+        for framework: FrameworkKind
+    ) -> String
     {
-        return "_\(name)Macro"
+        return "\(framework.rawValue)\(baseName)"
     }
     
     
     
-    /// The macro display name.
-    public var macroDisplayName: String
+    /// Gets the framework-specific internal macro assertion name.
+    /// - Parameter framework: The framework kind.
+    /// - Returns: The framework-specific internal macro assertion name.
+    public func macroInternalName(
+        for framework: FrameworkKind
+    ) -> String
     {
-        return "#\(name)"
+        return "_\(name(for: framework))Macro"
+    }
+    
+    
+    
+    /// Gets the framework-specific display macro assertion name.
+    /// - Parameter framework: The framework kind.
+    /// - Returns: The framework-specific display macro assertion name.
+    public func macroDisplayName(
+        for framework: FrameworkKind
+    ) -> String
+    {
+        return "#\(name(for: framework))"
     }
     
     
