@@ -7,13 +7,13 @@
 //
 //===----------------------------------------------------------------------===//
 
+import XCTest
 import XCTestKitCore
-@testable import XCTestKit
 @testable import TKTestSupport
 
 
 
-internal final class ComparatorCycleTests: XCTestKitCase
+internal final class ComparatorCycleTests: XCTestCase
 {
     func testSelfCycleInExpected() throws
     {
@@ -189,7 +189,7 @@ internal final class ComparatorCycleTests: XCTestKitCase
             ]
         )
         
-        XCTKAssertEqual(expected, actual)
+        XCTAssertEqual(expected, actual)
     }
     
     
@@ -222,7 +222,7 @@ internal final class ComparatorCycleTests: XCTestKitCase
             ]
         )
         
-        XCTKAssertEqual(expected, actual)
+        XCTAssertEqual(expected, actual)
     }
     
     
@@ -274,7 +274,7 @@ internal final class ComparatorCycleTests: XCTestKitCase
             ]
         )
         
-        XCTKAssertEqual(expected, actual)
+        XCTAssertEqual(expected, actual)
     }
     
     
@@ -367,7 +367,7 @@ internal final class ComparatorCycleTests: XCTestKitCase
             ]
         )
         
-        XCTKAssertEqual(expected, actual)
+        XCTAssertEqual(expected, actual)
     }
     
     
@@ -391,7 +391,7 @@ internal final class ComparatorCycleTests: XCTestKitCase
         /// ``Node`` uses identity-based equality (`===`), so the same object
         /// compared to itself is equal. The comparison should not traverse
         /// into the cycle.
-        XCTKAssertEqual(expected, actual)
+        XCTAssertEqual(expected, actual)
     }
     
     
@@ -479,7 +479,7 @@ internal final class ComparatorCycleTests: XCTestKitCase
             ]
         )
         
-        XCTKAssertEqual(expected, actual)
+        XCTAssertEqual(expected, actual)
     }
     
     
@@ -580,7 +580,7 @@ internal final class ComparatorCycleTests: XCTestKitCase
             ]
         )
         
-        XCTKAssertEqual(expected, actual)
+        XCTAssertEqual(expected, actual)
     }
 }
 
@@ -725,7 +725,7 @@ private extension ComparatorCycleTests
             ]
         )
         
-        XCTKAssertEqual(expected, actual)
+        XCTAssertEqual(expected, actual)
     }
     
     
@@ -821,7 +821,7 @@ private extension ComparatorCycleTests
             ]
         )
         
-        XCTKAssertEqual(expected, actual)
+        XCTAssertEqual(expected, actual)
     }
     
     
@@ -913,7 +913,7 @@ private extension ComparatorCycleTests
             ]
         )
         
-        XCTKAssertEqual(expected, actual)
+        XCTAssertEqual(expected, actual)
     }
     
     
@@ -1017,6 +1017,6 @@ private extension ComparatorCycleTests
             )
         )
         
-        XCTKAssertEqual(expected, actual)
+        XCTAssertEqual(expected, actual)
     }
 }

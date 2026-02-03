@@ -7,13 +7,13 @@
 //
 //===----------------------------------------------------------------------===//
 
+import XCTest
 import XCTestKitCore
-@testable import XCTestKit
 @testable import TKTestSupport
 
 
 
-internal final class StringComparatorNormalizationTests: XCTestKitCase
+internal final class StringComparatorNormalizationTests: XCTestCase
 {
     func testNewlineNormalizationCRLF() throws
     {
@@ -27,7 +27,7 @@ internal final class StringComparatorNormalizationTests: XCTestKitCase
         
         let expected: DiffNodeKind = .same
         
-        XCTKAssertEqual(expected, actual)
+        XCTAssertEqual(expected, actual)
     }
     
     
@@ -44,7 +44,7 @@ internal final class StringComparatorNormalizationTests: XCTestKitCase
         
         let expected: DiffNodeKind = .same
         
-        XCTKAssertEqual(expected, actual)
+        XCTAssertEqual(expected, actual)
     }
     
     
@@ -61,7 +61,7 @@ internal final class StringComparatorNormalizationTests: XCTestKitCase
         
         let expected: DiffNodeKind = .same
         
-        XCTKAssertEqual(expected, actual)
+        XCTAssertEqual(expected, actual)
     }
     
     
@@ -78,6 +78,6 @@ internal final class StringComparatorNormalizationTests: XCTestKitCase
         
         let expected: DiffNodeKind = .same
         
-        XCTKAssertEqual(expected, actual)
+        XCTAssertEqual(expected, actual)
     }
 }

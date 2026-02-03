@@ -7,13 +7,13 @@
 //
 //===----------------------------------------------------------------------===//
 
+import XCTest
 import XCTestKitCore
-@testable import XCTestKit
 @testable import TKTestSupport
 
 
 
-internal final class ComparatorArrayTests: XCTestKitCase
+internal final class ComparatorArrayTests: XCTestCase
 {
     func testArrayHashableMissingElement() throws
     {
@@ -39,7 +39,7 @@ internal final class ComparatorArrayTests: XCTestKitCase
             ]
         )
         
-        XCTKAssertEqual(expected, actual)
+        XCTAssertEqual(expected, actual)
     }
     
     
@@ -77,7 +77,7 @@ internal final class ComparatorArrayTests: XCTestKitCase
             ]
         )
         
-        XCTKAssertEqual(expected, actual)
+        XCTAssertEqual(expected, actual)
     }
     
     
@@ -106,7 +106,7 @@ internal final class ComparatorArrayTests: XCTestKitCase
             ]
         )
         
-        XCTKAssertEqual(expected, actual)
+        XCTAssertEqual(expected, actual)
     }
     
     
@@ -149,7 +149,7 @@ internal final class ComparatorArrayTests: XCTestKitCase
             ]
         )
         
-        XCTKAssertEqual(expected, actual)
+        XCTAssertEqual(expected, actual)
     }
     
     
@@ -178,7 +178,7 @@ internal final class ComparatorArrayTests: XCTestKitCase
             ]
         )
         
-        XCTKAssertEqual(expected, actual)
+        XCTAssertEqual(expected, actual)
     }
     
     
@@ -207,7 +207,7 @@ internal final class ComparatorArrayTests: XCTestKitCase
             ]
         )
         
-        XCTKAssertEqual(expected, actual)
+        XCTAssertEqual(expected, actual)
 
     }
     
@@ -279,7 +279,7 @@ internal final class ComparatorArrayTests: XCTestKitCase
             }
         )
         
-        XCTKAssertEqual(expected, actual)
+        XCTAssertEqual(expected, actual)
     }
     
     
@@ -325,7 +325,7 @@ internal final class ComparatorArrayTests: XCTestKitCase
             ]
         )
         
-        XCTKAssertEqual(expected, actual)
+        XCTAssertEqual(expected, actual)
     }
     
     
@@ -362,7 +362,7 @@ internal final class ComparatorArrayTests: XCTestKitCase
             ]
         )
         
-        XCTKAssertEqual(expected, actual)
+        XCTAssertEqual(expected, actual)
     }
     
     
@@ -396,7 +396,7 @@ internal final class ComparatorArrayTests: XCTestKitCase
             ]
         )
         
-        XCTKAssertEqual(expected, actual)
+        XCTAssertEqual(expected, actual)
     }
     
     
@@ -443,7 +443,7 @@ internal final class ComparatorArrayTests: XCTestKitCase
             ]
         )
         
-        XCTKAssertEqual(expected, actual)
+        XCTAssertEqual(expected, actual)
     }
     
     
@@ -494,6 +494,6 @@ internal final class ComparatorArrayTests: XCTestKitCase
             ]
         )
         
-        XCTKAssertEqual(expected, actual)
+        XCTAssertEqual(expected, actual)
     }
 }

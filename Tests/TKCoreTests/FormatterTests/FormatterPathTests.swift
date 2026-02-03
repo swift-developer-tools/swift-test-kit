@@ -7,13 +7,13 @@
 //
 //===----------------------------------------------------------------------===//
 
+import XCTest
 import XCTestKitCore
-@testable import XCTestKit
 @testable import TKTestSupport
 
 
 
-internal final class FormatterPathTests: XCTestKitCase
+internal final class FormatterPathTests: XCTestCase
 {
     private typealias LK = XCTestKitCore.Formatter.LabelKind
     
@@ -58,7 +58,7 @@ internal final class FormatterPathTests: XCTestKitCase
                 \(LK.actual.rawValue)\(act.age)
         """
         
-        XCTKAssertEqual(expected, actual)
+        XCTAssertEqual(expected, actual)
     }
     
     
@@ -115,7 +115,7 @@ internal final class FormatterPathTests: XCTestKitCase
                 \(LK.actual.rawValue)\(act.inner.value)
         """
         
-        XCTKAssertEqual(expected, actual)
+        XCTAssertEqual(expected, actual)
     }
     
     
@@ -167,7 +167,7 @@ internal final class FormatterPathTests: XCTestKitCase
                 \(LK.actual.rawValue)\(quote(act[0].name))
         """
         
-        XCTKAssertEqual(expected, actual)
+        XCTAssertEqual(expected, actual)
     }
     
     
@@ -236,7 +236,7 @@ internal final class FormatterPathTests: XCTestKitCase
                 \(LK.actual.rawValue)\(act.l2.l3.l4.val)
         """
         
-        XCTKAssertEqual(expected, actual)
+        XCTAssertEqual(expected, actual)
     }
     
     
@@ -275,7 +275,7 @@ internal final class FormatterPathTests: XCTestKitCase
                 \(LK.actual.rawValue)\(act[1])
         """
         
-        XCTKAssertEqual(expected, actual)
+        XCTAssertEqual(expected, actual)
     }
     
     
@@ -314,7 +314,7 @@ internal final class FormatterPathTests: XCTestKitCase
                 \(LK.actual.rawValue)\(act["a"]!)
         """
         
-        XCTKAssertEqual(expected, actual)
+        XCTAssertEqual(expected, actual)
     }
     
     
@@ -366,7 +366,7 @@ internal final class FormatterPathTests: XCTestKitCase
                 \(LK.actual.rawValue)\(act["key"]!.count)
         """
         
-        XCTKAssertEqual(expected, actual)
+        XCTAssertEqual(expected, actual)
     }
     
     
@@ -405,7 +405,7 @@ internal final class FormatterPathTests: XCTestKitCase
                 \(LK.actual.rawValue)"changed"
         """
         
-        XCTKAssertEqual(expected, actual)
+        XCTAssertEqual(expected, actual)
     }
     
     
@@ -444,7 +444,7 @@ internal final class FormatterPathTests: XCTestKitCase
                 \(LK.actual.rawValue)"a"
         """
         
-        XCTKAssertEqual(expected, actual)
+        XCTAssertEqual(expected, actual)
     }
     
     
@@ -483,7 +483,7 @@ internal final class FormatterPathTests: XCTestKitCase
                 \(LK.actual.rawValue)"hallo"
         """
         
-        XCTKAssertEqual(expected, actual)
+        XCTAssertEqual(expected, actual)
     }
     
     
@@ -538,7 +538,7 @@ internal final class FormatterPathTests: XCTestKitCase
                 \(LK.actual.rawValue)\(act.age)
         """
         
-        XCTKAssertEqual(expected, actual)
+        XCTAssertEqual(expected, actual)
     }
     
     
@@ -585,6 +585,6 @@ internal final class FormatterPathTests: XCTestKitCase
                 \(LK.actual.rawValue)\(act[1][1])
         """
         
-        XCTKAssertEqual(expected, actual)
+        XCTAssertEqual(expected, actual)
     }
 }

@@ -7,13 +7,13 @@
 //
 //===----------------------------------------------------------------------===//
 
+import XCTest
 import XCTestKitCore
-@testable import XCTestKit
 @testable import TKTestSupport
 
 
 
-internal final class FormatterIntegrationTests: XCTestKitCase
+internal final class FormatterIntegrationTests: XCTestCase
 {
     private typealias LK = XCTestKitCore.Formatter.LabelKind
     
@@ -50,7 +50,7 @@ internal final class FormatterIntegrationTests: XCTestKitCase
                 Cycle detected in both expected and actual values
         """
         
-        XCTKAssertEqual(expected, actual)
+        XCTAssertEqual(expected, actual)
     }
     
     
@@ -77,7 +77,7 @@ internal final class FormatterIntegrationTests: XCTestKitCase
         \(LK.actual.rawValue)\(act)
         """
         
-        XCTKAssertEqual(expected, actual)
+        XCTAssertEqual(expected, actual)
     }
     
     
@@ -114,7 +114,7 @@ internal final class FormatterIntegrationTests: XCTestKitCase
                 \(LK.unexpected.rawValue)\(quote(act[3]))
         """
         
-        XCTKAssertEqual(expected, actual)
+        XCTAssertEqual(expected, actual)
     }
     
     
@@ -150,7 +150,7 @@ internal final class FormatterIntegrationTests: XCTestKitCase
                 \(LK.actual.rawValue)\(act["key"]!.count)
         """
         
-        XCTKAssertEqual(expected, actual)
+        XCTAssertEqual(expected, actual)
     }
     
     
@@ -181,7 +181,7 @@ internal final class FormatterIntegrationTests: XCTestKitCase
             \(LK.unexpected.rawValue)"d"
         """
         
-        XCTKAssertEqual(expected, actual)
+        XCTAssertEqual(expected, actual)
     }
     
     
@@ -213,7 +213,7 @@ internal final class FormatterIntegrationTests: XCTestKitCase
                 \(LK.changed.rawValue)character 2 ("e" → "a")
         """
         
-        XCTKAssertEqual(expected, actual)
+        XCTAssertEqual(expected, actual)
     }
     
     
@@ -250,7 +250,7 @@ internal final class FormatterIntegrationTests: XCTestKitCase
                 \(LK.actual.rawValue)\(act.age)
         """
         
-        XCTKAssertEqual(expected, actual)
+        XCTAssertEqual(expected, actual)
     }
     
     
@@ -291,7 +291,7 @@ internal final class FormatterIntegrationTests: XCTestKitCase
                 \(LK.actual.rawValue)\(act.inner.value)
         """
         
-        XCTKAssertEqual(expected, actual)
+        XCTAssertEqual(expected, actual)
     }
     
     
@@ -328,6 +328,6 @@ internal final class FormatterIntegrationTests: XCTestKitCase
             ... and 3 more differences
         """
         
-        XCTKAssertEqual(expected, actual)
+        XCTAssertEqual(expected, actual)
     }
 }

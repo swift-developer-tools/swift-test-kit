@@ -7,13 +7,13 @@
 //
 //===----------------------------------------------------------------------===//
 
+import XCTest
 import XCTestKitCore
-@testable import XCTestKit
 @testable import TKTestSupport
 
 
 
-internal final class StringComparatorCharCoalescingTests: XCTestKitCase
+internal final class StringComparatorCharCoalescingTests: XCTestCase
 {
     func testCharCoalescingAdjacentRemovals() throws
     {
@@ -37,7 +37,7 @@ internal final class StringComparatorCharCoalescingTests: XCTestKitCase
             ]
         )
         
-        XCTKAssertEqual(expected, actual)
+        XCTAssertEqual(expected, actual)
     }
     
     
@@ -64,7 +64,7 @@ internal final class StringComparatorCharCoalescingTests: XCTestKitCase
             ]
         )
         
-        XCTKAssertEqual(expected, actual)
+        XCTAssertEqual(expected, actual)
     }
     
     
@@ -98,6 +98,6 @@ internal final class StringComparatorCharCoalescingTests: XCTestKitCase
             ]
         )
         
-        XCTKAssertEqual(expected, actual)
+        XCTAssertEqual(expected, actual)
     }
 }

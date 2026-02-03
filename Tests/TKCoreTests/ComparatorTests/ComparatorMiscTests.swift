@@ -7,14 +7,14 @@
 //
 //===----------------------------------------------------------------------===//
 
+import XCTest
 import XCTestKitCore
 import Foundation
-@testable import XCTestKit
 @testable import TKTestSupport
 
 
 
-internal final class ComparatorMiscTests: XCTestKitCase
+internal final class ComparatorMiscTests: XCTestCase
 {
     // MARK: - Primitive types
     
@@ -33,7 +33,7 @@ internal final class ComparatorMiscTests: XCTestKitCase
             kind:   .same
         )
         
-        XCTKAssertEqual(expected, actual)
+        XCTAssertEqual(expected, actual)
     }
     
     
@@ -56,7 +56,7 @@ internal final class ComparatorMiscTests: XCTestKitCase
             tree:       []
         )
         
-        XCTKAssertEqual(expected, actual)
+        XCTAssertEqual(expected, actual)
     }
     
     
@@ -76,7 +76,7 @@ internal final class ComparatorMiscTests: XCTestKitCase
             kind:   .same
         )
         
-        XCTKAssertEqual(expected, actual)
+        XCTAssertEqual(expected, actual)
     }
     
     
@@ -99,7 +99,7 @@ internal final class ComparatorMiscTests: XCTestKitCase
             tree:       []
         )
         
-        XCTKAssertEqual(expected, actual)
+        XCTAssertEqual(expected, actual)
     }
     
     
@@ -119,7 +119,7 @@ internal final class ComparatorMiscTests: XCTestKitCase
             kind:   .same
         )
         
-        XCTKAssertEqual(expected, actual)
+        XCTAssertEqual(expected, actual)
     }
     
     
@@ -142,7 +142,7 @@ internal final class ComparatorMiscTests: XCTestKitCase
             tree:       []
         )
         
-        XCTKAssertEqual(expected, actual)
+        XCTAssertEqual(expected, actual)
     }
     
     
@@ -162,7 +162,7 @@ internal final class ComparatorMiscTests: XCTestKitCase
             kind:   .same
         )
         
-        XCTKAssertEqual(expected, actual)
+        XCTAssertEqual(expected, actual)
     }
     
     
@@ -197,7 +197,7 @@ internal final class ComparatorMiscTests: XCTestKitCase
             ]
         )
         
-        XCTKAssertEqual(expected, actual)
+        XCTAssertEqual(expected, actual)
     }
     
     
@@ -256,7 +256,7 @@ internal final class ComparatorMiscTests: XCTestKitCase
             ]
         )
         
-        XCTKAssertEqual(expected, actual)
+        XCTAssertEqual(expected, actual)
     }
     
     
@@ -326,7 +326,7 @@ internal final class ComparatorMiscTests: XCTestKitCase
             ]
         )
         
-        XCTKAssertEqual(expected, actual)
+        XCTAssertEqual(expected, actual)
     }
     
     
@@ -348,7 +348,7 @@ internal final class ComparatorMiscTests: XCTestKitCase
             kind:   .same
         )
         
-        XCTKAssertEqual(expected, actual)
+        XCTAssertEqual(expected, actual)
     }
     
     
@@ -388,7 +388,7 @@ internal final class ComparatorMiscTests: XCTestKitCase
             ]
         )
         
-        XCTKAssertEqual(expected, actual)
+        XCTAssertEqual(expected, actual)
     }
     
     
@@ -433,7 +433,7 @@ internal final class ComparatorMiscTests: XCTestKitCase
             ]
         )
         
-        XCTKAssertEqual(expected, actual)
+        XCTAssertEqual(expected, actual)
     }
     
     
@@ -453,7 +453,7 @@ internal final class ComparatorMiscTests: XCTestKitCase
             kind:   .same
         )
         
-        XCTKAssertEqual(expected, actual)
+        XCTAssertEqual(expected, actual)
     }
     
     
@@ -485,7 +485,7 @@ internal final class ComparatorMiscTests: XCTestKitCase
             ]
         )
         
-        XCTKAssertEqual(expected, actual)
+        XCTAssertEqual(expected, actual)
     }
     
     
@@ -514,7 +514,7 @@ internal final class ComparatorMiscTests: XCTestKitCase
             kind:   .same
         )
         
-        XCTKAssertEqual(expected, actual)
+        XCTAssertEqual(expected, actual)
     }
     
     
@@ -553,7 +553,7 @@ internal final class ComparatorMiscTests: XCTestKitCase
             ]
         )
         
-        XCTKAssertEqual(expected, actual)
+        XCTAssertEqual(expected, actual)
     }
     
     
@@ -573,7 +573,7 @@ internal final class ComparatorMiscTests: XCTestKitCase
             kind:   .same
         )
         
-        XCTKAssertEqual(expected, actual)
+        XCTAssertEqual(expected, actual)
     }
     
     
@@ -603,7 +603,7 @@ internal final class ComparatorMiscTests: XCTestKitCase
             ]
         )
         
-        XCTKAssertEqual(expected, actual)
+        XCTAssertEqual(expected, actual)
     }
     
     
@@ -633,7 +633,7 @@ internal final class ComparatorMiscTests: XCTestKitCase
             ]
         )
         
-        XCTKAssertEqual(expected, actual)
+        XCTAssertEqual(expected, actual)
     }
     
     
@@ -653,7 +653,7 @@ internal final class ComparatorMiscTests: XCTestKitCase
             kind:   .same
         )
         
-        XCTKAssertEqual(expected, actual)
+        XCTAssertEqual(expected, actual)
     }
     
     
@@ -673,7 +673,7 @@ internal final class ComparatorMiscTests: XCTestKitCase
             kind:   .same
         )
         
-        XCTKAssertEqual(expected, actual)
+        XCTAssertEqual(expected, actual)
     }
     
     
@@ -696,7 +696,7 @@ internal final class ComparatorMiscTests: XCTestKitCase
             tree:       []
         )
         
-        XCTKAssertEqual(expected, actual)
+        XCTAssertEqual(expected, actual)
     }
     
     
@@ -730,7 +730,7 @@ internal final class ComparatorMiscTests: XCTestKitCase
             ]
         )
         
-        XCTKAssertEqual(expected, actual)
+        XCTAssertEqual(expected, actual)
     }
     
     
@@ -767,7 +767,7 @@ internal final class ComparatorMiscTests: XCTestKitCase
             }
         )
         
-        XCTKAssertEqual(expected, actual)
+        XCTAssertEqual(expected, actual)
     }
     
     
@@ -805,7 +805,7 @@ internal final class ComparatorMiscTests: XCTestKitCase
             ]
         )
         
-        XCTKAssertEqual(expected, actual)
+        XCTAssertEqual(expected, actual)
     }
     
     
@@ -864,6 +864,6 @@ internal final class ComparatorMiscTests: XCTestKitCase
             }
         )
         
-        XCTKAssertEqual(expected, actual)
+        XCTAssertEqual(expected, actual)
     }
 }

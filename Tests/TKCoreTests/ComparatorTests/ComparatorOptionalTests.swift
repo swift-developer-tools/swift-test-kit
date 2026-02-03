@@ -7,13 +7,13 @@
 //
 //===----------------------------------------------------------------------===//
 
+import XCTest
 import XCTestKitCore
-@testable import XCTestKit
 @testable import TKTestSupport
 
 
 
-internal final class ComparatorOptionalTests: XCTestKitCase
+internal final class ComparatorOptionalTests: XCTestCase
 {
     func testOptionalBothNone() throws
     {
@@ -30,7 +30,7 @@ internal final class ComparatorOptionalTests: XCTestKitCase
             kind:   .same
         )
         
-        XCTKAssertEqual(expected, actual)
+        XCTAssertEqual(expected, actual)
     }
     
     
@@ -73,7 +73,7 @@ internal final class ComparatorOptionalTests: XCTestKitCase
             ]
         )
         
-        XCTKAssertEqual(expected, actual)
+        XCTAssertEqual(expected, actual)
     }
     
     
@@ -93,7 +93,7 @@ internal final class ComparatorOptionalTests: XCTestKitCase
             kind:   .same
         )
         
-        XCTKAssertEqual(expected, actual)
+        XCTAssertEqual(expected, actual)
     }
     
     
@@ -122,7 +122,7 @@ internal final class ComparatorOptionalTests: XCTestKitCase
             ]
         )
         
-        XCTKAssertEqual(expected, actual)
+        XCTAssertEqual(expected, actual)
     }
     
     
@@ -151,7 +151,7 @@ internal final class ComparatorOptionalTests: XCTestKitCase
             ]
         )
         
-        XCTKAssertEqual(expected, actual)
+        XCTAssertEqual(expected, actual)
     }
     
     
@@ -197,7 +197,7 @@ internal final class ComparatorOptionalTests: XCTestKitCase
             ]
         )
         
-        XCTKAssertEqual(expected, actual)
+        XCTAssertEqual(expected, actual)
     }
     
     
@@ -234,7 +234,7 @@ internal final class ComparatorOptionalTests: XCTestKitCase
             ]
         )
         
-        XCTKAssertEqual(expected, actual)
+        XCTAssertEqual(expected, actual)
     }
     
     
@@ -254,7 +254,7 @@ internal final class ComparatorOptionalTests: XCTestKitCase
             kind:   .same
         )
         
-        XCTKAssertEqual(expected, actual)
+        XCTAssertEqual(expected, actual)
     }
     
     
@@ -283,7 +283,7 @@ internal final class ComparatorOptionalTests: XCTestKitCase
             ]
         )
         
-        XCTKAssertEqual(expected, actual)
+        XCTAssertEqual(expected, actual)
     }
     
     
@@ -303,6 +303,6 @@ internal final class ComparatorOptionalTests: XCTestKitCase
             kind:   .same
         )
         
-        XCTKAssertEqual(expected, actual)
+        XCTAssertEqual(expected, actual)
     }
 }

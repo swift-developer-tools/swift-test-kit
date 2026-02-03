@@ -7,13 +7,13 @@
 //
 //===----------------------------------------------------------------------===//
 
+import XCTest
 import XCTestKitCore
-@testable import XCTestKit
 @testable import TKTestSupport
 
 
 
-internal final class FormatterBooleanExprTests: XCTestKitCase
+internal final class FormatterBooleanExprTests: XCTestCase
 {
     // MARK: - AND chains
     
@@ -43,7 +43,7 @@ internal final class FormatterBooleanExprTests: XCTestKitCase
             (2 expressions not evaluated)
         """
         
-        XCTKAssertEqual(expected, actual)
+        XCTAssertEqual(expected, actual)
     }
     
     
@@ -76,7 +76,7 @@ internal final class FormatterBooleanExprTests: XCTestKitCase
             (1 expression not evaluated)
         """
         
-        XCTKAssertEqual(expected, actual)
+        XCTAssertEqual(expected, actual)
     }
     
     
@@ -109,7 +109,7 @@ internal final class FormatterBooleanExprTests: XCTestKitCase
             c = false ←
         """
         
-        XCTKAssertEqual(expected, actual)
+        XCTAssertEqual(expected, actual)
     }
     
     
@@ -142,7 +142,7 @@ internal final class FormatterBooleanExprTests: XCTestKitCase
             (2 expressions not evaluated)
         """
         
-        XCTKAssertEqual(expected, actual)
+        XCTAssertEqual(expected, actual)
     }
     
     
@@ -175,7 +175,7 @@ internal final class FormatterBooleanExprTests: XCTestKitCase
             c = false ←
         """
         
-        XCTKAssertEqual(expected, actual)
+        XCTAssertEqual(expected, actual)
     }
     
     
@@ -210,7 +210,7 @@ internal final class FormatterBooleanExprTests: XCTestKitCase
             (1 expression not evaluated)
         """
         
-        XCTKAssertEqual(expected, actual)
+        XCTAssertEqual(expected, actual)
     }
     
     
@@ -243,7 +243,7 @@ internal final class FormatterBooleanExprTests: XCTestKitCase
             (1 expression not evaluated)
         """
         
-        XCTKAssertEqual(expected, actual)
+        XCTAssertEqual(expected, actual)
     }
     
     
@@ -272,7 +272,7 @@ internal final class FormatterBooleanExprTests: XCTestKitCase
             a = false ←
         """
         
-        XCTKAssertEqual(expected, actual)
+        XCTAssertEqual(expected, actual)
     }
     
     
@@ -307,7 +307,7 @@ internal final class FormatterBooleanExprTests: XCTestKitCase
             (1 expression not evaluated)
         """
         
-        XCTKAssertEqual(expected, actual)
+        XCTAssertEqual(expected, actual)
     }
     
     
@@ -338,7 +338,7 @@ internal final class FormatterBooleanExprTests: XCTestKitCase
             \(exprText) = false ←
         """
         
-        XCTKAssertEqual(expected, actual)
+        XCTAssertEqual(expected, actual)
     }
     
     
@@ -367,7 +367,7 @@ internal final class FormatterBooleanExprTests: XCTestKitCase
             \(exprText) = true ←
         """
         
-        XCTKAssertEqual(expected, actual)
+        XCTAssertEqual(expected, actual)
     }
     
     
@@ -400,7 +400,7 @@ internal final class FormatterBooleanExprTests: XCTestKitCase
             (1 expression not evaluated)
         """
         
-        XCTKAssertEqual(expected, actual)
+        XCTAssertEqual(expected, actual)
     }
     
     
@@ -435,7 +435,7 @@ internal final class FormatterBooleanExprTests: XCTestKitCase
             (1 expression not evaluated)
         """
         
-        XCTKAssertEqual(expected, actual)
+        XCTAssertEqual(expected, actual)
     }
     
     
@@ -468,7 +468,7 @@ internal final class FormatterBooleanExprTests: XCTestKitCase
             c = false ←
         """
         
-        XCTKAssertEqual(expected, actual)
+        XCTAssertEqual(expected, actual)
     }
     
     
@@ -501,7 +501,7 @@ internal final class FormatterBooleanExprTests: XCTestKitCase
             (1 expression not evaluated)
         """
         
-        XCTKAssertEqual(expected, actual)
+        XCTAssertEqual(expected, actual)
     }
     
     
@@ -532,7 +532,7 @@ internal final class FormatterBooleanExprTests: XCTestKitCase
             value.isValid() = false ←
         """
         
-        XCTKAssertEqual(expected, actual)
+        XCTAssertEqual(expected, actual)
     }
     
     
@@ -566,7 +566,7 @@ internal final class FormatterBooleanExprTests: XCTestKitCase
             (1 expression not evaluated)
         """
         
-        XCTKAssertEqual(expected, actual)
+        XCTAssertEqual(expected, actual)
     }
     
     
@@ -599,7 +599,7 @@ internal final class FormatterBooleanExprTests: XCTestKitCase
             b = false ←
         """
         
-        XCTKAssertEqual(expected, actual)
+        XCTAssertEqual(expected, actual)
     }
     
     
@@ -630,7 +630,7 @@ internal final class FormatterBooleanExprTests: XCTestKitCase
             c = false ←
         """
         
-        XCTKAssertEqual(expected, actual)
+        XCTAssertEqual(expected, actual)
     }
     
     
@@ -663,7 +663,7 @@ internal final class FormatterBooleanExprTests: XCTestKitCase
             c = false ←
         """
         
-        XCTKAssertEqual(expected, actual)
+        XCTAssertEqual(expected, actual)
     }
     
     
@@ -692,7 +692,7 @@ internal final class FormatterBooleanExprTests: XCTestKitCase
             a = false ←
         """
         
-        XCTKAssertEqual(expected, actual)
+        XCTAssertEqual(expected, actual)
     }
     
     
@@ -723,7 +723,7 @@ internal final class FormatterBooleanExprTests: XCTestKitCase
             b = false ←
         """
         
-        XCTKAssertEqual(expected, actual)
+        XCTAssertEqual(expected, actual)
     }
     
     
@@ -759,7 +759,7 @@ internal final class FormatterBooleanExprTests: XCTestKitCase
             ... and more expressions (limit: 2)
         """
         
-        XCTKAssertEqual(expected, actual)
+        XCTAssertEqual(expected, actual)
     }
     
     
@@ -798,7 +798,7 @@ internal final class FormatterBooleanExprTests: XCTestKitCase
             ... and 3 more expressions
         """
         
-        XCTKAssertEqual(expected, actual)
+        XCTAssertEqual(expected, actual)
     }
     
     
@@ -834,7 +834,7 @@ internal final class FormatterBooleanExprTests: XCTestKitCase
             ... and 2 more expressions
         """
         
-        XCTKAssertEqual(expected, actual)
+        XCTAssertEqual(expected, actual)
     }
     
     
@@ -872,7 +872,7 @@ internal final class FormatterBooleanExprTests: XCTestKitCase
             c = true ←
         """
         
-        XCTKAssertEqual(expected, actual)
+        XCTAssertEqual(expected, actual)
     }
     
     
@@ -905,7 +905,7 @@ internal final class FormatterBooleanExprTests: XCTestKitCase
             c = false ←
         """
         
-        XCTKAssertEqual(expected, actual)
+        XCTAssertEqual(expected, actual)
     }
     
     
@@ -940,7 +940,7 @@ internal final class FormatterBooleanExprTests: XCTestKitCase
             (2 expressions not evaluated)
         """
         
-        XCTKAssertEqual(expected, actual)
+        XCTAssertEqual(expected, actual)
     }
     
     
@@ -975,6 +975,6 @@ internal final class FormatterBooleanExprTests: XCTestKitCase
             (1 expression not evaluated)
         """
         
-        XCTKAssertEqual(expected, actual)
+        XCTAssertEqual(expected, actual)
     }
 }

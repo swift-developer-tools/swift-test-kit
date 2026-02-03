@@ -11,7 +11,7 @@ import XCTestKitCore
 
 
 
-internal extension DiffNode
+public extension DiffNode
 {
     /// Creates a root node from the given values.
     /// - Parameters:

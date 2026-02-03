@@ -7,13 +7,13 @@
 //
 //===----------------------------------------------------------------------===//
 
+import XCTest
 import XCTestKitCore
-@testable import XCTestKit
 @testable import TKTestSupport
 
 
 
-internal final class ComparatorEnumTests: XCTestKitCase
+internal final class ComparatorEnumTests: XCTestCase
 {
     func testEnumDifferentCases() throws
     {
@@ -39,7 +39,7 @@ internal final class ComparatorEnumTests: XCTestKitCase
             tree:       []
         )
         
-        XCTKAssertEqual(expected, actual)
+        XCTAssertEqual(expected, actual)
     }
     
     
@@ -65,7 +65,7 @@ internal final class ComparatorEnumTests: XCTestKitCase
             kind:   .same
         )
         
-        XCTKAssertEqual(expected, actual)
+        XCTAssertEqual(expected, actual)
     }
     
     
@@ -114,7 +114,7 @@ internal final class ComparatorEnumTests: XCTestKitCase
             ]
         )
         
-        XCTKAssertEqual(expected, actual)
+        XCTAssertEqual(expected, actual)
     }
     
     
@@ -144,7 +144,7 @@ internal final class ComparatorEnumTests: XCTestKitCase
             tree:       []
         )
         
-        XCTKAssertEqual(expected, actual)
+        XCTAssertEqual(expected, actual)
     }
     
     
@@ -170,7 +170,7 @@ internal final class ComparatorEnumTests: XCTestKitCase
             kind:   .same
         )
         
-        XCTKAssertEqual(expected, actual)
+        XCTAssertEqual(expected, actual)
     }
     
     
@@ -199,7 +199,7 @@ internal final class ComparatorEnumTests: XCTestKitCase
             tree:       []
         )
         
-        XCTKAssertEqual(expected, actual)
+        XCTAssertEqual(expected, actual)
     }
     
     
@@ -228,7 +228,7 @@ internal final class ComparatorEnumTests: XCTestKitCase
             tree:       []
         )
         
-        XCTKAssertEqual(expected, actual)
+        XCTAssertEqual(expected, actual)
     }
     
     
@@ -271,7 +271,7 @@ internal final class ComparatorEnumTests: XCTestKitCase
             ]
         )
         
-        XCTKAssertEqual(expected, actual)
+        XCTAssertEqual(expected, actual)
     }
     
     
@@ -326,7 +326,7 @@ internal final class ComparatorEnumTests: XCTestKitCase
             ]
         )
         
-        XCTKAssertEqual(expected, actual)
+        XCTAssertEqual(expected, actual)
     }
     
     
@@ -361,7 +361,7 @@ internal final class ComparatorEnumTests: XCTestKitCase
             ]
         )
         
-        XCTKAssertEqual(expected, actual)
+        XCTAssertEqual(expected, actual)
     }
     
     
@@ -396,7 +396,7 @@ internal final class ComparatorEnumTests: XCTestKitCase
             ]
         )
         
-        XCTKAssertEqual(expected, actual)
+        XCTAssertEqual(expected, actual)
     }
     
     
@@ -426,7 +426,7 @@ internal final class ComparatorEnumTests: XCTestKitCase
             tree:       []
         )
         
-        XCTKAssertEqual(expected, actual)
+        XCTAssertEqual(expected, actual)
     }
     
     
@@ -453,7 +453,7 @@ internal final class ComparatorEnumTests: XCTestKitCase
             kind:   .same
         )
         
-        XCTKAssertEqual(expected, actual)
+        XCTAssertEqual(expected, actual)
     }
     
     
@@ -478,7 +478,7 @@ internal final class ComparatorEnumTests: XCTestKitCase
             kind:   .same
         )
         
-        XCTKAssertEqual(expected, actual)
+        XCTAssertEqual(expected, actual)
     }
     
     
@@ -526,7 +526,7 @@ internal final class ComparatorEnumTests: XCTestKitCase
             ]
         )
         
-        XCTKAssertEqual(expected, actual)
+        XCTAssertEqual(expected, actual)
     }
     
     
@@ -555,7 +555,7 @@ internal final class ComparatorEnumTests: XCTestKitCase
             tree:       []
         )
         
-        XCTKAssertEqual(expected, actual)
+        XCTAssertEqual(expected, actual)
     }
     
     
@@ -590,6 +590,6 @@ internal final class ComparatorEnumTests: XCTestKitCase
             ]
         )
         
-        XCTKAssertEqual(expected, actual)
+        XCTAssertEqual(expected, actual)
     }
 }

@@ -7,13 +7,13 @@
 //
 //===----------------------------------------------------------------------===//
 
+import XCTest
 import XCTestKitCore
-@testable import XCTestKit
 @testable import TKTestSupport
 
 
 
-internal final class FormatterNodeKindTests: XCTestKitCase
+internal final class FormatterNodeKindTests: XCTestCase
 {
     private typealias LK = XCTestKitCore.Formatter.LabelKind
     
@@ -59,7 +59,7 @@ internal final class FormatterNodeKindTests: XCTestKitCase
         
         let expected: String = ""
         
-        XCTKAssertEqual(expected, actual)
+        XCTAssertEqual(expected, actual)
     }
     
     
@@ -89,7 +89,7 @@ internal final class FormatterNodeKindTests: XCTestKitCase
         \(LK.actual.rawValue)\(act)
         """
         
-        XCTKAssertEqual(expected, actual)
+        XCTAssertEqual(expected, actual)
     }
     
     
@@ -117,7 +117,7 @@ internal final class FormatterNodeKindTests: XCTestKitCase
         \(LK.actual.rawValue)\(act)
         """
         
-        XCTKAssertEqual(expected, actual)
+        XCTAssertEqual(expected, actual)
     }
     
     
@@ -145,7 +145,7 @@ internal final class FormatterNodeKindTests: XCTestKitCase
         \(LK.actual.rawValue)\(act)
         """
         
-        XCTKAssertEqual(expected, actual)
+        XCTAssertEqual(expected, actual)
     }
     
     
@@ -173,7 +173,7 @@ internal final class FormatterNodeKindTests: XCTestKitCase
         \(LK.actual.rawValue)\(quote(act))
         """
         
-        XCTKAssertEqual(expected, actual)
+        XCTAssertEqual(expected, actual)
     }
     
     
@@ -201,7 +201,7 @@ internal final class FormatterNodeKindTests: XCTestKitCase
         \(LK.actual.rawValue)\(quote(act))
         """
         
-        XCTKAssertEqual(expected, actual)
+        XCTAssertEqual(expected, actual)
     }
     
     
@@ -229,7 +229,7 @@ internal final class FormatterNodeKindTests: XCTestKitCase
         \(LK.actual.rawValue)\(quote(act))
         """
         
-        XCTKAssertEqual(expected, actual)
+        XCTAssertEqual(expected, actual)
     }
     
     
@@ -257,7 +257,7 @@ internal final class FormatterNodeKindTests: XCTestKitCase
         \(LK.actual.rawValue)\(quote(act))
         """
         
-        XCTKAssertEqual(expected, actual)
+        XCTAssertEqual(expected, actual)
     }
     
     
@@ -285,7 +285,7 @@ internal final class FormatterNodeKindTests: XCTestKitCase
         \(LK.actual.rawValue)\(quote(act))
         """
         
-        XCTKAssertEqual(expected, actual)
+        XCTAssertEqual(expected, actual)
     }
     
     
@@ -313,7 +313,7 @@ internal final class FormatterNodeKindTests: XCTestKitCase
         \(LK.actual.rawValue)\(quote(act))
         """
         
-        XCTKAssertEqual(expected, actual)
+        XCTAssertEqual(expected, actual)
     }
     
     
@@ -341,7 +341,7 @@ internal final class FormatterNodeKindTests: XCTestKitCase
         \(LK.actual.rawValue)\(quote(act))
         """
         
-        XCTKAssertEqual(expected, actual)
+        XCTAssertEqual(expected, actual)
     }
     
     
@@ -369,7 +369,7 @@ internal final class FormatterNodeKindTests: XCTestKitCase
         \(LK.actual.rawValue)\(quote(act))
         """
         
-        XCTKAssertEqual(expected, actual)
+        XCTAssertEqual(expected, actual)
     }
     
     
@@ -408,7 +408,7 @@ internal final class FormatterNodeKindTests: XCTestKitCase
                 \(LK.missing.rawValue)\(exp[2])
         """
         
-        XCTKAssertEqual(expected, actual)
+        XCTAssertEqual(expected, actual)
     }
     
     
@@ -445,7 +445,7 @@ internal final class FormatterNodeKindTests: XCTestKitCase
                 \(LK.missing.rawValue)\(quote(exp[0]))
         """
         
-        XCTKAssertEqual(expected, actual)
+        XCTAssertEqual(expected, actual)
     }
     
     
@@ -484,7 +484,7 @@ internal final class FormatterNodeKindTests: XCTestKitCase
                 \(LK.unexpected.rawValue)\(act[2])
         """
         
-        XCTKAssertEqual(expected, actual)
+        XCTAssertEqual(expected, actual)
     }
     
     
@@ -521,7 +521,7 @@ internal final class FormatterNodeKindTests: XCTestKitCase
                 \(LK.unexpected.rawValue)\(quote(act[1]))
         """
         
-        XCTKAssertEqual(expected, actual)
+        XCTAssertEqual(expected, actual)
     }
 }
 
@@ -569,6 +569,6 @@ private extension FormatterNodeKindTests
                 \(location.description)
         """
         
-        XCTKAssertEqual(expected, actual)
+        XCTAssertEqual(expected, actual)
     }
 }

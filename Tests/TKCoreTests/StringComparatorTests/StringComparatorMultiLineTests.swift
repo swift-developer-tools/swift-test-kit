@@ -7,13 +7,13 @@
 //
 //===----------------------------------------------------------------------===//
 
+import XCTest
 import XCTestKitCore
-@testable import XCTestKit
 @testable import TKTestSupport
 
 
 
-internal final class StringComparatorMultiLineTests: XCTestKitCase
+internal final class StringComparatorMultiLineTests: XCTestCase
 {
     func testMultiLineEqualStrings() throws
     {
@@ -26,7 +26,7 @@ internal final class StringComparatorMultiLineTests: XCTestKitCase
         
         let expected: DiffNodeKind = .same
         
-        XCTKAssertEqual(expected, actual)
+        XCTAssertEqual(expected, actual)
     }
     
     
@@ -62,7 +62,7 @@ internal final class StringComparatorMultiLineTests: XCTestKitCase
             ]
         )
         
-        XCTKAssertEqual(expected, actual)
+        XCTAssertEqual(expected, actual)
     }
     
     
@@ -89,7 +89,7 @@ internal final class StringComparatorMultiLineTests: XCTestKitCase
             ]
         )
         
-        XCTKAssertEqual(expected, actual)
+        XCTAssertEqual(expected, actual)
     }
     
     
@@ -116,7 +116,7 @@ internal final class StringComparatorMultiLineTests: XCTestKitCase
             ]
         )
         
-        XCTKAssertEqual(expected, actual)
+        XCTAssertEqual(expected, actual)
     }
     
     
@@ -163,7 +163,7 @@ internal final class StringComparatorMultiLineTests: XCTestKitCase
             ]
         )
         
-        XCTKAssertEqual(expected, actual)
+        XCTAssertEqual(expected, actual)
     }
     
     
@@ -224,7 +224,7 @@ internal final class StringComparatorMultiLineTests: XCTestKitCase
             ]
         )
         
-        XCTKAssertEqual(expected, actual)
+        XCTAssertEqual(expected, actual)
     }
     
     
@@ -280,7 +280,7 @@ internal final class StringComparatorMultiLineTests: XCTestKitCase
             ]
         )
         
-        XCTKAssertEqual(expected, actual)
+        XCTAssertEqual(expected, actual)
     }
     
     
@@ -307,7 +307,7 @@ internal final class StringComparatorMultiLineTests: XCTestKitCase
             ]
         )
         
-        XCTKAssertEqual(expected, actual)
+        XCTAssertEqual(expected, actual)
     }
     
     
@@ -323,7 +323,7 @@ internal final class StringComparatorMultiLineTests: XCTestKitCase
         
         let expected: DiffNodeKind = .same
         
-        XCTKAssertEqual(expected, actual)
+        XCTAssertEqual(expected, actual)
     }
     
     
@@ -355,7 +355,7 @@ internal final class StringComparatorMultiLineTests: XCTestKitCase
             ]
         )
         
-        XCTKAssertEqual(expected, actual)
+        XCTAssertEqual(expected, actual)
     }
     
     
@@ -387,7 +387,7 @@ internal final class StringComparatorMultiLineTests: XCTestKitCase
             ]
         )
         
-        XCTKAssertEqual(expected, actual)
+        XCTAssertEqual(expected, actual)
     }
     
     
@@ -427,7 +427,7 @@ internal final class StringComparatorMultiLineTests: XCTestKitCase
             ]
         )
         
-        XCTKAssertEqual(expected, actual)
+        XCTAssertEqual(expected, actual)
     }
     
     
@@ -454,7 +454,7 @@ internal final class StringComparatorMultiLineTests: XCTestKitCase
             ]
         )
         
-        XCTKAssertEqual(expected, actual)
+        XCTAssertEqual(expected, actual)
     }
     
     
@@ -470,6 +470,6 @@ internal final class StringComparatorMultiLineTests: XCTestKitCase
         
         let expected: DiffNodeKind = .same
         
-        XCTKAssertEqual(expected, actual)
+        XCTAssertEqual(expected, actual)
     }
 }

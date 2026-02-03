@@ -7,13 +7,13 @@
 //
 //===----------------------------------------------------------------------===//
 
+import XCTest
 import XCTestKitCore
-@testable import XCTestKit
 @testable import TKTestSupport
 
 
 
-internal final class StringComparatorSingleLineTests: XCTestKitCase
+internal final class StringComparatorSingleLineTests: XCTestCase
 {
     func testSingleLineEqualStrings() throws
     {
@@ -26,7 +26,7 @@ internal final class StringComparatorSingleLineTests: XCTestKitCase
         
         let expected: DiffNodeKind = .same
         
-        XCTKAssertEqual(expected, actual)
+        XCTAssertEqual(expected, actual)
     }
     
     
@@ -54,7 +54,7 @@ internal final class StringComparatorSingleLineTests: XCTestKitCase
             ]
         )
         
-        XCTKAssertEqual(expected, actual)
+        XCTAssertEqual(expected, actual)
     }
     
     
@@ -70,7 +70,7 @@ internal final class StringComparatorSingleLineTests: XCTestKitCase
         
         let expected: DiffNodeKind = .same
         
-        XCTKAssertEqual(expected, actual)
+        XCTAssertEqual(expected, actual)
     }
     
     
@@ -97,7 +97,7 @@ internal final class StringComparatorSingleLineTests: XCTestKitCase
             ]
         )
         
-        XCTKAssertEqual(expected, actual)
+        XCTAssertEqual(expected, actual)
     }
     
     
@@ -124,7 +124,7 @@ internal final class StringComparatorSingleLineTests: XCTestKitCase
             ]
         )
         
-        XCTKAssertEqual(expected, actual)
+        XCTAssertEqual(expected, actual)
     }
     
     
@@ -152,7 +152,7 @@ internal final class StringComparatorSingleLineTests: XCTestKitCase
             ]
         )
         
-        XCTKAssertEqual(expected, actual)
+        XCTAssertEqual(expected, actual)
     }
     
     
@@ -180,7 +180,7 @@ internal final class StringComparatorSingleLineTests: XCTestKitCase
             ]
         )
         
-        XCTKAssertEqual(expected, actual)
+        XCTAssertEqual(expected, actual)
     }
     
     
@@ -207,7 +207,7 @@ internal final class StringComparatorSingleLineTests: XCTestKitCase
             ]
         )
         
-        XCTKAssertEqual(expected, actual)
+        XCTAssertEqual(expected, actual)
     }
     
     
@@ -234,7 +234,7 @@ internal final class StringComparatorSingleLineTests: XCTestKitCase
             ]
         )
         
-        XCTKAssertEqual(expected, actual)
+        XCTAssertEqual(expected, actual)
     }
     
     
@@ -262,7 +262,7 @@ internal final class StringComparatorSingleLineTests: XCTestKitCase
             ]
         )
         
-        XCTKAssertEqual(expected, actual)
+        XCTAssertEqual(expected, actual)
     }
     
     
@@ -289,7 +289,7 @@ internal final class StringComparatorSingleLineTests: XCTestKitCase
             ]
         )
         
-        XCTKAssertEqual(expected, actual)
+        XCTAssertEqual(expected, actual)
     }
     
     
@@ -317,6 +317,6 @@ internal final class StringComparatorSingleLineTests: XCTestKitCase
             ]
         )
         
-        XCTKAssertEqual(expected, actual)
+        XCTAssertEqual(expected, actual)
     }
 }

@@ -11,7 +11,7 @@ import XCTestKitCore
 
 
 
-internal extension TKBooleanExpr
+public extension TKBooleanExpr
 {
     /// Initializes a ``TKBooleanExpr`` instance from the given values.
     ///

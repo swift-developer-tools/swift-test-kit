@@ -7,13 +7,13 @@
 //
 //===----------------------------------------------------------------------===//
 
+import XCTest
 import XCTestKitCore
-@testable import XCTestKit
 @testable import TKTestSupport
 
 
 
-internal final class StringComparatorCharThresholdTests: XCTestKitCase
+internal final class StringComparatorCharThresholdTests: XCTestCase
 {
     func testCharDiffThresholdCollapsesWhenExceeded() throws
     {
@@ -32,7 +32,7 @@ internal final class StringComparatorCharThresholdTests: XCTestKitCase
             tree:       []
         )
         
-        XCTKAssertEqual(expected, actual)
+        XCTAssertEqual(expected, actual)
     }
     
     
@@ -61,7 +61,7 @@ internal final class StringComparatorCharThresholdTests: XCTestKitCase
             ]
         )
         
-        XCTKAssertEqual(expected, actual)
+        XCTAssertEqual(expected, actual)
     }
     
     
@@ -78,7 +78,7 @@ internal final class StringComparatorCharThresholdTests: XCTestKitCase
         
         let expected: DiffNodeKind = .same
         
-        XCTKAssertEqual(expected, actual)
+        XCTAssertEqual(expected, actual)
     }
     
     
@@ -112,7 +112,7 @@ internal final class StringComparatorCharThresholdTests: XCTestKitCase
             ]
         )
         
-        XCTKAssertEqual(expected, actual)
+        XCTAssertEqual(expected, actual)
     }
     
     
@@ -134,7 +134,7 @@ internal final class StringComparatorCharThresholdTests: XCTestKitCase
             tree:       []
         )
         
-        XCTKAssertEqual(expected, actual)
+        XCTAssertEqual(expected, actual)
     }
     
     
@@ -168,7 +168,7 @@ internal final class StringComparatorCharThresholdTests: XCTestKitCase
             ]
         )
         
-        XCTKAssertEqual(expected, actual)
+        XCTAssertEqual(expected, actual)
     }
     
     
@@ -197,6 +197,6 @@ internal final class StringComparatorCharThresholdTests: XCTestKitCase
             ]
         )
         
-        XCTKAssertEqual(expected, actual)
+        XCTAssertEqual(expected, actual)
     }
 }

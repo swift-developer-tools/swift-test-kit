@@ -7,13 +7,13 @@
 //
 //===----------------------------------------------------------------------===//
 
+import XCTest
 import XCTestKitCore
-@testable import XCTestKit
 @testable import TKTestSupport
 
 
 
-internal final class FormatterPredicateTests: XCTestKitCase
+internal final class FormatterPredicateTests: XCTestCase
 {
     private typealias PFK = PredicateFailureKind
     
@@ -47,7 +47,7 @@ internal final class FormatterPredicateTests: XCTestKitCase
             [1]: 3
         """
         
-        XCTKAssertEqual(expected, actual)
+        XCTAssertEqual(expected, actual)
     }
     
     
@@ -82,7 +82,7 @@ internal final class FormatterPredicateTests: XCTestKitCase
             [4]: 5
         """
         
-        XCTKAssertEqual(expected, actual)
+        XCTAssertEqual(expected, actual)
     }
     
     
@@ -121,7 +121,7 @@ internal final class FormatterPredicateTests: XCTestKitCase
             [1]: 3
         """
         
-        XCTKAssertEqual(expected, actual)
+        XCTAssertEqual(expected, actual)
     }
     
     
@@ -154,7 +154,7 @@ internal final class FormatterPredicateTests: XCTestKitCase
             [2]: 3 (threw error \(quote("error1")))
         """
         
-        XCTKAssertEqual(expected, actual)
+        XCTAssertEqual(expected, actual)
     }
     
     
@@ -187,7 +187,7 @@ internal final class FormatterPredicateTests: XCTestKitCase
             5
         """
         
-        XCTKAssertEqual(expected, actual)
+        XCTAssertEqual(expected, actual)
     }
     
     
@@ -218,7 +218,7 @@ internal final class FormatterPredicateTests: XCTestKitCase
             [1]: \(quote("a"))
         """
         
-        XCTKAssertEqual(expected, actual)
+        XCTAssertEqual(expected, actual)
     }
     
     
@@ -253,7 +253,7 @@ internal final class FormatterPredicateTests: XCTestKitCase
             [2]: 3
         """
         
-        XCTKAssertEqual(expected, actual)
+        XCTAssertEqual(expected, actual)
     }
     
     
@@ -290,7 +290,7 @@ internal final class FormatterPredicateTests: XCTestKitCase
             ... and more elements (limit: 2)
         """
         
-        XCTKAssertEqual(expected, actual)
+        XCTAssertEqual(expected, actual)
     }
     
     
@@ -327,7 +327,7 @@ internal final class FormatterPredicateTests: XCTestKitCase
             ... and 2 more elements
         """
         
-        XCTKAssertEqual(expected, actual)
+        XCTAssertEqual(expected, actual)
     }
     
     
@@ -361,7 +361,7 @@ internal final class FormatterPredicateTests: XCTestKitCase
             [1]: 3
         """
         
-        XCTKAssertEqual(expected, actual)
+        XCTAssertEqual(expected, actual)
     }
     
     
@@ -396,7 +396,7 @@ internal final class FormatterPredicateTests: XCTestKitCase
             [2]: 5
         """
         
-        XCTKAssertEqual(expected, actual)
+        XCTAssertEqual(expected, actual)
     }
     
     
@@ -429,7 +429,7 @@ internal final class FormatterPredicateTests: XCTestKitCase
             [1]: 2
         """
         
-        XCTKAssertEqual(expected, actual)
+        XCTAssertEqual(expected, actual)
     }
     
     
@@ -464,7 +464,7 @@ internal final class FormatterPredicateTests: XCTestKitCase
             [3]: 6
         """
         
-        XCTKAssertEqual(expected, actual)
+        XCTAssertEqual(expected, actual)
     }
     
     
@@ -497,7 +497,7 @@ internal final class FormatterPredicateTests: XCTestKitCase
             [2]: 3 (threw error \(quote("error1")))
         """
         
-        XCTKAssertEqual(expected, actual)
+        XCTAssertEqual(expected, actual)
     }
     
     
@@ -530,7 +530,7 @@ internal final class FormatterPredicateTests: XCTestKitCase
             4
         """
         
-        XCTKAssertEqual(expected, actual)
+        XCTAssertEqual(expected, actual)
     }
     
     
@@ -569,7 +569,7 @@ internal final class FormatterPredicateTests: XCTestKitCase
             [1]: 2
         """
         
-        XCTKAssertEqual(expected, actual)
+        XCTAssertEqual(expected, actual)
     }
     
     
@@ -606,7 +606,7 @@ internal final class FormatterPredicateTests: XCTestKitCase
             ... and more elements (limit: 2)
         """
         
-        XCTKAssertEqual(expected, actual)
+        XCTAssertEqual(expected, actual)
     }
     
     
@@ -644,7 +644,7 @@ internal final class FormatterPredicateTests: XCTestKitCase
             ... and 2 more elements
         """
         
-        XCTKAssertEqual(expected, actual)
+        XCTAssertEqual(expected, actual)
     }
     
     
@@ -675,7 +675,7 @@ internal final class FormatterPredicateTests: XCTestKitCase
             [1]: \(quote("a"))
         """
         
-        XCTKAssertEqual(expected, actual)
+        XCTAssertEqual(expected, actual)
     }
     
     
@@ -710,7 +710,7 @@ internal final class FormatterPredicateTests: XCTestKitCase
             [2]: 3
         """
         
-        XCTKAssertEqual(expected, actual)
+        XCTAssertEqual(expected, actual)
     }
     
     
@@ -744,7 +744,7 @@ internal final class FormatterPredicateTests: XCTestKitCase
             [1]: 3
         """
         
-        XCTKAssertEqual(expected, actual)
+        XCTAssertEqual(expected, actual)
     }
     
     
@@ -777,7 +777,7 @@ internal final class FormatterPredicateTests: XCTestKitCase
         Actual:   0 matched
         """
         
-        XCTKAssertEqual(expected, actual)
+        XCTAssertEqual(expected, actual)
     }
     
     
@@ -810,7 +810,7 @@ internal final class FormatterPredicateTests: XCTestKitCase
             Matched: [0-2], [5-6], [9]
         """
         
-        XCTKAssertEqual(expected, actual)
+        XCTAssertEqual(expected, actual)
     }
     
     
@@ -843,7 +843,7 @@ internal final class FormatterPredicateTests: XCTestKitCase
             Matched: [0], [2]
         """
         
-        XCTKAssertEqual(expected, actual)
+        XCTAssertEqual(expected, actual)
     }
     
     
@@ -874,7 +874,7 @@ internal final class FormatterPredicateTests: XCTestKitCase
         Actual:   0 matched
         """
         
-        XCTKAssertEqual(expected, actual)
+        XCTAssertEqual(expected, actual)
     }
     
     
@@ -907,7 +907,7 @@ internal final class FormatterPredicateTests: XCTestKitCase
             Matched: [0], [2], [4]
         """
         
-        XCTKAssertEqual(expected, actual)
+        XCTAssertEqual(expected, actual)
     }
     
     
@@ -940,7 +940,7 @@ internal final class FormatterPredicateTests: XCTestKitCase
             Matched: [0]
         """
         
-        XCTKAssertEqual(expected, actual)
+        XCTAssertEqual(expected, actual)
     }
     
     
@@ -971,7 +971,7 @@ internal final class FormatterPredicateTests: XCTestKitCase
         Actual:   0 matched
         """
         
-        XCTKAssertEqual(expected, actual)
+        XCTAssertEqual(expected, actual)
     }
     
     
@@ -1002,7 +1002,7 @@ internal final class FormatterPredicateTests: XCTestKitCase
         Actual:   3 matched
         """
         
-        XCTKAssertEqual(expected, actual)
+        XCTAssertEqual(expected, actual)
     }
     
     
@@ -1044,7 +1044,7 @@ internal final class FormatterPredicateTests: XCTestKitCase
                 [4]: \(quote("b")) (threw error \(quote("error2")))
         """
         
-        XCTKAssertEqual(expected, actual)
+        XCTAssertEqual(expected, actual)
     }
     
     
@@ -1082,7 +1082,7 @@ internal final class FormatterPredicateTests: XCTestKitCase
                 10 (threw error \(quote("error1")))
         """
         
-        XCTKAssertEqual(expected, actual)
+        XCTAssertEqual(expected, actual)
     }
     
     
@@ -1129,7 +1129,7 @@ internal final class FormatterPredicateTests: XCTestKitCase
             Matched: [0-1]
         """
         
-        XCTKAssertEqual(expected, actual)
+        XCTAssertEqual(expected, actual)
     }
     
     
@@ -1172,7 +1172,7 @@ internal final class FormatterPredicateTests: XCTestKitCase
             ... and 1 more element
         """
         
-        XCTKAssertEqual(expected, actual)
+        XCTAssertEqual(expected, actual)
     }
     
     
@@ -1215,7 +1215,7 @@ internal final class FormatterPredicateTests: XCTestKitCase
             ... and more elements (limit: 2)
         """
         
-        XCTKAssertEqual(expected, actual)
+        XCTAssertEqual(expected, actual)
     }
     
     
@@ -1248,7 +1248,7 @@ internal final class FormatterPredicateTests: XCTestKitCase
             Matched: [0-3]
         """
         
-        XCTKAssertEqual(expected, actual)
+        XCTAssertEqual(expected, actual)
     }
     
     
@@ -1289,7 +1289,7 @@ internal final class FormatterPredicateTests: XCTestKitCase
             Matched: [0-1], [3]
         """
         
-        XCTKAssertEqual(expected, actual)
+        XCTAssertEqual(expected, actual)
     }
     
     
@@ -1334,7 +1334,7 @@ internal final class FormatterPredicateTests: XCTestKitCase
             ... and 1 more element
         """
         
-        XCTKAssertEqual(expected, actual)
+        XCTAssertEqual(expected, actual)
     }
     
     
@@ -1370,7 +1370,7 @@ internal final class FormatterPredicateTests: XCTestKitCase
             [2]: 3
         """
         
-        XCTKAssertEqual(expected, actual)
+        XCTAssertEqual(expected, actual)
     }
     
     
@@ -1406,7 +1406,7 @@ internal final class FormatterPredicateTests: XCTestKitCase
             Error: \(quote("error1"))
         """
         
-        XCTKAssertEqual(expected, actual)
+        XCTAssertEqual(expected, actual)
     }
     
     
@@ -1448,7 +1448,7 @@ internal final class FormatterPredicateTests: XCTestKitCase
             [3]: 7
         """
         
-        XCTKAssertEqual(expected, actual)
+        XCTAssertEqual(expected, actual)
     }
     
     
@@ -1482,7 +1482,7 @@ internal final class FormatterPredicateTests: XCTestKitCase
             [1]: \(quote("b"))
         """
         
-        XCTKAssertEqual(expected, actual)
+        XCTAssertEqual(expected, actual)
     }
     
     
@@ -1516,7 +1516,7 @@ internal final class FormatterPredicateTests: XCTestKitCase
             [9]: 50
         """
         
-        XCTKAssertEqual(expected, actual)
+        XCTAssertEqual(expected, actual)
     }
     
     
@@ -1552,7 +1552,7 @@ internal final class FormatterPredicateTests: XCTestKitCase
             Error: \(quote("error1"))
         """
         
-        XCTKAssertEqual(expected, actual)
+        XCTAssertEqual(expected, actual)
     }
     
     
@@ -1586,7 +1586,7 @@ internal final class FormatterPredicateTests: XCTestKitCase
             5: [1], [3]
         """
         
-        XCTKAssertEqual(expected, actual)
+        XCTAssertEqual(expected, actual)
     }
     
     
@@ -1620,7 +1620,7 @@ internal final class FormatterPredicateTests: XCTestKitCase
             9: [3-4]
         """
         
-        XCTKAssertEqual(expected, actual)
+        XCTAssertEqual(expected, actual)
     }
     
     
@@ -1654,7 +1654,7 @@ internal final class FormatterPredicateTests: XCTestKitCase
             2: 3 occurrences
         """
         
-        XCTKAssertEqual(expected, actual)
+        XCTAssertEqual(expected, actual)
     }
     
     
@@ -1686,7 +1686,7 @@ internal final class FormatterPredicateTests: XCTestKitCase
             true: 3 occurrences
         """
         
-        XCTKAssertEqual(expected, actual)
+        XCTAssertEqual(expected, actual)
     }
     
     
@@ -1720,7 +1720,7 @@ internal final class FormatterPredicateTests: XCTestKitCase
             \(quote("b")): [1], [3]
         """
         
-        XCTKAssertEqual(expected, actual)
+        XCTAssertEqual(expected, actual)
     }
     
     
@@ -1757,7 +1757,7 @@ internal final class FormatterPredicateTests: XCTestKitCase
             ... and more elements (limit: 2)
         """
         
-        XCTKAssertEqual(expected, actual)
+        XCTAssertEqual(expected, actual)
     }
     
     
@@ -1793,7 +1793,7 @@ internal final class FormatterPredicateTests: XCTestKitCase
             ... and 2 more elements
         """
         
-        XCTKAssertEqual(expected, actual)
+        XCTAssertEqual(expected, actual)
     }
     
     
@@ -1830,7 +1830,7 @@ internal final class FormatterPredicateTests: XCTestKitCase
             5: [0], [2], [4]
         """
         
-        XCTKAssertEqual(expected, actual)
+        XCTAssertEqual(expected, actual)
     }
     
     
@@ -1873,7 +1873,7 @@ internal final class FormatterPredicateTests: XCTestKitCase
                 [2]: \(quote("aaa"))
         """
         
-        XCTKAssertEqual(expected, actual)
+        XCTAssertEqual(expected, actual)
     }
     
     
@@ -1929,7 +1929,7 @@ internal final class FormatterPredicateTests: XCTestKitCase
                 [4]: 40
         """
         
-        XCTKAssertEqual(expected, actual)
+        XCTAssertEqual(expected, actual)
     }
     
     
@@ -1970,7 +1970,7 @@ internal final class FormatterPredicateTests: XCTestKitCase
                 3 elements
         """
         
-        XCTKAssertEqual(expected, actual)
+        XCTAssertEqual(expected, actual)
     }
     
     
@@ -2006,7 +2006,7 @@ internal final class FormatterPredicateTests: XCTestKitCase
                 1 element
         """
         
-        XCTKAssertEqual(expected, actual)
+        XCTAssertEqual(expected, actual)
     }
     
     
@@ -2055,7 +2055,7 @@ internal final class FormatterPredicateTests: XCTestKitCase
                 [2]: \(quote("aaa"))
         """
         
-        XCTKAssertEqual(expected, actual)
+        XCTAssertEqual(expected, actual)
     }
     
     
@@ -2120,7 +2120,7 @@ internal final class FormatterPredicateTests: XCTestKitCase
             ... and more elements (limit: 2)
         """
         
-        XCTKAssertEqual(expected, actual)
+        XCTAssertEqual(expected, actual)
     }
     
     
@@ -2185,7 +2185,7 @@ internal final class FormatterPredicateTests: XCTestKitCase
             ... and 1 more element
         """
         
-        XCTKAssertEqual(expected, actual)
+        XCTAssertEqual(expected, actual)
     }
     
     
@@ -2231,7 +2231,7 @@ internal final class FormatterPredicateTests: XCTestKitCase
                 [2]: \(quote("aaa"))
         """
         
-        XCTKAssertEqual(expected, actual)
+        XCTAssertEqual(expected, actual)
     }
     
     
@@ -2266,7 +2266,7 @@ internal final class FormatterPredicateTests: XCTestKitCase
             [0]: MultiLineValue:     name: a     value: 1
         """
         
-        XCTKAssertEqual(expected, actual)
+        XCTAssertEqual(expected, actual)
     }
     
     
@@ -2300,7 +2300,7 @@ internal final class FormatterPredicateTests: XCTestKitCase
             MultiLineValue:     name: a     value: 1: [0], [2]
         """
         
-        XCTKAssertEqual(expected, actual)
+        XCTAssertEqual(expected, actual)
     }
     
     
@@ -2337,7 +2337,7 @@ internal final class FormatterPredicateTests: XCTestKitCase
             [1]: MultiLineValue:     name: a     value: 1
         """
         
-        XCTKAssertEqual(expected, actual)
+        XCTAssertEqual(expected, actual)
     }
 }
 

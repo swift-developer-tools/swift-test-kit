@@ -7,13 +7,13 @@
 //
 //===----------------------------------------------------------------------===//
 
+import XCTest
 import XCTestKitCore
-@testable import XCTestKit
 @testable import TKTestSupport
 
 
 
-internal final class ComparatorTupleTests: XCTestKitCase
+internal final class ComparatorTupleTests: XCTestCase
 {
     func testNestedTupleEqualValues() throws
     {
@@ -43,7 +43,7 @@ internal final class ComparatorTupleTests: XCTestKitCase
             kind:   .same
         )
         
-        XCTKAssertEqual(expected, actual)
+        XCTAssertEqual(expected, actual)
     }
     
     
@@ -107,7 +107,7 @@ internal final class ComparatorTupleTests: XCTestKitCase
             ]
         )
         
-        XCTKAssertEqual(expected, actual)
+        XCTAssertEqual(expected, actual)
     }
     
     
@@ -158,6 +158,6 @@ internal final class ComparatorTupleTests: XCTestKitCase
             ]
         )
         
-        XCTKAssertEqual(expected, actual)
+        XCTAssertEqual(expected, actual)
     }
 }

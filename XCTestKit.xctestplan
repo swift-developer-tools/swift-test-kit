@@ -61,11 +61,17 @@
   },
   "testTargets" : [
     {
-      "parallelizable" : false,
       "target" : {
         "containerPath" : "container:",
-        "identifier" : "XCTestKitTests",
-        "name" : "XCTestKitTests"
+        "identifier" : "XCTKTests",
+        "name" : "XCTKTests"
+      }
+    },
+    {
+      "target" : {
+        "containerPath" : "container:",
+        "identifier" : "TKCoreTests",
+        "name" : "TKCoreTests"
       }
     }
   ],

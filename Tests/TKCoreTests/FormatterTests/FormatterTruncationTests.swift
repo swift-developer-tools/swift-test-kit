@@ -7,13 +7,13 @@
 //
 //===----------------------------------------------------------------------===//
 
+import XCTest
 import XCTestKitCore
-@testable import XCTestKit
 @testable import TKTestSupport
 
 
 
-internal final class FormatterTruncationTests: XCTestKitCase
+internal final class FormatterTruncationTests: XCTestCase
 {
     private typealias LK = XCTestKitCore.Formatter.LabelKind
     
@@ -61,7 +61,7 @@ internal final class FormatterTruncationTests: XCTestKitCase
             ... and more differences (limit: 2)
         """
         
-        XCTKAssertEqual(expected, actual)
+        XCTAssertEqual(expected, actual)
     }
     
     
@@ -106,7 +106,7 @@ internal final class FormatterTruncationTests: XCTestKitCase
             ... and 3 more differences
         """
         
-        XCTKAssertEqual(expected, actual)
+        XCTAssertEqual(expected, actual)
     }
     
     
@@ -153,7 +153,7 @@ internal final class FormatterTruncationTests: XCTestKitCase
                 \(LK.actual.rawValue)\(act[2])
         """
         
-        XCTKAssertEqual(expected, actual)
+        XCTAssertEqual(expected, actual)
     }
     
     
@@ -193,7 +193,7 @@ internal final class FormatterTruncationTests: XCTestKitCase
             ... and 7 more differences
         """
         
-        XCTKAssertEqual(expected, actual)
+        XCTAssertEqual(expected, actual)
     }
     
     
@@ -250,7 +250,7 @@ internal final class FormatterTruncationTests: XCTestKitCase
             ... and 3 more differences
         """
         
-        XCTKAssertEqual(expected, actual)
+        XCTAssertEqual(expected, actual)
     }
     
     
@@ -291,7 +291,7 @@ internal final class FormatterTruncationTests: XCTestKitCase
             ... and 2 more differences
         """
         
-        XCTKAssertEqual(expected, actual)
+        XCTAssertEqual(expected, actual)
     }
     
     
@@ -383,7 +383,7 @@ internal final class FormatterTruncationTests: XCTestKitCase
             ... and 2 more differences
         """
         
-        XCTKAssertEqual(expected, actual)
+        XCTAssertEqual(expected, actual)
     }
     
     
@@ -479,7 +479,7 @@ internal final class FormatterTruncationTests: XCTestKitCase
                 \(LK.actual.rawValue)\(act.l2.l3.l4.l5.l6.l7.l8.l9.l10.val)
         """
         
-        XCTKAssertEqual(expected, actual)
+        XCTAssertEqual(expected, actual)
     }
     
     
@@ -514,7 +514,7 @@ internal final class FormatterTruncationTests: XCTestKitCase
         \(LK.actual.rawValue)\(quote(act))
         """
         
-        XCTKAssertEqual(expected, actual)
+        XCTAssertEqual(expected, actual)
     }
     
     
@@ -547,7 +547,7 @@ internal final class FormatterTruncationTests: XCTestKitCase
         \(LK.actual.rawValue)\(quote(act))
         """
         
-        XCTKAssertEqual(expected, actual)
+        XCTAssertEqual(expected, actual)
     }
     
     
@@ -597,7 +597,7 @@ internal final class FormatterTruncationTests: XCTestKitCase
                 \(LK.actual.rawValue)\(quote(act.data))
         """
         
-        XCTKAssertEqual(expected, actual)
+        XCTAssertEqual(expected, actual)
     }
     
     
@@ -662,7 +662,7 @@ internal final class FormatterTruncationTests: XCTestKitCase
                 \(LK.actual.rawValue)\(quote(act.l2.l3.data))
         """
         
-        XCTKAssertEqual(expected, actual)
+        XCTAssertEqual(expected, actual)
     }
     
     
@@ -708,7 +708,7 @@ internal final class FormatterTruncationTests: XCTestKitCase
         \(LK.actual.rawValue)\(act.age)
         """
         
-        XCTKAssertEqual(expected, actual)
+        XCTAssertEqual(expected, actual)
     }
     
     
@@ -752,7 +752,7 @@ internal final class FormatterTruncationTests: XCTestKitCase
             \(LK.actual.rawValue)\(act.age)
         """
         
-        XCTKAssertEqual(expected, actual)
+        XCTAssertEqual(expected, actual)
     }
     
     
@@ -780,6 +780,6 @@ internal final class FormatterTruncationTests: XCTestKitCase
         \(LK.actual.rawValue)\(act)
         """
         
-        XCTKAssertEqual(expected, actual)
+        XCTAssertEqual(expected, actual)
     }
 }

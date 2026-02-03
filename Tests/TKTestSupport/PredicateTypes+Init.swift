@@ -11,7 +11,7 @@ import XCTestKitCore
 
 
 
-internal extension ElementResult
+public extension ElementResult
 {
     /// Initializes an ``ElementResult`` instance from the given values.
     init(
@@ -30,7 +30,7 @@ internal extension ElementResult
 
 
 
-internal extension CountMismatch
+public extension CountMismatch
 {
     /// Initializes a ``CountMismatch`` instance from the given values, and
     /// an empty ``CountMismatch/errorElements`` array.
@@ -49,7 +49,7 @@ internal extension CountMismatch
 
 
 
-internal extension OrderingViolation
+public extension OrderingViolation
 {
     /// Initializes an ``OrderingViolation`` instance from the given values.
     init(
@@ -70,7 +70,7 @@ internal extension OrderingViolation
 
 
 
-internal extension DuplicateGroup
+public extension DuplicateGroup
 {
     /// Initializes a ``DuplicateGroup`` instance from the given values.
     init(
@@ -87,7 +87,7 @@ internal extension DuplicateGroup
 
 
 
-internal extension DuplicateKeyGroup
+public extension DuplicateKeyGroup
 {
     /// Initializes a ``DuplicateKeyGroup`` instance from the given values.
     init(
@@ -104,7 +104,7 @@ internal extension DuplicateKeyGroup
 
 
 
-internal extension IndexedElement
+public extension IndexedElement
 {
     /// Initializes an ``IndexedElement`` instance from the given values.
     init(

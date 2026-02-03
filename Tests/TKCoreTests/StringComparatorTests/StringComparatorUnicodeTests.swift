@@ -7,13 +7,13 @@
 //
 //===----------------------------------------------------------------------===//
 
+import XCTest
 import XCTestKitCore
-@testable import XCTestKit
 @testable import TKTestSupport
 
 
 
-internal final class StringComparatorUnicodeTests: XCTestKitCase
+internal final class StringComparatorUnicodeTests: XCTestCase
 {
     func testEmojiComparison() throws
     {
@@ -38,7 +38,7 @@ internal final class StringComparatorUnicodeTests: XCTestKitCase
             ]
         )
         
-        XCTKAssertEqual(expected, actual)
+        XCTAssertEqual(expected, actual)
     }
     
     
@@ -57,7 +57,7 @@ internal final class StringComparatorUnicodeTests: XCTestKitCase
         
         let expected: DiffNodeKind = .same
         
-        XCTKAssertEqual(expected, actual)
+        XCTAssertEqual(expected, actual)
     }
     
     
@@ -85,6 +85,6 @@ internal final class StringComparatorUnicodeTests: XCTestKitCase
             ]
         )
         
-        XCTKAssertEqual(expected, actual)
+        XCTAssertEqual(expected, actual)
     }
 }

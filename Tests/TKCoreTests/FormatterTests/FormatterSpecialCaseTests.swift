@@ -7,13 +7,13 @@
 //
 //===----------------------------------------------------------------------===//
 
+import XCTest
 import XCTestKitCore
-@testable import XCTestKit
 @testable import TKTestSupport
 
 
 
-internal final class FormatterSpecialCaseTests: XCTestKitCase
+internal final class FormatterSpecialCaseTests: XCTestCase
 {
     private typealias LK = XCTestKitCore.Formatter.LabelKind
     
@@ -64,7 +64,7 @@ internal final class FormatterSpecialCaseTests: XCTestKitCase
                 \(LK.changed.rawValue)character 2 ("e" → "a")
         """
         
-        XCTKAssertEqual(expected, actual)
+        XCTAssertEqual(expected, actual)
     }
     
     
@@ -119,7 +119,7 @@ internal final class FormatterSpecialCaseTests: XCTestKitCase
                 \(LK.changed.rawValue)character 4 ("d" → "Y")
         """
         
-        XCTKAssertEqual(expected, actual)
+        XCTAssertEqual(expected, actual)
     }
     
     
@@ -166,7 +166,7 @@ internal final class FormatterSpecialCaseTests: XCTestKitCase
                 \(LK.missing.rawValue)characters 3-4 "ll"
         """
         
-        XCTKAssertEqual(expected, actual)
+        XCTAssertEqual(expected, actual)
     }
     
     
@@ -213,7 +213,7 @@ internal final class FormatterSpecialCaseTests: XCTestKitCase
                 \(LK.missing.rawValue)characters 4-6 "def"
         """
         
-        XCTKAssertEqual(expected, actual)
+        XCTAssertEqual(expected, actual)
     }
     
     
@@ -273,7 +273,7 @@ internal final class FormatterSpecialCaseTests: XCTestKitCase
                 \(LK.unexpected.rawValue)2 characters at position 5 "YZ"
         """
         
-        XCTKAssertEqual(expected, actual)
+        XCTAssertEqual(expected, actual)
     }
     
     
@@ -312,7 +312,7 @@ internal final class FormatterSpecialCaseTests: XCTestKitCase
                 \(LK.actual.rawValue)"xyz"
         """
         
-        XCTKAssertEqual(expected, actual)
+        XCTAssertEqual(expected, actual)
     }
     
     
@@ -379,7 +379,7 @@ internal final class FormatterSpecialCaseTests: XCTestKitCase
                 \(LK.changed.rawValue)character 3 ("c" → "Y")
         """
         
-        XCTKAssertEqual(expected, actual)
+        XCTAssertEqual(expected, actual)
     }
     
     
@@ -418,7 +418,7 @@ internal final class FormatterSpecialCaseTests: XCTestKitCase
                 \(LK.actual.rawValue)"ABC"
         """
         
-        XCTKAssertEqual(expected, actual)
+        XCTAssertEqual(expected, actual)
     }
     
     
@@ -462,7 +462,7 @@ internal final class FormatterSpecialCaseTests: XCTestKitCase
             \(LK.missing.rawValue)"c"
         """
         
-        XCTKAssertEqual(expected, actual)
+        XCTAssertEqual(expected, actual)
     }
     
     
@@ -504,7 +504,7 @@ internal final class FormatterSpecialCaseTests: XCTestKitCase
             \(LK.unexpected.rawValue)"c"
         """
         
-        XCTKAssertEqual(expected, actual)
+        XCTAssertEqual(expected, actual)
     }
     
     
@@ -546,7 +546,7 @@ internal final class FormatterSpecialCaseTests: XCTestKitCase
             \(LK.unexpected.rawValue)"c"
         """
         
-        XCTKAssertEqual(expected, actual)
+        XCTAssertEqual(expected, actual)
     }
     
     
@@ -594,7 +594,7 @@ internal final class FormatterSpecialCaseTests: XCTestKitCase
             \(LK.unexpected.rawValue)4
         """
         
-        XCTKAssertEqual(expected, actual)
+        XCTAssertEqual(expected, actual)
     }
     
     
@@ -650,6 +650,6 @@ internal final class FormatterSpecialCaseTests: XCTestKitCase
                 \(LK.unexpected.rawValue)"c"
         """
         
-        XCTKAssertEqual(expected, actual)
+        XCTAssertEqual(expected, actual)
     }
 }
