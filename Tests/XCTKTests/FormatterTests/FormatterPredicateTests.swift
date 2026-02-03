@@ -9,7 +9,7 @@
 
 import XCTestKitCore
 @testable import XCTestKit
-@testable import TKTestUtilities
+@testable import TKTestSupport
 
 
 

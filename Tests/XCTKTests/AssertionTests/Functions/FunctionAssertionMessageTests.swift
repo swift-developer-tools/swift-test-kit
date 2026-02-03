@@ -7,7 +7,7 @@
 //
 //===----------------------------------------------------------------------===//
 
-@testable import TKTestUtilities
+@testable import TKTestSupport
 
 
 

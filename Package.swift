@@ -83,9 +83,9 @@ let package = Package(
         ),
         
         .target(
-            name: "TKTestUtilities",
+            name: "TKTestSupport",
             dependencies: ["XCTestKit"],
-            path: "Tests/TKTestUtilities"
+            path: "Tests/TKTestSupport"
         ),
         
         .testTarget(
@@ -94,7 +94,7 @@ let package = Package(
             [
                 "XCTestKit",
                 "TestKitMacros",
-                "TKTestUtilities"
+                "TKTestSupport"
             ]
         )
     ]

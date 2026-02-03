@@ -10,7 +10,7 @@
 import XCTestKitCore
 import Foundation
 @testable import XCTestKit
-@testable import TKTestUtilities
+@testable import TKTestSupport
 
 
 
