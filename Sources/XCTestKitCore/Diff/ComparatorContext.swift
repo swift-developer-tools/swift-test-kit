@@ -11,22 +11,22 @@
 internal final class ComparatorContext
 {
     /// The identifiers of visited expected reference types.
-    var visitedExpected : Set<ObjectIdentifier>
+    internal var visitedExpected    : Set<ObjectIdentifier>
     
     /// The identifiers of visited actual reference types.
-    var visitedActual   : Set<ObjectIdentifier>
+    internal var visitedActual      : Set<ObjectIdentifier>
     
     /// The options for computing diffs.
-    let options         : XCTKDiffOptions
+    internal let options            : TKDiffOptions
     
     
     
     /// Initializes a ``ComparatorContext`` instance, optionally specifying
     /// values for its properties.
-    init(
+    internal init(
         visitedExpected : Set<ObjectIdentifier>     = [],
         visitedActual   : Set<ObjectIdentifier>     = [],
-        options         : XCTKDiffOptions           = .init()
+        options         : TKDiffOptions             = .init()
     )
     {
         self.visitedExpected    = visitedExpected

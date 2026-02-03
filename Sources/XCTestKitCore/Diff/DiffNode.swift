@@ -16,13 +16,25 @@
 /// its position within its parent (for example, the label may be a property
 /// name or an array index), and a kind describing the comparison result at
 /// that position.
-internal struct DiffNode: Equatable
+public struct DiffNode: Equatable
 {
     /// The node label.
-    let label   : DiffNodeLabel
+    public let label    : DiffNodeLabel
     
     /// The kind of diff node.
-    let kind    : DiffNodeKind
+    public let kind     : DiffNodeKind
+    
+    
+    
+    /// Initializes a ``DiffNode`` instance from the given values.
+    public init(
+        label   : DiffNodeLabel,
+        kind    : DiffNodeKind
+    )
+    {
+        self.label  = label
+        self.kind   = kind
+    }
     
     
     
@@ -31,7 +43,7 @@ internal struct DiffNode: Equatable
     ///   - lhs: The left-hand side node to compare.
     ///   - rhs: The right-hand side node to compare.
     /// - Returns: Whether the given nodes are equal.
-    static func == (
+    public static func == (
         lhs : DiffNode,
         rhs : DiffNode
     ) -> Bool
@@ -46,7 +58,7 @@ internal struct DiffNode: Equatable
 // MARK: - CycleLocation
 
 /// The location where a cycle was detected.
-internal enum CycleLocation: Equatable, CustomStringConvertible
+public enum CycleLocation: Equatable, CustomStringConvertible
 {
     /// A cycle was detected in the expected value.
     case expected
@@ -60,7 +72,7 @@ internal enum CycleLocation: Equatable, CustomStringConvertible
     
     
     /// A description of where the cycle location was detected.
-    var description: String
+    public var description: String
     {
         switch self
         {
@@ -85,14 +97,14 @@ internal enum CycleLocation: Equatable, CustomStringConvertible
 
 /// The kind of diff computed between by comparing an expected value to an
 /// actual value.
-internal enum DiffNodeKind: Equatable
+public enum DiffNodeKind: Equatable
 {
     /// A cycle was detected during comparison.
     ///
     /// A cycle may occur when comparing reference types (classes) that contain
     /// a circular reference. The comparison stops immediately to prevent
     /// infinite recursion (rather than waiting to stop at the limit specified
-    /// by ``XCTKDiffOptions/maxRecursionDepth``, if any).
+    /// by ``TKDiffOptions/maxRecursionDepth``, if any).
     ///
     /// - Parameters:
     ///   - expected: The expected value.
@@ -154,7 +166,7 @@ internal enum DiffNodeKind: Equatable
     
     
     
-    var isCycle: Bool
+    public var isCycle: Bool
     {
         switch self
         {
@@ -165,7 +177,7 @@ internal enum DiffNodeKind: Equatable
     
     
     
-    var isSame: Bool
+    public var isSame: Bool
     {
         switch self
         {
@@ -176,7 +188,7 @@ internal enum DiffNodeKind: Equatable
     
     
     
-    var isDifferent: Bool
+    public var isDifferent: Bool
     {
         switch self
         {
@@ -187,7 +199,7 @@ internal enum DiffNodeKind: Equatable
     
     
     
-    var isMissing: Bool
+    public var isMissing: Bool
     {
         switch self
         {
@@ -198,7 +210,7 @@ internal enum DiffNodeKind: Equatable
     
     
     
-    var isUnexpected: Bool
+    public var isUnexpected: Bool
     {
         switch self
         {
@@ -213,7 +225,7 @@ internal enum DiffNodeKind: Equatable
 // MARK: - DiffNodeLabel
 
 /// The label of a node in a diff tree.
-internal enum DiffNodeLabel: Equatable, Sendable
+public enum DiffNodeLabel: Equatable, Sendable
 {
     /// The root node of a diff tree.
     /// - Parameter typeName: The name of the value's type.
@@ -272,7 +284,7 @@ internal enum DiffNodeLabel: Equatable, Sendable
     
     
     /// A string key used for sorting.
-    var sortKey: String
+    public var sortKey: String
     {
         switch self
         {
@@ -288,7 +300,7 @@ internal enum DiffNodeLabel: Equatable, Sendable
     
     
     
-    var isRoot: Bool
+    public var isRoot: Bool
     {
         switch self
         {
@@ -299,7 +311,7 @@ internal enum DiffNodeLabel: Equatable, Sendable
     
     
     
-    var isProperty: Bool
+    public var isProperty: Bool
     {
         switch self
         {
@@ -310,7 +322,7 @@ internal enum DiffNodeLabel: Equatable, Sendable
     
     
     
-    var isIndex: Bool
+    public var isIndex: Bool
     {
         switch self
         {
@@ -321,7 +333,7 @@ internal enum DiffNodeLabel: Equatable, Sendable
     
     
     
-    var isKey: Bool
+    public var isKey: Bool
     {
         switch self
         {
@@ -332,7 +344,7 @@ internal enum DiffNodeLabel: Equatable, Sendable
     
     
     
-    var isMember: Bool
+    public var isMember: Bool
     {
         switch self
         {
@@ -343,7 +355,7 @@ internal enum DiffNodeLabel: Equatable, Sendable
     
     
     
-    var isLine: Bool
+    public var isLine: Bool
     {
         switch self
         {
@@ -354,7 +366,7 @@ internal enum DiffNodeLabel: Equatable, Sendable
     
     
     
-    var isCharacter: Bool
+    public var isCharacter: Bool
     {
         switch self
         {
@@ -369,7 +381,7 @@ internal enum DiffNodeLabel: Equatable, Sendable
     /// the given key.
     /// - Parameter key: The key to use.
     /// - Returns: The created node label.
-    static func makeKey<K>(
+    public static func makeKey<K>(
         _ key: K
     ) -> DiffNodeLabel where K : Hashable
     {

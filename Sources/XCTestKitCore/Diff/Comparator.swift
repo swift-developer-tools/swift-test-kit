@@ -7,12 +7,8 @@
 //
 //===----------------------------------------------------------------------===//
 
-import XCTestKitCore
-
-
-
 /// The entry point for computing diffs between various data types.
-internal struct Comparator
+public struct Comparator
 {
     /// The context for tracking state across recursive comparison calls.
     private let context: ComparatorContext
@@ -23,18 +19,15 @@ internal struct Comparator
     /// - Parameters:
     ///   - expected: The expected value.
     ///   - actual: The actual value.
-    ///   - options: The options for testing. The default value is `nil`, which
-    ///   falls back to using global options.
+    ///   - options: The options for testing.
     /// - Returns: The diff node.
-    static func computeDiff<T>(
+    public static func computeDiff<T>(
         expected    : T,
         actual      : T,
-        options     : XCTKDiffOptions?  = nil
+        options     : TKDiffOptions
     ) -> DiffNode where T : Equatable
     {
-        let opts: XCTKDiffOptions = options ?? XCTKConfig.global.diffOptions
-        
-        let context     = ComparatorContext(options: opts)
+        let context     = ComparatorContext(options: options)
         let comparator  = Comparator(context: context)
         
         

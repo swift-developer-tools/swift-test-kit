@@ -7,10 +7,10 @@
 //
 //===----------------------------------------------------------------------===//
 
-// MARK: - XCTKOptions
+// MARK: - TKOptions
 
 /// The options for testing.
-public struct XCTKOptions: Equatable, Sendable
+public struct TKOptions: Equatable, Sendable
 {
     /// Whether to compute and display diffs on assertion failure.
     ///
@@ -20,24 +20,22 @@ public struct XCTKOptions: Equatable, Sendable
     
     /// The options for computing diffs.
     ///
-    /// The default value is a default-initialized ``XCTKDiffOptions``
-    /// instance.
-    public var diffOptions  : XCTKDiffOptions
+    /// The default value is a default-initialized ``TKDiffOptions`` instance.
+    public var diffOptions  : TKDiffOptions
     
     /// The options for formatting diffs.
     ///
-    /// The default value is a default-initialized ``XCTKFormatOptions``
-    /// instance.
-    public var formatOptions : XCTKFormatOptions
+    /// The default value is a default-initialized ``TKFormatOptions`` instance.
+    public var formatOptions : TKFormatOptions
     
     
     
-    /// Initializes an ``XCTKOptions`` instance, optionally specifying values
+    /// Initializes a ``TKOptions`` instance, optionally specifying values
     /// for its properties.
     public init(
-        diffEnabled     : Bool                  = true,
-        diffOptions     : XCTKDiffOptions       = .init(),
-        formatOptions   : XCTKFormatOptions     = .init()
+        diffEnabled     : Bool              = true,
+        diffOptions     : TKDiffOptions     = .init(),
+        formatOptions   : TKFormatOptions   = .init()
     )
     {
         self.diffEnabled    = diffEnabled
@@ -48,10 +46,10 @@ public struct XCTKOptions: Equatable, Sendable
 
 
 
-// MARK: - XCTKDiffOptions
+// MARK: - TKDiffOptions
 
 /// The options for computing diffs.
-public struct XCTKDiffOptions: Equatable, Sendable
+public struct TKDiffOptions: Equatable, Sendable
 {
     /// The maximum recursion depth when computing diffs.
     ///
@@ -96,7 +94,7 @@ public struct XCTKDiffOptions: Equatable, Sendable
     
     
     
-    /// Initializes an ``XCTKDiffOptions`` instance, optionally specifying
+    /// Initializes a ``TKDiffOptions`` instance, optionally specifying
     /// values for its properties.
     public init(
         maxRecursionDepth       : Int?      = 20,
@@ -125,10 +123,10 @@ public struct XCTKDiffOptions: Equatable, Sendable
 
 
 
-// MARK: - XCTKFormatOptions
+// MARK: - TKFormatOptions
 
 /// The options for formatting assertion failures.
-public struct XCTKFormatOptions: Equatable, Sendable
+public struct TKFormatOptions: Equatable, Sendable
 {
     /// The number of spaces used for each indent.
     ///
@@ -176,7 +174,7 @@ public struct XCTKFormatOptions: Equatable, Sendable
     
     
     
-    /// Initializes an ``XCTKFormatOptions`` instance, optionally specifying
+    /// Initializes a ``TKFormatOptions`` instance, optionally specifying
     /// values for its properties.
     public init(
         indentationSpaces       : Int   = 4,

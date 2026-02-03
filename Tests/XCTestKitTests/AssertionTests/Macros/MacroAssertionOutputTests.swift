@@ -28,7 +28,7 @@ internal final class MacroAssertionOutputTests: XCTestKitCase
     {
         let exprText: String = "a && b"
         
-        let evaluated: [XCTKBooleanExpr] =
+        let evaluated: [TKBooleanExpr] =
         [
             .init("a", false)
         ]
@@ -67,7 +67,7 @@ internal final class MacroAssertionOutputTests: XCTestKitCase
     {
         let exprText: String = "a || b"
         
-        let evaluated: [XCTKBooleanExpr] =
+        let evaluated: [TKBooleanExpr] =
         [
             .init("a", false),
             .init("b", false)
@@ -106,7 +106,7 @@ internal final class MacroAssertionOutputTests: XCTestKitCase
     {
         let exprText: String = "a && b"
         
-        let evaluated: [XCTKBooleanExpr] =
+        let evaluated: [TKBooleanExpr] =
         [
             .init("a", true),
             .init("b", true)

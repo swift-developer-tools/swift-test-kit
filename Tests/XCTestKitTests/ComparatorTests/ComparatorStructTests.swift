@@ -7,6 +7,7 @@
 //
 //===----------------------------------------------------------------------===//
 
+import XCTestKitCore
 @testable import XCTestKit
 @testable import XCTestKitTestUtilities
 
@@ -40,7 +41,8 @@ internal final class ComparatorStructTests: XCTestKitCase
         
         let actual: DiffNode = Comparator.computeDiff(
             expected:   exp,
-            actual:     act
+            actual:     act,
+            options:    XCTKConfig.global.diffOptions
         )
         
         let expected = DiffNode.makeRoot(
@@ -97,7 +99,8 @@ internal final class ComparatorStructTests: XCTestKitCase
         
         let actual: DiffNode = Comparator.computeDiff(
             expected:   exp,
-            actual:     exp
+            actual:     exp,
+            options:    XCTKConfig.global.diffOptions
         )
         
         let expected = DiffNode(
@@ -130,7 +133,8 @@ internal final class ComparatorStructTests: XCTestKitCase
         
         let actual: DiffNode = Comparator.computeDiff(
             expected:   exp,
-            actual:     act
+            actual:     act,
+            options:    XCTKConfig.global.diffOptions
         )
         
         let expected = DiffNode.makeRoot(
@@ -170,7 +174,7 @@ internal final class ComparatorStructTests: XCTestKitCase
         let actual: DiffNode = Comparator.computeDiff(
             expected:   exp,
             actual:     act,
-            options:    XCTKDiffOptions(maxRecursionDepth: 1)
+            options:    TKDiffOptions(maxRecursionDepth: 1)
         )
         
         let expected = DiffNode.makeRoot(
@@ -205,7 +209,7 @@ internal final class ComparatorStructTests: XCTestKitCase
         let actual: DiffNode = Comparator.computeDiff(
             expected:   exp,
             actual:     act,
-            options:    XCTKDiffOptions(maxRecursionDepth: nil)
+            options:    TKDiffOptions(maxRecursionDepth: nil)
         )
         
         let expected = DiffNode.makeRoot(
@@ -267,7 +271,7 @@ internal final class ComparatorStructTests: XCTestKitCase
         let actual: DiffNode = Comparator.computeDiff(
             expected:   exp,
             actual:     act,
-            options:    XCTKDiffOptions(maxRecursionDepth: 3)
+            options:    TKDiffOptions(maxRecursionDepth: 3)
         )
         
         let expected = DiffNode.makeRoot(
@@ -316,7 +320,8 @@ internal final class ComparatorStructTests: XCTestKitCase
         
         let actual: DiffNode = Comparator.computeDiff(
             expected:   exp,
-            actual:     exp
+            actual:     exp,
+            options:    XCTKConfig.global.diffOptions
         )
         
         let expected = DiffNode(
@@ -357,7 +362,8 @@ internal final class ComparatorStructTests: XCTestKitCase
         
         let actual: DiffNode = Comparator.computeDiff(
             expected:   exp,
-            actual:     act
+            actual:     act,
+            options:    XCTKConfig.global.diffOptions
         )
         
         let expected = DiffNode.makeRoot(
@@ -395,7 +401,8 @@ internal final class ComparatorStructTests: XCTestKitCase
         
         let actual: DiffNode = Comparator.computeDiff(
             expected:   exp,
-            actual:     exp
+            actual:     exp,
+            options:    XCTKConfig.global.diffOptions
         )
         
         let expected = DiffNode(
@@ -432,7 +439,8 @@ internal final class ComparatorStructTests: XCTestKitCase
         
         let actual: DiffNode = Comparator.computeDiff(
             expected:   exp,
-            actual:     act
+            actual:     act,
+            options:    XCTKConfig.global.diffOptions
         )
         
         let expected = DiffNode.makeRoot(

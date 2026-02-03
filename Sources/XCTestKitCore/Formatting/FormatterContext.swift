@@ -13,49 +13,48 @@ internal final class FormatterContext
     /// The formatted diff lines.
     ///
     /// The default value is an empty array.
-    var lines               : [FormattedLine]
+    internal var lines              : [FormattedLine]
     
     /// The current path being traversed.
     ///
     /// The default value is an empty array.
-    var currentPath         : [DiffNodeLabel]
+    internal var currentPath        : [DiffNodeLabel]
     
     /// The current indentation level.
     ///
     /// The default value is `0`.
-    var currentIndent       : Int
+    internal var currentIndent      : Int
     
     /// The number of emitted diffs.
     ///
     /// The default value is `0`.
-    var emittedDiffCount    : Int
+    internal var emittedDiffCount   : Int
     
     /// The total number of diffs in the diff tree.
-    let totalDiffCount      : Int?
+    internal var totalDiffCount     : Int?
     
     /// Whether the output was truncated.
     ///
     /// The default value is `false`.
-    var isTruncated         : Bool
+    internal var isTruncated        : Bool
     
     /// The options for formatting diffs.
     ///
-    /// The default value is a default-initialized ``XCTKFormatOptions``
-    /// instance.
-    let options             : XCTKFormatOptions
+    /// The default value is a default-initialized ``TKFormatOptions`` instance.
+    internal var options            : TKFormatOptions
     
     
     
     /// Initializes a ``FormatterContext`` instance from the given diff node,
     /// optionally specifying values for its properties.
-    init(
+    internal init(
         node                : DiffNode,
-        lines               : [FormattedLine]       = [],
-        currentPath         : [DiffNodeLabel]       = [],
-        currentIndent       : Int                   = 0,
-        emittedDiffCount    : Int                   = 0,
-        isTruncated         : Bool                  = false,
-        options             : XCTKFormatOptions     = .init()
+        lines               : [FormattedLine]   = [],
+        currentPath         : [DiffNodeLabel]   = [],
+        currentIndent       : Int               = 0,
+        emittedDiffCount    : Int               = 0,
+        isTruncated         : Bool              = false,
+        options             : TKFormatOptions   = .init()
     )
     {
         self.lines              = lines
@@ -73,8 +72,8 @@ internal final class FormatterContext
     
     
     /// Initializes a ``FormatterContext`` instance from the given values.
-    init(
-        options         : XCTKFormatOptions,
+    internal init(
+        options         : TKFormatOptions,
         totalDiffCount  : Int?              = nil
     )
     {
@@ -90,7 +89,7 @@ internal final class FormatterContext
     
     
     /// Whether the maximum number of diffs has been reached.
-    var isAtMaxDiffs: Bool
+    internal var isAtMaxDiffs: Bool
     {
         guard let maxDiffs: Int = options.maxDiffs
         else

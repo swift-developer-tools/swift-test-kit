@@ -7,8 +7,7 @@
 //
 //===----------------------------------------------------------------------===//
 
-// TODO: Move near DiffNode if no other XCTestKit-only extensions added?
-internal extension Array<DiffNode>
+public extension Array<DiffNode>
 {
     /// Whether the diff tree represents a set.
     var isSetTree: Bool

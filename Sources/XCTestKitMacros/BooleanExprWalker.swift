@@ -23,7 +23,7 @@ internal struct BooleanExprWalker
     ///   - message: An optional description of a failure.
     ///   - options: The options for testing.
     /// - Returns: The expanded macro expression.
-    static func expand(
+    internal static func expand(
         kind    : AssertionKind,
         expr    : ExprSyntax,
         message : ExprSyntax,
@@ -70,7 +70,7 @@ internal struct BooleanExprWalker
         """
             let _v0: Bool = \(expr)
         
-            let evaluated = XCTKBooleanExpr(
+            let evaluated = TKBooleanExpr(
                 text:   \(literal: exprText),
                 value:  _v0
             )
@@ -91,8 +91,7 @@ internal struct BooleanExprWalker
             code:       code,
             kind:       kind,
             expr:       expr,
-            message:    message,
-            options:    options
+            message:    message
         )
     }
     
@@ -123,8 +122,8 @@ internal struct BooleanExprWalker
         
         let code: ExprSyntax =
         """
-            var _evaluated      : [XCTKBooleanExpr]     = []
-            var _notEvaluated   : Int                   = 0
+            var _evaluated      : [TKBooleanExpr]   = []
+            var _notEvaluated   : Int               = 0
             
             \(raw: evaluationResult.code)
             
@@ -144,8 +143,7 @@ internal struct BooleanExprWalker
             code:       code,
             kind:       kind,
             expr:       expr,
-            message:    message,
-            options:    options
+            message:    message
         )
     }
     
@@ -163,14 +161,12 @@ internal struct BooleanExprWalker
     ///   - kind: The assertion kind.
     ///   - expr: The expression.
     ///   - message: An optional description of a failure.
-    ///   - options: The options for testing.
     /// - Returns: The expanded macro expression.
     private static func wrapWithErrorHandling(
         code    : ExprSyntax,
         kind    : AssertionKind,
         expr    : ExprSyntax,
-        message : ExprSyntax,
-        options : ExprSyntax
+        message : ExprSyntax
     ) -> ExprSyntax
     {
         if expr.containsTry
@@ -183,12 +179,16 @@ internal struct BooleanExprWalker
                 }
                 catch
                 {
-                    \(raw: kind.sourceExpr).failMacroExpansion(
-                        reason:     "threw error \\\"\\(error)\\\"",
-                        message:    \(message),
-                        file:       #filePath,
-                        line:       #line,
-                        options:    \(options)
+                    let text: String = 
+                        \(raw: kind.sourceExpr).makeMacroExpansionFailure(
+                            reason:     "threw error \\\"\\(error)\\\"",
+                            message:    \(message)
+                        )
+            
+                    XCTFail(
+                        text,
+                        file:   #file,
+                        line:   #line
                     )
                 }
             }()
@@ -306,7 +306,7 @@ internal struct BooleanExprWalker
         ///   - node: The node for which to generate code.
         ///   - context: The code generation context.
         /// - Returns: The generated evaluation code.
-        static func makeEvaluation(
+        internal static func makeEvaluation(
             _ node  : Node,
             context : CodeGenContext
         ) -> EvaluationResult
@@ -345,7 +345,7 @@ internal struct BooleanExprWalker
         ///   - expr: The expression.
         ///   - context: The code generation context.
         /// - Returns: The generated evaluation code.
-        static func makeLeafEvaluation(
+        private static func makeLeafEvaluation(
             expr    : ExprSyntax,
             context : CodeGenContext
         ) -> EvaluationResult
@@ -357,7 +357,7 @@ internal struct BooleanExprWalker
             """
             let \(varName): Bool = \(expr.trimmedDescription)
             
-            _evaluated.append(XCTKBooleanExpr(
+            _evaluated.append(TKBooleanExpr(
                 text:   \(quote(escapedText)),
                 value:  \(varName)
             ))
@@ -377,7 +377,7 @@ internal struct BooleanExprWalker
         ///   - rhs: The right-hand side operand.
         ///   - context: The code generation context.
         /// - Returns: The generated evaluation code.
-        static func makeAndEvaluation(
+        private static func makeAndEvaluation(
             lhs     : Node,
             rhs     : Node,
             context : CodeGenContext
@@ -429,7 +429,7 @@ internal struct BooleanExprWalker
         ///   - rhs: The right-hand side operand.
         ///   - context: The code generation context.
         /// - Returns: The generated evaluation code.
-        static func makeOrEvaluation(
+        private static func makeOrEvaluation(
             lhs     : Node,
             rhs     : Node,
             context : CodeGenContext
@@ -479,7 +479,7 @@ internal struct BooleanExprWalker
     // MARK: - Support
     
     /// Logical operators.
-    enum LogicalOperatorKind: CustomStringConvertible
+    internal enum LogicalOperatorKind: CustomStringConvertible
     {
         /// A logical AND operator.
         /// - Parameter infix: The infix operator expression.
@@ -500,7 +500,7 @@ internal struct BooleanExprWalker
         /// - Parameters:
         ///   - text: The operator text.
         ///   - infix: The infix operator expression.
-        init?(
+        internal init?(
             text    : String,
             infix   : InfixOperatorExprSyntax
         )
@@ -516,7 +516,7 @@ internal struct BooleanExprWalker
         
         
         /// The string representation of the operator.
-        var description: String
+        internal var description: String
         {
             switch self
             {
@@ -578,7 +578,7 @@ internal struct BooleanExprWalker
         
         
         /// The number of leaf nodes in this subtree.
-        var leafCount: Int
+        internal var leafCount: Int
         {
             switch self
             {

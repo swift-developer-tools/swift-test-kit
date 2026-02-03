@@ -7,13 +7,14 @@
 //
 //===----------------------------------------------------------------------===//
 
+import XCTestKitCore
 @testable import XCTestKit
 
 
 
-internal extension XCTKBooleanExpr
+internal extension TKBooleanExpr
 {
-    /// Initializes an ``XCTKBooleanExpr`` instance from the given values.
+    /// Initializes a ``TKBooleanExpr`` instance from the given values.
     ///
     /// - Note: This convenience initializer is available only in the test
     /// target. Production code uses the labeled memberwise initializer to

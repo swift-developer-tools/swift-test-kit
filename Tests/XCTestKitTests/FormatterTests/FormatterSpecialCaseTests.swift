@@ -7,6 +7,7 @@
 //
 //===----------------------------------------------------------------------===//
 
+import XCTestKitCore
 @testable import XCTestKit
 @testable import XCTestKitTestUtilities
 
@@ -14,7 +15,7 @@
 
 internal final class FormatterSpecialCaseTests: XCTestKitCase
 {
-    private typealias LK = XCTestKit.Formatter.LabelKind
+    private typealias LK = XCTestKitCore.Formatter.LabelKind
     
     
     
@@ -48,7 +49,10 @@ internal final class FormatterSpecialCaseTests: XCTestKitCase
             ]
         )
         
-        let actual: String = Formatter.formatDiff(node)
+        let actual: String = Formatter.formatDiff(
+            node,
+            options: XCTKConfig.global.formatOptions
+        )
         
         let expected: String =
         """
@@ -99,7 +103,10 @@ internal final class FormatterSpecialCaseTests: XCTestKitCase
             ]
         )
         
-        let actual: String = Formatter.formatDiff(node)
+        let actual: String = Formatter.formatDiff(
+            node,
+            options: XCTKConfig.global.formatOptions
+        )
         
         let expected: String =
         """
@@ -144,7 +151,10 @@ internal final class FormatterSpecialCaseTests: XCTestKitCase
             ]
         )
         
-        let actual: String = Formatter.formatDiff(node)
+        let actual: String = Formatter.formatDiff(
+            node,
+            options: XCTKConfig.global.formatOptions
+        )
         
         let expected: String =
         """
@@ -188,7 +198,10 @@ internal final class FormatterSpecialCaseTests: XCTestKitCase
             ]
         )
         
-        let actual: String = Formatter.formatDiff(node)
+        let actual: String = Formatter.formatDiff(
+            node,
+            options: XCTKConfig.global.formatOptions
+        )
         
         let expected: String =
         """
@@ -243,7 +256,10 @@ internal final class FormatterSpecialCaseTests: XCTestKitCase
             ]
         )
         
-        let actual: String = Formatter.formatDiff(node)
+        let actual: String = Formatter.formatDiff(
+            node,
+            options: XCTKConfig.global.formatOptions
+        )
         
         let expected: String =
         """
@@ -282,7 +298,10 @@ internal final class FormatterSpecialCaseTests: XCTestKitCase
             ]
         )
         
-        let actual: String = Formatter.formatDiff(node)
+        let actual: String = Formatter.formatDiff(
+            node,
+            options: XCTKConfig.global.formatOptions
+        )
         
         let expected: String =
         """
@@ -340,7 +359,10 @@ internal final class FormatterSpecialCaseTests: XCTestKitCase
             ]
         )
         
-        let actual: String = Formatter.formatDiff(node)
+        let actual: String = Formatter.formatDiff(
+            node,
+            options: XCTKConfig.global.formatOptions
+        )
         
         let expected: String =
         """
@@ -382,7 +404,10 @@ internal final class FormatterSpecialCaseTests: XCTestKitCase
             ]
         )
         
-        let actual: String = Formatter.formatDiff(node)
+        let actual: String = Formatter.formatDiff(
+            node,
+            options: XCTKConfig.global.formatOptions
+        )
         
         let expected: String =
         """
@@ -424,7 +449,10 @@ internal final class FormatterSpecialCaseTests: XCTestKitCase
             ]
         )
         
-        let actual: String = Formatter.formatDiff(node)
+        let actual: String = Formatter.formatDiff(
+            node,
+            options: XCTKConfig.global.formatOptions
+        )
         
         let expected: String =
         """
@@ -463,7 +491,10 @@ internal final class FormatterSpecialCaseTests: XCTestKitCase
             ]
         )
         
-        let actual: String = Formatter.formatDiff(node)
+        let actual: String = Formatter.formatDiff(
+            node,
+            options: XCTKConfig.global.formatOptions
+        )
         
         let expected: String =
         """
@@ -502,7 +533,10 @@ internal final class FormatterSpecialCaseTests: XCTestKitCase
             ]
         )
         
-        let actual: String = Formatter.formatDiff(node)
+        let actual: String = Formatter.formatDiff(
+            node,
+            options: XCTKConfig.global.formatOptions
+        )
         
         let expected: String =
         """
@@ -546,7 +580,10 @@ internal final class FormatterSpecialCaseTests: XCTestKitCase
             ]
         )
         
-        let actual: String = Formatter.formatDiff(node)
+        let actual: String = Formatter.formatDiff(
+            node,
+            options: XCTKConfig.global.formatOptions
+        )
         
         let expected: String =
         """
@@ -599,7 +636,10 @@ internal final class FormatterSpecialCaseTests: XCTestKitCase
             ]
         )
         
-        let actual: String = Formatter.formatDiff(node)
+        let actual: String = Formatter.formatDiff(
+            node,
+            options: XCTKConfig.global.formatOptions
+        )
         
         let expected: String =
         """

@@ -33,7 +33,10 @@ internal final class FormatterPredicateTests: XCTestKitCase
             isOrdered:          true
         )
         
-        let actual: String = Formatter.formatPredicate(failure)
+        let actual: String = Formatter.formatPredicate(
+            failure,
+            options: XCTKConfig.global.formatOptions
+        )
         
         let expected: String =
         """
@@ -63,7 +66,10 @@ internal final class FormatterPredicateTests: XCTestKitCase
             isOrdered:          true
         )
         
-        let actual: String = Formatter.formatPredicate(failure)
+        let actual: String = Formatter.formatPredicate(
+            failure,
+            options: XCTKConfig.global.formatOptions
+        )
         
         let expected: String =
         """
@@ -99,7 +105,8 @@ internal final class FormatterPredicateTests: XCTestKitCase
         let actual: String = Formatter.formatPredicate(
             failure,
             collectionText:     collectionText,
-            predicateText:      predicateText
+            predicateText:      predicateText,
+            options:            XCTKConfig.global.formatOptions
         )
         
         let expected: String =
@@ -132,7 +139,10 @@ internal final class FormatterPredicateTests: XCTestKitCase
             isOrdered:          true
         )
         
-        let actual: String = Formatter.formatPredicate(failure)
+        let actual: String = Formatter.formatPredicate(
+            failure,
+            options: XCTKConfig.global.formatOptions
+        )
         
         let expected: String =
         """
@@ -162,7 +172,10 @@ internal final class FormatterPredicateTests: XCTestKitCase
             isOrdered:          false
         )
         
-        let actual: String = Formatter.formatPredicate(failure)
+        let actual: String = Formatter.formatPredicate(
+            failure,
+            options: XCTKConfig.global.formatOptions
+        )
         
         let expected: String =
         """
@@ -191,7 +204,10 @@ internal final class FormatterPredicateTests: XCTestKitCase
             isOrdered:          true
         )
         
-        let actual: String = Formatter.formatPredicate(failure)
+        let actual: String = Formatter.formatPredicate(
+            failure,
+            options: XCTKConfig.global.formatOptions
+        )
         
         let expected: String =
         """
@@ -221,7 +237,10 @@ internal final class FormatterPredicateTests: XCTestKitCase
             isOrdered:          true
         )
         
-        let actual: String = Formatter.formatPredicate(failure)
+        let actual: String = Formatter.formatPredicate(
+            failure,
+            options: XCTKConfig.global.formatOptions
+        )
         
         let expected: String =
         """
@@ -327,7 +346,8 @@ internal final class FormatterPredicateTests: XCTestKitCase
         
         let actual: String = Formatter.formatPredicate(
             failure,
-            collectionText: "[1, 2, 3]"
+            collectionText:     "[1, 2, 3]",
+            options:            XCTKConfig.global.formatOptions
         )
         
         let expected: String =
@@ -395,7 +415,10 @@ internal final class FormatterPredicateTests: XCTestKitCase
             isOrdered:          true
         )
         
-        let actual: String = Formatter.formatPredicate(failure)
+        let actual: String = Formatter.formatPredicate(
+            failure,
+            options: XCTKConfig.global.formatOptions
+        )
         
         let expected: String =
         """
@@ -425,7 +448,10 @@ internal final class FormatterPredicateTests: XCTestKitCase
             isOrdered:          true
         )
         
-        let actual: String = Formatter.formatPredicate(failure)
+        let actual: String = Formatter.formatPredicate(
+            failure,
+            options: XCTKConfig.global.formatOptions
+        )
         
         let expected: String =
         """
@@ -456,7 +482,10 @@ internal final class FormatterPredicateTests: XCTestKitCase
             isOrdered:          true
         )
         
-        let actual: String = Formatter.formatPredicate(failure)
+        let actual: String = Formatter.formatPredicate(
+            failure,
+            options: XCTKConfig.global.formatOptions
+        )
         
         let expected: String =
         """
@@ -486,7 +515,10 @@ internal final class FormatterPredicateTests: XCTestKitCase
             isOrdered:          false
         )
         
-        let actual: String = Formatter.formatPredicate(failure)
+        let actual: String = Formatter.formatPredicate(
+            failure,
+            options: XCTKConfig.global.formatOptions
+        )
         
         let expected: String =
         """
@@ -521,7 +553,8 @@ internal final class FormatterPredicateTests: XCTestKitCase
         let actual: String = Formatter.formatPredicate(
             failure,
             collectionText:     collectionText,
-            predicateText:      predicateText
+            predicateText:      predicateText,
+            options:            XCTKConfig.global.formatOptions
         )
         
         let expected: String =
@@ -628,7 +661,10 @@ internal final class FormatterPredicateTests: XCTestKitCase
             isOrdered:          true
         )
         
-        let actual: String = Formatter.formatPredicate(failure)
+        let actual: String = Formatter.formatPredicate(
+            failure,
+            options: XCTKConfig.global.formatOptions
+        )
         
         let expected: String =
         """
@@ -658,7 +694,10 @@ internal final class FormatterPredicateTests: XCTestKitCase
             isOrdered:          true
         )
         
-        let actual: String = Formatter.formatPredicate(failure)
+        let actual: String = Formatter.formatPredicate(
+            failure,
+            options: XCTKConfig.global.formatOptions
+        )
         
         let expected: String =
         """
@@ -690,7 +729,8 @@ internal final class FormatterPredicateTests: XCTestKitCase
         
         let actual: String = Formatter.formatPredicate(
             failure,
-            collectionText: "[1, 2, 3]"
+            collectionText:     "[1, 2, 3]",
+            options:            XCTKConfig.global.formatOptions
         )
         
         let expected: String =
@@ -724,7 +764,10 @@ internal final class FormatterPredicateTests: XCTestKitCase
             isOrdered:          true
         )
         
-        let actual: String = Formatter.formatPredicate(failure)
+        let actual: String = Formatter.formatPredicate(
+            failure,
+            options: XCTKConfig.global.formatOptions
+        )
         
         let expected: String =
         """
@@ -752,7 +795,10 @@ internal final class FormatterPredicateTests: XCTestKitCase
             isOrdered:          true
         )
         
-        let actual: String = Formatter.formatPredicate(failure)
+        let actual: String = Formatter.formatPredicate(
+            failure,
+            options: XCTKConfig.global.formatOptions
+        )
         
         let expected: String =
         """
@@ -782,7 +828,10 @@ internal final class FormatterPredicateTests: XCTestKitCase
             isOrdered:          true
         )
         
-        let actual: String = Formatter.formatPredicate(failure)
+        let actual: String = Formatter.formatPredicate(
+            failure,
+            options: XCTKConfig.global.formatOptions
+        )
         
         let expected: String =
         """
@@ -812,7 +861,10 @@ internal final class FormatterPredicateTests: XCTestKitCase
             isOrdered:          true
         )
         
-        let actual: String = Formatter.formatPredicate(failure)
+        let actual: String = Formatter.formatPredicate(
+            failure,
+            options: XCTKConfig.global.formatOptions
+        )
         
         let expected: String =
         """
@@ -840,7 +892,10 @@ internal final class FormatterPredicateTests: XCTestKitCase
             isOrdered:          true
         )
         
-        let actual: String = Formatter.formatPredicate(failure)
+        let actual: String = Formatter.formatPredicate(
+            failure,
+            options: XCTKConfig.global.formatOptions
+        )
         
         let expected: String =
         """
@@ -870,7 +925,10 @@ internal final class FormatterPredicateTests: XCTestKitCase
             isOrdered:          true
         )
         
-        let actual: String = Formatter.formatPredicate(failure)
+        let actual: String = Formatter.formatPredicate(
+            failure,
+            options: XCTKConfig.global.formatOptions
+        )
         
         let expected: String =
         """
@@ -900,7 +958,10 @@ internal final class FormatterPredicateTests: XCTestKitCase
             isOrdered:          true
         )
         
-        let actual: String = Formatter.formatPredicate(failure)
+        let actual: String = Formatter.formatPredicate(
+            failure,
+            options: XCTKConfig.global.formatOptions
+        )
         
         let expected: String =
         """
@@ -928,7 +989,10 @@ internal final class FormatterPredicateTests: XCTestKitCase
             isOrdered:          false
         )
         
-        let actual: String = Formatter.formatPredicate(failure)
+        let actual: String = Formatter.formatPredicate(
+            failure,
+            options: XCTKConfig.global.formatOptions
+        )
         
         let expected: String =
         """
@@ -961,7 +1025,10 @@ internal final class FormatterPredicateTests: XCTestKitCase
             isOrdered:          true
         )
         
-        let actual: String = Formatter.formatPredicate(failure)
+        let actual: String = Formatter.formatPredicate(
+            failure,
+            options: XCTKConfig.global.formatOptions
+        )
         
         let expected: String =
         """
@@ -999,7 +1066,10 @@ internal final class FormatterPredicateTests: XCTestKitCase
             isOrdered:          false
         )
         
-        let actual: String = Formatter.formatPredicate(failure)
+        let actual: String = Formatter.formatPredicate(
+            failure,
+            options: XCTKConfig.global.formatOptions
+        )
         
         let expected: String =
         """
@@ -1163,7 +1233,10 @@ internal final class FormatterPredicateTests: XCTestKitCase
             isOrdered:          true
         )
         
-        let actual: String = Formatter.formatPredicate(failure)
+        let actual: String = Formatter.formatPredicate(
+            failure,
+            options: XCTKConfig.global.formatOptions
+        )
         
         let expected: String =
         """
@@ -1199,7 +1272,8 @@ internal final class FormatterPredicateTests: XCTestKitCase
         let actual: String = Formatter.formatPredicate(
             failure,
             collectionText:     collectionText,
-            predicateText:      predicateText
+            predicateText:      predicateText,
+            options:            XCTKConfig.global.formatOptions
         )
         
         let expected: String =
@@ -1281,7 +1355,10 @@ internal final class FormatterPredicateTests: XCTestKitCase
             isOrdered:          true
         )
         
-        let actual: String = Formatter.formatPredicate(failure)
+        let actual: String = Formatter.formatPredicate(
+            failure,
+            options: XCTKConfig.global.formatOptions
+        )
         
         let expected: String =
         """
@@ -1313,7 +1390,10 @@ internal final class FormatterPredicateTests: XCTestKitCase
             isOrdered:          true
         )
         
-        let actual: String = Formatter.formatPredicate(failure)
+        let actual: String = Formatter.formatPredicate(
+            failure,
+            options: XCTKConfig.global.formatOptions
+        )
         
         let expected: String =
         """
@@ -1351,7 +1431,8 @@ internal final class FormatterPredicateTests: XCTestKitCase
         let actual: String = Formatter.formatPredicate(
             failure,
             collectionText:     collectionText,
-            predicateText:      predicateText
+            predicateText:      predicateText,
+            options:            XCTKConfig.global.formatOptions
         )
         
         let expected: String =
@@ -1386,7 +1467,10 @@ internal final class FormatterPredicateTests: XCTestKitCase
             isOrdered:          true
         )
         
-        let actual: String = Formatter.formatPredicate(failure)
+        let actual: String = Formatter.formatPredicate(
+            failure,
+            options: XCTKConfig.global.formatOptions
+        )
         
         let expected: String =
         """
@@ -1417,7 +1501,10 @@ internal final class FormatterPredicateTests: XCTestKitCase
             isOrdered:          true
         )
         
-        let actual: String = Formatter.formatPredicate(failure)
+        let actual: String = Formatter.formatPredicate(
+            failure,
+            options: XCTKConfig.global.formatOptions
+        )
         
         let expected: String =
         """
@@ -1449,7 +1536,10 @@ internal final class FormatterPredicateTests: XCTestKitCase
             isOrdered:          true
         )
         
-        let actual: String = Formatter.formatPredicate(failure)
+        let actual: String = Formatter.formatPredicate(
+            failure,
+            options: XCTKConfig.global.formatOptions
+        )
         
         let expected: String =
         """
@@ -1482,7 +1572,10 @@ internal final class FormatterPredicateTests: XCTestKitCase
             isOrdered:          true
         )
         
-        let actual: String = Formatter.formatPredicate(failure)
+        let actual: String = Formatter.formatPredicate(
+            failure,
+            options: XCTKConfig.global.formatOptions
+        )
         
         let expected: String =
         """
@@ -1512,7 +1605,10 @@ internal final class FormatterPredicateTests: XCTestKitCase
             isOrdered:          true
         )
         
-        let actual: String = Formatter.formatPredicate(failure)
+        let actual: String = Formatter.formatPredicate(
+            failure,
+            options: XCTKConfig.global.formatOptions
+        )
         
         let expected: String =
         """
@@ -1543,7 +1639,10 @@ internal final class FormatterPredicateTests: XCTestKitCase
             isOrdered:          false
         )
         
-        let actual: String = Formatter.formatPredicate(failure)
+        let actual: String = Formatter.formatPredicate(
+            failure,
+            options: XCTKConfig.global.formatOptions
+        )
         
         let expected: String =
         """
@@ -1573,7 +1672,10 @@ internal final class FormatterPredicateTests: XCTestKitCase
             isOrdered:          false
         )
         
-        let actual: String = Formatter.formatPredicate(failure)
+        let actual: String = Formatter.formatPredicate(
+            failure,
+            options: XCTKConfig.global.formatOptions
+        )
         
         let expected: String =
         """
@@ -1603,7 +1705,10 @@ internal final class FormatterPredicateTests: XCTestKitCase
             isOrdered:          true
         )
         
-        let actual: String = Formatter.formatPredicate(failure)
+        let actual: String = Formatter.formatPredicate(
+            failure,
+            options: XCTKConfig.global.formatOptions
+        )
         
         let expected: String =
         """
@@ -1710,7 +1815,8 @@ internal final class FormatterPredicateTests: XCTestKitCase
         
         let actual: String = Formatter.formatPredicate(
             failure,
-            collectionText: collectionText
+            collectionText:     collectionText,
+            options:            XCTKConfig.global.formatOptions
         )
         
         let expected: String =
@@ -1751,7 +1857,10 @@ internal final class FormatterPredicateTests: XCTestKitCase
             isOrdered:          true
         )
         
-        let actual: String = Formatter.formatPredicate(failure)
+        let actual: String = Formatter.formatPredicate(
+            failure,
+            options: XCTKConfig.global.formatOptions
+        )
         
         let expected: String =
         """
@@ -1799,7 +1908,10 @@ internal final class FormatterPredicateTests: XCTestKitCase
             isOrdered:          true
         )
         
-        let actual: String = Formatter.formatPredicate(failure)
+        let actual: String = Formatter.formatPredicate(
+            failure,
+            options: XCTKConfig.global.formatOptions
+        )
         
         let expected: String =
         """
@@ -1843,7 +1955,10 @@ internal final class FormatterPredicateTests: XCTestKitCase
             isOrdered:          false
         )
         
-        let actual: String = Formatter.formatPredicate(failure)
+        let actual: String = Formatter.formatPredicate(
+            failure,
+            options: XCTKConfig.global.formatOptions
+        )
         
         let expected: String =
         """
@@ -1876,7 +1991,10 @@ internal final class FormatterPredicateTests: XCTestKitCase
             isOrdered:          false
         )
         
-        let actual: String = Formatter.formatPredicate(failure)
+        let actual: String = Formatter.formatPredicate(
+            failure,
+            options: XCTKConfig.global.formatOptions
+        )
         
         let expected: String =
         """
@@ -1919,7 +2037,8 @@ internal final class FormatterPredicateTests: XCTestKitCase
         let actual: String = Formatter.formatPredicate(
             failure,
             collectionText:     collectionText,
-            predicateText:      predicateText
+            predicateText:      predicateText,
+            options:            XCTKConfig.global.formatOptions
         )
         
         let expected: String =
@@ -2095,7 +2214,8 @@ internal final class FormatterPredicateTests: XCTestKitCase
         
         let actual: String = Formatter.formatPredicate(
             failure,
-            collectionText: collectionText
+            collectionText:     collectionText,
+            options:            XCTKConfig.global.formatOptions
         )
         
         let expected: String =
@@ -2132,7 +2252,10 @@ internal final class FormatterPredicateTests: XCTestKitCase
             isOrdered:          true
         )
         
-        let actual: String = Formatter.formatPredicate(failure)
+        let actual: String = Formatter.formatPredicate(
+            failure,
+            options: XCTKConfig.global.formatOptions
+        )
         
         let expected: String =
         """
@@ -2163,7 +2286,10 @@ internal final class FormatterPredicateTests: XCTestKitCase
             isOrdered:          true
         )
         
-        let actual: String = Formatter.formatPredicate(failure)
+        let actual: String = Formatter.formatPredicate(
+            failure,
+            options: XCTKConfig.global.formatOptions
+        )
         
         let expected: String =
         """
@@ -2196,7 +2322,10 @@ internal final class FormatterPredicateTests: XCTestKitCase
             isOrdered:          true
         )
         
-        let actual: String = Formatter.formatPredicate(failure)
+        let actual: String = Formatter.formatPredicate(
+            failure,
+            options: XCTKConfig.global.formatOptions
+        )
         
         let expected: String =
         """

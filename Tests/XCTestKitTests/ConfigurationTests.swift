@@ -8,6 +8,7 @@
 //===----------------------------------------------------------------------===//
 
 import XCTest
+import XCTestKitCore
 @testable import XCTestKit
 @testable import XCTestKitTestUtilities
 
@@ -41,8 +42,8 @@ internal final class ConfigurationTests: XCTestKitCase
         let options = XCTKConfig.global
         
         XCTKAssertEqual(options.diffEnabled, true)
-        XCTKAssertEqual(options.diffOptions, XCTKDiffOptions())
-        XCTKAssertEqual(options.formatOptions, XCTKFormatOptions())
+        XCTKAssertEqual(options.diffOptions, TKDiffOptions())
+        XCTKAssertEqual(options.formatOptions, TKFormatOptions())
     }
     
     
@@ -84,9 +85,9 @@ internal final class ConfigurationTests: XCTestKitCase
     {
         class CustomCase: XCTKCase
         {
-            override var options: XCTKOptions
+            override var options: TKOptions
             {
-                var opts = XCTKOptions()
+                var opts = TKOptions()
                 
                 opts.diffOptions.maxRecursionDepth = 1
                 
@@ -125,19 +126,19 @@ internal final class ConfigurationTests: XCTestKitCase
     
     
     
-    func testXCTKOptions() throws
+    func testTKOptions() throws
     {
-        let options = XCTKOptions()
+        let options = TKOptions()
         
-        XCTKAssertEqual(options.diffOptions, XCTKDiffOptions())
-        XCTKAssertEqual(options.formatOptions, XCTKFormatOptions())
+        XCTKAssertEqual(options.diffOptions, TKDiffOptions())
+        XCTKAssertEqual(options.formatOptions, TKFormatOptions())
     }
     
     
     
-    func testXCTKDiffOptions() throws
+    func testTKDiffOptions() throws
     {
-        let options = XCTKDiffOptions()
+        let options = TKDiffOptions()
         
         XCTKAssertEqual(options.maxRecursionDepth, 20)
         XCTKAssertNil(options.characterDiffThreshold)
@@ -145,9 +146,9 @@ internal final class ConfigurationTests: XCTestKitCase
     
     
     
-    func testXCTKFormatOptions() throws
+    func testTKFormatOptions() throws
     {
-        let options = XCTKFormatOptions()
+        let options = TKFormatOptions()
         
         XCTKAssertEqual(options.indentationSpaces, 4)
         XCTKAssertEqual(options.maxLineLength, 80)

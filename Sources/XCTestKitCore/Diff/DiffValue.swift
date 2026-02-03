@@ -7,14 +7,10 @@
 //
 //===----------------------------------------------------------------------===//
 
-import XCTestKitCore
-
-
-
 //  MARK: - RenderedValueKind
 
 /// The kind of a rendered value.
-internal enum RenderedValueKind: Equatable, Sendable
+public enum RenderedValueKind: Equatable, Sendable
 {
     /// A string or character value.
     ///
@@ -32,28 +28,28 @@ internal enum RenderedValueKind: Equatable, Sendable
 // MARK: - RenderedValue
 
 /// Pre-rendered information about a value.
-internal struct RenderedValue: Equatable, Sendable, CustomStringConvertible
+public struct RenderedValue: Equatable, Sendable, CustomStringConvertible
 {
     /// The string representation of the value.
     ///
     /// For strings, this is the string content with special characters
     /// escaped (`\n`, `\t`, `\r`, `\0`, `\\`), but without surrounding quotes.
     /// Quoting is handled by the formatter.
-    let description : String
+    public let description  : String
     
     /// The name of the value's type.
     ///
     /// This uses the full generic signature (for example, `Array<String>`).
-    let typeName    : String
+    public let typeName     : String
     
     /// The kind of value, used to determine the formatting behavior.
-    let kind        : RenderedValueKind
+    public let kind         : RenderedValueKind
     
     
     
     /// Initializes a ``RenderedValue`` instance from the given value.
     /// - Parameter value: The value to use.
-    init(
+    public init(
         _ value: Any
     )
     {
@@ -114,18 +110,18 @@ internal struct RenderedValue: Equatable, Sendable, CustomStringConvertible
 /// The tradeoffs of this approach include increased memory usage, but this is
 /// generally acceptable since diff trees are short-lived, and the string
 /// overhead is relatively light compared to the overall test execution cost.
-internal struct DiffValue: Equatable
+public struct DiffValue: Equatable
 {
     /// The underlying value.
-    let value       : Any
+    public let value    : Any
     
     /// The pre-rendered information about the value.
-    let rendered    : RenderedValue
+    public let rendered : RenderedValue
     
     
     
     /// Initializes a ``DiffValue`` instance from the given values.
-    init(
+    public init(
         value       : Any,
         rendered    : RenderedValue
     )
@@ -137,7 +133,7 @@ internal struct DiffValue: Equatable
     
     
     /// Initializes a ``DiffValue`` instance from the given value.
-    init(
+    public init(
         _ value: Any
     )
     {
@@ -155,7 +151,7 @@ internal struct DiffValue: Equatable
     ///   - lhs: The left-hand side value to compare.
     ///   - rhs: The right-hand side value to compare.
     /// - Returns: Whether the given values are equal.
-    static func == (
+    public static func == (
         lhs : DiffValue,
         rhs : DiffValue
     ) -> Bool

@@ -7,6 +7,7 @@
 //
 //===----------------------------------------------------------------------===//
 
+import XCTestKitCore
 @testable import XCTestKit
 @testable import XCTestKitTestUtilities
 
@@ -21,7 +22,8 @@ internal final class ComparatorArrayTests: XCTestKitCase
         
         let actual: DiffNode = Comparator.computeDiff(
             expected:   exp,
-            actual:     act
+            actual:     act,
+            options:    XCTKConfig.global.diffOptions
         )
         
         let expected = DiffNode.makeRoot(
@@ -49,7 +51,8 @@ internal final class ComparatorArrayTests: XCTestKitCase
         
         let actual: DiffNode = Comparator.computeDiff(
             expected:   exp,
-            actual:     act
+            actual:     act,
+            options:    XCTKConfig.global.diffOptions
         )
         
         let expected = DiffNode.makeRoot(
@@ -86,7 +89,8 @@ internal final class ComparatorArrayTests: XCTestKitCase
         
         let actual: DiffNode = Comparator.computeDiff(
             expected:   exp,
-            actual:     act
+            actual:     act,
+            options:    XCTKConfig.global.diffOptions
         )
         
         let expected = DiffNode.makeRoot(
@@ -119,7 +123,8 @@ internal final class ComparatorArrayTests: XCTestKitCase
         
         let actual: DiffNode = Comparator.computeDiff(
             expected:   exp,
-            actual:     act
+            actual:     act,
+            options:    XCTKConfig.global.diffOptions
         )
         
         let expected = DiffNode.makeRoot(
@@ -156,7 +161,8 @@ internal final class ComparatorArrayTests: XCTestKitCase
         
         let actual: DiffNode = Comparator.computeDiff(
             expected:   exp,
-            actual:     act
+            actual:     act,
+            options:    XCTKConfig.global.diffOptions
         )
         
         let expected = DiffNode.makeRoot(
@@ -184,7 +190,8 @@ internal final class ComparatorArrayTests: XCTestKitCase
         
         let actual: DiffNode = Comparator.computeDiff(
             expected:   exp,
-            actual:     act
+            actual:     act,
+            options:    XCTKConfig.global.diffOptions
         )
         
         let expected = DiffNode.makeRoot(
@@ -230,7 +237,8 @@ internal final class ComparatorArrayTests: XCTestKitCase
         
         let actual: DiffNode = Comparator.computeDiff(
             expected:   exp,
-            actual:     act
+            actual:     act,
+            options:    XCTKConfig.global.diffOptions
         )
         
         /// Non-hashable arrays fall back to index-by-index comparison.
@@ -300,7 +308,8 @@ internal final class ComparatorArrayTests: XCTestKitCase
         
         let actual: DiffNode = Comparator.computeDiff(
             expected:   exp,
-            actual:     act
+            actual:     act,
+            options:    XCTKConfig.global.diffOptions
         )
         
         let expected = DiffNode.makeRoot(
@@ -328,7 +337,8 @@ internal final class ComparatorArrayTests: XCTestKitCase
         
         let actual: DiffNode = Comparator.computeDiff(
             expected:   exp,
-            actual:     act
+            actual:     act,
+            options:    XCTKConfig.global.diffOptions
         )
         
         let expected = DiffNode.makeRoot(
@@ -364,7 +374,8 @@ internal final class ComparatorArrayTests: XCTestKitCase
         
         let actual: DiffNode = Comparator.computeDiff(
             expected:   exp,
-            actual:     act
+            actual:     act,
+            options:    XCTKConfig.global.diffOptions
         )
         
         let expected = DiffNode.makeRoot(
@@ -406,7 +417,8 @@ internal final class ComparatorArrayTests: XCTestKitCase
         
         let actual: DiffNode = Comparator.computeDiff(
             expected:   exp,
-            actual:     act
+            actual:     act,
+            options:    XCTKConfig.global.diffOptions
         )
         
         let expected = DiffNode.makeRoot(
@@ -452,7 +464,8 @@ internal final class ComparatorArrayTests: XCTestKitCase
         
         let actual: DiffNode = Comparator.computeDiff(
             expected:   exp,
-            actual:     act
+            actual:     act,
+            options:    XCTKConfig.global.diffOptions
         )
         
         let expected = DiffNode.makeRoot(

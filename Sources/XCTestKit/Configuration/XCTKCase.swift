@@ -7,31 +7,10 @@
 //
 //===----------------------------------------------------------------------===//
 
-import Synchronization
+import XCTestKitCore
 import XCTest
 
 
-
-// MARK: - XCTKConfig
-
-/// The global configuration for XCTestKit.
-///
-/// Use this to customize the default behavior of all XCTestKit assertions.
-public enum XCTKConfig
-{
-    private static let _global = Mutex<XCTKOptions>(.init())
-    
-    /// The global default options used by all XCTestKit assertions.
-    public static var global: XCTKOptions
-    {
-        get { _global.withLock { $0 } }
-        set { _global.withLock { $0 = newValue } }
-    }
-}
-
-
-
-// MARK: - XCTKCase
 
 /// The primary class for defining XCTestKit test cases.
 open class XCTKCase: XCTestCase
@@ -40,7 +19,7 @@ open class XCTKCase: XCTestCase
     ///
     /// To define reusable options for a test class, override this property
     /// and pass it to any assertion that should not use global options.
-    open var options: XCTKOptions
+    open var options: TKOptions
     {
         XCTKConfig.global
     }

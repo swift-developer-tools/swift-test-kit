@@ -7,6 +7,7 @@
 //
 //===----------------------------------------------------------------------===//
 
+import XCTestKitCore
 @testable import XCTestKit
 @testable import XCTestKitTestUtilities
 
@@ -22,7 +23,7 @@ internal final class StringComparatorCharThresholdTests: XCTestKitCase
         let actual: DiffNodeKind = StringComparator.compare(
             expected:   exp,
             actual:     act,
-            options:    XCTKDiffOptions(characterDiffThreshold: 0.75)
+            options:    .init(characterDiffThreshold: 0.75)
         )
         
         let expected: DiffNodeKind = .different(
@@ -44,7 +45,7 @@ internal final class StringComparatorCharThresholdTests: XCTestKitCase
         let actual: DiffNodeKind = StringComparator.compare(
             expected:   exp,
             actual:     act,
-            options:    XCTKDiffOptions(characterDiffThreshold: 0.75)
+            options:    .init(characterDiffThreshold: 0.75)
         )
         
         let expected: DiffNodeKind = .different(
@@ -72,7 +73,7 @@ internal final class StringComparatorCharThresholdTests: XCTestKitCase
         let actual: DiffNodeKind = StringComparator.compare(
             expected:   exp,
             actual:     exp,
-            options:    XCTKDiffOptions(characterDiffThreshold: 0.5)
+            options:    .init(characterDiffThreshold: 0.5)
         )
         
         let expected: DiffNodeKind = .same
@@ -95,7 +96,7 @@ internal final class StringComparatorCharThresholdTests: XCTestKitCase
         let actual: DiffNodeKind = StringComparator.compare(
             expected:   exp,
             actual:     act,
-            options:    XCTKDiffOptions(characterDiffThreshold: 0.5)
+            options:    .init(characterDiffThreshold: 0.5)
         )
         
         let expected: DiffNodeKind = .different(
@@ -124,7 +125,7 @@ internal final class StringComparatorCharThresholdTests: XCTestKitCase
         let actual: DiffNodeKind = StringComparator.compare(
             expected:   exp,
             actual:     act,
-            options:    XCTKDiffOptions(characterDiffThreshold: 0.9)
+            options:    .init(characterDiffThreshold: 0.9)
         )
         
         let expected: DiffNodeKind = .different(
@@ -180,7 +181,7 @@ internal final class StringComparatorCharThresholdTests: XCTestKitCase
         let actual: DiffNodeKind = StringComparator.compare(
             expected:   exp,
             actual:     act,
-            options:    XCTKDiffOptions(characterDiffThreshold: 0.5)
+            options:    .init(characterDiffThreshold: 0.5)
         )
         
         let expected: DiffNodeKind = .different(

@@ -15,7 +15,7 @@ import XCTestKitCore
 
 internal final class FormatterIntegrationTests: XCTestKitCase
 {
-    private typealias LK = XCTestKit.Formatter.LabelKind
+    private typealias LK = XCTestKitCore.Formatter.LabelKind
     
     
     
@@ -33,10 +33,14 @@ internal final class FormatterIntegrationTests: XCTestKitCase
         
         let node: DiffNode = Comparator.computeDiff(
             expected:   exp,
-            actual:     act
+            actual:     act,
+            options:    XCTKConfig.global.diffOptions
         )
         
-        let actual: String = Formatter.formatDiff(node)
+        let actual: String = Formatter.formatDiff(
+            node,
+            options: XCTKConfig.global.formatOptions
+        )
         
         let expected: String =
         """
@@ -58,10 +62,14 @@ internal final class FormatterIntegrationTests: XCTestKitCase
         
         let node: DiffNode = Comparator.computeDiff(
             expected:   exp,
-            actual:     act
+            actual:     act,
+            options:    XCTKConfig.global.diffOptions
         )
         
-        let actual: String = Formatter.formatDiff(node)
+        let actual: String = Formatter.formatDiff(
+            node,
+            options: XCTKConfig.global.formatOptions
+        )
         
         let expected: String =
         """
@@ -82,10 +90,14 @@ internal final class FormatterIntegrationTests: XCTestKitCase
         
         let node: DiffNode = Comparator.computeDiff(
             expected:   exp,
-            actual:     act
+            actual:     act,
+            options:    XCTKConfig.global.diffOptions
         )
         
-        let actual: String = Formatter.formatDiff(node)
+        let actual: String = Formatter.formatDiff(
+            node,
+            options: XCTKConfig.global.formatOptions
+        )
         
         let expected: String =
         """
@@ -120,10 +132,14 @@ internal final class FormatterIntegrationTests: XCTestKitCase
         
         let node: DiffNode = Comparator.computeDiff(
             expected:   exp,
-            actual:     act
+            actual:     act,
+            options:    XCTKConfig.global.diffOptions
         )
         
-        let actual: String = Formatter.formatDiff(node)
+        let actual: String = Formatter.formatDiff(
+            node,
+            options: XCTKConfig.global.formatOptions
+        )
         
         let expected: String =
         """
@@ -147,10 +163,14 @@ internal final class FormatterIntegrationTests: XCTestKitCase
         
         let node: DiffNode = Comparator.computeDiff(
             expected:   exp,
-            actual:     act
+            actual:     act,
+            options:    XCTKConfig.global.diffOptions
         )
         
-        let actual: String = Formatter.formatDiff(node)
+        let actual: String = Formatter.formatDiff(
+            node,
+            options: XCTKConfig.global.formatOptions
+        )
         
         let expected: String =
         """
@@ -174,10 +194,14 @@ internal final class FormatterIntegrationTests: XCTestKitCase
         
         let node: DiffNode = Comparator.computeDiff(
             expected:   exp,
-            actual:     act
+            actual:     act,
+            options:    XCTKConfig.global.diffOptions
         )
         
-        let actual: String = Formatter.formatDiff(node)
+        let actual: String = Formatter.formatDiff(
+            node,
+            options: XCTKConfig.global.formatOptions
+        )
         
         let expected: String =
         """
@@ -208,10 +232,14 @@ internal final class FormatterIntegrationTests: XCTestKitCase
         
         let node: DiffNode = Comparator.computeDiff(
             expected:   exp,
-            actual:     act
+            actual:     act,
+            options:    XCTKConfig.global.diffOptions
         )
         
-        let actual: String = Formatter.formatDiff(node)
+        let actual: String = Formatter.formatDiff(
+            node,
+            options: XCTKConfig.global.formatOptions
+        )
         
         let expected: String =
         """
@@ -245,10 +273,14 @@ internal final class FormatterIntegrationTests: XCTestKitCase
         
         let node: DiffNode = Comparator.computeDiff(
             expected:   exp,
-            actual:     act
+            actual:     act,
+            options:    XCTKConfig.global.diffOptions
         )
         
-        let actual: String = Formatter.formatDiff(node)
+        let actual: String = Formatter.formatDiff(
+            node,
+            options: XCTKConfig.global.formatOptions
+        )
         
         let expected: String =
         """
@@ -266,23 +298,19 @@ internal final class FormatterIntegrationTests: XCTestKitCase
     
     func testTruncation() throws
     {
-        let options = XCTKFormatOptions(
-            maxDiffs:       2,
-            countDiffs:     true
-        )
-        
         let exp         : [Int]     = [1, 2, 3, 4, 5]
         let act         : [Int]     = [0, 0, 0, 0, 0]
         let typeName    : String    = typeName(of: exp)
         
         let node: DiffNode = Comparator.computeDiff(
             expected:   exp,
-            actual:     act
+            actual:     act,
+            options:    XCTKConfig.global.diffOptions
         )
         
         let actual: String = Formatter.formatDiff(
             node,
-            options: options
+            options: .init(maxDiffs: 2, countDiffs: true)
         )
         
         let expected: String =

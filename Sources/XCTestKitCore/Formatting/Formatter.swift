@@ -7,14 +7,10 @@
 //
 //===----------------------------------------------------------------------===//
 
-import XCTestKitCore
-
-
-
 // MARK: - FormattedLine
 
 /// A formatted diff line.
-internal struct FormattedLine
+public struct FormattedLine
 {
     /// The indentation level.
     let indent  : Int
@@ -63,8 +59,8 @@ internal struct FormattedLine
 /// Currently, a closing quote is added to truncated strings by
 /// ``renderText(_:)``, since that implementation is trivial. Other
 /// behavior is acceptable and may be avoided by increasing the limit
-/// specified by ``XCTKFormatOptions/maxLineLength``.
-internal struct Formatter
+/// specified by ``TKFormatOptions/maxLineLength``.
+public struct Formatter
 {
     /// The context for tracking state across recursive formatting calls.
     private let context: FormatterContext
@@ -74,20 +70,16 @@ internal struct Formatter
     /// Formats the given diff.
     /// - Parameters:
     ///   - node: The root diff node.
-    ///   - options: The formatting options. The default value is `nil`, which
-    ///   falls back to using global options.
+    ///   - options: The formatting options.
     /// - Returns: The formatted failure.
-    static func formatDiff(
+    public static func formatDiff(
         _ node  : DiffNode,
-        options : XCTKFormatOptions?    = nil
+        options : TKFormatOptions
     ) -> String
     {
-        let opts: XCTKFormatOptions = options
-            ?? XCTKConfig.global.formatOptions
-        
         let context = FormatterContext(
             node:       node,
-            options:    opts
+            options:    options
         )
         
         let formatter = Formatter(context: context)
@@ -106,30 +98,26 @@ internal struct Formatter
     ///   - evaluated: The evaluated boolean expressions.
     ///   - notEvaluated: The number of unevaluated boolean expressions.
     ///   - expectedValue: The value expected by the assertion.
-    ///   - options: The formatting options. The default value is `nil`, which
-    ///   falls back to using global options.
+    ///   - options: The formatting options.
     /// - Returns: The formatted failure.
-    static func formatBooleanExpr(
+    public static func formatBooleanExpr(
         exprText        : String,
-        evaluated       : [XCTKBooleanExpr],
+        evaluated       : [TKBooleanExpr],
         notEvaluated    : Int,
         expectedValue   : Bool,
-        options         : XCTKFormatOptions?    = nil
+        options         : TKFormatOptions
     ) -> String
     {
-        let opts: XCTKFormatOptions = options
-            ?? XCTKConfig.global.formatOptions
-        
-        let exprsToShow: [XCTKBooleanExpr] = opts.showAllEvaluated
+        let exprsToShow: [TKBooleanExpr] = options.showAllEvaluated
             ? evaluated
             : evaluated.filter { $0.value != expectedValue }
         
-        let totalDiffCount: Int? = opts.countDiffs
+        let totalDiffCount: Int? = options.countDiffs
             ? exprsToShow.count
             : nil
         
         let context = FormatterContext(
-            options:            opts,
+            options:            options,
             totalDiffCount:     totalDiffCount
         )
         
@@ -154,25 +142,21 @@ internal struct Formatter
     ///   function assertions.
     ///   - predicateText: The predicate expression source text, or `nil` for
     ///   function assertions.
-    ///   - options: The options for testing. The default value is `nil`, which
-    ///   falls back to using global options.
+    ///   - options: The options for testing.
     /// - Returns: The formatted predicate failure.
-    static func formatPredicate(
+    public static func formatPredicate(
         _ failure       : PredicateFailure,
-        collectionText  : String?               = nil,
-        predicateText   : String?               = nil,
-        options         : XCTKFormatOptions?    = nil
+        collectionText  : String?           = nil,
+        predicateText   : String?           = nil,
+        options         : TKFormatOptions
     ) -> String
     {
-        let opts: XCTKFormatOptions = options
-            ?? XCTKConfig.global.formatOptions
-        
-        let totalDiffCount: Int? = opts.countDiffs
-            ? countPredicateDiffs(in: failure, options: opts)
+        let totalDiffCount: Int? = options.countDiffs
+            ? countPredicateDiffs(in: failure, options: options)
             : nil
         
         let context = FormatterContext(
-            options:            opts,
+            options:            options,
             totalDiffCount:     totalDiffCount
         )
         
@@ -395,7 +379,7 @@ internal struct Formatter
     /// also adding state synchronization complexity.
     ///
     /// Since path depth is generally not excessive (and is potentially
-    /// limited by ``XCTKDiffOptions/maxRecursionDepth``), and this method is
+    /// limited by ``TKDiffOptions/maxRecursionDepth``), and this method is
     /// called only once per leaf, the simpler approach is preferred.
     ///
     /// - Returns: The indentation level of the path, or `0` if it is empty.
@@ -469,7 +453,7 @@ internal struct Formatter
         
         /// The path is emitted with one level of indentation and no label.
         /// Compute the available width to potentially truncate the path if
-        /// it exceeds ``XCTKFormatOptions/maxLineLength``.
+        /// it exceeds ``TKFormatOptions/maxLineLength``.
         let availableWidth: Int = computeAvailableWidth(
             indent:         1,
             labelWidth:     0
@@ -773,7 +757,7 @@ internal struct Formatter
     ///   assertion to succeed.
     private func emitBooleanDecomposition(
         exprText        : String,
-        exprsToShow     : [XCTKBooleanExpr],
+        exprsToShow     : [TKBooleanExpr],
         notEvaluated    : Int,
         expectedValue   : Bool
     )
@@ -1261,7 +1245,7 @@ internal struct Formatter
     // MARK: - Support
     
     /// The label kind.
-    enum LabelKind: String, CaseIterable
+    public enum LabelKind: String, CaseIterable
     {
         case expected       = "Expected:   "
         case actual         = "Actual:     "
@@ -1370,7 +1354,7 @@ internal struct Formatter
     /// - Returns: The number of diffs in the given predicate failure.
     private static func countPredicateDiffs(
         in failure  : PredicateFailure,
-        options     : XCTKFormatOptions
+        options     : TKFormatOptions
     ) -> Int
     {
         switch failure.kind

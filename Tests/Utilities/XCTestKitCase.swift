@@ -8,6 +8,7 @@
 //===----------------------------------------------------------------------===//
 
 import XCTest
+import XCTestKitCore
 @testable import XCTestKit
 
 
@@ -22,7 +23,7 @@ internal class XCTestKitCase: XCTestCase
     {
         super.setUp()
         
-        XCTKConfig.global       = XCTKOptions()
+        XCTKConfig.global       = TKOptions()
         continueAfterFailure    = false
     }
     
@@ -30,7 +31,7 @@ internal class XCTestKitCase: XCTestCase
     
     override func tearDown()
     {
-        XCTKConfig.global = XCTKOptions()
+        XCTKConfig.global = TKOptions()
         
         super.tearDown()
     }

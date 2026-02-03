@@ -15,7 +15,7 @@ import XCTestKitCore
 
 internal final class FormatterTruncationTests: XCTestKitCase
 {
-    private typealias LK = XCTestKit.Formatter.LabelKind
+    private typealias LK = XCTestKitCore.Formatter.LabelKind
     
     
     
@@ -23,11 +23,6 @@ internal final class FormatterTruncationTests: XCTestKitCase
     
     func testMaxDiffsWithoutCountDiffs() throws
     {
-        let options = XCTKFormatOptions(
-            maxDiffs:       2,
-            countDiffs:     false
-        )
-        
         let exp         : [Int]     = [1, 2, 3, 4, 5]
         let act         : [Int]     = [0, 0, 0, 0, 0]
         let typeName    : String    = typeName(of: exp)
@@ -48,7 +43,7 @@ internal final class FormatterTruncationTests: XCTestKitCase
         
         let actual: String = Formatter.formatDiff(
             node,
-            options: options
+            options: .init(maxDiffs: 2, countDiffs: false)
         )
         
         let expected: String =
@@ -73,11 +68,6 @@ internal final class FormatterTruncationTests: XCTestKitCase
     
     func testMaxDiffsWithCountDiffs() throws
     {
-        let options = XCTKFormatOptions(
-            maxDiffs:       2,
-            countDiffs:     true
-        )
-        
         let exp         : [Int]     = [1, 2, 3, 4, 5]
         let act         : [Int]     = [0, 0, 0, 0, 0]
         let typeName    : String    = typeName(of: exp)
@@ -98,7 +88,7 @@ internal final class FormatterTruncationTests: XCTestKitCase
         
         let actual: String = Formatter.formatDiff(
             node,
-            options: options
+            options: .init(maxDiffs: 2, countDiffs: true)
         )
         
         let expected: String =
@@ -123,8 +113,6 @@ internal final class FormatterTruncationTests: XCTestKitCase
     
     func testMaxDiffsAtExactLimit() throws
     {
-        let options = XCTKFormatOptions(maxDiffs: 3)
-        
         let exp         : [Int]     = [1, 2, 3]
         let act         : [Int]     = [0, 0, 0]
         let typeName    : String    = typeName(of: exp)
@@ -145,7 +133,7 @@ internal final class FormatterTruncationTests: XCTestKitCase
         
         let actual: String = Formatter.formatDiff(
             node,
-            options: options
+            options: .init(maxDiffs: 3)
         )
         
         let expected: String =
@@ -172,11 +160,6 @@ internal final class FormatterTruncationTests: XCTestKitCase
     
     func testMaxDiffsWithSetTree() throws
     {
-        let options = XCTKFormatOptions(
-            maxDiffs:       3,
-            countDiffs:     true
-        )
-        
         let exp         : Set<Int>  = Set(1...10)
         let act         : Set<Int>  = []
         let typeName    : String    = typeName(of: exp)
@@ -196,7 +179,7 @@ internal final class FormatterTruncationTests: XCTestKitCase
         
         let actual: String = Formatter.formatDiff(
             node,
-            options: options
+            options: .init(maxDiffs: 3, countDiffs: true)
         )
         
         let expected: String =
@@ -217,11 +200,6 @@ internal final class FormatterTruncationTests: XCTestKitCase
     
     func testMaxDiffsWithLineDiffs() throws
     {
-        let options = XCTKFormatOptions(
-            maxDiffs:       2,
-            countDiffs:     true
-        )
-        
         let exp         : String    = "line1\nline2\nline3\nline4\nline5"
         let act         : String    = "AAAA\nBBBB\nCCCC\nDDDD\nEEEE"
         let expLines    : [String]  = exp.components(separatedBy: "\n")
@@ -252,7 +230,7 @@ internal final class FormatterTruncationTests: XCTestKitCase
         
         let actual: String = Formatter.formatDiff(
             node,
-            options: options
+            options: .init(maxDiffs: 2, countDiffs: true)
         )
         
         let expected: String =
@@ -279,11 +257,6 @@ internal final class FormatterTruncationTests: XCTestKitCase
     
     func testMaxDiffsOfOne() throws
     {
-        let options = XCTKFormatOptions(
-            maxDiffs:       1,
-            countDiffs:     true
-        )
-        
         let exp         : [Int]     = [1, 2, 3]
         let act         : [Int]     = [0, 0, 0]
         let typeName    : String    = typeName(of: exp)
@@ -304,7 +277,7 @@ internal final class FormatterTruncationTests: XCTestKitCase
         
         let actual: String = Formatter.formatDiff(
             node,
-            options: options
+            options: .init(maxDiffs: 1, countDiffs: true)
         )
         
         let expected: String =
@@ -336,11 +309,6 @@ internal final class FormatterTruncationTests: XCTestKitCase
             let x   : Inner
             let y   : Inner
         }
-        
-        let options = XCTKFormatOptions(
-            maxDiffs:       2,
-            countDiffs:     true
-        )
         
         let exp : Outer     = .init(x: Inner(a: 1, b: 2), y: Inner(a: 3, b: 4))
         let act : Outer     = .init(x: Inner(a: 0, b: 0), y: Inner(a: 0, b: 0))
@@ -397,7 +365,7 @@ internal final class FormatterTruncationTests: XCTestKitCase
         
         let actual: String = Formatter.formatDiff(
             node,
-            options: options
+            options: .init(maxDiffs: 2, countDiffs: true)
         )
         
         let expected: String =
@@ -427,7 +395,6 @@ internal final class FormatterTruncationTests: XCTestKitCase
         /// The path would be 32 characters: `.l2.l3.l4.l5.l6.l7.l8.l9.l10.val`.
         /// With a maximum line length of 30 and an indent of 1 (4 spaces),
         /// the available width is 26. The path should be middle-truncated.
-        let options = XCTKFormatOptions(maxLineLength: 30)
         
         struct L10  : Equatable { let val   : Int }
         struct L9   : Equatable { let l10   : L10 }
@@ -500,7 +467,7 @@ internal final class FormatterTruncationTests: XCTestKitCase
         
         let actual: String = Formatter.formatDiff(
             node,
-            options: options
+            options: .init(maxLineLength: 30)
         )
         
         let expected: String =
@@ -524,7 +491,6 @@ internal final class FormatterTruncationTests: XCTestKitCase
         /// Available width = 50 - 0 (indent) - 12 (label) = 38
         /// Value = 100 + 2 (quotes) = 102
         /// Truncated to 38 characters: 35 `a` characters + 3 (ellipsis)
-        let options = XCTKFormatOptions(maxLineLength: 50)
         
         let truncatedExp    : String    = .init(repeating: "a", count: 35)
         let exp             : String    = .init(repeating: "a", count: 100)
@@ -539,7 +505,7 @@ internal final class FormatterTruncationTests: XCTestKitCase
         
         let actual: String = Formatter.formatDiff(
             node,
-            options: options
+            options: .init(maxLineLength: 50)
         )
         
         let expected: String =
@@ -558,7 +524,6 @@ internal final class FormatterTruncationTests: XCTestKitCase
         /// Available width = 20 - 0 (indent) - 12 (label) = 8
         /// Minimum line width = 20
         /// Truncated to 20 characters: 17 `a` characters + 3 (ellipsis)
-        let options = XCTKFormatOptions(maxLineLength: 20)
         
         let shortExp    : String    = .init(repeating: "a", count: 17)
         let exp         : String    = .init(repeating: "a", count: 50)
@@ -573,7 +538,7 @@ internal final class FormatterTruncationTests: XCTestKitCase
         
         let actual: String = Formatter.formatDiff(
             node,
-            options: options
+            options: .init(maxLineLength: 20)
         )
         
         let expected: String =
@@ -597,7 +562,6 @@ internal final class FormatterTruncationTests: XCTestKitCase
         /// Available width = 60 - 8 (indent) - 12 (label) = 40
         /// Minimum line width = 20
         /// Truncated to 40 characters: 37 `a` characters + 3 (ellipsis)
-        let options = XCTKFormatOptions(maxLineLength: 60)
         
         let shortData   : String        = .init(repeating: "a", count: 37)
         let longData    : String        = .init(repeating: "a", count: 100)
@@ -621,7 +585,7 @@ internal final class FormatterTruncationTests: XCTestKitCase
         
         let actual: String = Formatter.formatDiff(
             node,
-            options: options
+            options: .init(maxLineLength: 60)
         )
         
         let expected: String =
@@ -643,7 +607,6 @@ internal final class FormatterTruncationTests: XCTestKitCase
         /// Available width = 30 - 12 (indent) - 12 (label) = 6
         /// Minimum line width = 20
         /// Truncated to 20 characters: 17 `a` characters + 3 (ellipsis)
-        let options = XCTKFormatOptions(maxLineLength: 30)
         
         struct L3   : Equatable { let data  : String }
         struct L2   : Equatable { let l3    : L3 }
@@ -687,7 +650,7 @@ internal final class FormatterTruncationTests: XCTestKitCase
         
         let actual: String = Formatter.formatDiff(
             node,
-            options: options
+            options: .init(maxLineLength: 30)
         )
         
         let expected: String =
@@ -713,8 +676,6 @@ internal final class FormatterTruncationTests: XCTestKitCase
             let age: Int
         }
         
-        let options = XCTKFormatOptions(indentationSpaces: 0)
-        
         let exp         : User      = .init(age: 30)
         let act         : User      = .init(age: 20)
         let typeName    : String    = typeName(of: exp)
@@ -735,7 +696,7 @@ internal final class FormatterTruncationTests: XCTestKitCase
         
         let actual: String = Formatter.formatDiff(
             node,
-            options: options
+            options: .init(indentationSpaces: 0)
         )
         
         let expected: String =
@@ -759,8 +720,6 @@ internal final class FormatterTruncationTests: XCTestKitCase
             let age: Int
         }
         
-        let options = XCTKFormatOptions(indentationSpaces: 2)
-        
         let exp         : User      = .init(age: 30)
         let act         : User      = .init(age: 20)
         let typeName    : String    = typeName(of: exp)
@@ -781,7 +740,7 @@ internal final class FormatterTruncationTests: XCTestKitCase
         
         let actual: String = Formatter.formatDiff(
             node,
-            options: options
+            options: .init(indentationSpaces: 2)
         )
         
         let expected: String =
@@ -800,8 +759,6 @@ internal final class FormatterTruncationTests: XCTestKitCase
     
     func testValueTruncationForNonStringType() throws
     {
-        let options = XCTKFormatOptions(maxLineLength: 30)
-        
         let exp         : [Int]     = Array(1...40)
         let act         : [Int]     = []
         let typeName    : String    = typeName(of: exp)
@@ -814,7 +771,7 @@ internal final class FormatterTruncationTests: XCTestKitCase
         
         let actual: String = Formatter.formatDiff(
             node,
-            options: options
+            options: .init(maxLineLength: 30)
         )
         
         let expected: String =

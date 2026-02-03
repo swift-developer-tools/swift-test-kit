@@ -7,6 +7,7 @@
 //
 //===----------------------------------------------------------------------===//
 
+import XCTestKitCore
 @testable import XCTestKit
 @testable import XCTestKitTestUtilities
 
@@ -20,7 +21,7 @@ internal final class FormatterBooleanExprTests: XCTestKitCase
     {
         let exprText: String = "a && b && c"
         
-        let evaluated: [XCTKBooleanExpr] =
+        let evaluated: [TKBooleanExpr] =
         [
             .init("a", false)
         ]
@@ -29,7 +30,8 @@ internal final class FormatterBooleanExprTests: XCTestKitCase
             exprText:       exprText,
             evaluated:      evaluated,
             notEvaluated:   2,
-            expectedValue:  true
+            expectedValue:  true,
+            options:        XCTKConfig.global.formatOptions
         )
         
         let expected: String =
@@ -50,7 +52,7 @@ internal final class FormatterBooleanExprTests: XCTestKitCase
     {
         let exprText: String = "a && b && c"
         
-        let evaluated: [XCTKBooleanExpr] =
+        let evaluated: [TKBooleanExpr] =
         [
             .init("a", true),
             .init("b", false)
@@ -60,7 +62,8 @@ internal final class FormatterBooleanExprTests: XCTestKitCase
             exprText:       exprText,
             evaluated:      evaluated,
             notEvaluated:   1,
-            expectedValue:  true
+            expectedValue:  true,
+            options:        XCTKConfig.global.formatOptions
         )
         
         let expected: String =
@@ -82,7 +85,7 @@ internal final class FormatterBooleanExprTests: XCTestKitCase
     {
         let exprText: String = "a && b && c"
         
-        let evaluated: [XCTKBooleanExpr] =
+        let evaluated: [TKBooleanExpr] =
         [
             .init("a", true),
             .init("b", true),
@@ -93,7 +96,8 @@ internal final class FormatterBooleanExprTests: XCTestKitCase
             exprText:       exprText,
             evaluated:      evaluated,
             notEvaluated:   0,
-            expectedValue:  true
+            expectedValue:  true,
+            options:        XCTKConfig.global.formatOptions
         )
         
         let expected: String =
@@ -116,7 +120,7 @@ internal final class FormatterBooleanExprTests: XCTestKitCase
     {
         let exprText: String = "a || b || c"
         
-        let evaluated: [XCTKBooleanExpr] =
+        let evaluated: [TKBooleanExpr] =
         [
             .init("a", true)
         ]
@@ -125,7 +129,8 @@ internal final class FormatterBooleanExprTests: XCTestKitCase
             exprText:       exprText,
             evaluated:      evaluated,
             notEvaluated:   2,
-            expectedValue:  false
+            expectedValue:  false,
+            options:        XCTKConfig.global.formatOptions
         )
         
         let expected: String =
@@ -146,7 +151,7 @@ internal final class FormatterBooleanExprTests: XCTestKitCase
     {
         let exprText: String = "a || b || c"
         
-        let evaluated: [XCTKBooleanExpr] =
+        let evaluated: [TKBooleanExpr] =
         [
             .init("a", false),
             .init("b", false),
@@ -157,7 +162,8 @@ internal final class FormatterBooleanExprTests: XCTestKitCase
             exprText:       exprText,
             evaluated:      evaluated,
             notEvaluated:   0,
-            expectedValue:  true
+            expectedValue:  true,
+            options:        XCTKConfig.global.formatOptions
         )
         
         let expected: String =
@@ -180,7 +186,7 @@ internal final class FormatterBooleanExprTests: XCTestKitCase
     {
         let exprText: String = "(a || b) && c"
         
-        let evaluated: [XCTKBooleanExpr] =
+        let evaluated: [TKBooleanExpr] =
         [
             .init("a", false),
             .init("b", false)
@@ -190,7 +196,8 @@ internal final class FormatterBooleanExprTests: XCTestKitCase
             exprText:       exprText,
             evaluated:      evaluated,
             notEvaluated:   1,
-            expectedValue:  true
+            expectedValue:  true,
+            options:        XCTKConfig.global.formatOptions
         )
         
         let expected: String =
@@ -212,7 +219,7 @@ internal final class FormatterBooleanExprTests: XCTestKitCase
     {
         let exprText: String = "(a || b) && c"
         
-        let evaluated: [XCTKBooleanExpr] =
+        let evaluated: [TKBooleanExpr] =
         [
             .init("a", true),
             .init("c", false)
@@ -222,7 +229,8 @@ internal final class FormatterBooleanExprTests: XCTestKitCase
             exprText:       exprText,
             evaluated:      evaluated,
             notEvaluated:   1,
-            expectedValue:  true
+            expectedValue:  true,
+            options:        XCTKConfig.global.formatOptions
         )
         
         let expected: String =
@@ -244,7 +252,7 @@ internal final class FormatterBooleanExprTests: XCTestKitCase
     {
         let exprText: String = "(a)"
         
-        let evaluated: [XCTKBooleanExpr] =
+        let evaluated: [TKBooleanExpr] =
         [
             .init("a", false)
         ]
@@ -253,7 +261,8 @@ internal final class FormatterBooleanExprTests: XCTestKitCase
             exprText:       exprText,
             evaluated:      evaluated,
             notEvaluated:   0,
-            expectedValue:  true
+            expectedValue:  true,
+            options:        XCTKConfig.global.formatOptions
         )
         
         let expected: String =
@@ -272,7 +281,7 @@ internal final class FormatterBooleanExprTests: XCTestKitCase
     {
         let exprText: String = "((a && (b)) || c) && d"
         
-        let evaluated: [XCTKBooleanExpr] =
+        let evaluated: [TKBooleanExpr] =
         [
             .init("a", true),
             .init("b", false),
@@ -283,7 +292,8 @@ internal final class FormatterBooleanExprTests: XCTestKitCase
             exprText:       exprText,
             evaluated:      evaluated,
             notEvaluated:   1,
-            expectedValue:  true
+            expectedValue:  true,
+            options:        XCTKConfig.global.formatOptions
         )
         
         let expected: String =
@@ -308,7 +318,7 @@ internal final class FormatterBooleanExprTests: XCTestKitCase
     {
         let exprText: String = "isValid"
         
-        let evaluated: [XCTKBooleanExpr] =
+        let evaluated: [TKBooleanExpr] =
         [
             .init(exprText, false)
         ]
@@ -317,7 +327,8 @@ internal final class FormatterBooleanExprTests: XCTestKitCase
             exprText:       exprText,
             evaluated:      evaluated,
             notEvaluated:   0,
-            expectedValue:  true
+            expectedValue:  true,
+            options:        XCTKConfig.global.formatOptions
         )
         
         let expected: String =
@@ -336,7 +347,7 @@ internal final class FormatterBooleanExprTests: XCTestKitCase
     {
         let exprText: String = "isValid"
         
-        let evaluated: [XCTKBooleanExpr] =
+        let evaluated: [TKBooleanExpr] =
         [
             .init(exprText, true)
         ]
@@ -345,7 +356,8 @@ internal final class FormatterBooleanExprTests: XCTestKitCase
             exprText:       exprText,
             evaluated:      evaluated,
             notEvaluated:   0,
-            expectedValue:  false
+            expectedValue:  false,
+            options:        XCTKConfig.global.formatOptions
         )
         
         let expected: String =
@@ -366,7 +378,7 @@ internal final class FormatterBooleanExprTests: XCTestKitCase
     {
         let exprText: String = "isValid() && isEnabled"
         
-        let evaluated: [XCTKBooleanExpr] =
+        let evaluated: [TKBooleanExpr] =
         [
             .init("isValid()", false)
         ]
@@ -375,7 +387,8 @@ internal final class FormatterBooleanExprTests: XCTestKitCase
             exprText:       exprText,
             evaluated:      evaluated,
             notEvaluated:   1,
-            expectedValue:  true
+            expectedValue:  true,
+            options:        XCTKConfig.global.formatOptions
         )
         
         let expected: String =
@@ -398,7 +411,7 @@ internal final class FormatterBooleanExprTests: XCTestKitCase
     {
         let exprText: String = "(!a || !(!b)) && !(!(!c))"
         
-        let evaluated: [XCTKBooleanExpr] =
+        let evaluated: [TKBooleanExpr] =
         [
             .init("!a", false),
             .init("!!b", false)
@@ -408,7 +421,8 @@ internal final class FormatterBooleanExprTests: XCTestKitCase
             exprText:       exprText,
             evaluated:      evaluated,
             notEvaluated:   1,
-            expectedValue:  true
+            expectedValue:  true,
+            options:        XCTKConfig.global.formatOptions
         )
         
         let expected: String =
@@ -430,7 +444,7 @@ internal final class FormatterBooleanExprTests: XCTestKitCase
     {
         let exprText: String = "a || b && c"
         
-        let evaluated: [XCTKBooleanExpr] =
+        let evaluated: [TKBooleanExpr] =
         [
             .init("a", false),
             .init("b", true),
@@ -441,7 +455,8 @@ internal final class FormatterBooleanExprTests: XCTestKitCase
             exprText:       exprText,
             evaluated:      evaluated,
             notEvaluated:   0,
-            expectedValue:  true
+            expectedValue:  true,
+            options:        XCTKConfig.global.formatOptions
         )
         
         let expected: String =
@@ -462,7 +477,7 @@ internal final class FormatterBooleanExprTests: XCTestKitCase
     {
         let exprText: String = "obj.isActive && obj.isValid && obj.value >= 30"
         
-        let evaluated: [XCTKBooleanExpr] =
+        let evaluated: [TKBooleanExpr] =
         [
             .init("obj.isActive", true),
             .init("obj.isValid", false)
@@ -472,7 +487,8 @@ internal final class FormatterBooleanExprTests: XCTestKitCase
             exprText:       exprText,
             evaluated:      evaluated,
             notEvaluated:   1,
-            expectedValue:  true
+            expectedValue:  true,
+            options:        XCTKConfig.global.formatOptions
         )
         
         let expected: String =
@@ -494,7 +510,7 @@ internal final class FormatterBooleanExprTests: XCTestKitCase
     {
         let exprText: String = "obj.contains(key) && value.isValid()"
         
-        let evaluated: [XCTKBooleanExpr] =
+        let evaluated: [TKBooleanExpr] =
         [
             .init("obj.contains(key)", false),
             .init("value.isValid()", false)
@@ -504,7 +520,8 @@ internal final class FormatterBooleanExprTests: XCTestKitCase
             exprText:       exprText,
             evaluated:      evaluated,
             notEvaluated:   0,
-            expectedValue:  true
+            expectedValue:  true,
+            options:        XCTKConfig.global.formatOptions
         )
         
         let expected: String =
@@ -526,7 +543,7 @@ internal final class FormatterBooleanExprTests: XCTestKitCase
     {
         let exprText: String = "a && b && c"
         
-        let evaluated: [XCTKBooleanExpr] =
+        let evaluated: [TKBooleanExpr] =
         [
             .init("a", true),
             .init("b", false)
@@ -558,7 +575,7 @@ internal final class FormatterBooleanExprTests: XCTestKitCase
     {
         let exprText: String = "a && b && c"
         
-        let evaluated: [XCTKBooleanExpr] =
+        let evaluated: [TKBooleanExpr] =
         [
             .init("a", true),
             .init("b", false)
@@ -591,7 +608,7 @@ internal final class FormatterBooleanExprTests: XCTestKitCase
     {
         let exprText: String = "a && b && c"
         
-        let evaluated: [XCTKBooleanExpr] =
+        let evaluated: [TKBooleanExpr] =
         [
             .init("a", true),
             .init("b", true),
@@ -622,7 +639,7 @@ internal final class FormatterBooleanExprTests: XCTestKitCase
     {
         let exprText: String = "a || b || c"
         
-        let evaluated: [XCTKBooleanExpr] =
+        let evaluated: [TKBooleanExpr] =
         [
             .init("a", false),
             .init("b", false),
@@ -655,7 +672,7 @@ internal final class FormatterBooleanExprTests: XCTestKitCase
     {
         let exprText: String = "a && b && c"
         
-        let evaluated: [XCTKBooleanExpr] =
+        let evaluated: [TKBooleanExpr] =
         [
             .init("a", false)
         ]
@@ -684,7 +701,7 @@ internal final class FormatterBooleanExprTests: XCTestKitCase
     {
         let exprText: String = "a && b"
         
-        let evaluated: [XCTKBooleanExpr] =
+        let evaluated: [TKBooleanExpr] =
         [
             .init("a", true),
             .init("b", false)
@@ -715,7 +732,7 @@ internal final class FormatterBooleanExprTests: XCTestKitCase
     {
         let exprText: String = "a || b || c || d || e"
         
-        let evaluated: [XCTKBooleanExpr] =
+        let evaluated: [TKBooleanExpr] =
         [
             .init("a", false),
             .init("b", false),
@@ -751,7 +768,7 @@ internal final class FormatterBooleanExprTests: XCTestKitCase
     {
         let exprText: String = "a || b || c || d || e"
         
-        let evaluated: [XCTKBooleanExpr] =
+        let evaluated: [TKBooleanExpr] =
         [
             .init("a", false),
             .init("b", false),
@@ -790,7 +807,7 @@ internal final class FormatterBooleanExprTests: XCTestKitCase
     {
         let exprText: String = "a || b || c"
         
-        let evaluated: [XCTKBooleanExpr] =
+        let evaluated: [TKBooleanExpr] =
         [
             .init("a", false),
             .init("b", false),
@@ -826,7 +843,7 @@ internal final class FormatterBooleanExprTests: XCTestKitCase
     {
         let exprText: String = "a || b || c || d || e"
         
-        let evaluated: [XCTKBooleanExpr] =
+        let evaluated: [TKBooleanExpr] =
         [
             .init("a", true),
             .init("b", false),
@@ -864,7 +881,7 @@ internal final class FormatterBooleanExprTests: XCTestKitCase
     {
         let exprText: String = "a || b || c"
         
-        let evaluated: [XCTKBooleanExpr] =
+        let evaluated: [TKBooleanExpr] =
         [
             .init("a", false),
             .init("b", false),
@@ -901,7 +918,7 @@ internal final class FormatterBooleanExprTests: XCTestKitCase
         let exprText: String = "veryLongVariableNameA && veryLongVariableNameB"
             + " && veryLongVariableNameC"
         
-        let evaluated: [XCTKBooleanExpr] =
+        let evaluated: [TKBooleanExpr] =
         [
             .init("veryLongVariableNameA", false)
         ]
@@ -936,7 +953,7 @@ internal final class FormatterBooleanExprTests: XCTestKitCase
         
         let exprText: String = "a && b"
         
-        let evaluated: [XCTKBooleanExpr] =
+        let evaluated: [TKBooleanExpr] =
         [
             .init("someObject.someProperty.someNestedProperty.value", false)
         ]

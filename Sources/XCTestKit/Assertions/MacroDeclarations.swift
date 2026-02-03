@@ -16,6 +16,10 @@
 //
 //===----------------------------------------------------------------------===//
 
+import XCTestKitCore
+
+
+
 // MARK: - Boolean
 
 /// Asserts that the given expression is true.
@@ -38,7 +42,7 @@ public macro XCTKAssert(
     _ message       : @autoclosure () -> String         = "",
     file            : StaticString                      = #filePath,
     line            : UInt                              = #line,
-    options         : XCTKOptions?                      = nil
+    options         : TKOptions?                        = nil
 ) = #externalMacro(
     module:     "XCTestKitMacros",
     type:       "AssertMacro"
@@ -66,7 +70,7 @@ public macro XCTKAssertTrue(
     _ message       : @autoclosure () -> String         = "",
     file            : StaticString                      = #filePath,
     line            : UInt                              = #line,
-    options         : XCTKOptions?                      = nil
+    options         : TKOptions?                        = nil
 ) = #externalMacro(
     module:     "XCTestKitMacros",
     type:       "AssertTrueMacro"
@@ -93,7 +97,7 @@ public macro XCTKAssertFalse(
     _ message       : @autoclosure () -> String         = "",
     file            : StaticString                      = #filePath,
     line            : UInt                              = #line,
-    options         : XCTKOptions?                      = nil
+    options         : TKOptions?                        = nil
 ) = #externalMacro(
     module:     "XCTestKitMacros",
     type:       "AssertFalseMacro"
@@ -122,7 +126,7 @@ public macro XCTKAssertNil(
     _ message       : @autoclosure () -> String         = "",
     file            : StaticString                      = #filePath,
     line            : UInt                              = #line,
-    options         : XCTKOptions?                      = nil
+    options         : TKOptions?                        = nil
 ) = #externalMacro(
     module:     "XCTestKitMacros",
     type:       "AssertNilMacro"
@@ -149,7 +153,7 @@ public macro XCTKAssertNotNil(
     _ message       : @autoclosure () -> String         = "",
     file            : StaticString                      = #filePath,
     line            : UInt                              = #line,
-    options         : XCTKOptions?                      = nil
+    options         : TKOptions?                        = nil
 ) = #externalMacro(
     module:     "XCTestKitMacros",
     type:       "AssertNotNilMacro"
@@ -182,7 +186,7 @@ public macro XCTKUnwrap<T>(
     _ message       : @autoclosure () -> String     = "",
     file            : StaticString                  = #filePath,
     line            : UInt                          = #line,
-    options         : XCTKOptions?                  = nil
+    options         : TKOptions?                    = nil
 ) -> T = #externalMacro(
             module:     "XCTestKitMacros",
             type:       "UnwrapMacro"
@@ -210,7 +214,7 @@ public macro XCTKAssertEqual<T>(
     _ message   : @autoclosure () -> String     = "",
     file        : StaticString                  = #filePath,
     line        : UInt                          = #line,
-    options     : XCTKOptions?                  = nil
+    options     : TKOptions?                    = nil
 ) = #externalMacro(
     module:     "XCTestKitMacros",
     type:       "AssertEqualMacro"
@@ -236,7 +240,7 @@ public macro XCTKAssertNotEqual<T>(
     _ message       : @autoclosure () -> String     = "",
     file            : StaticString                  = #filePath,
     line            : UInt                          = #line,
-    options         : XCTKOptions?                  = nil
+    options         : TKOptions?                    = nil
 ) = #externalMacro(
     module:     "XCTestKitMacros",
     type:       "AssertNotEqualMacro"
@@ -265,7 +269,7 @@ public macro XCTKAssertIdentical(
     _ message       : @autoclosure () -> String             = "",
     file            : StaticString                          = #filePath,
     line            : UInt                                  = #line,
-    options         : XCTKOptions?                          = nil
+    options         : TKOptions?                            = nil
 ) = #externalMacro(
     module:     "XCTestKitMacros",
     type:       "AssertIdenticalMacro"
@@ -294,7 +298,7 @@ public macro XCTKAssertNotIdentical(
     _ message       : @autoclosure () -> String             = "",
     file            : StaticString                          = #filePath,
     line            : UInt                                  = #line,
-    options         : XCTKOptions?                          = nil
+    options         : TKOptions?                            = nil
 ) = #externalMacro(
     module:     "XCTestKitMacros",
     type:       "AssertNotIdenticalMacro"
@@ -324,7 +328,7 @@ public macro XCTKAssertEqual<T>(
     _ message       : @autoclosure () -> String     = "",
     file            : StaticString                  = #filePath,
     line            : UInt                          = #line,
-    options         : XCTKOptions?                  = nil
+    options         : TKOptions?                    = nil
 ) = #externalMacro(
     module:     "XCTestKitMacros",
     type:       "AssertEqualWithAccuracyMacro"
@@ -353,7 +357,7 @@ public macro XCTKAssertEqual<T>(
     _ message       : @autoclosure () -> String     = "",
     file            : StaticString                  = #filePath,
     line            : UInt                          = #line,
-    options         : XCTKOptions?                  = nil
+    options         : TKOptions?                    = nil
 ) = #externalMacro(
     module:     "XCTestKitMacros",
     type:       "AssertEqualWithAccuracyMacro"
@@ -383,7 +387,7 @@ public macro XCTKAssertNotEqual<T>(
     _ message       : @autoclosure () -> String     = "",
     file            : StaticString                  = #filePath,
     line            : UInt                          = #line,
-    options         : XCTKOptions?                  = nil
+    options         : TKOptions?                    = nil
 ) = #externalMacro(
     module:     "XCTestKitMacros",
     type:       "AssertNotEqualWithAccuracyMacro"
@@ -413,7 +417,7 @@ public macro XCTKAssertNotEqual<T>(
     _ message       : @autoclosure () -> String     = "",
     file            : StaticString                  = #filePath,
     line            : UInt                          = #line,
-    options         : XCTKOptions?                  = nil
+    options         : TKOptions?                    = nil
 ) = #externalMacro(
     module:     "XCTestKitMacros",
     type:       "AssertNotEqualWithAccuracyMacro"
@@ -442,7 +446,7 @@ public macro XCTKAssertGreaterThan<T>(
     _ message       : @autoclosure () -> String     = "",
     file            : StaticString                  = #filePath,
     line            : UInt                          = #line,
-    options         : XCTKOptions?                  = nil
+    options         : TKOptions?                    = nil
 ) = #externalMacro(
     module:     "XCTestKitMacros",
     type:       "AssertGreaterThanMacro"
@@ -469,7 +473,7 @@ public macro XCTKAssertGreaterThanOrEqual<T>(
     _ message       : @autoclosure () -> String     = "",
     file            : StaticString                  = #filePath,
     line            : UInt                          = #line,
-    options         : XCTKOptions?                  = nil
+    options         : TKOptions?                    = nil
 ) = #externalMacro(
     module:     "XCTestKitMacros",
     type:       "AssertGreaterThanOrEqualMacro"
@@ -496,7 +500,7 @@ public macro XCTKAssertLessThanOrEqual<T>(
     _ message       : @autoclosure () -> String     = "",
     file            : StaticString                  = #filePath,
     line            : UInt                          = #line,
-    options         : XCTKOptions?                  = nil
+    options         : TKOptions?                    = nil
 ) = #externalMacro(
     module:     "XCTestKitMacros",
     type:   "AssertLessThanOrEqualMacro"
@@ -523,7 +527,7 @@ public macro XCTKAssertLessThan<T>(
     _ message       : @autoclosure () -> String     = "",
     file            : StaticString                  = #filePath,
     line            : UInt                          = #line,
-    options         : XCTKOptions?                  = nil
+    options         : TKOptions?                    = nil
 ) = #externalMacro(
     module:     "XCTestKitMacros",
     type:       "AssertLessThanMacro"
@@ -550,7 +554,7 @@ public macro XCTKAssertThrowsError<T>(
     _ message       : @autoclosure () -> String     = "",
     file            : StaticString                  = #filePath,
     line            : UInt                          = #line,
-    options         : XCTKOptions?                  = nil,
+    options         : TKOptions?                    = nil,
     _ errorHandler  : (any Error) -> Void           = { _ in }
 ) = #externalMacro(
     module:     "XCTestKitMacros",
@@ -575,7 +579,7 @@ public macro XCTKAssertNoThrow<T>(
     _ message       : @autoclosure () -> String     = "",
     file            : StaticString                  = #filePath,
     line            : UInt                          = #line,
-    options         : XCTKOptions?                  = nil
+    options         : TKOptions?                    = nil
 ) = #externalMacro(
     module:     "XCTestKitMacros",
     type:       "AssertNoThrowMacro"
@@ -626,7 +630,7 @@ public macro XCTKAssertAllSatisfy<C>(
     _ message       : @autoclosure () -> String     = "",
     file            : StaticString                  = #filePath,
     line            : UInt                          = #line,
-    options         : XCTKOptions?                  = nil
+    options         : TKOptions?                    = nil
 ) = #externalMacro(
     module:     "XCTestKitMacros",
     type:       "AssertSatisfyAllMacro"
@@ -654,7 +658,7 @@ public macro XCTKAssertAnySatisfy<C>(
     _ message       : @autoclosure () -> String     = "",
     file            : StaticString                  = #filePath,
     line            : UInt                          = #line,
-    options         : XCTKOptions?                  = nil
+    options         : TKOptions?                    = nil
 ) = #externalMacro(
     module:     "XCTestKitMacros",
     type:       "AssertSatisfyAnyMacro"
@@ -682,7 +686,7 @@ public macro XCTKAssertNoneSatisfy<C>(
     _ message       : @autoclosure () -> String     = "",
     file            : StaticString                  = #filePath,
     line            : UInt                          = #line,
-    options         : XCTKOptions?                  = nil
+    options         : TKOptions?                    = nil
 ) = #externalMacro(
     module:     "XCTestKitMacros",
     type:       "AssertSatisfyNoneMacro"
@@ -713,7 +717,7 @@ public macro XCTKAssertSatisfy<C>(
     _ message       : @autoclosure () -> String     = "",
     file            : StaticString                  = #filePath,
     line            : UInt                          = #line,
-    options         : XCTKOptions?                  = nil
+    options         : TKOptions?                    = nil
 ) = #externalMacro(
     module:     "XCTestKitMacros",
     type:       "AssertSatisfyAtLeastMacro"
@@ -744,7 +748,7 @@ public macro XCTKAssertSatisfy<C>(
     _ message       : @autoclosure () -> String     = "",
     file            : StaticString                  = #filePath,
     line            : UInt                          = #line,
-    options         : XCTKOptions?                  = nil
+    options         : TKOptions?                    = nil
 ) = #externalMacro(
     module:     "XCTestKitMacros",
     type:       "AssertSatisfyAtMostMacro"
@@ -774,7 +778,7 @@ public macro XCTKAssertSatisfy<C>(
     _ message       : @autoclosure () -> String     = "",
     file            : StaticString                  = #filePath,
     line            : UInt                          = #line,
-    options         : XCTKOptions?                  = nil
+    options         : TKOptions?                    = nil
 ) = #externalMacro(
     module:     "XCTestKitMacros",
     type:       "AssertSatisfyRangeMacro"
@@ -805,7 +809,7 @@ public macro XCTKAssertExactly<C>(
     _ message       : @autoclosure () -> String     = "",
     file            : StaticString                  = #filePath,
     line            : UInt                          = #line,
-    options         : XCTKOptions?                  = nil
+    options         : TKOptions?                    = nil
 ) = #externalMacro(
     module:     "XCTestKitMacros",
     type:       "AssertExactlyMacro"
@@ -833,7 +837,7 @@ public macro XCTKAssertExactlyOne<C>(
     _ message       : @autoclosure () -> String     = "",
     file            : StaticString                  = #filePath,
     line            : UInt                          = #line,
-    options         : XCTKOptions?                  = nil
+    options         : TKOptions?                    = nil
 ) = #externalMacro(
     module:     "XCTestKitMacros",
     type:       "AssertExactlyOneMacro"
@@ -861,7 +865,7 @@ public macro XCTKAssertSorted<C>(
     _ message       : @autoclosure () -> String             = "",
     file            : StaticString                          = #filePath,
     line            : UInt                                  = #line,
-    options         : XCTKOptions?                          = nil
+    options         : TKOptions?                            = nil
 ) = #externalMacro(
     module:     "XCTestKitMacros",
     type:       "AssertSortedMacro"
@@ -885,7 +889,7 @@ public macro XCTKAssertUnique<C>(
     _ message       : @autoclosure () -> String     = "",
     file            : StaticString                  = #filePath,
     line            : UInt                          = #line,
-    options         : XCTKOptions?                  = nil
+    options         : TKOptions?                    = nil
 ) = #externalMacro(
     module:     "XCTestKitMacros",
     type:       "AssertUniqueMacro"
@@ -913,7 +917,7 @@ public macro XCTKAssertUnique<C, K>(
     _ message       : @autoclosure () -> String     = "",
     file            : StaticString                  = #filePath,
     line            : UInt                          = #line,
-    options         : XCTKOptions?                  = nil
+    options         : TKOptions?                    = nil
 ) = #externalMacro(
     module:     "XCTestKitMacros",
     type:       "AssertUniqueByKeyMacro"
