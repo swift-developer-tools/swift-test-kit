@@ -89,7 +89,7 @@ let package = Package(
         ),
         
         .testTarget(
-            name: "XCTestKitTests",
+            name: "XCTKTests",
             dependencies:
             [
                 "XCTestKit",
