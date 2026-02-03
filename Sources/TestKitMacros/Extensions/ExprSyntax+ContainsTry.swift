@@ -11,7 +11,7 @@ import SwiftSyntax
 
 
 
-internal extension ExprSyntax
+public extension ExprSyntax
 {
     /// Whether the expression or any sub-expressions contain a `try`
     /// expression.

@@ -7,6 +7,7 @@
 //
 //===----------------------------------------------------------------------===//
 
+import TestKitMacros
 import SwiftCompilerPlugin
 import SwiftSyntaxMacros
 

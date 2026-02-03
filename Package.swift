@@ -19,48 +19,56 @@ let package = Package(
     products:
     [
         .library(
-            name:       "XCTestKit",
-            targets:    ["XCTestKit"]
+            name: "XCTestKit",
+            targets: ["XCTestKit"]
         )
     ],
     dependencies:
     [
         .package(
-            url:        "https://github.com/swiftlang/swift-docc-plugin",
-            branch:     "main"
+            url: "https://github.com/swiftlang/swift-docc-plugin",
+            branch: "main"
         ),
         
         .package(
-            url:    "https://github.com/swiftlang/swift-syntax",
-            from:   "602.0.0"
+            url: "https://github.com/swiftlang/swift-syntax",
+            from: "602.0.0"
         )
     ],
     targets:
     [
         .target(
-            name:           "XCTestKitCore",
-            dependencies:   []
+            name: "XCTestKitCore",
+            dependencies: []
+        ),
+        
+        .target(
+            name: "TestKitMacros",
+            dependencies:
+            [
+                "XCTestKitCore",
+                
+                .product(
+                    name: "SwiftSyntax",
+                    package: "swift-syntax"
+                ),
+                
+                .product(
+                    name: "SwiftSyntaxMacros",
+                    package: "swift-syntax"
+                )
+            ]
         ),
         
         .macro(
             name: "XCTestKitMacros",
             dependencies:
             [
-                "XCTestKitCore",
+                "TestKitMacros",
                 
                 .product(
-                    name:       "SwiftSyntax",
-                    package:    "swift-syntax"
-                ),
-                
-                .product(
-                    name:       "SwiftSyntaxMacros",
-                    package:    "swift-syntax"
-                ),
-                
-                .product(
-                    name:       "SwiftCompilerPlugin",
-                    package:    "swift-syntax"
+                    name: "SwiftCompilerPlugin",
+                    package: "swift-syntax"
                 )
             ]
         ),
@@ -75,9 +83,9 @@ let package = Package(
         ),
         
         .target(
-            name:           "XCTestKitTestUtilities",
-            dependencies:   ["XCTestKit"],
-            path:           "Tests/Utilities"
+            name: "XCTestKitTestUtilities",
+            dependencies: ["XCTestKit"],
+            path: "Tests/Utilities"
         ),
         
         .testTarget(
@@ -85,13 +93,8 @@ let package = Package(
             dependencies:
             [
                 "XCTestKit",
-                "XCTestKitMacros",
-                "XCTestKitTestUtilities",
-                
-                .product(
-                    name:       "SwiftSyntaxMacrosTestSupport",
-                    package:    "swift-syntax"
-                )
+                "TestKitMacros",
+                "XCTestKitTestUtilities"
             ]
         )
     ]

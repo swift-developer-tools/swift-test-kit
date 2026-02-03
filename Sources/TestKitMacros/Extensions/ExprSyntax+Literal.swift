@@ -8,10 +8,11 @@
 //===----------------------------------------------------------------------===//
 
 import SwiftSyntax
+import SwiftSyntaxMacros
 
 
 
-internal extension ExprSyntax
+public extension ExprSyntax
 {
     /// Creates `nil` literal expression.
     /// - Returns: The `nil` literal expression.

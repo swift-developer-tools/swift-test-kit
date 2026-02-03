@@ -12,7 +12,7 @@ import SwiftSyntax
 
 
 
-internal struct BooleanExprWalker
+public struct BooleanExprWalker
 {
     // MARK: - Expansion
     
@@ -24,7 +24,7 @@ internal struct BooleanExprWalker
     ///   - message: An optional description of a failure.
     ///   - options: The options for testing.
     /// - Returns: The expanded macro expression.
-    internal static func expand(
+    public static func expand(
         kind        : AssertionKind,
         framework   : FrameworkKind,
         expr        : ExprSyntax,
@@ -492,7 +492,7 @@ internal struct BooleanExprWalker
     // MARK: - Support
     
     /// Logical operators.
-    internal enum LogicalOperatorKind: CustomStringConvertible
+    public enum LogicalOperatorKind: CustomStringConvertible
     {
         /// A logical AND operator.
         /// - Parameter infix: The infix operator expression.
@@ -513,7 +513,7 @@ internal struct BooleanExprWalker
         /// - Parameters:
         ///   - text: The operator text.
         ///   - infix: The infix operator expression.
-        internal init?(
+        public init?(
             text    : String,
             infix   : InfixOperatorExprSyntax
         )
@@ -529,7 +529,7 @@ internal struct BooleanExprWalker
         
         
         /// The string representation of the operator.
-        internal var description: String
+        public var description: String
         {
             switch self
             {

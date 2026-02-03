@@ -11,7 +11,7 @@ import SwiftSyntax
 
 
 
-internal extension ExprSyntax
+public extension ExprSyntax
 {
     /// The kind of logical operator used in the expression, or `nil` if this
     /// is not an infix expression with a logical operator (`&&` or `||`).

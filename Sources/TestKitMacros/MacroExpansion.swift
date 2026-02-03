@@ -13,44 +13,41 @@ import SwiftSyntaxMacros
 
 
 
-// MARK: - Framework
-
-private let framework: FrameworkKind = .xctk
-
-
-
 // MARK: - Protocols
 
 /// A macro expression.
-internal protocol AssertionMacro: ExpressionMacro
+public protocol AssertionMacro: ExpressionMacro
 {
     typealias ExpansionError = MacroExpansionErrorMessage
     
     /// The underlying assertion kind.
-    static var kind: AssertionKind { get }
+    static var kind         : AssertionKind { get }
+    
+    /// The framework kind.
+    static var framework    : FrameworkKind { get }
 }
 
 /// A macro expression with no evaluated expression.
-internal protocol NoExprMacro               : AssertionMacro { }
+public protocol NoExprMacro                 : AssertionMacro { }
 
 /// A macro expression with one evaluated expression.
-internal protocol SingleExprMacro           : AssertionMacro { }
+public protocol SingleExprMacro             : AssertionMacro { }
 
 /// A macro expression with two evaluated expressions.
-internal protocol DoubleExprMacro           : AssertionMacro { }
+public protocol DoubleExprMacro             : AssertionMacro { }
 
 /// A macro expression for a predicate assertion.
-internal protocol DoubleExprPredicateMacro  : AssertionMacro { }
+public protocol DoubleExprPredicateMacro    : AssertionMacro { }
 
 
 
-extension AssertionMacro
+public extension AssertionMacro
 {
     /// Creates an error for an unhandled assertion kind during macro expansion.
     ///
     /// This indicates an internal bug where an ``AssertionKind`` was routed
     /// to a protocol extension that does not handle it.
-    public static func makeUnhandledKindError() -> ExpansionError
+    static func makeUnhandledKindError() -> ExpansionError
     {
         return ExpansionError(
             "Unhandled assertion kind"
@@ -65,14 +62,14 @@ extension AssertionMacro
 
 // MARK: - No expression
 
-extension NoExprMacro
+public extension NoExprMacro
 {
     /// Expands the macro.
     /// - Parameters:
     ///   - node: The AST node.
     ///   - context: The context in which the macro appears.
     /// - Returns: The expanded macro expression.
-    public static func expansion(
+    static func expansion(
         of  node    : some FreestandingMacroExpansionSyntax,
         in  context : some MacroExpansionContext
     ) throws -> ExprSyntax
@@ -94,14 +91,14 @@ extension NoExprMacro
 
 // MARK: - Single expression
 
-extension SingleExprMacro
+public extension SingleExprMacro
 {
     /// Expands the macro.
     /// - Parameters:
     ///   - node: The AST node.
     ///   - context: The context in which the macro appears.
     /// - Returns: The expanded macro expression.
-    public static func expansion(
+    static func expansion(
         of  node    : some FreestandingMacroExpansionSyntax,
         in  context : some MacroExpansionContext
     ) throws -> ExprSyntax
@@ -241,14 +238,14 @@ extension SingleExprMacro
 
 // MARK: - Double expression
 
-extension DoubleExprMacro
+public extension DoubleExprMacro
 {
     /// Expands the macro.
     /// - Parameters:
     ///   - node: The AST node.
     ///   - context: The context in which the macro appears.
     /// - Returns: The expanded macro expression.
-    public static func expansion(
+    static func expansion(
         of  node    : some FreestandingMacroExpansionSyntax,
         in  context : some MacroExpansionContext
     ) throws -> ExprSyntax
@@ -367,14 +364,14 @@ private struct PredicateExtractionResult
 
 
 
-extension DoubleExprPredicateMacro
+public extension DoubleExprPredicateMacro
 {
     /// Expands the macro.
     /// - Parameters:
     ///   - node: The AST node.
     ///   - context: The context in which the macro appears.
     /// - Returns: The expanded macro expression.
-    public static func expansion(
+    static func expansion(
         of  node    : some FreestandingMacroExpansionSyntax,
         in  context : some MacroExpansionContext
     ) throws -> ExprSyntax
