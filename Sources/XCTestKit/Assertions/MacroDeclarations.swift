@@ -23,10 +23,6 @@ import TestKitCore
 // MARK: - Boolean
 
 /// Asserts that the given expression is true.
-///
-/// This generates a failure when `expression == false` and is equivalent to
-/// ``XCTKAssertTrue(_:_:file:line:options:)-macro``.
-///
 /// - Parameters:
 ///   - expression: The expression to evaluate.
 ///   - message: An optional description of a failure.
@@ -51,10 +47,6 @@ public macro XCTKAssert(
 
 
 /// Asserts that the given expression is true.
-///
-/// This generates a failure when `expression == false` and is equivalent to
-/// ``XCTKAssert(_:_:file:line:options:)-macro``.
-///
 /// - Parameters:
 ///   - expression: The expression to evaluate.
 ///   - message: An optional description of a failure.
@@ -79,9 +71,6 @@ public macro XCTKAssertTrue(
 
 
 /// Asserts that the given expression is false.
-///
-/// This generates a failure when `expression == true`.
-///
 /// - Parameters:
 ///   - expression: The expression to evaluate.
 ///   - message: An optional description of a failure.
@@ -108,9 +97,6 @@ public macro XCTKAssertFalse(
 // MARK: - Nil and non-nil
 
 /// Asserts that the given expression is `nil`.
-///
-/// This generates a failure when `expression != nil`.
-///
 /// - Parameters:
 ///   - expression: The expression to evaluate.
 ///   - message: An optional description of a failure.
@@ -135,9 +121,6 @@ public macro XCTKAssertNil(
 
 
 /// Asserts that the given expression is not `nil`.
-///
-/// This generates a failure when `expression == nil`.
-///
 /// - Parameters:
 ///   - expression: The expression to evaluate.
 ///   - message: An optional description of a failure.
@@ -163,10 +146,6 @@ public macro XCTKAssertNotNil(
 
 /// Asserts that the given expression is not `nil`, and returns the unwrapped
 /// value.
-///
-/// This generates a failure when `expression == nil`. Otherwise, it returns
-/// the unwrapped value of `expression`.
-///
 /// - Parameters:
 ///   - expression: The expression to evaluate.
 ///   - message: An optional description of a failure.
