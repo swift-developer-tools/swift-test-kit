@@ -7,7 +7,7 @@
 //
 //===----------------------------------------------------------------------===//
 
-import XCTestKitCore
+import TestKitCore
 import XCTest
 
 

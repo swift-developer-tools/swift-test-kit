@@ -38,7 +38,7 @@ let package = Package(
     targets:
     [
         .target(
-            name: "XCTestKitCore",
+            name: "TestKitCore",
             dependencies: []
         ),
         
@@ -46,7 +46,7 @@ let package = Package(
             name: "TestKitMacros",
             dependencies:
             [
-                "XCTestKitCore",
+                "TestKitCore",
                 
                 .product(
                     name: "SwiftSyntax",
@@ -77,14 +77,14 @@ let package = Package(
             name: "XCTestKit",
             dependencies:
             [
-                "XCTestKitCore",
+                "TestKitCore",
                 "XCTestKitMacros"
             ]
         ),
         
         .target(
             name: "TKTestSupport",
-            dependencies: ["XCTestKitCore"],
+            dependencies: ["TestKitCore"],
             path: "Tests/TKTestSupport"
         ),
         
@@ -92,7 +92,7 @@ let package = Package(
             name: "TKCoreTests",
             dependencies:
             [
-                "XCTestKitCore",
+                "TestKitCore",
                 "TKTestSupport"
             ]
         ),

@@ -7,7 +7,7 @@
 //
 //===----------------------------------------------------------------------===//
 
-import XCTestKitCore
+import TestKitCore
 import TKTestSupport
 import XCTest
 
@@ -15,7 +15,7 @@ import XCTest
 
 internal final class FormatterSpecialCaseTests: XCTestCase
 {
-    private typealias LK = XCTestKitCore.Formatter.LabelKind
+    private typealias LK = TestKitCore.Formatter.LabelKind
     
     
     
