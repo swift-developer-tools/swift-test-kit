@@ -7,10 +7,6 @@
 //
 //===----------------------------------------------------------------------===//
 
-@testable import TKTestSupport
-
-
-
 internal final class FunctionAssertionThrowingTests: XCTestKitCase
 {
     // MARK: - Boolean

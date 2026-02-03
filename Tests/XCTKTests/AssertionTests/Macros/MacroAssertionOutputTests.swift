@@ -7,10 +7,10 @@
 //
 //===----------------------------------------------------------------------===//
 
-import XCTest
 import XCTestKitCore
+import TKTestSupport
+import XCTest
 @testable import XCTestKit
-@testable import TKTestSupport
 
 
 

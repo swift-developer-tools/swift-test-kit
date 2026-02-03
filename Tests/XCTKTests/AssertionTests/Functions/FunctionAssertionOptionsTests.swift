@@ -7,10 +7,6 @@
 //
 //===----------------------------------------------------------------------===//
 
-@testable import TKTestSupport
-
-
-
 internal final class FunctionAssertionOptionsTests: XCTestKitCase
 {
     // MARK: - Equality and inequality
