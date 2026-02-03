@@ -339,7 +339,7 @@ for the complete third-party license terms.
 
 ### Swift.org
 
-XCTestKit includes source code and documentation adapted from the 
+XCTestKit includes a numeric equality utility adapted from the 
 [Swift.org](https://www.swift.org) open source project under the Apache License, 
 Version 2.0, with Runtime Library Exception.
 

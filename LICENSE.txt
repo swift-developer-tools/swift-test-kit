@@ -1,4 +1,4 @@
-                                  XCTestKit
+                               swift-test-kit
                    Copyright (c) Margins Technologies LLC
 
    The below license applies to all code in this repository, except where

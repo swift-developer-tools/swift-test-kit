@@ -1,18 +1,9 @@
 //===----------------------------------------------------------------------===//
 //
-// This source file is part of the XCTestKit open source project.
+// This source file is part of the swift-test-kit open source project.
 //
 // Copyright (c) Margins Technologies LLC.
 // Licensed under the Apache License, Version 2.0.
-//
-// Parts of this file are adapted from the Swift.org open source project.
-//
-// Copyright (c) 2014 - 2016 Apple Inc. and the Swift project authors.
-// Licensed under the Apache License, Version 2.0, with Runtime Library
-// Exception.
-//
-// See https://swift.org/LICENSE.txt for license information.
-// See https://swift.org/CONTRIBUTORS.txt for the list of Swift project authors.
 //
 //===----------------------------------------------------------------------===//
 
