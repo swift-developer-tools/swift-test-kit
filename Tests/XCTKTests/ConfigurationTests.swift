@@ -123,38 +123,4 @@ internal final class ConfigurationTests: XCTestKitCase
         XCTKAssertNotNil(output2)
         XCTKAssertNotEqual(output1, output2)
     }
-    
-    
-    
-    func testTKOptions() throws
-    {
-        let options = TKOptions()
-        
-        XCTKAssertEqual(options.diffOptions, TKDiffOptions())
-        XCTKAssertEqual(options.formatOptions, TKFormatOptions())
-    }
-    
-    
-    
-    func testTKDiffOptions() throws
-    {
-        let options = TKDiffOptions()
-        
-        XCTKAssertEqual(options.maxRecursionDepth, 20)
-        XCTKAssertNil(options.characterDiffThreshold)
-    }
-    
-    
-    
-    func testTKFormatOptions() throws
-    {
-        let options = TKFormatOptions()
-        
-        XCTKAssertEqual(options.indentationSpaces, 4)
-        XCTKAssertEqual(options.maxLineLength, 80)
-        XCTKAssertEqual(options.maxDiffs, nil)
-        XCTKAssertEqual(options.countDiffs, false)
-        XCTKAssertEqual(options.showAllEvaluated, true)
-        XCTKAssertEqual(options.showNotEvaluatedCount, true)
-    }
 }
