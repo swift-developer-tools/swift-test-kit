@@ -7,7 +7,7 @@
 //
 //===----------------------------------------------------------------------===//
 
-@testable import XCTestKitTestUtilities
+@testable import TKTestUtilities
 
 
 
