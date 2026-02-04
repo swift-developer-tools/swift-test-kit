@@ -11,6 +11,8 @@ import TestKitCore
 
 
 
+// MARK: - Options
+
 /// The options for testing.
 ///
 /// - Note: See
@@ -38,3 +40,14 @@ public typealias TKFormatOptions    = TestKitBase.TKFormatOptions
 /// [`TKPropertyOptions`](https://swift-developer-tools.github.io/swift-test-kit/documentation/testkitbase/tkpropertyoptions)
 /// for the complete API reference.
 public typealias TKPropertyOptions  = TestKitBase.TKPropertyOptions
+
+
+
+// MARK: - Property-based testing
+
+/// The options for property-based testing.
+///
+/// - Note: See
+/// [`GenerationContext`](https://swift-developer-tools.github.io/swift-test-kit/documentation/testkitbase/generationcontext)
+/// for the complete API reference.
+public typealias GenerationContext  = TestKitBase.GenerationContext
