@@ -7,6 +7,6 @@
 //
 //===----------------------------------------------------------------------===//
 
-/// Re-export `TestKitOptions` so consumers of `TestKitCore` can access the
-/// option types without a separate import.
-@_exported import TestKitOptions
+/// Re-export `TestKitBase` so consumers of `TestKitCore` can access the
+/// base types without a separate import.
+@_exported import TestKitBase

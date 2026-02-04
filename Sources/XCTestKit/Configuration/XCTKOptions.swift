@@ -14,20 +14,20 @@ import TestKitCore
 /// The options for testing.
 ///
 /// - Note: See
-/// [`TKOptions`](https://swift-developer-tools.github.io/swift-test-kit/documentation/testkitoptions/tkoptions)
+/// [`TKOptions`](https://swift-developer-tools.github.io/swift-test-kit/documentation/testkitbase/tkoptions)
 /// for the complete API reference.
-public typealias TKOptions          = TestKitOptions.TKOptions
+public typealias TKOptions          = TestKitBase.TKOptions
 
 /// The options for computing diffs.
 ///
 /// - Note: See
-/// [`TKDiffOptions`](https://swift-developer-tools.github.io/swift-test-kit/documentation/testkitoptions/tkdiffoptions)
+/// [`TKDiffOptions`](https://swift-developer-tools.github.io/swift-test-kit/documentation/testkitbase/tkdiffoptions)
 /// for the complete API reference.
-public typealias TKDiffOptions      = TestKitOptions.TKDiffOptions
+public typealias TKDiffOptions      = TestKitBase.TKDiffOptions
 
 /// The options for formatting assertion failures.
 ///
 /// - Note: See
-/// [`TKFormatOptions`](https://swift-developer-tools.github.io/swift-test-kit/documentation/testkitoptions/tkformatoptions)
+/// [`TKFormatOptions`](https://swift-developer-tools.github.io/swift-test-kit/documentation/testkitbase/tkformatoptions)
 /// for the complete API reference.
-public typealias TKFormatOptions    = TestKitOptions.TKFormatOptions
+public typealias TKFormatOptions    = TestKitBase.TKFormatOptions
