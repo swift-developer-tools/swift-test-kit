@@ -38,8 +38,13 @@ let package = Package(
     targets:
     [
         .target(
-            name: "TestKitCore",
+            name: "TestKitOptions",
             dependencies: []
+        ),
+        
+        .target(
+            name: "TestKitCore",
+            dependencies: ["TestKitOptions"]
         ),
         
         .target(

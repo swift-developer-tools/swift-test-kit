@@ -64,6 +64,6 @@ final class TestClass: XCTKCase
 
 ### Options
 
-- ``XCTKOptions``
-- ``XCTKDiffOptions``
-- ``XCTKFormatOptions``
+- ``TKOptions``
+- ``TKDiffOptions``
+- ``TKFormatOptions``
