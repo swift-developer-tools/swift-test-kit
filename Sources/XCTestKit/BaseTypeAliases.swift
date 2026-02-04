@@ -31,3 +31,10 @@ public typealias TKDiffOptions      = TestKitBase.TKDiffOptions
 /// [`TKFormatOptions`](https://swift-developer-tools.github.io/swift-test-kit/documentation/testkitbase/tkformatoptions)
 /// for the complete API reference.
 public typealias TKFormatOptions    = TestKitBase.TKFormatOptions
+
+/// The options for property-based testing.
+///
+/// - Note: See
+/// [`TKPropertyOptions`](https://swift-developer-tools.github.io/swift-test-kit/documentation/testkitbase/tkpropertyoptions)
+/// for the complete API reference.
+public typealias TKPropertyOptions  = TestKitBase.TKPropertyOptions
