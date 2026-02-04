@@ -55,7 +55,7 @@ XCTKAssertEqual(expected, actual)
 let expected    = [1, 2, 3, 4, 5, 6, 7, 8]
 let actual      = [0, 0, 3, 4, 5, 6, 7, 0]
 
-let options = XCTKOptions(formatOptions: .init(maxDiffs: 2))
+let options = TKOptions(formatOptions: .init(maxDiffs: 2))
 
 XCTKAssertEqual(expected, actual, options: options)
 
@@ -287,7 +287,8 @@ XCTKAssertSatisfy(values, atLeast: 4)
 
 ## Documentation
 
-See [XCTestKit documentation](https://swift-developer-tools.github.io/xctestkit/documentation/xctestkit) 
+See [SwiftTestKit documentation](https://swift-developer-tools.github.io/swift-test-kit/documentation/swifttestkit) 
+and [XCTestKit documentation](https://swift-developer-tools.github.io/swift-test-kit/documentation/xctestkit) 
 for the complete API reference. 
 
 
@@ -327,19 +328,19 @@ XCTestKit Usage
 
 XCTestKit is licensed under the Apache License, Version 2.0.
 
-See [LICENSE](https://github.com/swift-developer-tools/XCTestKit/blob/main/LICENSE.txt) 
+See [LICENSE](https://github.com/swift-developer-tools/swift-test-kit/blob/main/LICENSE.txt) 
 for the complete license terms.
 
 
 
 ## Attribution
 
-See [Licenses](https://github.com/swift-developer-tools/XCTestKit/tree/main/Licenses) 
+See [Licenses](https://github.com/swift-developer-tools/swift-test-kit/tree/main/Licenses) 
 for the complete third-party license terms.
 
 ### Swift.org
 
-XCTestKit includes source code and documentation adapted from the 
+XCTestKit includes a numeric equality utility adapted from the 
 [Swift.org](https://www.swift.org) open source project under the Apache License, 
 Version 2.0, with Runtime Library Exception.
 
