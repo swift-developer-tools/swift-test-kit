@@ -29,3 +29,7 @@ import XCTestKit
 - ``TKDiffOptions``
 - ``TKFormatOptions``
 - ``TKPropertyOptions``
+
+### Property-Based Testing
+
+- ``GenerationContext``
