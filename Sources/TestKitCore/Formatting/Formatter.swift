@@ -102,13 +102,13 @@ public struct Formatter
     /// - Returns: The formatted failure.
     public static func formatBooleanExpr(
         exprText        : String,
-        evaluated       : [TKBooleanExpr],
+        evaluated       : [BooleanExpr],
         notEvaluated    : Int,
         expectedValue   : Bool,
         options         : TKFormatOptions
     ) -> String
     {
-        let exprsToShow: [TKBooleanExpr] = options.showAllEvaluated
+        let exprsToShow: [BooleanExpr] = options.showAllEvaluated
             ? evaluated
             : evaluated.filter { $0.value != expectedValue }
         
@@ -757,7 +757,7 @@ public struct Formatter
     ///   assertion to succeed.
     private func emitBooleanDecomposition(
         exprText        : String,
-        exprsToShow     : [TKBooleanExpr],
+        exprsToShow     : [BooleanExpr],
         notEvaluated    : Int,
         expectedValue   : Bool
     )

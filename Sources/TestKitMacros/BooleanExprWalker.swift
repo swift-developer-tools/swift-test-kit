@@ -76,7 +76,7 @@ public struct BooleanExprWalker
         """
             let _v0: Bool = \(expr)
         
-            let evaluated = TKBooleanExpr(
+            let evaluated = BooleanExpr(
                 text:   \(literal: exprText),
                 value:  _v0
             )
@@ -131,7 +131,7 @@ public struct BooleanExprWalker
         
         let code: ExprSyntax =
         """
-            var _evaluated      : [TKBooleanExpr]   = []
+            var _evaluated      : [BooleanExpr]     = []
             var _notEvaluated   : Int               = 0
             
             \(raw: evaluationResult.code)
@@ -370,7 +370,7 @@ public struct BooleanExprWalker
             """
             let \(varName): Bool = \(expr.trimmedDescription)
             
-            _evaluated.append(TKBooleanExpr(
+            _evaluated.append(BooleanExpr(
                 text:   \(quote(escapedText)),
                 value:  \(varName)
             ))

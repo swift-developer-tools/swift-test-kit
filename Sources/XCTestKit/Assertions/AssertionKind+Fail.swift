@@ -150,7 +150,7 @@ internal extension AssertionKind
     ///   - options: The options for testing.
     func fail(
         exprText        : String,
-        evaluated       : [TKBooleanExpr],
+        evaluated       : [BooleanExpr],
         notEvaluated    : Int,
         message         : () -> String?,
         file            : StaticString,

@@ -8,7 +8,7 @@
 //===----------------------------------------------------------------------===//
 
 /// A boolean expression evaluated during macro expression decomposition.
-public struct TKBooleanExpr: Equatable, Sendable
+public struct BooleanExpr: Equatable, Sendable
 {
     /// The source text of the expression.
     public let text     : String
@@ -18,7 +18,7 @@ public struct TKBooleanExpr: Equatable, Sendable
     
     
     
-    /// Initializes a ``TKBooleanExpr`` instance from the given values.
+    /// Initializes a ``BooleanExpr`` instance from the given values.
     public init(
         text    : String,
         value   : Bool

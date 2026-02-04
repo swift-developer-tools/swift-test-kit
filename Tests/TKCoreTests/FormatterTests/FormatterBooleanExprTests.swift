@@ -21,7 +21,7 @@ internal final class FormatterBooleanExprTests: XCTestCase
     {
         let exprText: String = "a && b && c"
         
-        let evaluated: [TKBooleanExpr] =
+        let evaluated: [BooleanExpr] =
         [
             .init("a", false)
         ]
@@ -52,7 +52,7 @@ internal final class FormatterBooleanExprTests: XCTestCase
     {
         let exprText: String = "a && b && c"
         
-        let evaluated: [TKBooleanExpr] =
+        let evaluated: [BooleanExpr] =
         [
             .init("a", true),
             .init("b", false)
@@ -85,7 +85,7 @@ internal final class FormatterBooleanExprTests: XCTestCase
     {
         let exprText: String = "a && b && c"
         
-        let evaluated: [TKBooleanExpr] =
+        let evaluated: [BooleanExpr] =
         [
             .init("a", true),
             .init("b", true),
@@ -120,7 +120,7 @@ internal final class FormatterBooleanExprTests: XCTestCase
     {
         let exprText: String = "a || b || c"
         
-        let evaluated: [TKBooleanExpr] =
+        let evaluated: [BooleanExpr] =
         [
             .init("a", true)
         ]
@@ -151,7 +151,7 @@ internal final class FormatterBooleanExprTests: XCTestCase
     {
         let exprText: String = "a || b || c"
         
-        let evaluated: [TKBooleanExpr] =
+        let evaluated: [BooleanExpr] =
         [
             .init("a", false),
             .init("b", false),
@@ -186,7 +186,7 @@ internal final class FormatterBooleanExprTests: XCTestCase
     {
         let exprText: String = "(a || b) && c"
         
-        let evaluated: [TKBooleanExpr] =
+        let evaluated: [BooleanExpr] =
         [
             .init("a", false),
             .init("b", false)
@@ -219,7 +219,7 @@ internal final class FormatterBooleanExprTests: XCTestCase
     {
         let exprText: String = "(a || b) && c"
         
-        let evaluated: [TKBooleanExpr] =
+        let evaluated: [BooleanExpr] =
         [
             .init("a", true),
             .init("c", false)
@@ -252,7 +252,7 @@ internal final class FormatterBooleanExprTests: XCTestCase
     {
         let exprText: String = "(a)"
         
-        let evaluated: [TKBooleanExpr] =
+        let evaluated: [BooleanExpr] =
         [
             .init("a", false)
         ]
@@ -281,7 +281,7 @@ internal final class FormatterBooleanExprTests: XCTestCase
     {
         let exprText: String = "((a && (b)) || c) && d"
         
-        let evaluated: [TKBooleanExpr] =
+        let evaluated: [BooleanExpr] =
         [
             .init("a", true),
             .init("b", false),
@@ -318,7 +318,7 @@ internal final class FormatterBooleanExprTests: XCTestCase
     {
         let exprText: String = "isValid"
         
-        let evaluated: [TKBooleanExpr] =
+        let evaluated: [BooleanExpr] =
         [
             .init(exprText, false)
         ]
@@ -347,7 +347,7 @@ internal final class FormatterBooleanExprTests: XCTestCase
     {
         let exprText: String = "isValid"
         
-        let evaluated: [TKBooleanExpr] =
+        let evaluated: [BooleanExpr] =
         [
             .init(exprText, true)
         ]
@@ -378,7 +378,7 @@ internal final class FormatterBooleanExprTests: XCTestCase
     {
         let exprText: String = "isValid() && isEnabled"
         
-        let evaluated: [TKBooleanExpr] =
+        let evaluated: [BooleanExpr] =
         [
             .init("isValid()", false)
         ]
@@ -411,7 +411,7 @@ internal final class FormatterBooleanExprTests: XCTestCase
     {
         let exprText: String = "(!a || !(!b)) && !(!(!c))"
         
-        let evaluated: [TKBooleanExpr] =
+        let evaluated: [BooleanExpr] =
         [
             .init("!a", false),
             .init("!!b", false)
@@ -444,7 +444,7 @@ internal final class FormatterBooleanExprTests: XCTestCase
     {
         let exprText: String = "a || b && c"
         
-        let evaluated: [TKBooleanExpr] =
+        let evaluated: [BooleanExpr] =
         [
             .init("a", false),
             .init("b", true),
@@ -477,7 +477,7 @@ internal final class FormatterBooleanExprTests: XCTestCase
     {
         let exprText: String = "obj.isActive && obj.isValid && obj.value >= 30"
         
-        let evaluated: [TKBooleanExpr] =
+        let evaluated: [BooleanExpr] =
         [
             .init("obj.isActive", true),
             .init("obj.isValid", false)
@@ -510,7 +510,7 @@ internal final class FormatterBooleanExprTests: XCTestCase
     {
         let exprText: String = "obj.contains(key) && value.isValid()"
         
-        let evaluated: [TKBooleanExpr] =
+        let evaluated: [BooleanExpr] =
         [
             .init("obj.contains(key)", false),
             .init("value.isValid()", false)
@@ -543,7 +543,7 @@ internal final class FormatterBooleanExprTests: XCTestCase
     {
         let exprText: String = "a && b && c"
         
-        let evaluated: [TKBooleanExpr] =
+        let evaluated: [BooleanExpr] =
         [
             .init("a", true),
             .init("b", false)
@@ -575,7 +575,7 @@ internal final class FormatterBooleanExprTests: XCTestCase
     {
         let exprText: String = "a && b && c"
         
-        let evaluated: [TKBooleanExpr] =
+        let evaluated: [BooleanExpr] =
         [
             .init("a", true),
             .init("b", false)
@@ -608,7 +608,7 @@ internal final class FormatterBooleanExprTests: XCTestCase
     {
         let exprText: String = "a && b && c"
         
-        let evaluated: [TKBooleanExpr] =
+        let evaluated: [BooleanExpr] =
         [
             .init("a", true),
             .init("b", true),
@@ -639,7 +639,7 @@ internal final class FormatterBooleanExprTests: XCTestCase
     {
         let exprText: String = "a || b || c"
         
-        let evaluated: [TKBooleanExpr] =
+        let evaluated: [BooleanExpr] =
         [
             .init("a", false),
             .init("b", false),
@@ -672,7 +672,7 @@ internal final class FormatterBooleanExprTests: XCTestCase
     {
         let exprText: String = "a && b && c"
         
-        let evaluated: [TKBooleanExpr] =
+        let evaluated: [BooleanExpr] =
         [
             .init("a", false)
         ]
@@ -701,7 +701,7 @@ internal final class FormatterBooleanExprTests: XCTestCase
     {
         let exprText: String = "a && b"
         
-        let evaluated: [TKBooleanExpr] =
+        let evaluated: [BooleanExpr] =
         [
             .init("a", true),
             .init("b", false)
@@ -732,7 +732,7 @@ internal final class FormatterBooleanExprTests: XCTestCase
     {
         let exprText: String = "a || b || c || d || e"
         
-        let evaluated: [TKBooleanExpr] =
+        let evaluated: [BooleanExpr] =
         [
             .init("a", false),
             .init("b", false),
@@ -768,7 +768,7 @@ internal final class FormatterBooleanExprTests: XCTestCase
     {
         let exprText: String = "a || b || c || d || e"
         
-        let evaluated: [TKBooleanExpr] =
+        let evaluated: [BooleanExpr] =
         [
             .init("a", false),
             .init("b", false),
@@ -807,7 +807,7 @@ internal final class FormatterBooleanExprTests: XCTestCase
     {
         let exprText: String = "a || b || c"
         
-        let evaluated: [TKBooleanExpr] =
+        let evaluated: [BooleanExpr] =
         [
             .init("a", false),
             .init("b", false),
@@ -843,7 +843,7 @@ internal final class FormatterBooleanExprTests: XCTestCase
     {
         let exprText: String = "a || b || c || d || e"
         
-        let evaluated: [TKBooleanExpr] =
+        let evaluated: [BooleanExpr] =
         [
             .init("a", true),
             .init("b", false),
@@ -881,7 +881,7 @@ internal final class FormatterBooleanExprTests: XCTestCase
     {
         let exprText: String = "a || b || c"
         
-        let evaluated: [TKBooleanExpr] =
+        let evaluated: [BooleanExpr] =
         [
             .init("a", false),
             .init("b", false),
@@ -918,7 +918,7 @@ internal final class FormatterBooleanExprTests: XCTestCase
         let exprText: String = "veryLongVariableNameA && veryLongVariableNameB"
             + " && veryLongVariableNameC"
         
-        let evaluated: [TKBooleanExpr] =
+        let evaluated: [BooleanExpr] =
         [
             .init("veryLongVariableNameA", false)
         ]
@@ -953,7 +953,7 @@ internal final class FormatterBooleanExprTests: XCTestCase
         
         let exprText: String = "a && b"
         
-        let evaluated: [TKBooleanExpr] =
+        let evaluated: [BooleanExpr] =
         [
             .init("someObject.someProperty.someNestedProperty.value", false)
         ]

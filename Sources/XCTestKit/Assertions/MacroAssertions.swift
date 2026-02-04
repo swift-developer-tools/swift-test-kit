@@ -17,7 +17,7 @@ import XCTest
 internal func _XCTKAssertMacro(
     result          : Bool,
     exprText        : String,
-    evaluated       : [TKBooleanExpr],
+    evaluated       : [BooleanExpr],
     notEvaluated    : Int,
     message         : @autoclosure () -> String,
     file            : StaticString,
@@ -42,7 +42,7 @@ internal func _XCTKAssertMacro(
 internal func _XCTKAssertTrueMacro(
     result          : Bool,
     exprText        : String,
-    evaluated       : [TKBooleanExpr],
+    evaluated       : [BooleanExpr],
     notEvaluated    : Int,
     message         : @autoclosure () -> String,
     file            : StaticString,
@@ -67,7 +67,7 @@ internal func _XCTKAssertTrueMacro(
 internal func _XCTKAssertFalseMacro(
     result          : Bool,
     exprText        : String,
-    evaluated       : [TKBooleanExpr],
+    evaluated       : [BooleanExpr],
     notEvaluated    : Int,
     message         : @autoclosure () -> String,
     file            : StaticString,

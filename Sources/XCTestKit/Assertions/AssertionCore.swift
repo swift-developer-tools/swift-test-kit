@@ -142,7 +142,7 @@ internal func evaluateXCTKAssertFalse(
 internal func evaluateXCTKAssert(
     result          : Bool,
     exprText        : String,
-    evaluated       : [TKBooleanExpr],
+    evaluated       : [BooleanExpr],
     notEvaluated    : Int,
     message         : () -> String,
     file            : StaticString,
@@ -171,7 +171,7 @@ internal func evaluateXCTKAssert(
 internal func evaluateXCTKAssertTrue(
     result          : Bool,
     exprText        : String,
-    evaluated       : [TKBooleanExpr],
+    evaluated       : [BooleanExpr],
     notEvaluated    : Int,
     message         : () -> String,
     file            : StaticString,
@@ -200,7 +200,7 @@ internal func evaluateXCTKAssertTrue(
 internal func evaluateXCTKAssertFalse(
     result          : Bool,
     exprText        : String,
-    evaluated       : [TKBooleanExpr],
+    evaluated       : [BooleanExpr],
     notEvaluated    : Int,
     message         : () -> String,
     file            : StaticString,

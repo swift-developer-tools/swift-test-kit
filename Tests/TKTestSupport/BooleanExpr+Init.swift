@@ -11,9 +11,9 @@ import TestKitCore
 
 
 
-public extension TKBooleanExpr
+public extension BooleanExpr
 {
-    /// Initializes a ``TKBooleanExpr`` instance from the given values.
+    /// Initializes a ``BooleanExpr`` instance from the given values.
     ///
     /// - Note: This convenience initializer is available only in the test
     /// target. Production code uses the labeled memberwise initializer to

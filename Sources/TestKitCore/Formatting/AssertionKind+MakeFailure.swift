@@ -210,7 +210,7 @@ extension AssertionKind
     public func makeBooleanExprFailure(
         context         : FailureContext,
         exprText        : String,
-        evaluated       : [TKBooleanExpr],
+        evaluated       : [BooleanExpr],
         notEvaluated    : Int,
         message         : () -> String?,
         options         : TKOptions
