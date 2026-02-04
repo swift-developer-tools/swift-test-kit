@@ -16,31 +16,44 @@ public struct TKOptions: Equatable, Sendable
     ///
     /// The default value is `true`. Pass `false` to delegate to the underlying
     /// XCTest equivalent.
-    public var diffEnabled  : Bool
+    public var diffEnabled          : Bool
+    
+    /// Whether tests keep running after an assertion failure.
+    ///
+    /// The default value is `true`. When `true`, tests keep running after an
+    /// assertion fails, equivalent to `#expect` in Swift Testing. When `false`,
+    /// failed assertions immediately stop the test, equivalent to `#require`.
+    ///
+    /// - Note: This option applies only to SwiftTestKit. For XCTestKit, use
+    /// [`continueAfterFailure`](https://developer.apple.com/documentation/xctest/xctestcase/continueafterfailure)
+    /// on [`XCTKCase`](https://swift-developer-tools.github.io/swift-test-kit/documentation/xctestkit/xctkcase).
+    public var continueAfterFailure : Bool
     
     /// The options for computing diffs.
     ///
     /// The default value is a default-initialized ``TKDiffOptions`` instance.
-    public var diffOptions  : TKDiffOptions
+    public var diffOptions          : TKDiffOptions
     
     /// The options for formatting diffs.
     ///
     /// The default value is a default-initialized ``TKFormatOptions`` instance.
-    public var formatOptions : TKFormatOptions
+    public var formatOptions        : TKFormatOptions
     
     
     
     /// Initializes a ``TKOptions`` instance, optionally specifying values
     /// for its properties.
     public init(
-        diffEnabled     : Bool              = true,
-        diffOptions     : TKDiffOptions     = .init(),
-        formatOptions   : TKFormatOptions   = .init()
+        diffEnabled             : Bool              = true,
+        continueAfterFailure    : Bool              = true,
+        diffOptions             : TKDiffOptions     = .init(),
+        formatOptions           : TKFormatOptions   = .init()
     )
     {
-        self.diffEnabled    = diffEnabled
-        self.diffOptions    = diffOptions
-        self.formatOptions  = formatOptions
+        self.diffEnabled            = diffEnabled
+        self.continueAfterFailure   = continueAfterFailure
+        self.diffOptions            = diffOptions
+        self.formatOptions          = formatOptions
     }
 }
 
