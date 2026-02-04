@@ -21,11 +21,22 @@ internal let failureContext = FailureContext(
     {
         message, file, line in
         
-        XCTFail(
-            message,
-            file:   file,
-            line:   line
-        )
+        if let interceptor = PropertyInterceptor.current
+        {
+            interceptor.record(
+                message:    message,
+                file:       file,
+                line:       line
+            )
+        }
+        else
+        {
+            XCTFail(
+                message,
+                file:   file,
+                line:   line
+            )
+        }
     }
 )
 
