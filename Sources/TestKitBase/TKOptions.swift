@@ -39,21 +39,29 @@ public struct TKOptions: Equatable, Sendable
     /// The default value is a default-initialized ``TKFormatOptions`` instance.
     public var formatOptions        : TKFormatOptions
     
+    /// The options for property-based testing.
+    ///
+    /// The default value is a default-initialized ``TKPropertyOptions``
+    /// instance.
+    public var propertyOptions      : TKPropertyOptions
+    
     
     
     /// Initializes a ``TKOptions`` instance, optionally specifying values
     /// for its properties.
     public init(
-        diffEnabled             : Bool              = true,
-        continueAfterFailure    : Bool              = true,
-        diffOptions             : TKDiffOptions     = .init(),
-        formatOptions           : TKFormatOptions   = .init()
+        diffEnabled             : Bool                  = true,
+        continueAfterFailure    : Bool                  = true,
+        diffOptions             : TKDiffOptions         = .init(),
+        formatOptions           : TKFormatOptions       = .init(),
+        propertyOptions         : TKPropertyOptions     = .init()
     )
     {
         self.diffEnabled            = diffEnabled
         self.continueAfterFailure   = continueAfterFailure
         self.diffOptions            = diffOptions
         self.formatOptions          = formatOptions
+        self.propertyOptions        = propertyOptions
     }
 }
 
