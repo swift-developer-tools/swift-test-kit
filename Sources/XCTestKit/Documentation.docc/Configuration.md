@@ -67,3 +67,4 @@ final class TestClass: XCTKCase
 - ``TKOptions``
 - ``TKDiffOptions``
 - ``TKFormatOptions``
+- ``TKPropertyOptions``
