@@ -13,6 +13,9 @@ import XCTest
 
 
 /// The primary class for defining XCTestKit test cases.
+///
+/// - Note: See [`XCTestCase`](https://developer.apple.com/documentation/xctest/xctestcase)
+/// documentation for the complete API reference.
 open class XCTKCase: XCTestCase
 {
     /// The class-level testing options.
