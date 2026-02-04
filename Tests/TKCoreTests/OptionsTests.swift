@@ -20,6 +20,7 @@ internal final class OptionsTests: XCTestCase
         
         XCTAssertEqual(options.diffOptions, TKDiffOptions())
         XCTAssertEqual(options.formatOptions, TKFormatOptions())
+        XCTAssertEqual(options.propertyOptions, TKPropertyOptions())
     }
     
     
@@ -44,5 +45,18 @@ internal final class OptionsTests: XCTestCase
         XCTAssertEqual(options.countDiffs, false)
         XCTAssertEqual(options.showAllEvaluated, true)
         XCTAssertEqual(options.showNotEvaluatedCount, true)
+    }
+    
+    
+    
+    func testTKPropertyOptions() throws
+    {
+        let options = TKPropertyOptions()
+        
+        XCTAssertEqual(options.iterations, 100)
+        XCTAssertEqual(options.maxShrinkSteps, 100)
+        XCTAssertEqual(options.maxSize, 100)
+        XCTAssertEqual(options.maxDiscardRatio, 10)
+        XCTAssertNil(options.seed)
     }
 }
