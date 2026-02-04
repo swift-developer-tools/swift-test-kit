@@ -14,8 +14,8 @@ public final class GenerationContext
     ///
     /// This controls the magnitude of generated values. The size begins at
     /// `0` and grows linearly across iterations, meaning earlier iterations
-    /// test smaller values (empty arrays, short strings, zero), while later
-    /// iterations test larger values.
+    /// test small values (for example, zero, empty arrays, and short strings),
+    /// while later iterations test larg values.
     public package(set) var size    : Int
     
     /// The seeded random number generator.
