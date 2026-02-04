@@ -16,10 +16,19 @@ public final class GenerationContext
     /// `0` and grows linearly across iterations, meaning earlier iterations
     /// test small values (for example, zero, empty arrays, and short strings),
     /// while later iterations test larg values.
-    public package(set) var size    : Int
+    public package(set) var size: Int
+    {
+        didSet
+        {
+            precondition(
+                size >= 0,
+                "size must be non-negative"
+            )
+        }
+    }
     
     /// The seeded random number generator.
-    private var rng                 : SeededRNG
+    private var rng: SeededRNG
     
     
     
@@ -31,6 +40,11 @@ public final class GenerationContext
         size    : Int       = 0
     )
     {
+        precondition(
+            size >= 0,
+            "size must be non-negative"
+        )
+        
         self.rng    = SeededRNG(seed: seed)
         self.size   = size
     }
