@@ -16,10 +16,10 @@ public final class GenerationContext
     /// `0` and grows linearly across iterations, meaning earlier iterations
     /// test smaller values (empty arrays, short strings, zero), while later
     /// iterations test larger values.
-    public var size : Int
+    public package(set) var size    : Int
     
     /// The seeded random number generator.
-    private var rng : SeededRNG
+    private var rng                 : SeededRNG
     
     
     
