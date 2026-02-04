@@ -28,3 +28,4 @@ import XCTestKit
 - ``TKOptions``
 - ``TKDiffOptions``
 - ``TKFormatOptions``
+- ``TKPropertyOptions``
