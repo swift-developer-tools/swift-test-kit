@@ -666,6 +666,9 @@ public macro XCTKAssertNoneSatisfy<C>(
 
 /// Asserts that at least the specified number of elements of the given
 /// collection satisfy the given predicate.
+///
+/// - Precondition: `atLeast` must be non-negative.
+/// 
 /// - Parameters:
 ///   - collection: The collection to evaluate.
 ///   - atLeast: The minimum number of elements of the collection that must
@@ -697,6 +700,9 @@ public macro XCTKAssertSatisfy<C>(
 
 /// Asserts that up to the specified number of elements of the given collection
 /// satisfy the given predicate.
+///
+/// - Precondition: `atMost` must be non-negative.
+/// 
 /// - Parameters:
 ///   - collection: The collection to evaluate.
 ///   - atMost: The maximum number of elements of the collection that must
@@ -728,6 +734,10 @@ public macro XCTKAssertSatisfy<C>(
 
 /// Asserts that the number of elements of the given collection that satisfy
 /// the given predicate is within the specified range.
+///
+/// - Precondition: `range.lowerBound` must be less than or equal to
+/// `range.upperBound`, and non-negative.
+/// 
 /// - Parameters:
 ///   - collection: The collection to evaluate.
 ///   - range: The range within which the number of matching elements must fall.
@@ -758,6 +768,9 @@ public macro XCTKAssertSatisfy<C>(
 
 /// Asserts that exactly the specified number of elements of the given
 /// collection satisfy the given predicate.
+///
+/// - Precondition: `count` must be non-negative.
+/// 
 /// - Parameters:
 ///   - collection: The collection to evaluate.
 ///   - count: The exact number of elements of the collection that must satisfy

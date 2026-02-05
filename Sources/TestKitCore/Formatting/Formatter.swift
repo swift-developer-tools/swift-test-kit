@@ -1259,6 +1259,9 @@ public struct Formatter
         ///
         /// Labels use trailing padding to align the labeled content, so
         /// all labels have the same number of characters.
+        ///
+        /// - Precondition: All `LabelKind` cases must have equal length for
+        /// alignment.
         static let length: Int =
         {
             let lengths: [Int] = LabelKind.allCases.map { $0.rawValue.count }
