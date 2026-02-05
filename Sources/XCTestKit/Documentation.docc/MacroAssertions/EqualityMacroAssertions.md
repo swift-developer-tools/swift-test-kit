@@ -16,7 +16,7 @@ Assert whether two values are equal or unequal.
 
 ### Tests for Equality Within a Specified Accuracy
 
-- ``XCTKAssertEqual(_:_:accuracy:_:file:line:options:)-38b76``
-- ``XCTKAssertEqual(_:_:accuracy:_:file:line:options:)-5vfs5``
-- ``XCTKAssertNotEqual(_:_:accuracy:_:file:line:options:)-5czq1``
-- ``XCTKAssertNotEqual(_:_:accuracy:_:file:line:options:)-1ogn6``
+- ``XCTKAssertEqual(_:_:accuracy:_:file:line:options:)-61xtk``
+- ``XCTKAssertEqual(_:_:accuracy:_:file:line:options:)-ewtn``
+- ``XCTKAssertNotEqual(_:_:accuracy:_:file:line:options:)-130t8``
+- ``XCTKAssertNotEqual(_:_:accuracy:_:file:line:options:)-5kbsz``
