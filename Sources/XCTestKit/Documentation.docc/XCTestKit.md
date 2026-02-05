@@ -361,3 +361,4 @@ for the list of Swift project authors.
 - <doc:Configuration>
 - <doc:FunctionAssertions>
 - <doc:MacroAssertions>
+- <doc:PropertyBasedTesting>
