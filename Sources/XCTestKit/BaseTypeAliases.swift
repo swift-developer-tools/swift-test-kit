@@ -45,6 +45,13 @@ public typealias TKPropertyOptions  = TestKitBase.TKPropertyOptions
 
 // MARK: - Property-based testing
 
+/// A type that can generate arbitrary random values.
+///
+/// - Note: See
+/// [`Arbitrary`](https://swift-developer-tools.github.io/swift-test-kit/documentation/testkitbase/arbitrary)
+/// for the complete API reference.
+public typealias Arbitrary          = TestKitBase.Arbitrary
+
 /// The options for property-based testing.
 ///
 /// - Note: See
