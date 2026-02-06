@@ -1,0 +1,151 @@
+//===----------------------------------------------------------------------===//
+//
+// This source file is part of the swift-test-kit open source project.
+//
+// Copyright (c) Margins Technologies LLC.
+// Licensed under the Apache License, Version 2.0.
+//
+//===----------------------------------------------------------------------===//
+
+import XCTest
+@testable import TestKitBase
+
+
+
+internal final class SeededRNGTests: XCTestCase
+{
+    // MARK: - Determinism
+    
+    func testSameSeedProducesSameSequence() throws
+    {
+        var rng1    = SeededRNG(seed: 1)
+        var rng2    = SeededRNG(seed: 1)
+        
+        for _ in 0..<500
+        {
+            XCTAssertEqual(rng1.next(), rng2.next())
+        }
+    }
+    
+    
+    
+    func testDifferentSeedsProduceDifferentSequences() throws
+    {
+        var rng1    = SeededRNG(seed: 1)
+        var rng2    = SeededRNG(seed: 2)
+        
+        /// Collect values and verify that at least one differs.
+        let values1 : [UInt64]  = (0..<500).map { _ in rng1.next() }
+        let values2 : [UInt64]  = (0..<500).map { _ in rng2.next() }
+        
+        XCTAssertNotEqual(values1, values2)
+    }
+    
+    
+    
+    // MARK: - Storage
+    
+    func testSeedIsStored() throws
+    {
+        let rng = SeededRNG(seed: 12345)
+        
+        XCTAssertEqual(rng.seed, 12345)
+    }
+    
+    
+    
+    func testSeedZero() throws
+    {
+        var rng = SeededRNG(seed: 0)
+        
+        XCTAssertEqual(rng.seed, 0)
+        
+        let first: UInt64 = rng.next()
+        
+        /// Output should be non-zero since SplitMix64 adds a constant
+        /// before mixing.
+        XCTAssertNotEqual(first, 0)
+    }
+    
+    
+    
+    func testSeedMax() throws
+    {
+        var rng = SeededRNG(seed: .max)
+        
+        XCTAssertEqual(rng.seed, .max)
+        
+        let first   : UInt64    = rng.next()
+        let second  : UInt64    = rng.next()
+        
+        XCTAssertNotEqual(first, second)
+    }
+    
+    
+    
+    // MARK: - Sequence progression
+    
+    func testConsecutiveValuesAreDifferent() throws
+    {
+        var rng         : SeededRNG     = .init(seed: 99)
+        var previous    : UInt64        = rng.next()
+        
+        for _ in 0..<500
+        {
+            let current: UInt64 = rng.next()
+            
+            XCTAssertNotEqual(current, previous)
+            
+            previous = current
+        }
+    }
+    
+    
+    
+    func testGenerationDOesNotAffectSeed() throws
+    {
+        var rng = SeededRNG(seed: 777)
+        
+        _ = rng.next()
+        _ = rng.next()
+        _ = rng.next()
+        
+        XCTAssertEqual(rng.seed, 777)
+    }
+    
+    
+    
+    // MARK: - Distribution
+    
+    func testOutputSpansBothHalves() throws
+    {
+        var rng         : SeededRNG     = .init(seed: 50)
+        let midpoint    : UInt64        = .max / 2
+        var hasLower    : Bool          = false
+        var hasUpper    : Bool          = false
+        
+        for _ in 0..<500
+        {
+            let value: UInt64 = rng.next()
+            
+            if value <= midpoint
+            {
+                hasLower = true
+            }
+            else
+            {
+                hasUpper = true
+            }
+            
+            if
+                hasLower,
+                hasUpper
+            {
+                break
+            }
+        }
+        
+        XCTAssertTrue(hasLower)
+        XCTAssertTrue(hasUpper)
+    }
+}
