@@ -21,7 +21,7 @@ internal final class GenerationContextTests: XCTestCase
         let context1    = GenerationContext(seed: 1)
         let context2    = GenerationContext(seed: 1)
         
-        for _ in 0..<500
+        for _ in 0..<1000
         {
             XCTAssertEqual(
                 context1.randomInt(in: 0...1000),
@@ -39,10 +39,10 @@ internal final class GenerationContextTests: XCTestCase
         
         /// Collect values and verify that at least one differs.
         let values1: [Int]
-            = (0..<500).map { _ in context1.randomInt(in: 0...1000) }
+            = (0..<1000).map { _ in context1.randomInt(in: 0...1000) }
         
         let values2: [Int]
-            = (0..<500).map { _ in context2.randomInt(in: 0...1000) }
+            = (0..<1000).map { _ in context2.randomInt(in: 0...1000) }
         
         XCTAssertNotEqual(values1, values2)
     }
@@ -91,7 +91,7 @@ internal final class GenerationContextTests: XCTestCase
         let context : GenerationContext     = .init(seed: 50)
         let range   : ClosedRange<Int>      = 10...20
         
-        for _ in 0..<500
+        for _ in 0..<1000
         {
             let value: Int = context.randomInt(in: range)
             
@@ -105,7 +105,7 @@ internal final class GenerationContextTests: XCTestCase
     {
         let context = GenerationContext(seed: 50)
         
-        for _ in 0..<500
+        for _ in 0..<1000
         {
             let value: Int = context.randomInt(in: 5...5)
             
@@ -120,7 +120,7 @@ internal final class GenerationContextTests: XCTestCase
         let context : GenerationContext     = .init(seed: 50)
         let range   : Range<Int>            = 10..<20
         
-        for _ in 0..<500
+        for _ in 0..<1000
         {
             let value: Int = context.randomInt(in: range)
             
@@ -137,7 +137,7 @@ internal final class GenerationContextTests: XCTestCase
         let context : GenerationContext     = .init(seed: 50)
         let range   : ClosedRange<Double>   = 10...20
         
-        for _ in 0..<500
+        for _ in 0..<1000
         {
             let value: Double = context.randomDouble(in: range)
             
@@ -151,7 +151,7 @@ internal final class GenerationContextTests: XCTestCase
     {
         let context = GenerationContext(seed: 50)
         
-        for _ in 0..<500
+        for _ in 0..<1000
         {
             let value: Double = context.randomDouble(in: 5...5)
             
@@ -166,7 +166,7 @@ internal final class GenerationContextTests: XCTestCase
         let context : GenerationContext     = .init(seed: 50)
         let range   : Range<Double>         = 10..<20
         
-        for _ in 0..<500
+        for _ in 0..<1000
         {
             let value: Double = context.randomDouble(in: range)
             
@@ -184,7 +184,7 @@ internal final class GenerationContextTests: XCTestCase
         var hasTrue     : Bool                  = false
         var hasFalse    : Bool                  = false
         
-        for _ in 0..<500
+        for _ in 0..<1000
         {
             let value: Bool = context.randomBool()
             
@@ -218,7 +218,7 @@ internal final class GenerationContextTests: XCTestCase
         let context     : GenerationContext     = .init(seed: 50)
         let collection  : [String]              = ["a", "b", "c", "d"]
         
-        for _ in 0..<500
+        for _ in 0..<1000
         {
             let element: String? = context.randomElement(of: collection)
             
