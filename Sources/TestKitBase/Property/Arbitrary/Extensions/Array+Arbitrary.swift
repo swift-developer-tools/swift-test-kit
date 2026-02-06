@@ -55,26 +55,18 @@ extension Array: Arbitrary where Element : Arbitrary
             
             candidates.append(firstHalf)
             candidates.append(secondHalf)
-        }
-        
-        
-        
-        /// Remove individual elements.
-        for index in indices
-        {
-            var copy: [Element] = self
             
-            copy.remove(at: index)
             
-            guard !copy.isEmpty
-            else
+            
+            /// Remove individual elements.
+            for index in indices
             {
-                /// Skip if this produces an empty array, which is already
-                /// the first candidate.
-                continue
+                var copy: [Element] = self
+                
+                copy.remove(at: index)
+                
+                candidates.append(copy)
             }
-            
-            candidates.append(copy)
         }
         
         
