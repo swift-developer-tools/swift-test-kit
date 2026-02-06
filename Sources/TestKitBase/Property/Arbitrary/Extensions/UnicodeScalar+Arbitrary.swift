@@ -23,8 +23,7 @@ extension Unicode.Scalar: Arbitrary
             return scalar
         }
         
-        /// ASCII printable range.
-        let value = UInt32(context.randomInt(in: 0x20...0x7E))
+        let value = UInt32(context.randomInt(in: asciiPrintableRange))
         
         return Unicode.Scalar(value) ?? Unicode.Scalar("a")
     }
@@ -85,6 +84,11 @@ extension Unicode.Scalar: Arbitrary
         
         return candidates
     }
+    
+    
+    
+    /// The ASCII printable range.
+    internal static let asciiPrintableRange: ClosedRange<Int> = 0x20...0x7E
     
     
     
