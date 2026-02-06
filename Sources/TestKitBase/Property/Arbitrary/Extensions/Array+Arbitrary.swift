@@ -66,6 +66,14 @@ extension Array: Arbitrary where Element : Arbitrary
             
             copy.remove(at: index)
             
+            guard !copy.isEmpty
+            else
+            {
+                /// Skip if this produces an empty array, which is already
+                /// the first candidate.
+                continue
+            }
+            
             candidates.append(copy)
         }
         
