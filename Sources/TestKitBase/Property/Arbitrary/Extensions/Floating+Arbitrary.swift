@@ -93,7 +93,6 @@ private extension BinaryFloatingPoint
     private static var specialValues: [Self]
     {
         return [
-            0.0,
             -0.0,
             .infinity,
             -.infinity,
