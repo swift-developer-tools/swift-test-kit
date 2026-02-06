@@ -21,7 +21,7 @@ internal final class SeededRNGTests: XCTestCase
         var rng1    = SeededRNG(seed: 1)
         var rng2    = SeededRNG(seed: 1)
         
-        for _ in 0..<500
+        for _ in 0..<1000
         {
             XCTAssertEqual(rng1.next(), rng2.next())
         }
@@ -35,8 +35,8 @@ internal final class SeededRNGTests: XCTestCase
         var rng2    = SeededRNG(seed: 2)
         
         /// Collect values and verify that at least one differs.
-        let values1 : [UInt64]  = (0..<500).map { _ in rng1.next() }
-        let values2 : [UInt64]  = (0..<500).map { _ in rng2.next() }
+        let values1 : [UInt64]  = (0..<1000).map { _ in rng1.next() }
+        let values2 : [UInt64]  = (0..<1000).map { _ in rng2.next() }
         
         XCTAssertNotEqual(values1, values2)
     }
@@ -90,7 +90,7 @@ internal final class SeededRNGTests: XCTestCase
         var rng         : SeededRNG     = .init(seed: 99)
         var previous    : UInt64        = rng.next()
         
-        for _ in 0..<500
+        for _ in 0..<1000
         {
             let current: UInt64 = rng.next()
             
@@ -124,7 +124,7 @@ internal final class SeededRNGTests: XCTestCase
         var hasLower    : Bool          = false
         var hasUpper    : Bool          = false
         
-        for _ in 0..<500
+        for _ in 0..<1000
         {
             let value: UInt64 = rng.next()
             
