@@ -9,7 +9,7 @@
 
 // MARK: - Extensions
 
-private extension BinaryFloatingPoint
+internal extension BinaryFloatingPoint
 {
     /// Returns the maximum magnitude for generation, based on the type's
     /// representable range.
@@ -20,7 +20,7 @@ private extension BinaryFloatingPoint
     ///
     /// - Parameter context: The generation context.
     /// - Returns: The generation bound.
-    static func bound(
+    fileprivate static func bound(
         from context: GenerationContext
     ) -> Int
     {
@@ -36,7 +36,7 @@ private extension BinaryFloatingPoint
     
     /// Shrinks the value toward zero.
     /// - Returns: The shrink candidates.
-    func shrinkTowardZero() -> [Self]
+    fileprivate func shrinkTowardZero() -> [Self]
     {
         guard
             self.isFinite,
@@ -90,7 +90,7 @@ private extension BinaryFloatingPoint
     
     
     /// Special values to occasionally generate.
-    private static var specialValues: [Self]
+    static var specialValues: [Self]
     {
         return [
             -0.0,
@@ -105,7 +105,7 @@ private extension BinaryFloatingPoint
     /// Generates a special value 5% of the time.
     /// - Parameter context: The generation context.
     /// - Returns: A special value or `nil`.
-    static func specialValue(
+    fileprivate static func specialValue(
         using context: GenerationContext
     ) -> Self?
     {
