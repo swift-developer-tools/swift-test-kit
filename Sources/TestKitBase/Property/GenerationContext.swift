@@ -35,6 +35,8 @@ public final class GenerationContext
     /// Initializes a ``GenerationContext`` instance from the given values.
     ///
     /// This is used by property runners.
+    ///
+    /// - Precondition: `size` must be non-negative.
     internal init(
         seed    : UInt64,
         size    : Int       = 0
