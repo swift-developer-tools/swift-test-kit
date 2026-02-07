@@ -17,7 +17,7 @@ extension Optional: Arbitrary where Wrapped : Arbitrary
         using context: GenerationContext
     ) -> Optional
     {
-        if context.randomInt(in: 1...5) == 1
+        if context.random(in: 1...5) == 1
         {
             return nil
         }

@@ -54,7 +54,7 @@ extension Int: Arbitrary
         using context: GenerationContext
     ) -> Int
     {
-        return context.randomInt(in: -context.size...context.size)
+        return context.random(in: -context.size...context.size)
     }
     
     
@@ -87,7 +87,7 @@ extension Int8: Arbitrary
     {
         let bound: Int = Swift.min(context.size, Int(Int8.max))
         
-        return Int8(context.randomInt(in: -bound...bound))
+        return Int8(context.random(in: -bound...bound))
     }
     
     
@@ -120,7 +120,7 @@ extension Int16: Arbitrary
     {
         let bound: Int = Swift.min(context.size, Int(Int16.max))
         
-        return Int16(context.randomInt(in: -bound...bound))
+        return Int16(context.random(in: -bound...bound))
     }
     
     
@@ -153,7 +153,7 @@ extension Int32: Arbitrary
     {
         let bound: Int = Swift.min(context.size, Int(Int32.max))
         
-        return Int32(context.randomInt(in: -bound...bound))
+        return Int32(context.random(in: -bound...bound))
     }
     
     
@@ -184,7 +184,7 @@ extension Int64: Arbitrary
         using context: GenerationContext
     ) -> Int64
     {
-        return Int64(context.randomInt(in: -context.size...context.size))
+        return Int64(context.random(in: -context.size...context.size))
     }
     
     
@@ -214,7 +214,7 @@ extension UInt: Arbitrary
         using context: GenerationContext
     ) -> UInt
     {
-        return UInt(context.randomInt(in: 0...context.size))
+        return UInt(context.random(in: 0...context.size))
     }
     
     
@@ -247,7 +247,7 @@ extension UInt8: Arbitrary
     {
         let bound: Int = Swift.min(context.size, Int(UInt8.max))
         
-        return UInt8(context.randomInt(in: 0...bound))
+        return UInt8(context.random(in: 0...bound))
     }
     
     
@@ -280,7 +280,7 @@ extension UInt16: Arbitrary
     {
         let bound: Int = Swift.min(context.size, Int(UInt16.max))
         
-        return UInt16(context.randomInt(in: 0...bound))
+        return UInt16(context.random(in: 0...bound))
     }
     
     
@@ -313,7 +313,7 @@ extension UInt32: Arbitrary
     {
         let bound: Int = Swift.min(context.size, Int(UInt32.max))
         
-        return UInt32(context.randomInt(in: 0...bound))
+        return UInt32(context.random(in: 0...bound))
     }
     
     
@@ -344,7 +344,7 @@ extension UInt64: Arbitrary
         using context: GenerationContext
     ) -> UInt64
     {
-        return UInt64(context.randomInt(in: 0...context.size))
+        return UInt64(context.random(in: 0...context.size))
     }
     
     

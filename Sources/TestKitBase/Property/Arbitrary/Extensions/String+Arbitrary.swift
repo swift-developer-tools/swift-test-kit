@@ -17,7 +17,7 @@ extension String: Arbitrary
         using context: GenerationContext
     ) -> String
     {
-        let count: Int = context.randomInt(in: 0...context.size)
+        let count: Int = context.random(in: 0...context.size)
         
         return String(
             (0..<count).map { _ in Character.arbitrary(using: context) }

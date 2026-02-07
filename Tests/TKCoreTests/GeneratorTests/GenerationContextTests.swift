@@ -24,8 +24,8 @@ internal final class GenerationContextTests: XCTestCase
         for _ in 0..<1000
         {
             XCTAssertEqual(
-                context1.randomInt(in: 0...1000),
-                context2.randomInt(in: 0...1000)
+                context1.random(in: 0...1000),
+                context2.random(in: 0...1000)
             )
         }
     }
@@ -39,10 +39,10 @@ internal final class GenerationContextTests: XCTestCase
         
         /// Collect values and verify that at least one differs.
         let values1: [Int]
-            = (0..<1000).map { _ in context1.randomInt(in: 0...1000) }
+            = (0..<1000).map { _ in context1.random(in: 0...1000) }
         
         let values2: [Int]
-            = (0..<1000).map { _ in context2.randomInt(in: 0...1000) }
+            = (0..<1000).map { _ in context2.random(in: 0...1000) }
         
         XCTAssertNotEqual(values1, values2)
     }
@@ -93,7 +93,7 @@ internal final class GenerationContextTests: XCTestCase
         
         for _ in 0..<1000
         {
-            let value: Int = context.randomInt(in: range)
+            let value: Int = context.random(in: range)
             
             XCTAssertTrue(range.contains(value))
         }
@@ -107,7 +107,7 @@ internal final class GenerationContextTests: XCTestCase
         
         for _ in 0..<1000
         {
-            let value: Int = context.randomInt(in: 5...5)
+            let value: Int = context.random(in: 5...5)
             
             XCTAssertEqual(value, 5)
         }
@@ -122,7 +122,7 @@ internal final class GenerationContextTests: XCTestCase
         
         for _ in 0..<1000
         {
-            let value: Int = context.randomInt(in: range)
+            let value: Int = context.random(in: range)
             
             XCTAssertTrue(range.contains(value))
         }
@@ -139,7 +139,7 @@ internal final class GenerationContextTests: XCTestCase
         
         for _ in 0..<1000
         {
-            let value: Double = context.randomDouble(in: range)
+            let value: Double = context.random(in: range)
             
             XCTAssertTrue(range.contains(value))
         }
@@ -153,7 +153,7 @@ internal final class GenerationContextTests: XCTestCase
         
         for _ in 0..<1000
         {
-            let value: Double = context.randomDouble(in: 5...5)
+            let value: Double = context.random(in: 5.0...5.0)
             
             XCTAssertEqual(value, 5)
         }
@@ -168,7 +168,7 @@ internal final class GenerationContextTests: XCTestCase
         
         for _ in 0..<1000
         {
-            let value: Double = context.randomDouble(in: range)
+            let value: Double = context.random(in: range)
             
             XCTAssertTrue(range.contains(value))
         }

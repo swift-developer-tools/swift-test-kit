@@ -23,7 +23,7 @@ extension Unicode.Scalar: Arbitrary
             return scalar
         }
         
-        let value = UInt32(context.randomInt(in: asciiPrintableRange))
+        let value = UInt32(context.random(in: asciiPrintableRange))
         
         return Unicode.Scalar(value) ?? Unicode.Scalar("a")
     }
@@ -119,7 +119,7 @@ extension Unicode.Scalar: Arbitrary
         
         guard
             unicodeProbability > 0,
-            context.randomDouble(in: 0.0..<1.0) < unicodeProbability
+            context.random(in: 0.0..<1.0) < unicodeProbability
         else
         {
             return nil
@@ -128,7 +128,7 @@ extension Unicode.Scalar: Arbitrary
         let range: (UInt32, UInt32)
             = context.randomElement(of: arbitraryRanges) ?? arbitraryRanges[0]
         
-        let value = UInt32(context.randomInt(in: Int(range.0)...Int(range.1)))
+        let value = UInt32(context.random(in: Int(range.0)...Int(range.1)))
         
         return Unicode.Scalar(value)
     }

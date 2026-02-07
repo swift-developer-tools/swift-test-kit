@@ -33,7 +33,7 @@
 ///     {
 ///         return User(
 ///             name:   String.arbitrary(using: context),
-///             age:    context.randomInt(in: 0...120)
+///             age:    context.random(in: 0...120)
 ///         )
 ///     }
 ///

@@ -109,7 +109,7 @@ internal extension BinaryFloatingPoint
         using context: GenerationContext
     ) -> Self?
     {
-        if context.randomInt(in: 1...20) == 1
+        if context.random(in: 1...20) == 1
         {
             return context.randomElement(of: specialValues) ?? 0.0
         }
@@ -140,8 +140,8 @@ extension Double: Arbitrary
         
         let bound: Int = Double.bound(from: context)
         
-        let integer     = Double(context.randomInt(in: -bound...bound))
-        let fraction    = Double(context.randomDouble(in: -1.0...1.0))
+        let integer     = Double(context.random(in: -bound...bound))
+        let fraction    = Double(context.random(in: -1.0...1.0))
         
         return integer + fraction
     }
@@ -183,8 +183,8 @@ extension Float: Arbitrary
         
         let bound: Int = Float.bound(from: context)
         
-        let integer     = Float(context.randomInt(in: -bound...bound))
-        let fraction    = Float(context.randomDouble(in: -1.0...1.0))
+        let integer     = Float(context.random(in: -bound...bound))
+        let fraction    = Float(context.random(in: -1.0...1.0))
         
         return integer + fraction
     }
@@ -226,8 +226,8 @@ extension Float16: Arbitrary
         
         let bound: Int = Float16.bound(from: context)
         
-        let integer     = Float16(context.randomInt(in: -bound...bound))
-        let fraction    = Float16(context.randomDouble(in: -1.0...1.0))
+        let integer     = Float16(context.random(in: -bound...bound))
+        let fraction    = Float16(context.random(in: -1.0...1.0))
         
         return integer + fraction
     }

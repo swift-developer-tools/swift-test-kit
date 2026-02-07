@@ -17,7 +17,7 @@ extension Array: Arbitrary where Element : Arbitrary
         using context: GenerationContext
     ) -> Array
     {
-        let count: Int = context.randomInt(in: 0...context.size)
+        let count: Int = context.random(in: 0...context.size)
         
         return (0..<count).map { _ in Element.arbitrary(using: context) }
     }

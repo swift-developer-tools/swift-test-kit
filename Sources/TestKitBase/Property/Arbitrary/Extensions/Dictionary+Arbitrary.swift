@@ -18,7 +18,7 @@ extension Dictionary : Arbitrary where Key : Arbitrary, Value : Arbitrary
         using context: GenerationContext
     ) -> Dictionary
     {
-        let count: Int = context.randomInt(in: 0...context.size)
+        let count: Int = context.random(in: 0...context.size)
         
         let keys: [Key]
             = (0..<count).map { _ in Key.arbitrary(using: context) }

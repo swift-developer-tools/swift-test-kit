@@ -71,17 +71,22 @@ public final class GenerationContext
     {
         return rng.seed
     }
-    
-    
-    
+}
+
+
+
+// MARK: - Random
+
+extension GenerationContext
+{
     /// Creates a random integer in the given range.
     /// - Parameter range: The range in which to create a random integer.
     /// - Returns: A random integer in the given range.
-    public func randomInt(
-        in range: ClosedRange<Int>
-    ) -> Int
+    public func random<T>(
+        in range: ClosedRange<T>
+    ) -> T where T : FixedWidthInteger
     {
-        return Int.random(
+        return T.random(
             in:     range,
             using:  &rng
         )
@@ -92,11 +97,11 @@ public final class GenerationContext
     /// Creates a random integer in the given range.
     /// - Parameter range: The range in which to create a random integer.
     /// - Returns: A random integer in the given range.
-    public func randomInt(
-        in range: Range<Int>
-    ) -> Int
+    public func random<T>(
+        in range: Range<T>
+    ) -> T where T : FixedWidthInteger
     {
-        return Int.random(
+        return T.random(
             in:     range,
             using:  &rng
         )
@@ -107,11 +112,11 @@ public final class GenerationContext
     /// Creates a random double in the given range.
     /// - Parameter range: The range in which to create a random double.
     /// - Returns: A random double in the given range.
-    public func randomDouble(
-        in range: Range<Double>
-    ) -> Double
+    public func random<T>(
+        in range: Range<T>
+    ) -> T where T : BinaryFloatingPoint, T.RawSignificand : FixedWidthInteger
     {
-        return Double.random(
+        return T.random(
             in:     range,
             using:  &rng
         )
@@ -122,11 +127,11 @@ public final class GenerationContext
     /// Creates a random double in the given range.
     /// - Parameter range: The range in which to create a random double.
     /// - Returns: A random double in the given range.
-    public func randomDouble(
-        in range: ClosedRange<Double>
-    ) -> Double
+    public func random<T>(
+        in range: ClosedRange<T>
+    ) -> T where T : BinaryFloatingPoint, T.RawSignificand : FixedWidthInteger
     {
-        return Double.random(
+        return T.random(
             in:     range,
             using:  &rng
         )
