@@ -36,59 +36,6 @@ extension String: Arbitrary
     /// to indicate that no shrinking should occur.
     public func shrink() -> [String]
     {
-        guard !isEmpty
-        else
-        {
-            return []
-        }
-        
-        var candidates  : [String]      = []
-        let characters  : [Character]   = Array(self)
-        
-        candidates.append("")
-        
-        
-        
-        if characters.count > 1
-        {
-            /// If the count is odd, the middle character is dropped here,
-            /// but will be included in the individual removal step.
-            let firstHalf   = String(characters.prefix(characters.count / 2))
-            let secondHalf  = String(characters.suffix(characters.count / 2))
-            
-            candidates.append(firstHalf)
-            candidates.append(secondHalf)
-        }
-        
-        
-        
-        /// Remove individual characters.
-        for index in characters.indices
-        {
-            var copy: [Character] = characters
-            
-            copy.remove(at: index)
-            
-            candidates.append(String(copy))
-        }
-        
-        
-        
-        /// Shrink individual characters.
-        for index in characters.indices
-        {
-            for shrunkenCharacter in characters[index].shrink()
-            {
-                var copy: [Character] = characters
-                
-                copy[index] = shrunkenCharacter
-                
-                candidates.append(String(copy))
-            }
-        }
-        
-        
-        
-        return candidates
+        return shrinkTowardEmpty()
     }
 }
