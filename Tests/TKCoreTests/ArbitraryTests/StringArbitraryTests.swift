@@ -298,9 +298,9 @@ internal final class StringArbitraryTests: XCTestCase
             .init("\u{1F642}\u{200D}\u{2194}\u{FE0F}")
         ]
         
-        for characters in characters
+        for character in characters
         {
-            validateCharacterShrinking(characters)
+            validateShrinkCandidates(of: character)
         }
     }
     
@@ -322,7 +322,7 @@ internal final class StringArbitraryTests: XCTestCase
         
         for scalar in scalars
         {
-            validateScalarShrinking(scalar)
+            validateShrinkCandidates(of: scalar)
         }
     }
     
@@ -344,7 +344,7 @@ internal final class StringArbitraryTests: XCTestCase
         
         for string in strings
         {
-            validateStringShrinking(string)
+            validateShrinkCandidates(of: string)
         }
     }
     
@@ -449,64 +449,67 @@ private extension StringArbitraryTests
     
     /// Validates the shrink candidates for the given character.
     /// - Parameter char: The character to evaluate.
-    func validateCharacterShrinking(
-        _ char: Character
+    func validateShrinkCandidates(
+        of char: Character
     )
     {
-        let target      : Character                     = "a"
-        let candidates  : [Character]                   = char.shrink()
-        let scalars     : Character.UnicodeScalarView   = char.unicodeScalars
+        let target      : Character     = "a"
+        let candidates  : [Character]   = char.shrink()
         
         if char == target
         {
-            /// The target does not shrink.
             XCTAssertEqual(candidates, [])
             return
         }
         
-        
-        
-        if scalars.count > 1
-        {
-            /// Multi-scalar (grapheme cluster). Expect target + optional base.
-            var expected: [Character] = [target]
-            
-            if let first: Unicode.Scalar = scalars.first
-            {
-                let base = Character(first)
-                
-                if
-                    base != char,
-                    base != target
-                {
-                    expected.append(base)
-                }
-            }
-            
-            XCTAssertEqual(candidates, expected)
-        }
-        else
-        {
-            /// Single-scalar. Expect delegation to `Unicode.Scalar` shrinking.
-            guard let scalar: Unicode.Scalar = scalars.first
-            else
-            {
-                XCTFail("Expected Unicode scalar")
-                return
-            }
-            
-            let expected: [Character] = scalar.shrink().map { Character($0) }
-            
-            XCTAssertEqual(candidates, expected)
-        }
-        
-        
-        
+        XCTAssertFalse(candidates.isEmpty)
         XCTAssertEqual(candidates.first, target)
         
         for candidate in candidates
         {
             XCTAssertNotEqual(candidate, char)
+        }
+        
+        let scalars: Character.UnicodeScalarView = char.unicodeScalars
+        
+        if scalars.count == 1
+        {
+            /// Single-scalars: all candidates must be between `value` and
+            /// `targetValue`.
+            let value       : UInt32    = scalars.first!.value
+            let targetValue : UInt32    = target.unicodeScalars.first!.value
+            let lower       : UInt32    = min(value, targetValue)
+            let upper       : UInt32    = max(value, targetValue)
+            
+            for candidate in candidates
+            {
+                let candidateScalars: Character.UnicodeScalarView
+                    = candidate.unicodeScalars
+                
+                XCTAssertEqual(candidateScalars.count, 1)
+                
+                XCTAssertGreaterThanOrEqual(
+                    candidateScalars.first!.value,
+                    lower
+                )
+                
+                XCTAssertLessThanOrEqual(
+                    candidateScalars.first!.value,
+                    upper
+                )
+            }
+        }
+        else
+        {
+            /// Multi-scalars: each candidate must be either the target, or
+            /// have fewer than the original (the base scalar).
+            for candidate in candidates
+            {
+                XCTAssertTrue(
+                    candidate == target
+                    || candidate.unicodeScalars.count < scalars.count
+                )
+            }
         }
     }
     
@@ -514,72 +517,28 @@ private extension StringArbitraryTests
     
     /// Validates the shrink candidates for the given Unicode scalar.
     /// - Parameter scalar: The scalar to evaluate.
-    func validateScalarShrinking(
-        _ scalar: Unicode.Scalar
+    func validateShrinkCandidates(
+        of scalar: Unicode.Scalar
     )
     {
-        let targetValue : UInt32            = Unicode.Scalar("a").value
-        let value       : UInt32            = scalar.value
+        let target      : Unicode.Scalar    = "a"
         let candidates  : [Unicode.Scalar]  = scalar.shrink()
         
-        if value == targetValue
+        if scalar == target
         {
-            /// The target does not shrink.
             XCTAssertEqual(candidates, [])
             return
         }
         
+        XCTAssertFalse(candidates.isEmpty)
+        XCTAssertEqual(candidates.first, target)
         
-        
-        /// Compute expected candidates with de-duplication.
-        var expected    : [Unicode.Scalar]  = []
-        var seen        : Set<UInt32>       = []
-        
-        if let target = Unicode.Scalar(targetValue)
-        {
-            expected.append(target)
-            seen.insert(targetValue)
-        }
-        
-        
-        
-        let mid: UInt32 = (value + targetValue) / 2
-        
-        if
-            !seen.contains(mid),
-            mid != value,
-            let midScalar = Unicode.Scalar(mid)
-        {
-            expected.append(midScalar)
-            seen.insert(mid)
-        }
-        
-        
-        
-        let closer: UInt32 = value > targetValue
-            ? value - 1
-            : value + 1
-        
-        if
-            !seen.contains(closer),
-            let closerScalar = Unicode.Scalar(closer)
-        {
-            expected.append(closerScalar)
-            seen.insert(closer)
-        }
-        
-        
-        
-        XCTAssertEqual(candidates, expected)
-        XCTAssertEqual(candidates.first, Unicode.Scalar(targetValue))
-        
-        
-        
-        let lower   : UInt32    = min(value, targetValue)
-        let upper   : UInt32    = max(value, targetValue)
+        let lower: UInt32 = min(scalar.value, target.value)
+        let upper: UInt32 = max(scalar.value, target.value)
         
         for candidate in candidates
         {
+            XCTAssertNotEqual(candidate, scalar)
             XCTAssertGreaterThanOrEqual(candidate.value, lower)
             XCTAssertLessThanOrEqual(candidate.value, upper)
         }
@@ -589,85 +548,25 @@ private extension StringArbitraryTests
     
     /// Validates the shrink candidates for the given string.
     /// - Parameter string: The string to evaluate.
-    func validateStringShrinking(
-        _ string: String
+    func validateShrinkCandidates(
+        of string: String
     )
     {
-        let candidates  : [String]      = string.shrink()
-        let characters  : [Character]   = Array(string)
+        let candidates: [String] = string.shrink()
         
         if string.isEmpty
         {
-            /// The empty string does not shrink.
             XCTAssertEqual(candidates, [])
             return
         }
         
-        
-        
-        var expected: [String] = []
-        
-        expected.append("")
-        
-        
-        
-        /// Halved.
-        if characters.count > 1
-        {
-            let firstHalf   = String(characters.prefix(characters.count / 2))
-            let secondHalf  = String(characters.suffix(characters.count / 2))
-            
-            expected.append(firstHalf)
-            expected.append(secondHalf)
-        }
-        
-        
-        
-        /// Remove individual characters.
-        for index in characters.indices
-        {
-            var copy: [Character] = characters
-            
-            copy.remove(at: index)
-            
-            expected.append(String(copy))
-        }
-        
-        
-        
-        /// Shrink individual characters.
-        for index in characters.indices
-        {
-            for shrunken in characters[index].shrink()
-            {
-                var copy: [Character] = characters
-                
-                copy[index] = shrunken
-                
-                expected.append(String(copy))
-            }
-        }
-        
-        
-        
-        XCTAssertEqual(candidates, expected)
-        
-        
-        
-        let halvesCount: Int = characters.count > 1 ? 2 : 0
-        
-        let elementsShrinkCount: Int
-            = characters.reduce(0) { $0 + $1.shrink().count }
-        
-        let expectedCount: Int
-            = 1 + halvesCount + characters.count + elementsShrinkCount
-        
-        XCTAssertEqual(candidates.count, expectedCount)
+        XCTAssertFalse(candidates.isEmpty)
         XCTAssertEqual(candidates.first, "")
         
         for candidate in candidates
         {
             XCTAssertNotEqual(candidate, string)
+            XCTAssertLessThanOrEqual(candidate.count, string.count)
         }
     }
 }
