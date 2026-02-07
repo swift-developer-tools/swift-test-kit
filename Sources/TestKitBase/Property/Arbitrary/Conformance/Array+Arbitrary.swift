@@ -34,58 +34,6 @@ extension Array: Arbitrary where Element : Arbitrary
     /// to indicate that no shrinking should occur.
     public func shrink() -> [Array]
     {
-        guard !isEmpty
-        else
-        {
-            return []
-        }
-        
-        var candidates: [Array] = []
-        
-        candidates.append([])
-        
-        
-        
-        if count > 1
-        {
-            /// If the count is odd, the middle element is dropped here,
-            /// but will be included in the individual removal step.
-            let firstHalf   = Array(prefix(count / 2))
-            let secondHalf  = Array(suffix(count / 2))
-            
-            candidates.append(firstHalf)
-            candidates.append(secondHalf)
-            
-            
-            
-            /// Remove individual elements.
-            for index in indices
-            {
-                var copy: [Element] = self
-                
-                copy.remove(at: index)
-                
-                candidates.append(copy)
-            }
-        }
-        
-        
-        
-        /// Shrink individual elements.
-        for index in indices
-        {
-            for shrunkenElement in self[index].shrink()
-            {
-                var copy: [Element] = self
-                
-                copy[index] = shrunkenElement
-                
-                candidates.append(copy)
-            }
-        }
-        
-        
-        
-        return candidates
+        return shrinkTowardEmpty()
     }
 }
