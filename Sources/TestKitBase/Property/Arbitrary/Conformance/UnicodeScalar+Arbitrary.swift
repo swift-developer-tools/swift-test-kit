@@ -88,7 +88,16 @@ extension Unicode.Scalar: Arbitrary
     
     
     /// The ASCII printable range.
-    internal static let asciiPrintableRange: ClosedRange<Int> = 0x20...0x7E
+    internal static let asciiPrintableRange : ClosedRange<Int>  = 0x20...0x7E
+    
+    /// The ASCII printable lowercase range.
+    internal static let asciiLowercaseRange : ClosedRange<Int>  = 0x61...0x7A
+    
+    /// The ASCII printable uppercase range.
+    internal static let asciiUppercaseRange : ClosedRange<Int>  = 0x41...0x5A
+    
+    /// The ASCII digit range.
+    internal static let asciiDigitRange     : ClosedRange<Int>  = 0x30...0x39
     
     
     
