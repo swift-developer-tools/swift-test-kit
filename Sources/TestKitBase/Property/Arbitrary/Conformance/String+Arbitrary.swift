@@ -28,7 +28,7 @@ extension String: Arbitrary
     
     /// Generates candidate values that are smaller than the receiver value.
     ///
-    /// Candidates incldue the empty string, each of the string, the string
+    /// Candidates include the empty string, each of the string, the string
     /// with individual characters removed, and the string with individual
     /// characters shrunk.
     ///
