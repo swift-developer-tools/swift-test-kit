@@ -26,7 +26,7 @@ extension Int: Arbitrary
     
     /// Generates candidate values that are smaller than the receiver value.
     ///
-    /// Candidates converge toward `0` by repeatedly halving the distance.
+    /// Candidates converge toward zero by repeatedly halving the distance.
     ///
     /// - Returns: An array of smaller candidate values, or an empty array
     /// to indicate that no shrinking should occur.
@@ -59,7 +59,7 @@ extension Int8: Arbitrary
     
     /// Generates candidate values that are smaller than the receiver value.
     ///
-    /// Candidates converge toward `0` by repeatedly halving the distance.
+    /// Candidates converge toward zero by repeatedly halving the distance.
     ///
     /// - Returns: An array of smaller candidate values, or an empty array
     /// to indicate that no shrinking should occur.
@@ -92,7 +92,7 @@ extension Int16: Arbitrary
     
     /// Generates candidate values that are smaller than the receiver value.
     ///
-    /// Candidates converge toward `0` by repeatedly halving the distance.
+    /// Candidates converge toward zero by repeatedly halving the distance.
     ///
     /// - Returns: An array of smaller candidate values, or an empty array
     /// to indicate that no shrinking should occur.
@@ -125,7 +125,7 @@ extension Int32: Arbitrary
     
     /// Generates candidate values that are smaller than the receiver value.
     ///
-    /// Candidates converge toward `0` by repeatedly halving the distance.
+    /// Candidates converge toward zero by repeatedly halving the distance.
     ///
     /// - Returns: An array of smaller candidate values, or an empty array
     /// to indicate that no shrinking should occur.
@@ -156,7 +156,7 @@ extension Int64: Arbitrary
     
     /// Generates candidate values that are smaller than the receiver value.
     ///
-    /// Candidates converge toward `0` by repeatedly halving the distance.
+    /// Candidates converge toward zero by repeatedly halving the distance.
     ///
     /// - Returns: An array of smaller candidate values, or an empty array
     /// to indicate that no shrinking should occur.
@@ -186,7 +186,7 @@ extension UInt: Arbitrary
     
     /// Generates candidate values that are smaller than the receiver value.
     ///
-    /// Candidates converge toward `0` by repeatedly halving the distance.
+    /// Candidates converge toward zero by repeatedly halving the distance.
     ///
     /// - Returns: An array of smaller candidate values, or an empty array
     /// to indicate that no shrinking should occur.
@@ -219,7 +219,7 @@ extension UInt8: Arbitrary
     
     /// Generates candidate values that are smaller than the receiver value.
     ///
-    /// Candidates converge toward `0` by repeatedly halving the distance.
+    /// Candidates converge toward zero by repeatedly halving the distance.
     ///
     /// - Returns: An array of smaller candidate values, or an empty array
     /// to indicate that no shrinking should occur.
@@ -252,7 +252,7 @@ extension UInt16: Arbitrary
     
     /// Generates candidate values that are smaller than the receiver value.
     ///
-    /// Candidates converge toward `0` by repeatedly halving the distance.
+    /// Candidates converge toward zero by repeatedly halving the distance.
     ///
     /// - Returns: An array of smaller candidate values, or an empty array
     /// to indicate that no shrinking should occur.
@@ -285,7 +285,7 @@ extension UInt32: Arbitrary
     
     /// Generates candidate values that are smaller than the receiver value.
     ///
-    /// Candidates converge toward `0` by repeatedly halving the distance.
+    /// Candidates converge toward zero by repeatedly halving the distance.
     ///
     /// - Returns: An array of smaller candidate values, or an empty array
     /// to indicate that no shrinking should occur.
@@ -316,7 +316,7 @@ extension UInt64: Arbitrary
     
     /// Generates candidate values that are smaller than the receiver value.
     ///
-    /// Candidates converge toward `0` by repeatedly halving the distance.
+    /// Candidates converge toward zero by repeatedly halving the distance.
     ///
     /// - Returns: An array of smaller candidate values, or an empty array
     /// to indicate that no shrinking should occur.
