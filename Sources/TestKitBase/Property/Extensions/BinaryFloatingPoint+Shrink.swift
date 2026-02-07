@@ -9,19 +9,68 @@
 
 internal extension BinaryFloatingPoint
 {
-    /// Shrinks the value toward zero.
+    /// Shrinks the value toward zero or the nearest bound by repeatedly
+    /// halving the distance.
+    ///
+    /// Shrink candidates converage toward zero if zero is within the range,
+    /// otherwise toward the nearest bound.
+    ///
+    /// - Parameter range: The range in which to generate floating-point
+    /// numbers.
     /// - Returns: The shrink candidates.
-    func shrinkTowardZero() -> [Self]
+    func shrinkTowardZero(
+        in range: ClosedRange<Self>? = nil
+    ) -> [Self]
     {
         guard
-            self.isFinite,
-            !self.isNaN
+            let range,
+            !range.isEmpty
         else
         {
-            return [0.0]
+            return Self.shrink(self, toward: 0.0)
         }
         
-        guard self != 0.0
+        let target: Self
+        
+        if range.contains(0.0)
+        {
+            target = 0.0
+        }
+        else if 0.0 < range.lowerBound
+        {
+            target = range.lowerBound
+        }
+        else
+        {
+            target = range.upperBound
+        }
+        
+        return Self.shrink(self, toward: target)
+            .filter { range.contains($0) }
+    }
+    
+    
+    
+    /// Shrinks the given value toward the given target by repeatedly halving
+    /// the distance.
+    /// - Parameters:
+    ///   - value: The value to shrink.
+    ///   - target: The value toward which shrink candidates converge.
+    /// - Returns: The shrink candidates.
+    private static func shrink(
+        _       value   : Self,
+        toward  target  : Self
+    ) -> [Self]
+    {
+        guard
+            value.isFinite,
+            !value.isNaN
+        else
+        {
+            return [target]
+        }
+        
+        guard value != target
         else
         {
             return []
@@ -29,33 +78,35 @@ internal extension BinaryFloatingPoint
         
         
         
-        var candidates: [Self] = [0.0]
+        var candidates: [Self] = [target]
         
-        /// Truncate the fractional part.
-        let truncated: Self = self.rounded(.towardZero)
+        /// Truncate the fractional part toward the target.
+        let truncated: Self = value.rounded(value > target ? .down : .up)
         
         if
-            truncated != self,
-            truncated != 0.0
+            truncated != value,
+            truncated != target
         {
             candidates.append(truncated)
         }
         
         
         
-        /// Halve toward zero.
-        var current: Self = truncated != 0.0
+        var distance: Self = truncated != target
             ? truncated
-            : self
+            : value
         
-        while abs(current) > 0.5
+        while abs(distance - target) > 0.5
         {
-            current /= 2.0
-            current.round(.towardZero)
+            distance = target + (distance - target) / 2
             
-            if current != 0.0
+            distance.round(value > target ? .down : .up)
+            
+            if
+                distance != target,
+                distance != value
             {
-                candidates.append(current)
+                candidates.append(distance)
             }
         }
         
