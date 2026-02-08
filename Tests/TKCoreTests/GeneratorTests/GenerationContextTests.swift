@@ -18,11 +18,10 @@ internal final class GenerationContextTests: XCTestCase
     
     func testSameSeedProducesSameSequence() throws
     {
-        let context1    = GenerationContext(seed: 1)
-        let context2    = GenerationContext(seed: 1)
-        
         for _ in 0..<1000
         {
+            let (context1, context2) = GenerationContext.sameRandomContexts
+            
             XCTAssertEqual(
                 context1.random(in: 0...1000),
                 context2.random(in: 0...1000)
@@ -34,8 +33,15 @@ internal final class GenerationContextTests: XCTestCase
     
     func testDifferentSeedsProduceDifferentSequences() throws
     {
-        let context1    = GenerationContext(seed: 1)
-        let context2    = GenerationContext(seed: 2)
+        let context1 = GenerationContext(
+            seed: 1,
+            size: GenerationContext.randomSize
+        )
+        
+        let context2 = GenerationContext(
+            seed: 2,
+            size: GenerationContext.randomSize
+        )
         
         /// Collect values and verify that at least one differs.
         let values1: [Int]
@@ -75,7 +81,7 @@ internal final class GenerationContextTests: XCTestCase
     
     func testSizeCanBeUpdated() throws
     {
-        let context = GenerationContext(seed: 1)
+        let context = GenerationContext.random
         
         context.size = 2
         
@@ -88,11 +94,12 @@ internal final class GenerationContextTests: XCTestCase
     
     func testRandomIntClosedRangeRespectsBounds() throws
     {
-        let context : GenerationContext     = .init(seed: 50)
-        let range   : ClosedRange<Int>      = 10...20
+        let range: ClosedRange<Int> = 10...20
         
         for _ in 0..<1000
         {
+            let context = GenerationContext.random
+            
             let value: Int = context.random(in: range)
             
             XCTAssertTrue(range.contains(value))
@@ -103,10 +110,10 @@ internal final class GenerationContextTests: XCTestCase
     
     func testRandomIntClosedRangeSingleValue() throws
     {
-        let context = GenerationContext(seed: 50)
-        
         for _ in 0..<1000
         {
+            let context = GenerationContext.random
+            
             let value: Int = context.random(in: 5...5)
             
             XCTAssertEqual(value, 5)
@@ -117,11 +124,12 @@ internal final class GenerationContextTests: XCTestCase
     
     func testRandomIntRangeRespectsBounds() throws
     {
-        let context : GenerationContext     = .init(seed: 50)
-        let range   : Range<Int>            = 10..<20
+        let range: Range<Int> = 10..<20
         
         for _ in 0..<1000
         {
+            let context = GenerationContext.random
+            
             let value: Int = context.random(in: range)
             
             XCTAssertTrue(range.contains(value))
@@ -134,11 +142,12 @@ internal final class GenerationContextTests: XCTestCase
     
     func testRandomDoubleClosedRangeRespectsBounds() throws
     {
-        let context : GenerationContext     = .init(seed: 50)
-        let range   : ClosedRange<Double>   = 10...20
+        let range: ClosedRange<Double> = 10...20
         
         for _ in 0..<1000
         {
+            let context = GenerationContext.random
+            
             let value: Double = context.random(in: range)
             
             XCTAssertTrue(range.contains(value))
@@ -149,10 +158,10 @@ internal final class GenerationContextTests: XCTestCase
     
     func testRandomDoubleClosedRangeSingleValue() throws
     {
-        let context = GenerationContext(seed: 50)
-        
         for _ in 0..<1000
         {
+            let context = GenerationContext.random
+            
             let value: Double = context.random(in: 5.0...5.0)
             
             XCTAssertEqual(value, 5)
@@ -163,11 +172,12 @@ internal final class GenerationContextTests: XCTestCase
     
     func testRandomDoubleRangeRespectsBounds() throws
     {
-        let context : GenerationContext     = .init(seed: 50)
-        let range   : Range<Double>         = 10..<20
+        let range: Range<Double> = 10..<20
         
         for _ in 0..<1000
         {
+            let context = GenerationContext.random
+            
             let value: Double = context.random(in: range)
             
             XCTAssertTrue(range.contains(value))
@@ -180,12 +190,13 @@ internal final class GenerationContextTests: XCTestCase
     
     func testRandomBoolProducesBothValues() throws
     {
-        let context     : GenerationContext     = .init(seed: 50)
-        var hasTrue     : Bool                  = false
-        var hasFalse    : Bool                  = false
+        var hasTrue     : Bool  = false
+        var hasFalse    : Bool  = false
         
         for _ in 0..<1000
         {
+            let context = GenerationContext.random
+            
             let value: Bool = context.randomBool()
             
             if value
@@ -215,11 +226,12 @@ internal final class GenerationContextTests: XCTestCase
     
     func testRandomElementReturnsElementFromCollection() throws
     {
-        let context     : GenerationContext     = .init(seed: 50)
-        let collection  : [String]              = ["a", "b", "c", "d"]
+        let collection: [String] = ["a", "b", "c", "d"]
         
         for _ in 0..<1000
         {
+            let context = GenerationContext.random
+            
             let element: String? = context.randomElement(of: collection)
             
             XCTAssertNotNil(element)
@@ -231,7 +243,7 @@ internal final class GenerationContextTests: XCTestCase
     
     func testRandomElementReturnsNilForEmptyCollection() throws
     {
-        let context     : GenerationContext     = .init(seed: 50)
+        let context     : GenerationContext     = .random
         let collection  : [Int]                 = []
         
         XCTAssertNil(context.randomElement(of: collection))
