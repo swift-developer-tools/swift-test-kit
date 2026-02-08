@@ -87,7 +87,7 @@ internal final class SeededRNGTests: XCTestCase
     
     func testConsecutiveValuesAreDifferent() throws
     {
-        var rng         : SeededRNG     = .init(seed: 99)
+        var rng         : SeededRNG     = .random
         var previous    : UInt64        = rng.next()
         
         for _ in 0..<1000
@@ -102,15 +102,17 @@ internal final class SeededRNGTests: XCTestCase
     
     
     
-    func testGenerationDOesNotAffectSeed() throws
+    func testGenerationDoesNotAffectSeed() throws
     {
-        var rng = SeededRNG(seed: 777)
+        let randomSeed  : UInt64        = GenerationContext.randomSeed
+        var rng         : SeededRNG     = .init(seed: randomSeed)
         
-        _ = rng.next()
-        _ = rng.next()
-        _ = rng.next()
+        for _ in 0..<1000
+        {
+            _ = rng.next()
+        }
         
-        XCTAssertEqual(rng.seed, 777)
+        XCTAssertEqual(rng.seed, randomSeed)
     }
     
     
@@ -119,7 +121,7 @@ internal final class SeededRNGTests: XCTestCase
     
     func testOutputSpansBothHalves() throws
     {
-        var rng         : SeededRNG     = .init(seed: 50)
+        var rng         : SeededRNG     = .random
         let midpoint    : UInt64        = .max / 2
         var hasLower    : Bool          = false
         var hasUpper    : Bool          = false
