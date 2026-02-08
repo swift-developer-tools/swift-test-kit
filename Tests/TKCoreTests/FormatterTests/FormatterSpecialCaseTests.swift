@@ -13,7 +13,7 @@ import XCTest
 
 
 
-internal final class FormatterSpecialCaseTests: XCTestCase
+internal final class FormatterSpecialCaseTests: XCTestCaseStopOnFail
 {
     private typealias LK = TestKitCore.Formatter.LabelKind
     

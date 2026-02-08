@@ -13,7 +13,7 @@ import XCTest
 
 
 
-internal final class ComparatorCycleTests: XCTestCase
+internal final class ComparatorCycleTests: XCTestCaseStopOnFail
 {
     func testSelfCycleInExpected() throws
     {

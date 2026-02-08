@@ -13,7 +13,7 @@ import XCTest
 
 
 
-internal final class StringComparatorCharThresholdTests: XCTestCase
+internal final class StringComparatorCharThresholdTests: XCTestCaseStopOnFail
 {
     func testCharDiffThresholdCollapsesWhenExceeded() throws
     {

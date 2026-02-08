@@ -13,7 +13,7 @@ import XCTest
 
 
 
-internal final class ComparatorOptionalTests: XCTestCase
+internal final class ComparatorOptionalTests: XCTestCaseStopOnFail
 {
     func testOptionalBothNone() throws
     {

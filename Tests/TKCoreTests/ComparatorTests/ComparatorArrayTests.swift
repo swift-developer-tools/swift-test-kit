@@ -13,7 +13,7 @@ import XCTest
 
 
 
-internal final class ComparatorArrayTests: XCTestCase
+internal final class ComparatorArrayTests: XCTestCaseStopOnFail
 {
     func testArrayHashableMissingElement() throws
     {

@@ -13,7 +13,7 @@ import XCTest
 
 
 
-internal final class StringComparatorUnicodeTests: XCTestCase
+internal final class StringComparatorUnicodeTests: XCTestCaseStopOnFail
 {
     func testEmojiComparison() throws
     {

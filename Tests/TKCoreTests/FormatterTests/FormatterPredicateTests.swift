@@ -13,7 +13,7 @@ import XCTest
 
 
 
-internal final class FormatterPredicateTests: XCTestCase
+internal final class FormatterPredicateTests: XCTestCaseStopOnFail
 {
     private typealias PFK = PredicateFailureKind
     

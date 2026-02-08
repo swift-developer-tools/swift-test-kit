@@ -13,7 +13,7 @@ import XCTest
 
 
 
-internal final class ComparatorTupleTests: XCTestCase
+internal final class ComparatorTupleTests: XCTestCaseStopOnFail
 {
     func testNestedTupleEqualValues() throws
     {

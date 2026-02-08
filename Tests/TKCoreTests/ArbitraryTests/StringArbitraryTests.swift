@@ -12,7 +12,7 @@ import XCTest
 
 
 
-internal final class StringArbitraryTests: XCTestCase
+internal final class StringArbitraryTests: XCTestCaseStopOnFail
 {
     // MARK: - Character generation
     

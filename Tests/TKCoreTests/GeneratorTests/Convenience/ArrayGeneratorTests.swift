@@ -12,7 +12,7 @@ import XCTest
 
 
 
-internal final class ArrayGeneratorTests: XCTestCase
+internal final class ArrayGeneratorTests: XCTestCaseStopOnFail
 {
     // MARK: - Exact count generation
     

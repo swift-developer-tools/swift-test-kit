@@ -13,7 +13,7 @@ import XCTest
 
 
 
-internal final class ComparatorEnumTests: XCTestCase
+internal final class ComparatorEnumTests: XCTestCaseStopOnFail
 {
     func testEnumDifferentCases() throws
     {

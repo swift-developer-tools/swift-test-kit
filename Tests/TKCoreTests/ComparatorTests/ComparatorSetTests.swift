@@ -13,7 +13,7 @@ import XCTest
 
 
 
-internal final class ComparatorSetTests: XCTestCase
+internal final class ComparatorSetTests: XCTestCaseStopOnFail
 {
     func testSetEqualValues() throws
     {

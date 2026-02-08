@@ -13,7 +13,7 @@ import XCTest
 
 
 
-internal final class FormatterBooleanExprTests: XCTestCase
+internal final class FormatterBooleanExprTests: XCTestCaseStopOnFail
 {
     // MARK: - AND chains
     

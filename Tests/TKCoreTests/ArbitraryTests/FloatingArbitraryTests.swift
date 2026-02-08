@@ -12,7 +12,7 @@ import XCTest
 
 
 
-internal final class FloatingArbitraryTests: XCTestCase
+internal final class FloatingArbitraryTests: XCTestCaseStopOnFail
 {
     // MARK: - Generation
     

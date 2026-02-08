@@ -12,7 +12,7 @@ import XCTest
 
 
 
-internal final class OptionsTests: XCTestCase
+internal final class OptionsTests: XCTestCaseStopOnFail
 {
     func testTKOptions() throws
     {
