@@ -159,4 +159,55 @@ extension GenerationContext
     {
         return collection.randomElement(using: &rng)
     }
+    
+    
+    
+    /// Gets a random element of the given collection, weighted by the given
+    /// closure.
+    ///
+    /// - Precondition: All weights must be positive.
+    ///
+    /// - Parameters:
+    ///   - collection: The collection from which to retrieve a random element.
+    ///   - weight: A closure that returns the weight for a given element.
+    /// - Returns: A random element of the given collection, or `nil` if the
+    /// collection is empty.
+    public func randomElement<C>(
+        of          collection  : C,
+        weightedBy  weight      : (C.Element) -> Int
+    ) -> C.Element? where C : Collection
+    {
+        guard !collection.isEmpty
+        else
+        {
+            return nil
+        }
+        
+        let total: Int = collection.reduce(0)
+        {
+            let w: Int = weight($1)
+            
+            precondition(
+                w > 0,
+                "All weights must be positive"
+            )
+            
+            return $0 + w
+        }
+        
+        var remaining: Int = random(in: 1...total)
+        
+        for element in collection
+        {
+            remaining -= weight(element)
+            
+            if remaining <= 0
+            {
+                return element
+            }
+        }
+        
+        /// This should be unreachable given valid weights.
+        return nil
+    }
 }
