@@ -33,4 +33,5 @@ import XCTestKit
 ### Property-Based Testing
 
 - ``Arbitrary``
+- ``Generator``
 - ``GenerationContext``
