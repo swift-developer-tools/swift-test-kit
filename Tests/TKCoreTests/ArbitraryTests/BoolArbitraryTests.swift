@@ -18,13 +18,12 @@ internal final class BoolArbitraryTests: XCTestCase
     
     func testArbitraryProducesBothValues() throws
     {
-        let context     : GenerationContext     = .init(seed: 50)
-        var hasTrue     : Bool                  = false
-        var hasFalse    : Bool                  = false
+        var hasTrue     : Bool  = false
+        var hasFalse    : Bool  = false
         
         for _ in 0..<1000
         {
-            let value: Bool = .arbitrary(using: context)
+            let value: Bool = .arbitrary(using: .random)
             
             if value
             {
@@ -51,11 +50,10 @@ internal final class BoolArbitraryTests: XCTestCase
     
     func testArbitraryDeterminism() throws
     {
-        let context1    = GenerationContext(seed: 40, size: 50)
-        let context2    = GenerationContext(seed: 40, size: 50)
-        
         for _ in 0..<1000
         {
+            let (context1, context2) = GenerationContext.sameRandomContexts
+            
             XCTAssertEqual(
                 Bool.arbitrary(using: context1),
                 Bool.arbitrary(using: context2)

@@ -18,11 +18,10 @@ internal final class ResultArbitraryTests: XCTestCase
     
     func testArbitraryDeterminism() throws
     {
-        let context1    = GenerationContext(seed: 40, size: 50)
-        let context2    = GenerationContext(seed: 40, size: 50)
-        
         for _ in 0..<1000
         {
+            let (context1, context2) = GenerationContext.sameRandomContexts
+            
             XCTAssertEqual(
                 TestResult.arbitrary(using: context1),
                 TestResult.arbitrary(using: context2)
@@ -34,13 +33,12 @@ internal final class ResultArbitraryTests: XCTestCase
     
     func testArbitraryProducesBothCases() throws
     {
-        let context     : GenerationContext     = .init(seed: 50, size: 50)
-        var hasSuccess  : Bool                  = false
-        var hasFailure  : Bool                  = false
+        var hasSuccess  : Bool  = false
+        var hasFailure  : Bool  = false
         
         for _ in 0..<1000
         {
-            let value = TestResult.arbitrary(using: context)
+            let value = TestResult.arbitrary(using: .random)
             
             switch value
             {
@@ -64,13 +62,12 @@ internal final class ResultArbitraryTests: XCTestCase
     
     func testArbitraryCaseRatio() throws
     {
-        let context         : GenerationContext     = .init(seed: 50, size: 50)
-        var successCount    : Int                   = 0
-        let iterations      : Int                   = 10_000
+        var successCount    : Int   = 0
+        let iterations      : Int   = 10_000
         
         for _ in 0..<iterations
         {
-            let value = TestResult.arbitrary(using: context)
+            let value = TestResult.arbitrary(using: .random)
             
             if case .success = value
             {
@@ -88,11 +85,15 @@ internal final class ResultArbitraryTests: XCTestCase
     
     func testArbitrarySuccessValuesRespectSizeBounds() throws
     {
-        let size    : Int                   = 10
-        let context : GenerationContext     = .init(seed: 50, size: size)
+        let size: Int = 10
         
         for _ in 0..<1000
         {
+            let context = GenerationContext(
+                seed:   GenerationContext.randomSeed,
+                size:   size
+            )
+            
             let value = TestResult.arbitrary(using: context)
             
             guard case let .success(n) = value
@@ -110,11 +111,15 @@ internal final class ResultArbitraryTests: XCTestCase
     
     func testArbitraryFailureValuesRespectSizeBounds() throws
     {
-        let size    : Int                   = 10
-        let context : GenerationContext     = .init(seed: 50, size: size)
+        let size: Int = 10
         
         for _ in 0..<1000
         {
+            let context = GenerationContext(
+                seed:   GenerationContext.randomSeed,
+                size:   size
+            )
+            
             let value = TestResult.arbitrary(using: context)
             
             guard case let .failure(error) = value
@@ -132,11 +137,9 @@ internal final class ResultArbitraryTests: XCTestCase
     
     func testArbitrarySizeZeroProducesZeroAssociatedValues() throws
     {
-        let context = GenerationContext(seed: 50, size: 0)
-        
         for _ in 0..<1000
         {
-            let value = TestResult.arbitrary(using: context)
+            let value = TestResult.arbitrary(using: .randomZeroSize)
             
             switch value
             {

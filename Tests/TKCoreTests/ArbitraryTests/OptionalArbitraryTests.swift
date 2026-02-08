@@ -18,11 +18,10 @@ internal final class OptionalArbitraryTests: XCTestCase
     
     func testArbitraryDeterminism() throws
     {
-        let context1    = GenerationContext(seed: 40, size: 50)
-        let context2    = GenerationContext(seed: 40, size: 50)
-        
         for _ in 0..<1000
         {
+            let (context1, context2) = GenerationContext.sameRandomContexts
+            
             XCTAssertEqual(
                 Optional<Int>.arbitrary(using: context1),
                 Optional<Int>.arbitrary(using: context2)
@@ -34,13 +33,12 @@ internal final class OptionalArbitraryTests: XCTestCase
     
     func testArbitraryProducesBothNilAndNonNil() throws
     {
-        let context     : GenerationContext     = .init(seed: 50, size: 50)
-        var hasNil      : Bool                  = false
-        var hasNonNil   : Bool                  = false
+        var hasNil      : Bool  = false
+        var hasNonNil   : Bool  = false
         
         for _ in 0..<1000
         {
-            let value = Optional<Int>.arbitrary(using: context)
+            let value = Optional<Int>.arbitrary(using: .random)
             
             if value == nil
             {
@@ -67,13 +65,12 @@ internal final class OptionalArbitraryTests: XCTestCase
     
     func testArbitraryNilRatio() throws
     {
-        let context     : GenerationContext     = .init(seed: 50, size: 50)
-        var nilCount    : Int                   = 0
-        let iterations  : Int                   = 10_000
+        var nilCount    : Int   = 0
+        let iterations  : Int   = 10_000
         
         for _ in 0..<iterations
         {
-            let value = Optional<Int>.arbitrary(using: context)
+            let value = Optional<Int>.arbitrary(using: .random)
             
             if value == nil
             {
@@ -91,11 +88,15 @@ internal final class OptionalArbitraryTests: XCTestCase
     
     func testArbitraryNonNilValuesRespectSizeBounds() throws
     {
-        let size    : Int                   = 10
-        let context : GenerationContext     = .init(seed: 50, size: size)
+        let size: Int = 10
         
         for _ in 0..<1000
         {
+            let context = GenerationContext(
+                seed:   GenerationContext.randomSeed,
+                size:   size
+            )
+            
             let value = Optional<Int>.arbitrary(using: context)
             
             guard let unwrapped: Int = value
@@ -113,11 +114,9 @@ internal final class OptionalArbitraryTests: XCTestCase
     
     func testArbitrarySizeZeroProducesZeroOrNil() throws
     {
-        let context = GenerationContext(seed: 50, size: 0)
-        
         for _ in 0..<1000
         {
-            let value = Optional<Int>.arbitrary(using: context)
+            let value = Optional<Int>.arbitrary(using: .randomZeroSize)
             
             if let unwrapped: Int = value
             {
@@ -130,14 +129,13 @@ internal final class OptionalArbitraryTests: XCTestCase
     
     func testNestedOptionalGenerationProducesAllCases() throws
     {
-        let context     : GenerationContext     = .init(seed: 50, size: 50)
-        var hasOuterNil : Bool                  = false
-        var hasInnerNil : Bool                  = false
-        var hasValue    : Bool                  = false
+        var hasOuterNil : Bool  = false
+        var hasInnerNil : Bool  = false
+        var hasValue    : Bool  = false
         
         for _ in 0..<10_000
         {
-            let value = Optional<Optional<Int>>.arbitrary(using: context)
+            let value = Optional<Optional<Int>>.arbitrary(using: .random)
             
             switch value
             {

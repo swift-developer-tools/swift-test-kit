@@ -39,11 +39,10 @@ internal final class CollectionArbitraryTests: XCTestCase
     
     func testCollectionOfOneGenerationDeterminism() throws
     {
-        let context1    = GenerationContext(seed: 40, size: 50)
-        let context2    = GenerationContext(seed: 40, size: 50)
-        
         for _ in 0..<1000
         {
+            let (context1, context2) = GenerationContext.sameRandomContexts
+            
             let first   = CollectionOfOne<Int>.arbitrary(using: context1)
             let second  = CollectionOfOne<Int>.arbitrary(using: context2)
             
@@ -55,11 +54,9 @@ internal final class CollectionArbitraryTests: XCTestCase
     
     func testCollectionOfOneGenerationSizeZeroProducesZeroElement() throws
     {
-        let context = GenerationContext(seed: 50, size: 0)
-        
         for _ in 0..<1000
         {
-            let value = CollectionOfOne<Int>.arbitrary(using: context)
+            let value = CollectionOfOne<Int>.arbitrary(using: .randomZeroSize)
             
             XCTAssertEqual(value[value.startIndex], 0)
         }
@@ -713,11 +710,10 @@ private extension CollectionArbitraryTests
         of type: T.Type
     ) where T : Arbitrary & Collection & Equatable
     {
-        let context1    = GenerationContext(seed: 40, size: 50)
-        let context2    = GenerationContext(seed: 40, size: 50)
-        
         for _ in 0..<1000
         {
+            let (context1, context2) = GenerationContext.sameRandomContexts
+            
             XCTAssertEqual(
                 T.arbitrary(using: context1),
                 T.arbitrary(using: context2)
@@ -733,11 +729,9 @@ private extension CollectionArbitraryTests
         for type: T.Type
     ) where T : Arbitrary & Collection
     {
-        let context = GenerationContext(seed: 50, size: 0)
-        
         for _ in 0..<1000
         {
-            let value = T.arbitrary(using: context)
+            let value = T.arbitrary(using: .randomZeroSize)
             
             XCTAssertTrue(value.isEmpty)
         }
@@ -751,11 +745,15 @@ private extension CollectionArbitraryTests
         for type: T.Type
     ) where T : Arbitrary & Collection
     {
-        let size    : Int                   = 10
-        let context : GenerationContext     = .init(seed: 50, size: size)
+        let size: Int = 10
         
         for _ in 0..<1000
         {
+            let context = GenerationContext(
+                seed:   GenerationContext.randomSeed,
+                size:   size
+            )
+            
             let value = T.arbitrary(using: context)
             
             XCTAssertLessThanOrEqual(value.count, size)
@@ -771,13 +769,12 @@ private extension CollectionArbitraryTests
         for type: T.Type
     ) where T : Arbitrary & Collection
     {
-        let context     : GenerationContext     = .init(seed: 50, size: 10)
-        var hasEmpty    : Bool                  = false
-        var hasNonEmpty : Bool                  = false
+        var hasEmpty    : Bool  = false
+        var hasNonEmpty : Bool  = false
         
         for _ in 0..<1000
         {
-            let value = T.arbitrary(using: context)
+            let value = T.arbitrary(using: .random)
             
             if value.isEmpty
             {
@@ -809,12 +806,16 @@ private extension CollectionArbitraryTests
         for type: T.Type
     ) where T : Arbitrary & Collection
     {
-        let size    : Int                   = 20
-        let context : GenerationContext     = .init(seed: 50, size: size)
-        var counts  : Set<Int>              = []
+        let size    : Int       = 20
+        var counts  : Set<Int>  = []
         
         for _ in 0..<1000
         {
+            let context = GenerationContext(
+                seed:   GenerationContext.randomSeed,
+                size:   size
+            )
+            
             let value = T.arbitrary(using: context)
             
             counts.insert(value.count)

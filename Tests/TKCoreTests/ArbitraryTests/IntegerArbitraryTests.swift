@@ -187,11 +187,10 @@ private extension IntegerArbitraryTests
         of type: T.Type
     ) where T : Arbitrary & FixedWidthInteger
     {
-        let context1    = GenerationContext(seed: 40, size: 50)
-        let context2    = GenerationContext(seed: 40, size: 50)
-        
         for _ in 0..<1000
         {
+            let (context1, context2) = GenerationContext.sameRandomContexts
+            
             XCTAssertEqual(
                 T.arbitrary(using: context1),
                 T.arbitrary(using: context2)
@@ -207,11 +206,9 @@ private extension IntegerArbitraryTests
         of type: T.Type
     ) where T : Arbitrary & FixedWidthInteger
     {
-        let context = GenerationContext(seed: 50, size: 0)
-        
         for _ in 0..<1000
         {
-            XCTAssertEqual(T.arbitrary(using: context), 0)
+            XCTAssertEqual(T.arbitrary(using: .randomZeroSize), 0)
         }
     }
     
@@ -224,10 +221,13 @@ private extension IntegerArbitraryTests
         of type: T.Type
     ) where T : Arbitrary & FixedWidthInteger
     {
-        let context = GenerationContext(seed: 50, size: 10)
-        
         for _ in 0..<1000
         {
+            let context = GenerationContext(
+                seed:   GenerationContext.randomSeed,
+                size:   10
+            )
+            
             let value = T.arbitrary(using: context)
             
             XCTAssertGreaterThanOrEqual(value, T.isSigned ? -10 : 0)
@@ -244,13 +244,12 @@ private extension IntegerArbitraryTests
         of type: T.Type
     ) where T : Arbitrary & FixedWidthInteger
     {
-        let context     : GenerationContext     = .init(seed: 50, size: 100)
-        var hasNegative : Bool                  = false
-        var hasPositive : Bool                  = false
+        var hasNegative : Bool  = false
+        var hasPositive : Bool  = false
         
         for _ in 0..<1000
         {
-            let value = T.arbitrary(using: context)
+            let value = T.arbitrary(using: .random)
             
             if value < 0
             {
@@ -299,13 +298,16 @@ private extension IntegerArbitraryTests
             return
         }
         
-        let context = GenerationContext(seed: 50, size: typeMax * 2)
-        
         let lowerBound  : T     = T.isSigned ? T(clamping: -typeMax) : 0
         let upperBound  : T     = T(clamping: typeMax)
         
         for _ in 0..<1000
         {
+            let context = GenerationContext(
+                seed:   GenerationContext.randomSeed,
+                size:   typeMax * 2
+            )
+            
             let value = T.arbitrary(using: context)
             
             XCTAssertGreaterThanOrEqual(value, lowerBound)

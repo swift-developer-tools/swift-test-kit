@@ -25,11 +25,9 @@ internal final class StringArbitraryTests: XCTestCase
     
     func testCharacterGenerationSizeZeroProducesASCII() throws
     {
-        let context = GenerationContext(seed: 50, size: 0)
-        
         for _ in 0..<1000
         {
-            let character = Character.arbitrary(using: context)
+            let character = Character.arbitrary(using: .randomZeroSize)
             
             let lower   = UInt32(Unicode.Scalar.asciiPrintableRange.lowerBound)
             let upper   = UInt32(Unicode.Scalar.asciiPrintableRange.upperBound)
@@ -46,12 +44,11 @@ internal final class StringArbitraryTests: XCTestCase
     
     func testCharacterGenerationProducesVariety() throws
     {
-        let context : GenerationContext     = .init(seed: 50, size: 50)
-        var unique  : Set<Character>        = []
+        var unique: Set<Character> = []
         
         for _ in 0..<1000
         {
-            let character = Character.arbitrary(using: context)
+            let character = Character.arbitrary(using: .random)
             
             unique.insert(character)
         }
@@ -74,11 +71,9 @@ internal final class StringArbitraryTests: XCTestCase
     
     func testScalarGenerationSizeZeroProducesASCII() throws
     {
-        let context = GenerationContext(seed: 50, size: 0)
-        
         for _ in 0..<1000
         {
-            let scalar  = Unicode.Scalar.arbitrary(using: context)
+            let scalar  = Unicode.Scalar.arbitrary(using: .randomZeroSize)
             let lower   = UInt32(Unicode.Scalar.asciiPrintableRange.lowerBound)
             let upper   = UInt32(Unicode.Scalar.asciiPrintableRange.upperBound)
             
@@ -91,11 +86,9 @@ internal final class StringArbitraryTests: XCTestCase
     
     func testScalarGenerationValuesInExpectedRange() throws
     {
-        let context = GenerationContext(seed: 50, size: 100)
-        
         for _ in 0..<1000
         {
-            let scalar = Unicode.Scalar.arbitrary(using: context)
+            let scalar = Unicode.Scalar.arbitrary(using: .random)
             
             XCTAssertTrue(isInExpectedRange(scalar))
         }
@@ -103,14 +96,13 @@ internal final class StringArbitraryTests: XCTestCase
     
     
     
-    func testScalarGenerationProducesUnicodeAtHighSize() throws
+    func testScalarGenerationProducesUnicode() throws
     {
-        let context     : GenerationContext     = .init(seed: 50, size: 1000)
-        var hasUnicode  : Bool                  = false
+        var hasUnicode: Bool = false
         
         for _ in 0..<1000
         {
-            let scalar = Unicode.Scalar.arbitrary(using: context)
+            let scalar = Unicode.Scalar.arbitrary(using: .random)
             
             if scalar.value > Unicode.Scalar.asciiPrintableRange.upperBound
             {
@@ -126,12 +118,11 @@ internal final class StringArbitraryTests: XCTestCase
     
     func testScalarGenerationProducesVariety() throws
     {
-        let context : GenerationContext     = .init(seed: 50, size: 50)
-        var unique  : Set<UInt32>           = []
+        var unique: Set<UInt32> = []
         
         for _ in 0..<1000
         {
-            let scalar = Unicode.Scalar.arbitrary(using: context)
+            let scalar = Unicode.Scalar.arbitrary(using: .random)
             
             unique.insert(scalar.value)
         }
@@ -154,11 +145,9 @@ internal final class StringArbitraryTests: XCTestCase
     
     func testStringGenerationSizeZeroProducesEmpty() throws
     {
-        let context = GenerationContext(seed: 50, size: 0)
-        
         for _ in 0..<1000
         {
-            XCTAssertEqual(String.arbitrary(using: context), "")
+            XCTAssertEqual(String.arbitrary(using: .randomZeroSize), "")
         }
     }
     
@@ -166,11 +155,15 @@ internal final class StringArbitraryTests: XCTestCase
     
     func testStringGenerationLengthRespectsSizeBounds() throws
     {
-        let size    : Int                   = 10
-        let context : GenerationContext     = .init(seed: 50, size: size)
+        let size: Int = 10
         
         for _ in 0..<1000
         {
+            let context = GenerationContext(
+                seed:   GenerationContext.randomSeed,
+                size:   size
+            )
+            
             let string = String.arbitrary(using: context)
             
             XCTAssertLessThanOrEqual(string.count, size)
@@ -181,13 +174,12 @@ internal final class StringArbitraryTests: XCTestCase
     
     func testStringGenerationProducesEmptyAndNonEmpty() throws
     {
-        let context     : GenerationContext     = .init(seed: 50, size: 10)
-        var hasEmpty    : Bool                  = false
-        var hasNonEmpty : Bool                  = false
+        var hasEmpty    : Bool  = false
+        var hasNonEmpty : Bool  = false
         
         for _ in 0..<1000
         {
-            let string = String.arbitrary(using: context)
+            let string = String.arbitrary(using: .random)
             
             if string.isEmpty
             {
@@ -214,18 +206,22 @@ internal final class StringArbitraryTests: XCTestCase
     
     func testStringGenerationProducesVariousCounts() throws
     {
-        let size    : Int                   = 20
-        let context : GenerationContext     = .init(seed: 50, size: size)
-        var counts  : Set<Int>              = []
+        let size    : Int       = 20
+        var counts  : Set<Int>  = []
         
         for _ in 0..<1000
         {
+            let context = GenerationContext(
+                seed:   GenerationContext.randomSeed,
+                size:   size
+            )
+            
             let string = String.arbitrary(using: context)
             
             counts.insert(string.count)
         }
         
-        XCTAssertGreaterThan(counts.count, 10)
+        XCTAssertGreaterThan(counts.count, size / 2)
     }
     
     
@@ -241,11 +237,9 @@ internal final class StringArbitraryTests: XCTestCase
     
     func testSubstringGenerationSizeZeroProducesEmpty() throws
     {
-        let context = GenerationContext(seed: 50, size: 0)
-        
         for _ in 0..<1000
         {
-            XCTAssertEqual(Substring.arbitrary(using: context), "")
+            XCTAssertEqual(Substring.arbitrary(using: .randomZeroSize), "")
         }
     }
     
@@ -253,11 +247,10 @@ internal final class StringArbitraryTests: XCTestCase
     
     func testSubstringGenerationMatchesStringContent() throws
     {
-        let context1    = GenerationContext(seed: 50, size: 50)
-        let context2    = GenerationContext(seed: 50, size: 50)
-        
         for _ in 0..<1000
         {
+            let (context1, context2) = GenerationContext.sameRandomContexts
+            
             let string      = String.arbitrary(using: context1)
             let substring   = Substring.arbitrary(using: context2)
             
@@ -395,19 +388,15 @@ private extension StringArbitraryTests
 {
     /// Validates that arbitrary value generation of the given type is
     /// deterministic.
-    /// - Parameters:
-    ///   - type: The type to evaluate.
-    ///   - size: The generation size.
+    /// - Parameter type: The type to evaluate.
     func validateDeterminism<T>(
-        of type : T.Type,
-        size    : Int       = 50
+        of type: T.Type
     ) where T : Arbitrary & Equatable
     {
-        let context1    = GenerationContext(seed: 40, size: size)
-        let context2    = GenerationContext(seed: 40, size: size)
-        
         for _ in 0..<1000
         {
+            let (context1, context2) = GenerationContext.sameRandomContexts
+            
             XCTAssertEqual(
                 T.arbitrary(using: context1),
                 T.arbitrary(using: context2)

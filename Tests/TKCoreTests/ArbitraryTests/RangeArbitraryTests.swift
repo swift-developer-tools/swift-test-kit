@@ -369,11 +369,10 @@ private extension RangeArbitraryTests
     ) where R : Arbitrary & ArbitraryRange & Equatable,
             R.Bound : Arbitrary & FixedWidthInteger
     {
-        let context1    = GenerationContext(seed: 40, size: 50)
-        let context2    = GenerationContext(seed: 40, size: 50)
-        
         for _ in 0..<1000
         {
+            let (context1, context2) = GenerationContext.sameRandomContexts
+            
             XCTAssertEqual(
                 R.arbitrary(using: context1),
                 R.arbitrary(using: context2)
@@ -390,11 +389,9 @@ private extension RangeArbitraryTests
     ) where R : Arbitrary & ArbitraryRange & Equatable,
             R.Bound : Arbitrary & FixedWidthInteger
     {
-        let context = GenerationContext(seed: 50, size: 0)
-        
         for _ in 0..<1000
         {
-            let range = R.arbitrary(using: context)
+            let range = R.arbitrary(using: .randomZeroSize)
             
             XCTAssertEqual(range.lowerBound, 0)
             XCTAssertEqual(range.upperBound, 0)
@@ -411,12 +408,16 @@ private extension RangeArbitraryTests
     ) where R : Arbitrary & ArbitraryRange & Equatable,
             R.Bound : Arbitrary & FixedWidthInteger
     {
-        let size    : Int                   = 10
-        let context : GenerationContext     = .init(seed: 50, size: size)
-        let bound   : R.Bound               = R.Bound(clamping: size)
+        let size    : Int       = 10
+        let bound   : R.Bound   = R.Bound(clamping: size)
         
         for _ in 0..<1000
         {
+            let context = GenerationContext(
+                seed:   GenerationContext.randomSeed,
+                size:   size
+            )
+            
             let range = R.arbitrary(using: context)
             
             if R.Bound.isSigned
@@ -441,11 +442,9 @@ private extension RangeArbitraryTests
     ) where R : Arbitrary & ArbitraryRange & Equatable,
             R.Bound : Arbitrary & FixedWidthInteger
     {
-        let context = GenerationContext(seed: 50, size: 100)
-        
         for _ in 0..<1000
         {
-            let range = R.arbitrary(using: context)
+            let range = R.arbitrary(using: .random)
             
             XCTAssertLessThanOrEqual(range.lowerBound, range.upperBound)
         }
@@ -461,14 +460,12 @@ private extension RangeArbitraryTests
     ) where R : Arbitrary & ArbitraryRange & Equatable,
             R.Bound : Arbitrary & FixedWidthInteger
     {
-        let context = GenerationContext(seed: 50, size: 100)
-        
         var hasNegativeLower    : Bool  = false
         var hasPositiveUpper    : Bool  = false
         
         for _ in 0..<1000
         {
-            let range = R.arbitrary(using: context)
+            let range = R.arbitrary(using: .random)
             
             if range.lowerBound < 0
             {
@@ -518,8 +515,6 @@ private extension RangeArbitraryTests
             return
         }
         
-        let context = GenerationContext(seed: 50, size: typeMax * 2)
-        
         let lowerBound: R.Bound = R.Bound.isSigned
             ? R.Bound(clamping: -typeMax)
             : 0
@@ -528,6 +523,11 @@ private extension RangeArbitraryTests
         
         for _ in 0..<1000
         {
+            let context = GenerationContext(
+                seed:   GenerationContext.randomSeed,
+                size:   typeMax * 2
+            )
+            
             let range = R.arbitrary(using: context)
             
             XCTAssertGreaterThanOrEqual(range.lowerBound, lowerBound)

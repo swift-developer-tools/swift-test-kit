@@ -91,11 +91,10 @@ private extension FloatingArbitraryTests
         of type: T.Type
     ) where T : Arbitrary & BinaryFloatingPoint
     {
-        let context1    = GenerationContext(seed: 40, size: 50)
-        let context2    = GenerationContext(seed: 40, size: 50)
-        
         for _ in 0..<1000
         {
+            let (context1, context2) = GenerationContext.sameRandomContexts
+            
             let value1  = T.arbitrary(using: context1)
             let value2  = T.arbitrary(using: context2)
             
@@ -119,11 +118,9 @@ private extension FloatingArbitraryTests
         of type: T.Type
     ) where T : Arbitrary & BinaryFloatingPoint
     {
-        let context = GenerationContext(seed: 50, size: 0)
-        
         for _ in 0..<1000
         {
-            let value = T.arbitrary(using: context)
+            let value = T.arbitrary(using: .randomZeroSize)
             
             guard
                 !value.isNaN,
@@ -148,12 +145,16 @@ private extension FloatingArbitraryTests
         of type: T.Type
     ) where T : Arbitrary & BinaryFloatingPoint
     {
-        let size    : Int                   = 10
-        let context : GenerationContext     = .init(seed: 50, size: size)
-        let bound   : T                     = T(size) + 1
+        let size    : Int   = 10
+        let bound   : T     = T(size) + 1
         
         for _ in 0..<1000
         {
+            let context = GenerationContext(
+                seed:   GenerationContext.randomSeed,
+                size:   size
+            )
+            
             let value = T.arbitrary(using: context)
             
             guard
@@ -181,13 +182,12 @@ private extension FloatingArbitraryTests
         of type: T.Type
     ) where T : Arbitrary & BinaryFloatingPoint
     {
-        let context     : GenerationContext     = .init(seed: 50, size: 100)
-        var hasNegative : Bool                  = false
-        var hasPositive : Bool                  = false
+        var hasNegative : Bool  = false
+        var hasPositive : Bool  = false
         
         for _ in 0..<1000
         {
-            let value = T.arbitrary(using: context)
+            let value = T.arbitrary(using: .random)
             
             if value < 0
             {
@@ -226,13 +226,17 @@ private extension FloatingArbitraryTests
             return
         }
         
-        let typeMax     = Int(T.greatestFiniteMagnitude)
-        let context     = GenerationContext(seed: 50, size: typeMax * 2)
+        let typeMax = Int(T.greatestFiniteMagnitude)
         
         var hasLargeValue: Bool = false
         
         for _ in 0..<1000
         {
+            let context = GenerationContext(
+                seed:   GenerationContext.randomSeed,
+                size:   typeMax * 2
+            )
+            
             let value = T.arbitrary(using: context)
             
             guard
@@ -263,14 +267,13 @@ private extension FloatingArbitraryTests
         of type: T.Type
     ) where T : Arbitrary & BinaryFloatingPoint
     {
-        let context         : GenerationContext     = .init(seed: 50, size: 50)
-        var hasNaN          : Bool                  = false
-        var hasInfinity     : Bool                  = false
-        var hasNegativeZero : Bool                  = false
+        var hasNaN          : Bool  = false
+        var hasInfinity     : Bool  = false
+        var hasNegativeZero : Bool  = false
         
         for _ in 0..<1000
         {
-            let value = T.arbitrary(using: context)
+            let value = T.arbitrary(using: .random)
             
             if value.isNaN
             {
@@ -312,12 +315,11 @@ private extension FloatingArbitraryTests
         of type: T.Type
     ) where T : Arbitrary & BinaryFloatingPoint
     {
-        let context         : GenerationContext     = .init(seed: 50, size: 50)
-        var hasFractional   : Bool                  = false
+        var hasFractional: Bool = false
         
         for _ in 0..<1000
         {
-            let value = T.arbitrary(using: context)
+            let value = T.arbitrary(using: .random)
             
             guard
                 !value.isNaN,
