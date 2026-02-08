@@ -52,6 +52,13 @@ public typealias TKPropertyOptions  = TestKitBase.TKPropertyOptions
 /// for the complete API reference.
 public typealias Arbitrary          = TestKitBase.Arbitrary
 
+/// A custom generator for producing values of a specific type.
+///
+/// - Note: See
+/// [`Generator`](https://swift-developer-tools.github.io/swift-test-kit/documentation/testkitbase/generator)
+/// for the complete API reference.
+public typealias Generator          = TestKitBase.Generator
+
 /// The options for property-based testing.
 ///
 /// - Note: See
