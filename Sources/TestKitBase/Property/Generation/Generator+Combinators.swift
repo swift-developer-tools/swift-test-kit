@@ -234,32 +234,17 @@ extension Generator
             "weighted must not be empty"
         )
         
-        precondition(
-            weighted.allSatisfy { $0.0 > 0 },
-            "All weights must be positive"
-        )
-        
-        let total: Int = weighted.reduce(0) { $0 + $1.0 }
-        
         return Generator<V>(
             generate:
             {
                 context in
                 
-                var remaining: Int = context.random(in: 1...total)
+                let result: (Int, Generator<V>) = context.randomElement(
+                    of:             weighted,
+                    weightedBy:     { $0.0 }
+                )!
                 
-                for (weight, generator) in weighted
-                {
-                    remaining -= weight
-                    
-                    if remaining <= 0
-                    {
-                        return generator.generate(context)
-                    }
-                }
-                
-                /// This should be unreachable given valid weights.
-                return weighted.last!.1.generate(context)
+                return result.1.generate(context)
             },
             shrink: { _ in return [] }
         )
