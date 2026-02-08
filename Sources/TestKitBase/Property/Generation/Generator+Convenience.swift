@@ -308,15 +308,19 @@ extension Generator where V == Character
     /// - Returns: A generator that produces alphanumeric characters.
     public static func alphanumeric() -> Generator<Character>
     {
-        let characters: String
-            = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
-        
         return Generator<Character>(
             generate:
             {
                 context in
                 
-                return context.randomElement(of: characters)!
+                let range: ClosedRange<Int> = context.randomElement(
+                    of:             Unicode.Scalar.alphanumericRanges,
+                    weightedBy:     { $0.count }
+                )!
+                
+                let value = UInt32(context.random(in: range))
+                
+                return Character(Unicode.Scalar(value)!)
             },
             shrink:
             {

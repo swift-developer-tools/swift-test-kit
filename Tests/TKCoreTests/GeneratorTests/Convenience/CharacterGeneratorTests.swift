@@ -149,15 +149,20 @@ internal final class CharacterGeneratorTests: XCTestCase
     
     func testAlphanumericProduction() throws
     {
-        let characters: String
-            = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
+        let ranges: [ClosedRange<Int>] = Unicode.Scalar.alphanumericRanges
         
         for _ in 0..<1000
         {
             let character: Character
                 = Generator.alphanumeric().generate(.random)
             
-            XCTAssertTrue(characters.contains(character))
+            let scalars: Character.UnicodeScalarView = character.unicodeScalars
+            
+            XCTAssertEqual(scalars.count, 1)
+            
+            let value = Int(scalars.first!.value)
+            
+            XCTAssertTrue(ranges.contains { $0.contains(value) })
         }
     }
     
