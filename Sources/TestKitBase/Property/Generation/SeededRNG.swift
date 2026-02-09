@@ -11,7 +11,7 @@
 internal struct SeededRNG: RandomNumberGenerator
 {
     /// The seed used to initialize the random number generator.
-    public let seed     : UInt64
+    internal let seed   : UInt64
     
     /// The current state.
     private var state   : UInt64
@@ -19,7 +19,7 @@ internal struct SeededRNG: RandomNumberGenerator
     
     
     /// Initializes a ``SeededRNG`` instance from the given seed.
-    public init(
+    internal init(
         seed: UInt64
     )
     {
@@ -34,7 +34,7 @@ internal struct SeededRNG: RandomNumberGenerator
     /// This uses the SplitMix64 algorithm (Sebastiano Vigna, 2015).
     ///
     /// - Returns: The next random value.
-    public mutating func next() -> UInt64
+    internal mutating func next() -> UInt64
     {
         state &+= 0x9e3779b97f4a7c15
         
