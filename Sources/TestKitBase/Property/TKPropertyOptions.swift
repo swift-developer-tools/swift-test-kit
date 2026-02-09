@@ -50,6 +50,10 @@ public struct TKPropertyOptions: Equatable, Sendable
     ///
     /// - Precondition: `iterations`, `maxShrinkSteps`, `maxSize`, and
     /// `maxDiscardRatio` must all be non-negative.
+    ///
+    /// - Warning: Very large `maxSize` values can cause significant memory
+    /// pressure, especially for collection types, which generate up to
+    /// `maxSize` elements per iteration.
     public init(
         iterations      : Int       = 100,
         maxShrinkSteps  : Int       = 100,
