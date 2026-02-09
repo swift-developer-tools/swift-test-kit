@@ -47,6 +47,9 @@ public struct TKPropertyOptions: Equatable, Sendable
     
     /// Initializes a ``TKPropertyOptions`` instance, optionally specifying
     /// values for its properties.
+    ///
+    /// - Precondition: `iterations`, `maxShrinkSteps`, `maxSize`, and
+    /// `maxDiscardRatio` must all be non-negative.
     public init(
         iterations      : Int       = 100,
         maxShrinkSteps  : Int       = 100,
@@ -55,6 +58,26 @@ public struct TKPropertyOptions: Equatable, Sendable
         seed            : UInt64?   = nil
     )
     {
+        precondition(
+            iterations >= 0,
+            "iterations must be non-negative"
+        )
+        
+        precondition(
+            maxShrinkSteps >= 0,
+            "maxShrinkSteps must be non-negative"
+        )
+        
+        precondition(
+            maxSize >= 0,
+            "maxSize must be non-negative"
+        )
+        
+        precondition(
+            maxDiscardRatio >= 0,
+            "maxDiscardRatio must be non-negative"
+        )
+        
         self.iterations         = iterations
         self.maxShrinkSteps     = maxShrinkSteps
         self.maxSize            = maxSize
