@@ -87,10 +87,10 @@
 public struct Generator<V>
 {
     /// Generates a value from the given context.
-    internal let generate   : (GenerationContext) -> V
+    package let generate    : (GenerationContext) -> V
     
     /// Shrinks the given value.
-    internal let shrink     : (V) -> [V]
+    package let shrink      : (V) -> [V]
     
     
     
