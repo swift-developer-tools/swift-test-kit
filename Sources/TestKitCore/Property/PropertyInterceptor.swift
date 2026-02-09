@@ -22,12 +22,10 @@ public final class PropertyInterceptor: Sendable
 {
     /// The current interceptor, if running inside a property evaluator.
     @TaskLocal
-    public static var current: PropertyInterceptor?
-    
-    
+    public static var current   : PropertyInterceptor?
     
     /// The current interceptor state.
-    private let state: Mutex<[InterceptedFailure]>
+    private let state           : Mutex<[InterceptedFailure]>
     
     
     
@@ -91,7 +89,7 @@ public final class PropertyInterceptor: Sendable
 // MARK: - InterceptedFailure
 
 /// A failure intercepted during property evaluation.
-public struct InterceptedFailure: Sendable
+public struct InterceptedFailure: Equatable, Sendable
 {
     /// The failure message.
     public let message  : String
@@ -101,4 +99,16 @@ public struct InterceptedFailure: Sendable
     
     /// The line where the failure occurred.
     public let line     : UInt
+    
+    
+    
+    public static func == (
+        lhs: InterceptedFailure,
+        rhs: InterceptedFailure
+    ) -> Bool
+    {
+        return lhs.message == rhs.message
+            && lhs.file.description == rhs.file.description
+            && lhs.line == rhs.line
+    }
 }
