@@ -200,7 +200,7 @@ public struct BooleanExprWalker
             
                     XCTFail(
                         text,
-                        file:   #file,
+                        file:   #filePath,
                         line:   #line
                     )
                 }
