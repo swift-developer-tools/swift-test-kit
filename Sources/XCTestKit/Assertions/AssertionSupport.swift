@@ -57,6 +57,7 @@ internal func evaluateExpr<T>(
         else
         {
             assertionKind.fail(
+                context:        failureContext,
                 captureKind:    captureKind,
                 reason:         "threw error \(quote(error))",
                 message:        message,
@@ -105,6 +106,7 @@ internal func evaluateCollection<C>(
     catch
     {
         assertionKind.fail(
+            context:        failureContext,
             captureKind:    captureKind,
             reason:         "threw error \(quote(error))",
             message:        message,

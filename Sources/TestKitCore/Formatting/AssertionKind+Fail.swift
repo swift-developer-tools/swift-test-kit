@@ -7,54 +7,21 @@
 //
 //===----------------------------------------------------------------------===//
 
-import TestKitCore
-import XCTest
-
-
-
-// MARK: - Failure context
-
-/// The XCTestKit assertion failure context.
-internal let failureContext = FailureContext(
-    framework: .xctk,
-    emit:
-    {
-        message, file, line in
-        
-        if let interceptor = PropertyInterceptor.current
-        {
-            interceptor.record(
-                message:    message,
-                file:       file,
-                line:       line
-            )
-        }
-        else
-        {
-            XCTFail(
-                message,
-                file:   file,
-                line:   line
-            )
-        }
-    }
-)
-
-
-
 /// Methods for failing assertions.
-internal extension AssertionKind
+package extension AssertionKind
 {
     // MARK: - Reason
     
     /// Reports a reason-based assertion failure.
     /// - Parameters:
+    ///   - context: The assertion failure context.
     ///   - captureKind: The kind of captured assertion expression.
     ///   - reason: The optional failure reason.
     ///   - message: The description of a failure.
     ///   - file: The file where the failure occurs.
     ///   - line: The line where the failure occurs.
     func fail(
+        context     : FailureContext,
         captureKind : ExprCaptureKind,
         reason      : String?,
         message     : () -> String?,
@@ -63,16 +30,16 @@ internal extension AssertionKind
     )
     {
         let text: String = makeReasonFailure(
-            context:        failureContext,
+            context:        context,
             captureKind:    captureKind,
             reason:         reason,
             message:        message
         )
         
-        XCTFail(
+        context.emit(
             text,
-            file: file,
-            line: line
+            file,
+            line
         )
     }
     
@@ -82,6 +49,7 @@ internal extension AssertionKind
     
     /// Reports a diff-based assertion failure.
     /// - Parameters:
+    ///   - context: The assertion failure context.
     ///   - captureKind: The kind of captured assertion expression.
     ///   - diff: The computed diff.
     ///   - message: The description of a failure.
@@ -89,6 +57,7 @@ internal extension AssertionKind
     ///   - line: The line where the failure occurs.
     ///   - options: The options for testing.
     func fail(
+        context     : FailureContext,
         captureKind : ExprCaptureKind,
         diff        : DiffNode,
         message     : () -> String?,
@@ -98,17 +67,17 @@ internal extension AssertionKind
     )
     {
         let result: Result<String, UnhandledError> = makeDiffFailure(
-            context:        failureContext,
+            context:        context,
             captureKind:    captureKind,
             diff:           diff,
             message:        message,
             options:        options
         )
         
-        XCTFail(
+        context.emit(
             getFailureMessage(from: result),
-            file: file,
-            line: line
+            file,
+            line
         )
     }
     
@@ -118,6 +87,7 @@ internal extension AssertionKind
     
     /// Reports a single-expression-based assertion failure.
     /// - Parameters:
+    ///   - context: The assertion failure context.
     ///   - captureKind: The kind of captured assertion expression.
     ///   - actual: The string representation of the actual value, or `nil`
     ///   to omit.
@@ -125,6 +95,7 @@ internal extension AssertionKind
     ///   - file: The file where the failure occurs.
     ///   - line: The line where the failure occurs.
     func fail(
+        context     : FailureContext,
         captureKind : ExprCaptureKind,
         actual      : String?,
         message     : () -> String?,
@@ -133,16 +104,16 @@ internal extension AssertionKind
     )
     {
         let result: Result<String, UnhandledError> = makeSingleExprFailure(
-            context:        failureContext,
+            context:        context,
             captureKind:    captureKind,
             actual:         actual,
             message:        message
         )
         
-        XCTFail(
+        context.emit(
             getFailureMessage(from: result),
-            file: file,
-            line: line
+            file,
+            line
         )
     }
     
@@ -152,6 +123,7 @@ internal extension AssertionKind
     
     /// Reports a boolean-expression-based macro assertion failure.
     /// - Parameters:
+    ///   - context: The assertion failure context.
     ///   - exprText: The expression source text.
     ///   - evaluated: The evaluated boolean expressions.
     ///   - notEvaluated: The number of unevaluated boolean expressions.
@@ -160,6 +132,7 @@ internal extension AssertionKind
     ///   - line: The line where the failure occurs.
     ///   - options: The options for testing.
     func fail(
+        context         : FailureContext,
         exprText        : String,
         evaluated       : [BooleanExpr],
         notEvaluated    : Int,
@@ -170,7 +143,7 @@ internal extension AssertionKind
     )
     {
         let text: String = makeBooleanExprFailure(
-            context:        failureContext,
+            context:        context,
             exprText:       exprText,
             evaluated:      evaluated,
             notEvaluated:   notEvaluated,
@@ -178,10 +151,10 @@ internal extension AssertionKind
             options:        options
         )
         
-        XCTFail(
+        context.emit(
             text,
-            file: file,
-            line: line
+            file,
+            line
         )
     }
     
@@ -191,6 +164,7 @@ internal extension AssertionKind
     
     /// Reports a predicate-based assertion failure.
     /// - Parameters:
+    ///   - context: The assertion failure context.
     ///   - captureKind: The kind of captured assertion expression.
     ///   - failure: Information about the failed predicate.
     ///   - message: The description of a failure.
@@ -198,6 +172,7 @@ internal extension AssertionKind
     ///   - line: The line where the failure occurs.
     ///   - options: The options for testing.
     func fail(
+        context     : FailureContext,
         captureKind : ExprCaptureKind,
         failure     : PredicateFailure,
         message     : () -> String?,
@@ -207,17 +182,17 @@ internal extension AssertionKind
     )
     {
         let text: String = makePredicateFailure(
-            context:        failureContext,
+            context:        context,
             captureKind:    captureKind,
             failure:        failure,
             message:        message,
             options:        options
         )
         
-        XCTFail(
+        context.emit(
             text,
-            file: file,
-            line: line
+            file,
+            line
         )
     }
     
