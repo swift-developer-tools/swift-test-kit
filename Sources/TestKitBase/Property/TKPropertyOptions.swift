@@ -31,8 +31,8 @@ public struct TKPropertyOptions: Equatable, Sendable
     ///
     /// The default value is `10`.
     ///
-    /// When using conditional properties, inputs that do not meet the
-    /// preconditions are discarded. If the discard count exceeds
+    /// When using conditional properties, inputs that do not satisfy the
+    /// precondition are discarded. If the discard count exceeds
     /// `maxDiscardRatio * iterations`, the test fails with an exhaustion error.
     public var maxDiscardRatio  : Int
     
