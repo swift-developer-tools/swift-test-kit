@@ -35,22 +35,6 @@ public struct DiffNode: Equatable
         self.label  = label
         self.kind   = kind
     }
-    
-    
-    
-    /// Checks whether the given nodes are equal.
-    /// - Parameters:
-    ///   - lhs: The left-hand side node to compare.
-    ///   - rhs: The right-hand side node to compare.
-    /// - Returns: Whether the given nodes are equal.
-    public static func == (
-        lhs : DiffNode,
-        rhs : DiffNode
-    ) -> Bool
-    {
-        return lhs.label == rhs.label
-            && lhs.kind == rhs.kind
-    }
 }
 
 
