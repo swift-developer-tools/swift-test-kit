@@ -19,11 +19,11 @@ package struct PropertyRunner
     /// Runs a property check using the given ``Arbitrary`` type.
     /// - Parameters:
     ///   - property: The property body.
-    ///   - options: The options for property-based testing.
+    ///   - options: The options for testing.
     /// - Returns: The result of the property check.
     package static func run<T>(
         property    : (T) throws -> Void,
-        options     : TKPropertyOptions
+        options     : TKOptions
     ) -> PropertyCheckResult<T> where T : Arbitrary
     {
         return run(
@@ -41,12 +41,12 @@ package struct PropertyRunner
     /// - Parameters:
     ///   - generator: The generator.
     ///   - property: The property body.
-    ///   - options: The options for property-based testing.
+    ///   - options: The options for testing.
     /// - Returns: The result of the property check.
     package static func run<T>(
         using generator : Generator<T>,
         property        : (T) throws -> Void,
-        options         : TKPropertyOptions
+        options         : TKOptions
     ) -> PropertyCheckResult<T>
     {
         return run(
@@ -64,12 +64,12 @@ package struct PropertyRunner
     /// - Parameters:
     ///   - precondition: The condition which generated inputs must satisfy.
     ///   - property: The property body.
-    ///   - options: The options for property-based testing.
+    ///   - options: The options for testing.
     /// - Returns: The result of the property check.
     package static func run<T>(
         where precondition  : @escaping (T) -> Bool,
         property            : (T) throws -> Void,
-        options             : TKPropertyOptions
+        options             : TKOptions
     ) -> PropertyCheckResult<T> where T : Arbitrary
     {
         return run(
@@ -88,13 +88,13 @@ package struct PropertyRunner
     ///   - generator: The generator.
     ///   - precondition: The condition which generated inputs must satisfy.
     ///   - property: The property body.
-    ///   - options: The options for property-based testing.
+    ///   - options: The options for testing.
     /// - Returns: The result of the property check.
     package static func run<T>(
         using generator     : Generator<T>,
         where precondition  : @escaping (T) -> Bool,
         property            : (T) throws -> Void,
-        options             : TKPropertyOptions
+        options             : TKOptions
     ) -> PropertyCheckResult<T>
     {
         return run(
@@ -114,23 +114,25 @@ package struct PropertyRunner
     ///   - shrink: The function to shrink the given value.
     ///   - precondition: The condition which generated inputs must satisfy.
     ///   - property: The property body.
-    ///   - options: The options for property-based testing.
+    ///   - options: The options for testing.
     /// - Returns: The result of the property check.
     private static func run<T>(
         generate            : (GenerationContext) -> T,
         shrink              : @escaping (T) -> [T],
         precondition        : ((T) -> Bool)?,
         property            : (T) throws -> Void,
-        options             : TKPropertyOptions
+        options             : TKOptions
     ) -> PropertyCheckResult<T>
     {
-        let seed: UInt64 = options.seed
+        let opts: TKPropertyOptions = options.propertyOptions
+        
+        let seed: UInt64 = opts.seed
             ?? .random(in: UInt64.min...UInt64.max)
         
         let context         : GenerationContext     = .init(seed: seed)
-        let maxSize         : Int                   = options.maxSize
-        let maxDiscardRatio : Int                   = options.maxDiscardRatio
-        let iterations      : Int                   = options.iterations
+        let maxSize         : Int                   = opts.maxSize
+        let maxDiscardRatio : Int                   = opts.maxDiscardRatio
+        let iterations      : Int                   = opts.iterations
         var iteration       : Int                   = 0
         var discarded       : Int                   = 0
         var succeeded       : Int                   = 0
@@ -234,7 +236,7 @@ package struct PropertyRunner
     ///   - seed: The seed used to initialize the random number generator.
     ///   - iteration: The iteraton at which the failing value was found.
     ///   - property: The property body.
-    ///   - options: The options for property-based testing.
+    ///   - options: The options for testing.
     /// - Returns: The minimal counterexample for the given value.
     private static func makeCounterexample<T>(
         value           : T,
@@ -243,13 +245,13 @@ package struct PropertyRunner
         seed            : UInt64,
         iteration       : Int,
         property        : (T) throws -> Void,
-        options         : TKPropertyOptions
+        options         : TKOptions
     ) -> Counterexample<T>
     {
         var current : T     = value
         var steps   : Int   = 0
         
-        while steps < options.maxShrinkSteps
+        while steps < options.propertyOptions.maxShrinkSteps
         {
             let candidates  : [T]   = shrink(current)
             var improved    : Bool  = false

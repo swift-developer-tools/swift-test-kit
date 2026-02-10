@@ -23,7 +23,7 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
         let iterations  : Int       = 50
         let seed        : UInt64    = 99
         
-        let options: TKPropertyOptions = Self.makeOptions(
+        let options: TKOptions = Self.makeOptions(
             iterations:     iterations,
             seed:           seed
         )
@@ -45,12 +45,9 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
     {
         let iterations: Int = 0
         
-        let options: TKPropertyOptions
-            = Self.makeOptions(iterations: iterations)
-        
         let result: PropertyCheckResult<BoundInt> = PropertyRunner.run(
             property:   { _ in },
-            options:    options
+            options:    Self.makeOptions(iterations: iterations)
         )
         
         let passed: PassedValues = try XCTUnwrap(Self.assertPassed(result))
@@ -80,7 +77,7 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
     {
         let iterations: Int = 1000
         
-        let options: TKPropertyOptions = Self.makeOptions(
+        let options: TKOptions = Self.makeOptions(
             iterations:     iterations,
             maxSize:        1000
         )
@@ -125,7 +122,7 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
     
     func testConditionallyFailingPropertyReturnsFailed() throws
     {
-        let options: TKPropertyOptions = Self.makeOptions(
+        let options: TKOptions = Self.makeOptions(
             iterations:     200,
             maxSize:        50
         )
@@ -283,7 +280,7 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
     {
         let target: Int = 50
         
-        let options: TKPropertyOptions = Self.makeOptions(
+        let options: TKOptions = Self.makeOptions(
             iterations:         100,
             maxSize:            100
         )
@@ -386,7 +383,7 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
     {
         let maxDiscardRatio: Int = 2
         
-        let options: TKPropertyOptions = Self.makeOptions(
+        let options: TKOptions = Self.makeOptions(
             iterations:         10,
             maxDiscardRatio:    maxDiscardRatio
         )
@@ -414,7 +411,7 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
         let maxDiscardRatio : Int   = 2
         let threshold       : Int   = maxDiscardRatio * iterations
         
-        let options: TKPropertyOptions = Self.makeOptions(
+        let options: TKOptions = Self.makeOptions(
             iterations:         iterations,
             maxDiscardRatio:    maxDiscardRatio
         )
@@ -495,7 +492,7 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
         let maxDiscardRatio : Int   = 1
         let threshold       : Int   = maxDiscardRatio * iterations
         
-        let options: TKPropertyOptions = Self.makeOptions(
+        let options: TKOptions = Self.makeOptions(
             iterations:         iterations,
             maxSize:            maxSize,
             maxDiscardRatio:    maxDiscardRatio
@@ -521,7 +518,7 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
     {
         let maxDiscardRatio: Int = 0
         
-        let options: TKPropertyOptions = Self.makeOptions(
+        let options: TKOptions = Self.makeOptions(
             iterations:         1,
             maxDiscardRatio:    maxDiscardRatio
         )
@@ -622,10 +619,10 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
     
     func testDifferentSeedsProduceDifferentSequences() throws
     {
-        var valuesA     : [Int]                 = []
-        var valuesB     : [Int]                 = []
-        let optionsA    : TKPropertyOptions     = Self.makeOptions(seed: 111)
-        let optionsB    : TKPropertyOptions     = Self.makeOptions(seed: 222)
+        var valuesA     : [Int]         = []
+        var valuesB     : [Int]         = []
+        let optionsA    : TKOptions     = Self.makeOptions(seed: 111)
+        let optionsB    : TKOptions     = Self.makeOptions(seed: 222)
         
         let resultA: PropertyCheckResult<BoundInt> = PropertyRunner.run(
             property:   { boundInt in valuesA.append(boundInt.value) },
@@ -679,7 +676,7 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
         let seed            : UInt64    = 64
         let maxDiscardRatio : Int       = 1
         
-        let options: TKPropertyOptions = Self.makeOptions(
+        let options: TKOptions = Self.makeOptions(
             iterations:         10,
             maxDiscardRatio:    maxDiscardRatio,
             seed:               seed
@@ -1390,7 +1387,7 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
         let maxDiscardRatio : Int   = 2
         let threshold       : Int   = maxDiscardRatio * iterations
         
-        let options: TKPropertyOptions = Self.makeOptions(
+        let options: TKOptions = Self.makeOptions(
             iterations:         iterations,
             maxDiscardRatio:    maxDiscardRatio
         )
@@ -1449,7 +1446,7 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
         var sizes       : [Int]     = []
         let iterations  : Int       = 50
         
-        let options: TKPropertyOptions = Self.makeOptions(
+        let options: TKOptions = Self.makeOptions(
             iterations:     iterations,
             maxSize:        100
         )
@@ -1520,7 +1517,7 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
         let iterations  : Int       = 100
         var sizes       : [Int]     = []
         
-        let options: TKPropertyOptions = Self.makeOptions(
+        let options: TKOptions = Self.makeOptions(
             iterations:     iterations,
             maxSize:        maxSize
         )
@@ -1579,7 +1576,7 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
         let iterations  : Int       = 10
         var sizes       : [Int]     = []
         
-        let options: TKPropertyOptions = Self.makeOptions(
+        let options: TKOptions = Self.makeOptions(
             iterations:     iterations,
             maxSize:        maxSize
         )
@@ -1613,7 +1610,7 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
         let iterations  : Int       = 5
         var sizes       : [Int]     = []
         
-        let options: TKPropertyOptions = Self.makeOptions(
+        let options: TKOptions = Self.makeOptions(
             iterations:     iterations,
             maxSize:        maxSize
         )
@@ -1646,7 +1643,7 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
         let iterations  : Int       = 10
         var sizes       : [Int]     = []
         
-        let options: TKPropertyOptions = Self.makeOptions(
+        let options: TKOptions = Self.makeOptions(
             iterations:         iterations,
             maxSize:            maxSize,
             maxDiscardRatio:    100
@@ -1701,7 +1698,7 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
         let iterations  : Int       = 10
         var accepted    : [Int]     = []
         
-        let options: TKPropertyOptions = Self.makeOptions(
+        let options: TKOptions = Self.makeOptions(
             iterations:         iterations,
             maxSize:            maxSize,
             maxDiscardRatio:    100
@@ -1810,23 +1807,25 @@ private extension PropertyRunnerTests
     
     
     
-    /// Initializes a ``TKPropertyOptions`` instance, optionally specifying
-    /// values for its properties.
+    /// Initializes a ``TKOptions`` instance, optionally specifying values
+    /// for its property-based testing options property.
     static func makeOptions(
         iterations      : Int       = 100,
         maxShrinkSteps  : Int       = 100,
         maxSize         : Int       = 100,
         maxDiscardRatio : Int       = 10,
         seed            : UInt64?   = defaultSeed
-    ) -> TKPropertyOptions
+    ) -> TKOptions
     {
-        return TKPropertyOptions(
+        let propertyOptions = TKPropertyOptions(
             iterations:         iterations,
             maxShrinkSteps:     maxShrinkSteps,
             maxSize:            maxSize,
             maxDiscardRatio:    maxDiscardRatio,
             seed:               seed
         )
+        
+        return TKOptions(propertyOptions: propertyOptions)
     }
     
     
