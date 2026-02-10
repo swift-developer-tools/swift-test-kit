@@ -384,9 +384,11 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
     
     func testPreconditionRejectingAllInputsReturnsExhausted() throws
     {
+        let maxDiscardRatio: Int = 2
+        
         let options: TKPropertyOptions = Self.makeOptions(
             iterations:         10,
-            maxDiscardRatio:    2
+            maxDiscardRatio:    maxDiscardRatio
         )
         
         let result: PropertyCheckResult<BoundInt> = PropertyRunner.run(
@@ -395,12 +397,13 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
             options:    options
         )
         
-        let exhaused: ExhaustedValues
+        let exhausted: ExhaustedValues
             = try XCTUnwrap(Self.assertExhausted(result))
         
-        XCTAssertEqual(exhaused.succeeded, 0)
-        XCTAssertGreaterThan(exhaused.discarded, 0)
-        XCTAssertEqual(exhaused.seed, Self.defaultSeed)
+        XCTAssertEqual(exhausted.succeeded, 0)
+        XCTAssertGreaterThan(exhausted.discarded, 0)
+        XCTAssertEqual(exhausted.ratio, maxDiscardRatio)
+        XCTAssertEqual(exhausted.seed, Self.defaultSeed)
     }
     
     
@@ -426,16 +429,19 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
             = try XCTUnwrap(Self.assertExhausted(result))
         
         XCTAssertEqual(exhausted.discarded, threshold + 1)
+        XCTAssertEqual(exhausted.ratio, maxDiscardRatio)
     }
     
     
     
     func testMaxDiscardRatioZeroExhaustsOnFirstDiscard() throws
     {
+        let maxDiscardRatio: Int = 0
+        
         let result: PropertyCheckResult<BoundInt> = PropertyRunner.run(
             where:      { boundInt in boundInt.value > 1000 },
             property:   { _ in },
-            options:    Self.makeOptions(maxDiscardRatio: 0)
+            options:    Self.makeOptions(maxDiscardRatio: maxDiscardRatio)
         )
         
         let exhausted: ExhaustedValues
@@ -443,6 +449,7 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
         
         XCTAssertEqual(exhausted.discarded, 1)
         XCTAssertEqual(exhausted.succeeded, 0)
+        XCTAssertEqual(exhausted.ratio, maxDiscardRatio)
     }
     
     
@@ -505,15 +512,18 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
         
         XCTAssertEqual(exhausted.succeeded, target + 1)
         XCTAssertEqual(exhausted.discarded, threshold + 1)
+        XCTAssertEqual(exhausted.ratio, maxDiscardRatio)
     }
     
     
     
     func testSingleIterationWithPreconditionRejectionExhauts() throws
     {
+        let maxDiscardRatio: Int = 0
+        
         let options: TKPropertyOptions = Self.makeOptions(
             iterations:         1,
-            maxDiscardRatio:    0
+            maxDiscardRatio:    maxDiscardRatio
         )
         
         let result: PropertyCheckResult<SizeCapture> = PropertyRunner.run(
@@ -527,6 +537,7 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
         
         XCTAssertEqual(exhausted.succeeded, 0)
         XCTAssertEqual(exhausted.discarded, 1)
+        XCTAssertEqual(exhausted.ratio, maxDiscardRatio)
     }
     
     
@@ -665,11 +676,12 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
     
     func testExhaustionSeedMatchesConfiguredSeed() throws
     {
-        let seed: UInt64 = 64
+        let seed            : UInt64    = 64
+        let maxDiscardRatio : Int       = 1
         
         let options: TKPropertyOptions = Self.makeOptions(
             iterations:         10,
-            maxDiscardRatio:    1,
+            maxDiscardRatio:    maxDiscardRatio,
             seed:               seed
         )
         
@@ -683,6 +695,7 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
             = try XCTUnwrap(Self.assertExhausted(result))
         
         XCTAssertEqual(exhausted.seed, seed)
+        XCTAssertEqual(exhausted.ratio, maxDiscardRatio)
     }
     
     
@@ -1399,6 +1412,7 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
         
         XCTAssertEqual(exhausted.succeeded, 0)
         XCTAssertEqual(exhausted.discarded, threshold + 1)
+        XCTAssertEqual(exhausted.ratio, maxDiscardRatio)
     }
     
     
@@ -1878,6 +1892,7 @@ private extension PropertyRunnerTests
     {
         let discarded   : Int
         let succeeded   : Int
+        let ratio       : Int
         let seed        : UInt64
     }
     
@@ -1893,7 +1908,7 @@ private extension PropertyRunnerTests
         _ result: PropertyCheckResult<T>
     ) -> ExhaustedValues?
     {
-        guard case let .exhausted(discarded, succeeded, seed) = result
+        guard case let .exhausted(discarded, succeeded, ratio, seed) = result
         else
         {
             XCTFail("Expected .exhausted, got \(result)")
@@ -1903,6 +1918,7 @@ private extension PropertyRunnerTests
         return ExhaustedValues(
             discarded:  discarded,
             succeeded:  succeeded,
+            ratio:      ratio,
             seed:       seed
         )
     }

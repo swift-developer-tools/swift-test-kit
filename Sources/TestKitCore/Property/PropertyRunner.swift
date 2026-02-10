@@ -136,6 +136,7 @@ package struct PropertyRunner
         var succeeded       : Int                   = 0
         
         
+        
         while succeeded < iterations
         {
             iteration       += 1
@@ -154,6 +155,7 @@ package struct PropertyRunner
                     return .exhausted(
                         discarded:  discarded,
                         succeeded:  succeeded,
+                        ratio:      maxDiscardRatio,
                         seed:       seed
                     )
                 }
@@ -335,10 +337,12 @@ package enum PropertyCheckResult<T>
     /// - Parameters:
     ///   - discarded: The number of discarded inputs.
     ///   - succeeded: The number of successful inputs.
+    ///   - ratio: The maximum ratio of discarded inputs to successful inputs.
     ///   - seed: The seed used to initialize the random number generator.
     case exhausted(
         discarded   : Int,
         succeeded   : Int,
+        ratio       : Int,
         seed        : UInt64
     )
 }
