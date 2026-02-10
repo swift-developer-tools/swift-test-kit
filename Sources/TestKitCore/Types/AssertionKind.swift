@@ -8,7 +8,7 @@
 //===----------------------------------------------------------------------===//
 
 /// The kind of assertion.
-public enum AssertionKind: String, Equatable, Sendable
+package enum AssertionKind: String, Equatable, Sendable
 {
     case assert
     case equal
@@ -86,7 +86,7 @@ public enum AssertionKind: String, Equatable, Sendable
     /// Gets the framework-specific assertion name.
     /// - Parameter framework: The framework kind.
     /// - Returns: The framework-specific assertion name.
-    public func name(
+    package func name(
         for framework: FrameworkKind
     ) -> String
     {
@@ -98,7 +98,7 @@ public enum AssertionKind: String, Equatable, Sendable
     /// Gets the framework-specific internal macro assertion name.
     /// - Parameter framework: The framework kind.
     /// - Returns: The framework-specific internal macro assertion name.
-    public func macroInternalName(
+    package func macroInternalName(
         for framework: FrameworkKind
     ) -> String
     {
@@ -110,7 +110,7 @@ public enum AssertionKind: String, Equatable, Sendable
     /// Gets the framework-specific display macro assertion name.
     /// - Parameter framework: The framework kind.
     /// - Returns: The framework-specific display macro assertion name.
-    public func macroDisplayName(
+    package func macroDisplayName(
         for framework: FrameworkKind
     ) -> String
     {
@@ -122,7 +122,7 @@ public enum AssertionKind: String, Equatable, Sendable
     /// The Swift source expression.
     ///
     /// This is used for code generation in macro expansions.
-    public var sourceExpr: String
+    package var sourceExpr: String
     {
         return "AssertionKind.\(rawValue)"
     }

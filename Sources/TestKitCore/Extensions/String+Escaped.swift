@@ -11,7 +11,7 @@ import Foundation
 
 
 
-public extension String
+package extension String
 {
     /// The string with special characters escaped.
     var escaped: String

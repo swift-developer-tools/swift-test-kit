@@ -11,7 +11,7 @@ import SwiftSyntax
 
 
 
-public extension LabeledExprListSyntax
+package extension LabeledExprListSyntax
 {
     /// Gets the specified argument.
     /// - Parameter label: The label of the argument to retrieve.

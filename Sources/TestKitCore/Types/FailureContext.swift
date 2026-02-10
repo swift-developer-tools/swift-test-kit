@@ -8,18 +8,18 @@
 //===----------------------------------------------------------------------===//
 
 /// The context for an assertion failure.
-public struct FailureContext: Sendable
+package struct FailureContext: Sendable
 {
     /// The framework kind.
-    public let framework    : FrameworkKind
+    package let framework   : FrameworkKind
     
     /// Emits a failure message.
-    public let emit         : @Sendable (String, StaticString, UInt) -> Void
+    package let emit        : @Sendable (String, StaticString, UInt) -> Void
     
     
     
     /// Initializes a ``FailureContext`` from the given values.
-    public init(
+    package init(
         framework   : FrameworkKind,
         emit        : @Sendable @escaping (String, StaticString, UInt) -> Void
     )

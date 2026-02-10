@@ -7,7 +7,7 @@
 //
 //===----------------------------------------------------------------------===//
 
-public extension Collection
+package extension Collection
 {
     /// Whether the collection is ordered.
     var isOrdered: Bool

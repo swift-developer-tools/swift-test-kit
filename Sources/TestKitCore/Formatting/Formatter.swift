@@ -10,7 +10,7 @@
 // MARK: - FormattedLine
 
 /// A formatted diff line.
-public struct FormattedLine
+package struct FormattedLine
 {
     /// The indentation level.
     let indent  : Int
@@ -60,7 +60,7 @@ public struct FormattedLine
 /// ``renderText(_:)``, since that implementation is trivial. Other
 /// behavior is acceptable and may be avoided by increasing the limit
 /// specified by ``TKFormatOptions/maxLineLength``.
-public struct Formatter
+package struct Formatter
 {
     /// The context for tracking state across recursive formatting calls.
     private let context: FormatterContext
@@ -72,7 +72,7 @@ public struct Formatter
     ///   - node: The root diff node.
     ///   - options: The formatting options.
     /// - Returns: The formatted failure.
-    public static func formatDiff(
+    package static func formatDiff(
         _ node  : DiffNode,
         options : TKFormatOptions
     ) -> String
@@ -100,7 +100,7 @@ public struct Formatter
     ///   - expectedValue: The value expected by the assertion.
     ///   - options: The formatting options.
     /// - Returns: The formatted failure.
-    public static func formatBooleanExpr(
+    package static func formatBooleanExpr(
         exprText        : String,
         evaluated       : [BooleanExpr],
         notEvaluated    : Int,
@@ -144,7 +144,7 @@ public struct Formatter
     ///   function assertions.
     ///   - options: The options for testing.
     /// - Returns: The formatted predicate failure.
-    public static func formatPredicate(
+    package static func formatPredicate(
         _ failure       : PredicateFailure,
         collectionText  : String?           = nil,
         predicateText   : String?           = nil,
@@ -1245,7 +1245,7 @@ public struct Formatter
     // MARK: - Support
     
     /// The label kind.
-    public enum LabelKind: String, CaseIterable
+    package enum LabelKind: String, CaseIterable
     {
         case expected       = "Expected:   "
         case actual         = "Actual:     "
@@ -1262,7 +1262,7 @@ public struct Formatter
         ///
         /// - Precondition: All `LabelKind` cases must have equal length for
         /// alignment.
-        static let length: Int =
+        package static let length: Int =
         {
             let lengths: [Int] = LabelKind.allCases.map { $0.rawValue.count }
             

@@ -14,14 +14,14 @@ import TestKitBase
 // MARK: - PropertyRunner
 
 /// Runs property-based tests.
-internal struct PropertyRunner
+package struct PropertyRunner
 {
     /// Runs a property check using the given ``Arbitrary`` type.
     /// - Parameters:
     ///   - property: The property body.
     ///   - options: The options for property-based testing.
     /// - Returns: The result of the property check.
-    internal static func run<T>(
+    package static func run<T>(
         property    : (T) throws -> Void,
         options     : TKPropertyOptions
     ) -> PropertyCheckResult<T> where T : Arbitrary
@@ -43,7 +43,7 @@ internal struct PropertyRunner
     ///   - property: The property body.
     ///   - options: The options for property-based testing.
     /// - Returns: The result of the property check.
-    internal static func run<T>(
+    package static func run<T>(
         using generator : Generator<T>,
         property        : (T) throws -> Void,
         options         : TKPropertyOptions
@@ -66,7 +66,7 @@ internal struct PropertyRunner
     ///   - property: The property body.
     ///   - options: The options for property-based testing.
     /// - Returns: The result of the property check.
-    internal static func run<T>(
+    package static func run<T>(
         where precondition  : @escaping (T) -> Bool,
         property            : (T) throws -> Void,
         options             : TKPropertyOptions
@@ -90,7 +90,7 @@ internal struct PropertyRunner
     ///   - property: The property body.
     ///   - options: The options for property-based testing.
     /// - Returns: The result of the property check.
-    internal static func run<T>(
+    package static func run<T>(
         using generator     : Generator<T>,
         where precondition  : @escaping (T) -> Bool,
         property            : (T) throws -> Void,
@@ -313,7 +313,7 @@ internal struct PropertyRunner
 // MARK: - PropertyCheckResult
 
 /// The result of a property check.
-internal enum PropertyCheckResult<T>
+package enum PropertyCheckResult<T>
 {
     /// All iterations passed.
     /// - Parameters:
@@ -348,26 +348,26 @@ internal enum PropertyCheckResult<T>
 // MARK: - Counterexample
 
 /// Information about a failing counterexample.
-internal struct Counterexample<T>
+package struct Counterexample<T>
 {
     /// The minimal counterexample (after shrinking).
-    let value           : T
+    package let value           : T
     
     /// The original counterexample (before shrinking).
-    let originalValue   : T
+    package let originalValue   : T
     
     /// The seed used to initialize the random number generator.
-    let seed            : UInt64
+    package let seed            : UInt64
     
     /// The 1-indexed iteration at which the original counterexample was found.
-    let iteration       : Int
+    package let iteration       : Int
     
     /// The number of shrink steps performed.
-    let shrinkSteps     : Int
+    package let shrinkSteps     : Int
     
     /// The assertion failures from the final run with the shrunken value.
-    let failures        : [InterceptedFailure]
+    package let failures        : [InterceptedFailure]
     
     /// The error thrown by the property body, if any.
-    let thrownError     : Error?
+    package let thrownError     : Error?
 }

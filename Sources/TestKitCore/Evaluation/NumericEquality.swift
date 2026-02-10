@@ -24,7 +24,7 @@
 ///   - accuracy: The accuracy.
 /// - Returns: Whether the given numeric expressions are equal, within the
 /// given accuracy.
-public func areEqual<T>(
+package func areEqual<T>(
     _ expr1     : T,
     _ expr2     : T,
     accuracy    : T

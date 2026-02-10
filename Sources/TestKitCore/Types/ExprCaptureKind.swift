@@ -8,7 +8,7 @@
 //===----------------------------------------------------------------------===//
 
 /// The kind of captured assertion expression.
-public enum ExprCaptureKind: Equatable, Sendable
+package enum ExprCaptureKind: Equatable, Sendable
 {
     /// A function assertion with no expression capture.
     case none

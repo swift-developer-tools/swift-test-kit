@@ -16,18 +16,18 @@
 /// its position within its parent (for example, the label may be a property
 /// name or an array index), and a kind describing the comparison result at
 /// that position.
-public struct DiffNode: Equatable
+package struct DiffNode: Equatable
 {
     /// The node label.
-    public let label    : DiffNodeLabel
+    package let label   : DiffNodeLabel
     
     /// The kind of diff node.
-    public let kind     : DiffNodeKind
+    package let kind    : DiffNodeKind
     
     
     
     /// Initializes a ``DiffNode`` instance from the given values.
-    public init(
+    package init(
         label   : DiffNodeLabel,
         kind    : DiffNodeKind
     )
@@ -42,7 +42,7 @@ public struct DiffNode: Equatable
 // MARK: - CycleLocation
 
 /// The location where a cycle was detected.
-public enum CycleLocation: Equatable, CustomStringConvertible
+package enum CycleLocation: Equatable, CustomStringConvertible
 {
     /// A cycle was detected in the expected value.
     case expected
@@ -56,7 +56,7 @@ public enum CycleLocation: Equatable, CustomStringConvertible
     
     
     /// A description of where the cycle location was detected.
-    public var description: String
+    package var description: String
     {
         switch self
         {
@@ -81,7 +81,7 @@ public enum CycleLocation: Equatable, CustomStringConvertible
 
 /// The kind of diff computed between by comparing an expected value to an
 /// actual value.
-public enum DiffNodeKind: Equatable
+package enum DiffNodeKind: Equatable
 {
     /// A cycle was detected during comparison.
     ///
@@ -150,7 +150,7 @@ public enum DiffNodeKind: Equatable
     
     
     
-    public var isCycle: Bool
+    package var isCycle: Bool
     {
         switch self
         {
@@ -161,7 +161,7 @@ public enum DiffNodeKind: Equatable
     
     
     
-    public var isSame: Bool
+    package var isSame: Bool
     {
         switch self
         {
@@ -172,7 +172,7 @@ public enum DiffNodeKind: Equatable
     
     
     
-    public var isDifferent: Bool
+    package var isDifferent: Bool
     {
         switch self
         {
@@ -183,7 +183,7 @@ public enum DiffNodeKind: Equatable
     
     
     
-    public var isMissing: Bool
+    package var isMissing: Bool
     {
         switch self
         {
@@ -194,7 +194,7 @@ public enum DiffNodeKind: Equatable
     
     
     
-    public var isUnexpected: Bool
+    package var isUnexpected: Bool
     {
         switch self
         {
@@ -209,7 +209,7 @@ public enum DiffNodeKind: Equatable
 // MARK: - DiffNodeLabel
 
 /// The label of a node in a diff tree.
-public enum DiffNodeLabel: Equatable, Sendable
+package enum DiffNodeLabel: Equatable, Sendable
 {
     /// The root node of a diff tree.
     /// - Parameter typeName: The name of the value's type.
@@ -268,7 +268,7 @@ public enum DiffNodeLabel: Equatable, Sendable
     
     
     /// A string key used for sorting.
-    public var sortKey: String
+    package var sortKey: String
     {
         switch self
         {
@@ -284,7 +284,7 @@ public enum DiffNodeLabel: Equatable, Sendable
     
     
     
-    public var isRoot: Bool
+    package var isRoot: Bool
     {
         switch self
         {
@@ -295,7 +295,7 @@ public enum DiffNodeLabel: Equatable, Sendable
     
     
     
-    public var isProperty: Bool
+    package var isProperty: Bool
     {
         switch self
         {
@@ -306,7 +306,7 @@ public enum DiffNodeLabel: Equatable, Sendable
     
     
     
-    public var isIndex: Bool
+    package var isIndex: Bool
     {
         switch self
         {
@@ -317,7 +317,7 @@ public enum DiffNodeLabel: Equatable, Sendable
     
     
     
-    public var isKey: Bool
+    package var isKey: Bool
     {
         switch self
         {
@@ -328,7 +328,7 @@ public enum DiffNodeLabel: Equatable, Sendable
     
     
     
-    public var isMember: Bool
+    package var isMember: Bool
     {
         switch self
         {
@@ -339,7 +339,7 @@ public enum DiffNodeLabel: Equatable, Sendable
     
     
     
-    public var isLine: Bool
+    package var isLine: Bool
     {
         switch self
         {
@@ -350,7 +350,7 @@ public enum DiffNodeLabel: Equatable, Sendable
     
     
     
-    public var isCharacter: Bool
+    package var isCharacter: Bool
     {
         switch self
         {
@@ -365,7 +365,7 @@ public enum DiffNodeLabel: Equatable, Sendable
     /// the given key.
     /// - Parameter key: The key to use.
     /// - Returns: The created node label.
-    public static func makeKey<K>(
+    package static func makeKey<K>(
         _ key: K
     ) -> DiffNodeLabel where K : Hashable
     {

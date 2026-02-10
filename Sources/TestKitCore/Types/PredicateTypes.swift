@@ -10,21 +10,21 @@
 // MARK: - PredicateFailure
 
 /// Information about a failed predicate.
-public struct PredicateFailure: Equatable
+package struct PredicateFailure: Equatable
 {
     /// The number of elements in the collection.
-    public let collectionCount  : Int
+    package let collectionCount : Int
     
     /// The kind of predicate failure.
-    public let kind             : PredicateFailureKind
+    package let kind            : PredicateFailureKind
     
     /// Whether the collection has meaningful indices.
-    public let isOrdered        : Bool
+    package let isOrdered       : Bool
     
     
     
     /// Initializes a ``PredicateFailure`` instance from the given values.
-    public init(
+    package init(
         collectionCount : Int,
         kind            : PredicateFailureKind,
         isOrdered       : Bool
@@ -41,7 +41,7 @@ public struct PredicateFailure: Equatable
 // MARK: - PredicateFailure
 
 /// The kind of predicate failure.
-public enum PredicateFailureKind: Equatable
+package enum PredicateFailureKind: Equatable
 {
     /// Elements that failed the predicate.
     ///
@@ -107,21 +107,21 @@ public enum PredicateFailureKind: Equatable
 // MARK: - ElementResult
 
 /// Information about an element evaluated by a predicate.
-public struct ElementResult: Equatable
+package struct ElementResult: Equatable
 {
     /// The index of the element in the collection.
-    public let index    : Int
+    package let index   : Int
     
     /// The element value.
-    public let value    : DiffValue
+    package let value   : DiffValue
     
     /// The error description, if the predicate threw an error.
-    public let error    : String?
+    package let error   : String?
     
     
     
     /// Initializes an ``ElementResult`` instance from the given values.
-    public init(
+    package init(
         index   : Int,
         value   : DiffValue,
         error   : String?
@@ -138,22 +138,22 @@ public struct ElementResult: Equatable
 // MARK: - PredicateIterationResult
 
 /// Information about the iteration of a predicate over a collectiion.
-public struct PredicateIterationResult
+package struct PredicateIterationResult
 {
     /// The elements that matched the predicate.
-    public let matchedElements  : [ElementResult]
+    package let matchedElements : [ElementResult]
     
     /// The elements that failed the predicate.
-    public let failedElements   : [ElementResult]
+    package let failedElements  : [ElementResult]
     
     /// The elements for which the predicate threw an error.
-    public let errorElements    : [ElementResult]
+    package let errorElements   : [ElementResult]
     
     
     
     /// Initializes a ``PredicateIterationResult`` instance from the given
     /// values.
-    public init(
+    package init(
         matchedElements : [ElementResult],
         failedElements  : [ElementResult],
         errorElements   : [ElementResult]
@@ -167,7 +167,7 @@ public struct PredicateIterationResult
     
     
     /// The indices of the elements that matched the predicate.
-    public var matchedIndices: [Int]
+    package var matchedIndices: [Int]
     {
         return matchedElements.map { $0.index }
     }
@@ -175,7 +175,7 @@ public struct PredicateIterationResult
     
     
     /// The elements that matched the predicate or threw an error.
-    public var allFailed: [ElementResult]
+    package var allFailed: [ElementResult]
     {
         return failedElements + errorElements
     }
@@ -183,7 +183,7 @@ public struct PredicateIterationResult
     
     
     /// The number of elements that failed the predicate or threw an error.
-    public var allFailedCount: Int
+    package var allFailedCount: Int
     {
         return allFailed.count
     }
@@ -191,7 +191,7 @@ public struct PredicateIterationResult
     
     
     /// The number of matched elements.
-    public var matchedCount: Int
+    package var matchedCount: Int
     {
         return matchedElements.count
     }
@@ -199,7 +199,7 @@ public struct PredicateIterationResult
     
     
     /// The number of failed elements.
-    public var failedCount: Int
+    package var failedCount: Int
     {
         return failedElements.count
     }
@@ -207,7 +207,7 @@ public struct PredicateIterationResult
     
     
     /// The number of elements for which the predicate threw an error.
-    public var errorCount: Int
+    package var errorCount: Int
     {
         return errorElements.count
     }
@@ -218,7 +218,7 @@ public struct PredicateIterationResult
 // MARK: - CountExpectationKind
 
 /// The expected count for a predicate.
-public enum CountExpectationKind: Equatable, Sendable
+package enum CountExpectationKind: Equatable, Sendable
 {
     /// Expected at least one element to match.
     case any
@@ -254,21 +254,21 @@ public enum CountExpectationKind: Equatable, Sendable
 // MARK: - CountMismatch
 
 /// Information about a count mismatch failure.
-public struct CountMismatch: Equatable
+package struct CountMismatch: Equatable
 {
     /// The expected count.
-    public let expected         : CountExpectationKind
+    package let expected        : CountExpectationKind
     
     /// The indices of elements that matched the predicate.
-    public let matchedIndices   : [Int]
+    package let matchedIndices  : [Int]
     
     /// Elements where the predicate threw an error.
-    public let errorElements    : [ElementResult]
+    package let errorElements   : [ElementResult]
     
     
     
     /// Initializes a ``CountMismatch`` instance from the given values.
-    public init(
+    package init(
         expected        : CountExpectationKind,
         matchedIndices  : [Int],
         errorElements   : [ElementResult]
@@ -285,24 +285,24 @@ public struct CountMismatch: Equatable
 // MARK: - OrderingViolation
 
 /// Information about an ordering violation in a sorted assertion.
-public struct OrderingViolation: Equatable
+package struct OrderingViolation: Equatable
 {
     /// The index of the first element in the violating pair.
-    public let index    : Int
+    package let index   : Int
     
     /// The first element in the violating pair.
-    public let first    : DiffValue
+    package let first   : DiffValue
     
     /// The second element in the violating pair.
-    public let second   : DiffValue
+    package let second  : DiffValue
     
     /// The error description, if the predicate threw an error.
-    public let error    : String?
+    package let error   : String?
     
     
     
     /// Initializes an ``OrderingViolation`` instance from the given values.
-    public init(
+    package init(
         index   : Int,
         first   : DiffValue,
         second  : DiffValue,
@@ -321,18 +321,18 @@ public struct OrderingViolation: Equatable
 // MARK: - DuplicateGroup
 
 /// Information about a group of duplicate elements.
-public struct DuplicateGroup: Equatable
+package struct DuplicateGroup: Equatable
 {
     /// The duplicate value.
-    public let value    : DiffValue
+    package let value   : DiffValue
     
     /// The indices where the duplicate value appears.
-    public var indices  : [Int]
+    package var indices : [Int]
     
     
     
     /// Initializes a ``DuplicateGroup`` instance from the given values.
-    public init(
+    package init(
         value   : DiffValue,
         indices : [Int]
     )
@@ -347,18 +347,18 @@ public struct DuplicateGroup: Equatable
 // MARK: - DuplicateKeyGroup
 
 /// Information about a group of elements with duplicate keys.
-public struct DuplicateKeyGroup: Equatable
+package struct DuplicateKeyGroup: Equatable
 {
     /// The duplicate key.
-    public let key      : DiffValue
+    package let key         : DiffValue
     
     /// The elements with the duplicate key, along with their indices.
-    public let elements : [IndexedElement]
+    package let elements    : [IndexedElement]
     
     
     
     /// Initializes a ``DuplicateKeyGroup`` instance from the given values.
-    public init(
+    package init(
         key         : DiffValue,
         elements    : [IndexedElement]
     )
@@ -373,18 +373,18 @@ public struct DuplicateKeyGroup: Equatable
 // MARK: - IndexedElement
 
 /// An element with its index in a collection.
-public struct IndexedElement: Equatable
+package struct IndexedElement: Equatable
 {
     /// The index of the element in a collection.
-    public let index    : Int
+    package let index   : Int
     
     /// The element value.
-    public let value    : DiffValue
+    package let value   : DiffValue
     
     
     
     /// Initializes an ``IndexedElement`` instance from the given values.
-    public init(
+    package init(
         index   : Int,
         value   : DiffValue
     )

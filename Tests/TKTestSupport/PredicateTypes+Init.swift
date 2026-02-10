@@ -11,7 +11,7 @@ import TestKitCore
 
 
 
-public extension ElementResult
+package extension ElementResult
 {
     /// Initializes an ``ElementResult`` instance from the given values.
     init(
@@ -30,7 +30,7 @@ public extension ElementResult
 
 
 
-public extension CountMismatch
+package extension CountMismatch
 {
     /// Initializes a ``CountMismatch`` instance from the given values, and
     /// an empty ``CountMismatch/errorElements`` array.
@@ -49,7 +49,7 @@ public extension CountMismatch
 
 
 
-public extension OrderingViolation
+package extension OrderingViolation
 {
     /// Initializes an ``OrderingViolation`` instance from the given values.
     init(
@@ -70,7 +70,7 @@ public extension OrderingViolation
 
 
 
-public extension DuplicateGroup
+package extension DuplicateGroup
 {
     /// Initializes a ``DuplicateGroup`` instance from the given values.
     init(
@@ -87,7 +87,7 @@ public extension DuplicateGroup
 
 
 
-public extension DuplicateKeyGroup
+package extension DuplicateKeyGroup
 {
     /// Initializes a ``DuplicateKeyGroup`` instance from the given values.
     init(
@@ -104,7 +104,7 @@ public extension DuplicateKeyGroup
 
 
 
-public extension IndexedElement
+package extension IndexedElement
 {
     /// Initializes an ``IndexedElement`` instance from the given values.
     init(

@@ -11,7 +11,7 @@ import Foundation
 
 
 
-public extension String
+package extension String
 {
     /// The string with newlines collapsed to a single space.
     func collapseLines() -> String

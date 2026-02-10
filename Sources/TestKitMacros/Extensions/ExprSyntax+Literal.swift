@@ -12,7 +12,7 @@ import SwiftSyntaxMacros
 
 
 
-public extension ExprSyntax
+package extension ExprSyntax
 {
     /// Creates `nil` literal expression.
     /// - Returns: The `nil` literal expression.

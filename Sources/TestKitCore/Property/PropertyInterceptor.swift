@@ -18,11 +18,11 @@ import Synchronization
 /// When an assertion fails inside a property evaluator, the failure message
 /// is recorded here instead of being reported to the associated framework.
 /// This allows the property body to be re-run for shrinking purposes.
-public final class PropertyInterceptor: Sendable
+package final class PropertyInterceptor: Sendable
 {
     /// The current interceptor, if running inside a property evaluator.
     @TaskLocal
-    public static var current   : PropertyInterceptor?
+    package static var current  : PropertyInterceptor?
     
     /// The current interceptor state.
     private let state           : Mutex<[InterceptedFailure]>
@@ -30,7 +30,7 @@ public final class PropertyInterceptor: Sendable
     
     
     /// Initializes a ``PropertyInterceptor`` instance.
-    public init()
+    package init()
     {
         self.state = Mutex([])
     }
@@ -38,7 +38,7 @@ public final class PropertyInterceptor: Sendable
     
     
     /// Whether a failure has been recorded.
-    public var didFail: Bool
+    package var didFail: Bool
     {
         return !failures.isEmpty
     }
@@ -46,7 +46,7 @@ public final class PropertyInterceptor: Sendable
     
     
     /// The recorded failures.
-    public var failures: [InterceptedFailure]
+    package var failures: [InterceptedFailure]
     {
         return state.withLock { $0 }
     }
@@ -58,7 +58,7 @@ public final class PropertyInterceptor: Sendable
     ///   - message: The failure message.
     ///   - file: The file where the failure occurred.
     ///   - line: The line where the failure occurred.
-    public func record(
+    package func record(
         message : String,
         file    : StaticString,
         line    : UInt
@@ -78,7 +78,7 @@ public final class PropertyInterceptor: Sendable
     /// Resets the interceptor for reuse.
     ///
     /// This is used to reset the interceptor between shrink attempts.
-    public func reset()
+    package func reset()
     {
         state.withLock { $0 = [] }
     }
@@ -89,20 +89,20 @@ public final class PropertyInterceptor: Sendable
 // MARK: - InterceptedFailure
 
 /// A failure intercepted during property evaluation.
-public struct InterceptedFailure: Equatable, Sendable
+package struct InterceptedFailure: Equatable, Sendable
 {
     /// The failure message.
-    public let message  : String
+    package let message : String
     
     /// The file where the failure occurred.
-    public let file     : StaticString
+    package let file    : StaticString
     
     /// The line where the failure occurred.
-    public let line     : UInt
+    package let line    : UInt
     
     
     
-    public static func == (
+    package static func == (
         lhs: InterceptedFailure,
         rhs: InterceptedFailure
     ) -> Bool

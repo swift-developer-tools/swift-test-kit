@@ -7,7 +7,7 @@
 //
 //===----------------------------------------------------------------------===//
 
-public extension Array<Any>
+package extension Array<Any>
 {
     /// An array of hashable type-erased values, or `nil` if the array
     /// elements are not hashable.

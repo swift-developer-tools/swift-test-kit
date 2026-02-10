@@ -11,7 +11,7 @@ import TestKitCore
 
 
 
-public extension DiffNode
+package extension DiffNode
 {
     /// Creates a root node from the given values.
     /// - Parameters:

@@ -7,7 +7,7 @@
 //
 //===----------------------------------------------------------------------===//
 
-public extension Array<DiffNode>
+package extension Array<DiffNode>
 {
     /// Whether the diff tree represents a set.
     var isSetTree: Bool

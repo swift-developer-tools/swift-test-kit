@@ -8,7 +8,7 @@
 //===----------------------------------------------------------------------===//
 
 /// Framework kinds.
-public enum FrameworkKind: String, Equatable, Sendable
+package enum FrameworkKind: String, Equatable, Sendable
 {
     /// XCTestKit.
     case xctk   = "XCTK"

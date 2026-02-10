@@ -11,7 +11,7 @@ import TestKitCore
 
 
 
-public extension BooleanExpr
+package extension BooleanExpr
 {
     /// Initializes a ``BooleanExpr`` instance from the given values.
     ///

@@ -16,7 +16,7 @@ import SwiftSyntaxMacros
 // MARK: - Protocols
 
 /// A macro expression.
-public protocol AssertionMacro: ExpressionMacro
+package protocol AssertionMacro: ExpressionMacro
 {
     typealias ExpansionError = MacroExpansionErrorMessage
     
@@ -28,20 +28,20 @@ public protocol AssertionMacro: ExpressionMacro
 }
 
 /// A macro expression with no evaluated expression.
-public protocol NoExprMacro                 : AssertionMacro { }
+package protocol NoExprMacro                : AssertionMacro { }
 
 /// A macro expression with one evaluated expression.
-public protocol SingleExprMacro             : AssertionMacro { }
+package protocol SingleExprMacro            : AssertionMacro { }
 
 /// A macro expression with two evaluated expressions.
-public protocol DoubleExprMacro             : AssertionMacro { }
+package protocol DoubleExprMacro            : AssertionMacro { }
 
 /// A macro expression for a predicate assertion.
-public protocol DoubleExprPredicateMacro    : AssertionMacro { }
+package protocol DoubleExprPredicateMacro   : AssertionMacro { }
 
 
 
-public extension AssertionMacro
+package extension AssertionMacro
 {
     /// Creates an error for an unhandled assertion kind during macro expansion.
     ///
@@ -62,7 +62,7 @@ public extension AssertionMacro
 
 // MARK: - No expression
 
-public extension NoExprMacro
+package extension NoExprMacro
 {
     /// Expands the macro.
     /// - Parameters:
@@ -91,7 +91,7 @@ public extension NoExprMacro
 
 // MARK: - Single expression
 
-public extension SingleExprMacro
+package extension SingleExprMacro
 {
     /// Expands the macro.
     /// - Parameters:
@@ -238,7 +238,7 @@ public extension SingleExprMacro
 
 // MARK: - Double expression
 
-public extension DoubleExprMacro
+package extension DoubleExprMacro
 {
     /// Expands the macro.
     /// - Parameters:
@@ -364,7 +364,7 @@ private struct PredicateExtractionResult
 
 
 
-public extension DoubleExprPredicateMacro
+package extension DoubleExprPredicateMacro
 {
     /// Expands the macro.
     /// - Parameters:

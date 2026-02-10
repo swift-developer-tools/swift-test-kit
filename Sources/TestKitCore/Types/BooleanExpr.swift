@@ -8,18 +8,18 @@
 //===----------------------------------------------------------------------===//
 
 /// A boolean expression evaluated during macro expression decomposition.
-public struct BooleanExpr: Equatable, Sendable
+package struct BooleanExpr: Equatable, Sendable
 {
     /// The source text of the expression.
-    public let text     : String
+    package let text    : String
     
     /// The evaluated boolean value.
-    public let value    : Bool
+    package let value   : Bool
     
     
     
     /// Initializes a ``BooleanExpr`` instance from the given values.
-    public init(
+    package init(
         text    : String,
         value   : Bool
     )

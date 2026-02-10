@@ -13,7 +13,7 @@
 ///   - collection: The collection over which to iterate.
 /// - Returns: Information about the iteration of the given predicate over the
 /// given collection.
-public func iteratePredicate<C>(
+package func iteratePredicate<C>(
     _       predicate   : (C.Element) throws -> Bool,
     over    collection  : C
 ) -> PredicateIterationResult where C : Collection
