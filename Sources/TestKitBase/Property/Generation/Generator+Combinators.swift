@@ -74,8 +74,8 @@ extension Generator
     /// so only candidates satisfying the predicate are considered during
     /// shrinking.
     ///
-    /// - Important: If the predicate rejects most values, generation will be
-    /// slow. Prefer constructing valid values directly when possible.
+    /// - Important: Precidates that reject most inputs slow down generation.
+    /// Prefer constructing valid values directly.
     ///
     /// - Precondition: The method must produce at least one matching value
     /// in 1,000 attempts.
