@@ -38,7 +38,7 @@ internal func evaluateExpr<T>(
     _ expr          : () throws -> T,
     assertionKind   : AssertionKind,
     captureKind     : ExprCaptureKind,
-    message         : () -> String?,
+    message         : () -> String,
     file            : StaticString,
     line            : UInt,
     errorHandler    : (any Error) -> Void   = { _ in }
@@ -94,7 +94,7 @@ internal func evaluateCollection<C>(
     _ collection    : () throws -> C,
     assertionKind   : AssertionKind,
     captureKind     : ExprCaptureKind,
-    message         : () -> String?,
+    message         : () -> String,
     file            : StaticString,
     line            : UInt
 ) -> Result<C, Error> where C : Collection

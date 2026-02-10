@@ -24,7 +24,7 @@ package extension AssertionKind
         context     : FailureContext,
         captureKind : ExprCaptureKind,
         reason      : String?,
-        message     : () -> String?,
+        message     : () -> String,
         file        : StaticString,
         line        : UInt
     )
@@ -60,7 +60,7 @@ package extension AssertionKind
         context     : FailureContext,
         captureKind : ExprCaptureKind,
         diff        : DiffNode,
-        message     : () -> String?,
+        message     : () -> String,
         file        : StaticString,
         line        : UInt,
         options     : TKOptions
@@ -98,7 +98,7 @@ package extension AssertionKind
         context     : FailureContext,
         captureKind : ExprCaptureKind,
         actual      : String?,
-        message     : () -> String?,
+        message     : () -> String,
         file        : StaticString,
         line        : UInt
     )
@@ -136,7 +136,7 @@ package extension AssertionKind
         exprText        : String,
         evaluated       : [BooleanExpr],
         notEvaluated    : Int,
-        message         : () -> String?,
+        message         : () -> String,
         file            : StaticString,
         line            : UInt,
         options         : TKOptions
@@ -175,7 +175,7 @@ package extension AssertionKind
         context     : FailureContext,
         captureKind : ExprCaptureKind,
         failure     : PredicateFailure,
-        message     : () -> String?,
+        message     : () -> String,
         file        : StaticString,
         line        : UInt,
         options     : TKOptions
