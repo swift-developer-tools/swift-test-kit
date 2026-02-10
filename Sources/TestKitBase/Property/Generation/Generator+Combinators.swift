@@ -359,115 +359,11 @@ extension Generator
     
     // MARK: - zip
     
-    /// Combines the two given generators into a generator of pairs.
+    /// Combines generators into a generator of tuples.
     ///
-    /// - Note: The returned generator preserves shrinking from both
-    /// underlying generators. Each position is shrunk independently, while
-    /// the other is held constant.
-    ///
-    /// - Parameters:
-    ///   - first: The first generator.
-    ///   - second: The second generator.
-    /// - Returns: A generator of pairs.
-    public static func zip<A, B>(
-        _ first     : Generator<A>,
-        _ second    : Generator<B>
-    ) -> Generator<(A, B)> where V == (A, B)
-    {
-        return Generator<(A, B)>(
-            generate:
-            {
-                context in
-                
-                return (
-                    first.generate(context),
-                    second.generate(context)
-                )
-            },
-            shrink:
-            {
-                pair in
-                
-                var candidates: [(A, B)] = []
-                
-                for a in first.shrink(pair.0)
-                {
-                    candidates.append((a, pair.1))
-                }
-                
-                for b in second.shrink(pair.1)
-                {
-                    candidates.append((pair.0, b))
-                }
-                
-                return candidates
-            }
-        )
-    }
-    
-    
-    
-    /// Combines the three given generators into a generator of triples.
-    ///
-    /// - Note: The returned generator preserves shrinking from all three
-    /// underlying generators. Each position is shrunk independently, while
-    /// the others are held constant.
-    ///
-    /// - Parameters:
-    ///   - first: The first generator.
-    ///   - second: The second generator.
-    ///   - third: The third generator.
-    /// - Returns: A generator of triples.
-    public static func zip<A, B, C>(
-        _ first     : Generator<A>,
-        _ second    : Generator<B>,
-        _ third     : Generator<C>
-    ) -> Generator<(A, B, C)> where V == (A, B, C)
-    {
-        return Generator<(A, B, C)>(
-            generate:
-            {
-                context in
-                
-                return (
-                    first.generate(context),
-                    second.generate(context),
-                    third.generate(context)
-                )
-            },
-            shrink:
-            {
-                triple in
-                
-                var candidates: [(A, B, C)] = []
-                
-                for a in first.shrink(triple.0)
-                {
-                    candidates.append((a, triple.1, triple.2))
-                }
-                
-                for b in second.shrink(triple.1)
-                {
-                    candidates.append((triple.0, b, triple.2))
-                }
-                
-                for c in third.shrink(triple.2)
-                {
-                    candidates.append((triple.0, triple.1, c))
-                }
-                
-                return candidates
-            }
-        )
-    }
-    
-    
-    
-    /// Combines four or more generators into a generator of tuples.
-    ///
-    /// - Note: The returned generator does not shrink. To enable shrinking
-    /// for four or more generators, implement an overload accepting the
-    /// necessary number of generators.
+    /// - Note: The returned generator preserves shrinking from all underlying
+    /// generators. Each value is shrunk independently, while holding the
+    /// others constant.
     ///
     /// - Parameter generators: The generators to combine.
     /// - Returns: A generator of tuples.
@@ -475,6 +371,13 @@ extension Generator
         _ generators: repeat Generator<each T>
     ) -> Generator<(repeat each T)> where V == (repeat each T)
     {
+        var shrinkers: [AnyShrinker] = []
+        
+        for generator in repeat each generators
+        {
+            shrinkers.append(AnyShrinker(generator.shrink))
+        }
+        
         return Generator<(repeat each T)>(
             generate:
             {
@@ -482,7 +385,65 @@ extension Generator
                 
                 return (repeat (each generators).generate(context))
             },
-            shrink: { _ in [] }
+            shrink:
+            {
+                tuple in
+                
+                /// Decompose the typed tuple into `[Any]` for index operations,
+                /// shrink one value while holding others constant, then
+                /// reconstruct the typed tuple by expanding each pack element
+                /// with the corresponding array index. Force-casting is safe
+                /// since array construction is controlled.
+                
+                var candidates: [(repeat each T)] = []
+                
+                let mirror  : Mirror    = .init(reflecting: tuple)
+                let values  : [Any]     = mirror.children.map { $0.value }
+                
+                
+                
+                /// Single-element packs are flattened to the underlying
+                /// element (`(T)` becomes `T`). `Mirror` has no children for
+                /// non-tuple values.
+                if values.isEmpty
+                {
+                    guard shrinkers.count == 1
+                    else
+                    {
+                        return []
+                    }
+                    
+                    for shrunken in shrinkers[0].shrink(tuple)
+                    {
+                        let copy        : [Any]         = [shrunken]
+                        let packIndex   : PackIndex     = .init()
+                        
+                        candidates.append(
+                            (repeat copy[packIndex.next()] as! each T)
+                        )
+                    }
+                }
+                
+                
+                
+                for index in values.indices
+                {
+                    for shrunken in shrinkers[index].shrink(values[index])
+                    {
+                        var copy: [Any] = values
+                        
+                        copy[index] = shrunken
+                        
+                        let packIndex = PackIndex()
+                        
+                        candidates.append(
+                            (repeat copy[packIndex.next()] as! each T)
+                        )
+                    }
+                }
+                
+                return candidates
+            }
         )
     }
 }

@@ -451,6 +451,23 @@ internal final class GeneratorCombinatorTests: XCTestCaseStopOnFail
     
     // MARK: - zip
     
+    func testZipOneDeterminism() throws
+    {
+        let generator: Generator<String> = .zip(.nonEmptyString())
+        
+        for _ in 0..<1000
+        {
+            let (context1, context2) = GenerationContext.sameRandomContexts
+            
+            let a   : String    = generator.generate(context1)
+            let b   : String    = generator.generate(context2)
+            
+            XCTAssertEqual(a, b)
+        }
+    }
+    
+    
+    
     func testZipTwoDeterminism() throws
     {
         let generator: Generator<(Int, String)> = .zip(
@@ -495,7 +512,84 @@ internal final class GeneratorCombinatorTests: XCTestCaseStopOnFail
     
     
     
-    func testZipTwoGeneratesIndependentValues() throws
+    func testZipFourDeterminism() throws
+    {
+        let generator = Generator.zip(
+            .integer(in: 0...100),
+            .integer(in: 0...100),
+            .integer(in: 0...100),
+            .integer(in: 0...100)
+        )
+        
+        for _ in 0..<1000
+        {
+            let (context1, context2) = GenerationContext.sameRandomContexts
+            
+            let a   = generator.generate(context1)
+            let b   = generator.generate(context2)
+            
+            XCTAssertEqual(a.0, b.0)
+            XCTAssertEqual(a.1, b.1)
+            XCTAssertEqual(a.2, b.2)
+            XCTAssertEqual(a.3, b.3)
+        }
+    }
+    
+    
+    
+    func testZipMixedTypesDeterminism() throws
+    {
+        let generator: Generator<(Int, String, Bool, Double)> = .zip(
+            .integer(in: 0...100),
+            .nonEmptyString(),
+            .constant(true),
+            .floatingPoint(in: -10...10)
+        )
+        
+        for _ in 0..<1000
+        {
+            let (context1, context2) = GenerationContext.sameRandomContexts
+            
+            let a   = generator.generate(context1)
+            let b   = generator.generate(context2)
+            
+            XCTAssertEqual(a.0, b.0)
+            XCTAssertEqual(a.1, b.1)
+            XCTAssertEqual(a.2, b.2)
+            XCTAssertEqual(a.3, b.3)
+        }
+    }
+    
+    
+    
+    func testZipOneGenerate() throws
+    {
+        let generator: Generator<Int> = .zip(.integer(in: 0...10))
+        
+        for _ in 0..<1000
+        {
+            let value: Int = generator.generate(.random)
+            
+            XCTAssertGreaterThanOrEqual(value, 0)
+            XCTAssertLessThanOrEqual(value, 10)
+        }
+    }
+    
+    
+    
+    func testZipOneShrink() throws
+    {
+        let generator: Generator<Int> = .zip(.integer(in: 0...100))
+        
+        let candidates: [Int] = generator.shrink(50)
+        
+        XCTAssertFalse(candidates.isEmpty)
+        XCTAssertEqual(candidates.first, 0)
+    }
+    
+    
+    
+    func testZipTwoGenerate() throws
     {
         let generator: Generator<(Int, String)> = .zip(
             .integer(in: 0...10),
@@ -514,14 +608,14 @@ internal final class GeneratorCombinatorTests: XCTestCaseStopOnFail
     
     
     
-    func testZipTwoShrinksIndependently() throws
+    func testZipTwoShrink() throws
     {
         let generator: Generator<(Int, Int)> = .zip(
             .integer(in: 0...100),
             .integer(in: 0...100)
         )
         
-        let candidates: [(Int,  Int)] = generator.shrink((50, 80))
+        let candidates: [(Int, Int)] = generator.shrink((50, 80))
         
         let onlyFirstShrunk: Bool = candidates.contains
         {
@@ -542,7 +636,7 @@ internal final class GeneratorCombinatorTests: XCTestCaseStopOnFail
     
     
     
-    func testZipThreeGeneratesIndependentValues() throws
+    func testZipThreeGenerate() throws
     {
         let generator: Generator<(Int, Int, Int)> = .zip(
             .constant(1),
@@ -562,7 +656,7 @@ internal final class GeneratorCombinatorTests: XCTestCaseStopOnFail
     
     
     
-    func testZipThreeShrinksIndependently() throws
+    func testZipThreeShrink() throws
     {
         let generator: Generator<(Int, Int, Int)> = .zip(
             .integer(in: 0...100),
@@ -570,7 +664,7 @@ internal final class GeneratorCombinatorTests: XCTestCaseStopOnFail
             .integer(in: 0...100)
         )
         
-        let candidates: [(Int,  Int, Int)] = generator.shrink((50, 60, 70))
+        let candidates: [(Int, Int, Int)] = generator.shrink((50, 60, 70))
         
         let onlyFirstShrunk: Bool = candidates.contains
         {
@@ -602,69 +696,142 @@ internal final class GeneratorCombinatorTests: XCTestCaseStopOnFail
     
     
     
-    func testZipPackDeterminism() throws
+    func testZipFourShrink() throws
     {
-        let generator = Generator.zip(
+        let generator: Generator<(Int, Int, Int, Int)> = .zip(
             .integer(in: 0...100),
             .integer(in: 0...100),
             .integer(in: 0...100),
             .integer(in: 0...100)
         )
         
-        for _ in 0..<1000
+        let candidates: [(Int, Int, Int, Int)]
+            = generator.shrink((40, 50, 60, 70))
+        
+        let onlyFirstShrunk: Bool = candidates.contains
         {
-            let (context1, context2) = GenerationContext.sameRandomContexts
-            
-            let a   = generator.generate(context1)
-            let b   = generator.generate(context2)
-            
-            XCTAssertEqual(a.0, b.0)
-            XCTAssertEqual(a.1, b.1)
-            XCTAssertEqual(a.2, b.2)
-            XCTAssertEqual(a.3, b.3)
+            return $0.0 != 40
+                && $0.1 == 50
+                && $0.2 == 60
+                && $0.3 == 70
         }
+        
+        XCTAssertTrue(onlyFirstShrunk)
+        
+        let onlySecondShrunk: Bool = candidates.contains
+        {
+            return $0.0 == 40
+                && $0.1 != 50
+                && $0.2 == 60
+                && $0.3 == 70
+        }
+        
+        XCTAssertTrue(onlySecondShrunk)
+        
+        let onlyThirdShrunk: Bool = candidates.contains
+        {
+            return $0.0 == 40
+                && $0.1 == 50
+                && $0.2 != 60
+                && $0.3 == 70
+        }
+        
+        XCTAssertTrue(onlyThirdShrunk)
+        
+        let onlyFourthShrunk: Bool = candidates.contains
+        {
+            return $0.0 == 40
+                && $0.1 == 50
+                && $0.2 == 60
+                && $0.3 != 70
+        }
+        
+        XCTAssertTrue(onlyFourthShrunk)
     }
     
     
     
-    func testZipPackDoesNotShrink() throws
-    {
-        let gen = Generator<Int>(
-            generate:   { _ in 1 },
-            shrink:     { _ in [0] }
-        )
-        
-        let quadGen = Generator.zip(gen, gen, gen, gen)
-        
-        for _ in 0..<1000
-        {
-            let quadruple = quadGen.generate(.random)
-            
-            XCTAssertTrue(quadGen.shrink(quadruple).isEmpty)
-        }
-    }
-    
-    
-    
-    func testZipPackGeneratesAllPositions() throws
+    func testZipSixGenerate() throws
     {
         let generator = Generator.zip(
             .constant(1),
             .constant(2),
             .constant(3),
             .constant(4),
-            .constant(5)
+            .constant(5),
+            .constant(6)
         )
         
         for _ in 0..<1000
         {
-            let quintuple = generator.generate(.random)
+            let sextuple = generator.generate(.random)
             
-            XCTAssertEqual(quintuple.0, 1)
-            XCTAssertEqual(quintuple.1, 2)
-            XCTAssertEqual(quintuple.2, 3)
-            XCTAssertEqual(quintuple.3, 4)
-            XCTAssertEqual(quintuple.4, 5)
+            XCTAssertEqual(sextuple.0, 1)
+            XCTAssertEqual(sextuple.1, 2)
+            XCTAssertEqual(sextuple.2, 3)
+            XCTAssertEqual(sextuple.3, 4)
+            XCTAssertEqual(sextuple.4, 5)
+            XCTAssertEqual(sextuple.5, 6)
+        }
+    }
+    
+    
+    
+    func testZipSixShrink() throws
+    {
+        let generator = Generator.zip(
+            .integer(in: 0...100),
+            .integer(in: 0...100),
+            .integer(in: 0...100),
+            .integer(in: 0...100),
+            .integer(in: 0...100),
+            .integer(in: 0...100)
+        )
+        
+        let original: [Int] = [10, 20, 30, 40, 50, 60]
+        
+        let candidates = generator.shrink((10, 20, 30, 40, 50, 60))
+        
+        XCTAssertFalse(candidates.isEmpty)
+        
+        for i in 0..<6
+        {
+            let found: Bool = candidates.contains
+            {
+                candidate in
+                
+                let values: [Int] =
+                [
+                    candidate.0,
+                    candidate.1,
+                    candidate.2,
+                    candidate.3,
+                    candidate.4,
+                    candidate.5
+                ]
+                
+                for j in 0..<6
+                {
+                    if j == i
+                    {
+                        if values[j] == original[j]
+                        {
+                            return false
+                        }
+                    }
+                    else
+                    {
+                        if values[j] != original[j]
+                        {
+                            return false
+                        }
+                    }
+                }
+                
+                return true
+            }
+            
+            XCTAssertTrue(found)
         }
     }
     
@@ -687,10 +854,6 @@ internal final class GeneratorCombinatorTests: XCTestCaseStopOnFail
             shrink:     { _ in [0] }
         )
         
-        /// 2-parameter should resolve to the fixed overload with shrinking.
-        /// 3-parameter should resolve to the fixed overload with shrinking.
-        /// 4-parameter should resolve to the pack overload with no shrinking.
-        
         let pairGenerator       = Generator.zip(genA, genB)
         let tripleGenerator     = Generator.zip(genA, genB, genC)
         let quadrupleGenerator  = Generator.zip(genA, genB, genC, genA)
@@ -704,7 +867,6 @@ internal final class GeneratorCombinatorTests: XCTestCaseStopOnFail
             XCTAssertEqual(pairValue.1, 2)
             XCTAssertFalse(pairShrunk.isEmpty)
             
-
             let tripleValue     = tripleGenerator.generate(.random)
             let tripleShrunk    = tripleGenerator.shrink(tripleValue)
             
@@ -720,7 +882,138 @@ internal final class GeneratorCombinatorTests: XCTestCaseStopOnFail
             XCTAssertEqual(quadrupleValue.1, 2)
             XCTAssertEqual(quadrupleValue.2, 3)
             XCTAssertEqual(quadrupleValue.3, 1)
-            XCTAssertTrue(quadrupleShrunk.isEmpty)
+            XCTAssertFalse(quadrupleShrunk.isEmpty)
         }
+    }
+    
+    
+    
+    func testZipMixedTypesGenerate() throws
+    {
+        let generator: Generator<(Int, String, Bool)> = .zip(
+            .integer(in: 0...10),
+            .nonEmptyString(),
+            .constant(true)
+        )
+        
+        for _ in 0..<1000
+        {
+            let value: (Int, String, Bool) = generator.generate(.random)
+            
+            XCTAssertGreaterThanOrEqual(value.0, 0)
+            XCTAssertLessThanOrEqual(value.0, 10)
+            XCTAssertFalse(value.1.isEmpty)
+            XCTAssertTrue(value.2)
+        }
+    }
+    
+    
+    
+    func testZipMixedTypesShrink() throws
+    {
+        let generator: Generator<(Int, String, Bool, Double)> = .zip(
+            .integer(in: 0...100),
+            .nonEmptyString(),
+            .constant(true),
+            .floatingPoint(in: 0...10)
+        )
+        
+        let value       = (50, "hello", true, 5.0)
+        let candidates  = generator.shrink(value)
+        
+        let onlyIntShrunk: Bool = candidates.contains
+        {
+            return $0.0 != 50
+                && $0.1 == "hello"
+                && $0.2 == true
+                && $0.3 == 5.0
+        }
+        
+        XCTAssertTrue(onlyIntShrunk)
+        
+        let onlyStringShrunk: Bool = candidates.contains
+        {
+            return $0.0 == 50
+                && $0.1 != "hello"
+                && $0.2 == true
+                && $0.3 == 5.0
+        }
+        
+        XCTAssertTrue(onlyStringShrunk)
+        
+        let onlyBoolShrunk: Bool = candidates.contains
+        {
+            return $0.0 == 50
+                && $0.1 == "hello"
+                && $0.2 != true
+                && $0.3 == 5.0
+        }
+        
+        /// ``Generator/constant(_:)`` does not shrink.
+        XCTAssertFalse(onlyBoolShrunk)
+        
+        let onlyDoubleShrunk: Bool = candidates.contains
+        {
+            return $0.0 == 50
+                && $0.1 == "hello"
+                && $0.2 == true
+                && $0.3 != 5.0
+        }
+        
+        XCTAssertTrue(onlyDoubleShrunk)
+    }
+    
+    
+    
+    func testZipShrinkCandidateValuesContainTargets() throws
+    {
+        let generator: Generator<(Int, Int)> = .zip(
+            .integer(in: 0...100),
+            .integer(in: 0...100)
+        )
+        
+        let candidates: [(Int, Int)] = generator.shrink((50, 80))
+        
+        XCTAssertTrue(candidates.contains { $0.0 == 0   && $0.1 == 80 })
+        XCTAssertTrue(candidates.contains { $0.0 == 50  && $0.1 == 0 })
+    }
+    
+    
+    
+    func testZipShrinkCandidateCountMatchesSum() throws
+    {
+        let intGen      : Generator<Int>        = .integer(in: 0...100)
+        let stringGen   : Generator<String>     = .nonEmptyString()
+        
+        let zipGen: Generator<(Int, String)> = .zip(
+            intGen,
+            stringGen
+        )
+        
+        let value               : (Int, String)     = (50, "hello")
+        let intCandidates       : [Int]             = intGen.shrink(value.0)
+        let stringCandidates    : [String]          = stringGen.shrink(value.1)
+        let zipCandidates       : [(Int, String)]   = zipGen.shrink(value)
+        
+        XCTAssertEqual(
+            zipCandidates.count,
+            intCandidates.count + stringCandidates.count
+        )
+    }
+    
+    
+    
+    func testZipAllConstantProducesNoShrinkCandidates() throws
+    {
+        let generator: Generator<(Int, String, Bool)> = .zip(
+            .constant(1),
+            .constant("a"),
+            .constant(true)
+        )
+        
+        let candidates: [(Int, String, Bool)]
+            = generator.shrink((1, "a", true))
+        
+        XCTAssertTrue(candidates.isEmpty)
     }
 }
