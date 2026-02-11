@@ -77,8 +77,7 @@ extension Generator
     /// - Important: Precidates that reject most inputs slow down generation.
     /// Prefer constructing valid values directly.
     ///
-    /// - Precondition: The method must produce at least one matching value
-    /// in 1,000 attempts.
+    /// - Precondition: A matching value must be produced within 1,000 attempts.
     ///
     /// - Parameter predicate: The predicate to call with each generated value.
     /// - Returns: A generator that only produces values satisfying the given
