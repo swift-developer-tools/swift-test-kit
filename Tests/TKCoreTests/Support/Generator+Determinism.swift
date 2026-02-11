@@ -12,10 +12,10 @@ import XCTest
 
 
 
-internal extension Generator where V : Equatable
+extension Generator where V : Equatable
 {
     /// Validates that output of the generator is deterministic.
-    func validateDeterminism()
+    internal func validateDeterminism()
     {
         for _ in 0..<1000
         {

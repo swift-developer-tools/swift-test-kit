@@ -8,7 +8,7 @@
 //===----------------------------------------------------------------------===//
 
 /// Methods for failing assertions.
-package extension AssertionKind
+extension AssertionKind
 {
     // MARK: - Reason
     
@@ -20,7 +20,7 @@ package extension AssertionKind
     ///   - message: The description of a failure.
     ///   - file: The file where the failure occurs.
     ///   - line: The line where the failure occurs.
-    func fail(
+    package func fail(
         context     : FailureContext,
         captureKind : ExprCaptureKind,
         reason      : String?,
@@ -56,7 +56,7 @@ package extension AssertionKind
     ///   - file: The file where the failure occurs.
     ///   - line: The line where the failure occurs.
     ///   - options: The options for testing.
-    func fail(
+    package func fail(
         context     : FailureContext,
         captureKind : ExprCaptureKind,
         diff        : DiffNode,
@@ -94,7 +94,7 @@ package extension AssertionKind
     ///   - message: The description of a failure.
     ///   - file: The file where the failure occurs.
     ///   - line: The line where the failure occurs.
-    func fail(
+    package func fail(
         context     : FailureContext,
         captureKind : ExprCaptureKind,
         actual      : String?,
@@ -131,7 +131,7 @@ package extension AssertionKind
     ///   - file: The file where the failure occurs.
     ///   - line: The line where the failure occurs.
     ///   - options: The options for testing.
-    func fail(
+    package func fail(
         context         : FailureContext,
         exprText        : String,
         evaluated       : [BooleanExpr],
@@ -171,7 +171,7 @@ package extension AssertionKind
     ///   - file: The file where the failure occurs.
     ///   - line: The line where the failure occurs.
     ///   - options: The options for testing.
-    func fail(
+    package func fail(
         context     : FailureContext,
         captureKind : ExprCaptureKind,
         failure     : PredicateFailure,

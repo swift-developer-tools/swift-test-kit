@@ -11,10 +11,10 @@ import Foundation
 
 
 
-package extension String
+extension String
 {
     /// The string with newlines collapsed to a single space.
-    func collapseLines() -> String
+    package func collapseLines() -> String
     {
         return self
             .replacingOccurrences(of: "\r\n",   with: " ")

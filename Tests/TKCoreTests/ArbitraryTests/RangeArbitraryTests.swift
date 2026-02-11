@@ -340,13 +340,13 @@ extension Range: ArbitraryRange
 
 // MARK: - Extensions
 
-private extension RangeArbitraryTests
+extension RangeArbitraryTests
 {
     // MARK: - Generation support
     
     /// Validates arbitrary value generation of the given type.
     /// - Parameter type: The type to evaluate.
-    func testGeneration<R>(
+    private func testGeneration<R>(
         of type: R.Type
     ) where R : Arbitrary & ArbitraryRange & Equatable,
             R.Bound : Arbitrary & FixedWidthInteger
@@ -364,7 +364,7 @@ private extension RangeArbitraryTests
     /// Validates that arbitrary value generation of the given type is
     /// deterministic.
     /// - Parameter type: The type to evaluate.
-    func validateDeterminism<R>(
+    private func validateDeterminism<R>(
         of type: R.Type
     ) where R : Arbitrary & ArbitraryRange & Equatable,
             R.Bound : Arbitrary & FixedWidthInteger
@@ -384,7 +384,7 @@ private extension RangeArbitraryTests
     
     /// Validates that a size of zero produces arbitrary values of zero.
     /// - Parameter type: The type to evaluate.
-    func validateSizeZeroProduction<R>(
+    private func validateSizeZeroProduction<R>(
         of type: R.Type
     ) where R : Arbitrary & ArbitraryRange & Equatable,
             R.Bound : Arbitrary & FixedWidthInteger
@@ -403,7 +403,7 @@ private extension RangeArbitraryTests
     /// Validates that arbitrary values of the given type respect the expected
     /// size bounds.
     /// - Parameter type: The type to evaluate.
-    func validateSizeBounds<R>(
+    private func validateSizeBounds<R>(
         of type: R.Type
     ) where R : Arbitrary & ArbitraryRange & Equatable,
             R.Bound : Arbitrary & FixedWidthInteger
@@ -437,7 +437,7 @@ private extension RangeArbitraryTests
     
     /// Validates the bounds of the given type.
     /// - Parameter type: The type to evaluate.
-    func validateBoundInvariant<R>(
+    private func validateBoundInvariant<R>(
         of type: R.Type
     ) where R : Arbitrary & ArbitraryRange & Equatable,
             R.Bound : Arbitrary & FixedWidthInteger
@@ -455,7 +455,7 @@ private extension RangeArbitraryTests
     /// Validates that arbitrary values of the given type produce values of
     /// the appropriate sign.
     /// - Parameter type: The type to evaluate.
-    func validateSignedValueProduction<R>(
+    private func validateSignedValueProduction<R>(
         of type: R.Type
     ) where R : Arbitrary & ArbitraryRange & Equatable,
             R.Bound : Arbitrary & FixedWidthInteger
@@ -502,7 +502,7 @@ private extension RangeArbitraryTests
     /// Validates that arbitrary values of the given type remain within the
     /// type's representable range when the size exceeds that range.
     /// - Parameter type: The type to evaluate.
-    func validateValueBounds<R>(
+    private func validateValueBounds<R>(
         of type: R.Type
     ) where R : Arbitrary & ArbitraryRange & Equatable,
             R.Bound : Arbitrary & FixedWidthInteger
@@ -541,7 +541,7 @@ private extension RangeArbitraryTests
     
     /// Validates the shrink candidates of the given type.
     /// - Parameter type: The type to test.
-    func testShrinking<R>(
+    private func testShrinking<R>(
         of type: R.Type
     ) where R : Arbitrary & ArbitraryRange & Equatable,
             R.Bound : Arbitrary & FixedWidthInteger
@@ -566,7 +566,7 @@ private extension RangeArbitraryTests
     /// Validates that a range with both bounds equal to zero produces no
     /// shrink candidates.
     /// - Parameter type: The type to test.
-    func validateZeroBoundsShrinking<R>(
+    private func validateZeroBoundsShrinking<R>(
         of type: R.Type
     ) where R : Arbitrary & ArbitraryRange & Equatable,
             R.Bound : Arbitrary & FixedWidthInteger
@@ -580,7 +580,7 @@ private extension RangeArbitraryTests
     
     /// Validates the expected shrink candidates of specific ranges.
     /// - Parameter type: The type to test.
-    func validateCuratedCandidates<R>(
+    private func validateCuratedCandidates<R>(
         of type: R.Type
     ) where R : Arbitrary & ArbitraryRange & Equatable,
             R.Bound : Arbitrary & FixedWidthInteger
@@ -633,7 +633,7 @@ private extension RangeArbitraryTests
     
     /// Validates the correctness of the shrink candidates of the given range.
     /// - Parameter range: The range to evaluate.
-    func validateShrinkCandidates<R>(
+    private func validateShrinkCandidates<R>(
         of range: R
     ) where R : Arbitrary & ArbitraryRange & Equatable,
             R.Bound : Arbitrary & FixedWidthInteger

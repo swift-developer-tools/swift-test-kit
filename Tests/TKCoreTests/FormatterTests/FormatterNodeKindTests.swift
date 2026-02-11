@@ -529,11 +529,11 @@ internal final class FormatterNodeKindTests: XCTestCaseStopOnFail
 
 // MARK: - Extensions
 
-private extension FormatterNodeKindTests
+extension FormatterNodeKindTests
 {
     /// Tests formatting a cycle detection.
     /// - Parameter location: The cycle location.
-    func testCycle(
+    private func testCycle(
         _ location: CycleLocation
     )
     {

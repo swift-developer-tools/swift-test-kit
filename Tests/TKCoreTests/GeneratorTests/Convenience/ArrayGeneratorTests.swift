@@ -360,14 +360,14 @@ internal final class ArrayGeneratorTests: XCTestCaseStopOnFail
 
 // MARK: - Extensions
 
-private extension ArrayGeneratorTests
+extension ArrayGeneratorTests
 {
     /// Validates that the given generator produces arrays with counts within
     /// the given range.
     /// - Parameters:
     ///   - generator: The generator to evaluate.
     ///   - expected: The expected range of counts.
-    func validateCount(
+    private func validateCount(
         of generator    : Generator<[Int]>,
         expected        : ClosedRange<Int>
     )

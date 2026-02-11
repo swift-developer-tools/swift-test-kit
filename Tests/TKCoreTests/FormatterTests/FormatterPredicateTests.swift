@@ -2345,11 +2345,11 @@ internal final class FormatterPredicateTests: XCTestCaseStopOnFail
 
 // MARK: - Extensions
 
-private extension FormatterPredicateTests
+extension FormatterPredicateTests
 {
     /// A type with a multi-line `CustomStringConvertible` description for
     /// testing newline collapsing in ``RenderedValue``.
-    struct MultiLineValue: CustomStringConvertible, Hashable
+    private struct MultiLineValue: CustomStringConvertible, Hashable
     {
         let name    : String
         let value   : Int

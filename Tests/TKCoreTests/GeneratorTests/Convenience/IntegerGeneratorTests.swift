@@ -161,13 +161,13 @@ internal final class IntegerGeneratorTests: XCTestCaseStopOnFail
 
 // MARK: - Extensions
 
-private extension IntegerGeneratorTests
+extension IntegerGeneratorTests
 {
     // MARK: - Closed range support
     
     /// Validates closed ranges of the given type.
     /// - Parameter type: The type to evaluate.
-    func testClosedRange<T>(
+    private func testClosedRange<T>(
         of type: T.Type
     ) where T : Arbitrary & FixedWidthInteger
     {
@@ -198,7 +198,7 @@ private extension IntegerGeneratorTests
     
     /// Validates closed ranges of the given type.
     /// - Parameter type: The type to evaluate.
-    func validateClosedRange<T>(
+    private func validateClosedRange<T>(
         _ range: ClosedRange<T>
     ) where T : Arbitrary & FixedWidthInteger
     {
@@ -240,7 +240,7 @@ private extension IntegerGeneratorTests
     
     /// Validates ranges of the given type.
     /// - Parameter type: The type to evaluate.
-    func testRange<T>(
+    private func testRange<T>(
         of type: T.Type
     ) where T : Arbitrary & FixedWidthInteger
     {
@@ -270,7 +270,7 @@ private extension IntegerGeneratorTests
     
     /// Validates ranges of the given type.
     /// - Parameter type: The type to evaluate.
-    func validateRange<T>(
+    private func validateRange<T>(
         _ range: Range<T>
     ) where T : Arbitrary & FixedWidthInteger
     {
@@ -319,7 +319,7 @@ private extension IntegerGeneratorTests
     /// - Parameters:
     ///   - generator: The generator to use.
     ///   - range: The range to use.
-    func validateBounds<T>(
+    private func validateBounds<T>(
         of  generator   : Generator<T>,
         in  range       : ClosedRange<T>
     ) where T : FixedWidthInteger
@@ -340,7 +340,7 @@ private extension IntegerGeneratorTests
     /// - Parameters:
     ///   - generator: The generator to use.
     ///   - range: The range to use.
-    func validateBounds<T>(
+    private func validateBounds<T>(
         of  generator   : Generator<T>,
         in  range       : Range<T>
     ) where T : FixedWidthInteger
@@ -358,7 +358,7 @@ private extension IntegerGeneratorTests
     
     /// Validates that the given generator generates a variety of values.
     /// - Parameter generator: The generator to use.
-    func validateVariety<T>(
+    private func validateVariety<T>(
         of generator: Generator<T>
     ) where T : FixedWidthInteger
     {
@@ -378,7 +378,7 @@ private extension IntegerGeneratorTests
     /// - Parameters:
     ///   - generator: The generator to use.
     ///   - expected: The expected value.
-    func validateConstant<T>(
+    private func validateConstant<T>(
         of generator    : Generator<T>,
         expected        : T
     ) where T : FixedWidthInteger
@@ -397,7 +397,7 @@ private extension IntegerGeneratorTests
     /// - Parameters:
     ///   - generator: The generator to use.
     ///   - range: The range to use.
-    func validateShrinkTarget<T>(
+    private func validateShrinkTarget<T>(
         of  generator   : Generator<T>,
         in  range       : ClosedRange<T>
     ) where T : Arbitrary & FixedWidthInteger
@@ -433,7 +433,7 @@ private extension IntegerGeneratorTests
     /// - Parameters:
     ///   - generator: The generator to use.
     ///   - range: The range to use.
-    func validateShrinkCandidateBounds<T>(
+    private func validateShrinkCandidateBounds<T>(
         of  generator   : Generator<T>,
         in  range       : ClosedRange<T>
     ) where T : Arbitrary & FixedWidthInteger
@@ -455,7 +455,7 @@ private extension IntegerGeneratorTests
     /// Returns the shrink target for the given range.
     /// - Parameter range: The range to use.
     /// - Returns: The shrink target for the given range.
-    func shrinkTarget<T>(
+    private func shrinkTarget<T>(
         for range: ClosedRange<T>
     ) -> T where T : FixedWidthInteger
     {

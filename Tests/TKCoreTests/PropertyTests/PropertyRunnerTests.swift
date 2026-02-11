@@ -1727,7 +1727,7 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
 
 // MARK: - Extensions
 
-private extension PropertyRunnerTests
+extension PropertyRunnerTests
 {
     /// A wrapper around `Int` that provides controllable shrinking.
     ///
@@ -1735,7 +1735,7 @@ private extension PropertyRunnerTests
     /// generates values in the range `-context.size...context.size`, which
     /// makes it harder to reason about value distributions in tests. This
     /// wrapper always generates values in the range `0...context.size`.
-    struct BoundInt: Arbitrary, Equatable, CustomStringConvertible
+    private struct BoundInt: Arbitrary, Equatable, CustomStringConvertible
     {
         let value: Int
         
@@ -1764,7 +1764,8 @@ private extension PropertyRunnerTests
     /// A wrapper around `Int` that does not shrink.
     ///
     /// See ``BoundInt`` for more information regarding the range of values.
-    struct BoundIntNoShrink: Arbitrary, Equatable, CustomStringConvertible
+    private struct BoundIntNoShrink:
+        Arbitrary, Equatable, CustomStringConvertible
     {
         let value: Int
         
@@ -1786,7 +1787,7 @@ private extension PropertyRunnerTests
     
     
     /// Captures the generation size directly for testing size progression.
-    struct SizeCapture: Arbitrary, Equatable
+    private struct SizeCapture: Arbitrary, Equatable
     {
         let size: Int
         
@@ -1803,13 +1804,13 @@ private extension PropertyRunnerTests
     /// The seed used to initialize the random number generator.
     ///
     /// Use a fixed seed rather than a random seed for deterministic tests.
-    static let defaultSeed: UInt64 = 12345
+    private static let defaultSeed: UInt64 = 12345
     
     
     
     /// Initializes a ``TKOptions`` instance, optionally specifying values
     /// for its property-based testing options property.
-    static func makeOptions(
+    private static func makeOptions(
         iterations      : Int       = 100,
         maxShrinkSteps  : Int       = 100,
         maxSize         : Int       = 100,
@@ -1831,7 +1832,7 @@ private extension PropertyRunnerTests
     
     
     /// The associated values of a passed ``PropertyCheckResult``.
-    struct PassedValues
+    private struct PassedValues
     {
         let iterations  : Int
         let seed        : UInt64
@@ -1845,7 +1846,7 @@ private extension PropertyRunnerTests
     /// - Returns: The associated values of the passed result, or `nil` if
     /// the result did not pass.
     @discardableResult
-    static func assertPassed<T>(
+    private static func assertPassed<T>(
         _ result: PropertyCheckResult<T>
     ) -> PassedValues?
     {
@@ -1870,7 +1871,7 @@ private extension PropertyRunnerTests
     /// - Returns: The counterexample of the failed result, `nil` if the
     /// result did not fail.
     @discardableResult
-    static func assertFailed<T>(
+    private static func assertFailed<T>(
         _ result: PropertyCheckResult<T>
     ) -> Counterexample<T>?
     {
@@ -1887,7 +1888,7 @@ private extension PropertyRunnerTests
     
     
     /// The associated values of an exhausted ``PropertyCheckResult``.
-    struct ExhaustedValues
+    private struct ExhaustedValues
     {
         let discarded   : Int
         let succeeded   : Int
@@ -1903,7 +1904,7 @@ private extension PropertyRunnerTests
     /// - Returns: The counterexample of the failed result, `nil` if the
     /// result did not fail.
     @discardableResult
-    static func assertExhausted<T>(
+    private static func assertExhausted<T>(
         _ result: PropertyCheckResult<T>
     ) -> ExhaustedValues?
     {

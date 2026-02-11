@@ -11,10 +11,10 @@
 
 
 
-internal extension SeededRNG
+extension SeededRNG
 {
     /// A random number generator with a random seed.
-    static var random: SeededRNG
+    internal static var random: SeededRNG
     {
         return SeededRNG(seed: GenerationContext.randomSeed)
     }

@@ -14,14 +14,15 @@ import TestKitCore
 extension AssertionKind
 {
     /// The assertion name.
-    var name: String
+    internal var name: String
     {
         return name(for: .xctk)
     }
     
     
+    
     /// The internal macro name.
-    public var macroInternalName: String
+    internal var macroInternalName: String
     {
         return "_\(name)Macro"
     }
@@ -29,7 +30,7 @@ extension AssertionKind
     
     
     /// The macro display name.
-    public var macroDisplayName: String
+    internal var macroDisplayName: String
     {
         return "#\(name)"
     }

@@ -11,10 +11,10 @@ import Foundation
 
 
 
-package extension String
+extension String
 {
     /// The string with special characters escaped.
-    var escaped: String
+    package var escaped: String
     {
         return self
             .replacingOccurrences(of: "\\", with: "\\\\")

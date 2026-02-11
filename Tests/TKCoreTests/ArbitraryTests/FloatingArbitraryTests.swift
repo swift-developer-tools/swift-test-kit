@@ -63,13 +63,13 @@ internal final class FloatingArbitraryTests: XCTestCaseStopOnFail
 
 // MARK: - Extensions
 
-private extension FloatingArbitraryTests
+extension FloatingArbitraryTests
 {
     // MARK: Generation support
     
     /// Validates arbitrary value generation of the given type.
     /// - Parameter type: The type to evaluate.
-    func testGeneration<T>(
+    private func testGeneration<T>(
         of type: T.Type
     ) where T : Arbitrary & BinaryFloatingPoint
     {
@@ -87,7 +87,7 @@ private extension FloatingArbitraryTests
     /// Validates that arbitrary value generation of the given type is
     /// deterministic.
     /// - Parameter type: The type to evaluate.
-    func validateDeterminism<T>(
+    private func validateDeterminism<T>(
         of type: T.Type
     ) where T : Arbitrary & BinaryFloatingPoint
     {
@@ -114,7 +114,7 @@ private extension FloatingArbitraryTests
     /// Validates that at size zero, non-special values are bounded by only
     /// the fractional component (`-1...1`).
     /// - Parameter type: The type to evaluate.
-    func validateSizeZeroBounds<T>(
+    private func validateSizeZeroBounds<T>(
         of type: T.Type
     ) where T : Arbitrary & BinaryFloatingPoint
     {
@@ -141,7 +141,7 @@ private extension FloatingArbitraryTests
     
     /// Validates that non-special values respect the expected size bounds.
     /// - Parameter type: The type to evaluate.
-    func validateSizeBounds<T>(
+    private func validateSizeBounds<T>(
         of type: T.Type
     ) where T : Arbitrary & BinaryFloatingPoint
     {
@@ -178,7 +178,7 @@ private extension FloatingArbitraryTests
     /// Validates that arbitrary values of the given type produce both
     /// positive and negative values.
     /// - Parameter type: The type to evaluate.
-    func validateSignedValueProduction<T>(
+    private func validateSignedValueProduction<T>(
         of type: T.Type
     ) where T : Arbitrary & BinaryFloatingPoint
     {
@@ -216,7 +216,7 @@ private extension FloatingArbitraryTests
     /// Validates that arbitrary values of the given type remain within the
     /// type's representable range when the size exceeds that range.
     /// - Parameter type: The type to evaluate.
-    func validateValueBounds<T>(
+    private func validateValueBounds<T>(
         of type: T.Type
     ) where T : Arbitrary & BinaryFloatingPoint
     {
@@ -263,7 +263,7 @@ private extension FloatingArbitraryTests
     
     /// Validates that special values are generated over many iterations.
     /// - Parameter type: The type to evaluate.
-    func validateSpecialValueProduction<T>(
+    private func validateSpecialValueProduction<T>(
         of type: T.Type
     ) where T : Arbitrary & BinaryFloatingPoint
     {
@@ -311,7 +311,7 @@ private extension FloatingArbitraryTests
     /// Validates that arbitrary values of the given type include non-integer
     /// (fractional) values.
     /// - Parameter type: The type to evaluate.
-    func validateFractionalValueProduction<T>(
+    private func validateFractionalValueProduction<T>(
         of type: T.Type
     ) where T : Arbitrary & BinaryFloatingPoint
     {
@@ -345,7 +345,7 @@ private extension FloatingArbitraryTests
     
     /// Validates the shrink candidates of the given type.
     /// - Parameter type: The type to test.
-    func testShrinking<T>(
+    private func testShrinking<T>(
         of type: T.Type
     ) where T : Arbitrary & BinaryFloatingPoint
     {
@@ -362,7 +362,7 @@ private extension FloatingArbitraryTests
     
     /// Validates that zero does not shrink.
     /// - Parameter type: The type to evaluate.
-    func validateZeroShrinking<T>(
+    private func validateZeroShrinking<T>(
         of type: T.Type
     ) where T : Arbitrary & BinaryFloatingPoint
     {
@@ -375,7 +375,7 @@ private extension FloatingArbitraryTests
     
     /// Validates that special values shrink to `[0]`.
     /// - Parameter type: The type to evaluate.
-    func validateSpecialValueShrinking<T>(
+    private func validateSpecialValueShrinking<T>(
         of type: T.Type
     ) where T : Arbitrary & BinaryFloatingPoint
     {
@@ -401,7 +401,7 @@ private extension FloatingArbitraryTests
     /// Validates that a fraction value's shrink candidates include the
     /// truncated (integer) form as the second candidate.
     /// - Parameter type: The type to evaluate.
-    func validateFractionalTruncation<T>(
+    private func validateFractionalTruncation<T>(
         of type: T.Type
     ) where T : Arbitrary & BinaryFloatingPoint
     {
@@ -424,7 +424,7 @@ private extension FloatingArbitraryTests
     /// - Precondition: `value` must must be finite, non-NaN, and non-zero.
     ///
     /// - Parameter value: The value to evaluate.
-    func validateShrinkCandidates<T>(
+    private func validateShrinkCandidates<T>(
         of value: T
     ) where T : Arbitrary & BinaryFloatingPoint
     {

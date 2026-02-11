@@ -291,13 +291,13 @@ internal final class ResultArbitraryTests: XCTestCaseStopOnFail
 
 // MARK: - Extensions
 
-private extension ResultArbitraryTests
+extension ResultArbitraryTests
 {
-    typealias TestResult = Result<Int, ArbitraryError>
+    private typealias TestResult = Result<Int, ArbitraryError>
     
     
     
-    struct ArbitraryError: Error, Arbitrary, Equatable
+    private struct ArbitraryError: Error, Arbitrary, Equatable
     {
         let code: Int
         

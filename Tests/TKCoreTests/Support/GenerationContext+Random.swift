@@ -12,10 +12,10 @@ import XCTest
 
 
 
-internal extension GenerationContext
+extension GenerationContext
 {
     /// A generation context with a random seed and size.
-    static var random: GenerationContext
+    internal static var random: GenerationContext
     {
         return GenerationContext(
             seed:   randomSeed,
@@ -26,7 +26,7 @@ internal extension GenerationContext
     
     
     /// A random generation context with a random seed and zero size.
-    static var randomZeroSize: GenerationContext
+    internal static var randomZeroSize: GenerationContext
     {
         return GenerationContext(
             seed:   randomSeed,
@@ -38,7 +38,8 @@ internal extension GenerationContext
     
     /// A tuple of generation contexts initialized using the same random
     /// seeds and sizes.
-    static var sameRandomContexts: (GenerationContext, GenerationContext)
+    internal static var sameRandomContexts:
+        (GenerationContext, GenerationContext)
     {
         let seed    : UInt64    = GenerationContext.randomSeed
         let size    : Int       = GenerationContext.randomSize
@@ -52,7 +53,7 @@ internal extension GenerationContext
     
     
     /// A random seed.
-    static var randomSeed: UInt64
+    internal static var randomSeed: UInt64
     {
         return .random(in: UInt64.min...UInt64.max)
     }
@@ -60,7 +61,7 @@ internal extension GenerationContext
     
     
     /// A random size.
-    static var randomSize: Int
+    internal static var randomSize: Int
     {
         return .random(in: 0...100)
     }

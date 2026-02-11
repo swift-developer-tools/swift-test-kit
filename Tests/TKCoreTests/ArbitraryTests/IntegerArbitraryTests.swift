@@ -161,13 +161,13 @@ internal final class IntegerArbitraryTests: XCTestCaseStopOnFail
 
 // MARK: - Extensions
 
-private extension IntegerArbitraryTests
+extension IntegerArbitraryTests
 {
     // MARK: Generation support
     
     /// Validates arbitrary value generation of the given type.
     /// - Parameter type: The type to evaluate.
-    func testGeneration<T>(
+    private func testGeneration<T>(
         of type: T.Type
     ) where T : Arbitrary & FixedWidthInteger
     {
@@ -183,7 +183,7 @@ private extension IntegerArbitraryTests
     /// Validates that arbitrary value generation of the given type is
     /// deterministic.
     /// - Parameter type: The type to evaluate.
-    func validateDeterminism<T>(
+    private func validateDeterminism<T>(
         of type: T.Type
     ) where T : Arbitrary & FixedWidthInteger
     {
@@ -202,7 +202,7 @@ private extension IntegerArbitraryTests
     
     /// Validates that a size of zero produces arbitrary values of zero.
     /// - Parameter type: The type to evaluate.
-    func validateSizeZeroProduction<T>(
+    private func validateSizeZeroProduction<T>(
         of type: T.Type
     ) where T : Arbitrary & FixedWidthInteger
     {
@@ -217,7 +217,7 @@ private extension IntegerArbitraryTests
     /// Validates that arbitrary values of the given type respect the expected
     /// size bounds.
     /// - Parameter type: The type to evaluate.
-    func validateSizeBounds<T>(
+    private func validateSizeBounds<T>(
         of type: T.Type
     ) where T : Arbitrary & FixedWidthInteger
     {
@@ -240,7 +240,7 @@ private extension IntegerArbitraryTests
     /// Validates that arbitrary values of the given type produce values of
     /// the appropriate sign.
     /// - Parameter type: The type to evaluate.
-    func validateSignedValueProduction<T>(
+    private func validateSignedValueProduction<T>(
         of type: T.Type
     ) where T : Arbitrary & FixedWidthInteger
     {
@@ -286,7 +286,7 @@ private extension IntegerArbitraryTests
     /// Validates that arbitrary values of the given type remain within the
     /// type's representable range when the size exceeds that range.
     /// - Parameter type: The type to evaluate.
-    func validateValueBounds<T>(
+    private func validateValueBounds<T>(
         of type: T.Type
     ) where T : Arbitrary & FixedWidthInteger
     {
@@ -321,7 +321,7 @@ private extension IntegerArbitraryTests
     
     /// Validates the shrink candidates of the given type.
     /// - Parameter type: The type to test.
-    func testShrinking<T>(
+    private func testShrinking<T>(
         of type: T.Type
     ) where T : Arbitrary & FixedWidthInteger
     {
@@ -343,7 +343,7 @@ private extension IntegerArbitraryTests
     
     /// Validates the shrink candidates of `0` and `1` as the given type.
     /// - Parameter type: The type to evaluate.
-    func validateZeroOneShrinking<T>(
+    private func validateZeroOneShrinking<T>(
         of type: T.Type
     ) where T : Arbitrary & FixedWidthInteger
     {
@@ -371,7 +371,7 @@ private extension IntegerArbitraryTests
     /// Validates the correctness of the shrink candidates of the minimum
     /// representable value of the given type.
     /// - Parameter type: The type to evaluate.
-    func validateMinValueShrinking<T>(
+    private func validateMinValueShrinking<T>(
         of type: T.Type
     ) where T : Arbitrary & FixedWidthInteger
     {
@@ -397,7 +397,7 @@ private extension IntegerArbitraryTests
     /// Validates the correctness of the shrink candidates of the maximum
     /// representable value of the given type.
     /// - Parameter type: The type to evaluate.
-    func validateMaxValueShrinking<T>(
+    private func validateMaxValueShrinking<T>(
         of type: T.Type
     ) where T : Arbitrary & FixedWidthInteger
     {
@@ -418,7 +418,7 @@ private extension IntegerArbitraryTests
     /// to test `T.min`.
     ///
     /// - Parameter value: The value to evaluate.
-    func validateShrinkCandidates<T>(
+    private func validateShrinkCandidates<T>(
         of value: T
     ) where T : Arbitrary & FixedWidthInteger
     {

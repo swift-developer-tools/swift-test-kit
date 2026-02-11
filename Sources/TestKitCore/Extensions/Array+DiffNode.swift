@@ -7,10 +7,10 @@
 //
 //===----------------------------------------------------------------------===//
 
-package extension Array<DiffNode>
+extension Array<DiffNode>
 {
     /// Whether the diff tree represents a set.
-    var isSetTree: Bool
+    package var isSetTree: Bool
     {
         guard !self.isEmpty
         else

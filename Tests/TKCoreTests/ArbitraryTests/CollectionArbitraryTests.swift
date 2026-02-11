@@ -686,11 +686,11 @@ internal final class CollectionArbitraryTests: XCTestCaseStopOnFail
 
 // MARK: - Extensions
 
-private extension CollectionArbitraryTests
+extension CollectionArbitraryTests
 {
     /// Validates arbitrary value generation of the given type.
     /// - Parameter type: The type to evaluate.
-    func testGeneration<T>(
+    private func testGeneration<T>(
         of type: T.Type
     ) where T : Arbitrary & Collection & Equatable
     {
@@ -706,7 +706,7 @@ private extension CollectionArbitraryTests
     /// Validates that arbitrary value generation of the given type is
     /// deterministic.
     /// - Parameter type: The type to evaluate.
-    func validateDeterminism<T>(
+    private func validateDeterminism<T>(
         of type: T.Type
     ) where T : Arbitrary & Collection & Equatable
     {
@@ -725,7 +725,7 @@ private extension CollectionArbitraryTests
     
     /// Validates that a size of zero produces empty collections.
     /// - Parameter type: The type to evaluate.
-    func validateSizeZeroProducesEmpty<T>(
+    private func validateSizeZeroProducesEmpty<T>(
         for type: T.Type
     ) where T : Arbitrary & Collection
     {
@@ -741,7 +741,7 @@ private extension CollectionArbitraryTests
     
     /// Validates generated collection counts do not exceed the generation size.
     /// - Parameter type: The type to evaluate.
-    func validateCountRespectsSizeBounds<T>(
+    private func validateCountRespectsSizeBounds<T>(
         for type: T.Type
     ) where T : Arbitrary & Collection
     {
@@ -765,7 +765,7 @@ private extension CollectionArbitraryTests
     /// Validates that arbitrary value generation produces both empty and
     /// non-empty collections.
     /// - Parameter type: The type to evaluate.
-    func validateProducesEmptyAndNonEmpty<T>(
+    private func validateProducesEmptyAndNonEmpty<T>(
         for type: T.Type
     ) where T : Arbitrary & Collection
     {
@@ -802,7 +802,7 @@ private extension CollectionArbitraryTests
     /// Validates that arbitrary value generation produces collections of
     /// various counts.
     /// - Parameter type: The type to evaluate.
-    func validateProducesVariousCounts<T>(
+    private func validateProducesVariousCounts<T>(
         for type: T.Type
     ) where T : Arbitrary & Collection
     {

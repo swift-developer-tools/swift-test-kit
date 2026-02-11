@@ -11,7 +11,7 @@ import TestKitCore
 
 
 
-package extension BooleanExpr
+extension BooleanExpr
 {
     /// Initializes a ``BooleanExpr`` instance from the given values.
     ///
@@ -22,7 +22,7 @@ package extension BooleanExpr
     /// - Parameters:
     ///   - text: The source text of the expression.
     ///   - value: The evaluated boolean value.
-    init(
+    package init(
         _ text  : String,
         _ value : Bool
     )

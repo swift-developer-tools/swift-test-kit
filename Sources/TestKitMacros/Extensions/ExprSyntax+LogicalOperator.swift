@@ -11,11 +11,11 @@ import SwiftSyntax
 
 
 
-package extension ExprSyntax
+extension ExprSyntax
 {
     /// The kind of logical operator used in the expression, or `nil` if this
     /// is not an infix expression with a logical operator (`&&` or `||`).
-    var logicalOperatorKind: BooleanExprWalker.LogicalOperatorKind?
+    package var logicalOperatorKind: BooleanExprWalker.LogicalOperatorKind?
     {
         guard
             let infix       = self.as(InfixOperatorExprSyntax.self),
@@ -35,7 +35,7 @@ package extension ExprSyntax
     
     /// Whether the expression is an infix expression with a logical operator
     /// (`&&` or `||`).
-    var isLogicalBinaryOperation: Bool
+    package var isLogicalBinaryOperation: Bool
     {
         return self.logicalOperatorKind != nil
     }

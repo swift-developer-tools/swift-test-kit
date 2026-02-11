@@ -999,14 +999,14 @@ internal final class PackShrinkingTests: XCTestCaseStopOnFail
 
 // MARK: - Extensions
 
-private extension PackShrinkingTests
+extension PackShrinkingTests
 {
     /// Computes the shrink candidates of the given values.
     /// - Parameters:
     ///   - values: The values for which to compute shrink candidates.
     ///   - shrinkers: The shrinkers to use.
     /// - Returns: The shrink candidates of the given values.
-    func computeShrinkCandidates(
+    private func computeShrinkCandidates(
         of      values      : [Any],
         using   shrinkers   : [AnyShrinker]
     ) -> [[Any]]

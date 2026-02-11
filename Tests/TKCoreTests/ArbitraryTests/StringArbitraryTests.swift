@@ -384,12 +384,12 @@ internal final class StringArbitraryTests: XCTestCaseStopOnFail
 
 // MARK: - Extensions
 
-private extension StringArbitraryTests
+extension StringArbitraryTests
 {
     /// Validates that arbitrary value generation of the given type is
     /// deterministic.
     /// - Parameter type: The type to evaluate.
-    func validateDeterminism<T>(
+    private func validateDeterminism<T>(
         of type: T.Type
     ) where T : Arbitrary & Equatable
     {
@@ -411,7 +411,7 @@ private extension StringArbitraryTests
     /// - Parameter scalar: The scalar to evaluate.
     /// - Returns: Whether the given scalar is in the ASCII printable range,
     /// or in one of the known Unicode generation ranges
-    func isInExpectedRange(
+    private func isInExpectedRange(
         _ scalar: Unicode.Scalar
     ) -> Bool
     {
@@ -438,7 +438,7 @@ private extension StringArbitraryTests
     
     /// Validates the shrink candidates for the given character.
     /// - Parameter char: The character to evaluate.
-    func validateShrinkCandidates(
+    private func validateShrinkCandidates(
         of char: Character
     )
     {
@@ -506,7 +506,7 @@ private extension StringArbitraryTests
     
     /// Validates the shrink candidates for the given Unicode scalar.
     /// - Parameter scalar: The scalar to evaluate.
-    func validateShrinkCandidates(
+    private func validateShrinkCandidates(
         of scalar: Unicode.Scalar
     )
     {
@@ -537,7 +537,7 @@ private extension StringArbitraryTests
     
     /// Validates the shrink candidates for the given string.
     /// - Parameter string: The string to evaluate.
-    func validateShrinkCandidates(
+    private func validateShrinkCandidates(
         of string: String
     )
     {

@@ -7,12 +7,12 @@
 //
 //===----------------------------------------------------------------------===//
 
-internal extension Array where Element : Arbitrary
+extension Array where Element : Arbitrary
 {
     /// Shrinks the array by removing elements and shrinking individual
     /// elements.
     /// - Returns: The shrink candidates.
-    func shrinkTowardEmpty() -> [[Element]]
+    internal func shrinkTowardEmpty() -> [[Element]]
     {
         return shrinkToward(minCount: 0)
     }
@@ -28,7 +28,7 @@ internal extension Array where Element : Arbitrary
     ///
     /// - Parameter minCount: The minimum number of elements.
     /// - Returns: The shrink candidates.
-    func shrinkToward(
+    internal func shrinkToward(
         minCount: Int
     ) -> [[Element]]
     {

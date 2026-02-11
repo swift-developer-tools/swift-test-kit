@@ -41,13 +41,13 @@ package protocol DoubleExprPredicateMacro   : AssertionMacro { }
 
 
 
-package extension AssertionMacro
+extension AssertionMacro
 {
     /// Creates an error for an unhandled assertion kind during macro expansion.
     ///
     /// This indicates an internal bug where an ``AssertionKind`` was routed
     /// to a protocol extension that does not handle it.
-    static func makeUnhandledKindError() -> ExpansionError
+    package static func makeUnhandledKindError() -> ExpansionError
     {
         return ExpansionError(
             "Unhandled assertion kind"
@@ -62,14 +62,14 @@ package extension AssertionMacro
 
 // MARK: - No expression
 
-package extension NoExprMacro
+extension NoExprMacro
 {
     /// Expands the macro.
     /// - Parameters:
     ///   - node: The AST node.
     ///   - context: The context in which the macro appears.
     /// - Returns: The expanded macro expression.
-    static func expansion(
+    package static func expansion(
         of  node    : some FreestandingMacroExpansionSyntax,
         in  context : some MacroExpansionContext
     ) throws -> ExprSyntax
@@ -91,14 +91,14 @@ package extension NoExprMacro
 
 // MARK: - Single expression
 
-package extension SingleExprMacro
+extension SingleExprMacro
 {
     /// Expands the macro.
     /// - Parameters:
     ///   - node: The AST node.
     ///   - context: The context in which the macro appears.
     /// - Returns: The expanded macro expression.
-    static func expansion(
+    package static func expansion(
         of  node    : some FreestandingMacroExpansionSyntax,
         in  context : some MacroExpansionContext
     ) throws -> ExprSyntax
@@ -238,14 +238,14 @@ package extension SingleExprMacro
 
 // MARK: - Double expression
 
-package extension DoubleExprMacro
+extension DoubleExprMacro
 {
     /// Expands the macro.
     /// - Parameters:
     ///   - node: The AST node.
     ///   - context: The context in which the macro appears.
     /// - Returns: The expanded macro expression.
-    static func expansion(
+    package static func expansion(
         of  node    : some FreestandingMacroExpansionSyntax,
         in  context : some MacroExpansionContext
     ) throws -> ExprSyntax
@@ -364,14 +364,14 @@ private struct PredicateExtractionResult
 
 
 
-package extension DoubleExprPredicateMacro
+extension DoubleExprPredicateMacro
 {
     /// Expands the macro.
     /// - Parameters:
     ///   - node: The AST node.
     ///   - context: The context in which the macro appears.
     /// - Returns: The expanded macro expression.
-    static func expansion(
+    package static func expansion(
         of  node    : some FreestandingMacroExpansionSyntax,
         in  context : some MacroExpansionContext
     ) throws -> ExprSyntax

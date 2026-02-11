@@ -12,11 +12,11 @@ import SwiftSyntaxMacros
 
 
 
-package extension ExprSyntax
+extension ExprSyntax
 {
     /// Creates `nil` literal expression.
     /// - Returns: The `nil` literal expression.
-    static func makeNilLiteral() -> ExprSyntax
+    package static func makeNilLiteral() -> ExprSyntax
     {
         return ExprSyntax(NilLiteralExprSyntax())
     }
@@ -26,7 +26,7 @@ package extension ExprSyntax
     /// Creates a string literal expression from the given content.
     /// - Parameter content: The string literal content.
     /// - Returns: The string literal expression.
-    static func makeStringLiteral(
+    package static func makeStringLiteral(
         _ content: String
     ) -> ExprSyntax
     {

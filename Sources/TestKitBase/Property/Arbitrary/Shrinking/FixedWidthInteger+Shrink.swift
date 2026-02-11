@@ -7,7 +7,7 @@
 //
 //===----------------------------------------------------------------------===//
 
-internal extension FixedWidthInteger
+extension FixedWidthInteger
 {
     /// Shrinks the value toward zero or the nearest bound by repeatedly
     /// halving the distance.
@@ -17,7 +17,7 @@ internal extension FixedWidthInteger
     ///
     /// - Parameter range: The range in which to generate integers.
     /// - Returns: The shrink candidates.
-    func shrinkTowardZero(
+    internal func shrinkTowardZero(
         in range: ClosedRange<Self>? = nil
     ) -> [Self]
     {

@@ -279,14 +279,14 @@ internal final class CharacterGeneratorTests: XCTestCaseStopOnFail
 
 // MARK: - Extensions
 
-private extension CharacterGeneratorTests
+extension CharacterGeneratorTests
 {
     /// Validates that the given generator only produces characters with
     /// scalar values within the given range.
     /// - Parameters:
     ///   - generator: The generator to evaluatea.
     ///   - range: The expected range of scalar values.
-    func validateCharacterRange(
+    private func validateCharacterRange(
         of generator    : Generator<Character>,
         range           : ClosedRange<Int>
     )
@@ -313,7 +313,7 @@ private extension CharacterGeneratorTests
     /// - Parameters:
     ///   - generator: The generator to evaluate.
     ///   - minUnique: The expected minimum number of unique characters.
-    func validateVariety(
+    private func validateVariety(
         of generator    : Generator<Character>,
         minUnique       : Int
     )

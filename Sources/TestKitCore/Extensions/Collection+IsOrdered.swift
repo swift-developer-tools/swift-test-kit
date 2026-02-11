@@ -7,10 +7,10 @@
 //
 //===----------------------------------------------------------------------===//
 
-package extension Collection
+extension Collection
 {
     /// Whether the collection is ordered.
-    var isOrdered: Bool
+    package var isOrdered: Bool
     {
         let mirror = Mirror(reflecting: self)
         

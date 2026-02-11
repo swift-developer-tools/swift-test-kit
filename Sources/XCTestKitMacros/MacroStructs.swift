@@ -16,9 +16,9 @@ import TestKitMacros
 
 internal protocol XCTKMacro: AssertionMacro { }
 
-internal extension XCTKMacro
+extension XCTKMacro
 {
-    static var framework: FrameworkKind { .xctk }
+    internal static var framework: FrameworkKind { .xctk }
 }
 
 

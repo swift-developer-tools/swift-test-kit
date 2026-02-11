@@ -7,12 +7,12 @@
 //
 //===----------------------------------------------------------------------===//
 
-internal extension String
+extension String
 {
     /// Shrinks the string by removing characters and shrinking individual
     /// characters.
     /// - Returns: The shrink candidates.
-    func shrinkTowardEmpty() -> [String]
+    internal func shrinkTowardEmpty() -> [String]
     {
         return shrinkToward(minCount: 0)
     }
@@ -28,7 +28,7 @@ internal extension String
     ///
     /// - Parameter minCount: The minimum number of characters.
     /// - Returns: The shrink candidates.
-    func shrinkToward(
+    internal func shrinkToward(
         minCount: Int
     ) -> [String]
     {
@@ -99,7 +99,7 @@ internal extension String
     
     /// Shrinks individual characters of the array, holding the others constant.
     /// - Returns: The shrink candidates.
-    func shrinkCharacters() -> [String]
+    internal func shrinkCharacters() -> [String]
     {
         let characters  : [Character]   = Array(self)
         var candidates  : [String]      = []

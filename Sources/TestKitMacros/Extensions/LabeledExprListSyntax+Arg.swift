@@ -11,12 +11,12 @@ import SwiftSyntax
 
 
 
-package extension LabeledExprListSyntax
+extension LabeledExprListSyntax
 {
     /// Gets the specified argument.
     /// - Parameter label: The label of the argument to retrieve.
     /// - Returns: The specified argument, or `nil` if not found.
-    func getArg(
+    package func getArg(
         labeled label: String,
     ) -> ExprSyntax?
     {
@@ -34,7 +34,7 @@ package extension LabeledExprListSyntax
     
     
     /// Unlabeled arguments.
-    var positionalArgs: [ExprSyntax]
+    package var positionalArgs: [ExprSyntax]
     {
         var args: [ExprSyntax] = []
         

@@ -8,8 +8,8 @@
 //===----------------------------------------------------------------------===//
 
 /// An error used to test assertions that accept a throwing expression.
-public struct TestError: Error
+package struct TestError: Error
 {
     /// Initializes a ``TestError`` instance.
-    public init() { }
+    package init() { }
 }

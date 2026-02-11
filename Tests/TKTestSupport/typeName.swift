@@ -10,7 +10,7 @@
 /// Gets the string description of the dynamic type of the given value.
 /// - Parameter value: The value to convert.
 /// - Returns: The string description of the dynamic type of the given value.
-public func typeName<T>(
+package func typeName<T>(
     of value: borrowing T
 ) -> String where T : ~Copyable, T : ~Escapable
 {

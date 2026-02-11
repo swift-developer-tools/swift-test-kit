@@ -589,12 +589,12 @@ internal final class ComparatorCycleTests: XCTestCaseStopOnFail
 
 // MARK: - Extensions
 
-internal extension ComparatorCycleTests
+extension ComparatorCycleTests
 {
     // MARK: - Node
     
     /// A reference type for testing cycle detection.
-    final class Node: Equatable
+    internal final class Node: Equatable
     {
         var value   : Int
         var next    : Node?
@@ -627,12 +627,12 @@ internal extension ComparatorCycleTests
 
 
 
-private extension ComparatorCycleTests
+extension ComparatorCycleTests
 {
     // MARK: - TreeNode
     
     /// A reference type for testing cycle detection.
-    final class TreeNode: Equatable
+    private final class TreeNode: Equatable
     {
         var value   : Int
         var left    : TreeNode?
@@ -671,7 +671,7 @@ private extension ComparatorCycleTests
     
     /// Tests detection of self-cycles in the given location.
     /// - Parameter cycleLocation: The cycle location to use.
-    func testSelfCycle(
+    private func testSelfCycle(
         in cycleLocation: CycleLocation
     )
     {
@@ -734,7 +734,7 @@ private extension ComparatorCycleTests
     
     /// Tests detection of mutual-cycles in the given location.
     /// - Parameter cycleLocation: The cycle location to use.
-    func testMutualCycle(
+    private func testMutualCycle(
         in cycleLocation: CycleLocation
     )
     {
@@ -830,7 +830,7 @@ private extension ComparatorCycleTests
     
     /// Tests a three-node cycle.
     /// - Parameter atRoot: Whether to cycle at the root.
-    func testThreeNodeCycle(
+    private func testThreeNodeCycle(
         atRoot: Bool
     )
     {
@@ -921,7 +921,7 @@ private extension ComparatorCycleTests
     // MARK: - CollectionKind
     
     /// Collection kinds.
-    enum CollectionKind
+    private enum CollectionKind
     {
         case array
         case dictionary
@@ -933,7 +933,7 @@ private extension ComparatorCycleTests
     
     /// Tests cycles in the specified kind of collection.
     /// - Parameter kind: The collection kind to use.
-    func testCycleInCollection(
+    private func testCycleInCollection(
         kind: CollectionKind
     )
     {

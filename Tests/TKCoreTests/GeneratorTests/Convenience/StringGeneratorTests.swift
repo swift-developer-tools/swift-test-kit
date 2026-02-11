@@ -423,14 +423,14 @@ internal final class StringGeneratorTests: XCTestCaseStopOnFail
 
 // MARK: - Extensions
 
-private extension StringGeneratorTests
+extension StringGeneratorTests
 {
     /// Validates that the given generator produces strings with counts within
     /// the given range.
     /// - Parameters:
     ///   - generator: The generator to evaluate.
     ///   - expected: The expected range of counts.
-    func validateCount(
+    private func validateCount(
         of generator    : Generator<String>,
         expected        : ClosedRange<Int>
     )

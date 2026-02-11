@@ -7,7 +7,7 @@
 //
 //===----------------------------------------------------------------------===//
 
-internal extension BinaryFloatingPoint
+extension BinaryFloatingPoint
 {
     /// Shrinks the value toward zero or the nearest bound by repeatedly
     /// halving the distance.
@@ -18,7 +18,7 @@ internal extension BinaryFloatingPoint
     /// - Parameter range: The range in which to generate floating-point
     /// numbers.
     /// - Returns: The shrink candidates.
-    func shrinkTowardZero(
+    internal func shrinkTowardZero(
         in range: ClosedRange<Self>? = nil
     ) -> [Self]
     {
@@ -124,7 +124,7 @@ internal extension BinaryFloatingPoint
     ///
     /// - Parameter context: The generation context.
     /// - Returns: The generation bound.
-    static func bound(
+    internal static func bound(
         from context: GenerationContext
     ) -> Int
     {
@@ -139,7 +139,7 @@ internal extension BinaryFloatingPoint
     
     
     /// Special values to occasionally generate.
-    static var specialValues: [Self]
+    internal static var specialValues: [Self]
     {
         return [
             -0.0,
@@ -154,7 +154,7 @@ internal extension BinaryFloatingPoint
     /// Generates a special value 5% of the time.
     /// - Parameter context: The generation context.
     /// - Returns: A special value or `nil`.
-    static func specialValue(
+    internal static func specialValue(
         using context: GenerationContext
     ) -> Self?
     {

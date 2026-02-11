@@ -7,11 +7,11 @@
 //
 //===----------------------------------------------------------------------===//
 
-package extension Array<Any>
+extension Array<Any>
 {
     /// An array of hashable type-erased values, or `nil` if the array
     /// elements are not hashable.
-    var hashable: [AnyHashable]?
+    package var hashable: [AnyHashable]?
     {
         var result: [AnyHashable] = []
         

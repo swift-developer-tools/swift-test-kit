@@ -11,11 +11,11 @@ import SwiftSyntax
 
 
 
-package extension ExprSyntax
+extension ExprSyntax
 {
     /// Whether the expression or any sub-expressions contain a `try`
     /// expression.
-    var containsTry: Bool
+    package var containsTry: Bool
     {
         if self.is(TryExprSyntax.self)
         {

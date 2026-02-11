@@ -101,10 +101,10 @@ public protocol Arbitrary
 
 // MARK: - Extensions
 
-public extension Arbitrary
+extension Arbitrary
 {
     /// Returns an empty array to indicate that no shrinking should occur.
-    func shrink() -> [Self]
+    public func shrink() -> [Self]
     {
         return []
     }

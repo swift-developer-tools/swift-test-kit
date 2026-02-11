@@ -11,10 +11,10 @@ import TestKitCore
 
 
 
-package extension ElementResult
+extension ElementResult
 {
     /// Initializes an ``ElementResult`` instance from the given values.
-    init(
+    package init(
         index   : Int,
         value   : Any,
         error   : String?     = nil
@@ -30,11 +30,11 @@ package extension ElementResult
 
 
 
-package extension CountMismatch
+extension CountMismatch
 {
     /// Initializes a ``CountMismatch`` instance from the given values, and
     /// an empty ``CountMismatch/errorElements`` array.
-    init(
+    package init(
         expected        : CountExpectationKind,
         matchedIndices  : [Int]
     )
@@ -49,10 +49,10 @@ package extension CountMismatch
 
 
 
-package extension OrderingViolation
+extension OrderingViolation
 {
     /// Initializes an ``OrderingViolation`` instance from the given values.
-    init(
+    package init(
         index   : Int,
         first   : Any,
         second  : Any,
@@ -70,10 +70,10 @@ package extension OrderingViolation
 
 
 
-package extension DuplicateGroup
+extension DuplicateGroup
 {
     /// Initializes a ``DuplicateGroup`` instance from the given values.
-    init(
+    package init(
         value   : Any,
         indices : [Int]
     )
@@ -87,10 +87,10 @@ package extension DuplicateGroup
 
 
 
-package extension DuplicateKeyGroup
+extension DuplicateKeyGroup
 {
     /// Initializes a ``DuplicateKeyGroup`` instance from the given values.
-    init(
+    package init(
         key         : Any,
         elements    : [IndexedElement]
     )
@@ -104,10 +104,10 @@ package extension DuplicateKeyGroup
 
 
 
-package extension IndexedElement
+extension IndexedElement
 {
     /// Initializes an ``IndexedElement`` instance from the given values.
-    init(
+    package init(
         _ index   : Int,
         _ value   : Any
     )
