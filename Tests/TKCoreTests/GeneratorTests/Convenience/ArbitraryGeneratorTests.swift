@@ -163,8 +163,7 @@ extension ArbitraryGeneratorTests
         
         for _ in 0..<1000
         {
-            let value: T = T.arbitrary(using: .random)
-            
+            let value           : T     = T.arbitrary(using: .random)
             let fromGenerator   : [T]   = generator.shrink(value)
             let fromProtocol    : [T]   = value.shrink()
             

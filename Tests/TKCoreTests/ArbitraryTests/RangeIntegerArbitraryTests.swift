@@ -299,45 +299,6 @@ internal final class RangeIntegerArbitraryTests: XCTestCaseStopOnFail
 
 
 
-// MARK: - ArbitraryRange
-
-private protocol ArbitraryRange
-{
-    associatedtype Bound: Comparable
-    
-    var lowerBound  : Bound     { get }
-    var upperBound  : Bound     { get }
-    
-    init(
-        lower   : Bound,
-        upper   : Bound
-    )
-}
-
-extension ClosedRange: ArbitraryRange
-{
-    init(
-        lower   : Bound,
-        upper   : Bound
-    )
-    {
-        self = lower...upper
-    }
-}
-
-extension Range: ArbitraryRange
-{
-    init(
-        lower   : Bound,
-        upper   : Bound
-    )
-    {
-        self = lower..<upper
-    }
-}
-
-
-
 // MARK: - Extensions
 
 extension RangeIntegerArbitraryTests
