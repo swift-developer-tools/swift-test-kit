@@ -20,17 +20,7 @@ extension Double: Arbitrary
         using context: GenerationContext
     ) -> Double
     {
-        if let specialValue = Double.specialValue(using: context)
-        {
-            return specialValue
-        }
-        
-        let bound: Int = Double.bound(from: context)
-        
-        let integer     = Double(context.random(in: -bound...bound))
-        let fraction    = Double(context.random(in: -1.0...1.0))
-        
-        return integer + fraction
+        return Self.makeArbitrary(using: context)
     }
     
     
@@ -63,17 +53,7 @@ extension Float: Arbitrary
         using context: GenerationContext
     ) -> Float
     {
-        if let specialValue = Float.specialValue(using: context)
-        {
-            return specialValue
-        }
-        
-        let bound: Int = Float.bound(from: context)
-        
-        let integer     = Float(context.random(in: -bound...bound))
-        let fraction    = Float(context.random(in: -1.0...1.0))
-        
-        return integer + fraction
+        return Self.makeArbitrary(using: context)
     }
     
     
@@ -106,17 +86,7 @@ extension Float16: Arbitrary
         using context: GenerationContext
     ) -> Float16
     {
-        if let specialValue = Float16.specialValue(using: context)
-        {
-            return specialValue
-        }
-        
-        let bound: Int = Float16.bound(from: context)
-        
-        let integer     = Float16(context.random(in: -bound...bound))
-        let fraction    = Float16(context.random(in: -1.0...1.0))
-        
-        return integer + fraction
+        return Self.makeArbitrary(using: context)
     }
     
     
@@ -140,6 +110,32 @@ extension Float16: Arbitrary
 
 extension BinaryFloatingPoint
 {
+    /// Generates an arbitrary value using the given generation context.
+    /// - Parameter context: The generation context.
+    /// - Returns: An arbitrary value in the range
+    /// `-context.size...context.size`, with a fractional component.
+    /// Occasionally generates special values (`-0.0`, `±infinity`, `nan`).
+    internal static func makeArbitrary(
+        using context: GenerationContext
+    ) -> Self
+    {
+        if let specialValue = specialValue(using: context)
+        {
+            return specialValue
+        }
+        
+        let bound   : Int   = bound(from: context)
+        let integer : Self  = .init(context.random(in: -bound...bound))
+        
+        let fraction: Self = context.size > 0
+            ? .init(context.random(in: -1.0...1.0))
+            : 0.0
+        
+        return integer + fraction
+    }
+    
+    
+    
     /// Shrinks the value toward zero or the nearest bound by repeatedly
     /// halving the distance.
     ///
