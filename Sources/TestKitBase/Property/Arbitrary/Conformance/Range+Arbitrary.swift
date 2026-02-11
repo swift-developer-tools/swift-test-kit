@@ -10,21 +10,36 @@
 extension Range: Arbitrary where Bound : Arbitrary & Comparable
 {
     /// Generates an arbitrary value using the given generation context.
+    ///
+    /// - Precondition: A valid range must be produced within 1,000 attempts.
+    ///
     /// - Parameter context: The generation context.
     /// - Returns: A range formed from two arbitrary bounds.
     public static func arbitrary(
         using context: GenerationContext
     ) -> Range
     {
-        let a   = Bound.arbitrary(using: context)
-        let b   = Bound.arbitrary(using: context)
-        
-        if a <= b
+        for _ in 0..<1000
         {
-            return a..<b
+            let a   = Bound.arbitrary(using: context)
+            let b   = Bound.arbitrary(using: context)
+            
+            if a <= b
+            {
+                return a..<b
+            }
+            
+            if b <= a
+            {
+                return b..<a
+            }
         }
         
-        return b..<a
+        preconditionFailure(
+            "Range.arbitrary(using:) failed to produce a valid range"
+            + " after 1000 attempts. Bound.arbitrary(using:) may be"
+            + " producing incomparable values too frequently."
+        )
     }
     
     
