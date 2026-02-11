@@ -163,7 +163,7 @@ extension BinaryFloatingPoint
         {
             target = 0.0
         }
-        else if 0.0 < range.lowerBound
+        else if range.lowerBound > 0.0
         {
             target = range.lowerBound
         }
