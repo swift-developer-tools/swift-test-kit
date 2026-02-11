@@ -42,6 +42,64 @@ package struct AnyShrinker
     {
         return _shrink(value)
     }
+    
+
+    
+    /// Generates shrink candidates from the given values.
+    ///
+    /// Each candidate is a copy of `values` with one element replace by a
+    /// shrunken alternative.
+    ///
+    /// - Parameters:
+    ///   - values: The mirrored tuple children, or an empty array for
+    ///   single-element packs.
+    ///   - original: The original tuple value. This is used only for
+    ///   single-element packs.
+    ///   - shrinkers: The shrinkers for each element.
+    /// - Returns: The type-erased shrink candidates.
+    package static func shrinkCandidates(
+        values      : [Any],
+        original    : Any,
+        shrinkers   : [AnyShrinker]
+    ) -> [[Any]]
+    {
+        var candidates: [[Any]] = []
+        
+        /// Single-element packs are flattened to the underlying element
+        /// (`(T)` becomes `T`). `Mirror` has no children for non-tuple values.
+        guard !values.isEmpty
+        else
+        {
+            guard shrinkers.count == 1
+            else
+            {
+                return []
+            }
+            
+            for shrunken in shrinkers[0].shrink(original)
+            {
+                candidates.append([shrunken])
+            }
+            
+            return candidates
+        }
+        
+        
+        
+        for index in values.indices
+        {
+            for shrunken in shrinkers[index].shrink(values[index])
+            {
+                var copy: [Any] = values
+                
+                copy[index] = shrunken
+                
+                candidates.append(copy)
+            }
+        }
+        
+        return candidates
+    }
 }
 
 

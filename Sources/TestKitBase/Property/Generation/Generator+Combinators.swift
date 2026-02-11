@@ -395,54 +395,23 @@ extension Generator
                 /// with the corresponding array index. Force-casting is safe
                 /// since array construction is controlled.
                 
-                var candidates: [(repeat each T)] = []
-                
                 let mirror  : Mirror    = .init(reflecting: tuple)
                 let values  : [Any]     = mirror.children.map { $0.value }
                 
+                let rawCandidates: [[Any]] = AnyShrinker.shrinkCandidates(
+                    values:     values,
+                    original:   tuple,
+                    shrinkers:  shrinkers
+                )
                 
-                
-                /// Single-element packs are flattened to the underlying
-                /// element (`(T)` becomes `T`). `Mirror` has no children for
-                /// non-tuple values.
-                if values.isEmpty
+                return rawCandidates.map
                 {
-                    guard shrinkers.count == 1
-                    else
-                    {
-                        return []
-                    }
+                    copy in
                     
-                    for shrunken in shrinkers[0].shrink(tuple)
-                    {
-                        let copy        : [Any]         = [shrunken]
-                        let packIndex   : PackIndex     = .init()
-                        
-                        candidates.append(
-                            (repeat copy[packIndex.next()] as! each T)
-                        )
-                    }
+                    let packIndex = PackIndex()
+                    
+                    return (repeat copy[packIndex.next()] as! each T)
                 }
-                
-                
-                
-                for index in values.indices
-                {
-                    for shrunken in shrinkers[index].shrink(values[index])
-                    {
-                        var copy: [Any] = values
-                        
-                        copy[index] = shrunken
-                        
-                        let packIndex = PackIndex()
-                        
-                        candidates.append(
-                            (repeat copy[packIndex.next()] as! each T)
-                        )
-                    }
-                }
-                
-                return candidates
             }
         )
     }
