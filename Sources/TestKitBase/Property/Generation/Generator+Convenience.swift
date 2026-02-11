@@ -7,6 +7,25 @@
 //
 //===----------------------------------------------------------------------===//
 
+// MARK: - Arbitrary
+
+extension Generator where V : Arbitrary
+{
+    /// Creates a generator that produces values by delegating to the type's
+    /// ``Arbitrary`` conformance.
+    /// - Returns: A generator that produces values by delegating to the type's
+    /// ``Arbitrary`` conformance.
+    public static func arbitrary() -> Generator<V>
+    {
+        return Generator<V>(
+            generate:   { context in V.arbitrary(using: context) },
+            shrink:     { value in value.shrink() }
+        )
+    }
+}
+
+
+
 // MARK: - Array
 
 extension Generator
