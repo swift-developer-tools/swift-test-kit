@@ -185,6 +185,82 @@ internal final class PackShrinkingTests: XCTestCaseStopOnFail
     
     
     
+    func testMakeShrinkerForType() throws
+    {
+        let shrinker = AnyShrinker.makeShrinker(for: Int.self)
+        
+        let input       : Int       = 50
+        let candidates  : [Any]     = shrinker.shrink(input)
+        let expected    : [Int]     = input.shrink()
+        
+        XCTAssertEqual(candidates.count, expected.count)
+        
+        for (candidate, exp) in zip(candidates, expected)
+        {
+            let value = try XCTUnwrap(candidate as? Int)
+            
+            XCTAssertEqual(value, exp)
+        }
+    }
+    
+    
+    
+    func testMakeShrinkerForTypeNoCandidates() throws
+    {
+        let shrinker = AnyShrinker.makeShrinker(for: Int.self)
+        
+        let candidates: [Any] = shrinker.shrink(0)
+        
+        XCTAssertTrue(candidates.isEmpty)
+    }
+    
+    
+    
+    func testMakeShrinkerFromGenerator() throws
+    {
+        let generator   : Generator<Int>    = .integer(in: 0...100)
+        let shrinker    : AnyShrinker       = .makeShrinker(from: generator)
+        
+        let input       : Int       = 99
+        let candidates  : [Any]     = shrinker.shrink(input)
+        let expected    : [Int]     = input.shrink()
+        
+        XCTAssertEqual(candidates.count, expected.count)
+        
+        for (candidate, exp) in zip(candidates, expected)
+        {
+            let value = try XCTUnwrap(candidate as? Int)
+            
+            XCTAssertEqual(value, exp)
+        }
+    }
+    
+    
+    
+    func testMakeShrinkerFromGeneratorCustomShrink() throws
+    {
+        let generator = Generator<Int>(
+            generate:   { context in context.random(in: 0...100) },
+            shrink:     { _ in [1, 2, 3] }
+        )
+        
+        let shrinker = AnyShrinker.makeShrinker(from: generator)
+        
+        let candidates: [Any] = shrinker.shrink(999)
+        
+        XCTAssertEqual(candidates.count, 3)
+        
+        let first   = try XCTUnwrap(candidates[0] as? Int)
+        let second  = try XCTUnwrap(candidates[1] as? Int)
+        let third   = try XCTUnwrap(candidates[2] as? Int)
+        
+        XCTAssertEqual(first, 1)
+        XCTAssertEqual(second, 2)
+        XCTAssertEqual(third, 3)
+    }
+    
+    
+    
     // MARK: - PackIndex
     
     func testSingleNextCall() throws
@@ -749,24 +825,173 @@ internal final class PackShrinkingTests: XCTestCaseStopOnFail
             using:  shrinkers
         )
         
+        XCTAssertEqual(candidates.count, p0Count + p1Count + p2Count)
         
         
-        /// Position n candidates should have position n changed.
         
         for index in 0..<p0Count
         {
             XCTAssertNotEqual(candidates[index][0] as! Int, 10)
+            XCTAssertEqual(candidates[index][1] as! Bool, true)
+            XCTAssertEqual(candidates[index][2] as! Int, 20)
         }
         
         for index in p0Count..<(p0Count + p1Count)
         {
+            XCTAssertEqual(candidates[index][0] as! Int, 10)
             XCTAssertNotEqual(candidates[index][1] as! Bool, true)
+            XCTAssertEqual(candidates[index][2] as! Int, 20)
         }
         
         for index in (p0Count + p1Count)..<(p0Count + p1Count + p2Count)
         {
+            XCTAssertEqual(candidates[index][0] as! Int, 10)
+            XCTAssertEqual(candidates[index][1] as! Bool, true)
             XCTAssertNotEqual(candidates[index][2] as! Int, 20)
         }
+    }
+    
+    
+    
+    func testShrinkCandidatesMultiElement() throws
+    {
+        let values: [Any] = [10, "abc"]
+        
+        let shrinkers: [AnyShrinker] =
+        [
+            .makeShrinker(for: Int.self),
+            .makeShrinker(for: String.self)
+        ]
+        
+        
+        
+        let p0Count: Int = shrinkers[0].shrink(values[0]).count
+        let p1Count: Int = shrinkers[1].shrink(values[1]).count
+        
+        let candidates: [[Any]] = AnyShrinker.shrinkCandidates(
+            values:     values,
+            original:   (10, "abc"),
+            shrinkers:  shrinkers
+        )
+        
+        XCTAssertEqual(candidates.count, p0Count + p1Count)
+        
+        for candidate in candidates
+        {
+            XCTAssertEqual(candidate.count, 2)
+            
+            var diffCount: Int = 0
+            
+            if (candidate[0] as! Int) != 10
+            {
+                diffCount += 1
+            }
+            
+            if (candidate[1] as! String) != "abc"
+            {
+                diffCount += 1
+            }
+            
+            XCTAssertEqual(diffCount, 1)
+        }
+        
+        
+        
+        for index in 0..<p0Count
+        {
+            XCTAssertNotEqual(candidates[index][0] as! Int, 10)
+            XCTAssertEqual(candidates[index][1] as! String, "abc")
+        }
+        
+        for index in p0Count..<(p0Count + p1Count)
+        {
+            XCTAssertEqual(candidates[index][0] as! Int, 10)
+            XCTAssertNotEqual(candidates[index][1] as! String, "abc")
+        }
+    }
+    
+    
+    
+    func testShrinkCandidatesSingleElementPack() throws
+    {
+        let shrinkers   : [AnyShrinker]     = [.makeShrinker(for: Int.self)]
+        let input       : Int               = 50
+        
+        let candidates: [[Any]] = AnyShrinker.shrinkCandidates(
+            values:     [],
+            original:   input,
+            shrinkers:  shrinkers
+        )
+        
+        let expected: [Int] = input.shrinkTowardZero()
+        
+        XCTAssertEqual(candidates.count, expected.count)
+        
+        for (candidate, exp) in zip(candidates, expected)
+        {
+            let value = try XCTUnwrap(candidate[0] as? Int)
+            
+            XCTAssertEqual(value, exp)
+        }
+    }
+    
+    
+    
+    func testShrinkCandidatesEmptyValuesWrongShrinkerCount() throws
+    {
+        /// No shrinkers or values. Nothing to shrink.
+        let zeroResult: [[Any]] = AnyShrinker.shrinkCandidates(
+            values:     [],
+            original:   40,
+            shrinkers:  []
+        )
+        
+        XCTAssertTrue(zeroResult.isEmpty)
+        
+        /// Two shrinkers, no values. Mismatch. Does not count as a
+        /// single-element pack.
+        let twoResult: [[Any]] = AnyShrinker.shrinkCandidates(
+            values:     [],
+            original:   40,
+            shrinkers:
+            [
+                .makeShrinker(for: Int.self),
+                .makeShrinker(for: Int.self)
+            ]
+        )
+        
+        XCTAssertTrue(twoResult.isEmpty)
+    }
+    
+    
+    
+    func testShrinkCandidatesAllUnshrinkable() throws
+    {
+        let candidates: [[Any]] = AnyShrinker.shrinkCandidates(
+            values:     [0, false, ""],
+            original:   (0, false, ""),
+            shrinkers:
+            [
+                .makeShrinker(for: Int.self),
+                .makeShrinker(for: Bool.self),
+                .makeShrinker(for: String.self)
+            ]
+        )
+        
+        XCTAssertTrue(candidates.isEmpty)
+    }
+    
+    
+    
+    func testShrinkCandidatesSingleElementPackUnshrinkable() throws
+    {
+        let candidates: [[Any]] = AnyShrinker.shrinkCandidates(
+            values:     [],
+            original:   0,
+            shrinkers:  [.makeShrinker(for: Int.self)]
+        )
+        
+        XCTAssertTrue(candidates.isEmpty)
     }
 }
 
