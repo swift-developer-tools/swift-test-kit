@@ -21,10 +21,17 @@ extension Generator where V : Equatable
         {
             let (context1, context2) = GenerationContext.sameRandomContexts
             
-            XCTAssertEqual(
-                self.generate(context1),
-                self.generate(context2)
-            )
+            let value1  : V     = self.generate(context1)
+            let value2  : V     = self.generate(context2)
+            
+            if
+                value1.isNaN,
+                value2.isNaN
+            {
+                continue
+            }
+            
+            XCTAssertEqual(value1, value2)
         }
     }
 }
