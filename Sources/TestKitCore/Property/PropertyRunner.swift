@@ -8,6 +8,7 @@
 //===----------------------------------------------------------------------===//
 
 import TestKitBase
+import OSLog
 
 
 
@@ -187,11 +188,25 @@ package struct PropertyRunner
         
         
         
+        if iterations == 0
+        {
+            logger.warning(
+                "Test passed vacuously - TKPropertyOptions.iterations is zero."
+            )
+        }
+        
         return .passed(
             iterations:     iterations,
             seed:           seed
         )
     }
+    
+    
+    
+    private static let logger = Logger(
+        subsystem:  "org.swifttestkit",
+        category:   "PropertyRunner"
+    )
     
     
     
