@@ -43,7 +43,31 @@ package struct AnyShrinker
         return _shrink(value)
     }
     
-
+    
+    
+    /// Creates a shrinker for the given type.
+    /// - Parameter type: The type to use.
+    /// - Returns: A shrinker for the given type.
+    package static func makeShrinker<T>(
+        for type: T.Type
+    ) -> AnyShrinker where T : Arbitrary
+    {
+        return AnyShrinker({ (value: T) in value.shrink() })
+    }
+    
+    
+    
+    /// Creates a shrinker from the given generator.
+    /// - Parameter generator: The generator to use.
+    /// - Returns: A shrinker from the given generator.
+    package static func makeShrinker<T>(
+        from generator: Generator<T>
+    ) -> AnyShrinker
+    {
+        return AnyShrinker(generator.shrink)
+    }
+    
+    
     
     /// Generates shrink candidates from the given values.
     ///
