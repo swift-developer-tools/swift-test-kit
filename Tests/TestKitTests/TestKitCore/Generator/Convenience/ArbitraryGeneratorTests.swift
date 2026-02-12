@@ -119,7 +119,7 @@ internal final class ArbitraryGeneratorTests: XCTestCaseStopOnFail
 
 
 
-// MARK: - Extensions
+// MARK: - Support
 
 extension ArbitraryGeneratorTests
 {

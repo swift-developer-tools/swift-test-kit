@@ -61,7 +61,7 @@ internal final class FloatingGeneratorTests: XCTestCaseStopOnFail
 
 
 
-// MARK: - Extensions
+// MARK: - Support
 
 extension FloatingGeneratorTests
 {

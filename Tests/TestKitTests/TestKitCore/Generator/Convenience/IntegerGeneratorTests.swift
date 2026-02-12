@@ -159,7 +159,7 @@ internal final class IntegerGeneratorTests: XCTestCaseStopOnFail
 
 
 
-// MARK: - Extensions
+// MARK: - Support
 
 extension IntegerGeneratorTests
 {

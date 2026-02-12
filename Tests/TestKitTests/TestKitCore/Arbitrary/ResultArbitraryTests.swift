@@ -289,7 +289,7 @@ internal final class ResultArbitraryTests: XCTestCaseStopOnFail
 
 
 
-// MARK: - Extensions
+// MARK: - Support
 
 extension ResultArbitraryTests
 {

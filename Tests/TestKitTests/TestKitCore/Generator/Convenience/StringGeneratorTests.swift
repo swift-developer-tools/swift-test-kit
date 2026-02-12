@@ -421,7 +421,7 @@ internal final class StringGeneratorTests: XCTestCaseStopOnFail
 
 
 
-// MARK: - Extensions
+// MARK: - Support
 
 extension StringGeneratorTests
 {

@@ -61,7 +61,7 @@ internal final class FloatingArbitraryTests: XCTestCaseStopOnFail
 
 
 
-// MARK: - Extensions
+// MARK: - Support
 
 extension FloatingArbitraryTests
 {

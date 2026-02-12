@@ -242,7 +242,7 @@ internal final class ForAllOptionsTests: XCTestKitCase
 
 
 
-// MARK: - Extensions
+// MARK: - Support
 
 extension ForAllOptionsTests
 {

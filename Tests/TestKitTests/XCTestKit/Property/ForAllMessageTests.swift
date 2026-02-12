@@ -86,7 +86,7 @@ internal final class ForAllMessageTests: XCTestKitCase
 
 
 
-// MARK: - Extensions
+// MARK: - Support
 
 extension ForAllMessageTests
 {

@@ -1402,7 +1402,7 @@ internal final class ForAllOutputTests: XCTestKitCase
 
 
 
-// MARK: - Extensions
+// MARK: - Support
 
 extension ForAllOutputTests
 {

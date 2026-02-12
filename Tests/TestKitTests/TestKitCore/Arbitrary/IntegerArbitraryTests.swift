@@ -159,7 +159,7 @@ internal final class IntegerArbitraryTests: XCTestCaseStopOnFail
 
 
 
-// MARK: - Extensions
+// MARK: - Support
 
 extension IntegerArbitraryTests
 {

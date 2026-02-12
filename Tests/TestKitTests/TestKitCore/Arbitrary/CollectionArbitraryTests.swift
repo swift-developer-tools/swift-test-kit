@@ -684,7 +684,7 @@ internal final class CollectionArbitraryTests: XCTestCaseStopOnFail
 
 
 
-// MARK: - Extensions
+// MARK: - Support
 
 extension CollectionArbitraryTests
 {

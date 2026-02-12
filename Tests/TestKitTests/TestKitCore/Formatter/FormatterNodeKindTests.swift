@@ -526,7 +526,7 @@ internal final class FormatterNodeKindTests: XCTestCaseStopOnFail
 
 
 
-// MARK: - Extensions
+// MARK: - Support
 
 extension FormatterNodeKindTests
 {

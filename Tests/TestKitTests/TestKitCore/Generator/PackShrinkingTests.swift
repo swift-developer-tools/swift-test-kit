@@ -1032,7 +1032,7 @@ internal final class PackShrinkingTests: XCTestCaseStopOnFail
 
 
 
-// MARK: - Extensions
+// MARK: - Support
 
 extension PackShrinkingTests
 {

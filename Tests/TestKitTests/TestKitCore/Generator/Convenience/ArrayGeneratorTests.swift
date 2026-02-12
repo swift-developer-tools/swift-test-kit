@@ -358,7 +358,7 @@ internal final class ArrayGeneratorTests: XCTestCaseStopOnFail
 
 
 
-// MARK: - Extensions
+// MARK: - Support
 
 extension ArrayGeneratorTests
 {

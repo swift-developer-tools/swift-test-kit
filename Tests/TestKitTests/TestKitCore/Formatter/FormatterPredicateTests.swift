@@ -2342,7 +2342,7 @@ internal final class FormatterPredicateTests: XCTestCaseStopOnFail
 
 
 
-// MARK: - Extensions
+// MARK: - Support
 
 extension FormatterPredicateTests
 {

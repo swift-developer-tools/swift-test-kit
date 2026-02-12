@@ -299,7 +299,7 @@ internal final class RangeIntegerArbitraryTests: XCTestCaseStopOnFail
 
 
 
-// MARK: - Extensions
+// MARK: - Support
 
 extension RangeIntegerArbitraryTests
 {

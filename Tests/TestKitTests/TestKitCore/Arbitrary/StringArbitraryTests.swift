@@ -382,7 +382,7 @@ internal final class StringArbitraryTests: XCTestCaseStopOnFail
 
 
 
-// MARK: - Extensions
+// MARK: - Support
 
 extension StringArbitraryTests
 {

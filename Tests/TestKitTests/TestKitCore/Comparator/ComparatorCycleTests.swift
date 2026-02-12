@@ -586,7 +586,7 @@ internal final class ComparatorCycleTests: XCTestCaseStopOnFail
 
 
 
-// MARK: - Extensions
+// MARK: - Support
 
 extension ComparatorCycleTests
 {

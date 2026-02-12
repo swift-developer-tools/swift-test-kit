@@ -277,7 +277,7 @@ internal final class CharacterGeneratorTests: XCTestCaseStopOnFail
 
 
 
-// MARK: - Extensions
+// MARK: - Support
 
 extension CharacterGeneratorTests
 {
