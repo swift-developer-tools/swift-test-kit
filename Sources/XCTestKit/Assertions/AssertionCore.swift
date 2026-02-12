@@ -766,8 +766,7 @@ internal func evaluateXCTKAssertEqual<T>(
     
     
     
-    let equal: Bool = areEqual(
-        value1,
+    let equal: Bool = value1.equals(
         value2,
         accuracy: accuracy
     )
@@ -837,8 +836,7 @@ internal func evaluateXCTKAssertEqual<T>(
     
     
     
-    let equal: Bool = areEqual(
-        value1,
+    let equal: Bool = value1.equals(
         value2,
         accuracy: accuracy
     )
@@ -908,8 +906,7 @@ internal func evaluateXCTKAssertNotEqual<T>(
     
     
     
-    let equal: Bool = areEqual(
-        value1,
+    let equal: Bool = value1.equals(
         value2,
         accuracy: accuracy
     )
@@ -979,8 +976,7 @@ internal func evaluateXCTKAssertNotEqual<T>(
     
     
     
-    let equal: Bool = areEqual(
-        value1,
+    let equal: Bool = value1.equals(
         value2,
         accuracy: accuracy
     )

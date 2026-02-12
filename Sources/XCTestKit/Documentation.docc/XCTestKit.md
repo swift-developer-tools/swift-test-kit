@@ -333,27 +333,6 @@ for the complete license terms.
 
 
 
-## Attribution
-
-See [Licenses](https://github.com/swift-developer-tools/swift-test-kit/tree/main/Licenses) 
-for the complete third-party license terms.
-
-### Swift.org
-
-XCTestKit includes a numeric equality utility adapted from the 
-[Swift.org](https://www.swift.org) open source project under the Apache License, 
-Version 2.0, with Runtime Library Exception.
-
-Copyright &copy; 2014 - 2016 Apple Inc. and the Swift project authors.
-
-See [https://swift.org/LICENSE.txt](https://swift.org/LICENSE.txt) for license 
-information.
-
-See [https://swift.org/CONTRIBUTORS.txt](https://swift.org/CONTRIBUTORS.txt) 
-for the list of Swift project authors.
-
-
-
 ## Topics
 
 ### Articles
