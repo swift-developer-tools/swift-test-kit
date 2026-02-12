@@ -82,28 +82,13 @@ let package = Package(
             ]
         ),
         
-        .target(
-            name: "TKTestSupport",
-            dependencies: ["TestKitCore"],
-            path: "Tests/TKTestSupport"
-        ),
-        
         .testTarget(
-            name: "TKCoreTests",
+            name: "TestKitTests",
             dependencies:
             [
                 "TestKitCore",
-                "TKTestSupport"
-            ]
-        ),
-        
-        .testTarget(
-            name: "XCTKTests",
-            dependencies:
-            [
-                "XCTestKit",
                 "TestKitMacros",
-                "TKTestSupport"
+                "XCTestKit"
             ]
         )
     ]
