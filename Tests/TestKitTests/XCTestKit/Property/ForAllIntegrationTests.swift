@@ -322,14 +322,10 @@ internal final class ForAllIntegrationTests: XCTestKitCase
     {
         let seed: UInt64 = 12345
         
-        let propertyOptions = PropertyOptions(
+        let options: TestOptions = .propertyOptions(
             iterations:     10,
             seed:           seed
         )
-        
-        let options = TestOptions(propertyOptions: propertyOptions)
-        
-        
         
         let output1: String? = withOneExpectedFailure
         {
@@ -362,12 +358,10 @@ internal final class ForAllIntegrationTests: XCTestKitCase
     
     func testAssertionInsideBodyDoesNotLeakAsSeparateFailure() throws
     {
-        let propertyOptions = PropertyOptions(
+        let options: TestOptions = .propertyOptions(
             iterations:     10,
             seed:           1
         )
-        
-        let options = TestOptions(propertyOptions: propertyOptions)
         
         /// If assertion failures are not intercepted, the assertion will
         /// report its failure directly to XCTest, producing more than one
@@ -392,10 +386,7 @@ internal final class ForAllIntegrationTests: XCTestKitCase
         let iterations  : Int   = 0
         var count       : Int   = 0
         
-        let propertyOptions     = PropertyOptions(iterations: iterations)
-        let options             = TestOptions(propertyOptions: propertyOptions)
-        
-        XCTKForAll(options: options)
+        XCTKForAll(options: .propertyOptions(iterations: iterations))
         {
             (_: Int) in
             
@@ -411,10 +402,7 @@ internal final class ForAllIntegrationTests: XCTestKitCase
     {
         var count: Int = 0
         
-        let propertyOptions     = PropertyOptions(iterations: 0)
-        let options             = TestOptions(propertyOptions: propertyOptions)
-        
-        XCTKForAll(options: options)
+        XCTKForAll(options: .propertyOptions(iterations: 0))
         {
             (_: Int) in
             
@@ -432,12 +420,10 @@ internal final class ForAllIntegrationTests: XCTestKitCase
     {
         XCTExpectFailure()
         
-        let propertyOptions = PropertyOptions(
+        let options: TestOptions = .propertyOptions(
             iterations:     1,
             seed:           1
         )
-        
-        let options = TestOptions(propertyOptions: propertyOptions)
         
         XCTKForAll(
             where:      { (_: Int) in false },
@@ -468,12 +454,10 @@ internal final class ForAllIntegrationTests: XCTestKitCase
     
     func testNestedProducesOneFailure() throws
     {
-        let propertyOptions = PropertyOptions(
+        let options: TestOptions = .propertyOptions(
             iterations:     1,
             seed:           1
         )
-        
-        let options = TestOptions(propertyOptions: propertyOptions)
         
         /// The inner evaluator fails on every iteration. Its assertion
         /// failures must be captured by the inner interceptor during
@@ -503,12 +487,10 @@ internal final class ForAllIntegrationTests: XCTestKitCase
     
     func testSequentialNoLeakFromPriorFailure() throws
     {
-        let propertyOptions = PropertyOptions(
+        let options: TestOptions = .propertyOptions(
             iterations:     10,
             seed:           1
         )
-        
-        let options = TestOptions(propertyOptions: propertyOptions)
         
         /// The first evaluator fails on the first assertion. The second
         /// evaluator succeeds on all assertions. The interceptor state must

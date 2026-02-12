@@ -118,12 +118,10 @@ extension ForAllMessageTests
         var count   : Int           = 0
         let message : () -> String  = { count += 1; return "msg" }
         
-        let propertyOptions = PropertyOptions(
+        let options: TestOptions = .propertyOptions(
             iterations:     1,
             seed:           50
         )
-        
-        let options = TestOptions(propertyOptions: propertyOptions)
         
         switch kind
         {
@@ -187,12 +185,10 @@ extension ForAllMessageTests
         var count   : Int           = 0
         let message : () -> String  = { count += 1; return "msg" }
         
-        let propertyOptions = PropertyOptions(
+        let options: TestOptions = .propertyOptions(
             iterations:     1,
             seed:           50
         )
-        
-        let options = TestOptions(propertyOptions: propertyOptions)
         
         withOneExpectedFailure
         {
@@ -267,13 +263,11 @@ extension ForAllMessageTests
         var count   : Int           = 0
         let message : () -> String  = { count += 1; return "msg" }
         
-        let propertyOptions = PropertyOptions(
+        let options: TestOptions = .propertyOptions(
             iterations:         1,
             maxDiscardRatio:    1,
             seed:               50
         )
-        
-        let options = TestOptions(propertyOptions: propertyOptions)
         
         withOneExpectedFailure
         {

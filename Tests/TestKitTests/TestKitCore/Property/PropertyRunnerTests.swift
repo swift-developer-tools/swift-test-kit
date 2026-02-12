@@ -21,7 +21,7 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
         let iterations  : Int       = 50
         let seed        : UInt64    = 99
         
-        let options: TestOptions = Self.makeOptions(
+        let options: TestOptions = .propertyOptions(
             iterations:     iterations,
             seed:           seed
         )
@@ -43,9 +43,14 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
     {
         let iterations: Int = 0
         
+        let options: TestOptions = .propertyOptions(
+            iterations:     iterations,
+            seed:           Self.seed
+        )
+        
         let result: PropertyCheckResult<BoundInt> = PropertyRunner.run(
             property:   { _ in },
-            options:    Self.makeOptions(iterations: iterations)
+            options:    options
         )
         
         let passed: PassedValues = try XCTUnwrap(Self.assertPassed(result))
@@ -59,9 +64,14 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
     {
         let iterations: Int = 1
         
+        let options: TestOptions = .propertyOptions(
+            iterations:     iterations,
+            seed:           Self.seed
+        )
+        
         let result: PropertyCheckResult<BoundInt> = PropertyRunner.run(
             property:   { _ in },
-            options:    Self.makeOptions(iterations: iterations)
+            options:    options
         )
         
         let passed: PassedValues = try XCTUnwrap(Self.assertPassed(result))
@@ -75,9 +85,10 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
     {
         let iterations: Int = 1000
         
-        let options: TestOptions = Self.makeOptions(
+        let options: TestOptions = .propertyOptions(
             iterations:     iterations,
-            maxSize:        1000
+            maxSize:        1000,
+            seed:           Self.seed
         )
         
         let result: PropertyCheckResult<BoundInt> = PropertyRunner.run(
@@ -107,7 +118,7 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
                     line:       1
                 )
             },
-            options: Self.makeOptions()
+            options: .propertyOptions(seed: Self.seed)
         )
         
         let counterexample: Counterexample<BoundInt>
@@ -120,9 +131,10 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
     
     func testConditionallyFailingPropertyReturnsFailed() throws
     {
-        let options: TestOptions = Self.makeOptions(
+        let options: TestOptions = .propertyOptions(
             iterations:     200,
-            maxSize:        50
+            maxSize:        50,
+            seed:           Self.seed
         )
         
         let result: PropertyCheckResult<BoundInt> = PropertyRunner.run(
@@ -156,7 +168,7 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
     {
         let result: PropertyCheckResult<BoundInt> = PropertyRunner.run(
             property:   { _ in throw TestError() },
-            options:    Self.makeOptions()
+            options:    .propertyOptions(seed: Self.seed)
         )
         
         let counterexample: Counterexample<BoundInt>
@@ -184,7 +196,7 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
                 
                 throw TestError()
             },
-            options: Self.makeOptions()
+            options: .propertyOptions(seed: Self.seed)
         )
         
         let counterexample: Counterexample<BoundInt>
@@ -220,7 +232,7 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
                     )
                 }
             },
-            options: Self.makeOptions()
+            options: .propertyOptions(seed: Self.seed)
         )
         
         let counterexample: Counterexample<BoundInt>
@@ -242,6 +254,11 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
     {
         let target: Int = 10
         
+        let options: TestOptions = .propertyOptions(
+            maxSize:    200,
+            seed:       Self.seed
+        )
+        
         let result: PropertyCheckResult<BoundInt> = PropertyRunner.run(
             property:
             {
@@ -261,7 +278,7 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
                     throw TestError()
                 }
             },
-            options: Self.makeOptions(maxSize: 200)
+            options: options
         )
         
         let counterexample: Counterexample<BoundInt>
@@ -278,9 +295,10 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
     {
         let target: Int = 50
         
-        let options: TestOptions = Self.makeOptions(
-            iterations:         100,
-            maxSize:            100
+        let options: TestOptions = .propertyOptions(
+            iterations:     100,
+            maxSize:        100,
+            seed:           Self.seed
         )
         
         let result: PropertyCheckResult<SizeCapture> = PropertyRunner.run(
@@ -319,6 +337,11 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
         
         let target: Int = 50
         
+        let options: TestOptions = .propertyOptions(
+            maxSize:    200,
+            seed:       Self.seed
+        )
+        
         let result: PropertyCheckResult<BoundInt> = PropertyRunner.run(
             property:
             {
@@ -333,7 +356,7 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
                     )
                 }
             },
-            options: Self.makeOptions(maxSize: 200)
+            options: options
         )
         
         let counterexample: Counterexample<BoundInt>
@@ -352,7 +375,7 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
         let result: PropertyCheckResult<BoundInt> = PropertyRunner.run(
             where:      { _ in true },
             property:   { _ in },
-            options:    Self.makeOptions()
+            options:    .propertyOptions(seed: Self.seed)
         )
         
         _ = try XCTUnwrap(Self.assertPassed(result))
@@ -369,7 +392,7 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
         let result: PropertyCheckResult<BoundInt> = PropertyRunner.run(
             where:      { boundInt in boundInt.value % 2 == 0 },
             property:   { _ in },
-            options:    Self.makeOptions()
+            options:    .propertyOptions(seed: Self.seed)
         )
         
         _ = try XCTUnwrap(Self.assertPassed(result))
@@ -381,9 +404,10 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
     {
         let maxDiscardRatio: Int = 2
         
-        let options: TestOptions = Self.makeOptions(
+        let options: TestOptions = .propertyOptions(
             iterations:         10,
-            maxDiscardRatio:    maxDiscardRatio
+            maxDiscardRatio:    maxDiscardRatio,
+            seed:               Self.seed
         )
         
         let result: PropertyCheckResult<BoundInt> = PropertyRunner.run(
@@ -409,9 +433,10 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
         let maxDiscardRatio : Int   = 2
         let threshold       : Int   = maxDiscardRatio * iterations
         
-        let options: TestOptions = Self.makeOptions(
+        let options: TestOptions = .propertyOptions(
             iterations:         iterations,
-            maxDiscardRatio:    maxDiscardRatio
+            maxDiscardRatio:    maxDiscardRatio,
+            seed:               Self.seed
         )
         
         let result: PropertyCheckResult<BoundInt> = PropertyRunner.run(
@@ -433,10 +458,15 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
     {
         let maxDiscardRatio: Int = 0
         
+        let options: TestOptions = .propertyOptions(
+            maxDiscardRatio:    maxDiscardRatio,
+            seed:               Self.seed
+        )
+        
         let result: PropertyCheckResult<BoundInt> = PropertyRunner.run(
             where:      { boundInt in boundInt.value > 1000 },
             property:   { _ in },
-            options:    Self.makeOptions(maxDiscardRatio: maxDiscardRatio)
+            options:    options
         )
         
         let exhausted: ExhaustedValues
@@ -451,6 +481,11 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
     
     func testConditionalPropertyWithFailingInputsReturnsFailed() throws
     {
+        let options: TestOptions = .propertyOptions(
+            maxSize:    200,
+            seed:       Self.seed
+        )
+        
         let result: PropertyCheckResult<BoundInt> = PropertyRunner.run(
             where: { boundInt in boundInt.value % 2 == 0 },
             property:
@@ -466,7 +501,7 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
                     )
                 }
             },
-            options: Self.makeOptions(maxSize: 200)
+            options: options
         )
         
         let counterexample: Counterexample<BoundInt>
@@ -490,10 +525,11 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
         let maxDiscardRatio : Int   = 1
         let threshold       : Int   = maxDiscardRatio * iterations
         
-        let options: TestOptions = Self.makeOptions(
+        let options: TestOptions = .propertyOptions(
             iterations:         iterations,
             maxSize:            maxSize,
-            maxDiscardRatio:    maxDiscardRatio
+            maxDiscardRatio:    maxDiscardRatio,
+            seed:               Self.seed
         )
         
         let result: PropertyCheckResult<SizeCapture> = PropertyRunner.run(
@@ -516,9 +552,10 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
     {
         let maxDiscardRatio: Int = 0
         
-        let options: TestOptions = Self.makeOptions(
+        let options: TestOptions = .propertyOptions(
             iterations:         1,
-            maxDiscardRatio:    maxDiscardRatio
+            maxDiscardRatio:    maxDiscardRatio,
+            seed:               Self.seed
         )
         
         let result: PropertyCheckResult<SizeCapture> = PropertyRunner.run(
@@ -541,7 +578,8 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
     
     func testSameSeedDeterminism() throws
     {
-        let target: Int = 7
+        let target  : Int           = 7
+        let options : TestOptions   = .propertyOptions(seed: Self.seed)
         
         let resultA: PropertyCheckResult<BoundInt> = PropertyRunner.run(
             property:
@@ -557,7 +595,7 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
                     )
                 }
             },
-            options: Self.makeOptions()
+            options: options
         )
         
         let resultB: PropertyCheckResult<BoundInt> = PropertyRunner.run(
@@ -574,7 +612,7 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
                     )
                 }
             },
-            options: Self.makeOptions()
+            options: options
         )
         
         switch (resultA, resultB)
@@ -604,7 +642,7 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
         {
             let result: PropertyCheckResult<BoundInt> = PropertyRunner.run(
                 property:   { _ in },
-                options:    Self.makeOptions(seed: nil)
+                options:    .propertyOptions(seed: nil)
             )
             
             let passed: PassedValues = try XCTUnwrap(Self.assertPassed(result))
@@ -619,8 +657,8 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
     {
         var valuesA     : [Int]         = []
         var valuesB     : [Int]         = []
-        let optionsA    : TestOptions   = Self.makeOptions(seed: 111)
-        let optionsB    : TestOptions   = Self.makeOptions(seed: 222)
+        let optionsA    : TestOptions   = .propertyOptions(seed: 111)
+        let optionsB    : TestOptions   = .propertyOptions(seed: 222)
         
         let resultA: PropertyCheckResult<BoundInt> = PropertyRunner.run(
             property:   { boundInt in valuesA.append(boundInt.value) },
@@ -643,8 +681,6 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
     
     func testCounterexampleSeedMatchesConfiguredSeed() throws
     {
-        let seed: UInt64 = 64
-        
         let result: PropertyCheckResult<BoundInt> = PropertyRunner.run(
             property:
             {
@@ -656,28 +692,25 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
                     line:       1
                 )
             },
-            options: Self.makeOptions(seed: seed)
+            options: .propertyOptions(seed: Self.seed)
         )
         
         let counterexample: Counterexample<BoundInt>
             = try XCTUnwrap(Self.assertFailed(result))
         
-        XCTAssertEqual(counterexample.seed, seed)
+        XCTAssertEqual(counterexample.seed, Self.seed)
     }
-    
-    
     
     
     
     func testExhaustionSeedMatchesConfiguredSeed() throws
     {
-        let seed            : UInt64    = 64
-        let maxDiscardRatio : Int       = 1
+        let maxDiscardRatio: Int = 1
         
-        let options: TestOptions = Self.makeOptions(
+        let options: TestOptions = .propertyOptions(
             iterations:         10,
             maxDiscardRatio:    maxDiscardRatio,
-            seed:               seed
+            seed:               Self.seed
         )
         
         let result: PropertyCheckResult<BoundInt> = PropertyRunner.run(
@@ -689,7 +722,7 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
         let exhausted: ExhaustedValues
             = try XCTUnwrap(Self.assertExhausted(result))
         
-        XCTAssertEqual(exhausted.seed, seed)
+        XCTAssertEqual(exhausted.seed, Self.seed)
         XCTAssertEqual(exhausted.ratio, maxDiscardRatio)
     }
     
@@ -708,7 +741,7 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
                     line:       1
                 )
             },
-            options: Self.makeOptions(seed: nil)
+            options: .propertyOptions(seed: nil)
         )
         
         _ = try XCTUnwrap(Self.assertFailed(result))
@@ -721,6 +754,11 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
     func testShrinkingReducesToMinimalCounterexample() throws
     {
         let target: Int = 10
+        
+        let options: TestOptions = .propertyOptions(
+            maxSize:    200,
+            seed:       Self.seed
+        )
         
         let result: PropertyCheckResult<BoundInt> = PropertyRunner.run(
             property:
@@ -736,7 +774,7 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
                     )
                 }
             },
-            options: Self.makeOptions(maxSize: 200)
+            options: options
         )
         
         let counterexample: Counterexample<BoundInt>
@@ -765,7 +803,7 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
                         )
                     }
                 },
-                options: Self.makeOptions()
+                options: .propertyOptions(seed: Self.seed)
             )
         
         let counterexample: Counterexample<BoundIntNoShrink>
@@ -784,6 +822,11 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
             shrink:     { value in value.shrinkTowardZero() }
         )
         
+        let options: TestOptions = .propertyOptions(
+            maxShrinkSteps:     3,
+            seed:               Self.seed
+        )
+        
         let result: PropertyCheckResult<Int> = PropertyRunner.run(
             using: generator,
             property:
@@ -799,7 +842,7 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
                     )
                 }
             },
-            options: Self.makeOptions(maxShrinkSteps: 3)
+            options: options
         )
         
         let counterexample: Counterexample<Int>
@@ -817,6 +860,11 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
     
     func testZeroMaxShrinkStepsDisablesShrinking() throws
     {
+        let options: TestOptions = .propertyOptions(
+            maxShrinkSteps:     0,
+            seed:               Self.seed
+        )
+        
         let result: PropertyCheckResult<BoundInt> = PropertyRunner.run(
             property:
             {
@@ -831,7 +879,7 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
                     )
                 }
             },
-            options: Self.makeOptions(maxShrinkSteps: 0)
+            options: options
         )
         
         let counterexample: Counterexample<BoundInt>
@@ -847,6 +895,11 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
     {
         let target: Int = 0
         
+        let options: TestOptions = .propertyOptions(
+            maxSize:    200,
+            seed:       Self.seed
+        )
+        
         let result: PropertyCheckResult<BoundInt> = PropertyRunner.run(
             property:
             {
@@ -861,7 +914,7 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
                     )
                 }
             },
-            options: Self.makeOptions(maxSize: 200)
+            options: options
         )
         
         let counterexample: Counterexample<BoundInt>
@@ -881,6 +934,11 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
     {
         let target: Int = 10
         
+        let options: TestOptions = .propertyOptions(
+            maxSize:    200,
+            seed:       Self.seed
+        )
+        
         let result: PropertyCheckResult<BoundInt> = PropertyRunner.run(
             property:
             {
@@ -891,7 +949,7 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
                     throw TestError()
                 }
             },
-            options: Self.makeOptions(maxSize: 200)
+            options: options
         )
         
         let counterexample: Counterexample<BoundInt>
@@ -930,7 +988,7 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
                     )
                 }
             },
-            options: Self.makeOptions()
+            options: .propertyOptions(seed: Self.seed)
         )
         
         let counterexample: Counterexample<Int>
@@ -950,6 +1008,11 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
             shrink:     { value in value.shrinkTowardZero() }
         )
         
+        let options: TestOptions = .propertyOptions(
+            maxShrinkSteps:     1,
+            seed:               Self.seed
+        )
+        
         let result: PropertyCheckResult<Int> = PropertyRunner.run(
             using: generator,
             property:
@@ -965,7 +1028,7 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
                     )
                 }
             },
-            options: Self.makeOptions(maxShrinkSteps: 1)
+            options: options
         )
         
         let counterexample: Counterexample<Int>
@@ -982,6 +1045,11 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
     
     func testSingleFailingIterationReturnsFailed() throws
     {
+        let options: TestOptions = .propertyOptions(
+            iterations:     1,
+            seed:           Self.seed
+        )
+        
         let result: PropertyCheckResult<BoundInt> = PropertyRunner.run(
             property:
             {
@@ -993,7 +1061,7 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
                     line:       1
                 )
             },
-            options: Self.makeOptions(iterations: 1)
+            options: options
         )
         
         let counterexample: Counterexample<BoundInt>
@@ -1013,10 +1081,14 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
         /// The precondition of `value >= 20` excludes `10` from the shrink
         /// candidates. Without precondition filtering, the minimal failing
         /// value would be `10`. With filtering, it is `20`.
-        
         let generator = Generator<Int>(
             generate:   { _ in 100 },
             shrink:     { value in [50, 30, 20, 10].filter { $0 < value }}
+        )
+        
+        let options: TestOptions = .propertyOptions(
+            iterations:     1,
+            seed:           Self.seed
         )
         
         let result: PropertyCheckResult<Int> = PropertyRunner.run(
@@ -1035,7 +1107,7 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
                     )
                 }
             },
-            options: Self.makeOptions(iterations: 1)
+            options: options
         )
         
         let counterexample: Counterexample<Int>
@@ -1050,6 +1122,11 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
     func testShrunkenCounterexampleCapturesBothFailureAndThrow() throws
     {
         let target: Int = 10
+        
+        let options: TestOptions = .propertyOptions(
+            maxSize:    200,
+            seed:       Self.seed
+        )
         
         let result: PropertyCheckResult<BoundInt> = PropertyRunner.run(
             property:
@@ -1067,7 +1144,7 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
                     throw TestError()
                 }
             },
-            options: Self.makeOptions(maxSize: 200)
+            options: options
         )
         
         let counterexample: Counterexample<BoundInt>
@@ -1099,6 +1176,11 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
             shrink:     { value in [value] }
         )
         
+        let options: TestOptions = .propertyOptions(
+            maxShrinkSteps:     maxShrinkSteps,
+            seed:               Self.seed
+        )
+        
         let result: PropertyCheckResult<Int> = PropertyRunner.run(
             using: generator,
             property:
@@ -1111,7 +1193,7 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
                     line:       1
                 )
             },
-            options: Self.makeOptions(maxShrinkSteps: maxShrinkSteps)
+            options: options
         )
         
         let counterexample: Counterexample<Int>
@@ -1130,6 +1212,11 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
     {
         let target: Int = 10
         
+        let options: TestOptions = .propertyOptions(
+            maxSize:    200,
+            seed:       Self.seed
+        )
+        
         let result: PropertyCheckResult<BoundInt> = PropertyRunner.run(
             property:
             {
@@ -1144,7 +1231,7 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
                     )
                 }
             },
-            options: Self.makeOptions(maxSize: 200)
+            options: options
         )
         
         let counterexample: Counterexample<BoundInt>
@@ -1176,6 +1263,11 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
             shrink:     { value in value.shrinkTowardZero() }
         )
         
+        let options: TestOptions = .propertyOptions(
+            iterations:     1,
+            seed:           Self.seed
+        )
+        
         let result: PropertyCheckResult<Int> = PropertyRunner.run(
             using:  generator,
             where:  { int in int >= 100 },
@@ -1189,7 +1281,7 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
                     line:       1
                 )
             },
-            options: Self.makeOptions(iterations: 1)
+            options: options
         )
         
         let counterexample: Counterexample<Int>
@@ -1241,7 +1333,7 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
                     )
                 }
             },
-            options: Self.makeOptions()
+            options: .propertyOptions(seed: Self.seed)
         )
         
         let counterexample: Counterexample<Int>
@@ -1281,7 +1373,7 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
                     )
                 }
             },
-            options: Self.makeOptions()
+            options: .propertyOptions(seed: Self.seed)
         )
         
         let counterexample: Counterexample<Int>
@@ -1311,7 +1403,7 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
                     line:       1
                 )
             },
-            options: Self.makeOptions()
+            options: .propertyOptions(seed: Self.seed)
         )
         
         let counterexample: Counterexample<Int>
@@ -1334,7 +1426,7 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
             using:      generator,
             where:      { int in int % 2 == 0 },
             property:   { _ in },
-            options:    Self.makeOptions()
+            options:    .propertyOptions(seed: Self.seed)
         )
         
         _ = try XCTUnwrap(Self.assertPassed(result))
@@ -1367,7 +1459,7 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
                     )
                 }
             },
-            options: Self.makeOptions()
+            options: .propertyOptions(seed: Self.seed)
         )
         
         let counterexample: Counterexample<Int>
@@ -1385,9 +1477,10 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
         let maxDiscardRatio : Int   = 2
         let threshold       : Int   = maxDiscardRatio * iterations
         
-        let options: TestOptions = Self.makeOptions(
+        let options: TestOptions = .propertyOptions(
             iterations:         iterations,
-            maxDiscardRatio:    maxDiscardRatio
+            maxDiscardRatio:    maxDiscardRatio,
+            seed:               Self.seed
         )
         
         let generator = Generator<Int>(
@@ -1428,7 +1521,7 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
                     firstSize = capture.size
                 }
             },
-            options: Self.makeOptions()
+            options: .propertyOptions(seed: Self.seed)
         )
         
         _ = try XCTUnwrap(Self.assertPassed(result))
@@ -1444,9 +1537,10 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
         var sizes       : [Int]     = []
         let iterations  : Int       = 50
         
-        let options: TestOptions = Self.makeOptions(
+        let options: TestOptions = .propertyOptions(
             iterations:     iterations,
-            maxSize:        100
+            maxSize:        100,
+            seed:           Self.seed
         )
         
         let result: PropertyCheckResult<SizeCapture> = PropertyRunner.run(
@@ -1474,9 +1568,14 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
         let maxSize : Int       = 25
         var sizes   : [Int]     = []
         
+        let options: TestOptions = .propertyOptions(
+            maxSize:    maxSize,
+            seed:       Self.seed
+        )
+        
         let result: PropertyCheckResult<SizeCapture> = PropertyRunner.run(
             property:   { capture in sizes.append(capture.size) },
-            options:    Self.makeOptions(maxSize: maxSize)
+            options:    options
         )
         
         _ = try XCTUnwrap(Self.assertPassed(result))
@@ -1494,9 +1593,14 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
         let maxSize : Int       = 0
         var sizes   : [Int]     = []
         
+        let options: TestOptions = .propertyOptions(
+            maxSize:    maxSize,
+            seed:       Self.seed
+        )
+        
         let result: PropertyCheckResult<SizeCapture> = PropertyRunner.run(
             property:   { capture in sizes.append(capture.size) },
-            options:    Self.makeOptions(maxSize: maxSize)
+            options:    options
         )
         
         _ = try XCTUnwrap(Self.assertPassed(result))
@@ -1515,9 +1619,10 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
         let iterations  : Int       = 100
         var sizes       : [Int]     = []
         
-        let options: TestOptions = Self.makeOptions(
+        let options: TestOptions = .propertyOptions(
             iterations:     iterations,
-            maxSize:        maxSize
+            maxSize:        maxSize,
+            seed:           Self.seed
         )
         
         let result: PropertyCheckResult<SizeCapture> = PropertyRunner.run(
@@ -1553,7 +1658,7 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
                     )
                 }
             },
-            options: Self.makeOptions()
+            options: .propertyOptions(seed: Self.seed)
         )
         
         let counterexample: Counterexample<SizeCapture>
@@ -1574,9 +1679,10 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
         let iterations  : Int       = 10
         var sizes       : [Int]     = []
         
-        let options: TestOptions = Self.makeOptions(
+        let options: TestOptions = .propertyOptions(
             iterations:     iterations,
-            maxSize:        maxSize
+            maxSize:        maxSize,
+            seed:           Self.seed
         )
         
         let result: PropertyCheckResult<SizeCapture> = PropertyRunner.run(
@@ -1608,9 +1714,10 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
         let iterations  : Int       = 5
         var sizes       : [Int]     = []
         
-        let options: TestOptions = Self.makeOptions(
+        let options: TestOptions = .propertyOptions(
             iterations:     iterations,
-            maxSize:        maxSize
+            maxSize:        maxSize,
+            seed:           Self.seed
         )
         
         let result: PropertyCheckResult<SizeCapture> = PropertyRunner.run(
@@ -1641,10 +1748,11 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
         let iterations  : Int       = 10
         var sizes       : [Int]     = []
         
-        let options: TestOptions = Self.makeOptions(
+        let options: TestOptions = .propertyOptions(
             iterations:         iterations,
             maxSize:            maxSize,
-            maxDiscardRatio:    100
+            maxDiscardRatio:    100,
+            seed:               Self.seed
         )
         
         /// Discard odd-sized iterations. Since the size formula uses
@@ -1696,10 +1804,11 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
         let iterations  : Int       = 10
         var accepted    : [Int]     = []
         
-        let options: TestOptions = Self.makeOptions(
+        let options: TestOptions = .propertyOptions(
             iterations:         iterations,
             maxSize:            maxSize,
-            maxDiscardRatio:    100
+            maxDiscardRatio:    100,
+            seed:               Self.seed
         )
         
         /// The precondition rejects odd values. Since ``BoundInt`` generates
@@ -1803,29 +1912,6 @@ extension PropertyRunnerTests
     ///
     /// Use a fixed seed rather than a random seed for deterministic tests.
     private static let seed: UInt64 = 12345
-    
-    
-    
-    /// Initializes a ``TestOptions`` instance, optionally specifying values
-    /// for its property-based testing options property.
-    private static func makeOptions(
-        iterations      : Int       = 100,
-        maxShrinkSteps  : Int       = 100,
-        maxSize         : Int       = 100,
-        maxDiscardRatio : Int       = 10,
-        seed            : UInt64?   = seed
-    ) -> TestOptions
-    {
-        let propertyOptions = PropertyOptions(
-            iterations:         iterations,
-            maxShrinkSteps:     maxShrinkSteps,
-            maxSize:            maxSize,
-            maxDiscardRatio:    maxDiscardRatio,
-            seed:               seed
-        )
-        
-        return TestOptions(propertyOptions: propertyOptions)
-    }
     
     
     

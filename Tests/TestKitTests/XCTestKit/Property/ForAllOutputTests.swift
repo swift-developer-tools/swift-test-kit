@@ -19,14 +19,10 @@ internal final class ForAllOutputTests: XCTestKitCase
     
     func testCounterexampleNoShrinking() throws
     {
-        let propertyOptions = PropertyOptions(
+        let options: TestOptions = .propertyOptions(
             iterations:     1,
             seed:           Self.seed
         )
-        
-        let options = TestOptions(propertyOptions: propertyOptions)
-        
-        
         
         let output: String? = withOneExpectedFailure
         {
@@ -65,14 +61,10 @@ internal final class ForAllOutputTests: XCTestKitCase
     
     func testCounterexampleWithShrinking() throws
     {
-        let propertyOptions = PropertyOptions(
+        let options: TestOptions = .propertyOptions(
             iterations:     1,
             seed:           Self.seed
         )
-        
-        let options = TestOptions(propertyOptions: propertyOptions)
-        
-        
         
         let generator = Generator<Int>(
             generate:   { _ in 100 },
@@ -119,15 +111,11 @@ internal final class ForAllOutputTests: XCTestKitCase
     
     func testCounterexampleAtLaterIteration() throws
     {
-        let propertyOptions = PropertyOptions(
+        let options: TestOptions = .propertyOptions(
             iterations:     10,
             maxSize:        100,
             seed:           Self.seed
         )
-        
-        let options = TestOptions(propertyOptions: propertyOptions)
-        
-        
         
         /// With `10` iterations and a max size of `100`, the size after five
         /// successful iterations is `50`. The property fails at the sixth
@@ -177,14 +165,10 @@ internal final class ForAllOutputTests: XCTestKitCase
     
     func testCounterexampleWithThrownError() throws
     {
-        let propertyOptions = PropertyOptions(
+        let options: TestOptions = .propertyOptions(
             iterations:     1,
             seed:           Self.seed
         )
-        
-        let options = TestOptions(propertyOptions: propertyOptions)
-        
-        
         
         let actual: String? = withOneExpectedFailure
         {
@@ -217,14 +201,10 @@ internal final class ForAllOutputTests: XCTestKitCase
     
     func testCounterexampleWithMessage() throws
     {
-        let propertyOptions = PropertyOptions(
+        let options: TestOptions = .propertyOptions(
             iterations:     1,
             seed:           Self.seed
         )
-        
-        let options = TestOptions(propertyOptions: propertyOptions)
-        
-        
         
         let actual: String? = withOneExpectedFailure
         {
@@ -262,14 +242,10 @@ internal final class ForAllOutputTests: XCTestKitCase
     
     func testCounterexampleWithMessageAndAssertionFailure() throws
     {
-        let propertyOptions = PropertyOptions(
+        let options: TestOptions = .propertyOptions(
             iterations:     1,
             seed:           Self.seed
         )
-        
-        let options = TestOptions(propertyOptions: propertyOptions)
-        
-        
         
         let output: String? = withOneExpectedFailure
         {
@@ -312,14 +288,10 @@ internal final class ForAllOutputTests: XCTestKitCase
     
     func testPreconditionGeneratorCounterexample() throws
     {
-        let propertyOptions = PropertyOptions(
+        let options: TestOptions = .propertyOptions(
             iterations:     1,
             seed:           Self.seed
         )
-        
-        let options = TestOptions(propertyOptions: propertyOptions)
-        
-        
         
         let generator = Generator<Int>(
             generate:   { _ in 100 },
@@ -367,14 +339,10 @@ internal final class ForAllOutputTests: XCTestKitCase
     
     func testPreconditionCounterexample() throws
     {
-        let propertyOptions = PropertyOptions(
+        let options: TestOptions = .propertyOptions(
             iterations:     1,
             seed:           Self.seed
         )
-        
-        let options = TestOptions(propertyOptions: propertyOptions)
-        
-        
         
         let output: String? = withOneExpectedFailure
         {
@@ -416,14 +384,10 @@ internal final class ForAllOutputTests: XCTestKitCase
     
     func testTwoParameterArbitraryCounterexample() throws
     {
-        let propertyOptions = PropertyOptions(
+        let options: TestOptions = .propertyOptions(
             iterations:     1,
             seed:           Self.seed
         )
-        
-        let options = TestOptions(propertyOptions: propertyOptions)
-        
-        
         
         let output: String? = withOneExpectedFailure
         {
@@ -463,14 +427,10 @@ internal final class ForAllOutputTests: XCTestKitCase
     
     func testTwoParameterCounterexampleNoShrinking() throws
     {
-        let propertyOptions = PropertyOptions(
+        let options: TestOptions = .propertyOptions(
             iterations:     1,
             seed:           Self.seed
         )
-        
-        let options = TestOptions(propertyOptions: propertyOptions)
-        
-        
         
         let gen1    = Generator<Int>.constant(50)
         let gen2    = Generator<String>.constant("abc")
@@ -516,14 +476,10 @@ internal final class ForAllOutputTests: XCTestKitCase
     
     func testTwoParameterCounterexampleWithShrinking() throws
     {
-        let propertyOptions = PropertyOptions(
+        let options: TestOptions = .propertyOptions(
             iterations:     1,
             seed:           Self.seed
         )
-        
-        let options = TestOptions(propertyOptions: propertyOptions)
-        
-        
         
         let gen1 = Generator<Int>(
             generate:   { _ in 20 },
@@ -573,14 +529,10 @@ internal final class ForAllOutputTests: XCTestKitCase
     
     func testThreeParameterCounterexampleNoShrinking() throws
     {
-        let propertyOptions = PropertyOptions(
+        let options: TestOptions = .propertyOptions(
             iterations:     1,
             seed:           Self.seed
         )
-        
-        let options = TestOptions(propertyOptions: propertyOptions)
-        
-        
         
         let gen1    = Generator<Int>.constant(50)
         let gen2    = Generator<String>.constant("abc")
@@ -628,14 +580,10 @@ internal final class ForAllOutputTests: XCTestKitCase
     
     func testThreeParameterCounterexampleWithShrinking() throws
     {
-        let propertyOptions = PropertyOptions(
+        let options: TestOptions = .propertyOptions(
             iterations:     1,
             seed:           Self.seed
         )
-        
-        let options = TestOptions(propertyOptions: propertyOptions)
-        
-        
         
         let gen1 = Generator<Int>(
             generate:   { _ in 20 },
@@ -687,15 +635,11 @@ internal final class ForAllOutputTests: XCTestKitCase
     
     func testAssertionFailurePriorityOverThrownError() throws
     {
-        let propertyOptions = PropertyOptions(
+        let options: TestOptions = .propertyOptions(
             iterations:         1,
             maxDiscardRatio:    1,
             seed:               Self.seed
         )
-        
-        let options = TestOptions(propertyOptions: propertyOptions)
-        
-        
         
         let output: String? = withOneExpectedFailure
         {
@@ -737,15 +681,11 @@ internal final class ForAllOutputTests: XCTestKitCase
     
     func testFirstAssertionFailureShown() throws
     {
-        let propertyOptions = PropertyOptions(
+        let options: TestOptions = .propertyOptions(
             iterations:         1,
             maxDiscardRatio:    1,
             seed:               Self.seed
         )
-        
-        let options = TestOptions(propertyOptions: propertyOptions)
-        
-        
         
         let output: String? = withOneExpectedFailure
         {
@@ -786,14 +726,10 @@ internal final class ForAllOutputTests: XCTestKitCase
     
     func testCollectionCounterexample() throws
     {
-        let propertyOptions = PropertyOptions(
+        let options: TestOptions = .propertyOptions(
             iterations:     1,
             seed:           Self.seed
         )
-        
-        let options = TestOptions(propertyOptions: propertyOptions)
-        
-        
         
         let generator = Generator<[Int]>.constant([1, 2, 3])
         
@@ -841,15 +777,11 @@ internal final class ForAllOutputTests: XCTestKitCase
         /// shrink from `100` down to `10`. With `maxShrinkSteps` of `2`,
         /// shrinking stops at `98`.
         
-        let propertyOptions = PropertyOptions(
+        let options: TestOptions = .propertyOptions(
             iterations:         1,
             maxShrinkSteps:     2,
             seed:               Self.seed
         )
-        
-        let options = TestOptions(propertyOptions: propertyOptions)
-        
-        
         
         let generator = Generator<Int>(
             generate:   { _ in 100 },
@@ -902,14 +834,10 @@ internal final class ForAllOutputTests: XCTestKitCase
             let y   : Int
         }
         
-        let propertyOptions = PropertyOptions(
+        let options: TestOptions = .propertyOptions(
             iterations:     1,
             seed:           Self.seed
         )
-        
-        let options = TestOptions(propertyOptions: propertyOptions)
-        
-        
         
         let generator = Generator<Point>.constant(Point(x: 5, y: 10))
         
@@ -953,14 +881,10 @@ internal final class ForAllOutputTests: XCTestKitCase
     
     func testCollectionCounterexampleWithShrinking() throws
     {
-        let propertyOptions = PropertyOptions(
+        let options: TestOptions = .propertyOptions(
             iterations:     1,
             seed:           Self.seed
         )
-        
-        let options = TestOptions(propertyOptions: propertyOptions)
-        
-        
         
         let generator = Generator<[Int]>(
             generate: { _ in [1, 2, 3] },
@@ -1012,14 +936,10 @@ internal final class ForAllOutputTests: XCTestKitCase
     
     func testThrownErrorShrinks() throws
     {
-        let propertyOptions = PropertyOptions(
+        let options: TestOptions = .propertyOptions(
             iterations:     1,
             seed:           Self.seed
         )
-        
-        let options = TestOptions(propertyOptions: propertyOptions)
-        
-        
         
         let generator = Generator<Int>(
             generate:   { _ in 100 },
@@ -1065,14 +985,10 @@ internal final class ForAllOutputTests: XCTestKitCase
     
     func testMultiParameterBothShrink() throws
     {
-        let propertyOptions = PropertyOptions(
+        let options: TestOptions = .propertyOptions(
             iterations:     1,
             seed:           Self.seed
         )
-        
-        let options = TestOptions(propertyOptions: propertyOptions)
-        
-        
         
         /// Both generators start at `10` and shrink to their respective
         /// thresholds. The property fails when both values meet or exceed
@@ -1156,16 +1072,12 @@ internal final class ForAllOutputTests: XCTestKitCase
     
     func testPreconditionGeneratorCounterexampleIncludesDiscards() throws
     {
-        let propertyOptions = PropertyOptions(
+        let options: TestOptions = .propertyOptions(
             iterations:         1,
             maxSize:            100,
             maxDiscardRatio:    10,
             seed:               Self.seed
         )
-        
-        let options = TestOptions(propertyOptions: propertyOptions)
-        
-        
         
         var attempts: Int = 0
         
@@ -1231,15 +1143,11 @@ internal final class ForAllOutputTests: XCTestKitCase
     
     func testExhaustion() throws
     {
-        let propertyOptions = PropertyOptions(
+        let options: TestOptions = .propertyOptions(
             iterations:         1,
             maxDiscardRatio:    1,
             seed:               Self.seed
         )
-        
-        let options = TestOptions(propertyOptions: propertyOptions)
-        
-        
         
         let actual: String? = withOneExpectedFailure
         {
@@ -1270,15 +1178,11 @@ internal final class ForAllOutputTests: XCTestKitCase
     
     func testExhaustionWithMessage() throws
     {
-        let propertyOptions = PropertyOptions(
+        let options: TestOptions = .propertyOptions(
             iterations:         1,
             maxDiscardRatio:    1,
             seed:               Self.seed
         )
-        
-        let options = TestOptions(propertyOptions: propertyOptions)
-        
-        
         
         let actual: String? = withOneExpectedFailure
         {
@@ -1312,16 +1216,12 @@ internal final class ForAllOutputTests: XCTestKitCase
     
     func testExhaustionAfterPartialSuccess() throws
     {
-        let propertyOptions = PropertyOptions(
+        let options: TestOptions = .propertyOptions(
             iterations:         5,
             maxSize:            100,
             maxDiscardRatio:    1,
             seed:               Self.seed
         )
-        
-        let options = TestOptions(propertyOptions: propertyOptions)
-        
-        
         
         /// Size grows as `succeeded * 100 / 5`. After 2 successes (sizes `0`
         /// and `20`), subsequent values are `40`, which fail the precondition.
@@ -1364,15 +1264,11 @@ internal final class ForAllOutputTests: XCTestKitCase
         /// discard limit is `0 * 1 = 0`. The first discarded input exceeds
         /// this limit.
         
-        let propertyOptions = PropertyOptions(
+        let options: TestOptions = .propertyOptions(
             iterations:         1,
             maxDiscardRatio:    0,
             seed:               Self.seed
         )
-        
-        let options = TestOptions(propertyOptions: propertyOptions)
-        
-        
         
         let actual: String? = withOneExpectedFailure
         {

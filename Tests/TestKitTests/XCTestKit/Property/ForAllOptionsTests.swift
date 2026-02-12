@@ -52,12 +52,10 @@ internal final class ForAllOptionsTests: XCTestKitCase
         /// With `iterations` set to zero, the property vacuously passes.
         XCTKConfig.global.propertyOptions.iterations = 0
         
-        let propertyOptions = PropertyOptions(
+        let options: TestOptions = .propertyOptions(
             iterations:     1,
             seed:           50
         )
-        
-        let options = TestOptions(propertyOptions: propertyOptions)
         
         let output: String? = withCapturedOutput(options: options)
         {
@@ -75,12 +73,10 @@ internal final class ForAllOptionsTests: XCTestKitCase
     
     func testSeedDeterminism() throws
     {
-        let propertyOptions = PropertyOptions(
+        let options: TestOptions = .propertyOptions(
             iterations:     1,
             seed:           12345
         )
-        
-        let options = TestOptions(propertyOptions: propertyOptions)
         
         let property: (Int) throws -> Void =
         {
@@ -110,12 +106,10 @@ internal final class ForAllOptionsTests: XCTestKitCase
     {
         let seed: UInt64 = 9876543210
         
-        let propertyOptions = PropertyOptions(
+        let options: TestOptions = .propertyOptions(
             iterations:     1,
             seed:           seed
         )
-        
-        let options = TestOptions(propertyOptions: propertyOptions)
         
         let output: String? = withCapturedOutput(options: options)
         {
@@ -137,13 +131,11 @@ internal final class ForAllOptionsTests: XCTestKitCase
         /// With `maxSize` set to zero, every iteration generates at size zero.
         /// ``Int/arbitrary(using:)`` produces `0` at size zero, so the
         /// property passes.
-        let propertyOptions = PropertyOptions(
+        var options: TestOptions = .propertyOptions(
             iterations:     10,
             maxSize:        0,
             seed:           50
         )
-        
-        var options = TestOptions(propertyOptions: propertyOptions)
         
         XCTKForAll(options: options)
         {
@@ -174,13 +166,11 @@ internal final class ForAllOptionsTests: XCTestKitCase
     
     func testMaxShrinkStepsZeroDisablesShrinking() throws
     {
-        let propertyOptions = PropertyOptions(
+        let options: TestOptions = .propertyOptions(
             iterations:         100,
             maxShrinkSteps:     0,
             seed:               50
         )
-        
-        let options = TestOptions(propertyOptions: propertyOptions)
         
         let output: String? = withCapturedOutput(options: options)
         {
@@ -197,13 +187,11 @@ internal final class ForAllOptionsTests: XCTestKitCase
     
     func testMaxShrinkStepsEnablesShrinking() throws
     {
-        let propertyOptions = PropertyOptions(
+        let options: TestOptions = .propertyOptions(
             iterations:         100,
             maxShrinkSteps:     100,
             seed:               50
         )
-        
-        let options = TestOptions(propertyOptions: propertyOptions)
         
         let output: String? = withCapturedOutput(options: options)
         {
@@ -222,13 +210,11 @@ internal final class ForAllOptionsTests: XCTestKitCase
     
     func testMaxDiscardRatioTriggersExhaustion() throws
     {
-        let propertyOptions = PropertyOptions(
+        let options: TestOptions = .propertyOptions(
             iterations:         1,
             maxDiscardRatio:    1,
             seed:               50
         )
-        
-        let options = TestOptions(propertyOptions: propertyOptions)
         
         let output: String? = withCapturedOutput(
             precondition:   { _ in false },
