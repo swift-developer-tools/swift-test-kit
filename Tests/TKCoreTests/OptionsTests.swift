@@ -14,20 +14,20 @@ import XCTest
 
 internal final class OptionsTests: XCTestCaseStopOnFail
 {
-    func testTKOptions() throws
+    func testTestOptions() throws
     {
-        let options = TKOptions()
+        let options = TestOptions()
         
-        XCTAssertEqual(options.diffOptions, TKDiffOptions())
-        XCTAssertEqual(options.formatOptions, TKFormatOptions())
-        XCTAssertEqual(options.propertyOptions, TKPropertyOptions())
+        XCTAssertEqual(options.diffOptions, DiffOptions())
+        XCTAssertEqual(options.formatOptions, FormatOptions())
+        XCTAssertEqual(options.propertyOptions, PropertyOptions())
     }
     
     
     
-    func testTKDiffOptions() throws
+    func testDiffOptions() throws
     {
-        let options = TKDiffOptions()
+        let options = DiffOptions()
         
         XCTAssertEqual(options.maxRecursionDepth, 20)
         XCTAssertNil(options.characterDiffThreshold)
@@ -35,9 +35,9 @@ internal final class OptionsTests: XCTestCaseStopOnFail
     
     
     
-    func testTKFormatOptions() throws
+    func testFormatOptions() throws
     {
-        let options = TKFormatOptions()
+        let options = FormatOptions()
         
         XCTAssertEqual(options.indentationSpaces, 4)
         XCTAssertEqual(options.maxLineLength, 80)
@@ -49,9 +49,9 @@ internal final class OptionsTests: XCTestCaseStopOnFail
     
     
     
-    func testTKPropertyOptions() throws
+    func testPropertyOptions() throws
     {
-        let options = TKPropertyOptions()
+        let options = PropertyOptions()
         
         XCTAssertEqual(options.iterations, 100)
         XCTAssertEqual(options.maxShrinkSteps, 100)

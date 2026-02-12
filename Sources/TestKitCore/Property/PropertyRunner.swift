@@ -23,7 +23,7 @@ package struct PropertyRunner
     /// - Returns: The result of the property check.
     package static func run<T>(
         property    : (T) throws -> Void,
-        options     : TKOptions
+        options     : TestOptions
     ) -> PropertyCheckResult<T> where T : Arbitrary
     {
         return run(
@@ -46,7 +46,7 @@ package struct PropertyRunner
     package static func run<T>(
         using generator : Generator<T>,
         property        : (T) throws -> Void,
-        options         : TKOptions
+        options         : TestOptions
     ) -> PropertyCheckResult<T>
     {
         return run(
@@ -69,7 +69,7 @@ package struct PropertyRunner
     package static func run<T>(
         where precondition  : @escaping (T) -> Bool,
         property            : (T) throws -> Void,
-        options             : TKOptions
+        options             : TestOptions
     ) -> PropertyCheckResult<T> where T : Arbitrary
     {
         return run(
@@ -94,7 +94,7 @@ package struct PropertyRunner
         using generator     : Generator<T>,
         where precondition  : @escaping (T) -> Bool,
         property            : (T) throws -> Void,
-        options             : TKOptions
+        options             : TestOptions
     ) -> PropertyCheckResult<T>
     {
         return run(
@@ -121,10 +121,10 @@ package struct PropertyRunner
         shrink              : @escaping (T) -> [T],
         precondition        : ((T) -> Bool)?,
         property            : (T) throws -> Void,
-        options             : TKOptions
+        options             : TestOptions
     ) -> PropertyCheckResult<T>
     {
-        let opts: TKPropertyOptions = options.propertyOptions
+        let opts: PropertyOptions = options.propertyOptions
         
         let seed: UInt64 = opts.seed
             ?? .random(in: UInt64.min...UInt64.max)
@@ -190,7 +190,7 @@ package struct PropertyRunner
         if iterations == 0
         {
             logger.warning(
-                "Test passed vacuously - TKPropertyOptions.iterations is zero."
+                "Test passed vacuously - PropertyOptions.iterations is zero."
             )
         }
         
@@ -259,7 +259,7 @@ package struct PropertyRunner
         seed            : UInt64,
         iteration       : Int,
         property        : (T) throws -> Void,
-        options         : TKOptions
+        options         : TestOptions
     ) -> Counterexample<T>
     {
         var current : T     = value

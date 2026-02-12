@@ -7,10 +7,10 @@
 //
 //===----------------------------------------------------------------------===//
 
-// MARK: - TKOptions
+// MARK: - TestOptions
 
 /// The options for testing.
-public struct TKOptions: Equatable, Sendable
+public struct TestOptions: Equatable, Sendable
 {
     /// Whether to compute and display diffs on assertion failure.
     ///
@@ -31,30 +31,30 @@ public struct TKOptions: Equatable, Sendable
     
     /// The options for computing diffs.
     ///
-    /// The default value is a default-initialized ``TKDiffOptions`` instance.
-    public var diffOptions          : TKDiffOptions
+    /// The default value is a default-initialized ``DiffOptions`` instance.
+    public var diffOptions          : DiffOptions
     
     /// The options for formatting diffs.
     ///
-    /// The default value is a default-initialized ``TKFormatOptions`` instance.
-    public var formatOptions        : TKFormatOptions
+    /// The default value is a default-initialized ``FormatOptions`` instance.
+    public var formatOptions        : FormatOptions
     
     /// The options for property-based testing.
     ///
-    /// The default value is a default-initialized ``TKPropertyOptions``
+    /// The default value is a default-initialized ``PropertyOptions``
     /// instance.
-    public var propertyOptions      : TKPropertyOptions
+    public var propertyOptions      : PropertyOptions
     
     
     
-    /// Initializes a ``TKOptions`` instance, optionally specifying values
+    /// Initializes a ``TestOptions`` instance, optionally specifying values
     /// for its properties.
     public init(
-        diffEnabled             : Bool                  = true,
-        continueAfterFailure    : Bool                  = true,
-        diffOptions             : TKDiffOptions         = .init(),
-        formatOptions           : TKFormatOptions       = .init(),
-        propertyOptions         : TKPropertyOptions     = .init()
+        diffEnabled             : Bool              = true,
+        continueAfterFailure    : Bool              = true,
+        diffOptions             : DiffOptions       = .init(),
+        formatOptions           : FormatOptions     = .init(),
+        propertyOptions         : PropertyOptions   = .init()
     )
     {
         self.diffEnabled            = diffEnabled
@@ -67,10 +67,10 @@ public struct TKOptions: Equatable, Sendable
 
 
 
-// MARK: - TKDiffOptions
+// MARK: - DiffOptions
 
 /// The options for computing diffs.
-public struct TKDiffOptions: Equatable, Sendable
+public struct DiffOptions: Equatable, Sendable
 {
     /// The maximum recursion depth when computing diffs.
     ///
@@ -115,8 +115,8 @@ public struct TKDiffOptions: Equatable, Sendable
     
     
     
-    /// Initializes a ``TKDiffOptions`` instance, optionally specifying
-    /// values for its properties.
+    /// Initializes a ``DiffOptions`` instance, optionally specifying values
+    /// for its properties.
     ///
     /// - Precondition: `maxRecursionDepth` must be positive or `nil`.
     /// - Precondition: `characterDiffThreshold` must be must be in the
@@ -148,10 +148,10 @@ public struct TKDiffOptions: Equatable, Sendable
 
 
 
-// MARK: - TKFormatOptions
+// MARK: - FormatOptions
 
 /// The options for formatting assertion failures.
-public struct TKFormatOptions: Equatable, Sendable
+public struct FormatOptions: Equatable, Sendable
 {
     /// The number of spaces used for each indent.
     ///
@@ -199,8 +199,8 @@ public struct TKFormatOptions: Equatable, Sendable
     
     
     
-    /// Initializes a ``TKFormatOptions`` instance, optionally specifying
-    /// values for its properties.
+    /// Initializes a ``FormatOptions`` instance, optionally specifying values
+    /// for its properties.
     ///
     /// - Precondition: `indentationSpaces` must be non-negative.
     /// - Precondition: `maxLineLength` must be positive.
@@ -241,10 +241,10 @@ public struct TKFormatOptions: Equatable, Sendable
 
 
 
-// MARK: - TKPropertyOptions
+// MARK: - PropertyOptions
 
 /// The options for property-based testing.
-public struct TKPropertyOptions: Equatable, Sendable
+public struct PropertyOptions: Equatable, Sendable
 {
     /// The number of test iterations.
     ///
@@ -281,7 +281,7 @@ public struct TKPropertyOptions: Equatable, Sendable
     
     
     
-    /// Initializes a ``TKPropertyOptions`` instance, optionally specifying
+    /// Initializes a ``PropertyOptions`` instance, optionally specifying
     /// values for its properties.
     ///
     /// - Precondition: `iterations`, `maxShrinkSteps`, `maxSize`, and

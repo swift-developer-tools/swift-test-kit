@@ -55,7 +55,7 @@ XCTKAssertEqual(expected, actual)
 let expected    = [1, 2, 3, 4, 5, 6, 7, 8]
 let actual      = [0, 0, 3, 4, 5, 6, 7, 0]
 
-let options = TKOptions(formatOptions: .init(maxDiffs: 2))
+let options = TestOptions(formatOptions: .init(maxDiffs: 2))
 
 XCTKAssertEqual(expected, actual, options: options)
 

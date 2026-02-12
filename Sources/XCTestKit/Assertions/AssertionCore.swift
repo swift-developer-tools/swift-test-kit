@@ -19,7 +19,7 @@ internal func evaluateXCTKAssert(
     message : () -> String,
     file    : StaticString,
     line    : UInt,
-    options : TKOptions
+    options : TestOptions
 )
 {
     let assertionKind: AssertionKind = .assert
@@ -61,7 +61,7 @@ internal func evaluateXCTKAssertTrue(
     message : () -> String,
     file    : StaticString,
     line    : UInt,
-    options : TKOptions
+    options : TestOptions
 )
 {
     let assertionKind: AssertionKind = .true
@@ -103,7 +103,7 @@ internal func evaluateXCTKAssertFalse(
     message : () -> String,
     file    : StaticString,
     line    : UInt,
-    options : TKOptions
+    options : TestOptions
 )
 {
     let assertionKind: AssertionKind = .false
@@ -150,7 +150,7 @@ internal func evaluateXCTKAssert(
     message         : () -> String,
     file            : StaticString,
     line            : UInt,
-    options         : TKOptions
+    options         : TestOptions
 )
 {
     if result
@@ -180,7 +180,7 @@ internal func evaluateXCTKAssertTrue(
     message         : () -> String,
     file            : StaticString,
     line            : UInt,
-    options         : TKOptions
+    options         : TestOptions
 )
 {
     if result
@@ -210,7 +210,7 @@ internal func evaluateXCTKAssertFalse(
     message         : () -> String,
     file            : StaticString,
     line            : UInt,
-    options         : TKOptions
+    options         : TestOptions
 )
 {
     if !result
@@ -240,7 +240,7 @@ internal func evaluateXCTKAssertNil(
     message     : () -> String,
     file        : StaticString,
     line        : UInt,
-    options     : TKOptions
+    options     : TestOptions
 )
 {
     let assertionKind: AssertionKind = .nil
@@ -301,7 +301,7 @@ internal func evaluateXCTKAssertNotNil(
     message     : () -> String,
     file        : StaticString,
     line        : UInt,
-    options     : TKOptions
+    options     : TestOptions
 )
 {
     let assertionKind: AssertionKind = .notNil
@@ -362,7 +362,7 @@ internal func evaluateXCTKUnwrap<T>(
     message     : () -> String,
     file        : StaticString,
     line        : UInt,
-    options     : TKOptions
+    options     : TestOptions
 ) throws -> T
 {
     let assertionKind: AssertionKind = .unwrap
@@ -431,7 +431,7 @@ internal func evaluateXCTKAssertEqual<T>(
     message     : () -> String,
     file        : StaticString,
     line        : UInt,
-    options     : TKOptions
+    options     : TestOptions
 ) where T : Equatable
 {
     let assertionKind: AssertionKind = .equal
@@ -518,7 +518,7 @@ internal func evaluateXCTKAssertNotEqual<T>(
     message     : () -> String,
     file        : StaticString,
     line        : UInt,
-    options     : TKOptions
+    options     : TestOptions
 ) where T : Equatable
 {
     let assertionKind: AssertionKind = .notEqual
@@ -581,7 +581,7 @@ internal func evaluateXCTKAssertIdentical(
     message     : () -> String,
     file        : StaticString,
     line        : UInt,
-    options     : TKOptions
+    options     : TestOptions
 )
 {
     let assertionKind   : AssertionKind     = .identical
@@ -654,7 +654,7 @@ internal func evaluateXCTKAssertNotIdentical(
     message     : () -> String,
     file        : StaticString,
     line        : UInt,
-    options     : TKOptions
+    options     : TestOptions
 )
 {
     let assertionKind   : AssertionKind     = .notIdentical
@@ -727,7 +727,7 @@ internal func evaluateXCTKAssertEqual<T>(
     message     : () -> String,
     file        : StaticString,
     line        : UInt,
-    options     : TKOptions
+    options     : TestOptions
 ) where T : FloatingPoint
 {
     let assertionKind: AssertionKind = .equalWithAccuracy
@@ -798,7 +798,7 @@ internal func evaluateXCTKAssertEqual<T>(
     message     : () -> String,
     file        : StaticString,
     line        : UInt,
-    options     : TKOptions
+    options     : TestOptions
 ) where T : Numeric
 {
     let assertionKind: AssertionKind = .equalWithAccuracy
@@ -869,7 +869,7 @@ internal func evaluateXCTKAssertNotEqual<T>(
     message     : () -> String,
     file        : StaticString,
     line        : UInt,
-    options     : TKOptions
+    options     : TestOptions
 ) where T : FloatingPoint
 {
     let assertionKind: AssertionKind = .notEqualWithAccuracy
@@ -940,7 +940,7 @@ internal func evaluateXCTKAssertNotEqual<T>(
     message     : () -> String,
     file        : StaticString,
     line        : UInt,
-    options     : TKOptions
+    options     : TestOptions
 ) where T : Numeric
 {
     let assertionKind: AssertionKind = .notEqualWithAccuracy
@@ -1012,7 +1012,7 @@ internal func evaluateXCTKAssertGreaterThan<T>(
     message     : () -> String,
     file        : StaticString,
     line        : UInt,
-    options     : TKOptions
+    options     : TestOptions
 ) where T : Comparable
 {
     let assertionKind: AssertionKind = .greaterThan
@@ -1076,7 +1076,7 @@ internal func evaluateXCTKAssertGreaterThanOrEqual<T>(
     message     : () -> String,
     file        : StaticString,
     line        : UInt,
-    options     : TKOptions
+    options     : TestOptions
 ) where T : Comparable
 {
     let assertionKind: AssertionKind = .greaterThanOrEqual
@@ -1140,7 +1140,7 @@ internal func evaluateXCTKAssertLessThanOrEqual<T>(
     message     : () -> String,
     file        : StaticString,
     line        : UInt,
-    options     : TKOptions
+    options     : TestOptions
 ) where T : Comparable
 {
     let assertionKind: AssertionKind = .lessThanOrEqual
@@ -1204,7 +1204,7 @@ internal func evaluateXCTKAssertLessThan<T>(
     message     : () -> String,
     file        : StaticString,
     line        : UInt,
-    options     : TKOptions
+    options     : TestOptions
 ) where T : Comparable
 {
     let assertionKind: AssertionKind = .lessThan
@@ -1269,7 +1269,7 @@ internal func evaluateXCTKAssertThrowsError<T>(
     message         : () -> String,
     file            : StaticString,
     line            : UInt,
-    options         : TKOptions,
+    options         : TestOptions,
     errorHandler    : (any Error) -> Void
 )
 {
@@ -1326,7 +1326,7 @@ internal func evaluateXCTKAssertNoThrow<T>(
     message     : () -> String,
     file        : StaticString,
     line        : UInt,
-    options     : TKOptions
+    options     : TestOptions
 )
 {
     let assertionKind: AssertionKind = .noThrow
@@ -1377,7 +1377,7 @@ internal func evaluateXCTKAssertAllSatisfy<C>(
     message     : () -> String,
     file        : StaticString,
     line        : UInt,
-    options     : TKOptions
+    options     : TestOptions
 ) where C : Collection
 {
     let assertionKind: AssertionKind = .satisfyAll
@@ -1437,7 +1437,7 @@ internal func evaluateXCTKAssertAnySatisfy<C>(
     message     : () -> String,
     file        : StaticString,
     line        : UInt,
-    options     : TKOptions
+    options     : TestOptions
 ) where C : Collection
 {
     let assertionKind: AssertionKind = .satisfyAny
@@ -1505,7 +1505,7 @@ internal func evaluateXCTKAssertNoneSatisfy<C>(
     message     : () -> String,
     file        : StaticString,
     line        : UInt,
-    options     : TKOptions
+    options     : TestOptions
 ) where C : Collection
 {
     let assertionKind: AssertionKind = .satisfyNone
@@ -1585,7 +1585,7 @@ internal func evaluateXCTKAssertSatisfy<C>(
     message     : () -> String,
     file        : StaticString,
     line        : UInt,
-    options     : TKOptions
+    options     : TestOptions
 ) where C : Collection
 {
     precondition(
@@ -1659,7 +1659,7 @@ internal func evaluateXCTKAssertSatisfy<C>(
     message     : () -> String,
     file        : StaticString,
     line        : UInt,
-    options     : TKOptions
+    options     : TestOptions
 ) where C : Collection
 {
     precondition(
@@ -1733,7 +1733,7 @@ internal func evaluateXCTKAssertSatisfy<C>(
     message     : () -> String,
     file        : StaticString,
     line        : UInt,
-    options     : TKOptions
+    options     : TestOptions
 ) where C : Collection
 {
     precondition(
@@ -1813,7 +1813,7 @@ internal func evaluateXCTKAssertExactly<C>(
     message     : () -> String,
     file        : StaticString,
     line        : UInt,
-    options     : TKOptions
+    options     : TestOptions
 ) where C : Collection
 {
     precondition(
@@ -1886,7 +1886,7 @@ internal func evaluateXCTKAssertExactlyOne<C>(
     message     : () -> String,
     file        : StaticString,
     line        : UInt,
-    options     : TKOptions
+    options     : TestOptions
 ) where C : Collection
 {
     let assertionKind: AssertionKind = .exactlyOne
@@ -1954,7 +1954,7 @@ internal func evaluateXCTKAssertSorted<C>(
     message     : () -> String,
     file        : StaticString,
     line        : UInt,
-    options     : TKOptions
+    options     : TestOptions
 ) where C : Collection
 {
     let assertionKind: AssertionKind = .sorted
@@ -2080,7 +2080,7 @@ internal func evaluateXCTKAssertUnique<C>(
     message     : () -> String,
     file        : StaticString,
     line        : UInt,
-    options     : TKOptions
+    options     : TestOptions
 ) where C : Collection, C.Element : Hashable
 {
     let assertionKind: AssertionKind = .unique
@@ -2171,7 +2171,7 @@ internal func evaluateXCTKAssertUnique<C, K>(
     message     : () -> String,
     file        : StaticString,
     line        : UInt,
-    options     : TKOptions
+    options     : TestOptions
 ) where C : Collection, K : Hashable
 {
     let assertionKind: AssertionKind = .uniqueByKey

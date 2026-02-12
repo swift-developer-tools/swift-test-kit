@@ -37,8 +37,8 @@ extension XCTestKitCase
         {
             case .equal:
                 
-                let options1    : TKOptions     = .init(diffEnabled: true)
-                let options2    : TKOptions     = .init(diffEnabled: false)
+                let options1    = TestOptions(diffEnabled: true)
+                let options2    = TestOptions(diffEnabled: false)
                 
                 body1 =
                 {
@@ -60,8 +60,8 @@ extension XCTestKitCase
                 
             case .satisfyAll:
                 
-                var options1    : TKOptions     = .init()
-                var options2    : TKOptions     = .init()
+                var options1    = TestOptions()
+                var options2    = TestOptions()
                 
                 options1.formatOptions.maxDiffs     = nil
                 options2.formatOptions.maxDiffs     = 1
@@ -89,8 +89,8 @@ extension XCTestKitCase
                 
             case .satisfyAny:
                 
-                var options1    : TKOptions     = .init()
-                var options2    : TKOptions     = .init()
+                var options1    = TestOptions()
+                var options2    = TestOptions()
                 
                 options1.formatOptions.maxDiffs     = nil
                 options2.formatOptions.maxDiffs     = 1
@@ -120,8 +120,8 @@ extension XCTestKitCase
                 
             case .satisfyNone:
                 
-                var options1    : TKOptions     = .init()
-                var options2    : TKOptions     = .init()
+                var options1    = TestOptions()
+                var options2    = TestOptions()
                 
                 options1.formatOptions.maxDiffs     = nil
                 options2.formatOptions.maxDiffs     = 1
@@ -149,8 +149,8 @@ extension XCTestKitCase
                 
             case .satisfyAtLeast:
                 
-                var options1    : TKOptions     = .init()
-                var options2    : TKOptions     = .init()
+                var options1    = TestOptions()
+                var options2    = TestOptions()
                 
                 options1.formatOptions.maxDiffs     = nil
                 options2.formatOptions.maxDiffs     = 1
@@ -182,8 +182,8 @@ extension XCTestKitCase
                 
             case .satisfyAtMost:
                 
-                var options1    : TKOptions     = .init()
-                var options2    : TKOptions     = .init()
+                var options1    = TestOptions()
+                var options2    = TestOptions()
                 
                 options1.formatOptions.maxDiffs     = nil
                 options2.formatOptions.maxDiffs     = 1
@@ -215,8 +215,8 @@ extension XCTestKitCase
                 
             case .satisfyRange:
                 
-                var options1    : TKOptions     = .init()
-                var options2    : TKOptions     = .init()
+                var options1    = TestOptions()
+                var options2    = TestOptions()
                 
                 options1.formatOptions.maxDiffs     = nil
                 options2.formatOptions.maxDiffs     = 1
@@ -248,8 +248,8 @@ extension XCTestKitCase
                 
             case .exactly:
                 
-                var options1    : TKOptions     = .init()
-                var options2    : TKOptions     = .init()
+                var options1    = TestOptions()
+                var options2    = TestOptions()
                 
                 options1.formatOptions.maxDiffs     = nil
                 options2.formatOptions.maxDiffs     = 1
@@ -281,8 +281,8 @@ extension XCTestKitCase
                 
             case .exactlyOne:
                 
-                var options1    : TKOptions     = .init()
-                var options2    : TKOptions     = .init()
+                var options1    = TestOptions()
+                var options2    = TestOptions()
                 
                 options1.formatOptions.maxDiffs     = nil
                 options2.formatOptions.maxDiffs     = 1
@@ -312,8 +312,8 @@ extension XCTestKitCase
                 
             case .unique:
                 
-                var options1    : TKOptions     = .init()
-                var options2    : TKOptions     = .init()
+                var options1    = TestOptions()
+                var options2    = TestOptions()
                 
                 options1.formatOptions.maxDiffs     = nil
                 options2.formatOptions.maxDiffs     = 1
@@ -338,8 +338,8 @@ extension XCTestKitCase
                 
             case .uniqueByKey:
                 
-                var options1    : TKOptions     = .init()
-                var options2    : TKOptions     = .init()
+                var options1    = TestOptions()
+                var options2    = TestOptions()
                 
                 options1.formatOptions.maxDiffs     = nil
                 options2.formatOptions.maxDiffs     = 1
@@ -426,8 +426,8 @@ extension XCTestKitCase
                 let a   : Bool  = true
                 let b   : Bool  = false
                 
-                var options1    : TKOptions     = .init()
-                var options2    : TKOptions     = .init()
+                var options1    = TestOptions()
+                var options2    = TestOptions()
                 
                 options1.formatOptions.showAllEvaluated     = true
                 options2.formatOptions.showAllEvaluated     = false
@@ -450,8 +450,8 @@ extension XCTestKitCase
                 
             case .equal:
                 
-                let options1    : TKOptions     = .init(diffEnabled: true)
-                let options2    : TKOptions     = .init(diffEnabled: false)
+                let options1    = TestOptions(diffEnabled: true)
+                let options2    = TestOptions(diffEnabled: false)
                 
                 body1 =
                 {
@@ -476,8 +476,8 @@ extension XCTestKitCase
                 let a   : Bool  = true
                 let b   : Bool  = false
                 
-                var options1    : TKOptions     = .init()
-                var options2    : TKOptions     = .init()
+                var options1    = TestOptions()
+                var options2    = TestOptions()
                 
                 options1.formatOptions.showAllEvaluated     = true
                 options2.formatOptions.showAllEvaluated     = false
@@ -503,8 +503,8 @@ extension XCTestKitCase
                 let a   : Bool  = true
                 let b   : Bool  = false
                 
-                var options1    : TKOptions     = .init()
-                var options2    : TKOptions     = .init()
+                var options1    = TestOptions()
+                var options2    = TestOptions()
                 
                 options1.formatOptions.showNotEvaluatedCount    = true
                 options2.formatOptions.showNotEvaluatedCount    = false
@@ -527,8 +527,8 @@ extension XCTestKitCase
                 
             case .satisfyAll:
                             
-                var options1    : TKOptions     = .init()
-                var options2    : TKOptions     = .init()
+                var options1    = TestOptions()
+                var options2    = TestOptions()
                 
                 options1.formatOptions.maxDiffs     = nil
                 options2.formatOptions.maxDiffs     = 1
@@ -556,8 +556,8 @@ extension XCTestKitCase
                 
             case .satisfyAny:
                 
-                var options1    : TKOptions     = .init()
-                var options2    : TKOptions     = .init()
+                var options1    = TestOptions()
+                var options2    = TestOptions()
                 
                 options1.formatOptions.maxDiffs     = nil
                 options2.formatOptions.maxDiffs     = 1
@@ -587,8 +587,8 @@ extension XCTestKitCase
                 
             case .satisfyNone:
                 
-                var options1    : TKOptions     = .init()
-                var options2    : TKOptions     = .init()
+                var options1    = TestOptions()
+                var options2    = TestOptions()
                 
                 options1.formatOptions.maxDiffs     = nil
                 options2.formatOptions.maxDiffs     = 1
@@ -616,8 +616,8 @@ extension XCTestKitCase
                 
             case .satisfyAtLeast:
                 
-                var options1    : TKOptions     = .init()
-                var options2    : TKOptions     = .init()
+                var options1    = TestOptions()
+                var options2    = TestOptions()
                 
                 options1.formatOptions.maxDiffs     = nil
                 options2.formatOptions.maxDiffs     = 1
@@ -649,8 +649,8 @@ extension XCTestKitCase
                 
             case .satisfyAtMost:
                 
-                var options1    : TKOptions     = .init()
-                var options2    : TKOptions     = .init()
+                var options1    = TestOptions()
+                var options2    = TestOptions()
                 
                 options1.formatOptions.maxDiffs     = nil
                 options2.formatOptions.maxDiffs     = 1
@@ -682,8 +682,8 @@ extension XCTestKitCase
                 
             case .satisfyRange:
                 
-                var options1    : TKOptions     = .init()
-                var options2    : TKOptions     = .init()
+                var options1    = TestOptions()
+                var options2    = TestOptions()
                 
                 options1.formatOptions.maxDiffs     = nil
                 options2.formatOptions.maxDiffs     = 1
@@ -715,8 +715,8 @@ extension XCTestKitCase
                 
             case .exactly:
                 
-                var options1    : TKOptions     = .init()
-                var options2    : TKOptions     = .init()
+                var options1    = TestOptions()
+                var options2    = TestOptions()
                 
                 options1.formatOptions.maxDiffs     = nil
                 options2.formatOptions.maxDiffs     = 1
@@ -748,8 +748,8 @@ extension XCTestKitCase
                 
             case .exactlyOne:
                 
-                var options1    : TKOptions     = .init()
-                var options2    : TKOptions     = .init()
+                var options1    = TestOptions()
+                var options2    = TestOptions()
                 
                 options1.formatOptions.maxDiffs     = nil
                 options2.formatOptions.maxDiffs     = 1
@@ -779,8 +779,8 @@ extension XCTestKitCase
                 
             case .unique:
                 
-                var options1    : TKOptions     = .init()
-                var options2    : TKOptions     = .init()
+                var options1    = TestOptions()
+                var options2    = TestOptions()
                 
                 options1.formatOptions.maxDiffs     = nil
                 options2.formatOptions.maxDiffs     = 1
@@ -805,8 +805,8 @@ extension XCTestKitCase
                 
             case .uniqueByKey:
                 
-                var options1    : TKOptions     = .init()
-                var options2    : TKOptions     = .init()
+                var options1    = TestOptions()
+                var options2    = TestOptions()
                 
                 options1.formatOptions.maxDiffs     = nil
                 options2.formatOptions.maxDiffs     = 1

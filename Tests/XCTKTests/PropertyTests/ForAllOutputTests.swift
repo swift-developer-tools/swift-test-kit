@@ -20,12 +20,12 @@ internal final class ForAllOutputTests: XCTestKitCase
     
     func testCounterexampleNoShrinking() throws
     {
-        let propertyOptions = TKPropertyOptions(
+        let propertyOptions = PropertyOptions(
             iterations:     1,
             seed:           Self.seed
         )
         
-        let options = TKOptions(propertyOptions: propertyOptions)
+        let options = TestOptions(propertyOptions: propertyOptions)
         
         
         
@@ -55,7 +55,7 @@ internal final class ForAllOutputTests: XCTestKitCase
         Counterexample:
             Int = 0
         
-        Seed: \(Self.seed) (re-run with TKPropertyOptions.seed)
+        Seed: \(Self.seed) (re-run with PropertyOptions.seed)
         
         """
         
@@ -66,12 +66,12 @@ internal final class ForAllOutputTests: XCTestKitCase
     
     func testCounterexampleWithShrinking() throws
     {
-        let propertyOptions = TKPropertyOptions(
+        let propertyOptions = PropertyOptions(
             iterations:     1,
             seed:           Self.seed
         )
         
-        let options = TKOptions(propertyOptions: propertyOptions)
+        let options = TestOptions(propertyOptions: propertyOptions)
         
         
         
@@ -109,7 +109,7 @@ internal final class ForAllOutputTests: XCTestKitCase
         Counterexample:
             Int = 10
         
-        Seed: \(Self.seed) (re-run with TKPropertyOptions.seed)
+        Seed: \(Self.seed) (re-run with PropertyOptions.seed)
         
         """
         
@@ -120,13 +120,13 @@ internal final class ForAllOutputTests: XCTestKitCase
     
     func testCounterexampleAtLaterIteration() throws
     {
-        let propertyOptions = TKPropertyOptions(
+        let propertyOptions = PropertyOptions(
             iterations:     10,
             maxSize:        100,
             seed:           Self.seed
         )
         
-        let options = TKOptions(propertyOptions: propertyOptions)
+        let options = TestOptions(propertyOptions: propertyOptions)
         
         
         
@@ -167,7 +167,7 @@ internal final class ForAllOutputTests: XCTestKitCase
         Counterexample:
             Int = 10
         
-        Seed: \(Self.seed) (re-run with TKPropertyOptions.seed)
+        Seed: \(Self.seed) (re-run with PropertyOptions.seed)
         
         """
         
@@ -178,12 +178,12 @@ internal final class ForAllOutputTests: XCTestKitCase
     
     func testCounterexampleWithThrownError() throws
     {
-        let propertyOptions = TKPropertyOptions(
+        let propertyOptions = PropertyOptions(
             iterations:     1,
             seed:           Self.seed
         )
         
-        let options = TKOptions(propertyOptions: propertyOptions)
+        let options = TestOptions(propertyOptions: propertyOptions)
         
         
         
@@ -206,7 +206,7 @@ internal final class ForAllOutputTests: XCTestKitCase
         Counterexample:
             Int = 0
         
-        Seed: \(Self.seed) (re-run with TKPropertyOptions.seed)
+        Seed: \(Self.seed) (re-run with PropertyOptions.seed)
         
         Threw error: TestError()
         """
@@ -218,12 +218,12 @@ internal final class ForAllOutputTests: XCTestKitCase
     
     func testCounterexampleWithMessage() throws
     {
-        let propertyOptions = TKPropertyOptions(
+        let propertyOptions = PropertyOptions(
             iterations:     1,
             seed:           Self.seed
         )
         
-        let options = TKOptions(propertyOptions: propertyOptions)
+        let options = TestOptions(propertyOptions: propertyOptions)
         
         
         
@@ -249,7 +249,7 @@ internal final class ForAllOutputTests: XCTestKitCase
         Counterexample:
             Int = 0
         
-        Seed: \(Self.seed) (re-run with TKPropertyOptions.seed)
+        Seed: \(Self.seed) (re-run with PropertyOptions.seed)
         
         Threw error: TestError()
         
@@ -263,12 +263,12 @@ internal final class ForAllOutputTests: XCTestKitCase
     
     func testCounterexampleWithMessageAndAssertionFailure() throws
     {
-        let propertyOptions = TKPropertyOptions(
+        let propertyOptions = PropertyOptions(
             iterations:     1,
             seed:           Self.seed
         )
         
-        let options = TKOptions(propertyOptions: propertyOptions)
+        let options = TestOptions(propertyOptions: propertyOptions)
         
         
         
@@ -302,7 +302,7 @@ internal final class ForAllOutputTests: XCTestKitCase
         Counterexample:
             Int = 0
         
-        Seed: \(Self.seed) (re-run with TKPropertyOptions.seed)
+        Seed: \(Self.seed) (re-run with PropertyOptions.seed)
         
         """
         
@@ -313,12 +313,12 @@ internal final class ForAllOutputTests: XCTestKitCase
     
     func testPreconditionGeneratorCounterexample() throws
     {
-        let propertyOptions = TKPropertyOptions(
+        let propertyOptions = PropertyOptions(
             iterations:     1,
             seed:           Self.seed
         )
         
-        let options = TKOptions(propertyOptions: propertyOptions)
+        let options = TestOptions(propertyOptions: propertyOptions)
         
         
         
@@ -357,7 +357,7 @@ internal final class ForAllOutputTests: XCTestKitCase
         Counterexample:
             Int = 50
         
-        Seed: \(Self.seed) (re-run with TKPropertyOptions.seed)
+        Seed: \(Self.seed) (re-run with PropertyOptions.seed)
         
         """
         
@@ -368,12 +368,12 @@ internal final class ForAllOutputTests: XCTestKitCase
     
     func testPreconditionCounterexample() throws
     {
-        let propertyOptions = TKPropertyOptions(
+        let propertyOptions = PropertyOptions(
             iterations:     1,
             seed:           Self.seed
         )
         
-        let options = TKOptions(propertyOptions: propertyOptions)
+        let options = TestOptions(propertyOptions: propertyOptions)
         
         
         
@@ -406,7 +406,7 @@ internal final class ForAllOutputTests: XCTestKitCase
         Counterexample:
             Int = 0
         
-        Seed: \(Self.seed) (re-run with TKPropertyOptions.seed)
+        Seed: \(Self.seed) (re-run with PropertyOptions.seed)
         
         """
         
@@ -417,12 +417,12 @@ internal final class ForAllOutputTests: XCTestKitCase
     
     func testTwoParameterArbitraryCounterexample() throws
     {
-        let propertyOptions = TKPropertyOptions(
+        let propertyOptions = PropertyOptions(
             iterations:     1,
             seed:           Self.seed
         )
         
-        let options = TKOptions(propertyOptions: propertyOptions)
+        let options = TestOptions(propertyOptions: propertyOptions)
         
         
         
@@ -453,7 +453,7 @@ internal final class ForAllOutputTests: XCTestKitCase
             Int = 0
             Int = 0
         
-        Seed: \(Self.seed) (re-run with TKPropertyOptions.seed)
+        Seed: \(Self.seed) (re-run with PropertyOptions.seed)
         
         """
         
@@ -464,12 +464,12 @@ internal final class ForAllOutputTests: XCTestKitCase
     
     func testTwoParameterCounterexampleNoShrinking() throws
     {
-        let propertyOptions = TKPropertyOptions(
+        let propertyOptions = PropertyOptions(
             iterations:     1,
             seed:           Self.seed
         )
         
-        let options = TKOptions(propertyOptions: propertyOptions)
+        let options = TestOptions(propertyOptions: propertyOptions)
         
         
         
@@ -506,7 +506,7 @@ internal final class ForAllOutputTests: XCTestKitCase
             Int = 50
             String = abc
         
-        Seed: \(Self.seed) (re-run with TKPropertyOptions.seed)
+        Seed: \(Self.seed) (re-run with PropertyOptions.seed)
         
         """
         
@@ -517,12 +517,12 @@ internal final class ForAllOutputTests: XCTestKitCase
     
     func testTwoParameterCounterexampleWithShrinking() throws
     {
-        let propertyOptions = TKPropertyOptions(
+        let propertyOptions = PropertyOptions(
             iterations:     1,
             seed:           Self.seed
         )
         
-        let options = TKOptions(propertyOptions: propertyOptions)
+        let options = TestOptions(propertyOptions: propertyOptions)
         
         
         
@@ -563,7 +563,7 @@ internal final class ForAllOutputTests: XCTestKitCase
             Int = 10
             String = abc
         
-        Seed: \(Self.seed) (re-run with TKPropertyOptions.seed)
+        Seed: \(Self.seed) (re-run with PropertyOptions.seed)
         
         """
         
@@ -574,12 +574,12 @@ internal final class ForAllOutputTests: XCTestKitCase
     
     func testThreeParameterCounterexampleNoShrinking() throws
     {
-        let propertyOptions = TKPropertyOptions(
+        let propertyOptions = PropertyOptions(
             iterations:     1,
             seed:           Self.seed
         )
         
-        let options = TKOptions(propertyOptions: propertyOptions)
+        let options = TestOptions(propertyOptions: propertyOptions)
         
         
         
@@ -618,7 +618,7 @@ internal final class ForAllOutputTests: XCTestKitCase
             String = abc
             Bool = true
         
-        Seed: \(Self.seed) (re-run with TKPropertyOptions.seed)
+        Seed: \(Self.seed) (re-run with PropertyOptions.seed)
         
         """
         
@@ -629,12 +629,12 @@ internal final class ForAllOutputTests: XCTestKitCase
     
     func testThreeParameterCounterexampleWithShrinking() throws
     {
-        let propertyOptions = TKPropertyOptions(
+        let propertyOptions = PropertyOptions(
             iterations:     1,
             seed:           Self.seed
         )
         
-        let options = TKOptions(propertyOptions: propertyOptions)
+        let options = TestOptions(propertyOptions: propertyOptions)
         
         
         
@@ -677,7 +677,7 @@ internal final class ForAllOutputTests: XCTestKitCase
             String = abc
             Bool = true
         
-        Seed: \(Self.seed) (re-run with TKPropertyOptions.seed)
+        Seed: \(Self.seed) (re-run with PropertyOptions.seed)
         
         """
         
@@ -688,13 +688,13 @@ internal final class ForAllOutputTests: XCTestKitCase
     
     func testAssertionFailurePriorityOverThrownError() throws
     {
-        let propertyOptions = TKPropertyOptions(
+        let propertyOptions = PropertyOptions(
             iterations:         1,
             maxDiscardRatio:    1,
             seed:               Self.seed
         )
         
-        let options = TKOptions(propertyOptions: propertyOptions)
+        let options = TestOptions(propertyOptions: propertyOptions)
         
         
         
@@ -727,7 +727,7 @@ internal final class ForAllOutputTests: XCTestKitCase
         Counterexample:
             Int = 0
         
-        Seed: \(Self.seed) (re-run with TKPropertyOptions.seed)
+        Seed: \(Self.seed) (re-run with PropertyOptions.seed)
         
         """
         
@@ -738,13 +738,13 @@ internal final class ForAllOutputTests: XCTestKitCase
     
     func testFirstAssertionFailureShown() throws
     {
-        let propertyOptions = TKPropertyOptions(
+        let propertyOptions = PropertyOptions(
             iterations:         1,
             maxDiscardRatio:    1,
             seed:               Self.seed
         )
         
-        let options = TKOptions(propertyOptions: propertyOptions)
+        let options = TestOptions(propertyOptions: propertyOptions)
         
         
         
@@ -776,7 +776,7 @@ internal final class ForAllOutputTests: XCTestKitCase
         Counterexample:
             Int = 0
         
-        Seed: \(Self.seed) (re-run with TKPropertyOptions.seed)
+        Seed: \(Self.seed) (re-run with PropertyOptions.seed)
         
         """
         
@@ -787,12 +787,12 @@ internal final class ForAllOutputTests: XCTestKitCase
     
     func testCollectionCounterexample() throws
     {
-        let propertyOptions = TKPropertyOptions(
+        let propertyOptions = PropertyOptions(
             iterations:     1,
             seed:           Self.seed
         )
         
-        let options = TKOptions(propertyOptions: propertyOptions)
+        let options = TestOptions(propertyOptions: propertyOptions)
         
         
         
@@ -827,7 +827,7 @@ internal final class ForAllOutputTests: XCTestKitCase
         Counterexample:
             Array<Int> = [1, 2, 3]
         
-        Seed: \(Self.seed) (re-run with TKPropertyOptions.seed)
+        Seed: \(Self.seed) (re-run with PropertyOptions.seed)
         
         """
         
@@ -842,13 +842,13 @@ internal final class ForAllOutputTests: XCTestKitCase
         /// shrink from `100` down to `10`. With `maxShrinkSteps` of `2`,
         /// shrinking stops at `98`.
         
-        let propertyOptions = TKPropertyOptions(
+        let propertyOptions = PropertyOptions(
             iterations:         1,
             maxShrinkSteps:     2,
             seed:               Self.seed
         )
         
-        let options = TKOptions(propertyOptions: propertyOptions)
+        let options = TestOptions(propertyOptions: propertyOptions)
         
         
         
@@ -886,7 +886,7 @@ internal final class ForAllOutputTests: XCTestKitCase
         Counterexample:
             Int = 98
         
-        Seed: \(Self.seed) (re-run with TKPropertyOptions.seed)
+        Seed: \(Self.seed) (re-run with PropertyOptions.seed)
         
         """
         
@@ -903,12 +903,12 @@ internal final class ForAllOutputTests: XCTestKitCase
             let y   : Int
         }
         
-        let propertyOptions = TKPropertyOptions(
+        let propertyOptions = PropertyOptions(
             iterations:     1,
             seed:           Self.seed
         )
         
-        let options = TKOptions(propertyOptions: propertyOptions)
+        let options = TestOptions(propertyOptions: propertyOptions)
         
         
         
@@ -943,7 +943,7 @@ internal final class ForAllOutputTests: XCTestKitCase
         Counterexample:
             Point = Point(x: 5, y: 10)
         
-        Seed: \(Self.seed) (re-run with TKPropertyOptions.seed)
+        Seed: \(Self.seed) (re-run with PropertyOptions.seed)
         
         """
         
@@ -954,12 +954,12 @@ internal final class ForAllOutputTests: XCTestKitCase
     
     func testCollectionCounterexampleWithShrinking() throws
     {
-        let propertyOptions = TKPropertyOptions(
+        let propertyOptions = PropertyOptions(
             iterations:     1,
             seed:           Self.seed
         )
         
-        let options = TKOptions(propertyOptions: propertyOptions)
+        let options = TestOptions(propertyOptions: propertyOptions)
         
         
         
@@ -1002,7 +1002,7 @@ internal final class ForAllOutputTests: XCTestKitCase
         Counterexample:
             Array<Int> = [1]
         
-        Seed: \(Self.seed) (re-run with TKPropertyOptions.seed)
+        Seed: \(Self.seed) (re-run with PropertyOptions.seed)
         
         """
         
@@ -1013,12 +1013,12 @@ internal final class ForAllOutputTests: XCTestKitCase
     
     func testThrownErrorShrinks() throws
     {
-        let propertyOptions = TKPropertyOptions(
+        let propertyOptions = PropertyOptions(
             iterations:     1,
             seed:           Self.seed
         )
         
-        let options = TKOptions(propertyOptions: propertyOptions)
+        let options = TestOptions(propertyOptions: propertyOptions)
         
         
         
@@ -1054,7 +1054,7 @@ internal final class ForAllOutputTests: XCTestKitCase
         Counterexample:
             Int = 12
         
-        Seed: \(Self.seed) (re-run with TKPropertyOptions.seed)
+        Seed: \(Self.seed) (re-run with PropertyOptions.seed)
         
         Threw error: TestError()
         """
@@ -1066,12 +1066,12 @@ internal final class ForAllOutputTests: XCTestKitCase
     
     func testMultiParameterBothShrink() throws
     {
-        let propertyOptions = TKPropertyOptions(
+        let propertyOptions = PropertyOptions(
             iterations:     1,
             seed:           Self.seed
         )
         
-        let options = TKOptions(propertyOptions: propertyOptions)
+        let options = TestOptions(propertyOptions: propertyOptions)
         
         
         
@@ -1146,7 +1146,7 @@ internal final class ForAllOutputTests: XCTestKitCase
             Int = 5
             Int = 3
         
-        Seed: \(Self.seed) (re-run with TKPropertyOptions.seed)
+        Seed: \(Self.seed) (re-run with PropertyOptions.seed)
         
         """
         
@@ -1157,14 +1157,14 @@ internal final class ForAllOutputTests: XCTestKitCase
     
     func testPreconditionGeneratorCounterexampleIncludesDiscards() throws
     {
-        let propertyOptions = TKPropertyOptions(
+        let propertyOptions = PropertyOptions(
             iterations:         1,
             maxSize:            100,
             maxDiscardRatio:    10,
             seed:               Self.seed
         )
         
-        let options = TKOptions(propertyOptions: propertyOptions)
+        let options = TestOptions(propertyOptions: propertyOptions)
         
         
         
@@ -1219,7 +1219,7 @@ internal final class ForAllOutputTests: XCTestKitCase
         Counterexample:
             Int = 10
         
-        Seed: \(Self.seed) (re-run with TKPropertyOptions.seed)
+        Seed: \(Self.seed) (re-run with PropertyOptions.seed)
         
         """
         
@@ -1232,13 +1232,13 @@ internal final class ForAllOutputTests: XCTestKitCase
     
     func testExhaustion() throws
     {
-        let propertyOptions = TKPropertyOptions(
+        let propertyOptions = PropertyOptions(
             iterations:         1,
             maxDiscardRatio:    1,
             seed:               Self.seed
         )
         
-        let options = TKOptions(propertyOptions: propertyOptions)
+        let options = TestOptions(propertyOptions: propertyOptions)
         
         
         
@@ -1261,7 +1261,7 @@ internal final class ForAllOutputTests: XCTestKitCase
         
             2 inputs discarded (max ratio: 1)
         
-        Seed: \(Self.seed) (re-run with TKPropertyOptions.seed)
+        Seed: \(Self.seed) (re-run with PropertyOptions.seed)
         """
         
         XCTAssertEqual(expected, actual)
@@ -1271,13 +1271,13 @@ internal final class ForAllOutputTests: XCTestKitCase
     
     func testExhaustionWithMessage() throws
     {
-        let propertyOptions = TKPropertyOptions(
+        let propertyOptions = PropertyOptions(
             iterations:         1,
             maxDiscardRatio:    1,
             seed:               Self.seed
         )
         
-        let options = TKOptions(propertyOptions: propertyOptions)
+        let options = TestOptions(propertyOptions: propertyOptions)
         
         
         
@@ -1301,7 +1301,7 @@ internal final class ForAllOutputTests: XCTestKitCase
         
             2 inputs discarded (max ratio: 1)
         
-        Seed: \(Self.seed) (re-run with TKPropertyOptions.seed)
+        Seed: \(Self.seed) (re-run with PropertyOptions.seed)
         
         hello world
         """
@@ -1313,14 +1313,14 @@ internal final class ForAllOutputTests: XCTestKitCase
     
     func testExhaustionAfterPartialSuccess() throws
     {
-        let propertyOptions = TKPropertyOptions(
+        let propertyOptions = PropertyOptions(
             iterations:         5,
             maxSize:            100,
             maxDiscardRatio:    1,
             seed:               Self.seed
         )
         
-        let options = TKOptions(propertyOptions: propertyOptions)
+        let options = TestOptions(propertyOptions: propertyOptions)
         
         
         
@@ -1351,7 +1351,7 @@ internal final class ForAllOutputTests: XCTestKitCase
         
             6 inputs discarded (max ratio: 1)
         
-        Seed: \(Self.seed) (re-run with TKPropertyOptions.seed)
+        Seed: \(Self.seed) (re-run with PropertyOptions.seed)
         """
         
         XCTAssertEqual(expected, actual)
@@ -1365,13 +1365,13 @@ internal final class ForAllOutputTests: XCTestKitCase
         /// discard limit is `0 * 1 = 0`. The first discarded input exceeds
         /// this limit.
         
-        let propertyOptions = TKPropertyOptions(
+        let propertyOptions = PropertyOptions(
             iterations:         1,
             maxDiscardRatio:    0,
             seed:               Self.seed
         )
         
-        let options = TKOptions(propertyOptions: propertyOptions)
+        let options = TestOptions(propertyOptions: propertyOptions)
         
         
         
@@ -1394,7 +1394,7 @@ internal final class ForAllOutputTests: XCTestKitCase
         
             1 input discarded (max ratio: 0)
         
-        Seed: \(Self.seed) (re-run with TKPropertyOptions.seed)
+        Seed: \(Self.seed) (re-run with PropertyOptions.seed)
         """
         
         XCTAssertEqual(expected, actual)

@@ -36,7 +36,7 @@ extension XCTestKitCase
     {
         var count   : Int           = 0
         let message : () -> String  = { count += 1; return "msg" }
-        let options : TKOptions      = .init()
+        let options : TestOptions   = .init()
         
         switch kind
         {
@@ -667,7 +667,7 @@ extension XCTestKitCase
     {
         var count   : Int           = 0
         let message : () -> String  = { count += 1; return "msg" }
-        let options : TKOptions     = .init()
+        let options : TestOptions   = .init()
         
         switch kind
         {

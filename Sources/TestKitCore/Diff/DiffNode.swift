@@ -88,7 +88,7 @@ package enum DiffNodeKind: Equatable
     /// A cycle may occur when comparing reference types (classes) that contain
     /// a circular reference. The comparison stops immediately to prevent
     /// infinite recursion (rather than waiting to stop at the limit specified
-    /// by ``TKDiffOptions/maxRecursionDepth``, if any).
+    /// by ``DiffOptions/maxRecursionDepth``, if any).
     ///
     /// - Parameters:
     ///   - expected: The expected value.

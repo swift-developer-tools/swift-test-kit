@@ -25,7 +25,7 @@ public func XCTKForAll<each T>(
     _ message   : @autoclosure () -> String         = "",
     file        : StaticString                      = #filePath,
     line        : UInt                              = #line,
-    options     : TKOptions?                        = nil,
+    options     : TestOptions?                      = nil,
     _ property  : (repeat each T) throws -> Void
 ) where repeat each T : Arbitrary
 {
@@ -78,7 +78,7 @@ public func XCTKForAll<each T>(
     message             : @autoclosure () -> String         = "",
     file                : StaticString                      = #filePath,
     line                : UInt                              = #line,
-    options             : TKOptions?                        = nil,
+    options             : TestOptions?                      = nil,
     _ property          : (repeat each T) throws -> Void
 )
 {
@@ -134,7 +134,7 @@ public func XCTKForAll<each T>(
     message             : @autoclosure () -> String         = "",
     file                : StaticString                      = #filePath,
     line                : UInt                              = #line,
-    options             : TKOptions?                        = nil,
+    options             : TestOptions?                      = nil,
     _ property          : (repeat each T) throws -> Void
 ) where repeat each T : Arbitrary
 {
@@ -201,7 +201,7 @@ public func XCTKForAll<each T>(
     message             : @autoclosure () -> String         = "",
     file                : StaticString                      = #filePath,
     line                : UInt                              = #line,
-    options             : TKOptions?                        = nil,
+    options             : TestOptions?                      = nil,
     _ property          : (repeat each T) throws -> Void
 )
 {

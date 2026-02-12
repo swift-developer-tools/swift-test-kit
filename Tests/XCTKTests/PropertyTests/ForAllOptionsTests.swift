@@ -52,12 +52,12 @@ internal final class ForAllOptionsTests: XCTestKitCase
         /// With `iterations` set to zero, the property vacuously passes.
         XCTKConfig.global.propertyOptions.iterations = 0
         
-        let propertyOptions = TKPropertyOptions(
+        let propertyOptions = PropertyOptions(
             iterations:     1,
             seed:           50
         )
         
-        let options = TKOptions(propertyOptions: propertyOptions)
+        let options = TestOptions(propertyOptions: propertyOptions)
         
         let output: String? = withCapturedOutput(options: options)
         {
@@ -75,12 +75,12 @@ internal final class ForAllOptionsTests: XCTestKitCase
     
     func testSeedDeterminism() throws
     {
-        let propertyOptions = TKPropertyOptions(
+        let propertyOptions = PropertyOptions(
             iterations:     1,
             seed:           12345
         )
         
-        let options = TKOptions(propertyOptions: propertyOptions)
+        let options = TestOptions(propertyOptions: propertyOptions)
         
         let property: (Int) throws -> Void =
         {
@@ -110,12 +110,12 @@ internal final class ForAllOptionsTests: XCTestKitCase
     {
         let seed: UInt64 = 9876543210
         
-        let propertyOptions = TKPropertyOptions(
+        let propertyOptions = PropertyOptions(
             iterations:     1,
             seed:           seed
         )
         
-        let options = TKOptions(propertyOptions: propertyOptions)
+        let options = TestOptions(propertyOptions: propertyOptions)
         
         let output: String? = withCapturedOutput(options: options)
         {
@@ -137,13 +137,13 @@ internal final class ForAllOptionsTests: XCTestKitCase
         /// With `maxSize` set to zero, every iteration generates at size zero.
         /// ``Int/arbitrary(using:)`` produces `0` at size zero, so the
         /// property passes.
-        let propertyOptions = TKPropertyOptions(
+        let propertyOptions = PropertyOptions(
             iterations:     10,
             maxSize:        0,
             seed:           50
         )
         
-        var options = TKOptions(propertyOptions: propertyOptions)
+        var options = TestOptions(propertyOptions: propertyOptions)
         
         XCTKForAll(options: options)
         {
@@ -174,13 +174,13 @@ internal final class ForAllOptionsTests: XCTestKitCase
     
     func testMaxShrinkStepsZeroDisablesShrinking() throws
     {
-        let propertyOptions = TKPropertyOptions(
+        let propertyOptions = PropertyOptions(
             iterations:         100,
             maxShrinkSteps:     0,
             seed:               50
         )
         
-        let options = TKOptions(propertyOptions: propertyOptions)
+        let options = TestOptions(propertyOptions: propertyOptions)
         
         let output: String? = withCapturedOutput(options: options)
         {
@@ -197,13 +197,13 @@ internal final class ForAllOptionsTests: XCTestKitCase
     
     func testMaxShrinkStepsEnablesShrinking() throws
     {
-        let propertyOptions = TKPropertyOptions(
+        let propertyOptions = PropertyOptions(
             iterations:         100,
             maxShrinkSteps:     100,
             seed:               50
         )
         
-        let options = TKOptions(propertyOptions: propertyOptions)
+        let options = TestOptions(propertyOptions: propertyOptions)
         
         let output: String? = withCapturedOutput(options: options)
         {
@@ -222,13 +222,13 @@ internal final class ForAllOptionsTests: XCTestKitCase
     
     func testMaxDiscardRatioTriggersExhaustion() throws
     {
-        let propertyOptions = TKPropertyOptions(
+        let propertyOptions = PropertyOptions(
             iterations:         1,
             maxDiscardRatio:    1,
             seed:               50
         )
         
-        let options = TKOptions(propertyOptions: propertyOptions)
+        let options = TestOptions(propertyOptions: propertyOptions)
         
         let output: String? = withCapturedOutput(
             precondition:   { _ in false },
@@ -254,7 +254,7 @@ extension ForAllOptionsTests
     /// - Returns: The captured failure message, or `nil` if no failure
     /// occurred.
     private func withCapturedOutput(
-        options     : TKOptions?,
+        options     : TestOptions?,
         property    : @escaping (Int) throws -> Void
     ) -> String?
     {
@@ -281,7 +281,7 @@ extension ForAllOptionsTests
     /// occurred.
     private func withCapturedOutput(
         precondition    : @escaping (Int) -> Bool,
-        options         : TKOptions?,
+        options         : TestOptions?,
         property        : @escaping (Int) throws -> Void    = { _ in }
     ) -> String?
     {

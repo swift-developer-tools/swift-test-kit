@@ -63,7 +63,7 @@ extension AssertionKind
         message     : () -> String,
         file        : StaticString,
         line        : UInt,
-        options     : TKOptions
+        options     : TestOptions
     )
     {
         let result: Result<String, UnhandledError> = makeDiffFailure(
@@ -139,7 +139,7 @@ extension AssertionKind
         message         : () -> String,
         file            : StaticString,
         line            : UInt,
-        options         : TKOptions
+        options         : TestOptions
     )
     {
         let text: String = makeBooleanExprFailure(
@@ -178,7 +178,7 @@ extension AssertionKind
         message     : () -> String,
         file        : StaticString,
         line        : UInt,
-        options     : TKOptions
+        options     : TestOptions
     )
     {
         let text: String = makePredicateFailure(

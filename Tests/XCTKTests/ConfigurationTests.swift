@@ -40,8 +40,8 @@ internal final class ConfigurationTests: XCTestKitCase
         let options = XCTKConfig.global
         
         XCTKAssertEqual(options.diffEnabled, true)
-        XCTKAssertEqual(options.diffOptions, TKDiffOptions())
-        XCTKAssertEqual(options.formatOptions, TKFormatOptions())
+        XCTKAssertEqual(options.diffOptions, DiffOptions())
+        XCTKAssertEqual(options.formatOptions, FormatOptions())
     }
     
     
@@ -83,9 +83,9 @@ internal final class ConfigurationTests: XCTestKitCase
     {
         class CustomCase: XCTKCase
         {
-            override var options: TKOptions
+            override var options: TestOptions
             {
-                var opts = TKOptions()
+                var opts = TestOptions()
                 
                 opts.diffOptions.maxRecursionDepth = 1
                 

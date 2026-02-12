@@ -16,30 +16,30 @@ import TestKitCore
 /// The options for testing.
 ///
 /// - Note: See
-/// [`TKOptions`](https://swift-developer-tools.github.io/swift-test-kit/documentation/testkitcore/tkoptions)
+/// [`TestOptions`](https://swift-developer-tools.github.io/swift-test-kit/documentation/testkitcore/testoptions)
 /// for the complete API reference.
-public typealias TKOptions          = TestKitCore.TKOptions
+public typealias TestOptions        = TestKitCore.TestOptions
 
 /// The options for computing diffs.
 ///
 /// - Note: See
-/// [`TKDiffOptions`](https://swift-developer-tools.github.io/swift-test-kit/documentation/testkitcore/tkdiffoptions)
+/// [`DiffOptions`](https://swift-developer-tools.github.io/swift-test-kit/documentation/testkitcore/diffoptions)
 /// for the complete API reference.
-public typealias TKDiffOptions      = TestKitCore.TKDiffOptions
+public typealias DiffOptions        = TestKitCore.DiffOptions
 
 /// The options for formatting assertion failures.
 ///
 /// - Note: See
-/// [`TKFormatOptions`](https://swift-developer-tools.github.io/swift-test-kit/documentation/testkitcore/tkformatoptions)
+/// [`FormatOptions`](https://swift-developer-tools.github.io/swift-test-kit/documentation/testkitcore/formatoptions)
 /// for the complete API reference.
-public typealias TKFormatOptions    = TestKitCore.TKFormatOptions
+public typealias FormatOptions      = TestKitCore.FormatOptions
 
 /// The options for property-based testing.
 ///
 /// - Note: See
-/// [`TKPropertyOptions`](https://swift-developer-tools.github.io/swift-test-kit/documentation/testkitcore/tkpropertyoptions)
+/// [`PropertyOptions`](https://swift-developer-tools.github.io/swift-test-kit/documentation/testkitcore/propertyoptions)
 /// for the complete API reference.
-public typealias TKPropertyOptions  = TestKitCore.TKPropertyOptions
+public typealias PropertyOptions    = TestKitCore.PropertyOptions
 
 
 

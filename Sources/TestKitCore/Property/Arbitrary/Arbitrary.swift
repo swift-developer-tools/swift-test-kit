@@ -61,7 +61,7 @@
 /// the type's ``arbitrary(using:)`` method, which automatically scales with
 /// ``GenerationContext/size``.
 ///
-/// The ``shrink()-8rz9j`` method returns candidates by shrinking one property
+/// The ``shrink()-7wd72`` method returns candidates by shrinking one property
 /// at a time, while holding the other properties constant.
 public protocol Arbitrary
 {

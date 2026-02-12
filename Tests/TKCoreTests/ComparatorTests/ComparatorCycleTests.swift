@@ -100,7 +100,7 @@ internal final class ComparatorCycleTests: XCTestCaseStopOnFail
         let actual: DiffNode = Comparator.computeDiff(
             expected:   expRoot,
             actual:     actRoot,
-            options:    TKDiffOptions(maxRecursionDepth: nil)
+            options:    DiffOptions(maxRecursionDepth: nil)
         )
         
         let expected = DiffNode.makeRoot(
@@ -205,7 +205,7 @@ internal final class ComparatorCycleTests: XCTestCaseStopOnFail
         let actual: DiffNode = Comparator.computeDiff(
             expected:   exp,
             actual:     act,
-            options:    TKDiffOptions(maxRecursionDepth: 1)
+            options:    DiffOptions(maxRecursionDepth: 1)
         )
         
         let expected = DiffNode.makeRoot(
@@ -248,7 +248,7 @@ internal final class ComparatorCycleTests: XCTestCaseStopOnFail
         let actual: DiffNode = Comparator.computeDiff(
             expected:   expA,
             actual:     actA,
-            options:    TKDiffOptions(maxRecursionDepth: nil)
+            options:    DiffOptions(maxRecursionDepth: nil)
         )
         
         let expected = DiffNode.makeRoot(
@@ -315,7 +315,7 @@ internal final class ComparatorCycleTests: XCTestCaseStopOnFail
         let actual: DiffNode = Comparator.computeDiff(
             expected:   exp,
             actual:     act,
-            options:    TKDiffOptions(maxRecursionDepth: nil)
+            options:    DiffOptions(maxRecursionDepth: nil)
         )
         
         let expectedInnerTree: [DiffNode] =
@@ -380,7 +380,7 @@ internal final class ComparatorCycleTests: XCTestCaseStopOnFail
         let actual: DiffNode = Comparator.computeDiff(
             expected:   exp,
             actual:     exp,
-            options:    TKDiffOptions(maxRecursionDepth: nil)
+            options:    DiffOptions(maxRecursionDepth: nil)
         )
         
         let expected = DiffNode(
@@ -415,7 +415,7 @@ internal final class ComparatorCycleTests: XCTestCaseStopOnFail
         let actual: DiffNode = Comparator.computeDiff(
             expected:   expRoot,
             actual:     actRoot,
-            options:    TKDiffOptions(maxRecursionDepth: nil)
+            options:    DiffOptions(maxRecursionDepth: nil)
         )
         
         let expected = DiffNode.makeRoot(
@@ -507,7 +507,7 @@ internal final class ComparatorCycleTests: XCTestCaseStopOnFail
         let actual: DiffNode = Comparator.computeDiff(
             expected:   expRoot,
             actual:     actRoot,
-            options:    TKDiffOptions(maxRecursionDepth: nil)
+            options:    DiffOptions(maxRecursionDepth: nil)
         )
         
         let expected = DiffNode.makeRoot(
@@ -699,7 +699,7 @@ extension ComparatorCycleTests
         let actual: DiffNode = Comparator.computeDiff(
             expected:   exp,
             actual:     act,
-            options:    TKDiffOptions(maxRecursionDepth: nil)
+            options:    DiffOptions(maxRecursionDepth: nil)
         )
         
         let expected = DiffNode.makeRoot(
@@ -779,7 +779,7 @@ extension ComparatorCycleTests
         let actual: DiffNode = Comparator.computeDiff(
             expected:   expA,
             actual:     actA,
-            options:    TKDiffOptions(maxRecursionDepth: nil)
+            options:    DiffOptions(maxRecursionDepth: nil)
         )
         
         let expected = DiffNode.makeRoot(
@@ -853,7 +853,7 @@ extension ComparatorCycleTests
         let actual: DiffNode = Comparator.computeDiff(
             expected:   expA,
             actual:     actA,
-            options:    TKDiffOptions(maxRecursionDepth: nil)
+            options:    DiffOptions(maxRecursionDepth: nil)
         )
         
         let expectedInnerTree: [DiffNode] =
@@ -959,7 +959,7 @@ extension ComparatorCycleTests
                 actual = Comparator.computeDiff(
                     expected:   exp,
                     actual:     act,
-                    options:    TKDiffOptions(maxRecursionDepth: nil)
+                    options:    DiffOptions(maxRecursionDepth: nil)
                 )
                 
                 rootTypeName        = typeName(of: exp)
@@ -975,7 +975,7 @@ extension ComparatorCycleTests
                 actual = Comparator.computeDiff(
                     expected:   exp,
                     actual:     act,
-                    options:    TKDiffOptions(maxRecursionDepth: nil)
+                    options:    DiffOptions(maxRecursionDepth: nil)
                 )
                 
                 rootTypeName        = typeName(of: exp)

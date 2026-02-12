@@ -87,7 +87,7 @@ extension AssertionKind
         captureKind : ExprCaptureKind,
         diff        : DiffNode,
         message     : () -> String?,
-        options     : TKOptions
+        options     : TestOptions
     ) -> Result<String, UnhandledError>
     {
         let diffOutput: String = Formatter.formatDiff(
@@ -213,7 +213,7 @@ extension AssertionKind
         evaluated       : [BooleanExpr],
         notEvaluated    : Int,
         message         : () -> String?,
-        options         : TKOptions
+        options         : TestOptions
     ) -> String
     {
         let output: String = Formatter.formatBooleanExpr(
@@ -253,7 +253,7 @@ extension AssertionKind
         captureKind : ExprCaptureKind,
         failure     : PredicateFailure,
         message     : () -> String?,
-        options     : TKOptions
+        options     : TestOptions
     ) -> String
     {
         let output  : String

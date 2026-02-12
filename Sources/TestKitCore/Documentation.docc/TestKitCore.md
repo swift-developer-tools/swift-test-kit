@@ -8,8 +8,8 @@ Core types shared by SwiftTestKit and XCTestKit.
 
 ## Overview
 
-SwiftTestKit and XCTestKit share some of the same core types.
-The core types are automatically available when importing either framework.
+SwiftTestKit and XCTestKit share the same core types. The core types are 
+automatically available when importing either framework.
 
 ```swift
 // Includes core types for SwiftTestKit.
@@ -25,10 +25,10 @@ import XCTestKit
 
 ### Testing Options
 
-- ``TKOptions``
-- ``TKDiffOptions``
-- ``TKFormatOptions``
-- ``TKPropertyOptions``
+- ``TestOptions``
+- ``DiffOptions``
+- ``FormatOptions``
+- ``PropertyOptions``
 
 ### Property-Based Testing
 

@@ -94,7 +94,7 @@ extension PropertyCheckResult
         )
         
         lines.append("")
-        lines.append("Seed: \(seed) (re-run with TKPropertyOptions.seed)")
+        lines.append("Seed: \(seed) (re-run with PropertyOptions.seed)")
         
         
         
@@ -170,7 +170,7 @@ extension Counterexample
         
         
         lines.append("")
-        lines.append("Seed: \(self.seed) (re-run with TKPropertyOptions.seed)")
+        lines.append("Seed: \(self.seed) (re-run with PropertyOptions.seed)")
         
         
         

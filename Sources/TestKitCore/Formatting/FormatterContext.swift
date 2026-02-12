@@ -40,8 +40,8 @@ internal final class FormatterContext
     
     /// The options for formatting diffs.
     ///
-    /// The default value is a default-initialized ``TKFormatOptions`` instance.
-    internal var options            : TKFormatOptions
+    /// The default value is a default-initialized ``FormatOptions`` instance.
+    internal var options            : FormatOptions
     
     
     
@@ -54,7 +54,7 @@ internal final class FormatterContext
         currentIndent       : Int               = 0,
         emittedDiffCount    : Int               = 0,
         isTruncated         : Bool              = false,
-        options             : TKFormatOptions   = .init()
+        options             : FormatOptions     = .init()
     )
     {
         self.lines              = lines
@@ -73,8 +73,8 @@ internal final class FormatterContext
     
     /// Initializes a ``FormatterContext`` instance from the given values.
     internal init(
-        options         : TKFormatOptions,
-        totalDiffCount  : Int?              = nil
+        options         : FormatOptions,
+        totalDiffCount  : Int?          = nil
     )
     {
         self.lines              = []

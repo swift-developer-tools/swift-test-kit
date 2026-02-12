@@ -24,7 +24,7 @@ package struct Comparator
     package static func computeDiff<T>(
         expected    : T,
         actual      : T,
-        options     : TKDiffOptions
+        options     : DiffOptions
     ) -> DiffNode where T : Equatable
     {
         let context     = ComparatorContext(options: options)

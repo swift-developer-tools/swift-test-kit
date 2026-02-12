@@ -59,7 +59,7 @@ package struct FormattedLine
 /// Currently, a closing quote is added to truncated strings by
 /// ``renderText(_:)``, since that implementation is trivial. Other
 /// behavior is acceptable and may be avoided by increasing the limit
-/// specified by ``TKFormatOptions/maxLineLength``.
+/// specified by ``FormatOptions/maxLineLength``.
 package struct Formatter
 {
     /// The context for tracking state across recursive formatting calls.
@@ -74,7 +74,7 @@ package struct Formatter
     /// - Returns: The formatted failure.
     package static func formatDiff(
         _ node  : DiffNode,
-        options : TKFormatOptions
+        options : FormatOptions
     ) -> String
     {
         let context = FormatterContext(
@@ -105,7 +105,7 @@ package struct Formatter
         evaluated       : [BooleanExpr],
         notEvaluated    : Int,
         expectedValue   : Bool,
-        options         : TKFormatOptions
+        options         : FormatOptions
     ) -> String
     {
         let exprsToShow: [BooleanExpr] = options.showAllEvaluated
@@ -148,7 +148,7 @@ package struct Formatter
         _ failure       : PredicateFailure,
         collectionText  : String?           = nil,
         predicateText   : String?           = nil,
-        options         : TKFormatOptions
+        options         : FormatOptions
     ) -> String
     {
         let totalDiffCount: Int? = options.countDiffs
@@ -379,7 +379,7 @@ package struct Formatter
     /// also adding state synchronization complexity.
     ///
     /// Since path depth is generally not excessive (and is potentially
-    /// limited by ``TKDiffOptions/maxRecursionDepth``), and this method is
+    /// limited by ``DiffOptions/maxRecursionDepth``), and this method is
     /// called only once per leaf, the simpler approach is preferred.
     ///
     /// - Returns: The indentation level of the path, or `0` if it is empty.
@@ -453,7 +453,7 @@ package struct Formatter
         
         /// The path is emitted with one level of indentation and no label.
         /// Compute the available width to potentially truncate the path if
-        /// it exceeds ``TKFormatOptions/maxLineLength``.
+        /// it exceeds ``FormatOptions/maxLineLength``.
         let availableWidth: Int = computeAvailableWidth(
             indent:         1,
             labelWidth:     0
@@ -1357,7 +1357,7 @@ package struct Formatter
     /// - Returns: The number of diffs in the given predicate failure.
     private static func countPredicateDiffs(
         in failure  : PredicateFailure,
-        options     : TKFormatOptions
+        options     : FormatOptions
     ) -> Int
     {
         switch failure.kind
