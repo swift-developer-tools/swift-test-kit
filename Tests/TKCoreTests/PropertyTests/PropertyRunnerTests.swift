@@ -400,7 +400,7 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
         XCTAssertEqual(exhausted.succeeded, 0)
         XCTAssertGreaterThan(exhausted.discarded, 0)
         XCTAssertEqual(exhausted.ratio, maxDiscardRatio)
-        XCTAssertEqual(exhausted.seed, Self.defaultSeed)
+        XCTAssertEqual(exhausted.seed, Self.seed)
     }
     
     
@@ -1804,7 +1804,7 @@ extension PropertyRunnerTests
     /// The seed used to initialize the random number generator.
     ///
     /// Use a fixed seed rather than a random seed for deterministic tests.
-    private static let defaultSeed: UInt64 = 12345
+    private static let seed: UInt64 = 12345
     
     
     
@@ -1815,7 +1815,7 @@ extension PropertyRunnerTests
         maxShrinkSteps  : Int       = 100,
         maxSize         : Int       = 100,
         maxDiscardRatio : Int       = 10,
-        seed            : UInt64?   = defaultSeed
+        seed            : UInt64?   = seed
     ) -> TKOptions
     {
         let propertyOptions = TKPropertyOptions(
