@@ -69,29 +69,43 @@ package struct AnyShrinker
     
     
     
-    /// Generates shrink candidates from the given values.
+    /// Generates the shrink candidates of the given value.
     ///
-    /// Each candidate is a copy of `values` with one element replace by a
-    /// shrunken alternative.
+    /// Each candidate is a copy of the given value's components with one
+    /// element replaced by a shrunken alternative.
     ///
     /// - Parameters:
-    ///   - values: The mirrored tuple children, or an empty array for
-    ///   single-element packs.
-    ///   - original: The original tuple value. This is used only for
-    ///   single-element packs.
+    ///   - value: The value to shrink. For multi-element packs, this is a
+    ///   tuple. For single-element packs, this is the element itself.
     ///   - shrinkers: The shrinkers for each element.
     /// - Returns: The type-erased shrink candidates.
     package static func shrinkCandidates(
-        values      : [Any],
-        original    : Any,
-        shrinkers   : [AnyShrinker]
+        of      value       : Any,
+        using   shrinkers   : [AnyShrinker]
     ) -> [[Any]]
     {
-        var candidates: [[Any]] = []
+        var candidates  : [[Any]]   = []
+        let mirror      : Mirror    = .init(reflecting: value)
+        let values      : [Any]     = mirror.children.map { $0.value }
         
-        /// Single-element packs are flattened to the underlying element
-        /// (`(T)` becomes `T`). `Mirror` has no children for non-tuple values.
-        guard !values.isEmpty
+        
+        
+        /// Multi-element packs produces tuples. Single-element packs are
+        /// flattened to the underlying element (`(T)` becomes `T`), so
+        /// `Mirror` reflects the type's own structure rather than tuple
+        /// members. For example, for a single-element parameter pack where
+        /// `T = [Int]`, `(repeat each T)` collapses to `[Int]`, and the
+        /// `Mirror` of this array reflects the elements as children.
+        ///
+        /// Check that the display style reflects a tuple, not an array or
+        /// struct whose mirror children happen to match the count.
+        ///
+        /// Check that the counts match between `values` and `shrinkers`,
+        /// to guard against a single-element pack whose value is itself a
+        /// tuple (for example, `T = (Int, String)`).
+        guard
+            mirror.displayStyle == .tuple,
+            values.count == shrinkers.count
         else
         {
             guard shrinkers.count == 1
@@ -100,7 +114,7 @@ package struct AnyShrinker
                 return []
             }
             
-            for shrunken in shrinkers[0].shrink(original)
+            for shrunken in shrinkers[0].shrink(value)
             {
                 candidates.append([shrunken])
             }

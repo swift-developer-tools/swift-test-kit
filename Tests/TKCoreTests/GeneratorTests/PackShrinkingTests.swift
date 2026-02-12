@@ -855,23 +855,18 @@ internal final class PackShrinkingTests: XCTestCaseStopOnFail
     
     func testShrinkCandidatesMultiElement() throws
     {
-        let values: [Any] = [10, "abc"]
-        
         let shrinkers: [AnyShrinker] =
         [
             .makeShrinker(for: Int.self),
             .makeShrinker(for: String.self)
         ]
         
-        
-        
-        let p0Count: Int = shrinkers[0].shrink(values[0]).count
-        let p1Count: Int = shrinkers[1].shrink(values[1]).count
+        let p0Count: Int = shrinkers[0].shrink(10).count
+        let p1Count: Int = shrinkers[1].shrink("abc").count
         
         let candidates: [[Any]] = AnyShrinker.shrinkCandidates(
-            values:     values,
-            original:   (10, "abc"),
-            shrinkers:  shrinkers
+            of:     (10, "abc"),
+            using:  shrinkers
         )
         
         XCTAssertEqual(candidates.count, p0Count + p1Count)
@@ -918,9 +913,8 @@ internal final class PackShrinkingTests: XCTestCaseStopOnFail
         let input       : Int               = 50
         
         let candidates: [[Any]] = AnyShrinker.shrinkCandidates(
-            values:     [],
-            original:   input,
-            shrinkers:  shrinkers
+            of:     input,
+            using:  shrinkers
         )
         
         let expected: [Int] = input.shrinkTowardZero()
@@ -941,9 +935,8 @@ internal final class PackShrinkingTests: XCTestCaseStopOnFail
     {
         /// No shrinkers or values. Nothing to shrink.
         let zeroResult: [[Any]] = AnyShrinker.shrinkCandidates(
-            values:     [],
-            original:   40,
-            shrinkers:  []
+            of:     40,
+            using:  []
         )
         
         XCTAssertTrue(zeroResult.isEmpty)
@@ -951,9 +944,8 @@ internal final class PackShrinkingTests: XCTestCaseStopOnFail
         /// Two shrinkers, no values. Mismatch. Does not count as a
         /// single-element pack.
         let twoResult: [[Any]] = AnyShrinker.shrinkCandidates(
-            values:     [],
-            original:   40,
-            shrinkers:
+            of: 40,
+            using:
             [
                 .makeShrinker(for: Int.self),
                 .makeShrinker(for: Int.self)
@@ -968,9 +960,8 @@ internal final class PackShrinkingTests: XCTestCaseStopOnFail
     func testShrinkCandidatesAllUnshrinkable() throws
     {
         let candidates: [[Any]] = AnyShrinker.shrinkCandidates(
-            values:     [0, false, ""],
-            original:   (0, false, ""),
-            shrinkers:
+            of: (0, false, ""),
+            using:
             [
                 .makeShrinker(for: Int.self),
                 .makeShrinker(for: Bool.self),
@@ -986,9 +977,8 @@ internal final class PackShrinkingTests: XCTestCaseStopOnFail
     func testShrinkCandidatesSingleElementPackUnshrinkable() throws
     {
         let candidates: [[Any]] = AnyShrinker.shrinkCandidates(
-            values:     [],
-            original:   0,
-            shrinkers:  [.makeShrinker(for: Int.self)]
+            of:     0,
+            using:  [.makeShrinker(for: Int.self)]
         )
         
         XCTAssertTrue(candidates.isEmpty)

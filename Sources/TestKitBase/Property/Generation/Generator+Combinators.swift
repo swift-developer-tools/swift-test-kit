@@ -394,13 +394,9 @@ extension Generator
                 /// with the corresponding array index. Force-casting is safe
                 /// since array construction is controlled.
                 
-                let mirror  : Mirror    = .init(reflecting: tuple)
-                let values  : [Any]     = mirror.children.map { $0.value }
-                
                 let rawCandidates: [[Any]] = AnyShrinker.shrinkCandidates(
-                    values:     values,
-                    original:   tuple,
-                    shrinkers:  shrinkers
+                    of:     tuple,
+                    using:  shrinkers
                 )
                 
                 return rawCandidates.map
