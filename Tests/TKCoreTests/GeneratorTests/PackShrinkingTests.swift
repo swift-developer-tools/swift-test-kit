@@ -983,6 +983,51 @@ internal final class PackShrinkingTests: XCTestCaseStopOnFail
         
         XCTAssertTrue(candidates.isEmpty)
     }
+    
+    
+    
+    func testShrinkCandidatesSingleElementPackTupleValue() throws
+    {
+        /// When `T = (Int, String)` in a single-element parameter pack,
+        /// `(repeat each T)` collapses to `(Int, String)`. The `Mirror`
+        /// reflects this as a tuple with two children, but there is only
+        /// one shrinker. The mismatch must be detected and fall through
+        /// to the single-element path.
+        
+        let shrinker = AnyShrinker({
+            (v: (Int, String)) -> [(Int, String)] in
+            
+            var candidates: [(Int, String)] = []
+            
+            for shrunkenInt in v.0.shrinkTowardZero()
+            {
+                candidates.append((shrunkenInt, v.1))
+            }
+            
+            return candidates
+        })
+        
+        let value: (Int, String) = (50, "abc")
+        
+        let candidates: [[Any]] = AnyShrinker.shrinkCandidates(
+            of:     value,
+            using:  [shrinker]
+        )
+        
+        let expected: [Int] = (50 as Int).shrinkTowardZero()
+        
+        XCTAssertEqual(candidates.count, expected.count)
+        XCTAssertGreaterThan(candidates.count, 0)
+        
+        for candidate in candidates
+        {
+            XCTAssertEqual(candidate.count, 1)
+            
+            let tuple = try XCTUnwrap(candidate[0] as? (Int, String))
+            
+            XCTAssertEqual(tuple.1, "abc")
+        }
+    }
 }
 
 
