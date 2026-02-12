@@ -7,7 +7,7 @@
 //
 //===----------------------------------------------------------------------===//
 
-@testable import TestKitBase
+@testable import TestKitCore
 
 
 

@@ -7,10 +7,6 @@
 //
 //===----------------------------------------------------------------------===//
 
-import TestKitBase
-
-
-
 extension PropertyCheckResult
 {
     /// Emits the property check result.

@@ -1,21 +1,21 @@
-# ``TestKitBase``
+# ``TestKitCore``
 
 @Metadata {
-    @DisplayName("SwiftTestKit and XCTestKit Base")
+    @DisplayName("SwiftTestKit and XCTestKit Core")
 }
 
-Shared types used by both SwiftTestKit and XCTestKit.
+Core types shared by SwiftTestKit and XCTestKit.
 
 ## Overview
 
-SwiftTestKit and XCTestKit share some of the same base types.
-The base types are automatically available when importing either framework.
+SwiftTestKit and XCTestKit share some of the same core types.
+The core types are automatically available when importing either framework.
 
 ```swift
-// Includes base types for SwiftTestKit.
+// Includes core types for SwiftTestKit.
 import SwiftTestKit
 
-// Includes base types for XCTestKit.
+// Includes core types for XCTestKit.
 import XCTestKit
 ```
 

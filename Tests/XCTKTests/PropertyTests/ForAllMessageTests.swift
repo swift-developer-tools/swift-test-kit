@@ -7,7 +7,7 @@
 //
 //===----------------------------------------------------------------------===//
 
-import TestKitBase
+import TestKitCore
 import XCTest
 @testable import XCTestKit
 
