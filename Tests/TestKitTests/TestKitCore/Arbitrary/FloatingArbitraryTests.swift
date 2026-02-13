@@ -130,8 +130,9 @@ extension FloatingArbitraryTests
                 continue
             }
             
-            /// At size zero, the integer part is zero. The fraction part is
-            /// in the range `-1...1`. The total must also be in that range.
+            /// At size zero, the integer component is zero. The fraction
+            /// component is in the range `-1...1`. The total must also be in
+            /// that range.
             XCTAssertGreaterThanOrEqual(value, -1)
             XCTAssertLessThanOrEqual(value, 1)
         }
@@ -165,8 +166,8 @@ extension FloatingArbitraryTests
                 continue
             }
             
-            /// The integer part is in the range `-size...size`, and the
-            /// fractional part is in the range `-1...1`. The total bound
+            /// The integer component is in the range `-size...size`, and the
+            /// fractional component is in the range `-1...1`. The total bound
             /// must be `size + 1`.
             XCTAssertGreaterThanOrEqual(value, -bound)
             XCTAssertLessThanOrEqual(value, bound)
