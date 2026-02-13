@@ -1,19 +1,44 @@
-# XCTestKit
+# swift-test-kit
 
-XCTestKit Summary
+Structural diff output, expression capture, predicate assertions, and 
+property-based testing for both Swift Testing and XCTest.
 
 
 
 ## Overview
 
-XCTestKit Overview
+SwiftTestKit and XCTestKit extend Swift's testing frameworks with advanced 
+assertions and property-based testing. SwiftTestKit integrates directly with 
+[Swift Testing](https://developer.apple.com/xcode/swift-testing), and 
+XCTestKit integrates directly with 
+[XCTest](https://developer.apple.com/documentation/xctest). Both libraries 
+provide identical APIs.
+
+When assertions fail, structural diffs pinpoint exactly where values diverge 
+within complex data structures, using path-based output that scales from flat 
+primitives to deeply-nested structs, collections, and multi-line strings. 
+
+Macro assertions capture the literal source text of expressions and decompose 
+compound boolean logic to identify which sub-expression caused the failure, 
+making CI/CD logs actionable without needing access to the source code.
+
+Predicate assertions verify conditions across collection elements and produce 
+element-level failure output, identifying which elements failed, which matched 
+unexpectedly, and which threw errors.
+
+Property-based testing generates random inputs automatically, shrinks failures 
+to minimal counterexamples, and reports failing inputs with the same rich 
+assertion output used by standalone assertions.
+
+All examples below use XCTestKit. SwiftTestKit provides an identical API 
+(simply replace the `XCTK` prefix with `STK`).
 
 
 
 ## Diff Output
 
-XCTestKit produces path-based diff output for assertion failures, providing 
-clear insight into where values differ within complex data structures.
+Assertion failures produce path-based diff output providing clear insight into 
+where values differ within complex data structures.
 
 Below are examples of diff output for several common data types. The number 
 of diffs shown, truncation behavior, and other formatting options may be 
@@ -285,11 +310,76 @@ XCTKAssertSatisfy(values, atLeast: 4)
 
 
 
-## Documentation
+## Property-Based Testing
 
-See [SwiftTestKit documentation](https://swift-developer-tools.github.io/swift-test-kit/documentation/swifttestkit) 
-and [XCTestKit documentation](https://swift-developer-tools.github.io/swift-test-kit/documentation/xctestkit) 
-for the complete API reference. 
+Describe properties that must hold for any given input, and SwiftTestKit and 
+XCTestKit will generate random test cases automatically. When an input causes 
+a property to fail, it will be shrunk to the smallest value that still fails 
+the property (the minimal counterexample), and then be reported along with the 
+full assertion output.
+
+```swift
+XCTKForAll
+{
+    (a: Int, b: Int) in
+    
+    // Addition is commutative. The assertion passes for all inputs.
+    XCTKAssertEqual(a + b, b + a)
+}
+```
+
+SwiftTestKit and XCTestKit assertions are automatically intercepted inside 
+property bodies, so counterexamples include the same diff output, expression 
+capture, and formatting used by standalone assertions.
+
+```swift
+func customSort(_ array: [Int]) -> [Int] { /* ... */ }
+
+XCTKForAll
+{
+    (array: [Int]) in
+    
+    // Assert that a custom sort function is working as intended.
+    XCTKAssertSorted(customSort(array), by: >=)
+}
+
+/// XCTKForAll failed after 4 iterations (shrunk in 2 steps)
+/// 
+/// Counterexample:
+///     Array<Int> = [1, 0]
+/// 
+/// Seed: 2188239925673862914 (re-run with PropertyOptions.seed)
+/// 
+/// XCTKAssertSorted failed
+/// 
+/// Collection count: 2
+/// 
+/// Not sorted at:
+/// 
+///     [0]: 0
+///     [1]: 1
+```
+
+Use a `Generator` when `Arbitrary` conformance of a specific type does not 
+produce the necessary distribution of values. For example, a generator may be
+used to test only positive integers, or only non-empty arrays.
+
+```swift
+XCTKForAll(using: .nonEmptyArray(of: Int.self))
+{
+    (array: [Int]) in
+    
+    // Assert that a custom sort function is working as intended, but 
+    // test with only non-empty arrays.
+    XCTKAssertSorted(customSort(array), by: >=)
+}
+```
+
+Built-in `Arbitrary` conformance is provided for many Swift standard library 
+types, including integers, floating-point numbers, strings, collections, 
+optionals, and more.
+
+<!-- TODO: @Arbitrary macro example -->
 
 
 
@@ -297,7 +387,7 @@ for the complete API reference.
 
 ### Swift Package Manager
 
-XCTestKit may be installed using 
+swift-test-kit may be installed using 
 [Swift Package Manager](https://docs.swift.org/swiftpm/documentation/packagemanagerdocs/).
 
 See [Xcode documentation](https://developer.apple.com/documentation/xcode/adding-package-dependencies-to-your-app) 
@@ -318,15 +408,17 @@ for instructions on how to add package dependencies.
 
 
 
-## Usage
+## Documentation
 
-XCTestKit Usage
+See [SwiftTestKit documentation](https://swift-developer-tools.github.io/swift-test-kit/documentation/swifttestkit) 
+and [XCTestKit documentation](https://swift-developer-tools.github.io/swift-test-kit/documentation/xctestkit) 
+for the complete API reference. 
 
 
 
 ## License
 
-XCTestKit is licensed under the Apache License, Version 2.0.
+swift-test-kit is licensed under the Apache License, Version 2.0.
 
 See [LICENSE](https://github.com/swift-developer-tools/swift-test-kit/blob/main/LICENSE.txt) 
 for the complete license terms.
