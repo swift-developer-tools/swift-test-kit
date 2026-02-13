@@ -8,7 +8,7 @@
 //===----------------------------------------------------------------------===//
 
 import TestKitCore
-import TestKitMacros
+import TestKitMacroCore
 
 
 

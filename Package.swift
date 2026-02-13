@@ -43,7 +43,7 @@ let package = Package(
         ),
         
         .target(
-            name: "TestKitMacros",
+            name: "TestKitMacroCore",
             dependencies:
             [
                 "TestKitCore",
@@ -64,7 +64,7 @@ let package = Package(
             name: "XCTestKitMacros",
             dependencies:
             [
-                "TestKitMacros",
+                "TestKitMacroCore",
                 
                 .product(
                     name: "SwiftCompilerPlugin",
@@ -87,7 +87,7 @@ let package = Package(
             dependencies:
             [
                 "TestKitCore",
-                "TestKitMacros",
+                "TestKitMacroCore",
                 "XCTestKit"
             ]
         )
