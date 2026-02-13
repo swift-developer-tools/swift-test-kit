@@ -427,7 +427,7 @@ for instructions on how to add package dependencies.
 
 See [SwiftTestKit documentation](https://swift-developer-tools.github.io/swift-test-kit/documentation/swifttestkit) 
 and [XCTestKit documentation](https://swift-developer-tools.github.io/swift-test-kit/documentation/xctestkit) 
-for the complete API reference. 
+for the complete API references. 
 
 
 

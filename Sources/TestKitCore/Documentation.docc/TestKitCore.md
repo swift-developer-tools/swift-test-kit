@@ -19,7 +19,11 @@ import SwiftTestKit
 import XCTestKit
 ```
 
-- Note: See specific framework documentation for additional usage information.
+- Note: See 
+[SwiftTestKit documentation](https://swift-developer-tools.github.io/swift-test-kit/documentation/swifttestkit) 
+and 
+[XCTestKit documentation](https://swift-developer-tools.github.io/swift-test-kit/documentation/xctestkit) 
+for the complete API references.
 
 ## Topics
 
