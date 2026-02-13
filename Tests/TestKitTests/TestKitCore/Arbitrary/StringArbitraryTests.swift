@@ -46,7 +46,7 @@ internal final class StringArbitraryTests: XCTestCaseStopOnFail
     {
         var unique: Set<Character> = []
         
-        for _ in 0..<1000
+        for _ in 0..<10_000
         {
             let character = Character.arbitrary(using: .random)
             
@@ -120,7 +120,7 @@ internal final class StringArbitraryTests: XCTestCaseStopOnFail
     {
         var unique: Set<UInt32> = []
         
-        for _ in 0..<1000
+        for _ in 0..<10_000
         {
             let scalar = Unicode.Scalar.arbitrary(using: .random)
             

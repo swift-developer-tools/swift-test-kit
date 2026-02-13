@@ -320,7 +320,7 @@ extension CharacterGeneratorTests
     {
         var unique: Set<Character> = []
         
-        for _ in 0..<1000
+        for _ in 0..<10_000
         {
             unique.insert(generator.generate(.random))
         }
