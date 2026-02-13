@@ -8,7 +8,10 @@ property-based testing for both Swift Testing and XCTest.
 ## Overview
 
 SwiftTestKit and XCTestKit extend Swift's testing frameworks with advanced 
-assertions and property-based testing. SwiftTestKit integrates directly with 
+assertions and property-based testing. Both libraries are included in the 
+swift-test-kit package.
+
+SwiftTestKit integrates directly with 
 [Swift Testing](https://developer.apple.com/xcode/swift-testing), and 
 XCTestKit integrates directly with 
 [XCTest](https://developer.apple.com/documentation/xctest). Both libraries 
@@ -30,8 +33,9 @@ Property-based testing generates random inputs automatically, shrinks failures
 to minimal counterexamples, and reports failing inputs with the same rich 
 assertion output used by standalone assertions.
 
-All examples below use XCTestKit. SwiftTestKit provides an identical API 
-(simply replace the `XCTK` prefix with `STK`).
+> [!NOTE]
+> All examples below use XCTestKit. SwiftTestKit provides an identical API 
+> (simply replace the `XCTK` prefix with `STK`).
 
 
 
