@@ -25,17 +25,20 @@ extension XCTKMacro
 
 // MARK: - Boolean
 
-internal struct AssertMacro: SingleExprMacro, XCTKMacro
+internal struct XCTKAssertMacro
+    : SingleExprMacro, XCTKMacro
 {
     static let kind: AssertionKind = .assert
 }
 
-internal struct AssertTrueMacro: SingleExprMacro, XCTKMacro
+internal struct XCTKAssertTrueMacro
+    : SingleExprMacro, XCTKMacro
 {
     static let kind: AssertionKind = .true
 }
 
-internal struct AssertFalseMacro: SingleExprMacro, XCTKMacro
+internal struct XCTKAssertFalseMacro
+    : SingleExprMacro, XCTKMacro
 {
     static let kind: AssertionKind = .false
 }
@@ -44,17 +47,20 @@ internal struct AssertFalseMacro: SingleExprMacro, XCTKMacro
 
 // MARK: - Nil and non-nil
 
-internal struct AssertNilMacro: SingleExprMacro, XCTKMacro
+internal struct XCTKAssertNilMacro
+    : SingleExprMacro, XCTKMacro
 {
     static let kind: AssertionKind = .nil
 }
 
-internal struct AssertNotNilMacro: SingleExprMacro, XCTKMacro
+internal struct XCTKAssertNotNilMacro
+    : SingleExprMacro, XCTKMacro
 {
     static let kind: AssertionKind = .notNil
 }
 
-internal struct UnwrapMacro: SingleExprMacro, XCTKMacro
+internal struct XCTKUnwrapMacro
+    : SingleExprMacro, XCTKMacro
 {
     static let kind: AssertionKind = .unwrap
 }
@@ -63,32 +69,38 @@ internal struct UnwrapMacro: SingleExprMacro, XCTKMacro
 
 // MARK: - Equality and inequality
 
-internal struct AssertEqualMacro: DoubleExprMacro, XCTKMacro
+internal struct XCTKAssertEqualMacro
+    : DoubleExprMacro, XCTKMacro
 {
     static let kind: AssertionKind = .equal
 }
 
-internal struct AssertNotEqualMacro: DoubleExprMacro, XCTKMacro
+internal struct XCTKAssertNotEqualMacro
+    : DoubleExprMacro, XCTKMacro
 {
     static let kind: AssertionKind = .notEqual
 }
 
-internal struct AssertIdenticalMacro: DoubleExprMacro, XCTKMacro
+internal struct XCTKAssertIdenticalMacro
+    : DoubleExprMacro, XCTKMacro
 {
     static let kind: AssertionKind = .identical
 }
 
-internal struct AssertNotIdenticalMacro: DoubleExprMacro, XCTKMacro
+internal struct XCTKAssertNotIdenticalMacro
+    : DoubleExprMacro, XCTKMacro
 {
     static let kind: AssertionKind = .notIdentical
 }
 
-internal struct AssertEqualWithAccuracyMacro: DoubleExprMacro, XCTKMacro
+internal struct XCTKAssertEqualWithAccuracyMacro
+    : DoubleExprMacro, XCTKMacro
 {
     static let kind: AssertionKind = .equalWithAccuracy
 }
 
-internal struct AssertNotEqualWithAccuracyMacro: DoubleExprMacro, XCTKMacro
+internal struct XCTKAssertNotEqualWithAccuracyMacro
+    : DoubleExprMacro, XCTKMacro
 {
     static let kind: AssertionKind = .notEqualWithAccuracy
 }
@@ -97,22 +109,26 @@ internal struct AssertNotEqualWithAccuracyMacro: DoubleExprMacro, XCTKMacro
 
 // MARK: - Comparable
 
-internal struct AssertGreaterThanMacro: DoubleExprMacro, XCTKMacro
+internal struct XCTKAssertGreaterThanMacro
+    : DoubleExprMacro, XCTKMacro
 {
     static let kind: AssertionKind = .greaterThan
 }
 
-internal struct AssertGreaterThanOrEqualMacro: DoubleExprMacro, XCTKMacro
+internal struct XCTKAssertGreaterThanOrEqualMacro
+    : DoubleExprMacro, XCTKMacro
 {
     static let kind: AssertionKind = .greaterThanOrEqual
 }
 
-internal struct AssertLessThanOrEqualMacro: DoubleExprMacro, XCTKMacro
+internal struct XCTKAssertLessThanOrEqualMacro
+    : DoubleExprMacro, XCTKMacro
 {
     static let kind: AssertionKind = .lessThanOrEqual
 }
 
-internal struct AssertLessThanMacro: DoubleExprMacro, XCTKMacro
+internal struct XCTKAssertLessThanMacro
+    : DoubleExprMacro, XCTKMacro
 {
     static let kind: AssertionKind = .lessThan
 }
@@ -121,12 +137,14 @@ internal struct AssertLessThanMacro: DoubleExprMacro, XCTKMacro
 
 // MARK: - Error
 
-internal struct AssertThrowsErrorMacro: SingleExprMacro, XCTKMacro
+internal struct XCTKAssertThrowsErrorMacro
+    : SingleExprMacro, XCTKMacro
 {
     static let kind: AssertionKind = .throwsError
 }
 
-internal struct AssertNoThrowMacro: SingleExprMacro, XCTKMacro
+internal struct XCTKAssertNoThrowMacro
+    : SingleExprMacro, XCTKMacro
 {
     static let kind: AssertionKind = .noThrow
 }
@@ -135,7 +153,8 @@ internal struct AssertNoThrowMacro: SingleExprMacro, XCTKMacro
 
 // MARK: - Fail
 
-internal struct FailMacro: NoExprMacro, XCTKMacro
+internal struct XCTKFailMacro
+    : NoExprMacro, XCTKMacro
 {
     static let kind: AssertionKind = .fail
 }
@@ -144,57 +163,68 @@ internal struct FailMacro: NoExprMacro, XCTKMacro
 
 // MARK: - Predicate
 
-internal struct AssertSatisfyAllMacro: DoubleExprPredicateMacro, XCTKMacro
+internal struct XCTKAssertSatisfyAllMacro
+    : DoubleExprPredicateMacro, XCTKMacro
 {
     static let kind: AssertionKind = .satisfyAll
 }
 
-internal struct AssertSatisfyAnyMacro: DoubleExprPredicateMacro, XCTKMacro
+internal struct XCTKAssertSatisfyAnyMacro
+    : DoubleExprPredicateMacro, XCTKMacro
 {
     static let kind: AssertionKind = .satisfyAny
 }
 
-internal struct AssertSatisfyNoneMacro: DoubleExprPredicateMacro, XCTKMacro
+internal struct XCTKAssertSatisfyNoneMacro
+    : DoubleExprPredicateMacro, XCTKMacro
 {
     static let kind: AssertionKind = .satisfyNone
 }
 
-internal struct AssertSatisfyAtLeastMacro: DoubleExprPredicateMacro, XCTKMacro
+internal struct XCTKAssertSatisfyAtLeastMacro
+    : DoubleExprPredicateMacro, XCTKMacro
 {
     static let kind: AssertionKind = .satisfyAtLeast
 }
 
-internal struct AssertSatisfyAtMostMacro: DoubleExprPredicateMacro, XCTKMacro
+internal struct XCTKAssertSatisfyAtMostMacro
+    : DoubleExprPredicateMacro, XCTKMacro
 {
     static let kind: AssertionKind = .satisfyAtMost
 }
 
-internal struct AssertSatisfyRangeMacro: DoubleExprPredicateMacro, XCTKMacro
+internal struct XCTKAssertSatisfyRangeMacro
+    : DoubleExprPredicateMacro, XCTKMacro
 {
     static let kind: AssertionKind = .satisfyRange
 }
 
-internal struct AssertExactlyMacro: DoubleExprPredicateMacro, XCTKMacro
+internal struct XCTKAssertExactlyMacro
+    : DoubleExprPredicateMacro, XCTKMacro
 {
     static let kind: AssertionKind = .exactly
 }
 
-internal struct AssertExactlyOneMacro: DoubleExprPredicateMacro, XCTKMacro
+internal struct XCTKAssertExactlyOneMacro
+    : DoubleExprPredicateMacro, XCTKMacro
 {
     static let kind: AssertionKind = .exactlyOne
 }
 
-internal struct AssertSortedMacro: DoubleExprPredicateMacro, XCTKMacro
+internal struct XCTKAssertSortedMacro
+    : DoubleExprPredicateMacro, XCTKMacro
 {
     static let kind: AssertionKind = .sorted
 }
 
-internal struct AssertUniqueMacro: SingleExprMacro, XCTKMacro
+internal struct XCTKAssertUniqueMacro
+    : SingleExprMacro, XCTKMacro
 {
     static let kind: AssertionKind = .unique
 }
 
-internal struct AssertUniqueByKeyMacro: DoubleExprPredicateMacro, XCTKMacro
+internal struct XCTKAssertUniqueByKeyMacro
+    : DoubleExprPredicateMacro, XCTKMacro
 {
     static let kind: AssertionKind = .uniqueByKey
 }

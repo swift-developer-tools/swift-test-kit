@@ -32,7 +32,7 @@ public macro XCTKAssert(
     options         : TestOptions?                      = nil
 ) = #externalMacro(
     module:     "TestKitMacros",
-    type:       "AssertMacro"
+    type:       "XCTKAssertMacro"
 )
 
 
@@ -56,7 +56,7 @@ public macro XCTKAssertTrue(
     options         : TestOptions?                      = nil
 ) = #externalMacro(
     module:     "TestKitMacros",
-    type:       "AssertTrueMacro"
+    type:       "XCTKAssertTrueMacro"
 )
 
 
@@ -80,7 +80,7 @@ public macro XCTKAssertFalse(
     options         : TestOptions?                      = nil
 ) = #externalMacro(
     module:     "TestKitMacros",
-    type:       "AssertFalseMacro"
+    type:       "XCTKAssertFalseMacro"
 )
 
 
@@ -106,7 +106,7 @@ public macro XCTKAssertNil(
     options         : TestOptions?                      = nil
 ) = #externalMacro(
     module:     "TestKitMacros",
-    type:       "AssertNilMacro"
+    type:       "XCTKAssertNilMacro"
 )
 
 
@@ -130,7 +130,7 @@ public macro XCTKAssertNotNil(
     options         : TestOptions?                      = nil
 ) = #externalMacro(
     module:     "TestKitMacros",
-    type:       "AssertNotNilMacro"
+    type:       "XCTKAssertNotNilMacro"
 )
 
 
@@ -159,7 +159,7 @@ public macro XCTKUnwrap<T>(
     options         : TestOptions?                  = nil
 ) -> T = #externalMacro(
             module:     "TestKitMacros",
-            type:       "UnwrapMacro"
+            type:       "XCTKUnwrapMacro"
         )
 
 
@@ -187,7 +187,7 @@ public macro XCTKAssertEqual<T>(
     options     : TestOptions?                  = nil
 ) = #externalMacro(
     module:     "TestKitMacros",
-    type:       "AssertEqualMacro"
+    type:       "XCTKAssertEqualMacro"
 )   where T : Equatable
 
 
@@ -213,7 +213,7 @@ public macro XCTKAssertNotEqual<T>(
     options         : TestOptions?                  = nil
 ) = #externalMacro(
     module:     "TestKitMacros",
-    type:       "AssertNotEqualMacro"
+    type:       "XCTKAssertNotEqualMacro"
 )   where T : Equatable
 
 
@@ -242,7 +242,7 @@ public macro XCTKAssertIdentical(
     options         : TestOptions?                          = nil
 ) = #externalMacro(
     module:     "TestKitMacros",
-    type:       "AssertIdenticalMacro"
+    type:       "XCTKAssertIdenticalMacro"
 )
 
 
@@ -271,7 +271,7 @@ public macro XCTKAssertNotIdentical(
     options         : TestOptions?                          = nil
 ) = #externalMacro(
     module:     "TestKitMacros",
-    type:       "AssertNotIdenticalMacro"
+    type:       "XCTKAssertNotIdenticalMacro"
 )
 
 
@@ -301,7 +301,7 @@ public macro XCTKAssertEqual<T>(
     options         : TestOptions?                  = nil
 ) = #externalMacro(
     module:     "TestKitMacros",
-    type:       "AssertEqualWithAccuracyMacro"
+    type:       "XCTKAssertEqualWithAccuracyMacro"
 )   where T : FloatingPoint
 
 
@@ -330,7 +330,7 @@ public macro XCTKAssertEqual<T>(
     options         : TestOptions?                  = nil
 ) = #externalMacro(
     module:     "TestKitMacros",
-    type:       "AssertEqualWithAccuracyMacro"
+    type:       "XCTKAssertEqualWithAccuracyMacro"
 )   where T : Numeric
 
 
@@ -360,7 +360,7 @@ public macro XCTKAssertNotEqual<T>(
     options         : TestOptions?                  = nil
 ) = #externalMacro(
     module:     "TestKitMacros",
-    type:       "AssertNotEqualWithAccuracyMacro"
+    type:       "XCTKAssertNotEqualWithAccuracyMacro"
 )   where T : FloatingPoint
 
 
@@ -390,7 +390,7 @@ public macro XCTKAssertNotEqual<T>(
     options         : TestOptions?                  = nil
 ) = #externalMacro(
     module:     "TestKitMacros",
-    type:       "AssertNotEqualWithAccuracyMacro"
+    type:       "XCTKAssertNotEqualWithAccuracyMacro"
 )   where T : Numeric
 
 
@@ -419,7 +419,7 @@ public macro XCTKAssertGreaterThan<T>(
     options         : TestOptions?                  = nil
 ) = #externalMacro(
     module:     "TestKitMacros",
-    type:       "AssertGreaterThanMacro"
+    type:       "XCTKAssertGreaterThanMacro"
 )   where T : Comparable
 
 
@@ -446,7 +446,7 @@ public macro XCTKAssertGreaterThanOrEqual<T>(
     options         : TestOptions?                  = nil
 ) = #externalMacro(
     module:     "TestKitMacros",
-    type:       "AssertGreaterThanOrEqualMacro"
+    type:       "XCTKAssertGreaterThanOrEqualMacro"
 )   where T : Comparable
 
 
@@ -473,7 +473,7 @@ public macro XCTKAssertLessThanOrEqual<T>(
     options         : TestOptions?                  = nil
 ) = #externalMacro(
     module:     "TestKitMacros",
-    type:   "AssertLessThanOrEqualMacro"
+    type:       "XCTKAssertLessThanOrEqualMacro"
 )   where T : Comparable
 
 
@@ -500,7 +500,7 @@ public macro XCTKAssertLessThan<T>(
     options         : TestOptions?                  = nil
 ) = #externalMacro(
     module:     "TestKitMacros",
-    type:       "AssertLessThanMacro"
+    type:       "XCTKAssertLessThanMacro"
 )   where T : Comparable
 
 
@@ -528,7 +528,7 @@ public macro XCTKAssertThrowsError<T>(
     _ errorHandler  : (any Error) -> Void           = { _ in }
 ) = #externalMacro(
     module:     "TestKitMacros",
-    type:       "AssertThrowsErrorMacro"
+    type:       "XCTKAssertThrowsErrorMacro"
 )
 
 
@@ -552,7 +552,7 @@ public macro XCTKAssertNoThrow<T>(
     options         : TestOptions?                  = nil
 ) = #externalMacro(
     module:     "TestKitMacros",
-    type:       "AssertNoThrowMacro"
+    type:       "XCTKAssertNoThrowMacro"
 )
 
 
@@ -573,7 +573,7 @@ public macro XCTKFail(
     line        : UInt          = #line
 ) = #externalMacro(
     module:     "TestKitMacros",
-    type:       "FailMacro"
+    type:       "XCTKFailMacro"
 )
 
 
@@ -603,7 +603,7 @@ public macro XCTKAssertAllSatisfy<C>(
     options         : TestOptions?                  = nil
 ) = #externalMacro(
     module:     "TestKitMacros",
-    type:       "AssertSatisfyAllMacro"
+    type:       "XCTKAssertSatisfyAllMacro"
 )   where C : Collection
 
 
@@ -631,7 +631,7 @@ public macro XCTKAssertAnySatisfy<C>(
     options         : TestOptions?                  = nil
 ) = #externalMacro(
     module:     "TestKitMacros",
-    type:       "AssertSatisfyAnyMacro"
+    type:       "XCTKAssertSatisfyAnyMacro"
 )   where C : Collection
 
 
@@ -659,7 +659,7 @@ public macro XCTKAssertNoneSatisfy<C>(
     options         : TestOptions?                  = nil
 ) = #externalMacro(
     module:     "TestKitMacros",
-    type:       "AssertSatisfyNoneMacro"
+    type:       "XCTKAssertSatisfyNoneMacro"
 )   where C : Collection
 
 
@@ -693,7 +693,7 @@ public macro XCTKAssertSatisfy<C>(
     options         : TestOptions?                  = nil
 ) = #externalMacro(
     module:     "TestKitMacros",
-    type:       "AssertSatisfyAtLeastMacro"
+    type:       "XCTKAssertSatisfyAtLeastMacro"
 )   where C : Collection
 
 
@@ -727,7 +727,7 @@ public macro XCTKAssertSatisfy<C>(
     options         : TestOptions?                  = nil
 ) = #externalMacro(
     module:     "TestKitMacros",
-    type:       "AssertSatisfyAtMostMacro"
+    type:       "XCTKAssertSatisfyAtMostMacro"
 )   where C : Collection
 
 
@@ -761,7 +761,7 @@ public macro XCTKAssertSatisfy<C>(
     options         : TestOptions?                  = nil
 ) = #externalMacro(
     module:     "TestKitMacros",
-    type:       "AssertSatisfyRangeMacro"
+    type:       "XCTKAssertSatisfyRangeMacro"
 )   where C : Collection
 
 
@@ -795,7 +795,7 @@ public macro XCTKAssertExactly<C>(
     options         : TestOptions?                  = nil
 ) = #externalMacro(
     module:     "TestKitMacros",
-    type:       "AssertExactlyMacro"
+    type:       "XCTKAssertExactlyMacro"
 )   where C : Collection
 
 
@@ -823,7 +823,7 @@ public macro XCTKAssertExactlyOne<C>(
     options         : TestOptions?                  = nil
 ) = #externalMacro(
     module:     "TestKitMacros",
-    type:       "AssertExactlyOneMacro"
+    type:       "XCTKAssertExactlyOneMacro"
 )   where C : Collection
 
 
@@ -851,7 +851,7 @@ public macro XCTKAssertSorted<C>(
     options         : TestOptions?                          = nil
 ) = #externalMacro(
     module:     "TestKitMacros",
-    type:       "AssertSortedMacro"
+    type:       "XCTKAssertSortedMacro"
 )   where C : Collection
 
 
@@ -875,7 +875,7 @@ public macro XCTKAssertUnique<C>(
     options         : TestOptions?                  = nil
 ) = #externalMacro(
     module:     "TestKitMacros",
-    type:       "AssertUniqueMacro"
+    type:       "XCTKAssertUniqueMacro"
 )   where C : Collection, C.Element : Hashable
 
 
@@ -903,5 +903,5 @@ public macro XCTKAssertUnique<C, K>(
     options         : TestOptions?                  = nil
 ) = #externalMacro(
     module:     "TestKitMacros",
-    type:       "AssertUniqueByKeyMacro"
+    type:       "XCTKAssertUniqueByKeyMacro"
 )   where C : Collection, K : Hashable

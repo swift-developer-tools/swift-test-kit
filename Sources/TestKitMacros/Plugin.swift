@@ -14,45 +14,45 @@ import SwiftSyntaxMacros
 
 
 @main
-struct XCTestKitMacroPlugin: CompilerPlugin
+struct TestKitMacroPlugin: CompilerPlugin
 {
     let providingMacros: [any Macro.Type] =
     [
-        AssertMacro.self,
-        AssertTrueMacro.self,
-        AssertFalseMacro.self,
+        XCTKAssertMacro.self,
+        XCTKAssertTrueMacro.self,
+        XCTKAssertFalseMacro.self,
         
-        AssertNilMacro.self,
-        AssertNotNilMacro.self,
-        UnwrapMacro.self,
+        XCTKAssertNilMacro.self,
+        XCTKAssertNotNilMacro.self,
+        XCTKUnwrapMacro.self,
         
-        AssertEqualMacro.self,
-        AssertNotEqualMacro.self,
-        AssertIdenticalMacro.self,
-        AssertNotIdenticalMacro.self,
-        AssertEqualWithAccuracyMacro.self,
-        AssertNotEqualWithAccuracyMacro.self,
+        XCTKAssertEqualMacro.self,
+        XCTKAssertNotEqualMacro.self,
+        XCTKAssertIdenticalMacro.self,
+        XCTKAssertNotIdenticalMacro.self,
+        XCTKAssertEqualWithAccuracyMacro.self,
+        XCTKAssertNotEqualWithAccuracyMacro.self,
         
-        AssertGreaterThanMacro.self,
-        AssertGreaterThanOrEqualMacro.self,
-        AssertLessThanOrEqualMacro.self,
-        AssertLessThanMacro.self,
+        XCTKAssertGreaterThanMacro.self,
+        XCTKAssertGreaterThanOrEqualMacro.self,
+        XCTKAssertLessThanOrEqualMacro.self,
+        XCTKAssertLessThanMacro.self,
         
-        AssertThrowsErrorMacro.self,
-        AssertNoThrowMacro.self,
+        XCTKAssertThrowsErrorMacro.self,
+        XCTKAssertNoThrowMacro.self,
         
-        FailMacro.self,
+        XCTKFailMacro.self,
         
-        AssertSatisfyAllMacro.self,
-        AssertSatisfyAnyMacro.self,
-        AssertSatisfyNoneMacro.self,
-        AssertSatisfyAtLeastMacro.self,
-        AssertSatisfyAtMostMacro.self,
-        AssertSatisfyRangeMacro.self,
-        AssertExactlyMacro.self,
-        AssertExactlyOneMacro.self,
-        AssertSortedMacro.self,
-        AssertUniqueMacro.self,
-        AssertUniqueByKeyMacro.self
+        XCTKAssertSatisfyAllMacro.self,
+        XCTKAssertSatisfyAnyMacro.self,
+        XCTKAssertSatisfyNoneMacro.self,
+        XCTKAssertSatisfyAtLeastMacro.self,
+        XCTKAssertSatisfyAtMostMacro.self,
+        XCTKAssertSatisfyRangeMacro.self,
+        XCTKAssertExactlyMacro.self,
+        XCTKAssertExactlyOneMacro.self,
+        XCTKAssertSortedMacro.self,
+        XCTKAssertUniqueMacro.self,
+        XCTKAssertUniqueByKeyMacro.self
     ]
 }
