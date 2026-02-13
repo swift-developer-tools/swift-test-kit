@@ -12,6 +12,15 @@ import TestKitCore
 
 
 /// Asserts that the given property holds for all generated inputs.
+///
+/// XCTestKit assertions used inside a property body are automatically
+/// intercepted rather than reported directly to XCTest.
+///
+/// - Important: Native XCTest assertions are not intercepted by XCTestKit.
+/// If a native XCTest assertion fails inside a property body, it bypasses
+/// shrinking and produces an immediate test failure. Use only XCTestKit
+/// assertions inside property bodies.
+///
 /// - Parameters:
 ///   - message: An optional description of a failure.
 ///   - file: The file where the failure occurs. The default value is the
@@ -62,6 +71,14 @@ public func XCTKForAll<each T>(
 /// not produce the necessary distribution of values. For example, a
 /// generator may be used to test only positive integers, or only non-empty
 /// arrays.
+///
+/// XCTestKit assertions used inside a property body are automatically
+/// intercepted rather than reported directly to XCTest.
+///
+/// - Important: Native XCTest assertions are not intercepted by XCTestKit.
+/// If a native XCTest assertion fails inside a property body, it bypasses
+/// shrinking and produces an immediate test failure. Use only XCTestKit
+/// assertions inside property bodies.
 ///
 /// - Parameters:
 ///   - generators: The generators to use to produce values.
@@ -118,6 +135,14 @@ public func XCTKForAll<each T>(
 /// - Important: Preconditions that reject most inputs waste iterations and
 /// can lead to exhaustion. Prefer constructing valid inputs using a custom
 /// ``Generator`` rather than discarding invalid inputs with a precondition.
+///
+/// XCTestKit assertions used inside a property body are automatically
+/// intercepted rather than reported directly to XCTest.
+///
+/// - Important: Native XCTest assertions are not intercepted by XCTestKit.
+/// If a native XCTest assertion fails inside a property body, it bypasses
+/// shrinking and produces an immediate test failure. Use only XCTestKit
+/// assertions inside property bodies.
 ///
 /// - Parameters:
 ///   - precondition: The condition which generated inputs must satisfy.
@@ -183,6 +208,14 @@ public func XCTKForAll<each T>(
 /// can lead to exhaustion. Prefer constructing valid inputs using
 /// generator-level filtering rather than discarding invalid inputs with a
 /// precondition.
+///
+/// XCTestKit assertions used inside a property body are automatically
+/// intercepted rather than reported directly to XCTest.
+///
+/// - Important: Native XCTest assertions are not intercepted by XCTestKit.
+/// If a native XCTest assertion fails inside a property body, it bypasses
+/// shrinking and produces an immediate test failure. Use only XCTestKit
+/// assertions inside property bodies.
 ///
 /// - Parameters:
 ///   - generators: The generators to use to produce values.
