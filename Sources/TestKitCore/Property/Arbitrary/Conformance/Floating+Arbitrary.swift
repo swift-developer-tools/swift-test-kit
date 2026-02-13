@@ -28,7 +28,8 @@ extension Double: Arbitrary
     /// Generates candidate values that are smaller than the receiver value.
     ///
     /// Special values shrink to zero. Finite values shrink toward zero by
-    /// truncating the fractional component, then repeatedly halving.
+    /// truncating the fractional component, then repeatedly halving the
+    /// distance.
     ///
     /// - Returns: An array of smaller candidate values, or an empty array
     /// to indicate that no shrinking should occur.
@@ -61,7 +62,8 @@ extension Float: Arbitrary
     /// Generates candidate values that are smaller than the receiver value.
     ///
     /// Special values shrink to zero. Finite values shrink toward zero by
-    /// truncating the fractional component, then repeatedly halving.
+    /// truncating the fractional component, then repeatedly halving the
+    /// distance.
     ///
     /// - Returns: An array of smaller candidate values, or an empty array
     /// to indicate that no shrinking should occur.
@@ -94,7 +96,8 @@ extension Float16: Arbitrary
     /// Generates candidate values that are smaller than the receiver value.
     ///
     /// Special values shrink to zero. Finite values shrink toward zero by
-    /// truncating the fractional component, then repeatedly halving.
+    /// truncating the fractional component, then repeatedly halving the
+    /// distance.
     ///
     /// - Returns: An array of smaller candidate values, or an empty array
     /// to indicate that no shrinking should occur.
