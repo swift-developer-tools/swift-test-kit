@@ -39,7 +39,7 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
     
     
     
-    func testZeroIterationsReturnsPased() throws
+    func testZeroIterationsReturnsPassed() throws
     {
         let iterations: Int = 0
         
