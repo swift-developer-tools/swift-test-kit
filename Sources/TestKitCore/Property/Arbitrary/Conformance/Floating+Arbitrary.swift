@@ -28,7 +28,7 @@ extension Double: Arbitrary
     /// Generates candidate values that are smaller than the receiver value.
     ///
     /// Special values shrink to zero. Finite values shrink toward zero by
-    /// truncating the fractional part, then repeatedly halving.
+    /// truncating the fractional component, then repeatedly halving.
     ///
     /// - Returns: An array of smaller candidate values, or an empty array
     /// to indicate that no shrinking should occur.
@@ -61,7 +61,7 @@ extension Float: Arbitrary
     /// Generates candidate values that are smaller than the receiver value.
     ///
     /// Special values shrink to zero. Finite values shrink toward zero by
-    /// truncating the fractional part, then repeatedly halving.
+    /// truncating the fractional component, then repeatedly halving.
     ///
     /// - Returns: An array of smaller candidate values, or an empty array
     /// to indicate that no shrinking should occur.
@@ -94,7 +94,7 @@ extension Float16: Arbitrary
     /// Generates candidate values that are smaller than the receiver value.
     ///
     /// Special values shrink to zero. Finite values shrink toward zero by
-    /// truncating the fractional part, then repeatedly halving.
+    /// truncating the fractional component, then repeatedly halving.
     ///
     /// - Returns: An array of smaller candidate values, or an empty array
     /// to indicate that no shrinking should occur.
@@ -207,7 +207,7 @@ extension BinaryFloatingPoint
         
         var candidates: [Self] = [target]
         
-        /// Truncate the fractional part toward the target.
+        /// Truncate the fractional component toward the target.
         let truncated: Self = value.rounded(value > target ? .down : .up)
         
         if
