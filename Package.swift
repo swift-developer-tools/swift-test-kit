@@ -61,7 +61,7 @@ let package = Package(
         ),
         
         .macro(
-            name: "XCTestKitMacros",
+            name: "TestKitMacros",
             dependencies:
             [
                 "TestKitMacroCore",
@@ -78,7 +78,7 @@ let package = Package(
             dependencies:
             [
                 "TestKitCore",
-                "XCTestKitMacros"
+                "TestKitMacros"
             ]
         ),
         
