@@ -60,8 +60,8 @@ struct Outer: Equatable
     let inner   : Inner
 }
 
-let expected    = Outer(tag: "a", inner: Inner(id: 1, value: 100, label: "x"))
-let actual      = Outer(tag: "a", inner: Inner(id: 1, value: 200, label: "x"))
+let expected    = Outer(tag: "a", inner: Inner(id: 1, value: 100, label: "b"))
+let actual      = Outer(tag: "a", inner: Inner(id: 1, value: 200, label: "b"))
 
 XCTKAssertEqual(expected, actual)
 
@@ -314,9 +314,9 @@ XCTKAssertSatisfy(values, atLeast: 4)
 
 Describe properties that must hold for any given input, and SwiftTestKit and 
 XCTestKit will generate random test cases automatically. When an input causes 
-a property to fail, it will be shrunk to the smallest value that still fails 
-the property (the minimal counterexample), and then be reported along with the 
-full assertion output.
+a property to fail, SwiftTestKit and XCTestKit will shrink the input to the 
+smallest value that still fails the property (the minimal counterexample), 
+and report it along with the full assertion output.
 
 ```swift
 XCTKForAll
@@ -339,7 +339,7 @@ XCTKForAll
 {
     (array: [Int]) in
     
-    // Assert that a custom sort function is working as intended.
+    // Assert that a custom sort function is working correctly.
     XCTKAssertSorted(customSort(array), by: >=)
 }
 
@@ -365,12 +365,14 @@ produce the necessary distribution of values. For example, a generator may be
 used to test only positive integers, or only non-empty arrays.
 
 ```swift
+func customSort(_ array: [Int]) -> [Int] { /* ... */ }
+
 XCTKForAll(using: .nonEmptyArray(of: Int.self))
 {
     (array: [Int]) in
     
-    // Assert that a custom sort function is working as intended, but 
-    // test with only non-empty arrays.
+    // Assert that a custom sort function is working correctly, 
+    // but test with only non-empty arrays.
     XCTKAssertSorted(customSort(array), by: >=)
 }
 ```
@@ -388,7 +390,16 @@ optionals, and more.
 ### Swift Package Manager
 
 swift-test-kit may be installed using 
-[Swift Package Manager](https://docs.swift.org/swiftpm/documentation/packagemanagerdocs/).
+[Swift Package Manager](https://docs.swift.org/swiftpm/documentation/packagemanagerdocs/). 
+The package includes both SwiftTestKit and XCTestKit.
+
+```swift
+// Use SwiftTestKit.
+import SwiftTestKit
+
+// Use XCTestKit.
+import XCTestKit
+```
 
 See [Xcode documentation](https://developer.apple.com/documentation/xcode/adding-package-dependencies-to-your-app) 
 for instructions on how to add package dependencies.
