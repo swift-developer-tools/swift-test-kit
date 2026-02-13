@@ -15,7 +15,7 @@ extension Double: Arbitrary
     /// - Parameter context: The generation context.
     /// - Returns: An arbitrary value in the range
     /// `-context.size...context.size`, with a fractional component.
-    /// Occasionally generates special values (`-0.0`, `±infinity`, `nan`).
+    /// Occasionally generates special values (`-0.0`, `±infinity`, `NaN`).
     public static func arbitrary(
         using context: GenerationContext
     ) -> Double
@@ -48,7 +48,7 @@ extension Float: Arbitrary
     /// - Parameter context: The generation context.
     /// - Returns: An arbitrary value in the range
     /// `-context.size...context.size`, with a fractional component.
-    /// Occasionally generates special values (`-0.0`, `±infinity`, `nan`).
+    /// Occasionally generates special values (`-0.0`, `±infinity`, `NaN`).
     public static func arbitrary(
         using context: GenerationContext
     ) -> Float
@@ -81,7 +81,7 @@ extension Float16: Arbitrary
     /// - Parameter context: The generation context.
     /// - Returns: An arbitrary value in the range
     /// `-context.size...context.size`, with a fractional component.
-    /// Occasionally generates special values (`-0.0`, `±infinity`, `nan`).
+    /// Occasionally generates special values (`-0.0`, `±infinity`, `NaN`).
     public static func arbitrary(
         using context: GenerationContext
     ) -> Float16
@@ -114,7 +114,7 @@ extension BinaryFloatingPoint
     /// - Parameter context: The generation context.
     /// - Returns: An arbitrary value in the range
     /// `-context.size...context.size`, with a fractional component.
-    /// Occasionally generates special values (`-0.0`, `±infinity`, `nan`).
+    /// Occasionally generates special values (`-0.0`, `±infinity`, `NaN`).
     internal static func makeArbitrary(
         using context: GenerationContext
     ) -> Self
