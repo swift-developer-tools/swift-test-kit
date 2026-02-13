@@ -62,13 +62,13 @@ let actual      = Outer(tag: "a", inner: Inner(id: 1, value: 200, label: "b"))
 
 XCTKAssertEqual(expected, actual)
 
-/// XCTKAssertEqual failed
+// XCTKAssertEqual failed
 ///
-/// Outer differs at:
+// Outer differs at:
 ///
-///     .inner.value
-///         Expected:   100
-///         Actual:     200
+//     .inner.value
+//         Expected:   100
+//         Actual:     200
 ```
 
 ### Arrays
@@ -81,19 +81,19 @@ let options = TestOptions(formatOptions: .init(maxDiffs: 2))
 
 XCTKAssertEqual(expected, actual, options: options)
 
-/// XCTKAssertEqual failed
+// XCTKAssertEqual failed
 ///
-/// Array<Int> differs at:
+// Array<Int> differs at:
 ///
-///     [0]
-///         Expected:   1
-///         Actual:     0
+//     [0]
+//         Expected:   1
+//         Actual:     0
 ///
-///     [1]
-///         Expected:   2
-///         Actual:     0
+//     [1]
+//         Expected:   2
+//         Actual:     0
 ///
-///     ... and 1 more difference
+//     ... and 1 more difference
 ```
 
 ### Multi-Line Strings
@@ -104,14 +104,14 @@ let actual      = "Line 1\nLine X\nLine 3"
 
 XCTKAssertEqual(expected, actual)
 
-/// XCTKAssertEqual failed
+// XCTKAssertEqual failed
 ///
-/// String differs at:
+// String differs at:
 ///
-///     line 2
-///         Expected:   "Line 2"
-///         Actual:     "Line X"
-///         Changed:    character 6 ("2" → "X")
+//     line 2
+//         Expected:   "Line 2"
+//         Actual:     "Line X"
+//         Changed:    character 6 ("2" → "X")
 ```
 
 ### Sets
@@ -122,14 +122,14 @@ let actual      : Set<String>   = ["a", "e", "f"]
 
 XCTKAssertEqual(expected, actual)
 
-/// XCTKAssertEqual failed
+// XCTKAssertEqual failed
 ///
-/// Set<String> differs:
+// Set<String> differs:
 ///
-///     Missing:    "b"
-///     Missing:    "c"
-///     Unexpected: "e"
-///     Unexpected: "f"
+//     Missing:    "b"
+//     Missing:    "c"
+//     Unexpected: "e"
+//     Unexpected: "f"
 ```
 
 
@@ -151,32 +151,32 @@ options may be configured at the global or assertion level.
 
 ```swift
 #XCTKAssertTrue(isValid() && hasAccess && count >= 10)
-/// where isValid() -> true, hasAccess == false, count == 20
+// where isValid() -> true, hasAccess == false, count == 20
 
-/// #XCTKAssertTrue failed
-/// 
-/// Expression: isValid() && hasAccess && count >= 10
-/// 
-///     isValid() = true
-///     hasAccess = false ←
-/// 
-///     (1 expression not evaluated)
+// #XCTKAssertTrue failed
+// 
+// Expression: isValid() && hasAccess && count >= 10
+// 
+//     isValid() = true
+//     hasAccess = false ←
+// 
+//     (1 expression not evaluated)
 ```
 
 ### Nested Expressions
 
 ```swift
 #XCTKAssertFalse((a || b) && (c || d))
-/// where a == true, b == false, c == true, d == false
+// where a == true, b == false, c == true, d == false
 
-/// #XCTKAssertFalse failed
-/// 
-/// Expression: (a || b) && (c || d)
-/// 
-///     a = true ←
-///     c = true ←
-/// 
-///     (2 expressions not evaluated)
+// #XCTKAssertFalse failed
+// 
+// Expression: (a || b) && (c || d)
+// 
+//     a = true ←
+//     c = true ←
+// 
+//     (2 expressions not evaluated)
 ```
 
 ### Non-Boolean Assertions
@@ -184,20 +184,20 @@ options may be configured at the global or assertion level.
 ```swift
 #XCTKAssertNoThrow(try getValue())
 
-/// #XCTKAssertNoThrow failed
-/// 
-/// Expression: try getValue()
-/// Threw:      RequestError.timeout
+// #XCTKAssertNoThrow failed
+// 
+// Expression: try getValue()
+// Threw:      RequestError.timeout
 ```
 
 ```swift
 #XCTKAssertNil(result.error)
-/// where result.error == RequestError.timeout
+// where result.error == RequestError.timeout
 
-/// #XCTKAssertNil failed
-/// 
-/// Expression: result.error
-/// Actual:     RequestError.timeout
+// #XCTKAssertNil failed
+// 
+// Expression: result.error
+// Actual:     RequestError.timeout
 ```
 
 
@@ -217,14 +217,14 @@ may be configured at the global or assertion level.
 ```swift
 XCTKAssertAllSatisfy([10, 15, 20, 25]) { $0.isMultiple(of: 10) }
 
-/// XCTKAssertAllSatisfy failed
-/// 
-/// Collection count: 4
-/// 
-/// Failed: 2 of 4
-/// 
-///     [1]: 15
-///     [3]: 25
+// XCTKAssertAllSatisfy failed
+// 
+// Collection count: 4
+// 
+// Failed: 2 of 4
+// 
+//     [1]: 15
+//     [3]: 25
 ```
 
 ### Exactly
@@ -232,17 +232,17 @@ XCTKAssertAllSatisfy([10, 15, 20, 25]) { $0.isMultiple(of: 10) }
 ```swift
 #XCTKAssertExactly([30, 25, 10, 35, 15], count: 2) { $0 > 20 }
 
-/// #XCTKAssertExactly failed
-/// 
-/// Collection count: 5
-/// 
-/// Collection: [30, 25, 10, 35, 15]
-/// Predicate:  { $0 > 20 }
-/// 
-/// Expected: exactly 2 matches
-/// Actual:   3 matched
-/// 
-///     Matched: [0-1], [3]
+// #XCTKAssertExactly failed
+// 
+// Collection count: 5
+// 
+// Collection: [30, 25, 10, 35, 15]
+// Predicate:  { $0 > 20 }
+// 
+// Expected: exactly 2 matches
+// Actual:   3 matched
+// 
+//     Matched: [0-1], [3]
 ```
 
 ### Sorted
@@ -250,14 +250,14 @@ XCTKAssertAllSatisfy([10, 15, 20, 25]) { $0.isMultiple(of: 10) }
 ```swift
 XCTKAssertSorted([10, 30, 20, 40], by: <)
 
-/// XCTKAssertSorted failed
-/// 
-/// Collection count: 4
-/// 
-/// Not sorted at:
-/// 
-///     [1]: 30
-///     [2]: 20
+// XCTKAssertSorted failed
+// 
+// Collection count: 4
+// 
+// Not sorted at:
+// 
+//     [1]: 30
+//     [2]: 20
 ```
 
 ### Unique
@@ -265,15 +265,15 @@ XCTKAssertSorted([10, 30, 20, 40], by: <)
 ```swift
 XCTKAssertUnique(["aa", "bb", "c"], by: { $0.count })
 
-/// XCTKAssertUnique failed
-/// 
-/// Collection count: 3
-/// 
-/// Duplicates: 1 key
-/// 
-///     Key 2:
-///         [0]: "aa"
-///         [1]: "bb"
+// XCTKAssertUnique failed
+// 
+// Collection count: 3
+// 
+// Duplicates: 1 key
+// 
+//     Key 2:
+//         [0]: "aa"
+//         [1]: "bb"
 ```
 
 ### Error Handling
@@ -291,18 +291,18 @@ XCTKAssertSatisfy(values, atLeast: 4)
     return value.isMultiple(of: 20)
 }
 
-/// XCTKAssertSatisfy failed
-/// 
-/// Collection count: 5
-/// 
-/// Expected: at least 4 matches
-/// Actual:   3 matched, 2 threw errors
-/// 
-///     Matched: [0], [2], [4]
-/// 
-///     Threw errors:
-///         [1]: -10 (threw error "invalid")
-///         [3]: -30 (threw error "invalid")
+// XCTKAssertSatisfy failed
+// 
+// Collection count: 5
+// 
+// Expected: at least 4 matches
+// Actual:   3 matched, 2 threw errors
+// 
+//     Matched: [0], [2], [4]
+// 
+//     Threw errors:
+//         [1]: -10 (threw error "invalid")
+//         [3]: -30 (threw error "invalid")
 ```
 
 
@@ -340,21 +340,21 @@ XCTKForAll
     XCTKAssertSorted(customSort(array), by: >=)
 }
 
-/// XCTKForAll failed after 4 iterations (shrunk in 2 steps)
-/// 
-/// Counterexample:
-///     Array<Int> = [1, 0]
-/// 
-/// Seed: 2188239925673862914 (re-run with PropertyOptions.seed)
-/// 
-/// XCTKAssertSorted failed
-/// 
-/// Collection count: 2
-/// 
-/// Not sorted at:
-/// 
-///     [0]: 0
-///     [1]: 1
+// XCTKForAll failed after 4 iterations (shrunk in 2 steps)
+// 
+// Counterexample:
+//     Array<Int> = [1, 0]
+// 
+// Seed: 2188239925673862914 (re-run with PropertyOptions.seed)
+// 
+// XCTKAssertSorted failed
+// 
+// Collection count: 2
+// 
+// Not sorted at:
+// 
+//     [0]: 0
+//     [1]: 1
 ```
 
 Use a ``Generator`` when ``Arbitrary`` conformance of a specific type does not 
