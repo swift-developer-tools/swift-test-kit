@@ -21,7 +21,7 @@ internal final class MacroAssertionBooleanExprTests: XCTestKitCase
     
     // MARK: - AND chains
     
-    func testAndChainFirstFalseShortCircuits() throws
+    func testAndChainFirstFalseShortCircuits()
     {
         let a   : Bool  = false
         let b   : Bool  = true
@@ -48,7 +48,7 @@ internal final class MacroAssertionBooleanExprTests: XCTestKitCase
     
     
     
-    func testAndChainMiddleFalseShortCircuits() throws
+    func testAndChainMiddleFalseShortCircuits()
     {
         let a   : Bool  = true
         let b   : Bool  = false
@@ -76,7 +76,7 @@ internal final class MacroAssertionBooleanExprTests: XCTestKitCase
     
     
     
-    func testAndChainLastFalseNoShortCircuit() throws
+    func testAndChainLastFalseNoShortCircuit()
     {
         let a   : Bool  = true
         let b   : Bool  = true
@@ -105,7 +105,7 @@ internal final class MacroAssertionBooleanExprTests: XCTestKitCase
     
     // MARK: - OR chains
     
-    func testOrChainFirstTrueShortCircuits() throws
+    func testOrChainFirstTrueShortCircuits()
     {
         let a   : Bool  = true
         let b   : Bool  = false
@@ -132,7 +132,7 @@ internal final class MacroAssertionBooleanExprTests: XCTestKitCase
     
     
     
-    func testOrChainAllFalseNoShortCircuit() throws
+    func testOrChainAllFalseNoShortCircuit()
     {
         let a   : Bool  = false
         let b   : Bool  = false
@@ -161,7 +161,7 @@ internal final class MacroAssertionBooleanExprTests: XCTestKitCase
     
     // MARK: - Nested expressions
     
-    func testNestedOrInAndExprWithFalseLHS() throws
+    func testNestedOrInAndExprWithFalseLHS()
     {
         let a   : Bool  = false
         let b   : Bool  = false
@@ -189,7 +189,7 @@ internal final class MacroAssertionBooleanExprTests: XCTestKitCase
     
     
     
-    func testNestedOrInAndExprWithTrueLHS() throws
+    func testNestedOrInAndExprWithTrueLHS()
     {
         let a   : Bool  = true
         let b   : Bool  = false
@@ -217,7 +217,7 @@ internal final class MacroAssertionBooleanExprTests: XCTestKitCase
     
     
     
-    func testParenthesizedSingleExprUnwrapping() throws
+    func testParenthesizedSingleExprUnwrapping()
     {
         let a: Bool = false
         
@@ -240,7 +240,7 @@ internal final class MacroAssertionBooleanExprTests: XCTestKitCase
     
     
     
-    func testDeeplyNestedExpr() throws
+    func testDeeplyNestedExpr()
     {
         let a   : Bool  = true
         let b   : Bool  = false
@@ -270,7 +270,7 @@ internal final class MacroAssertionBooleanExprTests: XCTestKitCase
     
     
     
-    func testOperatorPrecedence() throws
+    func testOperatorPrecedence()
     {
         let a   : Bool  = false
         let b   : Bool  = true
@@ -299,7 +299,7 @@ internal final class MacroAssertionBooleanExprTests: XCTestKitCase
     
     // MARK: - Single expression
     
-    func testSingleExprAssertTrueWhenFalse() throws
+    func testSingleExprAssertTrueWhenFalse()
     {
         let isValid: Bool = false
         
@@ -322,7 +322,7 @@ internal final class MacroAssertionBooleanExprTests: XCTestKitCase
     
     
     
-    func testSingleExprAssertFalseWhenTrue() throws
+    func testSingleExprAssertFalseWhenTrue()
     {
         let isValid: Bool = true
         
@@ -347,7 +347,7 @@ internal final class MacroAssertionBooleanExprTests: XCTestKitCase
     
     // MARK: - Function leaves
     
-    func testFunctionCallAsLeaf() throws
+    func testFunctionCallAsLeaf()
     {
         func isValid() -> Bool { return false }
         
@@ -376,7 +376,7 @@ internal final class MacroAssertionBooleanExprTests: XCTestKitCase
     
     // MARK: - Other expressions
     
-    func testNegation() throws
+    func testNegation()
     {
         let a   : Bool  = true
         let b   : Bool  = false
@@ -404,7 +404,7 @@ internal final class MacroAssertionBooleanExprTests: XCTestKitCase
     
     
     
-    func testPropertyAccessExprs() throws
+    func testPropertyAccessExprs()
     {
         struct SomeObject: Equatable
         {
@@ -441,7 +441,7 @@ internal final class MacroAssertionBooleanExprTests: XCTestKitCase
     
     
     
-    func testMethodCalls() throws
+    func testMethodCalls()
     {
         struct Value: Equatable
         {

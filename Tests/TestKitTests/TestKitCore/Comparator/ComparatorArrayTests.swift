@@ -14,7 +14,7 @@ import XCTest
 
 internal final class ComparatorArrayTests: XCTestCaseStopOnFail
 {
-    func testArrayHashableMissingElement() throws
+    func testArrayHashableMissingElement()
     {
         let exp : [String]  = ["a", "b", "c"]
         let act : [String]  = ["a", "b"]
@@ -43,7 +43,7 @@ internal final class ComparatorArrayTests: XCTestCaseStopOnFail
     
     
     
-    func testArrayHashableModifiedElement() throws
+    func testArrayHashableModifiedElement()
     {
         let exp : [String]  = ["a", "b", "c"]
         let act : [String]  = ["a", "x", "c"]
@@ -81,7 +81,7 @@ internal final class ComparatorArrayTests: XCTestCaseStopOnFail
     
     
     
-    func testArrayHashableUnexpectedElement() throws
+    func testArrayHashableUnexpectedElement()
     {
         let exp : [String]  = ["a", "b"]
         let act : [String]  = ["a", "b", "c"]
@@ -110,7 +110,7 @@ internal final class ComparatorArrayTests: XCTestCaseStopOnFail
     
     
     
-    func testArrayNonHashableFallback() throws
+    func testArrayNonHashableFallback()
     {
         struct Item: Equatable
         {
@@ -153,7 +153,7 @@ internal final class ComparatorArrayTests: XCTestCaseStopOnFail
     
     
     
-    func testArrayInsertionAtStart() throws
+    func testArrayInsertionAtStart()
     {
         let exp : [String]  = ["a", "b", "c"]
         let act : [String]  = ["x", "a", "b", "c"]
@@ -182,7 +182,7 @@ internal final class ComparatorArrayTests: XCTestCaseStopOnFail
     
     
     
-    func testArrayRemovalAtStart() throws
+    func testArrayRemovalAtStart()
     {
         let exp : [String]  = ["x", "a", "b", "c"]
         let act : [String]  = ["a", "b", "c"]
@@ -212,7 +212,7 @@ internal final class ComparatorArrayTests: XCTestCaseStopOnFail
     
     
     
-    func testArrayNonHashableWithInsertion() throws
+    func testArrayNonHashableWithInsertion()
     {
         struct Item: Equatable
         {
@@ -283,7 +283,7 @@ internal final class ComparatorArrayTests: XCTestCaseStopOnFail
     
     
     
-    func testArrayHashableWithInsertion() throws
+    func testArrayHashableWithInsertion()
     {
         struct Item: Equatable, Hashable
         {
@@ -329,7 +329,7 @@ internal final class ComparatorArrayTests: XCTestCaseStopOnFail
     
     
     
-    func testArrayOfMixedOptionals() throws
+    func testArrayOfMixedOptionals()
     {
         let exp : [Int?]    = [1, nil, 3, nil]
         let act : [Int?]    = [1, 2, 3, nil]
@@ -366,7 +366,7 @@ internal final class ComparatorArrayTests: XCTestCaseStopOnFail
     
     
     
-    func testArrayWithDuplicateElements() throws
+    func testArrayWithDuplicateElements()
     {
         let exp : [String]  = ["a", "a", "b", "c"]
         let act : [String]  = ["a", "b", "a", "c"]
@@ -400,7 +400,7 @@ internal final class ComparatorArrayTests: XCTestCaseStopOnFail
     
     
     
-    func testArrayOfDictionaries() throws
+    func testArrayOfDictionaries()
     {
         let exp: [[String : Int]] =
         [
@@ -447,7 +447,7 @@ internal final class ComparatorArrayTests: XCTestCaseStopOnFail
     
     
     
-    func testArrayOfSets() throws
+    func testArrayOfSets()
     {
         let exp: [Set<String>] =
         [

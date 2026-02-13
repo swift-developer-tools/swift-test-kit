@@ -16,70 +16,70 @@ internal final class IntegerArbitraryTests: XCTestCaseStopOnFail
 {
     // MARK: - Generation
     
-    func testIntGeneration() throws
+    func testIntGeneration()
     {
         testGeneration(of: Int.self)
     }
     
     
     
-    func testInt8Generation() throws
+    func testInt8Generation()
     {
         testGeneration(of: Int8.self)
     }
     
     
     
-    func testInt16Generation() throws
+    func testInt16Generation()
     {
         testGeneration(of: Int16.self)
     }
     
     
     
-    func testInt32Generation() throws
+    func testInt32Generation()
     {
         testGeneration(of: Int32.self)
     }
     
     
     
-    func testInt64Generation() throws
+    func testInt64Generation()
     {
         testGeneration(of: Int64.self)
     }
     
     
     
-    func testUIntGeneration() throws
+    func testUIntGeneration()
     {
         testGeneration(of: UInt.self)
     }
     
     
     
-    func testUInt8Generation() throws
+    func testUInt8Generation()
     {
         testGeneration(of: UInt8.self)
     }
     
     
     
-    func testUInt16Generation() throws
+    func testUInt16Generation()
     {
         testGeneration(of: UInt16.self)
     }
     
     
     
-    func testUInt32Generation() throws
+    func testUInt32Generation()
     {
         testGeneration(of: UInt32.self)
     }
     
     
     
-    func testUInt64Generation() throws
+    func testUInt64Generation()
     {
         testGeneration(of: UInt64.self)
     }
@@ -88,70 +88,70 @@ internal final class IntegerArbitraryTests: XCTestCaseStopOnFail
     
     // MARK: - Shrinking
     
-    func testIntShrinking() throws
+    func testIntShrinking()
     {
         testShrinking(of: Int.self)
     }
     
     
     
-    func testInt8Shrinking() throws
+    func testInt8Shrinking()
     {
         testShrinking(of: Int8.self)
     }
     
     
     
-    func testInt16Shrinking() throws
+    func testInt16Shrinking()
     {
         testShrinking(of: Int16.self)
     }
     
     
     
-    func testInt32Shrinking() throws
+    func testInt32Shrinking()
     {
         testShrinking(of: Int32.self)
     }
     
     
     
-    func testInt64Shrinking() throws
+    func testInt64Shrinking()
     {
         testShrinking(of: Int64.self)
     }
     
     
     
-    func testUIntShrinking() throws
+    func testUIntShrinking()
     {
         testShrinking(of: UInt.self)
     }
     
     
     
-    func testUInt8Shrinking() throws
+    func testUInt8Shrinking()
     {
         testShrinking(of: UInt8.self)
     }
     
     
     
-    func testUInt16Shrinking() throws
+    func testUInt16Shrinking()
     {
         testShrinking(of: UInt16.self)
     }
     
     
     
-    func testUInt32Shrinking() throws
+    func testUInt32Shrinking()
     {
         testShrinking(of: UInt32.self)
     }
     
     
     
-    func testUInt64Shrinking() throws
+    func testUInt64Shrinking()
     {
         testShrinking(of: UInt64.self)
     }

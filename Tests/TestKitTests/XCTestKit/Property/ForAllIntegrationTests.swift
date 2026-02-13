@@ -16,7 +16,7 @@ internal final class ForAllIntegrationTests: XCTestKitCase
 {
     // MARK: - Arbitrary
     
-    func testArbitrarySuccess() throws
+    func testArbitrarySuccess()
     {
         XCTKForAll
         {
@@ -28,7 +28,7 @@ internal final class ForAllIntegrationTests: XCTestKitCase
     
     
     
-    func testArbitraryFailure() throws
+    func testArbitraryFailure()
     {
         XCTExpectFailure()
         
@@ -42,7 +42,7 @@ internal final class ForAllIntegrationTests: XCTestKitCase
     
     
     
-    func testArbitraryOneParameterSuccess() throws
+    func testArbitraryOneParameterSuccess()
     {
         XCTKForAll
         {
@@ -54,7 +54,7 @@ internal final class ForAllIntegrationTests: XCTestKitCase
     
     
     
-    func testArbitraryTwoParameterSuccess() throws
+    func testArbitraryTwoParameterSuccess()
     {
         XCTKForAll
         {
@@ -66,7 +66,7 @@ internal final class ForAllIntegrationTests: XCTestKitCase
     
     
     
-    func testArbitraryThreeParameterSuccess() throws
+    func testArbitraryThreeParameterSuccess()
     {
         XCTKForAll
         {
@@ -78,7 +78,7 @@ internal final class ForAllIntegrationTests: XCTestKitCase
     
     
     
-    func testArbitraryTwoParameterFailure() throws
+    func testArbitraryTwoParameterFailure()
     {
         XCTExpectFailure()
         
@@ -92,7 +92,7 @@ internal final class ForAllIntegrationTests: XCTestKitCase
     
     
     
-    func testArbitraryThreeParameterFailure() throws
+    func testArbitraryThreeParameterFailure()
     {
         XCTExpectFailure()
         
@@ -108,7 +108,7 @@ internal final class ForAllIntegrationTests: XCTestKitCase
     
     // MARK: - Generator
     
-    func testGeneratorSuccess() throws
+    func testGeneratorSuccess()
     {
         XCTKForAll(using: Generator<Int>.integer(in: 1...100))
         {
@@ -120,7 +120,7 @@ internal final class ForAllIntegrationTests: XCTestKitCase
     
     
     
-    func testGeneratorFailure() throws
+    func testGeneratorFailure()
     {
         XCTExpectFailure()
         
@@ -134,7 +134,7 @@ internal final class ForAllIntegrationTests: XCTestKitCase
     
     
     
-    func testMultiParameterGeneratorSuccess() throws
+    func testMultiParameterGeneratorSuccess()
     {
         XCTKForAll(
             using:  Generator<Int>.integer(in: 1...100),
@@ -151,7 +151,7 @@ internal final class ForAllIntegrationTests: XCTestKitCase
     
     // MARK: - Precondition
     
-    func testPreconditionSuccess() throws
+    func testPreconditionSuccess()
     {
         XCTKForAll(where: { $0 % 2 == 0 })
         {
@@ -163,7 +163,7 @@ internal final class ForAllIntegrationTests: XCTestKitCase
     
     
     
-    func testPreconditionFailure() throws
+    func testPreconditionFailure()
     {
         XCTExpectFailure()
         
@@ -177,7 +177,7 @@ internal final class ForAllIntegrationTests: XCTestKitCase
     
     
     
-    func testPreconditionMultiParameterSuccess() throws
+    func testPreconditionMultiParameterSuccess()
     {
         XCTKForAll(where: { (a: Int, b: Int) in (a % 2 == 0) && (b % 2 == 0) })
         {
@@ -190,7 +190,7 @@ internal final class ForAllIntegrationTests: XCTestKitCase
     
     
     
-    func testPreconditionMultiParameterFailure() throws
+    func testPreconditionMultiParameterFailure()
     {
         XCTExpectFailure()
         
@@ -206,7 +206,7 @@ internal final class ForAllIntegrationTests: XCTestKitCase
     
     // MARK: - Precondition generator
     
-    func testPreconditionGeneratorSuccess() throws
+    func testPreconditionGeneratorSuccess()
     {
         XCTKForAll(
             using:  Generator<Int>.integer(in: 0...100),
@@ -221,7 +221,7 @@ internal final class ForAllIntegrationTests: XCTestKitCase
     
     
     
-    func testPreconditionGeneratorFailure() throws
+    func testPreconditionGeneratorFailure()
     {
         XCTExpectFailure()
         
@@ -238,7 +238,7 @@ internal final class ForAllIntegrationTests: XCTestKitCase
     
     
     
-    func testMultiParameterPreconditionGeneratorSuccess() throws
+    func testMultiParameterPreconditionGeneratorSuccess()
     {
         XCTKForAll(
             using:  Generator<Int>.integer(in: 0...100),
@@ -254,7 +254,7 @@ internal final class ForAllIntegrationTests: XCTestKitCase
     
     
     
-    func testMultiParameterPreconditionGeneratorFailure() throws
+    func testMultiParameterPreconditionGeneratorFailure()
     {
         XCTExpectFailure()
         
@@ -274,7 +274,7 @@ internal final class ForAllIntegrationTests: XCTestKitCase
     
     // MARK: - Throwing
     
-    func testThrowingPropertyTreatedAsFailure() throws
+    func testThrowingPropertyTreatedAsFailure()
     {
         XCTExpectFailure()
         
@@ -288,7 +288,7 @@ internal final class ForAllIntegrationTests: XCTestKitCase
     
     
     
-    func testUnwrapSuccessInsideBody() throws
+    func testUnwrapSuccessInsideBody()
     {
         XCTKForAll
         {
@@ -302,7 +302,7 @@ internal final class ForAllIntegrationTests: XCTestKitCase
     
     
     
-    func testUnwrapNilInsideBodyTreatedAsFailure() throws
+    func testUnwrapNilInsideBodyTreatedAsFailure()
     {
         XCTExpectFailure()
         
@@ -318,7 +318,7 @@ internal final class ForAllIntegrationTests: XCTestKitCase
     
     // MARK: - Seed replay
     
-    func testSeedReplayProducesSameOutput() throws
+    func testSeedReplayProducesSameOutput()
     {
         let seed: UInt64 = 12345
         
@@ -356,7 +356,7 @@ internal final class ForAllIntegrationTests: XCTestKitCase
     
     // MARK: - Interception
     
-    func testAssertionInsideBodyDoesNotLeakAsSeparateFailure() throws
+    func testAssertionInsideBodyDoesNotLeakAsSeparateFailure()
     {
         let options: TestOptions = .propertyOptions(
             iterations:     10,
@@ -381,7 +381,7 @@ internal final class ForAllIntegrationTests: XCTestKitCase
     
     // MARK: - Iteration count
     
-    func testIterationCount() throws
+    func testIterationCount()
     {
         let iterations  : Int   = 0
         var count       : Int   = 0
@@ -398,7 +398,7 @@ internal final class ForAllIntegrationTests: XCTestKitCase
     
     
     
-    func testZeroIterationsVacuouslyPasses() throws
+    func testZeroIterationsVacuouslyPasses()
     {
         var count: Int = 0
         
@@ -416,7 +416,7 @@ internal final class ForAllIntegrationTests: XCTestKitCase
     
     // MARK: - Exhaustion
     
-    func testExhaustionTreatedAsFailure() throws
+    func testExhaustionTreatedAsFailure()
     {
         XCTExpectFailure()
         
@@ -438,7 +438,7 @@ internal final class ForAllIntegrationTests: XCTestKitCase
     
     // MARK: - No assertion
     
-    func testArbitraryBodyWithNoAssertionVacuouslyPasses() throws
+    func testArbitraryBodyWithNoAssertionVacuouslyPasses()
     {
         XCTKForAll
         {
@@ -452,7 +452,7 @@ internal final class ForAllIntegrationTests: XCTestKitCase
     
     // MARK: - Nested
     
-    func testNestedProducesOneFailure() throws
+    func testNestedProducesOneFailure()
     {
         let options: TestOptions = .propertyOptions(
             iterations:     1,
@@ -485,7 +485,7 @@ internal final class ForAllIntegrationTests: XCTestKitCase
     
     // MARK: - Sequential
     
-    func testSequentialNoLeakFromPriorFailure() throws
+    func testSequentialNoLeakFromPriorFailure()
     {
         let options: TestOptions = .propertyOptions(
             iterations:     10,

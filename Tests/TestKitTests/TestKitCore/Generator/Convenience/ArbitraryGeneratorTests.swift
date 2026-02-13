@@ -14,7 +14,7 @@ import XCTest
 
 internal final class ArbitraryGeneratorTests: XCTestCaseStopOnFail
 {
-    func testDeterminism() throws
+    func testDeterminism()
     {
         Generator<Int>.arbitrary().validateDeterminism()
         Generator<UInt8>.arbitrary().validateDeterminism()
@@ -28,7 +28,7 @@ internal final class ArbitraryGeneratorTests: XCTestCaseStopOnFail
     
     
     
-    func testGenerationEquivalence() throws
+    func testGenerationEquivalence()
     {
         validateGenerationEquivalence(of: Int.self)
         validateGenerationEquivalence(of: UInt8.self)
@@ -42,7 +42,7 @@ internal final class ArbitraryGeneratorTests: XCTestCaseStopOnFail
     
     
     
-    func testShrinkingEquivalence() throws
+    func testShrinkingEquivalence()
     {
         validateShrinkingEquivalence(of: Int.self)
         validateShrinkingEquivalence(of: UInt8.self)
@@ -56,7 +56,7 @@ internal final class ArbitraryGeneratorTests: XCTestCaseStopOnFail
     
     
     
-    func testShrinkAtTargetProducesEmpty() throws
+    func testShrinkAtTargetProducesEmpty()
     {
         let intGen          = Generator<Int>.arbitrary()
         let uint8Gen        = Generator<UInt8>.arbitrary()
@@ -79,7 +79,7 @@ internal final class ArbitraryGeneratorTests: XCTestCaseStopOnFail
     
     
     
-    func testComposesWithMap() throws
+    func testComposesWithMap()
     {
         let generator: Generator<String> = Generator<Int>
             .arbitrary()
@@ -95,7 +95,7 @@ internal final class ArbitraryGeneratorTests: XCTestCaseStopOnFail
     
     
     
-    func testComposesWithFilter() throws
+    func testComposesWithFilter()
     {
         let generator: Generator<Int> =
             .arbitrary()

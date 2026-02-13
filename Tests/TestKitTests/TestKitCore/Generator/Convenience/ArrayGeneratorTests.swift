@@ -16,7 +16,7 @@ internal final class ArrayGeneratorTests: XCTestCaseStopOnFail
 {
     // MARK: - Exact count generation
     
-    func testExactCountDeterminism() throws
+    func testExactCountDeterminism()
     {
         let generator: Generator<[Int]> = .array(count: 5)
         
@@ -25,7 +25,7 @@ internal final class ArrayGeneratorTests: XCTestCaseStopOnFail
     
     
     
-    func testExactCountProducesCorrectCount() throws
+    func testExactCountProducesCorrectCount()
     {
         let generator: Generator<[Int]> = .array(count: 7)
         
@@ -37,7 +37,7 @@ internal final class ArrayGeneratorTests: XCTestCaseStopOnFail
     
     
     
-    func testExactCountZeroProducesEmpty() throws
+    func testExactCountZeroProducesEmpty()
     {
         let generator: Generator<[Int]> = .array(count: 0)
         
@@ -53,7 +53,7 @@ internal final class ArrayGeneratorTests: XCTestCaseStopOnFail
     
     // MARK: - Exact count shrinking
     
-    func testExactCountShrinkPreservesCount() throws
+    func testExactCountShrinkPreservesCount()
     {
         let generator   : Generator<[Int]>  = .array(count: 3)
         let array       : [Int]             = [10, -7, 99]
@@ -69,7 +69,7 @@ internal final class ArrayGeneratorTests: XCTestCaseStopOnFail
     
     
     
-    func testExactCountShrinkElementsConvergeTowardZero() throws
+    func testExactCountShrinkElementsConvergeTowardZero()
     {
         let generator   : Generator<[Int]>  = .array(count: 2)
         let array       : [Int]             = [10, -7]
@@ -101,7 +101,7 @@ internal final class ArrayGeneratorTests: XCTestCaseStopOnFail
     
     
     
-    func testExactCountShrinkAllZerosProducesEmpty() throws
+    func testExactCountShrinkAllZerosProducesEmpty()
     {
         let generator   : Generator<[Int]>  = .array(count: 3)
         let array       : [Int]             = [0, 0, 0]
@@ -114,7 +114,7 @@ internal final class ArrayGeneratorTests: XCTestCaseStopOnFail
     
     // MARK: - Closed range generation
     
-    func testClosedRangeDeterminism() throws
+    func testClosedRangeDeterminism()
     {
         let generator: Generator<[Int]> = .array(count: 2...8)
         
@@ -123,7 +123,7 @@ internal final class ArrayGeneratorTests: XCTestCaseStopOnFail
     
     
     
-    func testClosedRangeCountRespectsBounds() throws
+    func testClosedRangeCountRespectsBounds()
     {
         let generator: Generator<[Int]> = .array(count: 3...7)
         
@@ -135,7 +135,7 @@ internal final class ArrayGeneratorTests: XCTestCaseStopOnFail
     
     
     
-    func testClosedRangeProducesVariousCounts() throws
+    func testClosedRangeProducesVariousCounts()
     {
         let generator   : Generator<[Int]>  = .array(count: 0...10)
         var counts      : Set<Int>          = []
@@ -154,7 +154,7 @@ internal final class ArrayGeneratorTests: XCTestCaseStopOnFail
     
     // MARK: - Closed range shrinking
     
-    func testClosedRangeShrinkReducesCount() throws
+    func testClosedRangeShrinkReducesCount()
     {
         let generator   : Generator<[Int]>  = .array(count: 2...8)
         let array       : [Int]             = [10, 20, 30, 40, 50]
@@ -167,7 +167,7 @@ internal final class ArrayGeneratorTests: XCTestCaseStopOnFail
     
     
     
-    func testClosedRangeShrinkRespectsLowerBound() throws
+    func testClosedRangeShrinkRespectsLowerBound()
     {
         let generator   : Generator<[Int]>  = .array(count: 3...8)
         let array       : [Int]             = [10, 20, 30, 40, 50]
@@ -181,7 +181,7 @@ internal final class ArrayGeneratorTests: XCTestCaseStopOnFail
     
     
     
-    func testClosedRangeShrinkAtLowerBoundOnlyShrinkElements() throws
+    func testClosedRangeShrinkAtLowerBoundOnlyShrinkElements()
     {
         let generator   : Generator<[Int]>  = .array(count: 3...8)
         let array       : [Int]             = [10, 20, 30]
@@ -195,7 +195,7 @@ internal final class ArrayGeneratorTests: XCTestCaseStopOnFail
     
     
     
-    func testClosedRangeShrinkZeroLowerBoundIncludesEmpty() throws
+    func testClosedRangeShrinkZeroLowerBoundIncludesEmpty()
     {
         let generator   : Generator<[Int]>  = .array(count: 0...5)
         let array       : [Int]             = [10, 20, 30]
@@ -208,7 +208,7 @@ internal final class ArrayGeneratorTests: XCTestCaseStopOnFail
     
     // MARK: - Range generation
     
-    func testRangeDeterminism() throws
+    func testRangeDeterminism()
     {
         let generator: Generator<[Int]> = .array(count: 2..<9)
         
@@ -217,7 +217,7 @@ internal final class ArrayGeneratorTests: XCTestCaseStopOnFail
     
     
     
-    func testRangeCountRespectsBounds() throws
+    func testRangeCountRespectsBounds()
     {
         let generator: Generator<[Int]> = .array(count: 3..<8)
         
@@ -229,7 +229,7 @@ internal final class ArrayGeneratorTests: XCTestCaseStopOnFail
     
     
     
-    func testRangeProducesVariousCounts() throws
+    func testRangeProducesVariousCounts()
     {
         let generator   : Generator<[Int]>  = .array(count: 0..<11)
         var counts      : Set<Int>          = []
@@ -248,7 +248,7 @@ internal final class ArrayGeneratorTests: XCTestCaseStopOnFail
     
     // MARK: - Range shrinking
     
-    func testRangeShrinkReducesCount() throws
+    func testRangeShrinkReducesCount()
     {
         let generator   : Generator<[Int]>  = .array(count: 2..<9)
         let array       : [Int]             = [10, 20, 30, 40, 50]
@@ -261,7 +261,7 @@ internal final class ArrayGeneratorTests: XCTestCaseStopOnFail
     
     
     
-    func testRangeShrinkRespectsLowerBound() throws
+    func testRangeShrinkRespectsLowerBound()
     {
         let generator   : Generator<[Int]>  = .array(count: 3..<9)
         let array       : [Int]             = [10, 20, 30, 40, 50]
@@ -275,7 +275,7 @@ internal final class ArrayGeneratorTests: XCTestCaseStopOnFail
     
     
     
-    func testRangeShrinkAtLowerBoundOnlyShrinkElements() throws
+    func testRangeShrinkAtLowerBoundOnlyShrinkElements()
     {
         let generator   : Generator<[Int]>  = .array(count: 3..<9)
         let array       : [Int]             = [10, 20, 30]
@@ -289,7 +289,7 @@ internal final class ArrayGeneratorTests: XCTestCaseStopOnFail
     
     
     
-    func testRangeShrinkZeroLowerBoundIncludesEmpty() throws
+    func testRangeShrinkZeroLowerBoundIncludesEmpty()
     {
         let generator   : Generator<[Int]>  = .array(count: 0..<6)
         let array       : [Int]             = [10, 20, 30]
@@ -302,7 +302,7 @@ internal final class ArrayGeneratorTests: XCTestCaseStopOnFail
     
     // MARK: - Non-empty array generation
     
-    func testNonEmptyArrayDeterminism() throws
+    func testNonEmptyArrayDeterminism()
     {
         let generator: Generator<[Int]> = .nonEmptyArray()
         
@@ -311,7 +311,7 @@ internal final class ArrayGeneratorTests: XCTestCaseStopOnFail
     
     
     
-    func testNonEmptyArrayNeverProducesEmpty() throws
+    func testNonEmptyArrayNeverProducesEmpty()
     {
         let generator: Generator<[Int]> = .nonEmptyArray()
         
@@ -325,7 +325,7 @@ internal final class ArrayGeneratorTests: XCTestCaseStopOnFail
     
     // MARK: - Non-empty array shrinking
     
-    func testNonEmptyArrayShrinkNeverProducesEmpty() throws
+    func testNonEmptyArrayShrinkNeverProducesEmpty()
     {
         let generator   : Generator<[Int]>  = .nonEmptyArray()
         let array       : [Int]             = [10, 20, 30]
@@ -341,7 +341,7 @@ internal final class ArrayGeneratorTests: XCTestCaseStopOnFail
     
     
     
-    func testNonEmptyArrayShrinkSingleElementOnlyShrinkElement() throws
+    func testNonEmptyArrayShrinkSingleElementOnlyShrinkElement()
     {
         let generator   : Generator<[Int]>  = .nonEmptyArray()
         let array       : [Int]             = [10]

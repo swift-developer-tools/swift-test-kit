@@ -16,7 +16,7 @@ internal final class GeneratorCombinatorTests: XCTestCaseStopOnFail
 {
     // MARK: - map
     
-    func testMapDeterminism() throws
+    func testMapDeterminism()
     {
         let generator: Generator<String> = Generator<Int>
             .integer(in: 0...100)
@@ -27,7 +27,7 @@ internal final class GeneratorCombinatorTests: XCTestCaseStopOnFail
     
     
     
-    func testMapDoesNotShrink() throws
+    func testMapDoesNotShrink()
     {
         let generator: Generator<Int> = Generator<Int>
             .integer(in: 0...100)
@@ -38,7 +38,7 @@ internal final class GeneratorCombinatorTests: XCTestCaseStopOnFail
     
     
     
-    func testMapTransformsValues() throws
+    func testMapTransformsValues()
     {
         let base    : Generator<Int>    = .integer(in: 0...50)
         let doubled : Generator<Int>    = base.map { $0 * 2 }
@@ -57,7 +57,7 @@ internal final class GeneratorCombinatorTests: XCTestCaseStopOnFail
     
     // MARK: - flatMap
     
-    func testFlatMapDeterminism() throws
+    func testFlatMapDeterminism()
     {
         let generator: Generator<Int> = Generator<Int>
             .integer(in: 1...10)
@@ -68,7 +68,7 @@ internal final class GeneratorCombinatorTests: XCTestCaseStopOnFail
     
     
     
-    func testFlatMapDoesNotShrink() throws
+    func testFlatMapDoesNotShrink()
     {
         let generator: Generator<Int> = Generator<Int>
             .integer(in: 1...10)
@@ -79,7 +79,7 @@ internal final class GeneratorCombinatorTests: XCTestCaseStopOnFail
     
     
     
-    func testFlatMapChainsGenerators() throws
+    func testFlatMapChainsGenerators()
     {
         let generator: Generator<Int> = Generator<Int>
             .integer(in: 10...20)
@@ -98,7 +98,7 @@ internal final class GeneratorCombinatorTests: XCTestCaseStopOnFail
     
     // MARK: - filter
     
-    func testFilterDeterminism() throws
+    func testFilterDeterminism()
     {
         let generator: Generator<Int> = Generator<Int>
             .integer(in: 1...100)
@@ -109,7 +109,7 @@ internal final class GeneratorCombinatorTests: XCTestCaseStopOnFail
     
     
     
-    func testFilterProducesOnlyMatchingValues() throws
+    func testFilterProducesOnlyMatchingValues()
     {
         let generator: Generator<Int> = Generator<Int>
             .integer(in: 1...100)
@@ -125,7 +125,7 @@ internal final class GeneratorCombinatorTests: XCTestCaseStopOnFail
     
     
     
-    func testFilterShrinkCandidatesAlsoSatisfyPredicate() throws
+    func testFilterShrinkCandidatesAlsoSatisfyPredicate()
     {
         let generator: Generator<Int> = Generator<Int>
             .integer(in: 1...100)
@@ -141,7 +141,7 @@ internal final class GeneratorCombinatorTests: XCTestCaseStopOnFail
     
     
     
-    func testFilterPreservesUnderlyingBounds() throws
+    func testFilterPreservesUnderlyingBounds()
     {
         let generator: Generator<Int> = Generator<Int>
             .integer(in: 10...20)
@@ -161,7 +161,7 @@ internal final class GeneratorCombinatorTests: XCTestCaseStopOnFail
     
     // MARK: - constant
     
-    func testConstantDeterminism() throws
+    func testConstantDeterminism()
     {
         let generator: Generator<Character> = .constant("a")
         
@@ -170,7 +170,7 @@ internal final class GeneratorCombinatorTests: XCTestCaseStopOnFail
     
     
     
-    func testConstantDoesNotShrink() throws
+    func testConstantDoesNotShrink()
     {
         let generator: Generator<Int> = .constant(35)
         
@@ -179,7 +179,7 @@ internal final class GeneratorCombinatorTests: XCTestCaseStopOnFail
     
     
     
-    func testConstantAlwaysProducesSameValue() throws
+    func testConstantAlwaysProducesSameValue()
     {
         let generator: Generator<String> = .constant("hello")
         
@@ -191,7 +191,7 @@ internal final class GeneratorCombinatorTests: XCTestCaseStopOnFail
     
     
     
-    func testConstantIgnoresSize() throws
+    func testConstantIgnoresSize()
     {
         let generator: Generator<Int> = .constant(25)
         
@@ -205,7 +205,7 @@ internal final class GeneratorCombinatorTests: XCTestCaseStopOnFail
     
     // MARK: - oneOf
     
-    func testOneOfDeterminism() throws
+    func testOneOfDeterminism()
     {
         let generator: Generator<Int> = .oneOf(
             .constant(1),
@@ -218,7 +218,7 @@ internal final class GeneratorCombinatorTests: XCTestCaseStopOnFail
     
     
     
-    func testOneOfDoesNotShrink() throws
+    func testOneOfDoesNotShrink()
     {
         let generator: Generator<Int> = .oneOf(
             .integer(in: 0...10),
@@ -230,7 +230,7 @@ internal final class GeneratorCombinatorTests: XCTestCaseStopOnFail
     
     
     
-    func testOneOfSelectsFromAllGenerators() throws
+    func testOneOfSelectsFromAllGenerators()
     {
         let generator: Generator<Int> = .oneOf(
             .constant(1),
@@ -250,7 +250,7 @@ internal final class GeneratorCombinatorTests: XCTestCaseStopOnFail
     
     
     
-    func testOneOfSingleGeneratorAlwaysSelectsIt() throws
+    func testOneOfSingleGeneratorAlwaysSelectsIt()
     {
         let generator: Generator<Int> = .oneOf(.constant(30))
         
@@ -277,7 +277,7 @@ internal final class GeneratorCombinatorTests: XCTestCaseStopOnFail
     
     
     
-    func testFrequencyDoesNotShrink() throws
+    func testFrequencyDoesNotShrink()
     {
         let generator: Generator<Int> = .frequency(
             (1, .integer(in: 0...10)),
@@ -289,7 +289,7 @@ internal final class GeneratorCombinatorTests: XCTestCaseStopOnFail
     
     
     
-    func testFrequencyRespectsWeights() throws
+    func testFrequencyRespectsWeights()
     {
         let generator: Generator<Int> = .frequency(
             (99, .constant(1)),
@@ -313,7 +313,7 @@ internal final class GeneratorCombinatorTests: XCTestCaseStopOnFail
     
     
     
-    func testFrequencySelectsFromAllGenerators() throws
+    func testFrequencySelectsFromAllGenerators()
     {
         let generator: Generator<Int> = .frequency(
             (10, .constant(1)),
@@ -333,7 +333,7 @@ internal final class GeneratorCombinatorTests: XCTestCaseStopOnFail
     
     
     
-    func testFrequencyEqualWeightsDistributesEvenly() throws
+    func testFrequencyEqualWeightsDistributesEvenly()
     {
         let generator: Generator<Int> = .frequency(
             (1, .constant(1)),
@@ -359,7 +359,7 @@ internal final class GeneratorCombinatorTests: XCTestCaseStopOnFail
     
     // MARK: - elements
     
-    func testElementsDeterminism() throws
+    func testElementsDeterminism()
     {
         let generator: Generator<Int> = .elements(of: [10, 20, 30, 40, 50])
         
@@ -368,7 +368,7 @@ internal final class GeneratorCombinatorTests: XCTestCaseStopOnFail
     
     
     
-    func testElementsDoesNotShrink() throws
+    func testElementsDoesNotShrink()
     {
         let generator: Generator<Int> = .elements(of: [1, 2, 3])
         
@@ -377,7 +377,7 @@ internal final class GeneratorCombinatorTests: XCTestCaseStopOnFail
     
     
     
-    func testElementsSelectsFromCollection() throws
+    func testElementsSelectsFromCollection()
     {
         let options     : [String]              = ["red", "green", "blue"]
         let generator   : Generator<String>     = .elements(of: options)
@@ -398,7 +398,7 @@ internal final class GeneratorCombinatorTests: XCTestCaseStopOnFail
     
     
     
-    func testElementsSingleELementAlwaysProducesIt() throws
+    func testElementsSingleELementAlwaysProducesIt()
     {
         let generator: Generator<Int> = .elements(of: [30])
         
@@ -412,7 +412,7 @@ internal final class GeneratorCombinatorTests: XCTestCaseStopOnFail
     
     // MARK: - sized
     
-    func testSizedDeterminism() throws
+    func testSizedDeterminism()
     {
         let generator: Generator<Int> = .sized { .integer(in: 0...max(1, $0)) }
         
@@ -421,7 +421,7 @@ internal final class GeneratorCombinatorTests: XCTestCaseStopOnFail
     
     
     
-    func testSizedDoesNotShrink() throws
+    func testSizedDoesNotShrink()
     {
         let generator: Generator<Int> = .sized { .integer(in: 0...max(1, $0)) }
         
@@ -430,7 +430,7 @@ internal final class GeneratorCombinatorTests: XCTestCaseStopOnFail
     
     
     
-    func testSizedReceivesCurrentSize() throws
+    func testSizedReceivesCurrentSize()
     {
         let generator: Generator<Int> = .sized { .constant($0) }
         
@@ -451,7 +451,7 @@ internal final class GeneratorCombinatorTests: XCTestCaseStopOnFail
     
     // MARK: - zip
     
-    func testZipOneDeterminism() throws
+    func testZipOneDeterminism()
     {
         let generator: Generator<String> = .zip(.nonEmptyString())
         
@@ -468,7 +468,7 @@ internal final class GeneratorCombinatorTests: XCTestCaseStopOnFail
     
     
     
-    func testZipTwoDeterminism() throws
+    func testZipTwoDeterminism()
     {
         let generator: Generator<(Int, String)> = .zip(
             .integer(in: 0...100),
@@ -489,7 +489,7 @@ internal final class GeneratorCombinatorTests: XCTestCaseStopOnFail
     
     
     
-    func testZipThreeDeterminism() throws
+    func testZipThreeDeterminism()
     {
         let generator: Generator<(Int, Int, Int)> = .zip(
             .integer(in: 0...100),
@@ -512,7 +512,7 @@ internal final class GeneratorCombinatorTests: XCTestCaseStopOnFail
     
     
     
-    func testZipFourDeterminism() throws
+    func testZipFourDeterminism()
     {
         let generator = Generator.zip(
             .integer(in: 0...100),
@@ -537,7 +537,7 @@ internal final class GeneratorCombinatorTests: XCTestCaseStopOnFail
     
     
     
-    func testZipMixedTypesDeterminism() throws
+    func testZipMixedTypesDeterminism()
     {
         let generator: Generator<(Int, String, Bool, Double)> = .zip(
             .integer(in: 0...100),
@@ -562,7 +562,7 @@ internal final class GeneratorCombinatorTests: XCTestCaseStopOnFail
     
     
     
-    func testZipOneGenerate() throws
+    func testZipOneGenerate()
     {
         let generator: Generator<Int> = .zip(.integer(in: 0...10))
         
@@ -577,7 +577,7 @@ internal final class GeneratorCombinatorTests: XCTestCaseStopOnFail
     
     
     
-    func testZipOneShrink() throws
+    func testZipOneShrink()
     {
         let generator: Generator<Int> = .zip(.integer(in: 0...100))
         
@@ -589,7 +589,7 @@ internal final class GeneratorCombinatorTests: XCTestCaseStopOnFail
     
     
     
-    func testZipTwoGenerate() throws
+    func testZipTwoGenerate()
     {
         let generator: Generator<(Int, String)> = .zip(
             .integer(in: 0...10),
@@ -608,7 +608,7 @@ internal final class GeneratorCombinatorTests: XCTestCaseStopOnFail
     
     
     
-    func testZipTwoShrink() throws
+    func testZipTwoShrink()
     {
         let generator: Generator<(Int, Int)> = .zip(
             .integer(in: 0...100),
@@ -636,7 +636,7 @@ internal final class GeneratorCombinatorTests: XCTestCaseStopOnFail
     
     
     
-    func testZipThreeGenerate() throws
+    func testZipThreeGenerate()
     {
         let generator: Generator<(Int, Int, Int)> = .zip(
             .constant(1),
@@ -656,7 +656,7 @@ internal final class GeneratorCombinatorTests: XCTestCaseStopOnFail
     
     
     
-    func testZipThreeShrink() throws
+    func testZipThreeShrink()
     {
         let generator: Generator<(Int, Int, Int)> = .zip(
             .integer(in: 0...100),
@@ -696,7 +696,7 @@ internal final class GeneratorCombinatorTests: XCTestCaseStopOnFail
     
     
     
-    func testZipFourShrink() throws
+    func testZipFourShrink()
     {
         let generator: Generator<(Int, Int, Int, Int)> = .zip(
             .integer(in: 0...100),
@@ -751,7 +751,7 @@ internal final class GeneratorCombinatorTests: XCTestCaseStopOnFail
     
     
     
-    func testZipSixGenerate() throws
+    func testZipSixGenerate()
     {
         let generator = Generator.zip(
             .constant(1),
@@ -777,7 +777,7 @@ internal final class GeneratorCombinatorTests: XCTestCaseStopOnFail
     
     
     
-    func testZipSixShrink() throws
+    func testZipSixShrink()
     {
         let generator = Generator.zip(
             .integer(in: 0...100),
@@ -837,7 +837,7 @@ internal final class GeneratorCombinatorTests: XCTestCaseStopOnFail
     
     
     
-    func testZipOverloadResolution() throws
+    func testZipOverloadResolution()
     {
         let genA = Generator<Int>(
             generate:   { _ in 1 },
@@ -888,7 +888,7 @@ internal final class GeneratorCombinatorTests: XCTestCaseStopOnFail
     
     
     
-    func testZipMixedTypesGenerate() throws
+    func testZipMixedTypesGenerate()
     {
         let generator: Generator<(Int, String, Bool)> = .zip(
             .integer(in: 0...10),
@@ -909,7 +909,7 @@ internal final class GeneratorCombinatorTests: XCTestCaseStopOnFail
     
     
     
-    func testZipMixedTypesShrink() throws
+    func testZipMixedTypesShrink()
     {
         let generator: Generator<(Int, String, Bool, Double)> = .zip(
             .integer(in: 0...100),
@@ -965,7 +965,7 @@ internal final class GeneratorCombinatorTests: XCTestCaseStopOnFail
     
     
     
-    func testZipShrinkCandidateValuesContainTargets() throws
+    func testZipShrinkCandidateValuesContainTargets()
     {
         let generator: Generator<(Int, Int)> = .zip(
             .integer(in: 0...100),
@@ -980,7 +980,7 @@ internal final class GeneratorCombinatorTests: XCTestCaseStopOnFail
     
     
     
-    func testZipShrinkCandidateCountMatchesSum() throws
+    func testZipShrinkCandidateCountMatchesSum()
     {
         let intGen      : Generator<Int>        = .integer(in: 0...100)
         let stringGen   : Generator<String>     = .nonEmptyString()
@@ -1003,7 +1003,7 @@ internal final class GeneratorCombinatorTests: XCTestCaseStopOnFail
     
     
     
-    func testZipAllConstantProducesNoShrinkCandidates() throws
+    func testZipAllConstantProducesNoShrinkCandidates()
     {
         let generator: Generator<(Int, String, Bool)> = .zip(
             .constant(1),

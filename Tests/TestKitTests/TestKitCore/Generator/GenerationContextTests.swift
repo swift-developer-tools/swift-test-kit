@@ -16,7 +16,7 @@ internal final class GenerationContextTests: XCTestCaseStopOnFail
 {
     // MARK: - General
     
-    func testInitWithSeed() throws
+    func testInitWithSeed()
     {
         let context = GenerationContext(seed: 50)
         
@@ -26,7 +26,7 @@ internal final class GenerationContextTests: XCTestCaseStopOnFail
     
     
     
-    func testInitWithSeedAndSize() throws
+    func testInitWithSeedAndSize()
     {
         let context = GenerationContext(seed: 50, size: 100)
         
@@ -36,7 +36,7 @@ internal final class GenerationContextTests: XCTestCaseStopOnFail
     
     
     
-    func testDifferentSeedsProduceDifferentSequences() throws
+    func testDifferentSeedsProduceDifferentSequences()
     {
         let context1 = GenerationContext(
             seed: 1,
@@ -60,7 +60,7 @@ internal final class GenerationContextTests: XCTestCaseStopOnFail
     
     
     
-    func testSizeCanBeUpdated() throws
+    func testSizeCanBeUpdated()
     {
         let context = GenerationContext.random
         
@@ -73,7 +73,7 @@ internal final class GenerationContextTests: XCTestCaseStopOnFail
     
     // MARK: - random (integer)
     
-    func testRandomIntDeterminism() throws
+    func testRandomIntDeterminism()
     {
         for _ in 0..<1000
         {
@@ -88,7 +88,7 @@ internal final class GenerationContextTests: XCTestCaseStopOnFail
     
     
     
-    func testRandomIntClosedRangeRespectsBounds() throws
+    func testRandomIntClosedRangeRespectsBounds()
     {
         let range: ClosedRange<Int> = 10...20
         
@@ -104,7 +104,7 @@ internal final class GenerationContextTests: XCTestCaseStopOnFail
     
     
     
-    func testRandomIntClosedRangeSingleValue() throws
+    func testRandomIntClosedRangeSingleValue()
     {
         for _ in 0..<1000
         {
@@ -118,7 +118,7 @@ internal final class GenerationContextTests: XCTestCaseStopOnFail
     
     
     
-    func testRandomIntRangeRespectsBounds() throws
+    func testRandomIntRangeRespectsBounds()
     {
         let range: Range<Int> = 10..<20
         
@@ -136,7 +136,7 @@ internal final class GenerationContextTests: XCTestCaseStopOnFail
     
     // MARK: - random (floating)
     
-    func testRandomDoubleDeterminism() throws
+    func testRandomDoubleDeterminism()
     {
         for _ in 0..<1000
         {
@@ -151,7 +151,7 @@ internal final class GenerationContextTests: XCTestCaseStopOnFail
     
     
     
-    func testRandomDoubleClosedRangeRespectsBounds() throws
+    func testRandomDoubleClosedRangeRespectsBounds()
     {
         let range: ClosedRange<Double> = 10...20
         
@@ -167,7 +167,7 @@ internal final class GenerationContextTests: XCTestCaseStopOnFail
     
     
     
-    func testRandomDoubleClosedRangeSingleValue() throws
+    func testRandomDoubleClosedRangeSingleValue()
     {
         for _ in 0..<1000
         {
@@ -181,7 +181,7 @@ internal final class GenerationContextTests: XCTestCaseStopOnFail
     
     
     
-    func testRandomDoubleRangeRespectsBounds() throws
+    func testRandomDoubleRangeRespectsBounds()
     {
         let range: Range<Double> = 10..<20
         
@@ -199,7 +199,7 @@ internal final class GenerationContextTests: XCTestCaseStopOnFail
     
     // MARK: - randomBool
     
-    func testRandomBoolDeterminism() throws
+    func testRandomBoolDeterminism()
     {
         for _ in 0..<1000
         {
@@ -214,7 +214,7 @@ internal final class GenerationContextTests: XCTestCaseStopOnFail
     
     
     
-    func testRandomBoolProducesBothValues() throws
+    func testRandomBoolProducesBothValues()
     {
         var hasTrue     : Bool  = false
         var hasFalse    : Bool  = false
@@ -250,7 +250,7 @@ internal final class GenerationContextTests: XCTestCaseStopOnFail
     
     // MARK: - randomElement
     
-    func testRandomElementDeterminism() throws
+    func testRandomElementDeterminism()
     {
         let elements: [String] = ["a", "b", "c", "d"]
         
@@ -267,7 +267,7 @@ internal final class GenerationContextTests: XCTestCaseStopOnFail
     
     
     
-    func testRandomElementReturnsElementFromCollection() throws
+    func testRandomElementReturnsElementFromCollection()
     {
         let collection: [String] = ["a", "b", "c", "d"]
         
@@ -284,7 +284,7 @@ internal final class GenerationContextTests: XCTestCaseStopOnFail
     
     
     
-    func testRandomElementReturnsNilForEmptyCollection() throws
+    func testRandomElementReturnsNilForEmptyCollection()
     {
         let context     : GenerationContext     = .random
         let collection  : [Int]                 = []
@@ -296,7 +296,7 @@ internal final class GenerationContextTests: XCTestCaseStopOnFail
     
     // MARK: - randomElement weighted
     
-    func testWeightedRandomElementDeterminism() throws
+    func testWeightedRandomElementDeterminism()
     {
         let elements: [String] = ["a", "b", "c", "d"]
         
@@ -313,7 +313,7 @@ internal final class GenerationContextTests: XCTestCaseStopOnFail
     
     
     
-    func testWeightedRandomElementReturnsNilForEmptyCollection() throws
+    func testWeightedRandomElementReturnsNilForEmptyCollection()
     {
         let context     : GenerationContext     = .random
         let collection  : [Int]                 = []
@@ -325,7 +325,7 @@ internal final class GenerationContextTests: XCTestCaseStopOnFail
     
     
     
-    func testWeightedRandomElementSingleElementReturnsSame() throws
+    func testWeightedRandomElementSingleElementReturnsSame()
     {
         for _ in 0..<1000
         {
@@ -342,7 +342,7 @@ internal final class GenerationContextTests: XCTestCaseStopOnFail
     
     
     
-    func testWeightedRandomElementRespectsWeights() throws
+    func testWeightedRandomElementRespectsWeights()
     {
         let elements: [(String, Int)] =
         [
@@ -373,7 +373,7 @@ internal final class GenerationContextTests: XCTestCaseStopOnFail
     
     
     
-    func testWeightedRandomElementProducesAllElements() throws
+    func testWeightedRandomElementProducesAllElements()
     {
         let elements    : [String]      = ["a", "b", "c"]
         var seen        : Set<String>   = []

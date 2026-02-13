@@ -163,7 +163,7 @@ internal final class ForAllOutputTests: XCTestKitCase
     
     
     
-    func testCounterexampleWithThrownError() throws
+    func testCounterexampleWithThrownError()
     {
         let options: TestOptions = .propertyOptions(
             iterations:     1,
@@ -199,7 +199,7 @@ internal final class ForAllOutputTests: XCTestKitCase
     
     
     
-    func testCounterexampleWithMessage() throws
+    func testCounterexampleWithMessage()
     {
         let options: TestOptions = .propertyOptions(
             iterations:     1,
@@ -934,7 +934,7 @@ internal final class ForAllOutputTests: XCTestKitCase
     
     
     
-    func testThrownErrorShrinks() throws
+    func testThrownErrorShrinks()
     {
         let options: TestOptions = .propertyOptions(
             iterations:     1,
@@ -1141,7 +1141,7 @@ internal final class ForAllOutputTests: XCTestKitCase
     
     // MARK: - Exhaustion
     
-    func testExhaustion() throws
+    func testExhaustion()
     {
         let options: TestOptions = .propertyOptions(
             iterations:         1,
@@ -1176,7 +1176,7 @@ internal final class ForAllOutputTests: XCTestKitCase
     
     
     
-    func testExhaustionWithMessage() throws
+    func testExhaustionWithMessage()
     {
         let options: TestOptions = .propertyOptions(
             iterations:         1,
@@ -1214,7 +1214,7 @@ internal final class ForAllOutputTests: XCTestKitCase
     
     
     
-    func testExhaustionAfterPartialSuccess() throws
+    func testExhaustionAfterPartialSuccess()
     {
         let options: TestOptions = .propertyOptions(
             iterations:         5,
@@ -1258,7 +1258,7 @@ internal final class ForAllOutputTests: XCTestKitCase
     
     
     
-    func testSingularInputDiscarded() throws
+    func testSingularInputDiscarded()
     {
         /// With a `maxDiscardRatio` of `0` and `iterations` of `1`, the
         /// discard limit is `0 * 1 = 0`. The first discarded input exceeds

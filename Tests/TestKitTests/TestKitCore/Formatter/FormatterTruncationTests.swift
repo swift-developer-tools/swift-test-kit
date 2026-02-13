@@ -20,7 +20,7 @@ internal final class FormatterTruncationTests: XCTestCaseStopOnFail
     
     // MARK: - Max diffs
     
-    func testMaxDiffsWithoutCountDiffs() throws
+    func testMaxDiffsWithoutCountDiffs()
     {
         let exp         : [Int]     = [1, 2, 3, 4, 5]
         let act         : [Int]     = [0, 0, 0, 0, 0]
@@ -65,7 +65,7 @@ internal final class FormatterTruncationTests: XCTestCaseStopOnFail
     
     
     
-    func testMaxDiffsWithCountDiffs() throws
+    func testMaxDiffsWithCountDiffs()
     {
         let exp         : [Int]     = [1, 2, 3, 4, 5]
         let act         : [Int]     = [0, 0, 0, 0, 0]
@@ -110,7 +110,7 @@ internal final class FormatterTruncationTests: XCTestCaseStopOnFail
     
     
     
-    func testMaxDiffsAtExactLimit() throws
+    func testMaxDiffsAtExactLimit()
     {
         let exp         : [Int]     = [1, 2, 3]
         let act         : [Int]     = [0, 0, 0]
@@ -157,7 +157,7 @@ internal final class FormatterTruncationTests: XCTestCaseStopOnFail
     
     
     
-    func testMaxDiffsWithSetTree() throws
+    func testMaxDiffsWithSetTree()
     {
         let exp         : Set<Int>  = Set(1...10)
         let act         : Set<Int>  = []
@@ -197,7 +197,7 @@ internal final class FormatterTruncationTests: XCTestCaseStopOnFail
     
     
     
-    func testMaxDiffsWithLineDiffs() throws
+    func testMaxDiffsWithLineDiffs()
     {
         let exp         : String    = "line1\nline2\nline3\nline4\nline5"
         let act         : String    = "AAAA\nBBBB\nCCCC\nDDDD\nEEEE"
@@ -254,7 +254,7 @@ internal final class FormatterTruncationTests: XCTestCaseStopOnFail
     
     
     
-    func testMaxDiffsOfOne() throws
+    func testMaxDiffsOfOne()
     {
         let exp         : [Int]     = [1, 2, 3]
         let act         : [Int]     = [0, 0, 0]
@@ -295,7 +295,7 @@ internal final class FormatterTruncationTests: XCTestCaseStopOnFail
     
     
     
-    func testMaxDiffsWithNestedStructures() throws
+    func testMaxDiffsWithNestedStructures()
     {
         struct Inner: Equatable
         {
@@ -389,7 +389,7 @@ internal final class FormatterTruncationTests: XCTestCaseStopOnFail
     
     // MARK: Path
     
-    func testPathTruncationForLongPath() throws
+    func testPathTruncationForLongPath()
     {
         /// The path would be 32 characters: `.l2.l3.l4.l5.l6.l7.l8.l9.l10.val`.
         /// With a maximum line length of 30 and an indent of 1 (4 spaces),
@@ -485,7 +485,7 @@ internal final class FormatterTruncationTests: XCTestCaseStopOnFail
     
     // MARK: - Value
     
-    func testValueTruncationExceedsMaxLineLength() throws
+    func testValueTruncationExceedsMaxLineLength()
     {
         /// Available width = 50 - 0 (indent) - 12 (label) = 38
         /// Value = 100 + 2 (quotes) = 102
@@ -518,7 +518,7 @@ internal final class FormatterTruncationTests: XCTestCaseStopOnFail
     
     
     
-    func testValueTruncationRespectsMinimumWidth() throws
+    func testValueTruncationRespectsMinimumWidth()
     {
         /// Available width = 20 - 0 (indent) - 12 (label) = 8
         /// Minimum line width = 20
@@ -551,7 +551,7 @@ internal final class FormatterTruncationTests: XCTestCaseStopOnFail
     
     
     
-    func testValueTruncationAtNestedIndent() throws
+    func testValueTruncationAtNestedIndent()
     {
         struct Container: Equatable
         {
@@ -601,7 +601,7 @@ internal final class FormatterTruncationTests: XCTestCaseStopOnFail
     
     
     
-    func testValueTruncationAtMinimumWidth() throws
+    func testValueTruncationAtMinimumWidth()
     {
         /// Available width = 30 - 12 (indent) - 12 (label) = 6
         /// Minimum line width = 20
@@ -668,7 +668,7 @@ internal final class FormatterTruncationTests: XCTestCaseStopOnFail
     
     // MARK: - Indentation
     
-    func testZeroIndentationSpaces() throws
+    func testZeroIndentationSpaces()
     {
         struct User: Equatable
         {
@@ -712,7 +712,7 @@ internal final class FormatterTruncationTests: XCTestCaseStopOnFail
     
     
     
-    func testCustomIndentationSpaces() throws
+    func testCustomIndentationSpaces()
     {
         struct User: Equatable
         {
@@ -756,7 +756,7 @@ internal final class FormatterTruncationTests: XCTestCaseStopOnFail
     
     
     
-    func testValueTruncationForNonStringType() throws
+    func testValueTruncationForNonStringType()
     {
         let exp         : [Int]     = Array(1...40)
         let act         : [Int]     = []

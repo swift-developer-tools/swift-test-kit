@@ -16,28 +16,28 @@ internal final class CollectionArbitraryTests: XCTestCaseStopOnFail
 {
     // MARK: - Generation
     
-    func testArrayGeneration() throws
+    func testArrayGeneration()
     {
         testGeneration(of: Array<Int>.self)
     }
     
     
     
-    func testDictionaryGeneration() throws
+    func testDictionaryGeneration()
     {
         testGeneration(of: Dictionary<Int, Int>.self)
     }
     
     
     
-    func testSetGeneration() throws
+    func testSetGeneration()
     {
         testGeneration(of: Set<Int>.self)
     }
     
     
     
-    func testCollectionOfOneGenerationDeterminism() throws
+    func testCollectionOfOneGenerationDeterminism()
     {
         for _ in 0..<1000
         {
@@ -52,7 +52,7 @@ internal final class CollectionArbitraryTests: XCTestCaseStopOnFail
     
     
     
-    func testCollectionOfOneGenerationSizeZeroProducesZeroElement() throws
+    func testCollectionOfOneGenerationSizeZeroProducesZeroElement()
     {
         for _ in 0..<1000
         {
@@ -66,7 +66,7 @@ internal final class CollectionArbitraryTests: XCTestCaseStopOnFail
     
     // MARK: - Array shrinking
     
-    func testArrayShrinkEmpty() throws
+    func testArrayShrinkEmpty()
     {
         let value: [Int] = []
         
@@ -75,7 +75,7 @@ internal final class CollectionArbitraryTests: XCTestCaseStopOnFail
     
     
     
-    func testArrayShrinkSingleElementNoElementShrink() throws
+    func testArrayShrinkSingleElementNoElementShrink()
     {
         let value: [Int] = [0]
         
@@ -84,7 +84,7 @@ internal final class CollectionArbitraryTests: XCTestCaseStopOnFail
     
     
     
-    func testArrayShrinkSingleElementWithElementShrink() throws
+    func testArrayShrinkSingleElementWithElementShrink()
     {
         let value       : [Int]     = [50]
         let candidates  : [[Int]]   = value.shrink()
@@ -105,7 +105,7 @@ internal final class CollectionArbitraryTests: XCTestCaseStopOnFail
     
     
     
-    func testArrayShrinkEvenCount() throws
+    func testArrayShrinkEvenCount()
     {
         let value       : [Int]     = [10, 20]
         let candidates  : [[Int]]   = value.shrink()
@@ -138,7 +138,7 @@ internal final class CollectionArbitraryTests: XCTestCaseStopOnFail
     
     
     
-    func testArrayShrinkOddCount() throws
+    func testArrayShrinkOddCount()
     {
         let value       : [Int]     = [10, 20, 30]
         let candidates  : [[Int]]   = value.shrink()
@@ -178,7 +178,7 @@ internal final class CollectionArbitraryTests: XCTestCaseStopOnFail
     
     
     
-    func testArrayShrinkCandidateCount() throws
+    func testArrayShrinkCandidateCount()
     {
         let values: [[Int]] =
         [
@@ -208,7 +208,7 @@ internal final class CollectionArbitraryTests: XCTestCaseStopOnFail
     
     
     
-    func testArrayShrinkFirstCandidateEmpty() throws
+    func testArrayShrinkFirstCandidateEmpty()
     {
         let values: [[Int]] =
         [
@@ -227,7 +227,7 @@ internal final class CollectionArbitraryTests: XCTestCaseStopOnFail
     
     
     
-    func testArrayShrinkNoCandidateEqualsOriginal() throws
+    func testArrayShrinkNoCandidateEqualsOriginal()
     {
         let values: [[Int]] =
         [
@@ -247,7 +247,7 @@ internal final class CollectionArbitraryTests: XCTestCaseStopOnFail
     
     
     
-    func testArrayShrinkElementShrinkHoldsOthersConstant() throws
+    func testArrayShrinkElementShrinkHoldsOthersConstant()
     {
         let value       : [Int]     = [10, 20]
         let candidates  : [[Int]]   = value.shrink()
@@ -271,7 +271,7 @@ internal final class CollectionArbitraryTests: XCTestCaseStopOnFail
     
     // MARK: - CollectionOfOne shrinking
     
-    func testCollectionOfOneShrinkingZeroElement() throws
+    func testCollectionOfOneShrinkingZeroElement()
     {
         let candidates: [CollectionOfOne] = CollectionOfOne<Int>(0).shrink()
         
@@ -280,7 +280,7 @@ internal final class CollectionArbitraryTests: XCTestCaseStopOnFail
     
     
     
-    func testCollectionOfOneShrinkMatchesElementShrink() throws
+    func testCollectionOfOneShrinkMatchesElementShrink()
     {
         let values: [Int] = [1, 5, 40, -7, -100]
         
@@ -302,7 +302,7 @@ internal final class CollectionArbitraryTests: XCTestCaseStopOnFail
     
     // MARK: - Dictionary shrinking
     
-    func testDictionaryShrinkEmpty() throws
+    func testDictionaryShrinkEmpty()
     {
         let value: [Int : Int] = [:]
         
@@ -311,7 +311,7 @@ internal final class CollectionArbitraryTests: XCTestCaseStopOnFail
     
     
     
-    func testDictionaryShrinkSingleEntryWithValueShrink() throws
+    func testDictionaryShrinkSingleEntryWithValueShrink()
     {
         let value       : [Int : Int]       = [0: 50]
         let candidates  : [[Int : Int]]     = value.shrink()
@@ -326,7 +326,7 @@ internal final class CollectionArbitraryTests: XCTestCaseStopOnFail
     
     
     
-    func testDictionaryShrinkSingleEntryWithKeyShrink() throws
+    func testDictionaryShrinkSingleEntryWithKeyShrink()
     {
         let value       : [Int : Int]       = [50: 0]
         let candidates  : [[Int : Int]]     = value.shrink()
@@ -344,7 +344,7 @@ internal final class CollectionArbitraryTests: XCTestCaseStopOnFail
     
     
     
-    func testDictionaryShrinkFirstCandidateEmpty() throws
+    func testDictionaryShrinkFirstCandidateEmpty()
     {
         let values: [[Int : Int]] =
         [
@@ -363,7 +363,7 @@ internal final class CollectionArbitraryTests: XCTestCaseStopOnFail
     
     
     
-    func testDictionaryShrinkNoCandidateEqualsOriginalAndAllSmaller() throws
+    func testDictionaryShrinkNoCandidateEqualsOriginalAndAllSmaller()
     {
         let values: [[Int : Int]] =
         [
@@ -384,7 +384,7 @@ internal final class CollectionArbitraryTests: XCTestCaseStopOnFail
     
     
     
-    func testDictionaryShrinkKeyCollisionSkipped() throws
+    func testDictionaryShrinkKeyCollisionSkipped()
     {
         /// When a key shrinks to a value that already exists as a key in the
         /// dictionary, that candidate is skipped.
@@ -420,7 +420,7 @@ internal final class CollectionArbitraryTests: XCTestCaseStopOnFail
     
     
     
-    func testDictionaryShrinkContainsSubsetsOfExpectedSizes() throws
+    func testDictionaryShrinkContainsSubsetsOfExpectedSizes()
     {
         let value       : [Int : Int]       = [10: 1, 20: 2, 30: 3, 40: 4]
         let candidates  : [[Int : Int]]     = value.shrink()
@@ -438,7 +438,7 @@ internal final class CollectionArbitraryTests: XCTestCaseStopOnFail
     
     
     
-    func testDictionaryShrinkTwoEntriesContainsAllSingletons() throws
+    func testDictionaryShrinkTwoEntriesContainsAllSingletons()
     {
         let value       : [Int : Int]       = [10: 1, 20: 2]
         let candidates  : [[Int : Int]]     = value.shrink()
@@ -449,7 +449,7 @@ internal final class CollectionArbitraryTests: XCTestCaseStopOnFail
     
     
     
-    func testDictionaryShrinkValuesPreservesKeys() throws
+    func testDictionaryShrinkValuesPreservesKeys()
     {
         /// Value shrink candidates must preserve all original keys.
         let value       : [Int : Int]       = [0: 50, 1: 100]
@@ -475,7 +475,7 @@ internal final class CollectionArbitraryTests: XCTestCaseStopOnFail
     
     
     
-    func testDictionaryShrinkRemovalProducesCorrectSubsets() throws
+    func testDictionaryShrinkRemovalProducesCorrectSubsets()
     {
         /// Each removal candidate must be a strict subset of the original,
         /// with exactly one entry missing.
@@ -503,7 +503,7 @@ internal final class CollectionArbitraryTests: XCTestCaseStopOnFail
     
     // MARK: - Set shrinking
     
-    func testSetShrinkEmpty() throws
+    func testSetShrinkEmpty()
     {
         let value: Set<Int> = []
         
@@ -512,7 +512,7 @@ internal final class CollectionArbitraryTests: XCTestCaseStopOnFail
     
     
     
-    func testSetShrinkSingleZeroElement() throws
+    func testSetShrinkSingleZeroElement()
     {
         let value       : Set<Int>      = [0]
         let candidates  : [Set<Int>]    = value.shrink()
@@ -522,7 +522,7 @@ internal final class CollectionArbitraryTests: XCTestCaseStopOnFail
     
     
     
-    func testSetShrinkSingleNonZeroElement() throws
+    func testSetShrinkSingleNonZeroElement()
     {
         let value       : Set<Int>      = [5]
         let candidates  : [Set<Int>]    = value.shrink()
@@ -538,7 +538,7 @@ internal final class CollectionArbitraryTests: XCTestCaseStopOnFail
     
     
     
-    func testSetShrinkFirstCandidateEmpty() throws
+    func testSetShrinkFirstCandidateEmpty()
     {
         let values: [Set<Int>] =
         [
@@ -557,7 +557,7 @@ internal final class CollectionArbitraryTests: XCTestCaseStopOnFail
     
     
     
-    func testSetShrinkNoCandidateEqualsOriginal() throws
+    func testSetShrinkNoCandidateEqualsOriginal()
     {
         let values: [[Int]] =
         [
@@ -578,7 +578,7 @@ internal final class CollectionArbitraryTests: XCTestCaseStopOnFail
     
     
     
-    func testSetShrinkCandidatesContainShrunkenElements() throws
+    func testSetShrinkCandidatesContainShrunkenElements()
     {
         /// Use a set in which the elements do not shrink to each other,
         /// so singletons remain distinct after array shrinking.
@@ -597,7 +597,7 @@ internal final class CollectionArbitraryTests: XCTestCaseStopOnFail
     
     
     
-    func testSetShrinkContainsEmptyAndSubsets() throws
+    func testSetShrinkContainsEmptyAndSubsets()
     {
         let value       : Set<Int>      = [10, 20]
         let candidates  : [Set<Int>]    = value.shrink()
@@ -609,7 +609,7 @@ internal final class CollectionArbitraryTests: XCTestCaseStopOnFail
     
     
     
-    func testSetShrinkDuplicatesCollapsing() throws
+    func testSetShrinkDuplicatesCollapsing()
     {
         let value       : Set<Int>      = [10, 20]
         let candidates  : [Set<Int>]    = value.shrink()
@@ -621,7 +621,7 @@ internal final class CollectionArbitraryTests: XCTestCaseStopOnFail
     
     
     
-    func testSetShrinkFourElements() throws
+    func testSetShrinkFourElements()
     {
         let value       : Set<Int>      = [10, 20, 30, 40]
         let candidates  : [Set<Int>]    = value.shrink()
@@ -639,7 +639,7 @@ internal final class CollectionArbitraryTests: XCTestCaseStopOnFail
     
     
     
-    func testSetShrinkCandidateCountMatchesArrayShrink() throws
+    func testSetShrinkCandidateCountMatchesArrayShrink()
     {
         let values: [Set<Int>] =
         [
@@ -661,7 +661,7 @@ internal final class CollectionArbitraryTests: XCTestCaseStopOnFail
     
     
     
-    func testSetShrinkAllCandidatesStrictlySmaller() throws
+    func testSetShrinkAllCandidatesStrictlySmaller()
     {
         let values: [Set<Int>] =
         [

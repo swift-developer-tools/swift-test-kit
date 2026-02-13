@@ -16,7 +16,7 @@ internal final class OptionalArbitraryTests: XCTestCaseStopOnFail
 {
     // MARK: - Generation
     
-    func testArbitraryDeterminism() throws
+    func testArbitraryDeterminism()
     {
         for _ in 0..<1000
         {
@@ -31,7 +31,7 @@ internal final class OptionalArbitraryTests: XCTestCaseStopOnFail
     
     
     
-    func testArbitraryProducesBothNilAndNonNil() throws
+    func testArbitraryProducesBothNilAndNonNil()
     {
         var hasNil      : Bool  = false
         var hasNonNil   : Bool  = false
@@ -63,7 +63,7 @@ internal final class OptionalArbitraryTests: XCTestCaseStopOnFail
     
     
     
-    func testArbitraryNilRatio() throws
+    func testArbitraryNilRatio()
     {
         var nilCount    : Int   = 0
         let iterations  : Int   = 10_000
@@ -86,7 +86,7 @@ internal final class OptionalArbitraryTests: XCTestCaseStopOnFail
     
     
     
-    func testArbitraryNonNilValuesRespectSizeBounds() throws
+    func testArbitraryNonNilValuesRespectSizeBounds()
     {
         let size: Int = 10
         
@@ -112,7 +112,7 @@ internal final class OptionalArbitraryTests: XCTestCaseStopOnFail
     
     
     
-    func testArbitrarySizeZeroProducesZeroOrNil() throws
+    func testArbitrarySizeZeroProducesZeroOrNil()
     {
         for _ in 0..<1000
         {
@@ -127,7 +127,7 @@ internal final class OptionalArbitraryTests: XCTestCaseStopOnFail
     
     
     
-    func testNestedOptionalGenerationProducesAllCases() throws
+    func testNestedOptionalGenerationProducesAllCases()
     {
         var hasOuterNil : Bool  = false
         var hasInnerNil : Bool  = false
@@ -170,7 +170,7 @@ internal final class OptionalArbitraryTests: XCTestCaseStopOnFail
     
     // MARK: - Shrinking
     
-    func testShrinkNilReturnsEmpty() throws
+    func testShrinkNilReturnsEmpty()
     {
         let value: Optional<Int> = nil
         
@@ -179,7 +179,7 @@ internal final class OptionalArbitraryTests: XCTestCaseStopOnFail
     
     
     
-    func testShrinkSomeIncludesNilAsFirstCandidate() throws
+    func testShrinkSomeIncludesNilAsFirstCandidate()
     {
         let value       : Optional<Int>     = 10
         let candidates  : [Optional<Int>]   = value.shrink()
@@ -190,7 +190,7 @@ internal final class OptionalArbitraryTests: XCTestCaseStopOnFail
     
     
     
-    func testShrinkSomeIncludesWrappedShrinkCandidates() throws
+    func testShrinkSomeIncludesWrappedShrinkCandidates()
     {
         let value       : Optional<Int>     = 10
         let candidates  : [Optional<Int>]   = value.shrink()
@@ -205,7 +205,7 @@ internal final class OptionalArbitraryTests: XCTestCaseStopOnFail
     
     
     
-    func testShrinkSomeNegativeIncludesWrappedShrinkCandidates() throws
+    func testShrinkSomeNegativeIncludesWrappedShrinkCandidates()
     {
         let value       : Optional<Int>     = -7
         let candidates  : [Optional<Int>]   = value.shrink()
@@ -220,7 +220,7 @@ internal final class OptionalArbitraryTests: XCTestCaseStopOnFail
     
     
     
-    func testShrinkSomeZeroReturnsOnlyNil() throws
+    func testShrinkSomeZeroReturnsOnlyNil()
     {
         let value       : Optional<Int>     = 0
         let candidates  : [Optional<Int>]   = value.shrink()
@@ -230,7 +230,7 @@ internal final class OptionalArbitraryTests: XCTestCaseStopOnFail
     
     
     
-    func testShrinkSomeBoolTrue() throws
+    func testShrinkSomeBoolTrue()
     {
         let value       : Optional<Bool>    = true
         let candidates  : [Optional<Bool>]  = value.shrink()
@@ -240,7 +240,7 @@ internal final class OptionalArbitraryTests: XCTestCaseStopOnFail
     
     
     
-    func testShrinkSomeBoolFalse() throws
+    func testShrinkSomeBoolFalse()
     {
         let value       : Optional<Bool>    = false
         let candidates  : [Optional<Bool>]  = value.shrink()
@@ -250,7 +250,7 @@ internal final class OptionalArbitraryTests: XCTestCaseStopOnFail
     
     
     
-    func testShrinkSomeStringIncludesWrappedShrinkCandidates() throws
+    func testShrinkSomeStringIncludesWrappedShrinkCandidates()
     {
         let value       : Optional<String>      = "ab"
         let candidates  : [Optional<String>]    = value.shrink()
@@ -265,7 +265,7 @@ internal final class OptionalArbitraryTests: XCTestCaseStopOnFail
     
     
     
-    func testShrinkSomeEmptyStringReturnsOnlyNil() throws
+    func testShrinkSomeEmptyStringReturnsOnlyNil()
     {
         let value       : Optional<String>      = ""
         let candidates  : [Optional<String>]    = value.shrink()
@@ -275,7 +275,7 @@ internal final class OptionalArbitraryTests: XCTestCaseStopOnFail
     
     
     
-    func testNestedOptionalShrinkOuterNil() throws
+    func testNestedOptionalShrinkOuterNil()
     {
         let value       : Optional<Optional<Int>>       = nil
         let candidates  : [Optional<Optional<Int>>]     = value.shrink()
@@ -285,7 +285,7 @@ internal final class OptionalArbitraryTests: XCTestCaseStopOnFail
     
     
     
-    func testNestedOptionalShrinkInnerNil() throws
+    func testNestedOptionalShrinkInnerNil()
     {
         let value       : Optional<Optional<Int>>       = .some(nil)
         let candidates  : [Optional<Optional<Int>>]     = value.shrink()
@@ -298,7 +298,7 @@ internal final class OptionalArbitraryTests: XCTestCaseStopOnFail
     
     
     
-    func testNestedOptionalShrinkSomeValue() throws
+    func testNestedOptionalShrinkSomeValue()
     {
         let value       : Optional<Optional<Int>>       = .some(20)
         let candidates  : [Optional<Optional<Int>>]     = value.shrink()

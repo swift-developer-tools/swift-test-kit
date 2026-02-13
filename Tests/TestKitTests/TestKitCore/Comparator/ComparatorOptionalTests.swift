@@ -14,7 +14,7 @@ import XCTest
 
 internal final class ComparatorOptionalTests: XCTestCaseStopOnFail
 {
-    func testOptionalBothNone() throws
+    func testOptionalBothNone()
     {
         let exp: String? = nil
         
@@ -34,7 +34,7 @@ internal final class ComparatorOptionalTests: XCTestCaseStopOnFail
     
     
     
-    func testOptionalBothSomeDifferent() throws
+    func testOptionalBothSomeDifferent()
     {
         let exp : String?   = "hello"
         let act : String?   = "world"
@@ -77,7 +77,7 @@ internal final class ComparatorOptionalTests: XCTestCaseStopOnFail
     
     
     
-    func testOptionalBothSomeEqual() throws
+    func testOptionalBothSomeEqual()
     {
         let exp: String? = "hello"
         
@@ -97,7 +97,7 @@ internal final class ComparatorOptionalTests: XCTestCaseStopOnFail
     
     
     
-    func testOptionalExpectedNoneActualSome() throws
+    func testOptionalExpectedNoneActualSome()
     {
         let exp : String?   = nil
         let act : String?   = "hello"
@@ -126,7 +126,7 @@ internal final class ComparatorOptionalTests: XCTestCaseStopOnFail
     
     
     
-    func testOptionalExpectedSomeActualNone() throws
+    func testOptionalExpectedSomeActualNone()
     {
         let exp : String?   = "hello"
         let act : String?   = nil
@@ -155,7 +155,7 @@ internal final class ComparatorOptionalTests: XCTestCaseStopOnFail
     
     
     
-    func testNestedOptionalBothSomeDifferentWrappedValue() throws
+    func testNestedOptionalBothSomeDifferentWrappedValue()
     {
         let exp : Int???    = 1
         let act : Int???    = 2
@@ -201,7 +201,7 @@ internal final class ComparatorOptionalTests: XCTestCaseStopOnFail
     
     
     
-    func testNestedOptionalNilAtDifferentLevels() throws
+    func testNestedOptionalNilAtDifferentLevels()
     {
         let exp : Int???    = .some(.some(nil))
         let act : Int???    = .some(nil)
@@ -238,7 +238,7 @@ internal final class ComparatorOptionalTests: XCTestCaseStopOnFail
     
     
     
-    func testNestedOptionalBothNilAtSameLevel() throws
+    func testNestedOptionalBothNilAtSameLevel()
     {
         let exp: Int??? = .some(.some(nil))
         
@@ -258,7 +258,7 @@ internal final class ComparatorOptionalTests: XCTestCaseStopOnFail
     
     
     
-    func testNestedOptionalSomeVsOutermostNil() throws
+    func testNestedOptionalSomeVsOutermostNil()
     {
         let exp : Int???    = 1
         let act : Int???    = nil
@@ -287,7 +287,7 @@ internal final class ComparatorOptionalTests: XCTestCaseStopOnFail
     
     
     
-    func testNestedOptionalBothOutermostNil() throws
+    func testNestedOptionalBothOutermostNil()
     {
         let exp: Int??? = nil
         

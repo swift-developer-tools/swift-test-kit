@@ -14,7 +14,7 @@ import XCTest
 
 internal final class ComparatorStructTests: XCTestCaseStopOnFail
 {
-    func testNestedStructs() throws
+    func testNestedStructs()
     {
         struct Address: Equatable
         {
@@ -83,7 +83,7 @@ internal final class ComparatorStructTests: XCTestCaseStopOnFail
     
     
     
-    func testStructEqualValues() throws
+    func testStructEqualValues()
     {
         struct User: Equatable
         {
@@ -112,7 +112,7 @@ internal final class ComparatorStructTests: XCTestCaseStopOnFail
     
     
     
-    func testStructSinglePropertyDifference() throws
+    func testStructSinglePropertyDifference()
     {
         struct User: Equatable
         {
@@ -155,7 +155,7 @@ internal final class ComparatorStructTests: XCTestCaseStopOnFail
     
     
     
-    func testDepthLimitStopsRecursion() throws
+    func testDepthLimitStopsRecursion()
     {
         struct Inner: Equatable
         {
@@ -195,7 +195,7 @@ internal final class ComparatorStructTests: XCTestCaseStopOnFail
     
     
     
-    func testUnlimitedDepth() throws
+    func testUnlimitedDepth()
     {
         struct L4: Equatable { let value    : Int }
         struct L3: Equatable { let l4       : L4 }
@@ -256,7 +256,7 @@ internal final class ComparatorStructTests: XCTestCaseStopOnFail
     
     
     
-    func testDepthLimitAtExactBoundary() throws
+    func testDepthLimitAtExactBoundary()
     {
         struct L5: Equatable { let value    : Int }
         struct L4: Equatable { let l5       : L5 }
@@ -308,7 +308,7 @@ internal final class ComparatorStructTests: XCTestCaseStopOnFail
     
     
     
-    func testDeeplyNestedEqualStructs() throws
+    func testDeeplyNestedEqualStructs()
     {
         struct L4: Equatable { let value    : Int }
         struct L3: Equatable { let l4       : L4 }
@@ -333,7 +333,7 @@ internal final class ComparatorStructTests: XCTestCaseStopOnFail
     
     
     
-    func testDeeplyNestedStructsWithMultipleEqualSiblings() throws
+    func testDeeplyNestedStructsWithMultipleEqualSiblings()
     {
         struct Leaf: Equatable
         {
@@ -392,7 +392,7 @@ internal final class ComparatorStructTests: XCTestCaseStopOnFail
     
     
     
-    func testEmptyStructEqualValues() throws
+    func testEmptyStructEqualValues()
     {
         struct Empty: Equatable { }
         
@@ -414,7 +414,7 @@ internal final class ComparatorStructTests: XCTestCaseStopOnFail
     
     
     
-    func testEmptyStructWithPrivateBackingProperty() throws
+    func testEmptyStructWithPrivateBackingProperty()
     {
         struct Wrapper: Equatable
         {

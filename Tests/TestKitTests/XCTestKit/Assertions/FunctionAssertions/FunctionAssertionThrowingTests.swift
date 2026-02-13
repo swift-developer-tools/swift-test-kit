@@ -11,21 +11,21 @@ internal final class FunctionAssertionThrowingTests: XCTestKitCase
 {
     // MARK: - Boolean
     
-    func testAssertFailsOnThrow() throws
+    func testAssertFailsOnThrow()
     {
         testFunctionAssertionFailsOnThrow(.assert)
     }
     
     
     
-    func testAssertTrueFailsOnThrow() throws
+    func testAssertTrueFailsOnThrow()
     {
         testFunctionAssertionFailsOnThrow(.true)
     }
     
     
     
-    func testAssertFalseFailsOnThrow() throws
+    func testAssertFalseFailsOnThrow()
     {
         testFunctionAssertionFailsOnThrow(.false)
     }
@@ -34,21 +34,21 @@ internal final class FunctionAssertionThrowingTests: XCTestKitCase
     
     // MARK: - Nil and non-nil
     
-    func testAssertNilFailsOnThrow() throws
+    func testAssertNilFailsOnThrow()
     {
         testFunctionAssertionFailsOnThrow(.nil)
     }
     
     
     
-    func testAssertNotNilFailsOnThrow() throws
+    func testAssertNotNilFailsOnThrow()
     {
         testFunctionAssertionFailsOnThrow(.notNil)
     }
     
     
     
-    func testUnwrapFailsOnThrow() throws
+    func testUnwrapFailsOnThrow()
     {
         testFunctionAssertionFailsOnThrow(.unwrap)
     }
@@ -57,56 +57,56 @@ internal final class FunctionAssertionThrowingTests: XCTestKitCase
     
     // MARK: - Equality and inequality
     
-    func testAssertEqualFailsOnThrow() throws
+    func testAssertEqualFailsOnThrow()
     {
         testFunctionAssertionFailsOnThrow(.equal)
     }
     
     
     
-    func testAssertNotEqualFailsOnThrow() throws
+    func testAssertNotEqualFailsOnThrow()
     {
         testFunctionAssertionFailsOnThrow(.notEqual)
     }
     
     
     
-    func testAssertIdenticalFailsOnThrow() throws
+    func testAssertIdenticalFailsOnThrow()
     {
         testFunctionAssertionFailsOnThrow(.identical)
     }
     
     
     
-    func testAssertNotIdenticalFailsOnThrow() throws
+    func testAssertNotIdenticalFailsOnThrow()
     {
         testFunctionAssertionFailsOnThrow(.notIdentical)
     }
     
     
     
-    func testAssertEqualFloatAccFailsOnThrow() throws
+    func testAssertEqualFloatAccFailsOnThrow()
     {
         testFunctionAssertionFailsOnThrow(.equalWithAccuracy)
     }
     
     
     
-    func testAssertEqualIntAccFailsOnThrow() throws
+    func testAssertEqualIntAccFailsOnThrow()
     {
         testFunctionAssertionFailsOnThrow(.equalWithAccuracy)
     }
     
     
     
-    func testAssertNotEqualFloatAccFailsOnThrow() throws
+    func testAssertNotEqualFloatAccFailsOnThrow()
     {
         testFunctionAssertionFailsOnThrow(.notEqualWithAccuracy )
     }
     
     
     
-    func testAssertNotEqualIntAccFailsOnThrow() throws
+    func testAssertNotEqualIntAccFailsOnThrow()
     {
         testFunctionAssertionFailsOnThrow(.notEqualWithAccuracy)
     }
@@ -115,28 +115,28 @@ internal final class FunctionAssertionThrowingTests: XCTestKitCase
     
     // MARK: - Comparable
     
-    func testAssertGreaterFailsOnThrow() throws
+    func testAssertGreaterFailsOnThrow()
     {
         testFunctionAssertionFailsOnThrow(.greaterThan)
     }
     
     
     
-    func testAssertGreaterEqualFailsOnThrow() throws
+    func testAssertGreaterEqualFailsOnThrow()
     {
         testFunctionAssertionFailsOnThrow(.greaterThanOrEqual)
     }
     
     
     
-    func testAssertLessEqualFailsOnThrow() throws
+    func testAssertLessEqualFailsOnThrow()
     {
         testFunctionAssertionFailsOnThrow(.lessThanOrEqual)
     }
     
     
     
-    func testAssertLessFailsOnThrow() throws
+    func testAssertLessFailsOnThrow()
     {
         testFunctionAssertionFailsOnThrow(.lessThan)
     }
@@ -145,7 +145,7 @@ internal final class FunctionAssertionThrowingTests: XCTestKitCase
     
     // MARK: - Error
     
-    func testAssertNoThrowFailsOnThrow() throws
+    func testAssertNoThrowFailsOnThrow()
     {
         testFunctionAssertionFailsOnThrow(.noThrow)
     }
@@ -154,77 +154,77 @@ internal final class FunctionAssertionThrowingTests: XCTestKitCase
     
     // MARK: - Predicate
     
-    func testAssertSatisfyAllFailsOnThrow() throws
+    func testAssertSatisfyAllFailsOnThrow()
     {
         testFunctionAssertionFailsOnThrow(.satisfyAll)
     }
     
     
     
-    func testAssertSatisfyAnyFailsOnThrow() throws
+    func testAssertSatisfyAnyFailsOnThrow()
     {
         testFunctionAssertionFailsOnThrow(.satisfyAny)
     }
     
     
     
-    func testAssertSatisfyNoneFailsOnThrow() throws
+    func testAssertSatisfyNoneFailsOnThrow()
     {
         testFunctionAssertionFailsOnThrow(.satisfyNone)
     }
     
     
     
-    func testAssertSatisfyAtLeastFailsOnThrow() throws
+    func testAssertSatisfyAtLeastFailsOnThrow()
     {
         testFunctionAssertionFailsOnThrow(.satisfyAtLeast)
     }
     
     
     
-    func testAssertSatisfyAtMostFailsOnThrow() throws
+    func testAssertSatisfyAtMostFailsOnThrow()
     {
         testFunctionAssertionFailsOnThrow(.satisfyAtMost)
     }
     
     
     
-    func testAssertSatisfyRangeFailsOnThrow() throws
+    func testAssertSatisfyRangeFailsOnThrow()
     {
         testFunctionAssertionFailsOnThrow(.satisfyRange)
     }
     
     
     
-    func testAssertExactlyFailsOnThrow() throws
+    func testAssertExactlyFailsOnThrow()
     {
         testFunctionAssertionFailsOnThrow(.exactly)
     }
     
     
     
-    func testAssertExactlyOneFailsOnThrow() throws
+    func testAssertExactlyOneFailsOnThrow()
     {
         testFunctionAssertionFailsOnThrow(.exactlyOne)
     }
     
     
     
-    func testAssertSortedFailsOnThrow() throws
+    func testAssertSortedFailsOnThrow()
     {
         testFunctionAssertionFailsOnThrow(.sorted)
     }
     
     
     
-    func testAssertUniqueFailsOnThrow() throws
+    func testAssertUniqueFailsOnThrow()
     {
         testFunctionAssertionFailsOnThrow(.unique)
     }
     
     
     
-    func testAssertUniqueByKeyFailsOnThrow() throws
+    func testAssertUniqueByKeyFailsOnThrow()
     {
         testFunctionAssertionFailsOnThrow(.uniqueByKey)
     }

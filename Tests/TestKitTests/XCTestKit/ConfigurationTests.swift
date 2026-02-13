@@ -14,7 +14,7 @@ import TestKitCore
 
 internal final class ConfigurationTests: XCTestKitCase
 {
-    func testGlobalConfigAssignment() throws
+    func testGlobalConfigAssignment()
     {
         var options = XCTKConfig.global
         
@@ -35,7 +35,7 @@ internal final class ConfigurationTests: XCTestKitCase
     
     
     
-    func testGlobalConfigReturnsDefaultOptions() throws
+    func testGlobalConfigReturnsDefaultOptions()
     {
         let options = XCTKConfig.global
         
@@ -46,7 +46,7 @@ internal final class ConfigurationTests: XCTestKitCase
     
     
     
-    func testGlobalConfigDirectModification() throws
+    func testGlobalConfigDirectModification()
     {
         XCTKAssertTrue(XCTKConfig.global.diffEnabled)
         
@@ -57,7 +57,7 @@ internal final class ConfigurationTests: XCTestKitCase
     
     
     
-    func testXCTKCaseReflectsGlobalOptions() throws
+    func testXCTKCaseReflectsGlobalOptions()
     {
         let testCase = XCTKCase()
         
@@ -70,7 +70,7 @@ internal final class ConfigurationTests: XCTestKitCase
     
     
     
-    func testXCTKCaseReturnsGlobalOptions() throws
+    func testXCTKCaseReturnsGlobalOptions()
     {
         let testCase = XCTKCase()
         
@@ -79,7 +79,7 @@ internal final class ConfigurationTests: XCTestKitCase
     
     
     
-    func testXCTKCaseSubclassOverridePrecedence() throws
+    func testXCTKCaseSubclassOverridePrecedence()
     {
         class CustomCase: XCTKCase
         {
@@ -103,7 +103,7 @@ internal final class ConfigurationTests: XCTestKitCase
     
     
     
-    func testAssertionOptionsOverridePrecedence() throws
+    func testAssertionOptionsOverridePrecedence()
     {
         XCTKConfig.global.diffEnabled = true
         

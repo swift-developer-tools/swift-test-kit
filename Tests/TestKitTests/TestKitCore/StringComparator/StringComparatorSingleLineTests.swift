@@ -14,7 +14,7 @@ import XCTest
 
 internal final class StringComparatorSingleLineTests: XCTestCaseStopOnFail
 {
-    func testSingleLineEqualStrings() throws
+    func testSingleLineEqualStrings()
     {
         let exp: String = "hello"
         
@@ -30,7 +30,7 @@ internal final class StringComparatorSingleLineTests: XCTestCaseStopOnFail
     
     
     
-    func testSingleLineDifferentStrings() throws
+    func testSingleLineDifferentStrings()
     {
         let exp : String    = "hello"
         let act : String    = "hallo"
@@ -58,7 +58,7 @@ internal final class StringComparatorSingleLineTests: XCTestCaseStopOnFail
     
     
     
-    func testEmptyStringsEqual() throws
+    func testEmptyStringsEqual()
     {
         let exp: String = ""
         
@@ -74,7 +74,7 @@ internal final class StringComparatorSingleLineTests: XCTestCaseStopOnFail
     
     
     
-    func testEmptyVsNonEmpty() throws
+    func testEmptyVsNonEmpty()
     {
         let exp : String    = ""
         let act : String    = "hello"
@@ -101,7 +101,7 @@ internal final class StringComparatorSingleLineTests: XCTestCaseStopOnFail
     
     
     
-    func testNonEmptyVsEmpty() throws
+    func testNonEmptyVsEmpty()
     {
         let exp : String    = "hello"
         let act : String    = ""
@@ -128,7 +128,7 @@ internal final class StringComparatorSingleLineTests: XCTestCaseStopOnFail
     
     
     
-    func testCharChangeAtStringStart() throws
+    func testCharChangeAtStringStart()
     {
         let exp : String    = "hello"
         let act : String    = "Xello"
@@ -156,7 +156,7 @@ internal final class StringComparatorSingleLineTests: XCTestCaseStopOnFail
     
     
     
-    func testCharChangeAtStringEnd() throws
+    func testCharChangeAtStringEnd()
     {
         let exp : String    = "hello"
         let act : String    = "hellX"
@@ -184,7 +184,7 @@ internal final class StringComparatorSingleLineTests: XCTestCaseStopOnFail
     
     
     
-    func testPrefixMatch() throws
+    func testPrefixMatch()
     {
         let exp : String    = "abc"
         let act : String    = "abcdef"
@@ -211,7 +211,7 @@ internal final class StringComparatorSingleLineTests: XCTestCaseStopOnFail
     
     
     
-    func testSuffixMatch() throws
+    func testSuffixMatch()
     {
         let exp : String    = "abcdef"
         let act : String    = "def"
@@ -238,7 +238,7 @@ internal final class StringComparatorSingleLineTests: XCTestCaseStopOnFail
     
     
     
-    func testSingleCharStrings() throws
+    func testSingleCharStrings()
     {
         let exp : String    = "a"
         let act : String    = "b"
@@ -266,7 +266,7 @@ internal final class StringComparatorSingleLineTests: XCTestCaseStopOnFail
     
     
     
-    func testWhitespaceOnlyDifference() throws
+    func testWhitespaceOnlyDifference()
     {
         let exp : String    = "hello world"
         let act : String    = "hello  world"
@@ -293,7 +293,7 @@ internal final class StringComparatorSingleLineTests: XCTestCaseStopOnFail
     
     
     
-    func testTabVsSpace() throws
+    func testTabVsSpace()
     {
         let exp : String    = "hello\tworld"
         let act : String    = "hello world"

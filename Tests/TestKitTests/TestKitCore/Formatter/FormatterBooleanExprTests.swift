@@ -16,7 +16,7 @@ internal final class FormatterBooleanExprTests: XCTestCaseStopOnFail
 {
     // MARK: - AND chains
     
-    func testAndChainFirstFalseShortCircuits() throws
+    func testAndChainFirstFalseShortCircuits()
     {
         let exprText: String = "a && b && c"
         
@@ -47,7 +47,7 @@ internal final class FormatterBooleanExprTests: XCTestCaseStopOnFail
     
     
     
-    func testAndChainMiddleFalseShortCircuits() throws
+    func testAndChainMiddleFalseShortCircuits()
     {
         let exprText: String = "a && b && c"
         
@@ -80,7 +80,7 @@ internal final class FormatterBooleanExprTests: XCTestCaseStopOnFail
     
     
     
-    func testAndChainLastFalseNoShortCircuit() throws
+    func testAndChainLastFalseNoShortCircuit()
     {
         let exprText: String = "a && b && c"
         
@@ -115,7 +115,7 @@ internal final class FormatterBooleanExprTests: XCTestCaseStopOnFail
     
     // MARK: - OR chains
     
-    func testOrChainFirstTrueShortCircuits() throws
+    func testOrChainFirstTrueShortCircuits()
     {
         let exprText: String = "a || b || c"
         
@@ -146,7 +146,7 @@ internal final class FormatterBooleanExprTests: XCTestCaseStopOnFail
     
     
     
-    func testOrChainAllFalseNoShortCircuit() throws
+    func testOrChainAllFalseNoShortCircuit()
     {
         let exprText: String = "a || b || c"
         
@@ -181,7 +181,7 @@ internal final class FormatterBooleanExprTests: XCTestCaseStopOnFail
     
     // MARK: - Nested expressions
     
-    func testNestedOrInAndExprWithFalseLHS() throws
+    func testNestedOrInAndExprWithFalseLHS()
     {
         let exprText: String = "(a || b) && c"
         
@@ -214,7 +214,7 @@ internal final class FormatterBooleanExprTests: XCTestCaseStopOnFail
     
     
     
-    func testNestedOrInAndExprWithTrueLHS() throws
+    func testNestedOrInAndExprWithTrueLHS()
     {
         let exprText: String = "(a || b) && c"
         
@@ -247,7 +247,7 @@ internal final class FormatterBooleanExprTests: XCTestCaseStopOnFail
     
     
     
-    func testParenthesizedSingleExprUnwrapping() throws
+    func testParenthesizedSingleExprUnwrapping()
     {
         let exprText: String = "(a)"
         
@@ -276,7 +276,7 @@ internal final class FormatterBooleanExprTests: XCTestCaseStopOnFail
     
     
     
-    func testDeeplyNestedExpr() throws
+    func testDeeplyNestedExpr()
     {
         let exprText: String = "((a && (b)) || c) && d"
         
@@ -313,7 +313,7 @@ internal final class FormatterBooleanExprTests: XCTestCaseStopOnFail
     
     // MARK: - Single expression
     
-    func testSingleExprAssertTrueWhenFalse() throws
+    func testSingleExprAssertTrueWhenFalse()
     {
         let exprText: String = "isValid"
         
@@ -342,7 +342,7 @@ internal final class FormatterBooleanExprTests: XCTestCaseStopOnFail
     
     
     
-    func testSingleExprAssertFalseWhenTrue() throws
+    func testSingleExprAssertFalseWhenTrue()
     {
         let exprText: String = "isValid"
         
@@ -373,7 +373,7 @@ internal final class FormatterBooleanExprTests: XCTestCaseStopOnFail
     
     // MARK: - Function leaves
     
-    func testFunctionCallAsLeaf() throws
+    func testFunctionCallAsLeaf()
     {
         let exprText: String = "isValid() && isEnabled"
         
@@ -406,7 +406,7 @@ internal final class FormatterBooleanExprTests: XCTestCaseStopOnFail
     
     // MARK: - Other expressions
     
-    func testNegation() throws
+    func testNegation()
     {
         let exprText: String = "(!a || !(!b)) && !(!(!c))"
         
@@ -439,7 +439,7 @@ internal final class FormatterBooleanExprTests: XCTestCaseStopOnFail
     
     
     
-    func testOperatorPrecedence() throws
+    func testOperatorPrecedence()
     {
         let exprText: String = "a || b && c"
         
@@ -472,7 +472,7 @@ internal final class FormatterBooleanExprTests: XCTestCaseStopOnFail
     
     
     
-    func testPropertyAccessExprs() throws
+    func testPropertyAccessExprs()
     {
         let exprText: String = "obj.isActive && obj.isValid && obj.value >= 30"
         
@@ -505,7 +505,7 @@ internal final class FormatterBooleanExprTests: XCTestCaseStopOnFail
     
     
     
-    func testMethodCalls() throws
+    func testMethodCalls()
     {
         let exprText: String = "obj.contains(key) && value.isValid()"
         
@@ -538,7 +538,7 @@ internal final class FormatterBooleanExprTests: XCTestCaseStopOnFail
     
     // MARK: - Options
     
-    func testShowAllEvaluatedDisabledWithNotEvaluatedCount() throws
+    func testShowAllEvaluatedDisabledWithNotEvaluatedCount()
     {
         let exprText: String = "a && b && c"
         
@@ -570,7 +570,7 @@ internal final class FormatterBooleanExprTests: XCTestCaseStopOnFail
     
     
     
-    func testShowAllEvaluatedAndCountDisabled() throws
+    func testShowAllEvaluatedAndCountDisabled()
     {
         let exprText: String = "a && b && c"
         
@@ -603,7 +603,7 @@ internal final class FormatterBooleanExprTests: XCTestCaseStopOnFail
     
     
     
-    func testShowAllEvaluatedDisabledHidesPassingExprs() throws
+    func testShowAllEvaluatedDisabledHidesPassingExprs()
     {
         let exprText: String = "a && b && c"
         
@@ -634,7 +634,7 @@ internal final class FormatterBooleanExprTests: XCTestCaseStopOnFail
     
     
     
-    func testShowAllEvaluatedDisabledWithMultipleFailures() throws
+    func testShowAllEvaluatedDisabledWithMultipleFailures()
     {
         let exprText: String = "a || b || c"
         
@@ -667,7 +667,7 @@ internal final class FormatterBooleanExprTests: XCTestCaseStopOnFail
     
     
     
-    func testShowEvaluatedCountDisabledHidesCount() throws
+    func testShowEvaluatedCountDisabledHidesCount()
     {
         let exprText: String = "a && b && c"
         
@@ -696,7 +696,7 @@ internal final class FormatterBooleanExprTests: XCTestCaseStopOnFail
     
     
     
-    func testShowEvaluatedCountEnabledWithAllExprsEvaluated() throws
+    func testShowEvaluatedCountEnabledWithAllExprsEvaluated()
     {
         let exprText: String = "a && b"
         
@@ -727,7 +727,7 @@ internal final class FormatterBooleanExprTests: XCTestCaseStopOnFail
     
     
     
-    func testMaxDiffsTruncatesExprs() throws
+    func testMaxDiffsTruncatesExprs()
     {
         let exprText: String = "a || b || c || d || e"
         
@@ -763,7 +763,7 @@ internal final class FormatterBooleanExprTests: XCTestCaseStopOnFail
     
     
     
-    func testMaxDiffsWithCountDiffs() throws
+    func testMaxDiffsWithCountDiffs()
     {
         let exprText: String = "a || b || c || d || e"
         
@@ -802,7 +802,7 @@ internal final class FormatterBooleanExprTests: XCTestCaseStopOnFail
     
     
     
-    func testMaxDiffsOneWithCountDiffs() throws
+    func testMaxDiffsOneWithCountDiffs()
     {
         let exprText: String = "a || b || c"
         
@@ -838,7 +838,7 @@ internal final class FormatterBooleanExprTests: XCTestCaseStopOnFail
     
     
     
-    func testMaxDiffsWithShowAllEvaluatedDisabled() throws
+    func testMaxDiffsWithShowAllEvaluatedDisabled()
     {
         let exprText: String = "a || b || c || d || e"
         
@@ -876,7 +876,7 @@ internal final class FormatterBooleanExprTests: XCTestCaseStopOnFail
     
     
     
-    func testMaxDiffsAtExactLimitNoTruncation() throws
+    func testMaxDiffsAtExactLimitNoTruncation()
     {
         let exprText: String = "a || b || c"
         
@@ -909,7 +909,7 @@ internal final class FormatterBooleanExprTests: XCTestCaseStopOnFail
     
     
     
-    func testLongExprTextTruncated() throws
+    func testLongExprTextTruncated()
     {
         /// Available width = 50 - 12 (label) = 38
         /// Truncated to 38 characters: 35 `exprText` characters + 3 (ellipsis)
@@ -944,7 +944,7 @@ internal final class FormatterBooleanExprTests: XCTestCaseStopOnFail
     
     
     
-    func testLongEvaluatedExprTextTruncated() throws
+    func testLongEvaluatedExprTextTruncated()
     {
         /// Available width = 50 - 4 (indent) = 46
         /// Truncated to 46 characters: 33 expression characters + 3 (ellipsis)

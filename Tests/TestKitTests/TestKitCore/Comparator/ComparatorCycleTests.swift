@@ -14,77 +14,77 @@ import XCTest
 
 internal final class ComparatorCycleTests: XCTestCaseStopOnFail
 {
-    func testSelfCycleInExpected() throws
+    func testSelfCycleInExpected()
     {
         testSelfCycle(in: .expected)
     }
     
     
     
-    func testSelfCycleInActual() throws
+    func testSelfCycleInActual()
     {
         testSelfCycle(in: .actual)
     }
     
     
     
-    func testSelfCycleInBoth() throws
+    func testSelfCycleInBoth()
     {
         testSelfCycle(in: .both)
     }
     
     
     
-    func testMutualCycleInExpected() throws
+    func testMutualCycleInExpected()
     {
         testMutualCycle(in: .expected)
     }
     
     
     
-    func testMutualCycleInActual() throws
+    func testMutualCycleInActual()
     {
         testMutualCycle(in: .actual)
     }
     
     
     
-    func testMutualCycleInBoth() throws
+    func testMutualCycleInBoth()
     {
         testMutualCycle(in: .both)
     }
     
     
     
-    func testThreeNodeCycleAtRoot() throws
+    func testThreeNodeCycleAtRoot()
     {
         testThreeNodeCycle(atRoot: true)
     }
     
     
     
-    func testThreeNodeCycleNotAtRoot() throws
+    func testThreeNodeCycleNotAtRoot()
     {
         testThreeNodeCycle(atRoot: false)
     }
     
     
     
-    func testCycleInArray() throws
+    func testCycleInArray()
     {
         testCycleInCollection(kind: .array)
     }
     
     
     
-    func testCycleInDictionary() throws
+    func testCycleInDictionary()
     {
         testCycleInCollection(kind: .dictionary)
     }
     
     
     
-    func testSharedRefWithDifferentValues() throws
+    func testSharedRefWithDifferentValues()
     {
         let expA        = TreeNode(value: 99)
         let expB        = TreeNode(value: 1,    left: nil,      right: expA)
@@ -193,7 +193,7 @@ internal final class ComparatorCycleTests: XCTestCaseStopOnFail
     
     
     
-    func testDepthLimitTakesPrecedenceOverCycleDetection() throws
+    func testDepthLimitTakesPrecedenceOverCycleDetection()
     {
         let exp     = Node(value: 1)
         exp.next    = exp
@@ -226,7 +226,7 @@ internal final class ComparatorCycleTests: XCTestCaseStopOnFail
     
     
     
-    func testAsymmetricCycleStructure() throws
+    func testAsymmetricCycleStructure()
     {
         /// The self-cycle should be detected in the expected side only, and
         /// the comparison should stop there, rather than continuing down the
@@ -278,7 +278,7 @@ internal final class ComparatorCycleTests: XCTestCaseStopOnFail
     
     
     
-    func testCycleInStructInsideArray() throws
+    func testCycleInStructInsideArray()
     {
         final class Container: Equatable
         {
@@ -371,7 +371,7 @@ internal final class ComparatorCycleTests: XCTestCaseStopOnFail
     
     
     
-    func testSameObjectAsExpectedAndActual() throws
+    func testSameObjectAsExpectedAndActual()
     {
         let exp     = Node(value: 1)
         exp.next    = exp
@@ -395,7 +395,7 @@ internal final class ComparatorCycleTests: XCTestCaseStopOnFail
     
     
     
-    func testCycleInOneBranchWithDifferenceInSibling() throws
+    func testCycleInOneBranchWithDifferenceInSibling()
     {
         let expRoot     = TreeNode(value: 0)
         let expLeft     = TreeNode(value: 1)
@@ -483,7 +483,7 @@ internal final class ComparatorCycleTests: XCTestCaseStopOnFail
     
     
     
-    func testMultipleIndependentCycles() throws
+    func testMultipleIndependentCycles()
     {
         let expRoot     = TreeNode(value: 0)
         let expLeft     = TreeNode(value: 1)

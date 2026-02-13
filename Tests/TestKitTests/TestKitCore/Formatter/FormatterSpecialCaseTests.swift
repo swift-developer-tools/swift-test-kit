@@ -20,7 +20,7 @@ internal final class FormatterSpecialCaseTests: XCTestCaseStopOnFail
     
     // MARK: - Line/char diffs
     
-    func testLineDiffWithSingleCharModification() throws
+    func testLineDiffWithSingleCharModification()
     {
         let exp         : String    = "line1\nhello"
         let act         : String    = "line1\nhallo"
@@ -68,7 +68,7 @@ internal final class FormatterSpecialCaseTests: XCTestCaseStopOnFail
     
     
     
-    func testLineDiffWithMultipleCharModifications() throws
+    func testLineDiffWithMultipleCharModifications()
     {
         let exp         : String    = "line1\nabcdef"
         let act         : String    = "line1\naXcYef"
@@ -123,7 +123,7 @@ internal final class FormatterSpecialCaseTests: XCTestCaseStopOnFail
     
     
     
-    func testLineDiffWithMissingCharacters() throws
+    func testLineDiffWithMissingCharacters()
     {
         let exp         : String    = "line1\nhello"
         let act         : String    = "line1\nheo"
@@ -170,7 +170,7 @@ internal final class FormatterSpecialCaseTests: XCTestCaseStopOnFail
     
     
     
-    func testLineDiffWithUnexpectedCharacters() throws
+    func testLineDiffWithUnexpectedCharacters()
     {
         let exp         : String    = "line1\nabc"
         let act         : String    = "line1\nabcdef"
@@ -217,7 +217,7 @@ internal final class FormatterSpecialCaseTests: XCTestCaseStopOnFail
     
     
     
-    func testLineDiffWithMixedChanges() throws
+    func testLineDiffWithMixedChanges()
     {
         let exp         : String    = "line1\nabcdef"
         let act         : String    = "line1\naXefYZ"
@@ -277,7 +277,7 @@ internal final class FormatterSpecialCaseTests: XCTestCaseStopOnFail
     
     
     
-    func testLineDiffWithEmptyCharTree() throws
+    func testLineDiffWithEmptyCharTree()
     {
         let exp         : String    = "line1\ncompletely different"
         let act         : String    = "line1\nxyz"
@@ -316,7 +316,7 @@ internal final class FormatterSpecialCaseTests: XCTestCaseStopOnFail
     
     
     
-    func testMultipleLineDiffsWithCharSummaries() throws
+    func testMultipleLineDiffsWithCharSummaries()
     {
         let exp         : String    = "aaa\nbbb\nccc"
         let act         : String    = "aXa\nbbb\nccY"
@@ -383,7 +383,7 @@ internal final class FormatterSpecialCaseTests: XCTestCaseStopOnFail
     
     
     
-    func testCharPathWithMultipleChars() throws
+    func testCharPathWithMultipleChars()
     {
         let exp         : String    = "hello"
         let act         : String    = "hABCo"
@@ -424,7 +424,7 @@ internal final class FormatterSpecialCaseTests: XCTestCaseStopOnFail
     
     // MARK: - Sets
     
-    func testSetWithOnlyMissingElements() throws
+    func testSetWithOnlyMissingElements()
     {
         let exp         : Set<String>   = ["a", "b", "c"]
         let act         : Set<String>   = ["a"]
@@ -466,7 +466,7 @@ internal final class FormatterSpecialCaseTests: XCTestCaseStopOnFail
     
     
     
-    func testSetWithOnlyUnexpectedElements() throws
+    func testSetWithOnlyUnexpectedElements()
     {
         let exp         : Set<String>   = ["a"]
         let act         : Set<String>   = ["a", "b", "c"]
@@ -508,7 +508,7 @@ internal final class FormatterSpecialCaseTests: XCTestCaseStopOnFail
     
     
     
-    func testSetWithMissingAndUnexpectedElements() throws
+    func testSetWithMissingAndUnexpectedElements()
     {
         let exp         : Set<String>   = ["a", "b"]
         let act         : Set<String>   = ["a", "c"]
@@ -550,7 +550,7 @@ internal final class FormatterSpecialCaseTests: XCTestCaseStopOnFail
     
     
     
-    func testSetWithIntElements() throws
+    func testSetWithIntElements()
     {
         let exp         : Set<Int>  = [1, 2, 3]
         let act         : Set<Int>  = [1, 4]
@@ -598,7 +598,7 @@ internal final class FormatterSpecialCaseTests: XCTestCaseStopOnFail
     
     
     
-    func testSetInStruct() throws
+    func testSetInStruct()
     {
         struct Container: Equatable
         {

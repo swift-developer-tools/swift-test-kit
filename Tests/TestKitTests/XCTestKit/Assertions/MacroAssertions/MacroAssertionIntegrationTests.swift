@@ -17,7 +17,7 @@ internal final class MacroAssertionIntegrationTests: XCTestKitCase
 {
     // MARK: - Boolean
     
-    func testAssertWithTrueExpr() throws
+    func testAssertWithTrueExpr()
     {
         #XCTKAssert(true)
         #XCTKAssert(1 == 1)
@@ -26,7 +26,7 @@ internal final class MacroAssertionIntegrationTests: XCTestKitCase
     
     
     
-    func testAssertWithFalseExpr() throws
+    func testAssertWithFalseExpr()
     {
         XCTExpectFailure()
         #XCTKAssert(false)
@@ -34,7 +34,7 @@ internal final class MacroAssertionIntegrationTests: XCTestKitCase
     
     
     
-    func testAssertTrueWithTrueExpr() throws
+    func testAssertTrueWithTrueExpr()
     {
         #XCTKAssertTrue(true)
         #XCTKAssertTrue(1 == 1)
@@ -43,7 +43,7 @@ internal final class MacroAssertionIntegrationTests: XCTestKitCase
     
     
     
-    func testAssertTrueWithFalseExpr() throws
+    func testAssertTrueWithFalseExpr()
     {
         XCTExpectFailure()
         #XCTKAssertTrue(false)
@@ -51,7 +51,7 @@ internal final class MacroAssertionIntegrationTests: XCTestKitCase
     
     
     
-    func testAssertFalseWithFalseExpr() throws
+    func testAssertFalseWithFalseExpr()
     {
         #XCTKAssertFalse(!true)
         #XCTKAssertFalse(1 != 1)
@@ -60,7 +60,7 @@ internal final class MacroAssertionIntegrationTests: XCTestKitCase
     
     
     
-    func testAssertFalseWithTrueExpr() throws
+    func testAssertFalseWithTrueExpr()
     {
         XCTExpectFailure()
         #XCTKAssertFalse(true)
@@ -70,7 +70,7 @@ internal final class MacroAssertionIntegrationTests: XCTestKitCase
     
     // MARK: - Nil and non-nil
     
-    func testAssertNilWithNilExpr() throws
+    func testAssertNilWithNilExpr()
     {
         #XCTKAssertNil(nil)
         #XCTKAssertNil(Optional<Int>(nil))
@@ -78,7 +78,7 @@ internal final class MacroAssertionIntegrationTests: XCTestKitCase
     
     
     
-    func testAssertNilWithNonNilExpr() throws
+    func testAssertNilWithNonNilExpr()
     {
         XCTExpectFailure()
         #XCTKAssertNil(false)
@@ -86,7 +86,7 @@ internal final class MacroAssertionIntegrationTests: XCTestKitCase
     
     
     
-    func testAssertNotNilWithNonNilExpr() throws
+    func testAssertNotNilWithNonNilExpr()
     {
         #XCTKAssertNotNil(true)
         #XCTKAssertNotNil(false)
@@ -95,7 +95,7 @@ internal final class MacroAssertionIntegrationTests: XCTestKitCase
     
     
     
-    func testAssertNotNilWithNilExpr() throws
+    func testAssertNotNilWithNilExpr()
     {
         XCTExpectFailure()
         #XCTKAssertNotNil(nil)
@@ -111,7 +111,7 @@ internal final class MacroAssertionIntegrationTests: XCTestKitCase
     
     
     
-    func testUnwrapWithNonNilExpr() throws
+    func testUnwrapWithNonNilExpr()
     {
         XCTAssertTrue(try #XCTKUnwrap(true))
         XCTAssertFalse(try #XCTKUnwrap(false))
@@ -120,7 +120,7 @@ internal final class MacroAssertionIntegrationTests: XCTestKitCase
     
     
     
-    func testUnwrapThrowsXCTKUnwrapErrorOnNil() throws
+    func testUnwrapThrowsXCTKUnwrapErrorOnNil()
     {
         withOneExpectedFailure
         {
@@ -143,7 +143,7 @@ internal final class MacroAssertionIntegrationTests: XCTestKitCase
     
     
     
-    func testUnwrapRethrowsOriginalError() throws
+    func testUnwrapRethrowsOriginalError()
     {
         withOneExpectedFailure
         {
@@ -170,7 +170,7 @@ internal final class MacroAssertionIntegrationTests: XCTestKitCase
     
     // MARK: - Equality and inequality
     
-    func testAssertEqualWithEqualExpr() throws
+    func testAssertEqualWithEqualExpr()
     {
         #XCTKAssertEqual(1, 1)
         #XCTKAssertEqual(String("hello"), String("hello"))
@@ -178,7 +178,7 @@ internal final class MacroAssertionIntegrationTests: XCTestKitCase
     
     
     
-    func testAssertEqualWithUnequalExpr() throws
+    func testAssertEqualWithUnequalExpr()
     {
         XCTExpectFailure()
         #XCTKAssertEqual(0, 1)
@@ -186,7 +186,7 @@ internal final class MacroAssertionIntegrationTests: XCTestKitCase
     
     
     
-    func testAssertNotEqualWithUnequalExpr() throws
+    func testAssertNotEqualWithUnequalExpr()
     {
         #XCTKAssertNotEqual(0, 1)
         #XCTKAssertNotEqual(String("hello"), String("goodbye"))
@@ -194,7 +194,7 @@ internal final class MacroAssertionIntegrationTests: XCTestKitCase
     
     
     
-    func testAssertNotEqualWithEqualExpr() throws
+    func testAssertNotEqualWithEqualExpr()
     {
         XCTExpectFailure()
         #XCTKAssertNotEqual(1, 1)
@@ -202,7 +202,7 @@ internal final class MacroAssertionIntegrationTests: XCTestKitCase
     
     
     
-    func testAssertIdenticalWithIdenticalExpr() throws
+    func testAssertIdenticalWithIdenticalExpr()
     {
         let object = TestError() as AnyObject
         
@@ -211,7 +211,7 @@ internal final class MacroAssertionIntegrationTests: XCTestKitCase
     
     
     
-    func testAssertIdenticalWithUnidenticalExpr() throws
+    func testAssertIdenticalWithUnidenticalExpr()
     {
         XCTExpectFailure()
 
@@ -223,7 +223,7 @@ internal final class MacroAssertionIntegrationTests: XCTestKitCase
     
     
     
-    func testAssertNotIdenticalWithUnidenticalExpr() throws
+    func testAssertNotIdenticalWithUnidenticalExpr()
     {
         let object1     = TestError() as AnyObject
         let object2     = TestError() as AnyObject
@@ -233,7 +233,7 @@ internal final class MacroAssertionIntegrationTests: XCTestKitCase
     
     
     
-    func testAssertNotIdenticalWithIdenticalExpr() throws
+    func testAssertNotIdenticalWithIdenticalExpr()
     {
         XCTExpectFailure()
         
@@ -244,7 +244,7 @@ internal final class MacroAssertionIntegrationTests: XCTestKitCase
     
     
     
-    func testAssertEqualFloatAccWithEqualExpr() throws
+    func testAssertEqualFloatAccWithEqualExpr()
     {
         #XCTKAssertEqual(0.0, 0.0, accuracy: 1.0)
         #XCTKAssertEqual(1.0, 0.0, accuracy: 1.0)
@@ -253,7 +253,7 @@ internal final class MacroAssertionIntegrationTests: XCTestKitCase
     
     
     
-    func testAssertEqualFloatAccWithUnequalExpr() throws
+    func testAssertEqualFloatAccWithUnequalExpr()
     {
         XCTExpectFailure()
         #XCTKAssertEqual(0.0, 1.0, accuracy: 0.5)
@@ -261,7 +261,7 @@ internal final class MacroAssertionIntegrationTests: XCTestKitCase
     
     
     
-    func testAssertEqualIntAccWithEqualExpr() throws
+    func testAssertEqualIntAccWithEqualExpr()
     {
         let expr1   : Int   = 0
         let expr2   : Int   = 1
@@ -273,7 +273,7 @@ internal final class MacroAssertionIntegrationTests: XCTestKitCase
     
     
     
-    func testAssertEqualIntAccWithUnequalExpr() throws
+    func testAssertEqualIntAccWithUnequalExpr()
     {
         XCTExpectFailure()
         
@@ -285,7 +285,7 @@ internal final class MacroAssertionIntegrationTests: XCTestKitCase
     
     
     
-    func testAssertNotEqualFloatAccWithUnequalExpr() throws
+    func testAssertNotEqualFloatAccWithUnequalExpr()
     {
         #XCTKAssertNotEqual(0.0, 2.0, accuracy: 1.0)
         #XCTKAssertNotEqual(1.0, 0.0, accuracy: 0.5)
@@ -294,7 +294,7 @@ internal final class MacroAssertionIntegrationTests: XCTestKitCase
     
     
     
-    func testAssertNotEqualFloatAccWithEqualExpr() throws
+    func testAssertNotEqualFloatAccWithEqualExpr()
     {
         XCTExpectFailure()
         #XCTKAssertNotEqual(0.0, 1.0, accuracy: 1.0)
@@ -302,7 +302,7 @@ internal final class MacroAssertionIntegrationTests: XCTestKitCase
     
     
     
-    func testAssertNotEqualIntAccWithUnequalExpr() throws
+    func testAssertNotEqualIntAccWithUnequalExpr()
     {
         let expr1   : Int   = 0
         let expr2   : Int   = 2
@@ -313,7 +313,7 @@ internal final class MacroAssertionIntegrationTests: XCTestKitCase
     
     
     
-    func testAssertNotEqualIntAccWithEqualExpr() throws
+    func testAssertNotEqualIntAccWithEqualExpr()
     {
         XCTExpectFailure()
         
@@ -327,7 +327,7 @@ internal final class MacroAssertionIntegrationTests: XCTestKitCase
     
     // MARK: - Comparable
     
-    func testAssertGreaterWithTrueExpr() throws
+    func testAssertGreaterWithTrueExpr()
     {
         #XCTKAssertGreaterThan(1, 0)
         #XCTKAssertGreaterThan(0, -1)
@@ -336,7 +336,7 @@ internal final class MacroAssertionIntegrationTests: XCTestKitCase
     
     
     
-    func testAssertGreaterWithFalseExpr() throws
+    func testAssertGreaterWithFalseExpr()
     {
         XCTExpectFailure()
         #XCTKAssertGreaterThan(1, 1)
@@ -344,7 +344,7 @@ internal final class MacroAssertionIntegrationTests: XCTestKitCase
     
     
     
-    func testAssertGreaterEqualWithTrueExpr() throws
+    func testAssertGreaterEqualWithTrueExpr()
     {
         #XCTKAssertGreaterThanOrEqual(1, 0)
         #XCTKAssertGreaterThanOrEqual(0, -1)
@@ -353,7 +353,7 @@ internal final class MacroAssertionIntegrationTests: XCTestKitCase
     
     
     
-    func testAssertGreaterEqualWithFalseExpr() throws
+    func testAssertGreaterEqualWithFalseExpr()
     {
         XCTExpectFailure()
         #XCTKAssertGreaterThanOrEqual(0, 1)
@@ -361,7 +361,7 @@ internal final class MacroAssertionIntegrationTests: XCTestKitCase
     
     
     
-    func testAssertLessEqualWithTrueExpr() throws
+    func testAssertLessEqualWithTrueExpr()
     {
         #XCTKAssertLessThanOrEqual(0, 1)
         #XCTKAssertLessThanOrEqual(-1, 0)
@@ -370,7 +370,7 @@ internal final class MacroAssertionIntegrationTests: XCTestKitCase
     
     
     
-    func testAssertLessEqualWithFalseExpr() throws
+    func testAssertLessEqualWithFalseExpr()
     {
         XCTExpectFailure()
         #XCTKAssertLessThanOrEqual(1, 0)
@@ -378,7 +378,7 @@ internal final class MacroAssertionIntegrationTests: XCTestKitCase
     
     
     
-    func testAssertLessWithTrueExpr() throws
+    func testAssertLessWithTrueExpr()
     {
         #XCTKAssertLessThan(0, 1)
         #XCTKAssertLessThan(-1, 0)
@@ -387,7 +387,7 @@ internal final class MacroAssertionIntegrationTests: XCTestKitCase
     
     
     
-    func testAssertLessWithFalseExpr() throws
+    func testAssertLessWithFalseExpr()
     {
         XCTExpectFailure()
         #XCTKAssertLessThan(1, 1)
@@ -397,7 +397,7 @@ internal final class MacroAssertionIntegrationTests: XCTestKitCase
     
     // MARK: - Error
     
-    func testAssertThrowsWithThrowingExpr() throws
+    func testAssertThrowsWithThrowingExpr()
     {
         let expr: () throws -> Int = { throw TestError() }
         
@@ -406,7 +406,7 @@ internal final class MacroAssertionIntegrationTests: XCTestKitCase
     
     
     
-    func testAssertThrowsWithNonThrowingExpr() throws
+    func testAssertThrowsWithNonThrowingExpr()
     {
         let expr: () throws -> Int = { return 0 }
         
@@ -416,7 +416,7 @@ internal final class MacroAssertionIntegrationTests: XCTestKitCase
     
     
     
-    func testAssertNoThrowWithNonThrowingExpr() throws
+    func testAssertNoThrowWithNonThrowingExpr()
     {
         let expr: () throws -> Int = { return 0 }
         
@@ -425,7 +425,7 @@ internal final class MacroAssertionIntegrationTests: XCTestKitCase
     
     
     
-    func testAssertNoThrowWithThrowingExpr() throws
+    func testAssertNoThrowWithThrowingExpr()
     {
         XCTExpectFailure()
 
@@ -436,7 +436,7 @@ internal final class MacroAssertionIntegrationTests: XCTestKitCase
     
     
     
-    func testAssertThrowsCallsHandler() throws
+    func testAssertThrowsCallsHandler()
     {
         var handlerCalled: Bool = false
         
@@ -454,7 +454,7 @@ internal final class MacroAssertionIntegrationTests: XCTestKitCase
     
     
     
-    func testAssertThrowsDoesNotCallHandlerOnNoThrow() throws
+    func testAssertThrowsDoesNotCallHandlerOnNoThrow()
     {
         var handlerCalled: Bool = false
         
@@ -475,7 +475,7 @@ internal final class MacroAssertionIntegrationTests: XCTestKitCase
     
     
     
-    func testAssertThrowsHandlerReceivesErrorWithData() throws
+    func testAssertThrowsHandlerReceivesErrorWithData()
     {
         enum SomeError: Error, Equatable
         {
@@ -503,7 +503,7 @@ internal final class MacroAssertionIntegrationTests: XCTestKitCase
     
     
     
-    func testAssertThrowsHandlerCanAssert() throws
+    func testAssertThrowsHandlerCanAssert()
     {
         let expr: () throws -> Int = { throw TestError() }
         
@@ -519,7 +519,7 @@ internal final class MacroAssertionIntegrationTests: XCTestKitCase
     
     // MARK: - Fail
     
-    func testFail() throws
+    func testFail()
     {
         XCTExpectFailure()
         #XCTKFail()
@@ -529,7 +529,7 @@ internal final class MacroAssertionIntegrationTests: XCTestKitCase
     
     // MARK: - Predicate
     
-    func testAssertAllSatisfyWithPassingExpr() throws
+    func testAssertAllSatisfyWithPassingExpr()
     {
         #XCTKAssertAllSatisfy([2, 4, 6]) { $0 % 2 == 0 }
         #XCTKAssertAllSatisfy([Int]()) { $0 > 0 }
@@ -537,7 +537,7 @@ internal final class MacroAssertionIntegrationTests: XCTestKitCase
     
     
     
-    func testAssertAllSatisfyWithFailingExpr() throws
+    func testAssertAllSatisfyWithFailingExpr()
     {
         XCTExpectFailure()
         #XCTKAssertAllSatisfy([2, 3, 6]) { $0 % 2 == 0 }
@@ -545,7 +545,7 @@ internal final class MacroAssertionIntegrationTests: XCTestKitCase
     
     
     
-    func testAssertAnySatisfyWithPassingExpr() throws
+    func testAssertAnySatisfyWithPassingExpr()
     {
         #XCTKAssertAnySatisfy([1, 2, 3]) { $0 == 2 }
         #XCTKAssertAnySatisfy([1, 3, 5]) { $0 % 3 == 0 }
@@ -553,7 +553,7 @@ internal final class MacroAssertionIntegrationTests: XCTestKitCase
     
     
     
-    func testAssertAnySatisfyWithFailingExpr() throws
+    func testAssertAnySatisfyWithFailingExpr()
     {
         XCTExpectFailure()
         #XCTKAssertAnySatisfy([1, 3, 5]) { $0 % 2 == 0 }
@@ -561,7 +561,7 @@ internal final class MacroAssertionIntegrationTests: XCTestKitCase
     
     
     
-    func testAssertNoneSatisfyWithPassingExpr() throws
+    func testAssertNoneSatisfyWithPassingExpr()
     {
         #XCTKAssertNoneSatisfy([1, 3, 5]) { $0 % 2 == 0 }
         #XCTKAssertNoneSatisfy([Int]()) { $0 > 0 }
@@ -569,7 +569,7 @@ internal final class MacroAssertionIntegrationTests: XCTestKitCase
     
     
     
-    func testAssertNoneSatisfyWithFailingExpr() throws
+    func testAssertNoneSatisfyWithFailingExpr()
     {
         XCTExpectFailure()
         #XCTKAssertNoneSatisfy([1, 2, 3]) { $0 % 2 == 0 }
@@ -577,7 +577,7 @@ internal final class MacroAssertionIntegrationTests: XCTestKitCase
     
     
     
-    func testAssertSatisfyAtLeastWithPassingExpr() throws
+    func testAssertSatisfyAtLeastWithPassingExpr()
     {
         #XCTKAssertSatisfy([1, 2, 3, 4], atLeast: 2) { $0 % 2 == 0 }
         #XCTKAssertSatisfy([1, 2, 3, 4], atLeast: 0) { $0 > 10 }
@@ -585,7 +585,7 @@ internal final class MacroAssertionIntegrationTests: XCTestKitCase
     
     
     
-    func testAssertSatisfyAtLeastWithFailingExpr() throws
+    func testAssertSatisfyAtLeastWithFailingExpr()
     {
         XCTExpectFailure()
         #XCTKAssertSatisfy([1, 2, 3, 4], atLeast: 3) { $0 > 2 }
@@ -593,7 +593,7 @@ internal final class MacroAssertionIntegrationTests: XCTestKitCase
     
     
     
-    func testAssertSatisfyAtMostWithPassingExpr() throws
+    func testAssertSatisfyAtMostWithPassingExpr()
     {
         #XCTKAssertSatisfy([1, 2, 3, 4], atMost: 2) { $0 > 2 }
         #XCTKAssertSatisfy([1, 2, 3, 4], atMost: 4) { $0 > 0 }
@@ -601,7 +601,7 @@ internal final class MacroAssertionIntegrationTests: XCTestKitCase
     
     
     
-    func testAssertSatisfyAtMostWithFailingExpr() throws
+    func testAssertSatisfyAtMostWithFailingExpr()
     {
         XCTExpectFailure()
         #XCTKAssertSatisfy([1, 2, 3, 4], atMost: 1) { $0 > 2 }
@@ -609,7 +609,7 @@ internal final class MacroAssertionIntegrationTests: XCTestKitCase
     
     
     
-    func testAssertSatisfyRangeWithPassingExpr() throws
+    func testAssertSatisfyRangeWithPassingExpr()
     {
         #XCTKAssertSatisfy([1, 2, 3, 4, 5], range: 2...3) { $0 > 2 }
         #XCTKAssertSatisfy([1, 2, 3], range: 0...0) { $0 > 10 }
@@ -617,7 +617,7 @@ internal final class MacroAssertionIntegrationTests: XCTestKitCase
     
     
     
-    func testAssertSatisfyRangeWithFailingExpr() throws
+    func testAssertSatisfyRangeWithFailingExpr()
     {
         XCTExpectFailure()
         #XCTKAssertSatisfy([1, 2, 3, 4, 5], range: 0...1) { $0 > 2 }
@@ -625,7 +625,7 @@ internal final class MacroAssertionIntegrationTests: XCTestKitCase
     
     
     
-    func testAssertExactlyWithPassingExpr() throws
+    func testAssertExactlyWithPassingExpr()
     {
         #XCTKAssertExactly([1, 2, 3, 4], count: 2) { $0 > 2 }
         #XCTKAssertExactly([1, 2, 3], count: 0) { $0 > 10 }
@@ -633,7 +633,7 @@ internal final class MacroAssertionIntegrationTests: XCTestKitCase
     
     
     
-    func testAssertExactlyWithFailingExpr() throws
+    func testAssertExactlyWithFailingExpr()
     {
         XCTExpectFailure()
         #XCTKAssertExactly([1, 2, 3, 4], count: 3) { $0 > 2 }
@@ -641,7 +641,7 @@ internal final class MacroAssertionIntegrationTests: XCTestKitCase
     
     
     
-    func testAssertExactlyOneWithPassingExpr() throws
+    func testAssertExactlyOneWithPassingExpr()
     {
         #XCTKAssertExactlyOne([1, 2, 3]) { $0 == 2 }
         #XCTKAssertExactlyOne([1, 2, 3]) { $0 > 2 }
@@ -649,7 +649,7 @@ internal final class MacroAssertionIntegrationTests: XCTestKitCase
     
     
     
-    func testAssertExactlyOneWithFailingExpr() throws
+    func testAssertExactlyOneWithFailingExpr()
     {
         XCTExpectFailure()
         #XCTKAssertExactlyOne([1, 2, 3]) { $0 > 1 }
@@ -657,7 +657,7 @@ internal final class MacroAssertionIntegrationTests: XCTestKitCase
     
     
     
-    func testAssertSortedWithPassingExpr() throws
+    func testAssertSortedWithPassingExpr()
     {
         #XCTKAssertSorted([1, 2, 3, 4], by: <)
         #XCTKAssertSorted([4, 3, 2, 1], by: >)
@@ -667,7 +667,7 @@ internal final class MacroAssertionIntegrationTests: XCTestKitCase
     
     
     
-    func testAssertSortedWithFailingExpr() throws
+    func testAssertSortedWithFailingExpr()
     {
         XCTExpectFailure()
         #XCTKAssertSorted([1, 3, 2, 4], by: <)
@@ -675,7 +675,7 @@ internal final class MacroAssertionIntegrationTests: XCTestKitCase
     
     
     
-    func testAssertUniqueWithPassingExpr() throws
+    func testAssertUniqueWithPassingExpr()
     {
         #XCTKAssertUnique([1, 2, 3, 4])
         #XCTKAssertUnique([Int]())
@@ -684,7 +684,7 @@ internal final class MacroAssertionIntegrationTests: XCTestKitCase
     
     
     
-    func testAssertUniqueWithFailingExpr() throws
+    func testAssertUniqueWithFailingExpr()
     {
         XCTExpectFailure()
         #XCTKAssertUnique([1, 2, 3, 2])
@@ -692,7 +692,7 @@ internal final class MacroAssertionIntegrationTests: XCTestKitCase
     
     
     
-    func testAssertUniqueByKeyWithPassingExpr() throws
+    func testAssertUniqueByKeyWithPassingExpr()
     {
         #XCTKAssertUnique(["a", "bb", "ccc"], by: { $0.count })
         #XCTKAssertUnique([1, 2, 3], by: { $0 })
@@ -701,7 +701,7 @@ internal final class MacroAssertionIntegrationTests: XCTestKitCase
     
     
     
-    func testAssertUniqueByKeyWithFailingExpr() throws
+    func testAssertUniqueByKeyWithFailingExpr()
     {
         XCTExpectFailure()
         #XCTKAssertUnique(["a", "b", "cc"], by: { $0.count })

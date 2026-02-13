@@ -11,7 +11,7 @@ internal final class FunctionAssertionOptionsTests: XCTestKitCase
 {
     // MARK: - Equality and inequality
     
-    func testAssertEqualOptionsBehavior() throws
+    func testAssertEqualOptionsBehavior()
     {
         testFunctionAssertionOptionsBehavior(.equal)
     }
@@ -20,70 +20,70 @@ internal final class FunctionAssertionOptionsTests: XCTestKitCase
     
     // MARK: - Predicate
     
-    func testAssertSatisfyAllOptionsBehavior() throws
+    func testAssertSatisfyAllOptionsBehavior()
     {
         testFunctionAssertionOptionsBehavior(.satisfyAll)
     }
     
     
     
-    func testAssertSatisfyAnyOptionsBehavior() throws
+    func testAssertSatisfyAnyOptionsBehavior()
     {
         testFunctionAssertionOptionsBehavior(.satisfyAny)
     }
     
     
     
-    func testAssertSatisfyNoneOptionsBehavior() throws
+    func testAssertSatisfyNoneOptionsBehavior()
     {
         testFunctionAssertionOptionsBehavior(.satisfyNone)
     }
     
     
     
-    func testAssertSatisfyAtLeastOptionsBehavior() throws
+    func testAssertSatisfyAtLeastOptionsBehavior()
     {
         testFunctionAssertionOptionsBehavior(.satisfyAtLeast)
     }
     
     
     
-    func testAssertSatisfyAtMostOptionsBehavior() throws
+    func testAssertSatisfyAtMostOptionsBehavior()
     {
         testFunctionAssertionOptionsBehavior(.satisfyAtMost)
     }
     
     
     
-    func testAssertSatisfyRangeOptionsBehavior() throws
+    func testAssertSatisfyRangeOptionsBehavior()
     {
         testFunctionAssertionOptionsBehavior(.satisfyRange)
     }
     
     
     
-    func testAssertExactlyOptionsBehavior() throws
+    func testAssertExactlyOptionsBehavior()
     {
         testFunctionAssertionOptionsBehavior(.exactly)
     }
     
     
     
-    func testAssertExactlyOneOptionsBehavior() throws
+    func testAssertExactlyOneOptionsBehavior()
     {
         testFunctionAssertionOptionsBehavior(.exactlyOne)
     }
     
     
     
-    func testAssertUniqueBehavior() throws
+    func testAssertUniqueBehavior()
     {
         testFunctionAssertionOptionsBehavior(.unique)
     }
     
     
     
-    func testAssertUniqueByKeyBehavior() throws
+    func testAssertUniqueByKeyBehavior()
     {
         testFunctionAssertionOptionsBehavior(.uniqueByKey)
     }

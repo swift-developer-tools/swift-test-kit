@@ -47,7 +47,7 @@ internal final class ForAllOptionsTests: XCTestKitCase
     
     
     
-    func testExplicitOptionsOverrideGlobal() throws
+    func testExplicitOptionsOverrideGlobal()
     {
         /// With `iterations` set to zero, the property vacuously passes.
         XCTKConfig.global.propertyOptions.iterations = 0
@@ -71,7 +71,7 @@ internal final class ForAllOptionsTests: XCTestKitCase
     
     // MARK: - Seed
     
-    func testSeedDeterminism() throws
+    func testSeedDeterminism()
     {
         let options: TestOptions = .propertyOptions(
             iterations:     1,
@@ -102,7 +102,7 @@ internal final class ForAllOptionsTests: XCTestKitCase
     
     
     
-    func testSeedAppearsInOutput() throws
+    func testSeedAppearsInOutput()
     {
         let seed: UInt64 = 9876543210
         
@@ -126,7 +126,7 @@ internal final class ForAllOptionsTests: XCTestKitCase
     
     // MARK: - Generation size
     
-    func testMaxSizeAffectsGeneration() throws
+    func testMaxSizeAffectsGeneration()
     {
         /// With `maxSize` set to zero, every iteration generates at size zero.
         /// ``Int/arbitrary(using:)`` produces `0` at size zero, so the
@@ -164,7 +164,7 @@ internal final class ForAllOptionsTests: XCTestKitCase
     
     // MARK: - Shrinking
     
-    func testMaxShrinkStepsZeroDisablesShrinking() throws
+    func testMaxShrinkStepsZeroDisablesShrinking()
     {
         let options: TestOptions = .propertyOptions(
             iterations:         100,
@@ -185,7 +185,7 @@ internal final class ForAllOptionsTests: XCTestKitCase
     
     
     
-    func testMaxShrinkStepsEnablesShrinking() throws
+    func testMaxShrinkStepsEnablesShrinking()
     {
         let options: TestOptions = .propertyOptions(
             iterations:         100,
@@ -208,7 +208,7 @@ internal final class ForAllOptionsTests: XCTestKitCase
     
     // MARK: - Exhaustion
     
-    func testMaxDiscardRatioTriggersExhaustion() throws
+    func testMaxDiscardRatioTriggersExhaustion()
     {
         let options: TestOptions = .propertyOptions(
             iterations:         1,

@@ -14,7 +14,7 @@ import XCTest
 
 internal final class ComparatorSetTests: XCTestCaseStopOnFail
 {
-    func testSetEqualValues() throws
+    func testSetEqualValues()
     {
         let exp: Set<String> = ["a", "b", "c"]
         
@@ -34,7 +34,7 @@ internal final class ComparatorSetTests: XCTestCaseStopOnFail
     
     
     
-    func testSetMissingEntry() throws
+    func testSetMissingEntry()
     {
         let exp : Set<String>   = ["a", "b", "c"]
         let act : Set<String>   = ["a", "b"]
@@ -63,7 +63,7 @@ internal final class ComparatorSetTests: XCTestCaseStopOnFail
     
     
     
-    func testSetMultipleMissingEntries() throws
+    func testSetMultipleMissingEntries()
     {
         let exp : Set<String>   = ["a", "b", "c", "d"]
         let act : Set<String>   = ["a"]
@@ -102,7 +102,7 @@ internal final class ComparatorSetTests: XCTestCaseStopOnFail
     
     
     
-    func testSetUnexpectedEntry() throws
+    func testSetUnexpectedEntry()
     {
         let exp : Set<String>   = ["a", "b"]
         let act : Set<String>   = ["a", "b", "c"]
@@ -131,7 +131,7 @@ internal final class ComparatorSetTests: XCTestCaseStopOnFail
     
     
     
-    func testSetMultipleUnexpectedEntries() throws
+    func testSetMultipleUnexpectedEntries()
     {
         let exp : Set<String>   = ["a"]
         let act : Set<String>   = ["a", "b", "c", "d"]
@@ -170,7 +170,7 @@ internal final class ComparatorSetTests: XCTestCaseStopOnFail
     
     
     
-    func testSetMixedChanges() throws
+    func testSetMixedChanges()
     {
         let exp : Set<String>   = ["a", "b", "c"]
         let act : Set<String>   = ["a", "d", "e"]
@@ -214,7 +214,7 @@ internal final class ComparatorSetTests: XCTestCaseStopOnFail
     
     
     
-    func testSetEmptyVsNonEmpty() throws
+    func testSetEmptyVsNonEmpty()
     {
         let exp : Set<String>   = []
         let act : Set<String>   = ["a", "b"]
@@ -248,7 +248,7 @@ internal final class ComparatorSetTests: XCTestCaseStopOnFail
     
     
     
-    func testSetNonEmptyVsEmpty() throws
+    func testSetNonEmptyVsEmpty()
     {
         let exp : Set<String>   = ["a", "b"]
         let act : Set<String>   = []
@@ -282,7 +282,7 @@ internal final class ComparatorSetTests: XCTestCaseStopOnFail
     
     
     
-    func testSetBothEmpty() throws
+    func testSetBothEmpty()
     {
         let exp: Set<String> = []
         
@@ -302,7 +302,7 @@ internal final class ComparatorSetTests: XCTestCaseStopOnFail
     
     
     
-    func testSetOfOptionals() throws
+    func testSetOfOptionals()
     {
         let exp : Set<Int?>     = [1, nil, 3]
         let act : Set<Int?>     = [1, 2, 3]

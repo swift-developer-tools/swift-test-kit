@@ -16,140 +16,140 @@ internal final class RangeIntegerArbitraryTests: XCTestCaseStopOnFail
 {
     // MARK: - Generation
     
-    func testClosedRangeIntGeneration() throws
+    func testClosedRangeIntGeneration()
     {
         testGeneration(of: ClosedRange<Int>.self)
     }
     
     
     
-    func testClosedRangeInt8Generation() throws
+    func testClosedRangeInt8Generation()
     {
         testGeneration(of: ClosedRange<Int8>.self)
     }
     
     
     
-    func testClosedRangeInt16Generation() throws
+    func testClosedRangeInt16Generation()
     {
         testGeneration(of: ClosedRange<Int16>.self)
     }
     
     
     
-    func testClosedRangeInt32Generation() throws
+    func testClosedRangeInt32Generation()
     {
         testGeneration(of: ClosedRange<Int32>.self)
     }
     
     
     
-    func testClosedRangeInt64Generation() throws
+    func testClosedRangeInt64Generation()
     {
         testGeneration(of: ClosedRange<Int64>.self)
     }
     
     
     
-    func testClosedRangeUIntGeneration() throws
+    func testClosedRangeUIntGeneration()
     {
         testGeneration(of: ClosedRange<UInt>.self)
     }
     
     
     
-    func testClosedRangeUInt8Generation() throws
+    func testClosedRangeUInt8Generation()
     {
         testGeneration(of: ClosedRange<UInt8>.self)
     }
     
     
     
-    func testClosedRangeUInt16Generation() throws
+    func testClosedRangeUInt16Generation()
     {
         testGeneration(of: ClosedRange<UInt16>.self)
     }
     
     
     
-    func testClosedRangeUInt32Generation() throws
+    func testClosedRangeUInt32Generation()
     {
         testGeneration(of: ClosedRange<UInt32>.self)
     }
     
     
     
-    func testClosedRangeUInt64Generation() throws
+    func testClosedRangeUInt64Generation()
     {
         testGeneration(of: ClosedRange<UInt64>.self)
     }
     
     
     
-    func testRangeIntGeneration() throws
+    func testRangeIntGeneration()
     {
         testGeneration(of: Range<Int>.self)
     }
     
     
     
-    func testRangeInt8Generation() throws
+    func testRangeInt8Generation()
     {
         testGeneration(of: Range<Int8>.self)
     }
     
     
     
-    func testRangeInt16Generation() throws
+    func testRangeInt16Generation()
     {
         testGeneration(of: Range<Int16>.self)
     }
     
     
     
-    func testRangeInt32Generation() throws
+    func testRangeInt32Generation()
     {
         testGeneration(of: Range<Int32>.self)
     }
     
     
     
-    func testRangeInt64Generation() throws
+    func testRangeInt64Generation()
     {
         testGeneration(of: Range<Int64>.self)
     }
     
     
     
-    func testRangeUIntGeneration() throws
+    func testRangeUIntGeneration()
     {
         testGeneration(of: Range<UInt>.self)
     }
     
     
     
-    func testRangeUInt8Generation() throws
+    func testRangeUInt8Generation()
     {
         testGeneration(of: Range<UInt8>.self)
     }
     
     
     
-    func testRangeUInt16Generation() throws
+    func testRangeUInt16Generation()
     {
         testGeneration(of: Range<UInt16>.self)
     }
     
     
     
-    func testRangeUInt32Generation() throws
+    func testRangeUInt32Generation()
     {
         testGeneration(of: Range<UInt32>.self)
     }
     
     
     
-    func testRangeUInt64Generation() throws
+    func testRangeUInt64Generation()
     {
         testGeneration(of: Range<UInt64>.self)
     }
@@ -158,140 +158,140 @@ internal final class RangeIntegerArbitraryTests: XCTestCaseStopOnFail
     
     // MARK: - Shrinking
     
-    func testClosedRangeIntShrinking() throws
+    func testClosedRangeIntShrinking()
     {
         testShrinking(of: ClosedRange<Int>.self)
     }
     
     
     
-    func testClosedRangeInt8Shrinking() throws
+    func testClosedRangeInt8Shrinking()
     {
         testShrinking(of: ClosedRange<Int8>.self)
     }
     
     
     
-    func testClosedRangeInt16Shrinking() throws
+    func testClosedRangeInt16Shrinking()
     {
         testShrinking(of: ClosedRange<Int16>.self)
     }
     
     
     
-    func testClosedRangeInt32Shrinking() throws
+    func testClosedRangeInt32Shrinking()
     {
         testShrinking(of: ClosedRange<Int32>.self)
     }
     
     
     
-    func testClosedRangeInt64Shrinking() throws
+    func testClosedRangeInt64Shrinking()
     {
         testShrinking(of: ClosedRange<Int64>.self)
     }
     
     
     
-    func testClosedRangeUIntShrinking() throws
+    func testClosedRangeUIntShrinking()
     {
         testShrinking(of: ClosedRange<UInt>.self)
     }
     
     
     
-    func testClosedRangeUInt8Shrinking() throws
+    func testClosedRangeUInt8Shrinking()
     {
         testShrinking(of: ClosedRange<UInt8>.self)
     }
     
     
     
-    func testClosedRangeUInt16Shrinking() throws
+    func testClosedRangeUInt16Shrinking()
     {
         testShrinking(of: ClosedRange<UInt16>.self)
     }
     
     
     
-    func testClosedRangeUInt32Shrinking() throws
+    func testClosedRangeUInt32Shrinking()
     {
         testShrinking(of: ClosedRange<UInt32>.self)
     }
     
     
     
-    func testClosedRangeUInt64Shrinking() throws
+    func testClosedRangeUInt64Shrinking()
     {
         testShrinking(of: ClosedRange<UInt64>.self)
     }
     
     
     
-    func testRangeIntShrinking() throws
+    func testRangeIntShrinking()
     {
         testShrinking(of: Range<Int>.self)
     }
     
     
     
-    func testRangeInt8Shrinking() throws
+    func testRangeInt8Shrinking()
     {
         testShrinking(of: Range<Int8>.self)
     }
     
     
     
-    func testRangeInt16Shrinking() throws
+    func testRangeInt16Shrinking()
     {
         testShrinking(of: Range<Int16>.self)
     }
     
     
     
-    func testRangeInt32Shrinking() throws
+    func testRangeInt32Shrinking()
     {
         testShrinking(of: Range<Int32>.self)
     }
     
     
     
-    func testRangeInt64Shrinking() throws
+    func testRangeInt64Shrinking()
     {
         testShrinking(of: Range<Int64>.self)
     }
     
     
     
-    func testRangeUIntShrinking() throws
+    func testRangeUIntShrinking()
     {
         testShrinking(of: Range<UInt>.self)
     }
     
     
     
-    func testRangeUInt8Shrinking() throws
+    func testRangeUInt8Shrinking()
     {
         testShrinking(of: Range<UInt8>.self)
     }
     
     
     
-    func testRangeUInt16Shrinking() throws
+    func testRangeUInt16Shrinking()
     {
         testShrinking(of: Range<UInt16>.self)
     }
     
     
     
-    func testRangeUInt32Shrinking() throws
+    func testRangeUInt32Shrinking()
     {
         testShrinking(of: Range<UInt32>.self)
     }
     
     
     
-    func testRangeUInt64Shrinking() throws
+    func testRangeUInt64Shrinking()
     {
         testShrinking(of: Range<UInt64>.self)
     }

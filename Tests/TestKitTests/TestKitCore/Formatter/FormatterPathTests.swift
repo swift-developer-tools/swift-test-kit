@@ -18,7 +18,7 @@ internal final class FormatterPathTests: XCTestCaseStopOnFail
     
     
     
-    func testPropertyPath() throws
+    func testPropertyPath()
     {
         struct User: Equatable
         {
@@ -62,7 +62,7 @@ internal final class FormatterPathTests: XCTestCaseStopOnFail
     
     
     
-    func testNestedPropertyPath() throws
+    func testNestedPropertyPath()
     {
         struct Inner: Equatable
         {
@@ -119,7 +119,7 @@ internal final class FormatterPathTests: XCTestCaseStopOnFail
     
     
     
-    func testMixedNestedPath() throws
+    func testMixedNestedPath()
     {
         struct Item: Equatable
         {
@@ -171,7 +171,7 @@ internal final class FormatterPathTests: XCTestCaseStopOnFail
     
     
     
-    func testDeeplyNestedPath() throws
+    func testDeeplyNestedPath()
     {
         struct L4: Equatable { let val  : Int }
         struct L3: Equatable { let l4   : L4 }
@@ -240,7 +240,7 @@ internal final class FormatterPathTests: XCTestCaseStopOnFail
     
     
     
-    func testIndexPath() throws
+    func testIndexPath()
     {
         let exp         : [Int]     = [1, 2, 3]
         let act         : [Int]     = [1, 0, 3]
@@ -279,7 +279,7 @@ internal final class FormatterPathTests: XCTestCaseStopOnFail
     
     
     
-    func testKeyPath() throws
+    func testKeyPath()
     {
         let exp         : [String : Int]    = ["a": 1]
         let act         : [String : Int]    = ["a": 2]
@@ -318,7 +318,7 @@ internal final class FormatterPathTests: XCTestCaseStopOnFail
     
     
     
-    func testDictionaryKeyNestedWithProperty() throws
+    func testDictionaryKeyNestedWithProperty()
     {
         struct Item: Equatable
         {
@@ -370,7 +370,7 @@ internal final class FormatterPathTests: XCTestCaseStopOnFail
     
     
     
-    func testLinePath() throws
+    func testLinePath()
     {
         let exp         : String    = "line1\nline2"
         let act         : String    = "line1\nchanged"
@@ -409,7 +409,7 @@ internal final class FormatterPathTests: XCTestCaseStopOnFail
     
     
     
-    func testCharacterPath() throws
+    func testCharacterPath()
     {
         let exp         : String    = "hello"
         let act         : String    = "hallo"
@@ -448,7 +448,7 @@ internal final class FormatterPathTests: XCTestCaseStopOnFail
     
     
     
-    func testLineAndCharacterPath() throws
+    func testLineAndCharacterPath()
     {
         let exp         : String    = "line1\nhello"
         let act         : String    = "line1\nhallo"
@@ -487,7 +487,7 @@ internal final class FormatterPathTests: XCTestCaseStopOnFail
     
     
     
-    func testMultipleDifferencesAtSameLevel() throws
+    func testMultipleDifferencesAtSameLevel()
     {
         struct User: Equatable
         {
@@ -542,7 +542,7 @@ internal final class FormatterPathTests: XCTestCaseStopOnFail
     
     
     
-    func testNestedArrayIndices() throws
+    func testNestedArrayIndices()
     {
         let exp         : [[Int]]   = [[1, 2], [3, 4]]
         let act         : [[Int]]   = [[1, 2], [3, 8]]

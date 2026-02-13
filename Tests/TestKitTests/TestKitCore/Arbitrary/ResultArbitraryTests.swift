@@ -16,7 +16,7 @@ internal final class ResultArbitraryTests: XCTestCaseStopOnFail
 {
     // MARK: - Generation
     
-    func testArbitraryDeterminism() throws
+    func testArbitraryDeterminism()
     {
         for _ in 0..<1000
         {
@@ -31,7 +31,7 @@ internal final class ResultArbitraryTests: XCTestCaseStopOnFail
     
     
     
-    func testArbitraryProducesBothCases() throws
+    func testArbitraryProducesBothCases()
     {
         var hasSuccess  : Bool  = false
         var hasFailure  : Bool  = false
@@ -60,7 +60,7 @@ internal final class ResultArbitraryTests: XCTestCaseStopOnFail
     
     
     
-    func testArbitraryCaseRatio() throws
+    func testArbitraryCaseRatio()
     {
         var successCount    : Int   = 0
         let iterations      : Int   = 10_000
@@ -83,7 +83,7 @@ internal final class ResultArbitraryTests: XCTestCaseStopOnFail
     
     
     
-    func testArbitrarySuccessValuesRespectSizeBounds() throws
+    func testArbitrarySuccessValuesRespectSizeBounds()
     {
         let size: Int = 10
         
@@ -109,7 +109,7 @@ internal final class ResultArbitraryTests: XCTestCaseStopOnFail
     
     
     
-    func testArbitraryFailureValuesRespectSizeBounds() throws
+    func testArbitraryFailureValuesRespectSizeBounds()
     {
         let size: Int = 10
         
@@ -135,7 +135,7 @@ internal final class ResultArbitraryTests: XCTestCaseStopOnFail
     
     
     
-    func testArbitrarySizeZeroProducesZeroAssociatedValues() throws
+    func testArbitrarySizeZeroProducesZeroAssociatedValues()
     {
         for _ in 0..<1000
         {
@@ -158,7 +158,7 @@ internal final class ResultArbitraryTests: XCTestCaseStopOnFail
     
     // MARK: - Shrinking
     
-    func testShrinkSuccessPreservesCaseAndShrinksValue() throws
+    func testShrinkSuccessPreservesCaseAndShrinksValue()
     {
         let value       : TestResult    = .success(10)
         let candidates  : [TestResult]  = value.shrink()
@@ -180,7 +180,7 @@ internal final class ResultArbitraryTests: XCTestCaseStopOnFail
     
     
     
-    func testShrinkFailurePreservesCaseAndShrinksValue() throws
+    func testShrinkFailurePreservesCaseAndShrinksValue()
     {
         let value       : TestResult    = .failure(ArbitraryError(code: 10))
         let candidates  : [TestResult]  = value.shrink()
@@ -203,7 +203,7 @@ internal final class ResultArbitraryTests: XCTestCaseStopOnFail
     
     
     
-    func testShrinkSuccessNegativePreservesCaseAndShrinksValue() throws
+    func testShrinkSuccessNegativePreservesCaseAndShrinksValue()
     {
         let value       : TestResult    = .success(-7)
         let candidates  : [TestResult]  = value.shrink()
@@ -225,7 +225,7 @@ internal final class ResultArbitraryTests: XCTestCaseStopOnFail
     
     
     
-    func testShrinkFailureNegativePreservesCaseAndShrinksValue() throws
+    func testShrinkFailureNegativePreservesCaseAndShrinksValue()
     {
         let value       : TestResult    = .failure(ArbitraryError(code: -7))
         let candidates  : [TestResult]  = value.shrink()
@@ -248,7 +248,7 @@ internal final class ResultArbitraryTests: XCTestCaseStopOnFail
     
     
     
-    func testShrinkSuccessZeroReturnsEmpty() throws
+    func testShrinkSuccessZeroReturnsEmpty()
     {
         let value       : TestResult    = .success(0)
         let candidates  : [TestResult]  = value.shrink()
@@ -258,7 +258,7 @@ internal final class ResultArbitraryTests: XCTestCaseStopOnFail
     
     
     
-    func testShrinkFailureZeroReturnsEmpty() throws
+    func testShrinkFailureZeroReturnsEmpty()
     {
         let value       : TestResult    = .failure(ArbitraryError(code: 0))
         let candidates  : [TestResult]  = value.shrink()
@@ -268,7 +268,7 @@ internal final class ResultArbitraryTests: XCTestCaseStopOnFail
     
     
     
-    func testShrinkSuccessOneReturnsSuccessZero() throws
+    func testShrinkSuccessOneReturnsSuccessZero()
     {
         let value       : TestResult    = .success(1)
         let candidates  : [TestResult]  = value.shrink()
@@ -278,7 +278,7 @@ internal final class ResultArbitraryTests: XCTestCaseStopOnFail
     
     
     
-    func testShrinkFailureOneReturnsSuccessZero() throws
+    func testShrinkFailureOneReturnsSuccessZero()
     {
         let value       : TestResult    = .failure(ArbitraryError(code: 1))
         let candidates  : [TestResult]  = value.shrink()

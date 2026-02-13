@@ -14,7 +14,7 @@ import XCTest
 
 internal final class StringComparatorMultiLineTests: XCTestCaseStopOnFail
 {
-    func testMultiLineEqualStrings() throws
+    func testMultiLineEqualStrings()
     {
         let exp: String = "line0\nline1\nline2"
         
@@ -30,7 +30,7 @@ internal final class StringComparatorMultiLineTests: XCTestCaseStopOnFail
     
     
     
-    func testMultiLineModifiedLine() throws
+    func testMultiLineModifiedLine()
     {
         let exp : String    = "line0\nline1\nline2"
         let act : String    = "line0\nlineX\nline2"
@@ -66,7 +66,7 @@ internal final class StringComparatorMultiLineTests: XCTestCaseStopOnFail
     
     
     
-    func testMultiLineMissingLine() throws
+    func testMultiLineMissingLine()
     {
         let exp : String    = "line0\nline1\nline2"
         let act : String    = "line0\nline2"
@@ -93,7 +93,7 @@ internal final class StringComparatorMultiLineTests: XCTestCaseStopOnFail
     
     
     
-    func testMultiLineUnexpectedLine() throws
+    func testMultiLineUnexpectedLine()
     {
         let exp : String    = "line0\nline2"
         let act : String    = "line0\nline1\nline2"
@@ -120,7 +120,7 @@ internal final class StringComparatorMultiLineTests: XCTestCaseStopOnFail
     
     
     
-    func testSingleLineVsMultiLine() throws
+    func testSingleLineVsMultiLine()
     {
         let exp : String    = "single"
         let act : String    = "multiple\nlines"
@@ -167,7 +167,7 @@ internal final class StringComparatorMultiLineTests: XCTestCaseStopOnFail
     
     
     
-    func testMultipleLineChanges() throws
+    func testMultipleLineChanges()
     {
         let exp : String    = "keep\nremove\nmodify"
         let act : String    = "keep\nchange\nadd"
@@ -228,7 +228,7 @@ internal final class StringComparatorMultiLineTests: XCTestCaseStopOnFail
     
     
     
-    func testMultilineAllChangeTypes() throws
+    func testMultilineAllChangeTypes()
     {
         let exp : String    = "keep\nremove\nmodify\nkeep2"
         let act : String    = "keep\nmodified\nkeep2\nadd"
@@ -284,7 +284,7 @@ internal final class StringComparatorMultiLineTests: XCTestCaseStopOnFail
     
     
     
-    func testTrailingNewlineDifference() throws
+    func testTrailingNewlineDifference()
     {
         let exp : String    = "line0\nline1\n"
         let act : String    = "line0\nline1"
@@ -311,7 +311,7 @@ internal final class StringComparatorMultiLineTests: XCTestCaseStopOnFail
     
     
     
-    func testBothHaveTrailingNewlines() throws
+    func testBothHaveTrailingNewlines()
     {
         let exp: String = "line0\nline1\n"
         
@@ -327,7 +327,7 @@ internal final class StringComparatorMultiLineTests: XCTestCaseStopOnFail
     
     
     
-    func testOnlyNewlines() throws
+    func testOnlyNewlines()
     {
         let exp : String    = "\n\n\n"
         let act : String    = "\n"
@@ -359,7 +359,7 @@ internal final class StringComparatorMultiLineTests: XCTestCaseStopOnFail
     
     
     
-    func testEmptyLineInMiddle() throws
+    func testEmptyLineInMiddle()
     {
         let exp : String    = "a\n\nb\n"
         let act : String    = "a\nb"
@@ -391,7 +391,7 @@ internal final class StringComparatorMultiLineTests: XCTestCaseStopOnFail
     
     
     
-    func testEmptyVsMultiline() throws
+    func testEmptyVsMultiline()
     {
         let exp : String    = ""
         let act : String    = "line0\nline1"
@@ -431,7 +431,7 @@ internal final class StringComparatorMultiLineTests: XCTestCaseStopOnFail
     
     
     
-    func testSingleNewlineVsEmpty() throws
+    func testSingleNewlineVsEmpty()
     {
         let exp : String    = "\n"
         let act : String    = ""
@@ -458,7 +458,7 @@ internal final class StringComparatorMultiLineTests: XCTestCaseStopOnFail
     
     
     
-    func testBothSingleNewline() throws
+    func testBothSingleNewline()
     {
         let exp: String = "\n"
         

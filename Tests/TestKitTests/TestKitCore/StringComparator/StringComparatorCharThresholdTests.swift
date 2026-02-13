@@ -14,7 +14,7 @@ import XCTest
 
 internal final class StringComparatorCharThresholdTests: XCTestCaseStopOnFail
 {
-    func testCharDiffThresholdCollapsesWhenExceeded() throws
+    func testCharDiffThresholdCollapsesWhenExceeded()
     {
         let exp : String    = "12345"
         let act : String    = "54321"
@@ -36,7 +36,7 @@ internal final class StringComparatorCharThresholdTests: XCTestCaseStopOnFail
     
     
     
-    func testCharDiffThresholdPreservesWhenNotExceeded() throws
+    func testCharDiffThresholdPreservesWhenNotExceeded()
     {
         let exp : String    = "hello"
         let act : String    = "hallo"
@@ -65,7 +65,7 @@ internal final class StringComparatorCharThresholdTests: XCTestCaseStopOnFail
     
     
     
-    func testCharDiffThresholdWithEmptyStrings() throws
+    func testCharDiffThresholdWithEmptyStrings()
     {
         let exp: String = ""
         
@@ -82,7 +82,7 @@ internal final class StringComparatorCharThresholdTests: XCTestCaseStopOnFail
     
     
     
-    func testCharDiffThresholdAtExactBoundary() throws
+    func testCharDiffThresholdAtExactBoundary()
     {
         /// Exactly 50% of characters are changed, and the threshold is 50%.
         /// The character diff must be preserved. The changes will be
@@ -116,7 +116,7 @@ internal final class StringComparatorCharThresholdTests: XCTestCaseStopOnFail
     
     
     
-    func testCharDiffThresholdCompletelyDifferentWithThreshold() throws
+    func testCharDiffThresholdCompletelyDifferentWithThreshold()
     {
         let exp : String    = "abc"
         let act : String    = "xyz"
@@ -138,7 +138,7 @@ internal final class StringComparatorCharThresholdTests: XCTestCaseStopOnFail
     
     
     
-    func testCharDiffThresholdCompletelyDifferentNoThreshold() throws
+    func testCharDiffThresholdCompletelyDifferentNoThreshold()
     {
         /// The diff will produce removed `{0, 1, 2}` and inserted `{0, 1, 2}`.
         /// At index `0`, both have entries, so the coalescing logic will
@@ -172,7 +172,7 @@ internal final class StringComparatorCharThresholdTests: XCTestCaseStopOnFail
     
     
     
-    func testThresholdAppliesToIndividualLines() throws
+    func testThresholdAppliesToIndividualLines()
     {
         let exp : String    = "keep\n12345\nkeep"
         let act : String    = "keep\n54321\nkeep"

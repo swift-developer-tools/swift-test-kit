@@ -16,7 +16,7 @@ internal final class DataArbitraryTests: XCTestCaseStopOnFail
 {
     // MARK: - Generation
     
-    func testGenerationDeterminism() throws
+    func testGenerationDeterminism()
     {
         for _ in 0..<1000
         {
@@ -31,7 +31,7 @@ internal final class DataArbitraryTests: XCTestCaseStopOnFail
     
     
     
-    func testGenerationSizeZeroProducesEmpty() throws
+    func testGenerationSizeZeroProducesEmpty()
     {
         for _ in 0..<1000
         {
@@ -41,7 +41,7 @@ internal final class DataArbitraryTests: XCTestCaseStopOnFail
     
     
     
-    func testGenerationCountRespectsSizeBounds() throws
+    func testGenerationCountRespectsSizeBounds()
     {
         let size: Int = 10
         
@@ -60,7 +60,7 @@ internal final class DataArbitraryTests: XCTestCaseStopOnFail
     
     
     
-    func testGenerationProducesEmptyAndNonEmpty() throws
+    func testGenerationProducesEmptyAndNonEmpty()
     {
         var hasEmpty    : Bool  = false
         var hasNonEmpty : Bool  = false
@@ -92,7 +92,7 @@ internal final class DataArbitraryTests: XCTestCaseStopOnFail
     
     
     
-    func testGenerationProducesVariousCounts() throws
+    func testGenerationProducesVariousCounts()
     {
         let size    : Int       = 20
         var counts  : Set<Int>  = []
@@ -114,7 +114,7 @@ internal final class DataArbitraryTests: XCTestCaseStopOnFail
     
     
     
-    func testGenerationProducesVariety() throws
+    func testGenerationProducesVariety()
     {
         var uniqueBytes: Set<UInt8> = []
         
@@ -142,14 +142,14 @@ internal final class DataArbitraryTests: XCTestCaseStopOnFail
     
     // MARK: - Shrinking
     
-    func testShrinkingEmptyData() throws
+    func testShrinkingEmptyData()
     {
         XCTAssertEqual(Data().shrink(), [])
     }
     
     
     
-    func testShrinkingSingleByte() throws
+    func testShrinkingSingleByte()
     {
         let candidates: [Data] = Data([50]).shrink()
         
@@ -159,7 +159,7 @@ internal final class DataArbitraryTests: XCTestCaseStopOnFail
     
     
     
-    func testShrinkingFirstCandidateEmpty() throws
+    func testShrinkingFirstCandidateEmpty()
     {
         for _ in 0..<1000
         {
@@ -180,7 +180,7 @@ internal final class DataArbitraryTests: XCTestCaseStopOnFail
     
     
     
-    func testShrinkingCandidatesSmaller() throws
+    func testShrinkingCandidatesSmaller()
     {
         for _ in 0..<1000
         {
@@ -203,7 +203,7 @@ internal final class DataArbitraryTests: XCTestCaseStopOnFail
     
     
     
-    func testShrinkingCandidatesDistinctFromOriginal() throws
+    func testShrinkingCandidatesDistinctFromOriginal()
     {
         for _ in 0..<1000
         {
@@ -218,7 +218,7 @@ internal final class DataArbitraryTests: XCTestCaseStopOnFail
     
     
     
-    func testShrinkingIncludesElementShrinking() throws
+    func testShrinkingIncludesElementShrinking()
     {
         let data        : Data      = .init([255, 128])
         let candidates  : [Data]    = data.shrink()
@@ -238,7 +238,7 @@ internal final class DataArbitraryTests: XCTestCaseStopOnFail
     
     
     
-    func testShrinkingIncludesStructuralCandidates() throws
+    func testShrinkingIncludesStructuralCandidates()
     {
         let data        : Data      = .init([1, 2, 3, 4])
         let candidates  : [Data]    = data.shrink()

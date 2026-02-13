@@ -16,7 +16,7 @@ internal final class UUIDArbitraryTests: XCTestCaseStopOnFail
 {
     // MARK: - Generation
     
-    func testGenerationDeterminism() throws
+    func testGenerationDeterminism()
     {
         for _ in 0..<1000
         {
@@ -31,7 +31,7 @@ internal final class UUIDArbitraryTests: XCTestCaseStopOnFail
     
     
     
-    func testGenerationVersion4() throws
+    func testGenerationVersion4()
     {
         for _ in 0..<1000
         {
@@ -46,7 +46,7 @@ internal final class UUIDArbitraryTests: XCTestCaseStopOnFail
     
     
     
-    func testGenerationVariant1() throws
+    func testGenerationVariant1()
     {
         for _ in 0..<1000
         {
@@ -88,7 +88,7 @@ internal final class UUIDArbitraryTests: XCTestCaseStopOnFail
     
     
     
-    func testGenerationUniqueness() throws
+    func testGenerationUniqueness()
     {
         var seen: Set<UUID> = []
         
@@ -109,7 +109,7 @@ internal final class UUIDArbitraryTests: XCTestCaseStopOnFail
     
     
     
-    func testGenerationByteVariety() throws
+    func testGenerationByteVariety()
     {
         var uniquePerPosition: [Set<UInt8>] = Array(
             repeating:  [],
@@ -172,7 +172,7 @@ internal final class UUIDArbitraryTests: XCTestCaseStopOnFail
     
     // MARK: - Shrinking
     
-    func testShrinkingReturnsEmpty() throws
+    func testShrinkingReturnsEmpty()
     {
         for _ in 0..<1000
         {

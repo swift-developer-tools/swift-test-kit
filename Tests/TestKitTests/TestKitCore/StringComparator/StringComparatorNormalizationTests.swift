@@ -14,7 +14,7 @@ import XCTest
 
 internal final class StringComparatorNormalizationTests: XCTestCaseStopOnFail
 {
-    func testNewlineNormalizationCRLF() throws
+    func testNewlineNormalizationCRLF()
     {
         let exp : String    = "line0\r\nline1"
         let act : String    = "line0\nline1"
@@ -31,7 +31,7 @@ internal final class StringComparatorNormalizationTests: XCTestCaseStopOnFail
     
     
     
-    func testNewlineNormalizationCR() throws
+    func testNewlineNormalizationCR()
     {
         let exp : String    = "line0\rline1"
         let act : String    = "line0\nline1"
@@ -48,7 +48,7 @@ internal final class StringComparatorNormalizationTests: XCTestCaseStopOnFail
     
     
     
-    func testMixedNewlineNormalization() throws
+    func testMixedNewlineNormalization()
     {
         let exp : String    = "line0\r\nline1\r\nline3"
         let act : String    = "line0\nline1\nline3"
@@ -65,7 +65,7 @@ internal final class StringComparatorNormalizationTests: XCTestCaseStopOnFail
     
     
     
-    func testMixedCRLFAndCRNormalization() throws
+    func testMixedCRLFAndCRNormalization()
     {
         let exp : String    = "line0\r\nline1\rline3"
         let act : String    = "line0\nline1\nline3"

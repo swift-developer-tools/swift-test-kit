@@ -15,70 +15,70 @@ import XCTest
 
 internal final class ForAllMessageTests: XCTestKitCase
 {
-    func testArbitraryMessageNotEvalOnSuccess() throws
+    func testArbitraryMessageNotEvalOnSuccess()
     {
         testMessageNotEvalOnSuccess(.arbitrary)
     }
     
     
     
-    func testArbitraryMessageEvalOnceOnFailure() throws
+    func testArbitraryMessageEvalOnceOnFailure()
     {
         testMessageEvalOnceOnFailure(.arbitrary)
     }
     
     
     
-    func testGeneratorMessageNotEvalOnSuccess() throws
+    func testGeneratorMessageNotEvalOnSuccess()
     {
         testMessageNotEvalOnSuccess(.generator)
     }
     
     
     
-    func testGeneratorMessageEvalOnceOnFailure() throws
+    func testGeneratorMessageEvalOnceOnFailure()
     {
         testMessageEvalOnceOnFailure(.generator)
     }
     
     
     
-    func testPreconditionMessageNotEvalOnSuccess() throws
+    func testPreconditionMessageNotEvalOnSuccess()
     {
         testMessageNotEvalOnSuccess(.precondition)
     }
     
     
     
-    func testPreconditionMessageEvalOnceOnFailure() throws
+    func testPreconditionMessageEvalOnceOnFailure()
     {
         testMessageEvalOnceOnFailure(.precondition)
     }
     
     
     
-    func testPreconditionMessageEvalOnceOnExhaustion() throws
+    func testPreconditionMessageEvalOnceOnExhaustion()
     {
         testMessageEvalOnceOnExhaustion(useGenerator: false)
     }
     
     
     
-    func testPreconditionGeneratorMessageNotEvalOnSuccess() throws
+    func testPreconditionGeneratorMessageNotEvalOnSuccess()
     {
         testMessageNotEvalOnSuccess(.preconditionGenerator)
     }
     
     
     
-    func testPreconditionGeneratorMessageEvalOnceOnFailure() throws
+    func testPreconditionGeneratorMessageEvalOnceOnFailure()
     {
         testMessageEvalOnceOnFailure(.preconditionGenerator)
     }
     
     
     
-    func testPreconditionGeneratorMessageEvalOnceOnExhaustion() throws
+    func testPreconditionGeneratorMessageEvalOnceOnExhaustion()
     {
         testMessageEvalOnceOnExhaustion(useGenerator: true)
     }

@@ -16,21 +16,21 @@ internal final class RangeFloatingArbitraryTests: XCTestCaseStopOnFail
 {
     // MARK: - Generation
     
-    func testClosedRangeDoubleGeneration() throws
+    func testClosedRangeDoubleGeneration()
     {
         testGeneration(of: ClosedRange<Double>.self)
     }
     
     
     
-    func testClosedRangeFloatGeneration() throws
+    func testClosedRangeFloatGeneration()
     {
         testGeneration(of: ClosedRange<Float>.self)
     }
     
     
     
-    func testClosedRangeFloat16Generation() throws
+    func testClosedRangeFloat16Generation()
     {
         testGeneration(of: ClosedRange<Float16>.self)
     }
@@ -39,21 +39,21 @@ internal final class RangeFloatingArbitraryTests: XCTestCaseStopOnFail
     
     // MARK: - Shrinking
     
-    func testRangeDoubleShrinking() throws
+    func testRangeDoubleShrinking()
     {
         testShrinking(of: Range<Double>.self)
     }
     
     
     
-    func testRangeFloatShrinking() throws
+    func testRangeFloatShrinking()
     {
         testShrinking(of: Range<Float>.self)
     }
     
     
     
-    func testRangeFloat16Shrinking() throws
+    func testRangeFloat16Shrinking()
     {
         testShrinking(of: Range<Float16>.self)
     }

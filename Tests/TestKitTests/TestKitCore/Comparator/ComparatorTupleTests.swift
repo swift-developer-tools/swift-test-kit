@@ -14,7 +14,7 @@ import XCTest
 
 internal final class ComparatorTupleTests: XCTestCaseStopOnFail
 {
-    func testNestedTupleEqualValues() throws
+    func testNestedTupleEqualValues()
     {
         struct Container: Equatable
         {
@@ -47,7 +47,7 @@ internal final class ComparatorTupleTests: XCTestCaseStopOnFail
     
     
     
-    func testNestedTupleSingleElementDifference() throws
+    func testNestedTupleSingleElementDifference()
     {
         struct Container: Equatable
         {
@@ -111,7 +111,7 @@ internal final class ComparatorTupleTests: XCTestCaseStopOnFail
     
     
     
-    func testNestedLabeledTupleSingleElementDifference() throws
+    func testNestedLabeledTupleSingleElementDifference()
     {
         struct Container: Equatable
         {

@@ -14,7 +14,7 @@ import XCTest
 
 internal final class ComparatorDictionaryTests: XCTestCaseStopOnFail
 {
-    func testDictionaryEqualValues() throws
+    func testDictionaryEqualValues()
     {
         let exp: [String : Int] = ["a": 1, "b": 2, "c": 3]
         
@@ -34,7 +34,7 @@ internal final class ComparatorDictionaryTests: XCTestCaseStopOnFail
     
     
     
-    func testDictionaryDifferentValue() throws
+    func testDictionaryDifferentValue()
     {
         let exp : [String : Int]    = ["a": 1, "b": 2]
         let act : [String : Int]    = ["a": 1, "b": 0]
@@ -64,7 +64,7 @@ internal final class ComparatorDictionaryTests: XCTestCaseStopOnFail
     
     
     
-    func testDictionaryMultipleDifferentValues() throws
+    func testDictionaryMultipleDifferentValues()
     {
         let exp : [String : Int]    = ["a": 1, "b": 2, "c": 3]
         let act : [String : Int]    = ["a": 1, "b": 4, "c": 6]
@@ -100,7 +100,7 @@ internal final class ComparatorDictionaryTests: XCTestCaseStopOnFail
     
     
     
-    func testDictionaryMissingEntry() throws
+    func testDictionaryMissingEntry()
     {
         let exp : [String : Int]    = ["a": 1, "b": 2]
         let act : [String : Int]    = ["a": 1]
@@ -129,7 +129,7 @@ internal final class ComparatorDictionaryTests: XCTestCaseStopOnFail
     
     
     
-    func testDictionaryMultipleMissingEntries() throws
+    func testDictionaryMultipleMissingEntries()
     {
         let exp : [String : Int]    = ["a": 1, "b": 2, "c": 3, "d": 4]
         let act : [String : Int]    = ["a": 1]
@@ -168,7 +168,7 @@ internal final class ComparatorDictionaryTests: XCTestCaseStopOnFail
     
     
     
-    func testDictionaryUnexpectedEntry() throws
+    func testDictionaryUnexpectedEntry()
     {
         let exp : [String : Int]    = ["a": 1]
         let act : [String : Int]    = ["a": 1, "b": 2]
@@ -197,7 +197,7 @@ internal final class ComparatorDictionaryTests: XCTestCaseStopOnFail
     
     
     
-    func testDictionaryMultipleUnexpectedEntries() throws
+    func testDictionaryMultipleUnexpectedEntries()
     {
         let exp : [String : Int]    = ["a": 1]
         let act : [String : Int]    = ["a": 1, "b": 2, "c": 3, "d": 4]
@@ -236,7 +236,7 @@ internal final class ComparatorDictionaryTests: XCTestCaseStopOnFail
     
     
     
-    func testDictionaryMixedChanges() throws
+    func testDictionaryMixedChanges()
     {
         let exp : [String : Int]    = ["a": 1, "b": 2, "c": 3]
         let act : [String : Int]    = ["a": 1, "c": 9, "d": 4]
@@ -276,7 +276,7 @@ internal final class ComparatorDictionaryTests: XCTestCaseStopOnFail
     
     
     
-    func testDictionaryIntegerKeyOrdering() throws
+    func testDictionaryIntegerKeyOrdering()
     {
         /// `String(describing:)` produces: `"1", "2", "10", "20"`.
         /// Lexicoographic sort: `"10" < "2" < "20"`
@@ -318,7 +318,7 @@ internal final class ComparatorDictionaryTests: XCTestCaseStopOnFail
     
     
     
-    func testDictionaryEmptyVsNonEmpty() throws
+    func testDictionaryEmptyVsNonEmpty()
     {
         let exp : [String : Int]    = [:]
         let act : [String : Int]    = ["a": 1, "b": 2]
@@ -352,7 +352,7 @@ internal final class ComparatorDictionaryTests: XCTestCaseStopOnFail
     
     
     
-    func testDictionaryNonEmptyVsEmpty() throws
+    func testDictionaryNonEmptyVsEmpty()
     {
         let exp : [String : Int]    = ["a": 1, "b": 2]
         let act : [String : Int]    = [:]
@@ -386,7 +386,7 @@ internal final class ComparatorDictionaryTests: XCTestCaseStopOnFail
     
     
     
-    func testDictionaryBothEmpty() throws
+    func testDictionaryBothEmpty()
     {
         let exp: [String : Int] = [:]
         
@@ -406,7 +406,7 @@ internal final class ComparatorDictionaryTests: XCTestCaseStopOnFail
     
     
     
-    func testDictionaryWithOptionalValues() throws
+    func testDictionaryWithOptionalValues()
     {
         let exp : [String : Int?]   = ["a": 1, "b": nil, "c": 3]
         let act : [String : Int?]   = ["a": 1, "b": 2, "c": 3]
@@ -443,7 +443,7 @@ internal final class ComparatorDictionaryTests: XCTestCaseStopOnFail
     
     
     
-    func testDictionaryOfArrays() throws
+    func testDictionaryOfArrays()
     {
         let exp: [String : [Int]] =
         [
@@ -490,7 +490,7 @@ internal final class ComparatorDictionaryTests: XCTestCaseStopOnFail
     
     
     
-    func testDictionaryOfSets() throws
+    func testDictionaryOfSets()
     {
         let exp: [String : Set<Int>] =
         [
@@ -541,7 +541,7 @@ internal final class ComparatorDictionaryTests: XCTestCaseStopOnFail
     
     
     
-    func testDictionaryWithCustomHashableKey() throws
+    func testDictionaryWithCustomHashableKey()
     {
         struct User: Hashable
         {
@@ -593,7 +593,7 @@ internal final class ComparatorDictionaryTests: XCTestCaseStopOnFail
     
     
     
-    func testDictionaryWithCustomHashableKeyMissingEntry() throws
+    func testDictionaryWithCustomHashableKeyMissingEntry()
     {
         struct Point: Hashable
         {
@@ -636,7 +636,7 @@ internal final class ComparatorDictionaryTests: XCTestCaseStopOnFail
     
     
     
-    func testDictionaryWithEnumKey() throws
+    func testDictionaryWithEnumKey()
     {
         enum Direction: Hashable
         {

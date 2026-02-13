@@ -14,7 +14,7 @@ import XCTest
 
 internal final class ComparatorEnumTests: XCTestCaseStopOnFail
 {
-    func testEnumDifferentCases() throws
+    func testEnumDifferentCases()
     {
         enum Status: Equatable
         {
@@ -43,7 +43,7 @@ internal final class ComparatorEnumTests: XCTestCaseStopOnFail
     
     
     
-    func testEnumSameCaseEqualValues() throws
+    func testEnumSameCaseEqualValues()
     {
         enum Status: Equatable
         {
@@ -69,7 +69,7 @@ internal final class ComparatorEnumTests: XCTestCaseStopOnFail
     
     
     
-    func testEnumSameCaseDifferentValues() throws
+    func testEnumSameCaseDifferentValues()
     {
         enum Status: Equatable
         {
@@ -118,7 +118,7 @@ internal final class ComparatorEnumTests: XCTestCaseStopOnFail
     
     
     
-    func testEnumWithoutAssocDifferentCases() throws
+    func testEnumWithoutAssocDifferentCases()
     {
         enum State: Equatable
         {
@@ -148,7 +148,7 @@ internal final class ComparatorEnumTests: XCTestCaseStopOnFail
     
     
     
-    func testEnumWithoutAssocSameCase() throws
+    func testEnumWithoutAssocSameCase()
     {
         enum State: Equatable
         {
@@ -174,7 +174,7 @@ internal final class ComparatorEnumTests: XCTestCaseStopOnFail
     
     
     
-    func testEnumMixedCaseWithAssocVsWithout() throws
+    func testEnumMixedCaseWithAssocVsWithout()
     {
         enum State: Equatable
         {
@@ -203,7 +203,7 @@ internal final class ComparatorEnumTests: XCTestCaseStopOnFail
     
     
     
-    func testEnumMixedCaseWithoutAssocVsWith() throws
+    func testEnumMixedCaseWithoutAssocVsWith()
     {
         enum State: Equatable
         {
@@ -232,7 +232,7 @@ internal final class ComparatorEnumTests: XCTestCaseStopOnFail
     
     
     
-    func testEnumMultipleAssocSomeDifferent() throws
+    func testEnumMultipleAssocSomeDifferent()
     {
         enum Result: Equatable
         {
@@ -275,7 +275,7 @@ internal final class ComparatorEnumTests: XCTestCaseStopOnFail
     
     
     
-    func testEnumMultipleAssocAllDifferent() throws
+    func testEnumMultipleAssocAllDifferent()
     {
         enum Result: Equatable
         {
@@ -330,7 +330,7 @@ internal final class ComparatorEnumTests: XCTestCaseStopOnFail
     
     
     
-    func testEnumUnlabeledAssoc() throws
+    func testEnumUnlabeledAssoc()
     {
         enum Wrapper: Equatable
         {
@@ -365,7 +365,7 @@ internal final class ComparatorEnumTests: XCTestCaseStopOnFail
     
     
     
-    func testEnumSingleUnlabeledAssoc() throws
+    func testEnumSingleUnlabeledAssoc()
     {
         enum Wrapper: Equatable
         {
@@ -400,7 +400,7 @@ internal final class ComparatorEnumTests: XCTestCaseStopOnFail
     
     
     
-    func testEnumRawValueDifferentCases() throws
+    func testEnumRawValueDifferentCases()
     {
         enum Priority: Int, Equatable
         {
@@ -430,7 +430,7 @@ internal final class ComparatorEnumTests: XCTestCaseStopOnFail
     
     
     
-    func testEnumRawValueSameCase() throws
+    func testEnumRawValueSameCase()
     {
         enum Priority: Int, Equatable
         {
@@ -457,7 +457,7 @@ internal final class ComparatorEnumTests: XCTestCaseStopOnFail
     
     
     
-    func testResultSuccessEqualValues() throws
+    func testResultSuccessEqualValues()
     {
         enum TestError: Error, Equatable
         {
@@ -482,7 +482,7 @@ internal final class ComparatorEnumTests: XCTestCaseStopOnFail
     
     
     
-    func testResultSuccessDifferentValues() throws
+    func testResultSuccessDifferentValues()
     {
         enum TestError: Error, Equatable
         {
@@ -530,7 +530,7 @@ internal final class ComparatorEnumTests: XCTestCaseStopOnFail
     
     
     
-    func testResultSuccessVsFailure() throws
+    func testResultSuccessVsFailure()
     {
         enum TestError: Error, Equatable
         {
@@ -559,7 +559,7 @@ internal final class ComparatorEnumTests: XCTestCaseStopOnFail
     
     
     
-    func testResultFailureDifferentErrors() throws
+    func testResultFailureDifferentErrors()
     {
         enum TestError: Error, Equatable
         {

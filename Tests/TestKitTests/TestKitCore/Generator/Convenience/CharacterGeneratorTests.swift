@@ -16,14 +16,14 @@ internal final class CharacterGeneratorTests: XCTestCaseStopOnFail
 {
     // MARK: - ASCII
     
-    func testASCIIDeterminism() throws
+    func testASCIIDeterminism()
     {
         Generator.ascii().validateDeterminism()
     }
     
     
     
-    func testASCIIProduction() throws
+    func testASCIIProduction()
     {
         validateCharacterRange(
             of:     .ascii(),
@@ -33,7 +33,7 @@ internal final class CharacterGeneratorTests: XCTestCaseStopOnFail
     
     
     
-    func testASCIIProducesVariety() throws
+    func testASCIIProducesVariety()
     {
         let min = Double(Unicode.Scalar.asciiPrintableRange.count) * 0.95
         
@@ -47,14 +47,14 @@ internal final class CharacterGeneratorTests: XCTestCaseStopOnFail
     
     // MARK: - Lowercase
     
-    func testLowercaseDeterminism() throws
+    func testLowercaseDeterminism()
     {
         Generator.lowercase().validateDeterminism()
     }
     
     
     
-    func testLowercaseProduction() throws
+    func testLowercaseProduction()
     {
         validateCharacterRange(
             of:     .lowercase(),
@@ -64,7 +64,7 @@ internal final class CharacterGeneratorTests: XCTestCaseStopOnFail
     
     
     
-    func testLowercaseProducesVariety() throws
+    func testLowercaseProducesVariety()
     {
         let min = Double(Unicode.Scalar.asciiLowercaseRange.count) * 0.95
         
@@ -78,14 +78,14 @@ internal final class CharacterGeneratorTests: XCTestCaseStopOnFail
     
     // MARK: - Uppercase
     
-    func testUppercaseDeterminism() throws
+    func testUppercaseDeterminism()
     {
         Generator.uppercase().validateDeterminism()
     }
     
     
     
-    func testUppercaseProduction() throws
+    func testUppercaseProduction()
     {
         validateCharacterRange(
             of:     .uppercase(),
@@ -95,7 +95,7 @@ internal final class CharacterGeneratorTests: XCTestCaseStopOnFail
     
     
     
-    func testUppercaseProducesVariety() throws
+    func testUppercaseProducesVariety()
     {
         let min = Double(Unicode.Scalar.asciiUppercaseRange.count) * 0.95
         
@@ -109,14 +109,14 @@ internal final class CharacterGeneratorTests: XCTestCaseStopOnFail
     
     // MARK: - Digit
     
-    func testDigitDeterminism() throws
+    func testDigitDeterminism()
     {
         Generator.digit().validateDeterminism()
     }
     
     
     
-    func testDigitProduction() throws
+    func testDigitProduction()
     {
         validateCharacterRange(
             of:     .digit(),
@@ -126,7 +126,7 @@ internal final class CharacterGeneratorTests: XCTestCaseStopOnFail
     
     
     
-    func testDigitProducesVariety() throws
+    func testDigitProducesVariety()
     {
         let min = Double(Unicode.Scalar.asciiDigitRange.count) * 0.95
         
@@ -140,14 +140,14 @@ internal final class CharacterGeneratorTests: XCTestCaseStopOnFail
     
     // MARK: - Alphanumeric
     
-    func testAlphanumericDeterminism() throws
+    func testAlphanumericDeterminism()
     {
         Generator.alphanumeric().validateDeterminism()
     }
     
     
     
-    func testAlphanumericProduction() throws
+    func testAlphanumericProduction()
     {
         let ranges: [ClosedRange<Int>] = Unicode.Scalar.alphanumericRanges
         
@@ -168,7 +168,7 @@ internal final class CharacterGeneratorTests: XCTestCaseStopOnFail
     
     
     
-    func testAlphanumericProducesVariety() throws
+    func testAlphanumericProducesVariety()
     {
         let min = Double(Unicode.Scalar.asciiDigitRange.count) * 0.95
         
@@ -182,14 +182,14 @@ internal final class CharacterGeneratorTests: XCTestCaseStopOnFail
     
     // MARK: - From
     
-    func testFromDeterminism() throws
+    func testFromDeterminism()
     {
         Generator.from("abc").validateDeterminism()
     }
     
     
     
-    func testFromProduction() throws
+    func testFromProduction()
     {
         let characters: String = "abc"
         
@@ -204,7 +204,7 @@ internal final class CharacterGeneratorTests: XCTestCaseStopOnFail
     
     
     
-    func testFromProducesVariety() throws
+    func testFromProducesVariety()
     {
         let characters  : String            = "abc"
         var unique      : Set<Character>    = []
@@ -219,7 +219,7 @@ internal final class CharacterGeneratorTests: XCTestCaseStopOnFail
     
     
     
-    func testFromSingleCharacterAlwaysProducesSameCharacter() throws
+    func testFromSingleCharacterAlwaysProducesSameCharacter()
     {
         for _ in 0..<1000
         {
@@ -233,7 +233,7 @@ internal final class CharacterGeneratorTests: XCTestCaseStopOnFail
     
     // MARK: - Shrinking
     
-    func testAllCharacterGeneratorsShrinkTowardA() throws
+    func testAllCharacterGeneratorsShrinkTowardA()
     {
         let generators: [Generator<Character>] =
         [
@@ -256,7 +256,7 @@ internal final class CharacterGeneratorTests: XCTestCaseStopOnFail
     
     
     
-    func testAllCharacterGeneratorsTargetDoesNotShrink() throws
+    func testAllCharacterGeneratorsTargetDoesNotShrink()
     {
         let generators: [Generator<Character>] =
         [

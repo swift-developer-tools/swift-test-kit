@@ -16,7 +16,7 @@ internal final class PropertyInterceptorTests: XCTestCaseStopOnFail
 {
     // MARK: - Initialize
     
-    func testInitialState() throws
+    func testInitialState()
     {
         let interceptor = PropertyInterceptor()
         
@@ -55,7 +55,7 @@ internal final class PropertyInterceptorTests: XCTestCaseStopOnFail
     
     
     
-    func testMultipleRecordingsPreservesOrder() throws
+    func testMultipleRecordingsPreservesOrder()
     {
         let interceptor = PropertyInterceptor()
         
@@ -117,7 +117,7 @@ internal final class PropertyInterceptorTests: XCTestCaseStopOnFail
     
     // MARK: - Reset
     
-    func testResetClearsFailures() throws
+    func testResetClearsFailures()
     {
         let interceptor = PropertyInterceptor()
         
@@ -137,7 +137,7 @@ internal final class PropertyInterceptorTests: XCTestCaseStopOnFail
     }
     
     
-    func testResetNewInstance() throws
+    func testResetNewInstance()
     {
         let interceptor = PropertyInterceptor()
         
@@ -149,7 +149,7 @@ internal final class PropertyInterceptorTests: XCTestCaseStopOnFail
     
     
     
-    func testRecordAfterReset() throws
+    func testRecordAfterReset()
     {
         let interceptor = PropertyInterceptor()
         
@@ -193,7 +193,7 @@ internal final class PropertyInterceptorTests: XCTestCaseStopOnFail
     
     
     
-    func testRepeatedResetCycles() throws
+    func testRepeatedResetCycles()
     {
         let interceptor = PropertyInterceptor()
         
@@ -222,14 +222,14 @@ internal final class PropertyInterceptorTests: XCTestCaseStopOnFail
     
     // MARK: - TaskLocal
     
-    func testCurrentIsNilByDefault() throws
+    func testCurrentIsNilByDefault()
     {
         XCTAssertNil(PropertyInterceptor.current)
     }
     
     
     
-    func testCurrentIsAvailableInsideWithValue() throws
+    func testCurrentIsAvailableInsideWithValue()
     {
         let interceptor = PropertyInterceptor()
         
@@ -242,7 +242,7 @@ internal final class PropertyInterceptorTests: XCTestCaseStopOnFail
     
     
     
-    func testCurrentIsRestoredAfterWithValue() throws
+    func testCurrentIsRestoredAfterWithValue()
     {
         let interceptor = PropertyInterceptor()
         
@@ -256,7 +256,7 @@ internal final class PropertyInterceptorTests: XCTestCaseStopOnFail
     
     
     
-    func testNestedWithValueOverridesAndRestores() throws
+    func testNestedWithValueOverridesAndRestores()
     {
         let outer   = PropertyInterceptor()
         let inner   = PropertyInterceptor()
@@ -281,7 +281,7 @@ internal final class PropertyInterceptorTests: XCTestCaseStopOnFail
     
     
     
-    func testNestedInterceptorsAreIndependent() throws
+    func testNestedInterceptorsAreIndependent()
     {
         let outer   = PropertyInterceptor()
         let inner   = PropertyInterceptor()

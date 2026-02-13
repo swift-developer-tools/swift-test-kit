@@ -576,7 +576,7 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
     
     // MARK: - Seed
     
-    func testSameSeedDeterminism() throws
+    func testSameSeedDeterminism()
     {
         let target  : Int           = 7
         let options : TestOptions   = .propertyOptions(seed: Self.seed)

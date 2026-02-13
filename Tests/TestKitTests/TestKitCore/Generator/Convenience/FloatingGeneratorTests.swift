@@ -16,21 +16,21 @@ internal final class FloatingGeneratorTests: XCTestCaseStopOnFail
 {
     // MARK: - Closed range
     
-    func testDoubleClosedRange() throws
+    func testDoubleClosedRange()
     {
         testClosedRange(of: Double.self)
     }
     
     
     
-    func testFloatClosedRange() throws
+    func testFloatClosedRange()
     {
         testClosedRange(of: Float.self)
     }
     
     
     
-    func testFloat16ClosedRange() throws
+    func testFloat16ClosedRange()
     {
         testClosedRange(of: Float16.self)
     }
@@ -39,21 +39,21 @@ internal final class FloatingGeneratorTests: XCTestCaseStopOnFail
     
     // MARK: - Range
     
-    func testDoubleRange() throws
+    func testDoubleRange()
     {
         testRange(of: Double.self)
     }
     
     
     
-    func testFloatRange() throws
+    func testFloatRange()
     {
         testRange(of: Float.self)
     }
     
     
     
-    func testFloat16Range() throws
+    func testFloat16Range()
     {
         testRange(of: Float16.self)
     }

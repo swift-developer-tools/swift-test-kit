@@ -20,7 +20,7 @@ internal final class FormatterNodeKindTests: XCTestCaseStopOnFail
     
     //  MARK: - Cycle
     
-    func testCycleInExpected() throws
+    func testCycleInExpected()
     {
         testCycle(.expected)
     }
@@ -28,14 +28,14 @@ internal final class FormatterNodeKindTests: XCTestCaseStopOnFail
     
     
     
-    func testCycleInActual() throws
+    func testCycleInActual()
     {
         testCycle(.actual)
     }
     
     
     
-    func testCycleInBoth() throws
+    func testCycleInBoth()
     {
         testCycle(.both)
     }
@@ -44,7 +44,7 @@ internal final class FormatterNodeKindTests: XCTestCaseStopOnFail
     
     // MARK: - Same
     
-    func testSameProducesNoOutput() throws
+    func testSameProducesNoOutput()
     {
         let node = DiffNode(
             label:  .root(typeName: typeName(of: 1)),
@@ -65,7 +65,7 @@ internal final class FormatterNodeKindTests: XCTestCaseStopOnFail
     
     // MARK: - Different
     
-    func testDifferentLeafBool() throws
+    func testDifferentLeafBool()
     {
         let exp         : Bool      = true
         let act         : Bool      = false
@@ -93,7 +93,7 @@ internal final class FormatterNodeKindTests: XCTestCaseStopOnFail
     
     
     
-    func testDifferentLeafDouble() throws
+    func testDifferentLeafDouble()
     {
         let exp         : Double    = 1.0
         let act         : Double    = 2.0
@@ -121,7 +121,7 @@ internal final class FormatterNodeKindTests: XCTestCaseStopOnFail
     
     
     
-    func testDifferentLeafInt() throws
+    func testDifferentLeafInt()
     {
         let exp         : Int       = 10
         let act         : Int       = 20
@@ -149,7 +149,7 @@ internal final class FormatterNodeKindTests: XCTestCaseStopOnFail
     
     
     
-    func testDifferentLeafString() throws
+    func testDifferentLeafString()
     {
         let exp         : String    = "hello"
         let act         : String    = "goodbye"
@@ -177,7 +177,7 @@ internal final class FormatterNodeKindTests: XCTestCaseStopOnFail
     
     
     
-    func testDifferentLeafEmptyString() throws
+    func testDifferentLeafEmptyString()
     {
         let exp         : String    = "hello"
         let act         : String    = ""
@@ -205,7 +205,7 @@ internal final class FormatterNodeKindTests: XCTestCaseStopOnFail
     
     
     
-    func testDifferentLeafStringWithNewline() throws
+    func testDifferentLeafStringWithNewline()
     {
         let exp         : String    = "hello\nworld"
         let act         : String    = "hello"
@@ -233,7 +233,7 @@ internal final class FormatterNodeKindTests: XCTestCaseStopOnFail
     
     
     
-    func testDifferentLeafStringWithTab() throws
+    func testDifferentLeafStringWithTab()
     {
         let exp         : String    = "hello\tworld"
         let act         : String    = "hello"
@@ -261,7 +261,7 @@ internal final class FormatterNodeKindTests: XCTestCaseStopOnFail
     
     
     
-    func testDifferentLeafStringWithCR() throws
+    func testDifferentLeafStringWithCR()
     {
         let exp         : String    = "hello\rworld"
         let act         : String    = "hello"
@@ -289,7 +289,7 @@ internal final class FormatterNodeKindTests: XCTestCaseStopOnFail
     
     
     
-    func testDifferentLeafStringWithBackslash() throws
+    func testDifferentLeafStringWithBackslash()
     {
         let exp         : String    = "path\\to\\file"
         let act         : String    = "path/to/file"
@@ -317,7 +317,7 @@ internal final class FormatterNodeKindTests: XCTestCaseStopOnFail
     
     
     
-    func testDifferentLeafStringWithNullTerminator() throws
+    func testDifferentLeafStringWithNullTerminator()
     {
         let exp         : String    = "hello\0world"
         let act         : String    = "hello"
@@ -345,7 +345,7 @@ internal final class FormatterNodeKindTests: XCTestCaseStopOnFail
     
     
     
-    func testDifferentLeafStringWithMultipleSpecialChars() throws
+    func testDifferentLeafStringWithMultipleSpecialChars()
     {
         let exp         : String    = "a\nb\tc\rd\0e\\f"
         let act         : String    = "different"
@@ -375,7 +375,7 @@ internal final class FormatterNodeKindTests: XCTestCaseStopOnFail
     
     // MARK: - Missing
     
-    func testMissingIntElement() throws
+    func testMissingIntElement()
     {
         let exp         : [Int]     = [1, 2, 3]
         let act         : [Int]     = [1, 2]
@@ -412,7 +412,7 @@ internal final class FormatterNodeKindTests: XCTestCaseStopOnFail
     
     
     
-    func testMissingStringElement() throws
+    func testMissingStringElement()
     {
         let exp         : [String]  = ["a", "b"]
         let act         : [String]  = ["b"]
@@ -451,7 +451,7 @@ internal final class FormatterNodeKindTests: XCTestCaseStopOnFail
     
     // MARK: - Unexpected
     
-    func testUnexpectedIntElement() throws
+    func testUnexpectedIntElement()
     {
         let exp         : [Int]     = [1, 2]
         let act         : [Int]     = [0, 1, 2]
@@ -488,7 +488,7 @@ internal final class FormatterNodeKindTests: XCTestCaseStopOnFail
     
     
     
-    func testUnexpectedStringElement() throws
+    func testUnexpectedStringElement()
     {
         let exp         : [String]  = ["b"]
         let act         : [String]  = ["a", "b"]

@@ -16,7 +16,7 @@ internal final class ComparatorMiscTests: XCTestCaseStopOnFail
 {
     // MARK: - Primitive types
     
-    func testBooleanEqualValues() throws
+    func testBooleanEqualValues()
     {
         let exp: Bool = true
         
@@ -36,7 +36,7 @@ internal final class ComparatorMiscTests: XCTestCaseStopOnFail
     
     
     
-    func testBooleanDifferentValues() throws
+    func testBooleanDifferentValues()
     {
         let exp : Bool  = true
         let act : Bool  = false
@@ -59,7 +59,7 @@ internal final class ComparatorMiscTests: XCTestCaseStopOnFail
     
     
     
-    func testIntegerEqualValues() throws
+    func testIntegerEqualValues()
     {
         let exp: Int = 10
         
@@ -79,7 +79,7 @@ internal final class ComparatorMiscTests: XCTestCaseStopOnFail
     
     
     
-    func testIntegerDifferentValues() throws
+    func testIntegerDifferentValues()
     {
         let exp : Int   = 10
         let act : Int   = 20
@@ -102,7 +102,7 @@ internal final class ComparatorMiscTests: XCTestCaseStopOnFail
     
     
     
-    func testFloatEqualValues() throws
+    func testFloatEqualValues()
     {
         let exp: Float64 = 10 / 3
         
@@ -122,7 +122,7 @@ internal final class ComparatorMiscTests: XCTestCaseStopOnFail
     
     
     
-    func testFloatDifferentValues() throws
+    func testFloatDifferentValues()
     {
         let exp : Float64   = 10 / 3
         let act : Float64   = 20 / 3
@@ -145,7 +145,7 @@ internal final class ComparatorMiscTests: XCTestCaseStopOnFail
     
     
     
-    func testStringEqualValues() throws
+    func testStringEqualValues()
     {
         let exp: String = "hello"
         
@@ -165,7 +165,7 @@ internal final class ComparatorMiscTests: XCTestCaseStopOnFail
     
     
     
-    func testStringDifferentValues() throws
+    func testStringDifferentValues()
     {
         let exp : String    = "hello"
         let act : String    = "goodbye"
@@ -202,7 +202,7 @@ internal final class ComparatorMiscTests: XCTestCaseStopOnFail
     
     // MARK: - Reference types
     
-    func testClassWithValueBasedEquality() throws
+    func testClassWithValueBasedEquality()
     {
         /// Check whether structural diffing works correctly when classes use
         /// property-based equality (`==`).
@@ -261,7 +261,7 @@ internal final class ComparatorMiscTests: XCTestCaseStopOnFail
     
     // MARK: - Closures
     
-    func testStructWithClosure() throws
+    func testStructWithClosure()
     {
         /// The closures are different, but a closure cannot conform to
         /// `Equatable`, and the `Equatable` implementation does not consider
@@ -331,7 +331,7 @@ internal final class ComparatorMiscTests: XCTestCaseStopOnFail
     
     // MARK: - Standard library types
     
-    func testDataEqualValues() throws
+    func testDataEqualValues()
     {
         let exp = Data([0x00, 0x01, 0x02, 0x03])
         
@@ -351,7 +351,7 @@ internal final class ComparatorMiscTests: XCTestCaseStopOnFail
     
     
     
-    func testDataDifferentValues() throws
+    func testDataDifferentValues()
     {
         let expBytes    : [UInt8]   = [0x00, 0x01, 0x02, 0x03]
         let actBytes    : [UInt8]   = [0x00, 0x01, 0xFF, 0x03]
@@ -391,7 +391,7 @@ internal final class ComparatorMiscTests: XCTestCaseStopOnFail
     
     
     
-    func testDataDifferentLengths() throws
+    func testDataDifferentLengths()
     {
         let expBytes    : [UInt8]   = [0x00, 0x01, 0x02]
         let actBytes    : [UInt8]   = [0x00, 0x01]
@@ -436,7 +436,7 @@ internal final class ComparatorMiscTests: XCTestCaseStopOnFail
     
     
     
-    func testDateEqualValues() throws
+    func testDateEqualValues()
     {
         let exp = Date(timeIntervalSince1970: 1_000_000)
         
@@ -456,7 +456,7 @@ internal final class ComparatorMiscTests: XCTestCaseStopOnFail
     
     
     
-    func testDateDifferentValues() throws
+    func testDateDifferentValues()
     {
         let exp     = Date(timeIntervalSince1970: 1_000_000)
         let act     = Date(timeIntervalSince1970: 2_000_000)
@@ -488,7 +488,7 @@ internal final class ComparatorMiscTests: XCTestCaseStopOnFail
     
     
     
-    func testOptionSetEqualValues() throws
+    func testOptionSetEqualValues()
     {
         struct Permissions: OptionSet, Equatable
         {
@@ -517,7 +517,7 @@ internal final class ComparatorMiscTests: XCTestCaseStopOnFail
     
     
     
-    func testOptionSetDifferentValues() throws
+    func testOptionSetDifferentValues()
     {
         struct Permissions: OptionSet, Equatable
         {
@@ -556,7 +556,7 @@ internal final class ComparatorMiscTests: XCTestCaseStopOnFail
     
     
     
-    func testRangeEqualValues() throws
+    func testRangeEqualValues()
     {
         let exp: Range<Int> = 0..<10
         
@@ -576,7 +576,7 @@ internal final class ComparatorMiscTests: XCTestCaseStopOnFail
     
     
     
-    func testRangeDifferentValues() throws
+    func testRangeDifferentValues()
     {
         let exp : Range<Int>    = 0..<10
         let act : Range<Int>    = 0..<5
@@ -606,7 +606,7 @@ internal final class ComparatorMiscTests: XCTestCaseStopOnFail
     
     
     
-    func testClosedRangeDifferentValues() throws
+    func testClosedRangeDifferentValues()
     {
         let exp : ClosedRange<Int>  = 0...10
         let act : ClosedRange<Int>  = 5...10
@@ -636,7 +636,7 @@ internal final class ComparatorMiscTests: XCTestCaseStopOnFail
     
     
     
-    func testURLEqualValues() throws
+    func testURLEqualValues()
     {
         let exp = URL(string: "https://example.com/page")!
         
@@ -656,7 +656,7 @@ internal final class ComparatorMiscTests: XCTestCaseStopOnFail
     
     
     
-    func testUUIDEqualValues() throws
+    func testUUIDEqualValues()
     {
         let exp = UUID(uuidString: "00000000-0000-0000-0000-000000000001")!
         
@@ -676,7 +676,7 @@ internal final class ComparatorMiscTests: XCTestCaseStopOnFail
     
     
     
-    func testUUIDDifferentValues() throws
+    func testUUIDDifferentValues()
     {
         let exp     = UUID(uuidString: "00000000-0000-0000-0000-000000000001")!
         let act     = UUID(uuidString: "00000000-0000-0000-0000-000000000002")!
@@ -701,7 +701,7 @@ internal final class ComparatorMiscTests: XCTestCaseStopOnFail
     
     // MARK: - Big data
     
-    func testLargeArraySingleDifference() throws
+    func testLargeArraySingleDifference()
     {
         let exp : [Int]     = Array(0..<10_000)
         var act : [Int]     = Array(0..<10_000)
@@ -733,7 +733,7 @@ internal final class ComparatorMiscTests: XCTestCaseStopOnFail
     
     
     
-    func testLargeArrayManyDifferences() throws
+    func testLargeArrayManyDifferences()
     {
         let exp : [Int]     = Array(0..<10_000)
         var act : [Int]     = Array(0..<10_000)
@@ -770,7 +770,7 @@ internal final class ComparatorMiscTests: XCTestCaseStopOnFail
     
     
     
-    func testLargeDictionarySingleDifference() throws
+    func testLargeDictionarySingleDifference()
     {
         var exp : [Int : Int]   = [:]
         var act : [Int : Int]   = [:]
@@ -808,7 +808,7 @@ internal final class ComparatorMiscTests: XCTestCaseStopOnFail
     
     
     
-    func testLargeSetManyDifferences() throws
+    func testLargeSetManyDifferences()
     {
         let exp : Set<Int>  = .init(0..<10_000)
         let act : Set<Int>  = .init(500..<10_500)

@@ -20,7 +20,7 @@ internal final class FormatterPredicateTests: XCTestCaseStopOnFail
     
     // MARK: - Elements failed
     
-    func testSingleFailedElement() throws
+    func testSingleFailedElement()
     {
         let kind = PFK.elementsFailed([
             ElementResult(index: 1, value: 3)
@@ -51,7 +51,7 @@ internal final class FormatterPredicateTests: XCTestCaseStopOnFail
     
     
     
-    func testMultipleFailedElements() throws
+    func testMultipleFailedElements()
     {
         let kind = PFK.elementsFailed([
             ElementResult(index: 0, value: 1),
@@ -86,7 +86,7 @@ internal final class FormatterPredicateTests: XCTestCaseStopOnFail
     
     
     
-    func testMacroCaptureShowsCollectionAndPredicate() throws
+    func testMacroCaptureShowsCollectionAndPredicate()
     {
         let kind = PFK.elementsFailed([
             ElementResult(index: 1, value: 3)
@@ -125,7 +125,7 @@ internal final class FormatterPredicateTests: XCTestCaseStopOnFail
     
     
     
-    func testFailedElementWithError() throws
+    func testFailedElementWithError()
     {
         let kind = PFK.elementsFailed([
             ElementResult(index: 0, value: 1),
@@ -158,7 +158,7 @@ internal final class FormatterPredicateTests: XCTestCaseStopOnFail
     
     
     
-    func testUnorderedCollectionOmitsIndices() throws
+    func testUnorderedCollectionOmitsIndices()
     {
         let kind = PFK.elementsFailed([
             ElementResult(index: 0, value: 1),
@@ -191,7 +191,7 @@ internal final class FormatterPredicateTests: XCTestCaseStopOnFail
     
     
     
-    func testFailedStringElementsAreQuoted() throws
+    func testFailedStringElementsAreQuoted()
     {
         let kind = PFK.elementsFailed([
             ElementResult(index: 1, value: "a")
@@ -222,7 +222,7 @@ internal final class FormatterPredicateTests: XCTestCaseStopOnFail
     
     
     
-    func testAllElementsFailed() throws
+    func testAllElementsFailed()
     {
         let kind = PFK.elementsFailed([
             ElementResult(index: 0, value: 1),
@@ -257,7 +257,7 @@ internal final class FormatterPredicateTests: XCTestCaseStopOnFail
     
     
     
-    func testMaxDiffsTruncatesElements() throws
+    func testMaxDiffsTruncatesElements()
     {
         let kind = PFK.elementsFailed([
             ElementResult(index: 0, value: 1),
@@ -294,7 +294,7 @@ internal final class FormatterPredicateTests: XCTestCaseStopOnFail
     
     
     
-    func testMaxDiffsWithCountDiffs() throws
+    func testMaxDiffsWithCountDiffs()
     {
         let kind = PFK.elementsFailed([
             ElementResult(index: 0, value: 1),
@@ -331,7 +331,7 @@ internal final class FormatterPredicateTests: XCTestCaseStopOnFail
     
     
     
-    func testElementsFailedCollectionTextWithoutPredicateText() throws
+    func testElementsFailedCollectionTextWithoutPredicateText()
     {
         let kind = PFK.elementsFailed([
             ElementResult(index: 1, value: 3)
@@ -365,7 +365,7 @@ internal final class FormatterPredicateTests: XCTestCaseStopOnFail
     
     
     
-    func testElementsFailedMaxDiffsAtExactBoundar() throws
+    func testElementsFailedMaxDiffsAtExactBoundar()
     {
         let kind = PFK.elementsFailed([
             ElementResult(index: 0, value: 1),
@@ -402,7 +402,7 @@ internal final class FormatterPredicateTests: XCTestCaseStopOnFail
     
     // MARK: - Elements matched
     
-    func testSingleMatchedElement() throws
+    func testSingleMatchedElement()
     {
         let kind = PFK.elementsMatched([
             ElementResult(index: 1, value: 2)
@@ -433,7 +433,7 @@ internal final class FormatterPredicateTests: XCTestCaseStopOnFail
     
     
     
-    func testMultipleMatchedElements() throws
+    func testMultipleMatchedElements()
     {
         let kind = PFK.elementsMatched([
             ElementResult(index: 0, value: 2),
@@ -468,7 +468,7 @@ internal final class FormatterPredicateTests: XCTestCaseStopOnFail
     
     
     
-    func testMatchedElementWithError() throws
+    func testMatchedElementWithError()
     {
         let kind = PFK.elementsMatched([
             ElementResult(index: 0, value: 1),
@@ -501,7 +501,7 @@ internal final class FormatterPredicateTests: XCTestCaseStopOnFail
     
     
     
-    func testMatchedElementsUnorderedOmitsIndices() throws
+    func testMatchedElementsUnorderedOmitsIndices()
     {
         let kind = PFK.elementsMatched([
             ElementResult(index: 0, value: 2),
@@ -534,7 +534,7 @@ internal final class FormatterPredicateTests: XCTestCaseStopOnFail
     
     
     
-    func testMatchedElementsMacroCapture() throws
+    func testMatchedElementsMacroCapture()
     {
         let kind = PFK.elementsMatched([
             ElementResult(index: 1, value: 2)
@@ -573,7 +573,7 @@ internal final class FormatterPredicateTests: XCTestCaseStopOnFail
     
     
     
-    func testMatchedElementsMaxDiffsTruncation() throws
+    func testMatchedElementsMaxDiffsTruncation()
     {
         let kind = PFK.elementsMatched([
             ElementResult(index: 0, value: 2),
@@ -610,7 +610,7 @@ internal final class FormatterPredicateTests: XCTestCaseStopOnFail
     
     
     
-    func testMatchedElementsMaxDiffsWithCountDiffs() throws
+    func testMatchedElementsMaxDiffsWithCountDiffs()
     {
         let kind = PFK.elementsMatched([
             ElementResult(index: 0, value: 2),
@@ -648,7 +648,7 @@ internal final class FormatterPredicateTests: XCTestCaseStopOnFail
     
     
     
-    func testMatchedStringElementsAreQuoted() throws
+    func testMatchedStringElementsAreQuoted()
     {
         let kind = PFK.elementsMatched([
             ElementResult(index: 1, value: "a")
@@ -679,7 +679,7 @@ internal final class FormatterPredicateTests: XCTestCaseStopOnFail
     
     
     
-    func testAllElementsMatched() throws
+    func testAllElementsMatched()
     {
         let kind = PFK.elementsMatched([
             ElementResult(index: 0, value: 1),
@@ -714,7 +714,7 @@ internal final class FormatterPredicateTests: XCTestCaseStopOnFail
     
     
     
-    func testElementsMatchedCollectionTextWithoutPredicateText() throws
+    func testElementsMatchedCollectionTextWithoutPredicateText()
     {
         let kind = PFK.elementsMatched([
             ElementResult(index: 1, value: 3)
@@ -750,7 +750,7 @@ internal final class FormatterPredicateTests: XCTestCaseStopOnFail
     
     // MARK: - Count mismatch
     
-    func testCountMismatchAtLeastWithNoMatches() throws
+    func testCountMismatchAtLeastWithNoMatches()
     {
         let mismatch = CountMismatch(
             expected:           .atLeast(3),
@@ -781,7 +781,7 @@ internal final class FormatterPredicateTests: XCTestCaseStopOnFail
     
     
     
-    func testCountMismatchAtMostWithCoalescedIndices() throws
+    func testCountMismatchAtMostWithCoalescedIndices()
     {
         let mismatch = CountMismatch(
             expected:           .atMost(2),
@@ -814,7 +814,7 @@ internal final class FormatterPredicateTests: XCTestCaseStopOnFail
     
     
     
-    func testCountMismatchExactlySingularForm() throws
+    func testCountMismatchExactlySingularForm()
     {
         let mismatch = CountMismatch(
             expected:           .exactly(1),
@@ -847,7 +847,7 @@ internal final class FormatterPredicateTests: XCTestCaseStopOnFail
     
     
     
-    func testCountMismatchAtLeastSingularForm() throws
+    func testCountMismatchAtLeastSingularForm()
     {
         let mismatch = CountMismatch(
             expected:           .atLeast(1),
@@ -878,7 +878,7 @@ internal final class FormatterPredicateTests: XCTestCaseStopOnFail
     
     
     
-    func testCountMismatchAtMostSingularForm() throws
+    func testCountMismatchAtMostSingularForm()
     {
         let mismatch = CountMismatch(
             expected:           .atMost(1),
@@ -911,7 +911,7 @@ internal final class FormatterPredicateTests: XCTestCaseStopOnFail
     
     
     
-    func testCountMismatchRangeExpectation() throws
+    func testCountMismatchRangeExpectation()
     {
         let mismatch = CountMismatch(
             expected:           .range(2...4),
@@ -944,7 +944,7 @@ internal final class FormatterPredicateTests: XCTestCaseStopOnFail
     
     
     
-    func testCountMismatchAnyExpectation() throws
+    func testCountMismatchAnyExpectation()
     {
         let mismatch = CountMismatch(
             expected:           .any,
@@ -975,7 +975,7 @@ internal final class FormatterPredicateTests: XCTestCaseStopOnFail
     
     
     
-    func testCountMismatchUnorderedOmitsMatchedIndices() throws
+    func testCountMismatchUnorderedOmitsMatchedIndices()
     {
         let mismatch = CountMismatch(
             expected:           .exactly(1),
@@ -1006,7 +1006,7 @@ internal final class FormatterPredicateTests: XCTestCaseStopOnFail
     
     
     
-    func testCountMismatchWithErrors() throws
+    func testCountMismatchWithErrors()
     {
         let mismatch = CountMismatch(
             expected:           .atLeast(3),
@@ -1048,7 +1048,7 @@ internal final class FormatterPredicateTests: XCTestCaseStopOnFail
     
     
     
-    func testCountMismatchUnorderedWithErrors() throws
+    func testCountMismatchUnorderedWithErrors()
     {
         let mismatch = CountMismatch(
             expected:           .exactly(2),
@@ -1086,7 +1086,7 @@ internal final class FormatterPredicateTests: XCTestCaseStopOnFail
     
     
     
-    func testCountMismatchMacroCaptureOfLongCollectionText() throws
+    func testCountMismatchMacroCaptureOfLongCollectionText()
     {
         let mismatch = CountMismatch(
             expected:           .atLeast(5),
@@ -1133,7 +1133,7 @@ internal final class FormatterPredicateTests: XCTestCaseStopOnFail
     
     
     
-    func testCountMismatchWithErrorsMaxDiffsTruncation() throws
+    func testCountMismatchWithErrorsMaxDiffsTruncation()
     {
         let mismatch = CountMismatch(
             expected:           .exactly(0),
@@ -1176,7 +1176,7 @@ internal final class FormatterPredicateTests: XCTestCaseStopOnFail
     
     
     
-    func testCountMismatchErrorsMaxDiffsWithoutCountDiffs() throws
+    func testCountMismatchErrorsMaxDiffsWithoutCountDiffs()
     {
         let mismatch = CountMismatch(
             expected:           .exactly(0),
@@ -1219,7 +1219,7 @@ internal final class FormatterPredicateTests: XCTestCaseStopOnFail
     
     
     
-    func testCountMismatchSingleContiguousRange() throws
+    func testCountMismatchSingleContiguousRange()
     {
         let mismatch = CountMismatch(
             expected:           .atMost(2),
@@ -1252,7 +1252,7 @@ internal final class FormatterPredicateTests: XCTestCaseStopOnFail
     
     
     
-    func testCountMismatchMacroCapture() throws
+    func testCountMismatchMacroCapture()
     {
         let mismatch = CountMismatch(
             expected:           .exactly(2),
@@ -1293,7 +1293,7 @@ internal final class FormatterPredicateTests: XCTestCaseStopOnFail
     
     
     
-    func testCountMismatchWithMatchedIndicesAndErrorsTruncated() throws
+    func testCountMismatchWithMatchedIndicesAndErrorsTruncated()
     {
         let mismatch = CountMismatch(
             expected:           .atLeast(4),
@@ -1340,7 +1340,7 @@ internal final class FormatterPredicateTests: XCTestCaseStopOnFail
     
     // MARK: - Ordering violation
     
-    func testOrderingViolationBasic() throws
+    func testOrderingViolationBasic()
     {
         let violation = OrderingViolation(
             index:      1,
@@ -1374,7 +1374,7 @@ internal final class FormatterPredicateTests: XCTestCaseStopOnFail
     
     
     
-    func testOrderingViolationError() throws
+    func testOrderingViolationError()
     {
         let violation = OrderingViolation(
             index:      0,
@@ -1410,7 +1410,7 @@ internal final class FormatterPredicateTests: XCTestCaseStopOnFail
     
     
     
-    func testOrderingViolationMacroCapture() throws
+    func testOrderingViolationMacroCapture()
     {
         let violation = OrderingViolation(
             index:      2,
@@ -1452,7 +1452,7 @@ internal final class FormatterPredicateTests: XCTestCaseStopOnFail
     
     
     
-    func testOrderingViolationStringsValuesAreQuoted() throws
+    func testOrderingViolationStringsValuesAreQuoted()
     {
         let violation = OrderingViolation(
             index:      0,
@@ -1486,7 +1486,7 @@ internal final class FormatterPredicateTests: XCTestCaseStopOnFail
     
     
     
-    func testOrderingViolationAtHighIndex() throws
+    func testOrderingViolationAtHighIndex()
     {
         let violation = OrderingViolation(
             index:      8,
@@ -1520,7 +1520,7 @@ internal final class FormatterPredicateTests: XCTestCaseStopOnFail
     
     
     
-    func testOrderingViolationWithStringValues() throws
+    func testOrderingViolationWithStringValues()
     {
         let violation = OrderingViolation(
             index:      1,
@@ -1558,7 +1558,7 @@ internal final class FormatterPredicateTests: XCTestCaseStopOnFail
     
     // MARK: - Duplicates
     
-    func testDuplicatesSingleGroup() throws
+    func testDuplicatesSingleGroup()
     {
         let groups: [DuplicateGroup] =
         [
@@ -1590,7 +1590,7 @@ internal final class FormatterPredicateTests: XCTestCaseStopOnFail
     
     
     
-    func testDuplicatesMultipleGroupsWithCoalescedIndices() throws
+    func testDuplicatesMultipleGroupsWithCoalescedIndices()
     {
         let groups: [DuplicateGroup] =
         [
@@ -1624,7 +1624,7 @@ internal final class FormatterPredicateTests: XCTestCaseStopOnFail
     
     
     
-    func testDuplicatesUnorderedMultipleGroups() throws
+    func testDuplicatesUnorderedMultipleGroups()
     {
         let groups: [DuplicateGroup] =
         [
@@ -1658,7 +1658,7 @@ internal final class FormatterPredicateTests: XCTestCaseStopOnFail
     
     
     
-    func testDuplicatesUnorderedShowsOccurrenceCount() throws
+    func testDuplicatesUnorderedShowsOccurrenceCount()
     {
         let groups: [DuplicateGroup] =
         [
@@ -1690,7 +1690,7 @@ internal final class FormatterPredicateTests: XCTestCaseStopOnFail
     
     
     
-    func testDuplicateStringsValuesAreQuoted() throws
+    func testDuplicateStringsValuesAreQuoted()
     {
         let groups: [DuplicateGroup] =
         [
@@ -1724,7 +1724,7 @@ internal final class FormatterPredicateTests: XCTestCaseStopOnFail
     
     
     
-    func testDuplicatesMaxDiffsTruncation() throws
+    func testDuplicatesMaxDiffsTruncation()
     {
         let groups: [DuplicateGroup] =
         [
@@ -1761,7 +1761,7 @@ internal final class FormatterPredicateTests: XCTestCaseStopOnFail
     
     
     
-    func testDuplicatesMaxDiffsWithCountDiffs() throws
+    func testDuplicatesMaxDiffsWithCountDiffs()
     {
         let groups: [DuplicateGroup] =
         [
@@ -1797,7 +1797,7 @@ internal final class FormatterPredicateTests: XCTestCaseStopOnFail
     
     
     
-    func testDuplicatesCollectionTextWithoutPredicateText() throws
+    func testDuplicatesCollectionTextWithoutPredicateText()
     {
         let groups: [DuplicateGroup] =
         [
@@ -1836,7 +1836,7 @@ internal final class FormatterPredicateTests: XCTestCaseStopOnFail
     
     // MARK: - Duplicate keys
     
-    func testDuplicatesKeysSingleGroup() throws
+    func testDuplicatesKeysSingleGroup()
     {
         let groups: [DuplicateKeyGroup] =
         [
@@ -1877,7 +1877,7 @@ internal final class FormatterPredicateTests: XCTestCaseStopOnFail
     
     
     
-    func testDuplicatesKeysMultipleGroups() throws
+    func testDuplicatesKeysMultipleGroups()
     {
         let groups: [DuplicateKeyGroup] =
         [
@@ -1933,7 +1933,7 @@ internal final class FormatterPredicateTests: XCTestCaseStopOnFail
     
     
     
-    func testDuplicatesKeysUnorderedShowsElementCount() throws
+    func testDuplicatesKeysUnorderedShowsElementCount()
     {
         let groups: [DuplicateKeyGroup] =
         [
@@ -1974,7 +1974,7 @@ internal final class FormatterPredicateTests: XCTestCaseStopOnFail
     
     
     
-    func testDuplicateKeysUnorderedSingularElementCount() throws
+    func testDuplicateKeysUnorderedSingularElementCount()
     {
         let groups: [DuplicateKeyGroup] =
         [
@@ -2010,7 +2010,7 @@ internal final class FormatterPredicateTests: XCTestCaseStopOnFail
     
     
     
-    func testDuplicateKeysMacroCapture() throws
+    func testDuplicateKeysMacroCapture()
     {
         let groups: [DuplicateKeyGroup] =
         [
@@ -2059,7 +2059,7 @@ internal final class FormatterPredicateTests: XCTestCaseStopOnFail
     
     
     
-    func testDuplicateKeysMaxDiffsTruncation() throws
+    func testDuplicateKeysMaxDiffsTruncation()
     {
         let groups: [DuplicateKeyGroup] =
         [
@@ -2124,7 +2124,7 @@ internal final class FormatterPredicateTests: XCTestCaseStopOnFail
     
     
     
-    func testDuplicateKeysMaxDiffsWithCountDiffs() throws
+    func testDuplicateKeysMaxDiffsWithCountDiffs()
     {
         let groups: [DuplicateKeyGroup] =
         [
@@ -2189,7 +2189,7 @@ internal final class FormatterPredicateTests: XCTestCaseStopOnFail
     
     
     
-    func testDuplicateKeysCollectionTextWithoutPredicateText() throws
+    func testDuplicateKeysCollectionTextWithoutPredicateText()
     {
         let groups: [DuplicateKeyGroup] =
         [
@@ -2237,7 +2237,7 @@ internal final class FormatterPredicateTests: XCTestCaseStopOnFail
     
     // MARK: - Multi-line values
     
-    func testFailedElementWithMultiLineValues() throws
+    func testFailedElementWithMultiLineValues()
     {
         let element = MultiLineValue("a", 1)
         
@@ -2270,7 +2270,7 @@ internal final class FormatterPredicateTests: XCTestCaseStopOnFail
     
     
     
-    func testDuplicatesWithMultiLineValues() throws
+    func testDuplicatesWithMultiLineValues()
     {
         let element = MultiLineValue("a", 1)
         
@@ -2304,7 +2304,7 @@ internal final class FormatterPredicateTests: XCTestCaseStopOnFail
     
     
     
-    func testOrderingViolationWithMultiLineValues() throws
+    func testOrderingViolationWithMultiLineValues()
     {
         let element1 = MultiLineValue("b", 2)
         let element2 = MultiLineValue("a", 1)

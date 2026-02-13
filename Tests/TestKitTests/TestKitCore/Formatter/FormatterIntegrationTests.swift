@@ -18,7 +18,7 @@ internal final class FormatterIntegrationTests: XCTestCaseStopOnFail
     
     
     
-    func testCycleDetection() throws
+    func testCycleDetection()
     {
         typealias Node = ComparatorCycleTests.Node
         
@@ -54,7 +54,7 @@ internal final class FormatterIntegrationTests: XCTestCaseStopOnFail
     
     
     
-    func testRootLevelPrimitive() throws
+    func testRootLevelPrimitive()
     {
         let exp : Int   = 30
         let act : Int   = 20
@@ -81,7 +81,7 @@ internal final class FormatterIntegrationTests: XCTestCaseStopOnFail
     
     
     
-    func testArrayWithMixedChanges() throws
+    func testArrayWithMixedChanges()
     {
         let exp         : [String]  = ["a", "b", "c", "d"]
         let act         : [String]  = ["a", "x", "d", "e"]
@@ -118,7 +118,7 @@ internal final class FormatterIntegrationTests: XCTestCaseStopOnFail
     
     
     
-    func testDictionaryWithNestedValueDiff() throws
+    func testDictionaryWithNestedValueDiff()
     {
         struct Item: Equatable
         {
@@ -154,7 +154,7 @@ internal final class FormatterIntegrationTests: XCTestCaseStopOnFail
     
     
     
-    func testSetMixedDifferences() throws
+    func testSetMixedDifferences()
     {
         let exp         : Set<String>   = ["a", "b", "c"]
         let act         : Set<String>   = ["a", "d"]
@@ -185,7 +185,7 @@ internal final class FormatterIntegrationTests: XCTestCaseStopOnFail
     
     
     
-    func testMultiLineStringWithCharDiffs() throws
+    func testMultiLineStringWithCharDiffs()
     {
         let exp         : String    = "line1\nhello\nline3"
         let act         : String    = "line1\nhallo\nline3"
@@ -217,7 +217,7 @@ internal final class FormatterIntegrationTests: XCTestCaseStopOnFail
     
     
     
-    func testStructWithSinglePropertyDifference() throws
+    func testStructWithSinglePropertyDifference()
     {
         struct User: Equatable
         {
@@ -254,7 +254,7 @@ internal final class FormatterIntegrationTests: XCTestCaseStopOnFail
     
     
     
-    func testNestedStructPathFlattening() throws
+    func testNestedStructPathFlattening()
     {
         struct Inner: Equatable
         {
@@ -295,7 +295,7 @@ internal final class FormatterIntegrationTests: XCTestCaseStopOnFail
     
     
     
-    func testTruncation() throws
+    func testTruncation()
     {
         let exp         : [Int]     = [1, 2, 3, 4, 5]
         let act         : [Int]     = [0, 0, 0, 0, 0]

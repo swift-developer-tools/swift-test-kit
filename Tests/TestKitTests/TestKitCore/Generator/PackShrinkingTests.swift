@@ -75,7 +75,7 @@ internal final class PackShrinkingTests: XCTestCaseStopOnFail
     
     
     
-    func testNoShrinkCandidates() throws
+    func testNoShrinkCandidates()
     {
         let shrinker = AnyShrinker({ (v: Int) in v.shrinkTowardZero() })
         
@@ -205,7 +205,7 @@ internal final class PackShrinkingTests: XCTestCaseStopOnFail
     
     
     
-    func testMakeShrinkerForTypeNoCandidates() throws
+    func testMakeShrinkerForTypeNoCandidates()
     {
         let shrinker = AnyShrinker.makeShrinker(for: Int.self)
         
@@ -263,7 +263,7 @@ internal final class PackShrinkingTests: XCTestCaseStopOnFail
     
     // MARK: - PackIndex
     
-    func testSingleNextCall() throws
+    func testSingleNextCall()
     {
         let packIndex = PackIndex()
         
@@ -272,7 +272,7 @@ internal final class PackShrinkingTests: XCTestCaseStopOnFail
     
     
     
-    func testSequentialFromZero() throws
+    func testSequentialFromZero()
     {
         let packIndex = PackIndex()
         
@@ -284,7 +284,7 @@ internal final class PackShrinkingTests: XCTestCaseStopOnFail
     
     
     
-    func testNewInstanceStartsAtZero() throws
+    func testNewInstanceStartsAtZero()
     {
         let packIndex1 = PackIndex()
         
@@ -305,7 +305,7 @@ internal final class PackShrinkingTests: XCTestCaseStopOnFail
     
     // MARK: - Integration
     
-    func testPerPositionIndependence() throws
+    func testPerPositionIndependence()
     {
         /// Zip-style shrinking (shrinking one value while holding others
         /// constant) must produce candidates with only one input changed.
@@ -446,7 +446,7 @@ internal final class PackShrinkingTests: XCTestCaseStopOnFail
     
     
     
-    func testPackIndexArrayReconstruction() throws
+    func testPackIndexArrayReconstruction()
     {
         let values: [Any] = ["a", 1, true, 2.5]
         
@@ -465,7 +465,7 @@ internal final class PackShrinkingTests: XCTestCaseStopOnFail
     
     
     
-    func testNewPackIndexPerCandidate() throws
+    func testNewPackIndexPerCandidate()
     {
         let values: [Any] = [10, "x", true]
         
@@ -599,7 +599,7 @@ internal final class PackShrinkingTests: XCTestCaseStopOnFail
     
     
     
-    func testAllPositionsUnshrinkable() throws
+    func testAllPositionsUnshrinkable()
     {
         let values: [Any] = [0, false, ""]
         
@@ -620,7 +620,7 @@ internal final class PackShrinkingTests: XCTestCaseStopOnFail
     
     
     
-    func testShrinkCandidateCountEqualsSumOfPositions() throws
+    func testShrinkCandidateCountEqualsSumOfPositions()
     {
         /// The total number of shrink candidates must equal the sum of
         /// shrink candidates from each position independently.
@@ -663,7 +663,7 @@ internal final class PackShrinkingTests: XCTestCaseStopOnFail
     
     
     
-    func testNoCandidateEqualsOriginalValues() throws
+    func testNoCandidateEqualsOriginalValues()
     {
         let values: [Any] = [100.25, "abc", true]
         
@@ -696,7 +696,7 @@ internal final class PackShrinkingTests: XCTestCaseStopOnFail
     
     
     
-    func testEachCandidateDiffersInExactlyOnePosition() throws
+    func testEachCandidateDiffersInExactlyOnePosition()
     {
         let values: [Any] = [20, "abc", true, 77.0]
         
@@ -747,7 +747,7 @@ internal final class PackShrinkingTests: XCTestCaseStopOnFail
     
     
     
-    func testSameTypeDifferentShrinkStrategies() throws
+    func testSameTypeDifferentShrinkStrategies()
     {
         /// The same types but with different shrink strategies must produce
         /// independent shrink candidates according to their own strategy.
@@ -799,7 +799,7 @@ internal final class PackShrinkingTests: XCTestCaseStopOnFail
     
     
     
-    func testShrinkCandidateOrderMatchesPositionOrder() throws
+    func testShrinkCandidateOrderMatchesPositionOrder()
     {
         /// All candidates from position 0 must appear first, then position 1,
         /// and then position 2, matching the iteration order of the
@@ -853,7 +853,7 @@ internal final class PackShrinkingTests: XCTestCaseStopOnFail
     
     
     
-    func testShrinkCandidatesMultiElement() throws
+    func testShrinkCandidatesMultiElement()
     {
         let shrinkers: [AnyShrinker] =
         [
@@ -931,7 +931,7 @@ internal final class PackShrinkingTests: XCTestCaseStopOnFail
     
     
     
-    func testShrinkCandidatesEmptyValuesWrongShrinkerCount() throws
+    func testShrinkCandidatesEmptyValuesWrongShrinkerCount()
     {
         /// No shrinkers or values. Nothing to shrink.
         let zeroResult: [[Any]] = AnyShrinker.shrinkCandidates(
@@ -957,7 +957,7 @@ internal final class PackShrinkingTests: XCTestCaseStopOnFail
     
     
     
-    func testShrinkCandidatesAllUnshrinkable() throws
+    func testShrinkCandidatesAllUnshrinkable()
     {
         let candidates: [[Any]] = AnyShrinker.shrinkCandidates(
             of: (0, false, ""),
@@ -974,7 +974,7 @@ internal final class PackShrinkingTests: XCTestCaseStopOnFail
     
     
     
-    func testShrinkCandidatesSingleElementPackUnshrinkable() throws
+    func testShrinkCandidatesSingleElementPackUnshrinkable()
     {
         let candidates: [[Any]] = AnyShrinker.shrinkCandidates(
             of:     0,

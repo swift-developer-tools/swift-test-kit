@@ -16,7 +16,7 @@ internal final class SeededRNGTests: XCTestCaseStopOnFail
 {
     // MARK: - Determinism
     
-    func testSameSeedProducesSameSequence() throws
+    func testSameSeedProducesSameSequence()
     {
         var rng1    = SeededRNG(seed: 1)
         var rng2    = SeededRNG(seed: 1)
@@ -29,7 +29,7 @@ internal final class SeededRNGTests: XCTestCaseStopOnFail
     
     
     
-    func testDifferentSeedsProduceDifferentSequences() throws
+    func testDifferentSeedsProduceDifferentSequences()
     {
         var rng1    = SeededRNG(seed: 1)
         var rng2    = SeededRNG(seed: 2)
@@ -45,7 +45,7 @@ internal final class SeededRNGTests: XCTestCaseStopOnFail
     
     // MARK: - Storage
     
-    func testSeedIsStored() throws
+    func testSeedIsStored()
     {
         let rng = SeededRNG(seed: 12345)
         
@@ -54,7 +54,7 @@ internal final class SeededRNGTests: XCTestCaseStopOnFail
     
     
     
-    func testSeedZero() throws
+    func testSeedZero()
     {
         var rng = SeededRNG(seed: 0)
         
@@ -69,7 +69,7 @@ internal final class SeededRNGTests: XCTestCaseStopOnFail
     
     
     
-    func testSeedMax() throws
+    func testSeedMax()
     {
         var rng = SeededRNG(seed: .max)
         
@@ -85,7 +85,7 @@ internal final class SeededRNGTests: XCTestCaseStopOnFail
     
     // MARK: - Sequence progression
     
-    func testConsecutiveValuesAreDifferent() throws
+    func testConsecutiveValuesAreDifferent()
     {
         var rng         : SeededRNG     = .random
         var previous    : UInt64        = rng.next()
@@ -102,7 +102,7 @@ internal final class SeededRNGTests: XCTestCaseStopOnFail
     
     
     
-    func testGenerationDoesNotAffectSeed() throws
+    func testGenerationDoesNotAffectSeed()
     {
         let randomSeed  : UInt64        = GenerationContext.randomSeed
         var rng         : SeededRNG     = .init(seed: randomSeed)
@@ -119,7 +119,7 @@ internal final class SeededRNGTests: XCTestCaseStopOnFail
     
     // MARK: - Distribution
     
-    func testOutputSpansBothHalves() throws
+    func testOutputSpansBothHalves()
     {
         var rng         : SeededRNG     = .random
         let midpoint    : UInt64        = .max / 2

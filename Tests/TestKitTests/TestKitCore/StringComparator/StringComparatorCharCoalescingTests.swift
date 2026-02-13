@@ -14,7 +14,7 @@ import XCTest
 
 internal final class StringComparatorCharCoalescingTests: XCTestCaseStopOnFail
 {
-    func testCharCoalescingAdjacentRemovals() throws
+    func testCharCoalescingAdjacentRemovals()
     {
         let exp : String    = "abcdef"
         let act : String    = "adef"
@@ -41,7 +41,7 @@ internal final class StringComparatorCharCoalescingTests: XCTestCaseStopOnFail
     
     
     
-    func testCharCoalescingAdjacentInsertions() throws
+    func testCharCoalescingAdjacentInsertions()
     {
         let exp : String    = "adef"
         let act : String    = "abcdef"
@@ -68,7 +68,7 @@ internal final class StringComparatorCharCoalescingTests: XCTestCaseStopOnFail
     
     
     
-    func testCharCoalescingMixedChanges() throws
+    func testCharCoalescingMixedChanges()
     {
         let exp : String    = "abcdef"
         let act : String    = "aXXcYYf"

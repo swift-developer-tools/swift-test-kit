@@ -23,7 +23,7 @@ internal final class MacroAssertionOutputTests: XCTestKitCase
     
     // MARK: - Boolean
 
-    func testAssertFailureMessage() throws
+    func testAssertFailureMessage()
     {
         let exprText: String = "a && b"
         
@@ -62,7 +62,7 @@ internal final class MacroAssertionOutputTests: XCTestKitCase
     
     
     
-    func testAssertTrueFailureMessage() throws
+    func testAssertTrueFailureMessage()
     {
         let exprText: String = "a || b"
         
@@ -101,7 +101,7 @@ internal final class MacroAssertionOutputTests: XCTestKitCase
     
     
     
-    func testAssertFalseFailureMessage() throws
+    func testAssertFalseFailureMessage()
     {
         let exprText: String = "a && b"
         
@@ -142,7 +142,7 @@ internal final class MacroAssertionOutputTests: XCTestKitCase
     
     // MARK: - Nil and non-nil
     
-    func testAssertNilFailureMessage() throws
+    func testAssertNilFailureMessage()
     {
         let expr        : Int       = 10
         let exprText    : String    = "something"
@@ -172,7 +172,7 @@ internal final class MacroAssertionOutputTests: XCTestKitCase
     
     
     
-    func testAssertNotNilFailureMessage() throws
+    func testAssertNotNilFailureMessage()
     {
         let expr        : Int?      = nil
         let exprText    : String    = "something"
@@ -201,7 +201,7 @@ internal final class MacroAssertionOutputTests: XCTestKitCase
     
     
     
-    func testUnwrapFailureMessage() throws
+    func testUnwrapFailureMessage()
     {
         let expr        : Int?      = nil
         let exprText    : String    = "something"
@@ -232,7 +232,7 @@ internal final class MacroAssertionOutputTests: XCTestKitCase
     
     // MARK: - Equality and inequality
     
-    func testAssertEqualFailureMessage() throws
+    func testAssertEqualFailureMessage()
     {
         struct User: Equatable
         {
@@ -277,7 +277,7 @@ internal final class MacroAssertionOutputTests: XCTestKitCase
     
     
     
-    func testNotEqualFailureMessage() throws
+    func testNotEqualFailureMessage()
     {
         let expr        : Int       = 10
         let expr1Text   : String    = "something"
@@ -312,7 +312,7 @@ internal final class MacroAssertionOutputTests: XCTestKitCase
     
     
     
-    func testIdenticalFailureMessage() throws
+    func testIdenticalFailureMessage()
     {
         let expr1       : NSObject  = .init()
         let expr2       : NSObject  = .init()
@@ -347,7 +347,7 @@ internal final class MacroAssertionOutputTests: XCTestKitCase
     
     
     
-    func testNotIdenticalFailureMessage() throws
+    func testNotIdenticalFailureMessage()
     {
         let expr        : NSObject  = .init()
         let expr1Text   : String    = "something"
@@ -381,7 +381,7 @@ internal final class MacroAssertionOutputTests: XCTestKitCase
     
     
     
-    func testAssertEqualFloatAccuracyFailureMessage() throws
+    func testAssertEqualFloatAccuracyFailureMessage()
     {
         let expr1       : Double    = 1.0
         let expr2       : Double    = 2.0
@@ -422,7 +422,7 @@ internal final class MacroAssertionOutputTests: XCTestKitCase
     
     
     
-    func testAssertEqualIntAccuracyFailureMessage() throws
+    func testAssertEqualIntAccuracyFailureMessage()
     {
         let expr1       : Int       = 0
         let expr2       : Int       = 2
@@ -463,7 +463,7 @@ internal final class MacroAssertionOutputTests: XCTestKitCase
     
     
     
-    func testAssertNotEqualFloatAccuracyFailureMessage() throws
+    func testAssertNotEqualFloatAccuracyFailureMessage()
     {
         let expr1       : Double    = 0.0
         let expr2       : Double    = 1.0
@@ -504,7 +504,7 @@ internal final class MacroAssertionOutputTests: XCTestKitCase
     
     
     
-    func testAssertNotEqualIntAccuracyFailureMessage() throws
+    func testAssertNotEqualIntAccuracyFailureMessage()
     {
         let expr1       : Int       = 0
         let expr2       : Int       = 1
@@ -547,7 +547,7 @@ internal final class MacroAssertionOutputTests: XCTestKitCase
     
     // MARK: - Comparable
     
-    func testAssertGreaterThanFailureMessage() throws
+    func testAssertGreaterThanFailureMessage()
     {
         let expr1       : Int       = 0
         let expr2       : Int       = 1
@@ -586,7 +586,7 @@ internal final class MacroAssertionOutputTests: XCTestKitCase
     
     
     
-    func testAssertGreaterThanOrEqualFailureMessage() throws
+    func testAssertGreaterThanOrEqualFailureMessage()
     {
         let expr1       : Int       = 0
         let expr2       : Int       = 1
@@ -625,7 +625,7 @@ internal final class MacroAssertionOutputTests: XCTestKitCase
     
     
     
-    func testAssertLessThanOrEqualFailureMessage() throws
+    func testAssertLessThanOrEqualFailureMessage()
     {
         let expr1       : Int       = 1
         let expr2       : Int       = 0
@@ -664,7 +664,7 @@ internal final class MacroAssertionOutputTests: XCTestKitCase
     
     
     
-    func testAssertLessThanFailureMessage() throws
+    func testAssertLessThanFailureMessage()
     {
         let expr1       : Int       = 1
         let expr2       : Int       = 0
@@ -705,7 +705,7 @@ internal final class MacroAssertionOutputTests: XCTestKitCase
     
     // MARK: - Error
     
-    func testAssertThrowsErrorFailureMessage() throws
+    func testAssertThrowsErrorFailureMessage()
     {
         let expr        : () throws -> Int  = { return 0 }
         let exprText    : String            = "something"
@@ -735,7 +735,7 @@ internal final class MacroAssertionOutputTests: XCTestKitCase
     
     
     
-    func testAssertNoThrowFailureMessage() throws
+    func testAssertNoThrowFailureMessage()
     {
         let error       : TestError         = .init()
         let expr        : () throws -> Int  = { throw error }
@@ -768,7 +768,7 @@ internal final class MacroAssertionOutputTests: XCTestKitCase
     
     // MARK: - Fail
     
-    func testFailFailureMessage() throws
+    func testFailFailureMessage()
     {
         let actual: String? = withOneExpectedFailure
         {
@@ -786,7 +786,7 @@ internal final class MacroAssertionOutputTests: XCTestKitCase
     
     // MARK: - Predicate
     
-    func testAssertAllSatisfyFailureMessage() throws
+    func testAssertAllSatisfyFailureMessage()
     {
         let actual: String? = withOneExpectedFailure
         {
@@ -816,7 +816,7 @@ internal final class MacroAssertionOutputTests: XCTestKitCase
     
     
     
-    func testAssertAnySatisfyFailureMessage() throws
+    func testAssertAnySatisfyFailureMessage()
     {
         let actual: String? = withOneExpectedFailure
         {
@@ -845,7 +845,7 @@ internal final class MacroAssertionOutputTests: XCTestKitCase
     
     
     
-    func testAssertNoneSatisfyFailureMessage() throws
+    func testAssertNoneSatisfyFailureMessage()
     {
         let actual: String? = withOneExpectedFailure
         {
@@ -875,7 +875,7 @@ internal final class MacroAssertionOutputTests: XCTestKitCase
     
     
     
-    func testAssertSatisfyAtLeastFailureMessage() throws
+    func testAssertSatisfyAtLeastFailureMessage()
     {
         let actual: String? = withOneExpectedFailure
         {
@@ -907,7 +907,7 @@ internal final class MacroAssertionOutputTests: XCTestKitCase
     
     
     
-    func testAssertSatisfyAtMostFailureMessage() throws
+    func testAssertSatisfyAtMostFailureMessage()
     {
         let actual: String? = withOneExpectedFailure
         {
@@ -939,7 +939,7 @@ internal final class MacroAssertionOutputTests: XCTestKitCase
     
     
     
-    func testAssertSatisfyRangeFailureMessage() throws
+    func testAssertSatisfyRangeFailureMessage()
     {
         let actual: String? = withOneExpectedFailure
         {
@@ -971,7 +971,7 @@ internal final class MacroAssertionOutputTests: XCTestKitCase
     
     
     
-    func testAssertExactlyFailureMessage() throws
+    func testAssertExactlyFailureMessage()
     {
         let actual: String? = withOneExpectedFailure
         {
@@ -1003,7 +1003,7 @@ internal final class MacroAssertionOutputTests: XCTestKitCase
     
     
     
-    func testAssertExactlyOneFailureMessage() throws
+    func testAssertExactlyOneFailureMessage()
     {
         let actual: String? = withOneExpectedFailure
         {
@@ -1034,7 +1034,7 @@ internal final class MacroAssertionOutputTests: XCTestKitCase
     
     
     
-    func testAssertSortedFailureMessage() throws
+    func testAssertSortedFailureMessage()
     {
         let actual: String? = withOneExpectedFailure
         {
@@ -1065,7 +1065,7 @@ internal final class MacroAssertionOutputTests: XCTestKitCase
     
     
     
-    func testAssertUniqueFailureMessage() throws
+    func testAssertUniqueFailureMessage()
     {
         let actual: String? = withOneExpectedFailure
         {
@@ -1093,7 +1093,7 @@ internal final class MacroAssertionOutputTests: XCTestKitCase
     
     
     
-    func testAssertUniqueByKeyFailureMessage() throws
+    func testAssertUniqueByKeyFailureMessage()
     {
         let actual: String? = withOneExpectedFailure
         {

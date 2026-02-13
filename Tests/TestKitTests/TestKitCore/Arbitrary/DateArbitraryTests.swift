@@ -16,7 +16,7 @@ internal final class DateArbitraryTests: XCTestCaseStopOnFail
 {
     // MARK: - Generation
     
-    func testGenerationDeterminism() throws
+    func testGenerationDeterminism()
     {
         for _ in 0..<1000
         {
@@ -31,7 +31,7 @@ internal final class DateArbitraryTests: XCTestCaseStopOnFail
     
     
     
-    func testGenerationSizeZeroBounds() throws
+    func testGenerationSizeZeroBounds()
     {
         let oneDay: TimeInterval = 60 * 60 * 24
         
@@ -50,7 +50,7 @@ internal final class DateArbitraryTests: XCTestCaseStopOnFail
     
     
     
-    func testGenerationSizeBounds() throws
+    func testGenerationSizeBounds()
     {
         let size    : Int           = 10
         let oneDay  : TimeInterval  = 60 * 60 * 24
@@ -77,7 +77,7 @@ internal final class DateArbitraryTests: XCTestCaseStopOnFail
     
     
     
-    func testGenerationProducesEmptyAndNonEmpty() throws
+    func testGenerationProducesEmptyAndNonEmpty()
     {
         let referenceDate   : Date  = .init(timeIntervalSinceReferenceDate: 0)
         var hasBefore       : Bool  = false
@@ -110,7 +110,7 @@ internal final class DateArbitraryTests: XCTestCaseStopOnFail
     
     
     
-    func testGenerationProducesSubSecondPrecision() throws
+    func testGenerationProducesSubSecondPrecision()
     {
         var hasFractionalSecond: Bool = false
         
@@ -134,7 +134,7 @@ internal final class DateArbitraryTests: XCTestCaseStopOnFail
     
     // MARK: - Shrinking
     
-    func testShrinkingReferenceDateProducesNoCandidates() throws
+    func testShrinkingReferenceDateProducesNoCandidates()
     {
         let referenceDate = Date(timeIntervalSinceReferenceDate: 0)
         
@@ -143,7 +143,7 @@ internal final class DateArbitraryTests: XCTestCaseStopOnFail
     
     
     
-    func testShrinkingFirstCandidateIsReferenceDate() throws
+    func testShrinkingFirstCandidateIsReferenceDate()
     {
         for _ in 0..<1000
         {
@@ -164,7 +164,7 @@ internal final class DateArbitraryTests: XCTestCaseStopOnFail
     
     
     
-    func testShrinkingCandidatesConvergeTowardReferenceDate() throws
+    func testShrinkingCandidatesConvergeTowardReferenceDate()
     {
         for _ in 0..<1000
         {
@@ -193,7 +193,7 @@ internal final class DateArbitraryTests: XCTestCaseStopOnFail
     
     
     
-    func testShrinkingCandidatesPreserveSign() throws
+    func testShrinkingCandidatesPreserveSign()
     {
         for _ in 0..<1000
         {
@@ -226,7 +226,7 @@ internal final class DateArbitraryTests: XCTestCaseStopOnFail
     
     
     
-    func testShrinkingCandidatesDistinctFromOriginal() throws
+    func testShrinkingCandidatesDistinctFromOriginal()
     {
         for _ in 0..<1000
         {
@@ -241,7 +241,7 @@ internal final class DateArbitraryTests: XCTestCaseStopOnFail
     
     
     
-    func testShrinkingNearReferenceDateValue() throws
+    func testShrinkingNearReferenceDateValue()
     {
         let intervals: [TimeInterval] =
         [

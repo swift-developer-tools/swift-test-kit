@@ -14,7 +14,7 @@ import XCTest
 
 internal final class OptionsTests: XCTestCaseStopOnFail
 {
-    func testTestOptions() throws
+    func testTestOptions()
     {
         let options = TestOptions()
         
@@ -25,7 +25,7 @@ internal final class OptionsTests: XCTestCaseStopOnFail
     
     
     
-    func testDiffOptions() throws
+    func testDiffOptions()
     {
         let options = DiffOptions()
         
@@ -35,7 +35,7 @@ internal final class OptionsTests: XCTestCaseStopOnFail
     
     
     
-    func testFormatOptions() throws
+    func testFormatOptions()
     {
         let options = FormatOptions()
         
@@ -49,7 +49,7 @@ internal final class OptionsTests: XCTestCaseStopOnFail
     
     
     
-    func testPropertyOptions() throws
+    func testPropertyOptions()
     {
         let options = PropertyOptions()
         

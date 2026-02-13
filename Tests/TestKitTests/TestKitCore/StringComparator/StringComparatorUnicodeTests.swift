@@ -14,7 +14,7 @@ import XCTest
 
 internal final class StringComparatorUnicodeTests: XCTestCaseStopOnFail
 {
-    func testEmojiComparison() throws
+    func testEmojiComparison()
     {
         let exp : String    = "hello 👋 world"
         let act : String    = "hello 🌎 world"
@@ -42,7 +42,7 @@ internal final class StringComparatorUnicodeTests: XCTestCaseStopOnFail
     
     
     
-    func testCombiningChars() throws
+    func testCombiningChars()
     {
         /// Swift uses canonical equivalence, so precomposed (`é` -> `U+00E9`)
         /// and decomposed (`e` + `U+0301`) forms are considered equal.
@@ -61,7 +61,7 @@ internal final class StringComparatorUnicodeTests: XCTestCaseStopOnFail
     
     
     
-    func testComplexEmoji() throws
+    func testComplexEmoji()
     {
         let exp : String    = "😀"
         let act : String    = "🎭☹️❓"

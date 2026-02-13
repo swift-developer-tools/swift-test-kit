@@ -16,70 +16,70 @@ internal final class IntegerGeneratorTests: XCTestCaseStopOnFail
 {
     // MARK: - Closed range
     
-    func testIntClosedRange() throws
+    func testIntClosedRange()
     {
         testClosedRange(of: Int.self)
     }
     
     
     
-    func testInt8ClosedRange() throws
+    func testInt8ClosedRange()
     {
         testClosedRange(of: Int8.self)
     }
     
     
     
-    func testInt16ClosedRange() throws
+    func testInt16ClosedRange()
     {
         testClosedRange(of: Int16.self)
     }
     
     
     
-    func testInt32ClosedRange() throws
+    func testInt32ClosedRange()
     {
         testClosedRange(of: Int32.self)
     }
     
     
     
-    func testInt64ClosedRange() throws
+    func testInt64ClosedRange()
     {
         testClosedRange(of: Int64.self)
     }
     
     
     
-    func testUIntClosedRange() throws
+    func testUIntClosedRange()
     {
         testClosedRange(of: UInt.self)
     }
     
     
     
-    func testUInt8ClosedRange() throws
+    func testUInt8ClosedRange()
     {
         testClosedRange(of: UInt8.self)
     }
     
     
     
-    func testUInt16ClosedRange() throws
+    func testUInt16ClosedRange()
     {
         testClosedRange(of: UInt16.self)
     }
     
     
     
-    func testUInt32ClosedRange() throws
+    func testUInt32ClosedRange()
     {
         testClosedRange(of: UInt32.self)
     }
     
     
     
-    func testUInt64ClosedRange() throws
+    func testUInt64ClosedRange()
     {
         testClosedRange(of: UInt64.self)
     }
@@ -88,70 +88,70 @@ internal final class IntegerGeneratorTests: XCTestCaseStopOnFail
     
     // MARK: - Range
     
-    func testIntRange() throws
+    func testIntRange()
     {
         testRange(of: Int.self)
     }
     
     
     
-    func testInt8Range() throws
+    func testInt8Range()
     {
         testRange(of: Int8.self)
     }
     
     
     
-    func testInt16Range() throws
+    func testInt16Range()
     {
         testRange(of: Int16.self)
     }
     
     
     
-    func testInt32Range() throws
+    func testInt32Range()
     {
         testRange(of: Int32.self)
     }
     
     
     
-    func testInt64Range() throws
+    func testInt64Range()
     {
         testRange(of: Int64.self)
     }
     
     
     
-    func testUIntRange() throws
+    func testUIntRange()
     {
         testRange(of: UInt.self)
     }
     
     
     
-    func testUInt8Range() throws
+    func testUInt8Range()
     {
         testRange(of: UInt8.self)
     }
     
     
     
-    func testUInt16Range() throws
+    func testUInt16Range()
     {
         testRange(of: UInt16.self)
     }
     
     
     
-    func testUInt32Range() throws
+    func testUInt32Range()
     {
         testRange(of: UInt32.self)
     }
     
     
     
-    func testUInt64Range() throws
+    func testUInt64Range()
     {
         testRange(of: UInt64.self)
     }

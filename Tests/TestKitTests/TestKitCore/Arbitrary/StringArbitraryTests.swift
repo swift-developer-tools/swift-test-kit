@@ -16,14 +16,14 @@ internal final class StringArbitraryTests: XCTestCaseStopOnFail
 {
     // MARK: - Character generation
     
-    func testCharGenerationDeterminism() throws
+    func testCharGenerationDeterminism()
     {
         validateDeterminism(of: Character.self)
     }
     
     
     
-    func testCharacterGenerationSizeZeroProducesASCII() throws
+    func testCharacterGenerationSizeZeroProducesASCII()
     {
         for _ in 0..<1000
         {
@@ -42,7 +42,7 @@ internal final class StringArbitraryTests: XCTestCaseStopOnFail
     
     
     
-    func testCharacterGenerationProducesVariety() throws
+    func testCharacterGenerationProducesVariety()
     {
         var unique: Set<Character> = []
         
@@ -62,14 +62,14 @@ internal final class StringArbitraryTests: XCTestCaseStopOnFail
     
     // MARK: - Scalar generation
     
-    func testScalarGenerationDeterminism() throws
+    func testScalarGenerationDeterminism()
     {
         validateDeterminism(of: Unicode.Scalar.self)
     }
     
     
     
-    func testScalarGenerationSizeZeroProducesASCII() throws
+    func testScalarGenerationSizeZeroProducesASCII()
     {
         for _ in 0..<1000
         {
@@ -84,7 +84,7 @@ internal final class StringArbitraryTests: XCTestCaseStopOnFail
     
     
     
-    func testScalarGenerationValuesInExpectedRange() throws
+    func testScalarGenerationValuesInExpectedRange()
     {
         for _ in 0..<1000
         {
@@ -96,7 +96,7 @@ internal final class StringArbitraryTests: XCTestCaseStopOnFail
     
     
     
-    func testScalarGenerationProducesUnicode() throws
+    func testScalarGenerationProducesUnicode()
     {
         var hasUnicode: Bool = false
         
@@ -116,7 +116,7 @@ internal final class StringArbitraryTests: XCTestCaseStopOnFail
     
     
     
-    func testScalarGenerationProducesVariety() throws
+    func testScalarGenerationProducesVariety()
     {
         var unique: Set<UInt32> = []
         
@@ -136,14 +136,14 @@ internal final class StringArbitraryTests: XCTestCaseStopOnFail
     
     // MARK: - String generation
     
-    func testStringGenerationDeterminism() throws
+    func testStringGenerationDeterminism()
     {
         validateDeterminism(of: String.self)
     }
     
     
     
-    func testStringGenerationSizeZeroProducesEmpty() throws
+    func testStringGenerationSizeZeroProducesEmpty()
     {
         for _ in 0..<1000
         {
@@ -153,7 +153,7 @@ internal final class StringArbitraryTests: XCTestCaseStopOnFail
     
     
     
-    func testStringGenerationLengthRespectsSizeBounds() throws
+    func testStringGenerationLengthRespectsSizeBounds()
     {
         let size: Int = 10
         
@@ -172,7 +172,7 @@ internal final class StringArbitraryTests: XCTestCaseStopOnFail
     
     
     
-    func testStringGenerationProducesEmptyAndNonEmpty() throws
+    func testStringGenerationProducesEmptyAndNonEmpty()
     {
         var hasEmpty    : Bool  = false
         var hasNonEmpty : Bool  = false
@@ -204,7 +204,7 @@ internal final class StringArbitraryTests: XCTestCaseStopOnFail
     
     
     
-    func testStringGenerationProducesVariousCounts() throws
+    func testStringGenerationProducesVariousCounts()
     {
         let size    : Int       = 20
         var counts  : Set<Int>  = []
@@ -228,14 +228,14 @@ internal final class StringArbitraryTests: XCTestCaseStopOnFail
     
     // MARK: - Substring generation
     
-    func testSubstringGenerationDeterminism() throws
+    func testSubstringGenerationDeterminism()
     {
         validateDeterminism(of: Substring.self)
     }
     
     
     
-    func testSubstringGenerationSizeZeroProducesEmpty() throws
+    func testSubstringGenerationSizeZeroProducesEmpty()
     {
         for _ in 0..<1000
         {
@@ -245,7 +245,7 @@ internal final class StringArbitraryTests: XCTestCaseStopOnFail
     
     
     
-    func testSubstringGenerationMatchesStringContent() throws
+    func testSubstringGenerationMatchesStringContent()
     {
         for _ in 0..<1000
         {
@@ -262,7 +262,7 @@ internal final class StringArbitraryTests: XCTestCaseStopOnFail
     
     // MARK: - Shrinking
     
-    func testCharacterShrinking() throws
+    func testCharacterShrinking()
     {
         let characters: [Character] =
         [
@@ -299,7 +299,7 @@ internal final class StringArbitraryTests: XCTestCaseStopOnFail
     
     
     
-    func testScalarShrinking() throws
+    func testScalarShrinking()
     {
         let scalars: [Unicode.Scalar] =
         [
@@ -321,7 +321,7 @@ internal final class StringArbitraryTests: XCTestCaseStopOnFail
     
     
     
-    func testStringShrinking() throws
+    func testStringShrinking()
     {
         let strings: [String] =
         [
@@ -343,7 +343,7 @@ internal final class StringArbitraryTests: XCTestCaseStopOnFail
     
     
     
-    func testSubstringEmptyShrinking() throws
+    func testSubstringEmptyShrinking()
     {
         let empty: Substring = ""[...]
         
@@ -352,7 +352,7 @@ internal final class StringArbitraryTests: XCTestCaseStopOnFail
     
     
     
-    func testSubstringShrinkingMatchesStringShrinking() throws
+    func testSubstringShrinkingMatchesStringShrinking()
     {
         let strings: [String] =
         [

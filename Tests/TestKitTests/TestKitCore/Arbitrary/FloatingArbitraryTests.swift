@@ -16,21 +16,21 @@ internal final class FloatingArbitraryTests: XCTestCaseStopOnFail
 {
     // MARK: - Generation
     
-    func testDoubleGeneration() throws
+    func testDoubleGeneration()
     {
         testGeneration(of: Double.self)
     }
     
     
     
-    func testFloatGeneration() throws
+    func testFloatGeneration()
     {
         testGeneration(of: Float.self)
     }
     
     
     
-    func testFloat16Generation() throws
+    func testFloat16Generation()
     {
         testGeneration(of: Float16.self)
     }
@@ -39,21 +39,21 @@ internal final class FloatingArbitraryTests: XCTestCaseStopOnFail
     
     // MARK: - Shrinking
     
-    func testDoubleShrinking() throws
+    func testDoubleShrinking()
     {
         testShrinking(of: Double.self)
     }
     
     
     
-    func testFloatShrinking() throws
+    func testFloatShrinking()
     {
         testShrinking(of: Float.self)
     }
     
     
     
-    func testFloat16Shrinking() throws
+    func testFloat16Shrinking()
     {
         testShrinking(of: Float16.self)
     }

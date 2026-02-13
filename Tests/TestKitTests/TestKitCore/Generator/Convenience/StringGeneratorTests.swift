@@ -16,7 +16,7 @@ internal final class StringGeneratorTests: XCTestCaseStopOnFail
 {
     // MARK: - Exact count generation
     
-    func testExactCountDeterminism() throws
+    func testExactCountDeterminism()
     {
         let generator: Generator<String> = .string(count: 5)
         
@@ -25,7 +25,7 @@ internal final class StringGeneratorTests: XCTestCaseStopOnFail
     
     
     
-    func testExactCountProducesCorrectCount() throws
+    func testExactCountProducesCorrectCount()
     {
         let generator: Generator<String> = .string(count: 7)
         
@@ -37,7 +37,7 @@ internal final class StringGeneratorTests: XCTestCaseStopOnFail
     
     
     
-    func testExactCountZeroProducesEmpty() throws
+    func testExactCountZeroProducesEmpty()
     {
         let generator: Generator<String> = .string(
             count:          10,
@@ -61,7 +61,7 @@ internal final class StringGeneratorTests: XCTestCaseStopOnFail
     
     
     
-    func testExactCountUsesCustomCharacterGenerator() throws
+    func testExactCountUsesCustomCharacterGenerator()
     {
         let generator: Generator<String> = .string(count: 0)
         
@@ -77,7 +77,7 @@ internal final class StringGeneratorTests: XCTestCaseStopOnFail
     
     // MARK: - Exact count shrinking
     
-    func testExactCountShrinkPreservesCount() throws
+    func testExactCountShrinkPreservesCount()
     {
         let generator   : Generator<String>     = .string(count: 3)
         let string      : String                = "zxyw"
@@ -93,7 +93,7 @@ internal final class StringGeneratorTests: XCTestCaseStopOnFail
     
     
     
-    func testExactCountShrinkElementsConvergeTowardZero() throws
+    func testExactCountShrinkElementsConvergeTowardZero()
     {
         let generator   : Generator<String>     = .string(count: 2)
         let string      : String                = "xyz"
@@ -144,7 +144,7 @@ internal final class StringGeneratorTests: XCTestCaseStopOnFail
     
     
     
-    func testExactCountShrinkAllAsProducesEmpty() throws
+    func testExactCountShrinkAllAsProducesEmpty()
     {
         let generator   : Generator<String>     = .string(count: 3)
         let string      : String                = "aaa"
@@ -157,7 +157,7 @@ internal final class StringGeneratorTests: XCTestCaseStopOnFail
     
     // MARK: - Closed range generation
     
-    func testClosedRangeDeterminism() throws
+    func testClosedRangeDeterminism()
     {
         let generator: Generator<String> = .string(count: 2...8)
         
@@ -166,7 +166,7 @@ internal final class StringGeneratorTests: XCTestCaseStopOnFail
     
     
     
-    func testClosedRangeCountRespectsBounds() throws
+    func testClosedRangeCountRespectsBounds()
     {
         let generator: Generator<String> = .string(count: 3...7)
         
@@ -178,7 +178,7 @@ internal final class StringGeneratorTests: XCTestCaseStopOnFail
     
     
     
-    func testClosedRangeProducesVariousCounts() throws
+    func testClosedRangeProducesVariousCounts()
     {
         let generator   : Generator<String>     = .string(count: 0...10)
         var counts      : Set<Int>              = []
@@ -197,7 +197,7 @@ internal final class StringGeneratorTests: XCTestCaseStopOnFail
     
     // MARK: - Closed range shrinking
     
-    func testClosedRangeShrinkReducesCount() throws
+    func testClosedRangeShrinkReducesCount()
     {
         let generator   : Generator<String>     = .string(count: 2...8)
         let string      : String                = "abcde"
@@ -210,7 +210,7 @@ internal final class StringGeneratorTests: XCTestCaseStopOnFail
     
     
     
-    func testClosedRangeShrinkRespectsLowerBound() throws
+    func testClosedRangeShrinkRespectsLowerBound()
     {
         let generator   : Generator<String>     = .string(count: 3...8)
         let string      : String                = "abcde"
@@ -224,7 +224,7 @@ internal final class StringGeneratorTests: XCTestCaseStopOnFail
     
     
     
-    func testClosedRangeShrinkAtLowerBoundOnlyShrinkCharacters() throws
+    func testClosedRangeShrinkAtLowerBoundOnlyShrinkCharacters()
     {
         let generator   : Generator<String>     = .string(count: 3...8)
         let string      : String                = "xyz"
@@ -238,7 +238,7 @@ internal final class StringGeneratorTests: XCTestCaseStopOnFail
     
     
     
-    func testClosedRangeShrinkZeroLowerBoundIncludesEmpty() throws
+    func testClosedRangeShrinkZeroLowerBoundIncludesEmpty()
     {
         let generator   : Generator<String>     = .string(count: 0...5)
         let string      : String                = "xyz"
@@ -251,7 +251,7 @@ internal final class StringGeneratorTests: XCTestCaseStopOnFail
     
     // MARK: - Range generation
     
-    func testRangeDeterminism() throws
+    func testRangeDeterminism()
     {
         let generator: Generator<String> = .string(count: 2..<9)
         
@@ -260,7 +260,7 @@ internal final class StringGeneratorTests: XCTestCaseStopOnFail
     
     
     
-    func testRangeCountRespectsBounds() throws
+    func testRangeCountRespectsBounds()
     {
         let generator: Generator<String> = .string(count: 3..<8)
         
@@ -272,7 +272,7 @@ internal final class StringGeneratorTests: XCTestCaseStopOnFail
     
     
     
-    func testRangeProducesVariousCounts() throws
+    func testRangeProducesVariousCounts()
     {
         let generator   : Generator<String>     = .string(count: 0..<11)
         var counts      : Set<Int>              = []
@@ -291,7 +291,7 @@ internal final class StringGeneratorTests: XCTestCaseStopOnFail
     
     // MARK: - Range shrinking
     
-    func testRangeShrinkReducesCount() throws
+    func testRangeShrinkReducesCount()
     {
         let generator   : Generator<String>     = .string(count: 2..<9)
         let string      : String                = "abcde"
@@ -304,7 +304,7 @@ internal final class StringGeneratorTests: XCTestCaseStopOnFail
     
     
     
-    func testRangeShrinkRespectsLowerBound() throws
+    func testRangeShrinkRespectsLowerBound()
     {
         let generator   : Generator<String>     = .string(count: 3..<9)
         let string      : String                = "xyz"
@@ -318,7 +318,7 @@ internal final class StringGeneratorTests: XCTestCaseStopOnFail
     
     
     
-    func testRangeShrinkAtLowerBoundOnlyShrinkCharacters() throws
+    func testRangeShrinkAtLowerBoundOnlyShrinkCharacters()
     {
         let generator   : Generator<String>     = .string(count: 3..<9)
         let string      : String                = "xyz"
@@ -332,7 +332,7 @@ internal final class StringGeneratorTests: XCTestCaseStopOnFail
     
     
     
-    func testRangeShrinkZeroLowerBoundIncludesEmpty() throws
+    func testRangeShrinkZeroLowerBoundIncludesEmpty()
     {
         let generator   : Generator<String>     = .string(count: 0..<6)
         let string      : String                = "xyz"
@@ -345,7 +345,7 @@ internal final class StringGeneratorTests: XCTestCaseStopOnFail
     
     // MARK: - Non-empty string generation
     
-    func testNonEmptyStringDeterminism() throws
+    func testNonEmptyStringDeterminism()
     {
         let generator: Generator<String> = .nonEmptyString()
         
@@ -354,7 +354,7 @@ internal final class StringGeneratorTests: XCTestCaseStopOnFail
     
     
     
-    func testNonEmptyStringNeverProducesEmpty() throws
+    func testNonEmptyStringNeverProducesEmpty()
     {
         let generator: Generator<String> = .nonEmptyString()
         
@@ -366,7 +366,7 @@ internal final class StringGeneratorTests: XCTestCaseStopOnFail
     
     
     
-    func testNonEmptyStringUsesCustomCharacterGenerator() throws
+    func testNonEmptyStringUsesCustomCharacterGenerator()
     {
         let generator: Generator<String>
             = .nonEmptyString(characters: .digit())
@@ -388,7 +388,7 @@ internal final class StringGeneratorTests: XCTestCaseStopOnFail
     
     // MARK: - Non-empty string shrinking
     
-    func testNonEmptyStringShrinkNeverProducesEmpty() throws
+    func testNonEmptyStringShrinkNeverProducesEmpty()
     {
         let generator   : Generator<String>     = .nonEmptyString()
         let string      : String                = "xyz"
@@ -404,7 +404,7 @@ internal final class StringGeneratorTests: XCTestCaseStopOnFail
     
     
     
-    func testNonEmptyStringShrinkSingleElementOnlyShrinkCharacter() throws
+    func testNonEmptyStringShrinkSingleElementOnlyShrinkCharacter()
     {
         let generator   : Generator<String>     = .nonEmptyString()
         let string      : String                = "z"

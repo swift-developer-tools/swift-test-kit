@@ -11,21 +11,21 @@ internal final class MacroAssertionOptionsTests: XCTestKitCase
 {
     // MARK: - Boolean
     
-    func testAssertOptionsBehavior() throws
+    func testAssertOptionsBehavior()
     {
         testMacroAssertionOptionsBehavior(.assert)
     }
     
     
     
-    func testAssertTrueOptionsBehavior() throws
+    func testAssertTrueOptionsBehavior()
     {
         testMacroAssertionOptionsBehavior(.true)
     }
     
     
     
-    func testAssertFalseOptionsBehavior() throws
+    func testAssertFalseOptionsBehavior()
     {
         testMacroAssertionOptionsBehavior(.false)
     }
@@ -34,7 +34,7 @@ internal final class MacroAssertionOptionsTests: XCTestKitCase
     
     // MARK: - Equality and inequality
     
-    func testAssertEqualOptionsBehavior() throws
+    func testAssertEqualOptionsBehavior()
     {
         testMacroAssertionOptionsBehavior(.equal)
     }
@@ -43,70 +43,70 @@ internal final class MacroAssertionOptionsTests: XCTestKitCase
     
     // MARK: - Predicate
     
-    func testAssertSatisfyAllOptionsBehavior() throws
+    func testAssertSatisfyAllOptionsBehavior()
     {
         testMacroAssertionOptionsBehavior(.satisfyAll)
     }
     
     
     
-    func testAssertSatisfyAnyOptionsBehavior() throws
+    func testAssertSatisfyAnyOptionsBehavior()
     {
         testMacroAssertionOptionsBehavior(.satisfyAny)
     }
     
     
     
-    func testAssertSatisfyNoneOptionsBehavior() throws
+    func testAssertSatisfyNoneOptionsBehavior()
     {
         testMacroAssertionOptionsBehavior(.satisfyNone)
     }
     
     
     
-    func testAssertSatisfyAtLeastOptionsBehavior() throws
+    func testAssertSatisfyAtLeastOptionsBehavior()
     {
         testMacroAssertionOptionsBehavior(.satisfyAtLeast)
     }
     
     
     
-    func testAssertSatisfyAtMostOptionsBehavior() throws
+    func testAssertSatisfyAtMostOptionsBehavior()
     {
         testMacroAssertionOptionsBehavior(.satisfyAtMost)
     }
     
     
     
-    func testAssertSatisfyRangeOptionsBehavior() throws
+    func testAssertSatisfyRangeOptionsBehavior()
     {
         testMacroAssertionOptionsBehavior(.satisfyRange)
     }
     
     
     
-    func testAssertExactlyOptionsBehavior() throws
+    func testAssertExactlyOptionsBehavior()
     {
         testMacroAssertionOptionsBehavior(.exactly)
     }
     
     
     
-    func testAssertExactlyOneOptionsBehavior() throws
+    func testAssertExactlyOneOptionsBehavior()
     {
         testMacroAssertionOptionsBehavior(.exactlyOne)
     }
     
     
     
-    func testAssertUniqueBehavior() throws
+    func testAssertUniqueBehavior()
     {
         testMacroAssertionOptionsBehavior(.unique)
     }
     
     
     
-    func testAssertUniqueByKeyBehavior() throws
+    func testAssertUniqueByKeyBehavior()
     {
         testMacroAssertionOptionsBehavior(.uniqueByKey)
     }

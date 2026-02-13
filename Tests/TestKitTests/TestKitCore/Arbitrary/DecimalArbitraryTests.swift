@@ -16,7 +16,7 @@ internal final class DecimalArbitraryTests: XCTestCaseStopOnFail
 {
     // MARK: - Generation
     
-    func testGenerationDeterminism() throws
+    func testGenerationDeterminism()
     {
         for _ in 0..<1000
         {
@@ -38,7 +38,7 @@ internal final class DecimalArbitraryTests: XCTestCaseStopOnFail
     
     
     
-    func testGenerationSizeZeroBounds() throws
+    func testGenerationSizeZeroBounds()
     {
         for _ in 0..<1000
         {
@@ -60,7 +60,7 @@ internal final class DecimalArbitraryTests: XCTestCaseStopOnFail
     
     
     
-    func testGenerationSizeBounds() throws
+    func testGenerationSizeBounds()
     {
         let size    : Int       = 10
         let bound   : Decimal   = .init(size) + 1
@@ -90,7 +90,7 @@ internal final class DecimalArbitraryTests: XCTestCaseStopOnFail
     
     
     
-    func testGenerationSignedValueProduction() throws
+    func testGenerationSignedValueProduction()
     {
         var hasNegative : Bool  = false
         var hasPositive : Bool  = false
@@ -123,7 +123,7 @@ internal final class DecimalArbitraryTests: XCTestCaseStopOnFail
     
     
     
-    func testGenerationNaNProduction() throws
+    func testGenerationNaNProduction()
     {
         var hasNaN: Bool = false
         
@@ -143,7 +143,7 @@ internal final class DecimalArbitraryTests: XCTestCaseStopOnFail
     
     
     
-    func testGenerationFractionalProduction() throws
+    func testGenerationFractionalProduction()
     {
         var hasFractional: Bool = false
         
@@ -171,21 +171,21 @@ internal final class DecimalArbitraryTests: XCTestCaseStopOnFail
     
     // MARK: - Shrinking
     
-    func testShrinkingZero() throws
+    func testShrinkingZero()
     {
         XCTAssertEqual(Decimal.zero.shrink(), [])
     }
     
     
     
-    func testShrinkingNaN() throws
+    func testShrinkingNaN()
     {
         XCTAssertEqual(Decimal.nan.shrink(), [0])
     }
     
     
     
-    func testShrinkingPositiveFractionalTruncation() throws
+    func testShrinkingPositiveFractionalTruncation()
     {
         let value       : Decimal       = .init(string: "99.75")!
         let truncated   : Decimal       = 99
@@ -198,7 +198,7 @@ internal final class DecimalArbitraryTests: XCTestCaseStopOnFail
     
     
     
-    func testShrinkingNegativeFractionalTruncation() throws
+    func testShrinkingNegativeFractionalTruncation()
     {
         let value       : Decimal       = .init(string: "-99.75")!
         let truncated   : Decimal       = -99
@@ -211,7 +211,7 @@ internal final class DecimalArbitraryTests: XCTestCaseStopOnFail
     
     
     
-    func testShrinkingCuratedValues() throws
+    func testShrinkingCuratedValues()
     {
         let values: [Decimal] =
         [
@@ -232,7 +232,7 @@ internal final class DecimalArbitraryTests: XCTestCaseStopOnFail
     
     
     
-    func testShrinkingCandidatesDistinctFromOriginal() throws
+    func testShrinkingCandidatesDistinctFromOriginal()
     {
         for _ in 0..<1000
         {
@@ -247,7 +247,7 @@ internal final class DecimalArbitraryTests: XCTestCaseStopOnFail
     
     
     
-    func testShrinkingHalvingProducesIntermediateSteps() throws
+    func testShrinkingHalvingProducesIntermediateSteps()
     {
         let value       : Decimal       = 1001
         let candidates  : [Decimal]     = value.shrink()
@@ -257,7 +257,7 @@ internal final class DecimalArbitraryTests: XCTestCaseStopOnFail
     
     
     
-    func testShrinkingHalfProducesOnlyTarget() throws
+    func testShrinkingHalfProducesOnlyTarget()
     {
         /// The halving loop termiantes when the gap is not greater than
         /// `0.5`. For a value of exactly `0.5`, the truncated value (`0`)

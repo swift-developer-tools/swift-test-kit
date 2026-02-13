@@ -16,7 +16,7 @@ internal final class BoolArbitraryTests: XCTestCaseStopOnFail
 {
     // MARK: - Generation
     
-    func testArbitraryProducesBothValues() throws
+    func testArbitraryProducesBothValues()
     {
         var hasTrue     : Bool  = false
         var hasFalse    : Bool  = false
@@ -48,7 +48,7 @@ internal final class BoolArbitraryTests: XCTestCaseStopOnFail
     
     
     
-    func testArbitraryDeterminism() throws
+    func testArbitraryDeterminism()
     {
         for _ in 0..<1000
         {
@@ -65,14 +65,14 @@ internal final class BoolArbitraryTests: XCTestCaseStopOnFail
     
     // MARK: - Shrinking
     
-    func testShrinkTrue() throws
+    func testShrinkTrue()
     {
         XCTAssertEqual(true.shrink(), [false])
     }
     
     
     
-    func testShrinkFalse() throws
+    func testShrinkFalse()
     {
         XCTAssertEqual(false.shrink(), [])
     }
