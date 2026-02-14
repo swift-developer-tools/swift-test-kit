@@ -18,21 +18,21 @@ internal final class RangeFloatingArbitraryTests: XCTestCaseStopOnFail
     
     func testClosedRangeDoubleGeneration()
     {
-        testGeneration(of: ClosedRange<Double>.self)
+        validateGeneration(of: ClosedRange<Double>.self)
     }
     
     
     
     func testClosedRangeFloatGeneration()
     {
-        testGeneration(of: ClosedRange<Float>.self)
+        validateGeneration(of: ClosedRange<Float>.self)
     }
     
     
     
     func testClosedRangeFloat16Generation()
     {
-        testGeneration(of: ClosedRange<Float16>.self)
+        validateGeneration(of: ClosedRange<Float16>.self)
     }
     
     
@@ -41,21 +41,21 @@ internal final class RangeFloatingArbitraryTests: XCTestCaseStopOnFail
     
     func testRangeDoubleShrinking()
     {
-        testShrinking(of: Range<Double>.self)
+        validateShrinking(of: Range<Double>.self)
     }
     
     
     
     func testRangeFloatShrinking()
     {
-        testShrinking(of: Range<Float>.self)
+        validateShrinking(of: Range<Float>.self)
     }
     
     
     
     func testRangeFloat16Shrinking()
     {
-        testShrinking(of: Range<Float16>.self)
+        validateShrinking(of: Range<Float16>.self)
     }
 }
 
@@ -69,7 +69,7 @@ extension RangeFloatingArbitraryTests
     
     /// Validates arbitrary value generation of the given type.
     /// - Parameter type: The type to evaluate.
-    private func testGeneration<R>(
+    private func validateGeneration<R>(
         of type: R.Type
     ) where R : Arbitrary & ArbitraryRange & Equatable,
             R.Bound : Arbitrary & BinaryFloatingPoint,
@@ -268,7 +268,7 @@ extension RangeFloatingArbitraryTests
     
     /// Validates the shrink candidates of the given type.
     /// - Parameter type: The type to test.
-    private func testShrinking<R>(
+    private func validateShrinking<R>(
         of type: R.Type
     ) where R : Arbitrary & ArbitraryRange & Equatable,
             R.Bound : Arbitrary & BinaryFloatingPoint,

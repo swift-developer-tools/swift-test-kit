@@ -18,140 +18,140 @@ internal final class RangeIntegerArbitraryTests: XCTestCaseStopOnFail
     
     func testClosedRangeIntGeneration()
     {
-        testGeneration(of: ClosedRange<Int>.self)
+        validateGeneration(of: ClosedRange<Int>.self)
     }
     
     
     
     func testClosedRangeInt8Generation()
     {
-        testGeneration(of: ClosedRange<Int8>.self)
+        validateGeneration(of: ClosedRange<Int8>.self)
     }
     
     
     
     func testClosedRangeInt16Generation()
     {
-        testGeneration(of: ClosedRange<Int16>.self)
+        validateGeneration(of: ClosedRange<Int16>.self)
     }
     
     
     
     func testClosedRangeInt32Generation()
     {
-        testGeneration(of: ClosedRange<Int32>.self)
+        validateGeneration(of: ClosedRange<Int32>.self)
     }
     
     
     
     func testClosedRangeInt64Generation()
     {
-        testGeneration(of: ClosedRange<Int64>.self)
+        validateGeneration(of: ClosedRange<Int64>.self)
     }
     
     
     
     func testClosedRangeUIntGeneration()
     {
-        testGeneration(of: ClosedRange<UInt>.self)
+        validateGeneration(of: ClosedRange<UInt>.self)
     }
     
     
     
     func testClosedRangeUInt8Generation()
     {
-        testGeneration(of: ClosedRange<UInt8>.self)
+        validateGeneration(of: ClosedRange<UInt8>.self)
     }
     
     
     
     func testClosedRangeUInt16Generation()
     {
-        testGeneration(of: ClosedRange<UInt16>.self)
+        validateGeneration(of: ClosedRange<UInt16>.self)
     }
     
     
     
     func testClosedRangeUInt32Generation()
     {
-        testGeneration(of: ClosedRange<UInt32>.self)
+        validateGeneration(of: ClosedRange<UInt32>.self)
     }
     
     
     
     func testClosedRangeUInt64Generation()
     {
-        testGeneration(of: ClosedRange<UInt64>.self)
+        validateGeneration(of: ClosedRange<UInt64>.self)
     }
     
     
     
     func testRangeIntGeneration()
     {
-        testGeneration(of: Range<Int>.self)
+        validateGeneration(of: Range<Int>.self)
     }
     
     
     
     func testRangeInt8Generation()
     {
-        testGeneration(of: Range<Int8>.self)
+        validateGeneration(of: Range<Int8>.self)
     }
     
     
     
     func testRangeInt16Generation()
     {
-        testGeneration(of: Range<Int16>.self)
+        validateGeneration(of: Range<Int16>.self)
     }
     
     
     
     func testRangeInt32Generation()
     {
-        testGeneration(of: Range<Int32>.self)
+        validateGeneration(of: Range<Int32>.self)
     }
     
     
     
     func testRangeInt64Generation()
     {
-        testGeneration(of: Range<Int64>.self)
+        validateGeneration(of: Range<Int64>.self)
     }
     
     
     
     func testRangeUIntGeneration()
     {
-        testGeneration(of: Range<UInt>.self)
+        validateGeneration(of: Range<UInt>.self)
     }
     
     
     
     func testRangeUInt8Generation()
     {
-        testGeneration(of: Range<UInt8>.self)
+        validateGeneration(of: Range<UInt8>.self)
     }
     
     
     
     func testRangeUInt16Generation()
     {
-        testGeneration(of: Range<UInt16>.self)
+        validateGeneration(of: Range<UInt16>.self)
     }
     
     
     
     func testRangeUInt32Generation()
     {
-        testGeneration(of: Range<UInt32>.self)
+        validateGeneration(of: Range<UInt32>.self)
     }
     
     
     
     func testRangeUInt64Generation()
     {
-        testGeneration(of: Range<UInt64>.self)
+        validateGeneration(of: Range<UInt64>.self)
     }
     
     
@@ -160,140 +160,140 @@ internal final class RangeIntegerArbitraryTests: XCTestCaseStopOnFail
     
     func testClosedRangeIntShrinking()
     {
-        testShrinking(of: ClosedRange<Int>.self)
+        validateShrinking(of: ClosedRange<Int>.self)
     }
     
     
     
     func testClosedRangeInt8Shrinking()
     {
-        testShrinking(of: ClosedRange<Int8>.self)
+        validateShrinking(of: ClosedRange<Int8>.self)
     }
     
     
     
     func testClosedRangeInt16Shrinking()
     {
-        testShrinking(of: ClosedRange<Int16>.self)
+        validateShrinking(of: ClosedRange<Int16>.self)
     }
     
     
     
     func testClosedRangeInt32Shrinking()
     {
-        testShrinking(of: ClosedRange<Int32>.self)
+        validateShrinking(of: ClosedRange<Int32>.self)
     }
     
     
     
     func testClosedRangeInt64Shrinking()
     {
-        testShrinking(of: ClosedRange<Int64>.self)
+        validateShrinking(of: ClosedRange<Int64>.self)
     }
     
     
     
     func testClosedRangeUIntShrinking()
     {
-        testShrinking(of: ClosedRange<UInt>.self)
+        validateShrinking(of: ClosedRange<UInt>.self)
     }
     
     
     
     func testClosedRangeUInt8Shrinking()
     {
-        testShrinking(of: ClosedRange<UInt8>.self)
+        validateShrinking(of: ClosedRange<UInt8>.self)
     }
     
     
     
     func testClosedRangeUInt16Shrinking()
     {
-        testShrinking(of: ClosedRange<UInt16>.self)
+        validateShrinking(of: ClosedRange<UInt16>.self)
     }
     
     
     
     func testClosedRangeUInt32Shrinking()
     {
-        testShrinking(of: ClosedRange<UInt32>.self)
+        validateShrinking(of: ClosedRange<UInt32>.self)
     }
     
     
     
     func testClosedRangeUInt64Shrinking()
     {
-        testShrinking(of: ClosedRange<UInt64>.self)
+        validateShrinking(of: ClosedRange<UInt64>.self)
     }
     
     
     
     func testRangeIntShrinking()
     {
-        testShrinking(of: Range<Int>.self)
+        validateShrinking(of: Range<Int>.self)
     }
     
     
     
     func testRangeInt8Shrinking()
     {
-        testShrinking(of: Range<Int8>.self)
+        validateShrinking(of: Range<Int8>.self)
     }
     
     
     
     func testRangeInt16Shrinking()
     {
-        testShrinking(of: Range<Int16>.self)
+        validateShrinking(of: Range<Int16>.self)
     }
     
     
     
     func testRangeInt32Shrinking()
     {
-        testShrinking(of: Range<Int32>.self)
+        validateShrinking(of: Range<Int32>.self)
     }
     
     
     
     func testRangeInt64Shrinking()
     {
-        testShrinking(of: Range<Int64>.self)
+        validateShrinking(of: Range<Int64>.self)
     }
     
     
     
     func testRangeUIntShrinking()
     {
-        testShrinking(of: Range<UInt>.self)
+        validateShrinking(of: Range<UInt>.self)
     }
     
     
     
     func testRangeUInt8Shrinking()
     {
-        testShrinking(of: Range<UInt8>.self)
+        validateShrinking(of: Range<UInt8>.self)
     }
     
     
     
     func testRangeUInt16Shrinking()
     {
-        testShrinking(of: Range<UInt16>.self)
+        validateShrinking(of: Range<UInt16>.self)
     }
     
     
     
     func testRangeUInt32Shrinking()
     {
-        testShrinking(of: Range<UInt32>.self)
+        validateShrinking(of: Range<UInt32>.self)
     }
     
     
     
     func testRangeUInt64Shrinking()
     {
-        testShrinking(of: Range<UInt64>.self)
+        validateShrinking(of: Range<UInt64>.self)
     }
 }
 
@@ -307,7 +307,7 @@ extension RangeIntegerArbitraryTests
     
     /// Validates arbitrary value generation of the given type.
     /// - Parameter type: The type to evaluate.
-    private func testGeneration<R>(
+    private func validateGeneration<R>(
         of type: R.Type
     ) where R : Arbitrary & ArbitraryRange & Equatable,
             R.Bound : Arbitrary & FixedWidthInteger
@@ -481,7 +481,7 @@ extension RangeIntegerArbitraryTests
     
     /// Validates the shrink candidates of the given type.
     /// - Parameter type: The type to test.
-    private func testShrinking<R>(
+    private func validateShrinking<R>(
         of type: R.Type
     ) where R : Arbitrary & ArbitraryRange & Equatable,
             R.Bound : Arbitrary & FixedWidthInteger
