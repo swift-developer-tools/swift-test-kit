@@ -203,7 +203,7 @@ package struct PropertyRunner
     
     
     private static let logger = Logger(
-        subsystem:  "org.swifttestkit",
+        subsystem:  "swift-test-kit",
         category:   "PropertyRunner"
     )
     
