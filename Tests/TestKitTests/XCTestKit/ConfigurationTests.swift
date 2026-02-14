@@ -8,7 +8,7 @@
 //===----------------------------------------------------------------------===//
 
 import TestKitCore
-@testable import XCTestKit
+import XCTestKit
 
 
 
