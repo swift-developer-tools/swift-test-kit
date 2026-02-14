@@ -16,7 +16,7 @@ extension LabeledExprListSyntax
     /// Gets the specified argument.
     /// - Parameter label: The label of the argument to retrieve.
     /// - Returns: The specified argument, or `nil` if not found.
-    package func getArg(
+    internal func getArg(
         labeled label: String,
     ) -> ExprSyntax?
     {
@@ -34,7 +34,7 @@ extension LabeledExprListSyntax
     
     
     /// Unlabeled arguments.
-    package var positionalArgs: [ExprSyntax]
+    internal var positionalArgs: [ExprSyntax]
     {
         var args: [ExprSyntax] = []
         

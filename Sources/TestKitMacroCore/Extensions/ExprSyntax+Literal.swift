@@ -16,7 +16,7 @@ extension ExprSyntax
 {
     /// Creates `nil` literal expression.
     /// - Returns: The `nil` literal expression.
-    package static func makeNilLiteral() -> ExprSyntax
+    internal static func makeNilLiteral() -> ExprSyntax
     {
         return ExprSyntax(NilLiteralExprSyntax())
     }
@@ -26,7 +26,7 @@ extension ExprSyntax
     /// Creates a string literal expression from the given content.
     /// - Parameter content: The string literal content.
     /// - Returns: The string literal expression.
-    package static func makeStringLiteral(
+    internal static func makeStringLiteral(
         _ content: String
     ) -> ExprSyntax
     {

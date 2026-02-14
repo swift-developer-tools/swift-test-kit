@@ -15,7 +15,7 @@ extension ExprSyntax
 {
     /// Whether the expression or any sub-expressions contain a `try`
     /// expression.
-    package var containsTry: Bool
+    internal var containsTry: Bool
     {
         if self.is(TryExprSyntax.self)
         {

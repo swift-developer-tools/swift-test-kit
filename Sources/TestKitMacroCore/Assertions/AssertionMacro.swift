@@ -47,7 +47,7 @@ extension AssertionMacro
     ///
     /// This indicates an internal bug where an ``AssertionKind`` was routed
     /// to a protocol extension that does not handle it.
-    package static func makeUnhandledKindError() -> ExpansionError
+    internal static func makeUnhandledKindError() -> ExpansionError
     {
         return ExpansionError(
             "Unhandled assertion kind"
