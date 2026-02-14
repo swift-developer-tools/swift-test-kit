@@ -74,15 +74,15 @@ package struct BooleanExprWalker
         
         let code: ExprSyntax =
         """
-            let _v0: Bool = \(expr)
+            let _$v0: Bool = \(expr)
         
             let evaluated = BooleanExpr(
                 text:   \(literal: exprText),
-                value:  _v0
+                value:  _$v0
             )
         
             \(raw: kind.macroInternalName(for: framework))(
-                result:         _v0,
+                result:         _$v0,
                 exprText:       \(literal: exprText),
                 evaluated:      [evaluated],
                 notEvaluated:   0,
@@ -131,16 +131,16 @@ package struct BooleanExprWalker
         
         let code: ExprSyntax =
         """
-            var _evaluated      : [BooleanExpr]     = []
-            var _notEvaluated   : Int               = 0
+            var _$evaluated     : [BooleanExpr]     = []
+            var _$notEvaluated  : Int               = 0
             
             \(raw: evaluationResult.code)
             
             \(raw: kind.macroInternalName(for: framework))(
                 result:         \(raw: evaluationResult.varName),
                 exprText:       \(literal: expr.trimmedDescription),
-                evaluated:      _evaluated,
-                notEvaluated:   _notEvaluated,
+                evaluated:      _$evaluated,
+                notEvaluated:   _$notEvaluated,
                 message:        \(message),
                 file:           #filePath,
                 line:           #line,
@@ -223,11 +223,13 @@ package struct BooleanExprWalker
         /// Counter for generating unique variable names.
         private var varCounter: Int = 0
         
+        
+        
         /// Generates the next unique variable name.
         /// - Returns: The next unique variable name.
         func nextVar() -> String
         {
-            let name: String = "_v\(varCounter)"
+            let name: String = "_$v\(varCounter)"
             
             varCounter += 1
             
@@ -370,7 +372,7 @@ package struct BooleanExprWalker
             """
             let \(varName): Bool = \(expr.trimmedDescription)
             
-            _evaluated.append(BooleanExpr(
+            _$evaluated.append(BooleanExpr(
                 text:   \(quote(escapedText)),
                 value:  \(varName)
             ))
@@ -416,7 +418,7 @@ package struct BooleanExprWalker
             
             if !\(lhsResult.varName)
             {
-                _notEvaluated += \(rhs.leafCount)
+                _$notEvaluated += \(rhs.leafCount)
                 
                 \(resultVarName) = false
             }
@@ -468,7 +470,7 @@ package struct BooleanExprWalker
             
             if \(lhsResult.varName)
             {
-                _notEvaluated += \(rhs.leafCount)
+                _$notEvaluated += \(rhs.leafCount)
                 
                 \(resultVarName) = true
             }
