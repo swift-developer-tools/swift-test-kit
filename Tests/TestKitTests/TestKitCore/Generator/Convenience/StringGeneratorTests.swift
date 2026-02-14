@@ -20,7 +20,7 @@ internal final class StringGeneratorTests: XCTestCaseStopOnFail
     {
         let generator: Generator<String> = .string(count: 5)
         
-        generator.validateDeterminism()
+        generator.assertDeterministic()
     }
     
     
@@ -161,7 +161,7 @@ internal final class StringGeneratorTests: XCTestCaseStopOnFail
     {
         let generator: Generator<String> = .string(count: 2...8)
         
-        generator.validateDeterminism()
+        generator.assertDeterministic()
     }
     
     
@@ -255,7 +255,7 @@ internal final class StringGeneratorTests: XCTestCaseStopOnFail
     {
         let generator: Generator<String> = .string(count: 2..<9)
         
-        generator.validateDeterminism()
+        generator.assertDeterministic()
     }
     
     
@@ -349,7 +349,7 @@ internal final class StringGeneratorTests: XCTestCaseStopOnFail
     {
         let generator: Generator<String> = .nonEmptyString()
         
-        generator.validateDeterminism()
+        generator.assertDeterministic()
     }
     
     

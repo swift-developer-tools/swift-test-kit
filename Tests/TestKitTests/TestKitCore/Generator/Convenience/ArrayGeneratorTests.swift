@@ -20,7 +20,7 @@ internal final class ArrayGeneratorTests: XCTestCaseStopOnFail
     {
         let generator: Generator<[Int]> = .array(count: 5)
         
-        generator.validateDeterminism()
+        generator.assertDeterministic()
     }
     
     
@@ -118,7 +118,7 @@ internal final class ArrayGeneratorTests: XCTestCaseStopOnFail
     {
         let generator: Generator<[Int]> = .array(count: 2...8)
         
-        generator.validateDeterminism()
+        generator.assertDeterministic()
     }
     
     
@@ -212,7 +212,7 @@ internal final class ArrayGeneratorTests: XCTestCaseStopOnFail
     {
         let generator: Generator<[Int]> = .array(count: 2..<9)
         
-        generator.validateDeterminism()
+        generator.assertDeterministic()
     }
     
     
@@ -306,7 +306,7 @@ internal final class ArrayGeneratorTests: XCTestCaseStopOnFail
     {
         let generator: Generator<[Int]> = .nonEmptyArray()
         
-        generator.validateDeterminism()
+        generator.assertDeterministic()
     }
     
     

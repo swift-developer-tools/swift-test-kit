@@ -204,7 +204,7 @@ extension IntegerGeneratorTests
     {
         let generator: Generator<T> = .integer(in: range)
         
-        generator.validateDeterminism()
+        generator.assertDeterministic()
         
         validateBounds(
             of:     generator,
@@ -276,7 +276,7 @@ extension IntegerGeneratorTests
     {
         let generator: Generator<T> = .integer(in: range)
         
-        generator.validateDeterminism()
+        generator.assertDeterministic()
         
         validateBounds(
             of:     generator,

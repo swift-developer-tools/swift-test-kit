@@ -14,8 +14,8 @@ import XCTest
 
 extension Generator where V : Equatable
 {
-    /// Validates that output of the generator is deterministic.
-    internal func validateDeterminism()
+    /// Asserts that output of the generator is deterministic.
+    internal func assertDeterministic()
     {
         for _ in 0..<1000
         {

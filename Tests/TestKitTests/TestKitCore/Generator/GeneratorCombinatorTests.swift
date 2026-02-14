@@ -22,7 +22,7 @@ internal final class GeneratorCombinatorTests: XCTestCaseStopOnFail
             .integer(in: 0...100)
             .map { String($0) }
         
-        generator.validateDeterminism()
+        generator.assertDeterministic()
     }
     
     
@@ -63,7 +63,7 @@ internal final class GeneratorCombinatorTests: XCTestCaseStopOnFail
             .integer(in: 1...10)
             .flatMap { .integer(in: 0...$0) }
         
-        generator.validateDeterminism()
+        generator.assertDeterministic()
     }
     
     
@@ -104,7 +104,7 @@ internal final class GeneratorCombinatorTests: XCTestCaseStopOnFail
             .integer(in: 1...100)
             .filter { $0 > 50 }
         
-        generator.validateDeterminism()
+        generator.assertDeterministic()
     }
     
     
@@ -165,7 +165,7 @@ internal final class GeneratorCombinatorTests: XCTestCaseStopOnFail
     {
         let generator: Generator<Character> = .constant("a")
         
-        generator.validateDeterminism()
+        generator.assertDeterministic()
     }
     
     
@@ -213,7 +213,7 @@ internal final class GeneratorCombinatorTests: XCTestCaseStopOnFail
             .constant(3)
         )
         
-        generator.validateDeterminism()
+        generator.assertDeterministic()
     }
     
     
@@ -272,7 +272,7 @@ internal final class GeneratorCombinatorTests: XCTestCaseStopOnFail
             (1, .constant(3))
         )
         
-        generator.validateDeterminism()
+        generator.assertDeterministic()
     }
     
     
@@ -363,7 +363,7 @@ internal final class GeneratorCombinatorTests: XCTestCaseStopOnFail
     {
         let generator: Generator<Int> = .elements(of: [10, 20, 30, 40, 50])
         
-        generator.validateDeterminism()
+        generator.assertDeterministic()
     }
     
     
@@ -416,7 +416,7 @@ internal final class GeneratorCombinatorTests: XCTestCaseStopOnFail
     {
         let generator: Generator<Int> = .sized { .integer(in: 0...max(1, $0)) }
         
-        generator.validateDeterminism()
+        generator.assertDeterministic()
     }
     
     

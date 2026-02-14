@@ -16,14 +16,14 @@ internal final class ArbitraryGeneratorTests: XCTestCaseStopOnFail
 {
     func testDeterminism()
     {
-        Generator<Int>.arbitrary().validateDeterminism()
-        Generator<UInt8>.arbitrary().validateDeterminism()
-        Generator<Double>.arbitrary().validateDeterminism()
-        Generator<Bool>.arbitrary().validateDeterminism()
-        Generator<[Int]>.arbitrary().validateDeterminism()
-        Generator<String>.arbitrary().validateDeterminism()
-        Generator<Substring>.arbitrary().validateDeterminism()
-        Generator<Character>.arbitrary().validateDeterminism()
+        Generator<Int>.arbitrary().assertDeterministic()
+        Generator<UInt8>.arbitrary().assertDeterministic()
+        Generator<Double>.arbitrary().assertDeterministic()
+        Generator<Bool>.arbitrary().assertDeterministic()
+        Generator<[Int]>.arbitrary().assertDeterministic()
+        Generator<String>.arbitrary().assertDeterministic()
+        Generator<Substring>.arbitrary().assertDeterministic()
+        Generator<Character>.arbitrary().assertDeterministic()
     }
     
     

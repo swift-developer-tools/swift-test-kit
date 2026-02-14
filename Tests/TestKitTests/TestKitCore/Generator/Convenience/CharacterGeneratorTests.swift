@@ -18,7 +18,7 @@ internal final class CharacterGeneratorTests: XCTestCaseStopOnFail
     
     func testASCIIDeterminism()
     {
-        Generator.ascii().validateDeterminism()
+        Generator.ascii().assertDeterministic()
     }
     
     
@@ -49,7 +49,7 @@ internal final class CharacterGeneratorTests: XCTestCaseStopOnFail
     
     func testLowercaseDeterminism()
     {
-        Generator.lowercase().validateDeterminism()
+        Generator.lowercase().assertDeterministic()
     }
     
     
@@ -80,7 +80,7 @@ internal final class CharacterGeneratorTests: XCTestCaseStopOnFail
     
     func testUppercaseDeterminism()
     {
-        Generator.uppercase().validateDeterminism()
+        Generator.uppercase().assertDeterministic()
     }
     
     
@@ -111,7 +111,7 @@ internal final class CharacterGeneratorTests: XCTestCaseStopOnFail
     
     func testDigitDeterminism()
     {
-        Generator.digit().validateDeterminism()
+        Generator.digit().assertDeterministic()
     }
     
     
@@ -142,7 +142,7 @@ internal final class CharacterGeneratorTests: XCTestCaseStopOnFail
     
     func testAlphanumericDeterminism()
     {
-        Generator.alphanumeric().validateDeterminism()
+        Generator.alphanumeric().assertDeterministic()
     }
     
     
@@ -184,7 +184,7 @@ internal final class CharacterGeneratorTests: XCTestCaseStopOnFail
     
     func testFromDeterminism()
     {
-        Generator.from("abc").validateDeterminism()
+        Generator.from("abc").assertDeterministic()
     }
     
     
