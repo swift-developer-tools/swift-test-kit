@@ -15,7 +15,7 @@ import SwiftSyntaxMacros
 
 // MARK: - Protocols
 
-/// A macro expression.
+/// An assertion macro expression.
 package protocol AssertionMacro: ExpressionMacro
 {
     typealias ExpansionError = MacroExpansionErrorMessage
@@ -27,16 +27,16 @@ package protocol AssertionMacro: ExpressionMacro
     static var framework    : FrameworkKind { get }
 }
 
-/// A macro expression with no evaluated expression.
+/// An assertion macro expression with no evaluated expression.
 package protocol NoExprMacro                : AssertionMacro { }
 
-/// A macro expression with one evaluated expression.
+/// An assertion macro expression with one evaluated expression.
 package protocol SingleExprMacro            : AssertionMacro { }
 
-/// A macro expression with two evaluated expressions.
+/// An assertion macro expression with two evaluated expressions.
 package protocol DoubleExprMacro            : AssertionMacro { }
 
-/// A macro expression for a predicate assertion.
+/// An assertion macroo expression for a predicate assertion.
 package protocol DoubleExprPredicateMacro   : AssertionMacro { }
 
 
@@ -64,9 +64,10 @@ extension AssertionMacro
 
 extension NoExprMacro
 {
-    /// Expands the macro.
+    /// Expands the macro described by the given freestanding macro expansion,
+    /// within the given context, to produce a replacement expression.
     /// - Parameters:
-    ///   - node: The AST node.
+    ///   - node: The freestanding macro expansion.
     ///   - context: The context in which the macro appears.
     /// - Returns: The expanded macro expression.
     package static func expansion(
@@ -93,9 +94,10 @@ extension NoExprMacro
 
 extension SingleExprMacro
 {
-    /// Expands the macro.
+    /// Expands the macro described by the given freestanding macro expansion,
+    /// within the given context, to produce a replacement expression.
     /// - Parameters:
-    ///   - node: The AST node.
+    ///   - node: The freestanding macro expansion.
     ///   - context: The context in which the macro appears.
     /// - Returns: The expanded macro expression.
     package static func expansion(
@@ -240,9 +242,10 @@ extension SingleExprMacro
 
 extension DoubleExprMacro
 {
-    /// Expands the macro.
+    /// Expands the macro described by the given freestanding macro expansion,
+    /// within the given context, to produce a replacement expression.
     /// - Parameters:
-    ///   - node: The AST node.
+    ///   - node: The freestanding macro expansion.
     ///   - context: The context in which the macro appears.
     /// - Returns: The expanded macro expression.
     package static func expansion(
@@ -366,9 +369,10 @@ private struct PredicateExtractionResult
 
 extension DoubleExprPredicateMacro
 {
-    /// Expands the macro.
+    /// Expands the macro described by the given freestanding macro expansion,
+    /// within the given context, to produce a replacement expression.
     /// - Parameters:
-    ///   - node: The AST node.
+    ///   - node: The freestanding macro expansion.
     ///   - context: The context in which the macro appears.
     /// - Returns: The expanded macro expression.
     package static func expansion(
@@ -491,7 +495,7 @@ extension DoubleExprPredicateMacro
     
     /// Extracts the predicate and message from the given node.
     /// - Parameters:
-    ///   - node: The AST node.
+    ///   - node: The freestanding macro expansion.
     ///   - args: The predicate assertion arguments.
     ///   - positionalArgs: The predicate assertion position arugments.
     ///   - predicateLabel: The predicate parameter label.
