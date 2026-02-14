@@ -24,14 +24,14 @@ extension Generator where V : Equatable
             let value1  : V     = self.generate(context1)
             let value2  : V     = self.generate(context2)
             
-            if
-                value1.isNaN,
-                value2.isNaN
+            if value1.isNaN
             {
-                continue
+                XCTAssertTrue(value2.isNaN)
             }
-            
-            XCTAssertEqual(value1, value2)
+            else
+            {
+                XCTAssertEqual(value1, value2)
+            }
         }
     }
 }
