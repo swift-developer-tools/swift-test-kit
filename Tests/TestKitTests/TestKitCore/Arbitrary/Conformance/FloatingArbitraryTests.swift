@@ -73,40 +73,13 @@ extension FloatingArbitraryTests
         of type: T.Type
     ) where T : Arbitrary & BinaryFloatingPoint
     {
-        validateDeterminism(of: type)
+        assertArbitraryDeterminism(of: type)
         validateSizeZeroBounds(of: type)
         validateSizeBounds(of: type)
         validateSignedValueProduction(of: type)
         validateValueBounds(of: type)
         validateSpecialValueProduction(of: type)
         validateFractionalValueProduction(of: type)
-    }
-    
-    
-    
-    /// Validates that arbitrary value generation of the given type is
-    /// deterministic.
-    /// - Parameter type: The type to evaluate.
-    private func validateDeterminism<T>(
-        of type: T.Type
-    ) where T : Arbitrary & BinaryFloatingPoint
-    {
-        for _ in 0..<1000
-        {
-            let (context1, context2) = GenerationContext.sameRandomContexts
-            
-            let value1  = T.arbitrary(using: context1)
-            let value2  = T.arbitrary(using: context2)
-            
-            if value1.isNaN
-            {
-                XCTAssertTrue(value2.isNaN)
-            }
-            else
-            {
-                XCTAssertEqual(value1, value2)
-            }
-        }
     }
     
     

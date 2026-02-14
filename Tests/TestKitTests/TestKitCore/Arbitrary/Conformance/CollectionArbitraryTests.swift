@@ -694,31 +694,11 @@ extension CollectionArbitraryTests
         of type: T.Type
     ) where T : Arbitrary & Collection & Equatable
     {
-        validateDeterminism(of: type)
+        assertArbitraryDeterminism(of: type)
         validateSizeZeroProducesEmpty(for: type)
         validateCountRespectsSizeBounds(for: type)
         validateProducesEmptyAndNonEmpty(for: type)
         validateProducesVariousCounts(for: type)
-    }
-    
-    
-    
-    /// Validates that arbitrary value generation of the given type is
-    /// deterministic.
-    /// - Parameter type: The type to evaluate.
-    private func validateDeterminism<T>(
-        of type: T.Type
-    ) where T : Arbitrary & Collection & Equatable
-    {
-        for _ in 0..<1000
-        {
-            let (context1, context2) = GenerationContext.sameRandomContexts
-            
-            XCTAssertEqual(
-                T.arbitrary(using: context1),
-                T.arbitrary(using: context2)
-            )
-        }
     }
     
     

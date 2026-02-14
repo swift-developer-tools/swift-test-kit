@@ -18,15 +18,7 @@ internal final class OptionalArbitraryTests: XCTestCaseStopOnFail
     
     func testArbitraryDeterminism()
     {
-        for _ in 0..<1000
-        {
-            let (context1, context2) = GenerationContext.sameRandomContexts
-            
-            XCTAssertEqual(
-                Optional<Int>.arbitrary(using: context1),
-                Optional<Int>.arbitrary(using: context2)
-            )
-        }
+        assertArbitraryDeterminism(of: Optional<Int>.self)
     }
     
     

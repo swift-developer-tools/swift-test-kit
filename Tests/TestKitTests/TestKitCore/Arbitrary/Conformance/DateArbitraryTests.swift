@@ -18,15 +18,7 @@ internal final class DateArbitraryTests: XCTestCaseStopOnFail
     
     func testGenerationDeterminism()
     {
-        for _ in 0..<1000
-        {
-            let (context1, context2) = GenerationContext.sameRandomContexts
-            
-            XCTAssertEqual(
-                Date.arbitrary(using: context1),
-                Date.arbitrary(using: context2)
-            )
-        }
+        assertArbitraryDeterminism(of: Date.self)
     }
     
     

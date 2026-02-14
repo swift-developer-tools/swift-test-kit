@@ -50,15 +50,7 @@ internal final class BoolArbitraryTests: XCTestCaseStopOnFail
     
     func testArbitraryDeterminism()
     {
-        for _ in 0..<1000
-        {
-            let (context1, context2) = GenerationContext.sameRandomContexts
-            
-            XCTAssertEqual(
-                Bool.arbitrary(using: context1),
-                Bool.arbitrary(using: context2)
-            )
-        }
+        assertArbitraryDeterminism(of: Bool.self)
     }
     
     

@@ -312,33 +312,12 @@ extension RangeIntegerArbitraryTests
     ) where R : Arbitrary & ArbitraryRange & Equatable,
             R.Bound : Arbitrary & FixedWidthInteger
     {
-        validateDeterminism(of: type)
+        assertArbitraryDeterminism(of: type)
         validateSizeZeroProduction(of: type)
         validateSizeBounds(of: type)
         validateBoundInvariant(of: type)
         validateSignedValueProduction(of: type)
         validateValueBounds(of: type)
-    }
-    
-    
-    
-    /// Validates that arbitrary value generation of the given type is
-    /// deterministic.
-    /// - Parameter type: The type to evaluate.
-    private func validateDeterminism<R>(
-        of type: R.Type
-    ) where R : Arbitrary & ArbitraryRange & Equatable,
-            R.Bound : Arbitrary & FixedWidthInteger
-    {
-        for _ in 0..<1000
-        {
-            let (context1, context2) = GenerationContext.sameRandomContexts
-            
-            XCTAssertEqual(
-                R.arbitrary(using: context1),
-                R.arbitrary(using: context2)
-            )
-        }
     }
     
     

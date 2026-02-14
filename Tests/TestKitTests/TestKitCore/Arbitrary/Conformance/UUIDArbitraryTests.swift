@@ -18,15 +18,7 @@ internal final class UUIDArbitraryTests: XCTestCaseStopOnFail
     
     func testGenerationDeterminism()
     {
-        for _ in 0..<1000
-        {
-            let (context1, context2) = GenerationContext.sameRandomContexts
-            
-            XCTAssertEqual(
-                UUID.arbitrary(using: context1),
-                UUID.arbitrary(using: context2)
-            )
-        }
+        assertArbitraryDeterminism(of: UUID.self)
     }
     
     

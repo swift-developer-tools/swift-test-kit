@@ -18,22 +18,7 @@ internal final class DecimalArbitraryTests: XCTestCaseStopOnFail
     
     func testGenerationDeterminism()
     {
-        for _ in 0..<1000
-        {
-            let (context1, context2) = GenerationContext.sameRandomContexts
-            
-            let value1 = Decimal.arbitrary(using: context1)
-            let value2 = Decimal.arbitrary(using: context2)
-            
-            if value1.isNaN
-            {
-                XCTAssertTrue(value2.isNaN)
-            }
-            else
-            {
-                XCTAssertEqual(value1, value2)
-            }
-        }
+        assertArbitraryDeterminism(of: Decimal.self)
     }
     
     

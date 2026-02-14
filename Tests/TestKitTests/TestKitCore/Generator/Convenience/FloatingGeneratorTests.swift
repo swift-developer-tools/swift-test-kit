@@ -103,7 +103,7 @@ extension FloatingGeneratorTests
     {
         let generator: Generator<T> = .floatingPoint(in: range)
         
-        validateDeterminism(of: generator)
+        generator.assertDeterministic()
         
         validateBounds(
             of:     generator,
@@ -172,7 +172,7 @@ extension FloatingGeneratorTests
     {
         let generator: Generator<T> = .floatingPoint(in: range)
         
-        validateDeterminism(of: generator)
+        generator.assertDeterministic()
         
         validateBounds(
             of:     generator,
@@ -190,32 +190,6 @@ extension FloatingGeneratorTests
     
     
     // MARK: - Generation support
-    
-    /// Validates that the output of the given generator is deterministic.
-    /// - Parameter generator: The generator to evaluate.
-    private func validateDeterminism<T>(
-        of generator: Generator<T>
-    ) where T : BinaryFloatingPoint
-    {
-        let (context1, context2) = GenerationContext.sameRandomContexts
-        
-        for _ in 0..<1000
-        {
-            let value1  : T     = generator.generate(context1)
-            let value2  : T     = generator.generate(context2)
-            
-            if value1.isNaN
-            {
-                XCTAssertTrue(value2.isNaN)
-            }
-            else
-            {
-                XCTAssertEqual(value1, value2)
-            }
-        }
-    }
-    
-    
     
     /// Validates that the given generator generates values within the
     /// given range.

@@ -171,31 +171,11 @@ extension IntegerArbitraryTests
         of type: T.Type
     ) where T : Arbitrary & FixedWidthInteger
     {
-        validateDeterminism(of: type)
+        assertArbitraryDeterminism(of: type)
         validateSizeZeroProduction(of: type)
         validateSizeBounds(of: type)
         validateSignedValueProduction(of: type)
         validateValueBounds(of: type)
-    }
-    
-    
-    
-    /// Validates that arbitrary value generation of the given type is
-    /// deterministic.
-    /// - Parameter type: The type to evaluate.
-    private func validateDeterminism<T>(
-        of type: T.Type
-    ) where T : Arbitrary & FixedWidthInteger
-    {
-        for _ in 0..<1000
-        {
-            let (context1, context2) = GenerationContext.sameRandomContexts
-            
-            XCTAssertEqual(
-                T.arbitrary(using: context1),
-                T.arbitrary(using: context2)
-            )
-        }
     }
     
     

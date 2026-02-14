@@ -18,7 +18,7 @@ internal final class StringArbitraryTests: XCTestCaseStopOnFail
     
     func testCharGenerationDeterminism()
     {
-        validateDeterminism(of: Character.self)
+        assertArbitraryDeterminism(of: Character.self)
     }
     
     
@@ -64,7 +64,7 @@ internal final class StringArbitraryTests: XCTestCaseStopOnFail
     
     func testScalarGenerationDeterminism()
     {
-        validateDeterminism(of: Unicode.Scalar.self)
+        assertArbitraryDeterminism(of: Unicode.Scalar.self)
     }
     
     
@@ -138,7 +138,7 @@ internal final class StringArbitraryTests: XCTestCaseStopOnFail
     
     func testStringGenerationDeterminism()
     {
-        validateDeterminism(of: String.self)
+        assertArbitraryDeterminism(of: String.self)
     }
     
     
@@ -230,7 +230,7 @@ internal final class StringArbitraryTests: XCTestCaseStopOnFail
     
     func testSubstringGenerationDeterminism()
     {
-        validateDeterminism(of: Substring.self)
+        assertArbitraryDeterminism(of: Substring.self)
     }
     
     
@@ -386,26 +386,6 @@ internal final class StringArbitraryTests: XCTestCaseStopOnFail
 
 extension StringArbitraryTests
 {
-    /// Validates that arbitrary value generation of the given type is
-    /// deterministic.
-    /// - Parameter type: The type to evaluate.
-    private func validateDeterminism<T>(
-        of type: T.Type
-    ) where T : Arbitrary & Equatable
-    {
-        for _ in 0..<1000
-        {
-            let (context1, context2) = GenerationContext.sameRandomContexts
-            
-            XCTAssertEqual(
-                T.arbitrary(using: context1),
-                T.arbitrary(using: context2)
-            )
-        }
-    }
-    
-    
-    
     /// Checks whether the given scalar is in the ASCII printable range, or
     /// in one of the known Unicode generation ranges.
     /// - Parameter scalar: The scalar to evaluate.
