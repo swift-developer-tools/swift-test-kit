@@ -77,8 +77,7 @@ internal final class ResultArbitraryTests: XCTestCaseStopOnFail
         
         let ratio = Double(successCount) / Double(iterations)
         
-        XCTAssertGreaterThan(ratio, 0.5 * 0.95)
-        XCTAssertLessThan(ratio, 0.5 * 1.05)
+        assertApproximateRatio(ratio, 0.5, n: iterations)
     }
     
     
