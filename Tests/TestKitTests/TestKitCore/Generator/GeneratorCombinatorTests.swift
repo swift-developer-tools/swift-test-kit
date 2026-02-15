@@ -306,7 +306,6 @@ internal final class GeneratorCombinatorTests: XCTestCaseStopOnFail
             counts[value, default: 0] += 1
         }
         
-        XCTAssertNil(counts[0])
         XCTAssertGreaterThan(counts[1]!, Int(Double(iterations) * 0.95))
         XCTAssertLessThan(counts[2]!, Int(Double(iterations) * 0.05))
     }

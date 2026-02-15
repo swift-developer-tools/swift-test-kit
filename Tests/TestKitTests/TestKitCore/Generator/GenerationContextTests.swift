@@ -50,10 +50,10 @@ internal final class GenerationContextTests: XCTestCaseStopOnFail
         
         /// Collect values and verify that at least one differs.
         let values1: [Int]
-            = (0..<1000).map { _ in context1.random(in: 0...1000) }
+        = (0..<1000).map { _ in context1.random(in: 0...1000) }
         
         let values2: [Int]
-            = (0..<1000).map { _ in context2.random(in: 0...1000) }
+        = (0..<1000).map { _ in context2.random(in: 0...1000) }
         
         XCTAssertNotEqual(values1, values2)
     }
@@ -393,5 +393,234 @@ internal final class GenerationContextTests: XCTestCaseStopOnFail
         }
         
         XCTAssertEqual(seen, Set(elements))
+    }
+    
+    
+    
+    // MARK: - withReducedSize
+    
+    func testWithReducedSizeHalvesSizeByDefault()
+    {
+        let context = GenerationContext(seed: 1, size: 100)
+        
+        context.withReducedSize
+        {
+            XCTAssertEqual(context.size, 50)
+        }
+    }
+    
+    
+    
+    func testWithReducedSizeRestoresSize()
+    {
+        let context = GenerationContext(seed: 1, size: 100)
+        
+        context.withReducedSize
+        {
+            XCTAssertEqual(context.size, 50)
+        }
+        
+        XCTAssertEqual(context.size, 100)
+    }
+    
+    
+    
+    func testWithReducedSizeCustomDivisor()
+    {
+        let context = GenerationContext(seed: 1, size: 100)
+        
+        context.withReducedSize(by: 4)
+        {
+            XCTAssertEqual(context.size, 25)
+        }
+        
+        XCTAssertEqual(context.size, 100)
+    }
+    
+    
+    
+    func testWithReducedSizeReturnValue()
+    {
+        let context = GenerationContext(seed: 1, size: 100)
+        
+        let result: String = context.withReducedSize
+        {
+            XCTAssertEqual(context.size, 50)
+            return "hello world"
+        }
+        
+        XCTAssertEqual(context.size, 100)
+        XCTAssertEqual(result, "hello world")
+    }
+    
+    
+    
+    func testWithReducedSizeNested()
+    {
+        let context = GenerationContext(seed: 1, size: 120)
+        
+        context.withReducedSize
+        {
+            XCTAssertEqual(context.size, 60)
+            
+            context.withReducedSize
+            {
+                XCTAssertEqual(context.size, 30)
+                
+                context.withReducedSize
+                {
+                    XCTAssertEqual(context.size, 15)
+                }
+                
+                XCTAssertEqual(context.size, 30)
+            }
+            
+            XCTAssertEqual(context.size, 60)
+        }
+        
+        XCTAssertEqual(context.size, 120)
+    }
+    
+    
+    
+    func testWithReducedSizeNestedCustomDivisor()
+    {
+        let context = GenerationContext(seed: 1, size: 120)
+        
+        context.withReducedSize(by: 3)
+        {
+            XCTAssertEqual(context.size, 40)
+            
+            context.withReducedSize(by: 4)
+            {
+                XCTAssertEqual(context.size, 10)
+                
+                context.withReducedSize(by: 5)
+                {
+                    XCTAssertEqual(context.size, 2)
+                }
+                
+                XCTAssertEqual(context.size, 10)
+            }
+            
+            XCTAssertEqual(context.size, 40)
+        }
+        
+        XCTAssertEqual(context.size, 120)
+    }
+    
+    
+    
+    func testWithReducedSizeFloorsAtZero()
+    {
+        let context0 = GenerationContext(seed: 1, size: 0)
+        
+        context0.withReducedSize
+        {
+            XCTAssertEqual(context0.size, 0)
+        }
+        
+        XCTAssertEqual(context0.size, 0)
+        
+        let context1 = GenerationContext(seed: 1, size: 1)
+        
+        context1.withReducedSize
+        {
+            XCTAssertEqual(context1.size, 0)
+        }
+        
+        XCTAssertEqual(context1.size, 1)
+    }
+    
+    
+    
+    func testWithReducedSizeRNGContinuity()
+    {
+        for _ in 0..<1000
+        {
+            let (context1, context2) = GenerationContext.sameRandomContexts
+            
+            let value1: Int = context1.withReducedSize
+            {
+                return context1.random(in: 0...1000)
+            }
+            
+            let value2: Int = context2.withReducedSize
+            {
+                return context2.random(in: 0...1000)
+            }
+            
+            XCTAssertEqual(value1, value2)
+        }
+    }
+    
+    
+    
+    func testWithReducedSizeIntegerDivisionTruncation()
+    {
+        let context1 = GenerationContext(seed: 1, size: 7)
+        
+        context1.withReducedSize
+        {
+            XCTAssertEqual(context1.size, 3)
+        }
+        
+        XCTAssertEqual(context1.size, 7)
+        
+        let context2 = GenerationContext(seed: 1, size: 5)
+        
+        context2.withReducedSize(by: 3)
+        {
+            XCTAssertEqual(context2.size, 1)
+        }
+        
+        XCTAssertEqual(context2.size, 5)
+    }
+    
+    
+    
+    func testWithReducedSizeDivisorLargerThanSize()
+    {
+        let context = GenerationContext(seed: 1, size: 3)
+        
+        context.withReducedSize(by: 10)
+        {
+            XCTAssertEqual(context.size, 0)
+        }
+        
+        XCTAssertEqual(context.size, 3)
+    }
+    
+    
+    
+    func testWithReducedSizeSequentialDoesNotAccumulateDepth()
+    {
+        let context = GenerationContext(seed: 1, size: 100)
+        
+        for _ in 0..<1000
+        {
+            context.withReducedSize { }
+        }
+        
+        XCTAssertEqual(context.size, 100)
+    }
+    
+    
+    
+    func testWithReducedSizeDoesNotAffectRNGSequence()
+    {
+        for _ in 0..<1000
+        {
+            let (context1, context2) = GenerationContext.sameRandomContexts
+            
+            let value1: Int = context1.withReducedSize
+            {
+                return context1.random(in: 0...1000)
+            }
+            
+            let value2: Int = context2.random(in: 0...1000)
+            
+            XCTAssertEqual(value1, value2)
+        }
     }
 }
