@@ -187,6 +187,33 @@ extension ArbitraryExtensionMacro
     // MARK: Enum generation
     
     /// Generates the ``Arbitrary/arbitrary(using:)`` method for an enum.
+    ///
+    /// Cases are partitioned into base cases (no associated values) and
+    /// payload cases (associated value). The generated shrink method uses
+    /// size-away generation to ensure termination for recursive types.
+    ///
+    /// - Base cases only: A case is selected uniformly at random with no
+    /// size reduction.
+    ///
+    /// - Base cases and payload cases: At size zero, only base cases are
+    /// selected, which guarantees termination for directly recursive and
+    /// mutually recursive types. At a size greater than zero, all cases are
+    /// eligible, but payload cases generate their associated values inside
+    /// ``GenerationContext/withReducedSize(by:_:)``, halving the size for
+    /// each level of recursion.
+    ///
+    /// - Payload cases only: All cases are eligible at any size, with
+    /// associated values generated inside similarly as the mixed base/payload
+    /// variant. There is no size-zero guard, since there are no base cases
+    /// to act as fallbacks. For non-recursive types, this has no impact.
+    /// For mutually recursive types, this ensures size decreases on every
+    /// step through the cycle, so a partner type with base cases can terminate.
+    ///
+    /// This logic is applied universally rather than only when self-references
+    /// are detected, since mutual recursion (`A` → `B` → `A`) cannot be
+    /// detected by the macro at the syntax level. The macro sees only one
+    /// declaration at a time.
+    ///
     /// - Parameters:
     ///   - cases: The enum cases.
     ///   - typeName: The enum name.
@@ -205,36 +232,64 @@ extension ArbitraryExtensionMacro
         lines.append(indent(1, ") -> \(typeName)"))
         lines.append(indent(1, "{"))
         
-        if cases.count == 1
+        
+        
+        var baseCases       : [EnumCase]    = []
+        var payloadCases    : [EnumCase]    = []
+        
+        for enumCase in cases
         {
-            lines.append(indent(2, "return \(makeCaseConstruction(cases[0]))"))
+            if enumCase.associatedValues.isEmpty
+            {
+                baseCases.append(enumCase)
+            }
+            else
+            {
+                payloadCases.append(enumCase)
+            }
+        }
+        
+        if payloadCases.isEmpty
+        {
+            /// All cases are base cases (no associated values). Emit a direct
+            /// `return` statement.
+            appendCaseSelection(
+                cases:          cases,
+                wrapPayload:    false,
+                baseIndent:     2,
+                lines:          &lines
+            )
         }
         else
         {
-            let text1: String = "switch context.random(in: 0..<\(cases.count))"
+            /// At least one case has associated values.
             
-            lines.append(indent(2, text1))
-            lines.append(indent(2, "{"))
-            
-            for (index, enumCase) in cases.enumerated()
+            if !baseCases.isEmpty
             {
-                let pattern: String = index < cases.count - 1
-                    ? "case \(index):"
-                    : "default:"
+                /// Emit a size guard that selects only base cases at size
+                /// zero to ensure termination for recursive types.
+                lines.append(indent(2, "if context.size <= 0"))
+                lines.append(indent(2, "{"))
                 
-                lines.append(indent(3, pattern))
+                appendCaseSelection(
+                    cases:          baseCases,
+                    wrapPayload:    false,
+                    baseIndent:     3,
+                    lines:          &lines
+                )
                 
-                let text2: String = "return \(makeCaseConstruction(enumCase))"
-                
-                lines.append(indent(4, text2))
-                
-                if index < cases.count - 1
-                {
-                    lines.append("")
-                }
+                lines.append(indent(2, "}"))
+                lines.append("")
             }
             
-            lines.append(indent(2, "}"))
+            /// Select from all cases and wrap payload cases in
+            /// ``GenerationContext/withReducedSize(by:_:)``.
+            appendCaseSelection(
+                cases:          cases,
+                wrapPayload:    true,
+                baseIndent:     2,
+                lines:          &lines
+            )
         }
         
         lines.append(indent(1, "}"))
@@ -247,6 +302,38 @@ extension ArbitraryExtensionMacro
     // MARK: Enum shrinking
     
     /// Generates the ``Arbitrary/shrink()`` method for an enum.
+    ///
+    /// Cases without associated values return an empty array, since no
+    /// shrinking is possible. Cases with associated values use one of the
+    /// following strategies.
+    ///
+    /// ## Structural Shrinking
+    ///
+    /// Structural shrinking is applied to associated values whoes type is the
+    /// enum itself (direct self-references). Each self-referencing value is
+    /// appended directly as a shrink candidate, since it is type-correct and
+    /// structurally smaller. These candidates appear first in the array of
+    /// candidates, which allows shrinking to collapse recursive structures
+    /// toward the base cases.
+    ///
+    /// Without structural shrinking, recursive types could not shrink. The
+    /// one-at-a-time pattern at base cases would return an empty array and
+    /// propagate through every level.
+    ///
+    /// Self-referencing is determined by ``isSelfReference(_:enumName:)``, by
+    /// checking an `IdentifierTypeSyntax` against the enum's name.
+    ///
+    /// Mutually recursive types (`A` → `B` → `A`) do not benefit from
+    /// structural shrinking, since neither type's associated values match its
+    /// own name. The macro cannot perform cross-type structural analysis.
+    /// For these cases, shrinking is limited to each type's shrinking method.
+    ///
+    /// ## One-at-a-Time Shrinking
+    ///
+    /// One-at-a-time shrinking follows the structural candidates. Each
+    /// associated value is shrunk independently while the others are held
+    /// constant.
+    ///
     /// - Parameters:
     ///   - cases: The enum cases.
     ///   - typeName: The enum name.
@@ -263,6 +350,8 @@ extension ArbitraryExtensionMacro
         lines.append(indent(1, "\(accessLevel)func shrink() -> [\(typeName)]"))
         lines.append(indent(1, "{"))
         
+        
+        
         let hasAssociatedValues: Bool = cases.contains
         {
             return !$0.associatedValues.isEmpty
@@ -278,6 +367,8 @@ extension ArbitraryExtensionMacro
         
         lines.append(indent(2, "switch self"))
         lines.append(indent(2, "{"))
+        
+        
         
         for (caseIndex, enumCase) in cases.enumerated()
         {
@@ -307,6 +398,33 @@ extension ArbitraryExtensionMacro
                 lines.append("")
                 lines.append(indent(4, "var _$results: [\(typeName)] = []"))
                 
+                
+                
+                /// Structual candidates. For associated values whose type is
+                /// the enum itself, append the value directly to enable
+                /// shrinking for recursive types where the one-at-a-time
+                /// pattern would otherwise produce no shrink candidates.
+                for (valueIndex, value) in
+                        enumCase.associatedValues.enumerated()
+                {
+                    let isSelfRef: Bool = isSelfReference(
+                        value.typeSyntax,
+                        enumName: typeName
+                    )
+                    
+                    if isSelfRef
+                    {
+                        lines.append("")
+                        
+                        let appendText: String =
+                            "_$results.append(\(bindings[valueIndex]))"
+                        
+                        lines.append(indent(4, appendText))
+                    }
+                }
+                
+                
+                
                 for (valueIndex, _) in enumCase.associatedValues.enumerated()
                 {
                     let binding: String = bindings[valueIndex]
@@ -325,15 +443,21 @@ extension ArbitraryExtensionMacro
                     lines.append(indent(4, "}"))
                 }
                 
+                
+                
                 lines.append("")
                 lines.append(indent(4, "return _$results"))
             }
+            
+            
             
             if caseIndex < cases.count - 1
             {
                 lines.append("")
             }
         }
+        
+        
         
         lines.append(indent(2, "}"))
         lines.append(indent(1, "}"))
@@ -699,6 +823,138 @@ extension ArbitraryExtensionMacro
             .joined(separator: ", ")
         
         return " where \(constraints)"
+    }
+    
+    
+    
+    /// Appends a case selection block to the given lines.
+    ///
+    /// For a single case, this appends a direct `return` statement. For
+    /// multiple cases, this appends a `switch` statement over a random index.
+    ///
+    /// - Parameters:
+    ///   - cases: The cases from which to select.
+    ///   - wrapPayload: Whether to wrap payload cases (cases with associated
+    ///   values) in ``GenerationContext/withReducedSize(by:_:)``.
+    ///   - baseIndent: The base indentation level.
+    ///   - lines: The lines to which to append.
+    private static func appendCaseSelection(
+        cases       : [EnumCase],
+        wrapPayload : Bool,
+        baseIndent  : Int,
+        lines       : inout [String]
+    )
+    {
+        if cases.count == 1
+        {
+            let enumCase: EnumCase = cases[0]
+            
+            if
+                wrapPayload,
+                !enumCase.associatedValues.isEmpty
+            {
+                lines.append(
+                    indent(baseIndent, "return context.withReducedSize")
+                )
+                
+                lines.append(indent(baseIndent, "{"))
+                
+                let caseText: String 
+                    = "return \(makeCaseConstruction(enumCase))"
+                
+                lines.append(indent(baseIndent + 1, caseText))
+                lines.append(indent(baseIndent, "}"))
+            }
+            else
+            {
+                let caseText: String 
+                    = "return \(makeCaseConstruction(enumCase))"
+                
+                lines.append(indent(baseIndent, caseText))
+            }
+            
+            return
+        }
+        
+        
+        
+        let switchText: String 
+            = "switch context.random(in: 0..<\(cases.count))"
+        
+        lines.append(indent(baseIndent, switchText))
+        lines.append(indent(baseIndent, "{"))
+        
+        for (index, enumCase) in cases.enumerated()
+        {
+            let patternText: String = index < cases.count - 1
+                ? "case \(index):"
+                : "default:"
+            
+            lines.append(indent(baseIndent + 1, patternText))
+            
+            if
+                wrapPayload,
+                !enumCase.associatedValues.isEmpty
+            {
+                lines.append(
+                    indent(baseIndent + 2, "return context.withReducedSize")
+                )
+                
+                lines.append(indent(baseIndent + 2, "{"))
+                
+                let caseText: String
+                    = "return \(makeCaseConstruction(enumCase))"
+                
+                lines.append(indent(baseIndent + 3, caseText))
+                lines.append(indent(baseIndent + 2, "}"))
+            }
+            else
+            {
+                let caseText: String
+                    = "return \(makeCaseConstruction(enumCase))"
+                
+                lines.append(indent(baseIndent + 2, caseText))
+            }
+            
+            if index < cases.count - 1
+            {
+                lines.append("")
+            }
+        }
+        
+        lines.append(indent(baseIndent, "}"))
+    }
+    
+    
+    
+    /// Whether the given type syntax is a direct self-reference.
+    ///
+    /// A direct self-reference is an `IdentifierTypeSyntax` whose name matches
+    /// the enum's base identifier.
+    ///
+    /// Types that contain the enum indirectly, such as `Optional<T>`
+    /// (`OptionalTypeSyntax`), `Array<T>` (`ArrayTypeSyntax`), or `(T, Int)`
+    /// (`TupleTypeSyntax`), do not match this condition, since their
+    /// outermost syntax node is not `IdentifierTypeSyntax`. These types shrink
+    /// through their own shrinking methods, rather than through structural
+    /// shrinking.
+    ///
+    /// - Parameters:
+    ///   - typeSyntax: The type syntax to check.
+    ///   - enumName: The enum's base identifier name.
+    /// - Returns: Whether the given type syntax is a direct self-reference.
+    private static func isSelfReference(
+        _ typeSyntax    : TypeSyntax,
+        enumName        : String
+    ) -> Bool
+    {
+        guard let identifier = typeSyntax.as(IdentifierTypeSyntax.self)
+        else
+        {
+            return false
+        }
+        
+        return identifier.name.text == enumName
     }
 }
 
