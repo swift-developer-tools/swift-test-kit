@@ -124,12 +124,7 @@ extension FloatingArbitraryTests
         
         for _ in 0..<1000
         {
-            let context = GenerationContext(
-                seed:   GenerationContext.randomSeed,
-                size:   size
-            )
-            
-            let value = T.arbitrary(using: context)
+            let value = T.arbitrary(using: .randomSeed(size: size))
             
             guard
                 !value.isNaN,
@@ -206,12 +201,7 @@ extension FloatingArbitraryTests
         
         for _ in 0..<1000
         {
-            let context = GenerationContext(
-                seed:   GenerationContext.randomSeed,
-                size:   typeMax * 2
-            )
-            
-            let value = T.arbitrary(using: context)
+            let value = T.arbitrary(using: .randomSeed(size: typeMax * 2))
             
             guard
                 !value.isNaN,

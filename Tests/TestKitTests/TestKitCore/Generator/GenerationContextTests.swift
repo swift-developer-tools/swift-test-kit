@@ -38,15 +38,8 @@ internal final class GenerationContextTests: XCTestCaseStopOnFail
     
     func testDifferentSeedsProduceDifferentSequences()
     {
-        let context1 = GenerationContext(
-            seed: 1,
-            size: GenerationContext.randomSize
-        )
-        
-        let context2 = GenerationContext(
-            seed: 2,
-            size: GenerationContext.randomSize
-        )
+        let context1    = GenerationContext.randomSize(seed: 1)
+        let context2    = GenerationContext.randomSize(seed: 2)
         
         /// Collect values and verify that at least one differs.
         let values1: [Int]

@@ -7,8 +7,8 @@
 //
 //===----------------------------------------------------------------------===//
 
+import TestKitCore
 import XCTest
-@testable import TestKitCore
 
 
 
@@ -203,12 +203,7 @@ extension IntegerArbitraryTests
     {
         for _ in 0..<1000
         {
-            let context = GenerationContext(
-                seed:   GenerationContext.randomSeed,
-                size:   10
-            )
-            
-            let value = T.arbitrary(using: context)
+            let value = T.arbitrary(using: .randomSeed(size: 10))
             
             XCTAssertGreaterThanOrEqual(value, T.isSigned ? -10 : 0)
             XCTAssertLessThanOrEqual(value, 10)
@@ -283,12 +278,7 @@ extension IntegerArbitraryTests
         
         for _ in 0..<1000
         {
-            let context = GenerationContext(
-                seed:   GenerationContext.randomSeed,
-                size:   typeMax * 2
-            )
-            
-            let value = T.arbitrary(using: context)
+            let value = T.arbitrary(using: .randomSeed(size: typeMax * 2))
             
             XCTAssertGreaterThanOrEqual(value, lowerBound)
             XCTAssertLessThanOrEqual(value, upperBound)

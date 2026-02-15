@@ -7,8 +7,8 @@
 //
 //===----------------------------------------------------------------------===//
 
+import TestKitCore
 import XCTest
-@testable import TestKitCore
 
 
 
@@ -353,12 +353,7 @@ extension RangeIntegerArbitraryTests
         
         for _ in 0..<1000
         {
-            let context = GenerationContext(
-                seed:   GenerationContext.randomSeed,
-                size:   size
-            )
-            
-            let range = R.arbitrary(using: context)
+            let range = R.arbitrary(using: .randomSeed(size: size))
             
             if R.Bound.isSigned
             {
@@ -463,12 +458,7 @@ extension RangeIntegerArbitraryTests
         
         for _ in 0..<1000
         {
-            let context = GenerationContext(
-                seed:   GenerationContext.randomSeed,
-                size:   typeMax * 2
-            )
-            
-            let range = R.arbitrary(using: context)
+            let range = R.arbitrary(using: .randomSeed(size: typeMax * 2))
             
             XCTAssertGreaterThanOrEqual(range.lowerBound, lowerBound)
             XCTAssertLessThanOrEqual(range.upperBound, upperBound)

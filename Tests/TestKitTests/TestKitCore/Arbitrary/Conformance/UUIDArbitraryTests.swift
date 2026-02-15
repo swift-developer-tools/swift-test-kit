@@ -7,8 +7,8 @@
 //
 //===----------------------------------------------------------------------===//
 
+import TestKitCore
 import XCTest
-@testable import TestKitCore
 
 
 
@@ -86,12 +86,7 @@ internal final class UUIDArbitraryTests: XCTestCaseStopOnFail
         
         for _ in 0..<1000
         {
-            let context = GenerationContext(
-                seed:   GenerationContext.randomSeed,
-                size:   Int(UInt8.max)
-            )
-            
-            let uuid = UUID.arbitrary(using: context)
+            let uuid = UUID.arbitrary(using: .randomSeed(size: Int(UInt8.max)))
             
             XCTAssertFalse(seen.contains(uuid))
             
@@ -110,12 +105,7 @@ internal final class UUIDArbitraryTests: XCTestCaseStopOnFail
         
         for _ in 0..<10_000
         {
-            let context = GenerationContext(
-                seed:   GenerationContext.randomSeed,
-                size:   Int(UInt8.max)
-            )
-            
-            let uuid = UUID.arbitrary(using: context)
+            let uuid = UUID.arbitrary(using: .randomSeed(size: Int(UInt8.max)))
             
             let bytes: [UInt8] = Mirror(reflecting: uuid.uuid).children.map
             {

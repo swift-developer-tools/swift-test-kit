@@ -7,9 +7,9 @@
 //
 //===----------------------------------------------------------------------===//
 
+import TestKitCore
 import XCTestKit
 import XCTest
-@testable import TestKitCore
 
 
 
@@ -67,12 +67,7 @@ internal final class ArbitraryMacroStructTests: XCTestCaseStopOnFail
         
         for _ in 0..<1000
         {
-            let context = GenerationContext(
-                seed:   GenerationContext.randomSeed,
-                size:   size
-            )
-            
-            let value = SingleLet.arbitrary(using: context)
+            let value = SingleLet.arbitrary(using: .randomSeed(size: size))
             
             XCTAssertGreaterThanOrEqual(value.id, -size)
             XCTAssertLessThanOrEqual(value.id, size)
@@ -144,12 +139,7 @@ internal final class ArbitraryMacroStructTests: XCTestCaseStopOnFail
         
         for _ in 0..<1000
         {
-            let context = GenerationContext(
-                seed:   GenerationContext.randomSeed,
-                size:   size
-            )
-            
-            let value = SingleVar.arbitrary(using: context)
+            let value = SingleVar.arbitrary(using: .randomSeed(size: size))
             
             XCTAssertGreaterThanOrEqual(value.id, -size)
             XCTAssertLessThanOrEqual(value.id, size)
@@ -328,12 +318,7 @@ internal final class ArbitraryMacroStructTests: XCTestCaseStopOnFail
         
         for _ in 0..<1000
         {
-            let context = GenerationContext(
-                seed:   GenerationContext.randomSeed,
-                size:   size
-            )
-            
-            let value = LetDefault.arbitrary(using: context)
+            let value = LetDefault.arbitrary(using: .randomSeed(size: size))
             
             XCTAssertGreaterThanOrEqual(value.x, -size)
             XCTAssertLessThanOrEqual(value.x, size)
@@ -384,12 +369,7 @@ internal final class ArbitraryMacroStructTests: XCTestCaseStopOnFail
         
         for _ in 0..<iterations
         {
-            let context = GenerationContext(
-                seed:   GenerationContext.randomSeed,
-                size:   200
-            )
-            
-            let value = VarDefault.arbitrary(using: context)
+            let value = VarDefault.arbitrary(using: .randomSeed(size: 200))
             
             yValues.insert(value.y)
         }

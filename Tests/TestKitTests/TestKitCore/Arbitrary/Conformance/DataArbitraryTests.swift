@@ -7,8 +7,8 @@
 //
 //===----------------------------------------------------------------------===//
 
+import TestKitCore
 import XCTest
-@testable import TestKitCore
 
 
 
@@ -39,12 +39,7 @@ internal final class DataArbitraryTests: XCTestCaseStopOnFail
         
         for _ in 0..<1000
         {
-            let context = GenerationContext(
-                seed:   GenerationContext.randomSeed,
-                size:   size
-            )
-            
-            let data = Data.arbitrary(using: context)
+            let data = Data.arbitrary(using: .randomSeed(size: size))
             
             XCTAssertLessThanOrEqual(data.count, size)
         }
@@ -91,12 +86,7 @@ internal final class DataArbitraryTests: XCTestCaseStopOnFail
         
         for _ in 0..<1000
         {
-            let context = GenerationContext(
-                seed:   GenerationContext.randomSeed,
-                size:   size
-            )
-            
-            let data = Data.arbitrary(using: context)
+            let data = Data.arbitrary(using: .randomSeed(size: size))
             
             counts.insert(data.count)
         }
@@ -112,12 +102,7 @@ internal final class DataArbitraryTests: XCTestCaseStopOnFail
         
         for _ in 0..<10_000
         {
-            let context = GenerationContext(
-                seed:   GenerationContext.randomSeed,
-                size:   Int(UInt8.max)
-            )
-            
-            let data = Data.arbitrary(using: context)
+            let data = Data.arbitrary(using: .randomSeed(size: Int(UInt8.max)))
             
             for byte in data
             {

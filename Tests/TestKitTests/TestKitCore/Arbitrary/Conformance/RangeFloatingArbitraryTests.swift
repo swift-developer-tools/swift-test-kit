@@ -7,8 +7,8 @@
 //
 //===----------------------------------------------------------------------===//
 
+import TestKitCore
 import XCTest
-@testable import TestKitCore
 
 
 
@@ -126,12 +126,7 @@ extension RangeFloatingArbitraryTests
         
         for _ in 0..<1000
         {
-            let context = GenerationContext(
-                seed:   GenerationContext.randomSeed,
-                size:   size
-            )
-            
-            let range = R.arbitrary(using: context)
+            let range = R.arbitrary(using: .randomSeed(size: size))
             
             if range.lowerBound.isFinite
             {
@@ -243,12 +238,7 @@ extension RangeFloatingArbitraryTests
         
         for _ in 0..<1000
         {
-            let context = GenerationContext(
-                seed:   GenerationContext.randomSeed,
-                size:   Int(typeMax) * 2
-            )
-            
-            let range = R.arbitrary(using: context)
+            let range = R.arbitrary(using: .randomSeed(size: Int(typeMax) * 2))
             
             if range.lowerBound.isFinite
             {

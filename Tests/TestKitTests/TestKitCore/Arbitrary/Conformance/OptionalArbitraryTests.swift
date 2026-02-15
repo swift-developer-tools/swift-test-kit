@@ -7,8 +7,8 @@
 //
 //===----------------------------------------------------------------------===//
 
+import TestKitCore
 import XCTest
-@testable import TestKitCore
 
 
 
@@ -83,12 +83,7 @@ internal final class OptionalArbitraryTests: XCTestCaseStopOnFail
         
         for _ in 0..<1000
         {
-            let context = GenerationContext(
-                seed:   GenerationContext.randomSeed,
-                size:   size
-            )
-            
-            let value = Optional<Int>.arbitrary(using: context)
+            let value = Optional<Int>.arbitrary(using: .randomSeed(size: size))
             
             guard let unwrapped: Int = value
             else

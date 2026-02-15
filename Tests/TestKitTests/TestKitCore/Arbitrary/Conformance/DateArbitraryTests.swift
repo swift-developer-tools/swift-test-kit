@@ -7,8 +7,8 @@
 //
 //===----------------------------------------------------------------------===//
 
+import TestKitCore
 import XCTest
-@testable import TestKitCore
 
 
 
@@ -50,12 +50,7 @@ internal final class DateArbitraryTests: XCTestCaseStopOnFail
         
         for _ in 0..<1000
         {
-            let context = GenerationContext(
-                seed:   GenerationContext.randomSeed,
-                size:   size
-            )
-            
-            let date: Date = .arbitrary(using: context)
+            let date: Date = .arbitrary(using: .randomSeed(size: size))
             
             let interval: TimeInterval = date.timeIntervalSinceReferenceDate
             

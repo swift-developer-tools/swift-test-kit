@@ -7,8 +7,8 @@
 //
 //===----------------------------------------------------------------------===//
 
+import TestKitCore
 import XCTest
-@testable import TestKitCore
 
 
 
@@ -437,12 +437,9 @@ internal final class GeneratorCombinatorTests: XCTestCaseStopOnFail
         {
             let randomSize: Int = GenerationContext.randomSize
             
-            let context = GenerationContext(
-                seed:   GenerationContext.randomSeed,
-                size:   randomSize
-            )
+            let value: Int = generator.generate(.randomSeed(size: randomSize))
             
-            XCTAssertEqual(generator.generate(context), randomSize)
+            XCTAssertEqual(value, randomSize)
         }
     }
     

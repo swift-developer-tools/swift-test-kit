@@ -159,12 +159,7 @@ internal final class StringArbitraryTests: XCTestCaseStopOnFail
         
         for _ in 0..<1000
         {
-            let context = GenerationContext(
-                seed:   GenerationContext.randomSeed,
-                size:   size
-            )
-            
-            let string = String.arbitrary(using: context)
+            let string = String.arbitrary(using: .randomSeed(size: size))
             
             XCTAssertLessThanOrEqual(string.count, size)
         }
@@ -211,12 +206,7 @@ internal final class StringArbitraryTests: XCTestCaseStopOnFail
         
         for _ in 0..<1000
         {
-            let context = GenerationContext(
-                seed:   GenerationContext.randomSeed,
-                size:   size
-            )
-            
-            let string = String.arbitrary(using: context)
+            let string = String.arbitrary(using: .randomSeed(size: size))
             
             counts.insert(string.count)
         }

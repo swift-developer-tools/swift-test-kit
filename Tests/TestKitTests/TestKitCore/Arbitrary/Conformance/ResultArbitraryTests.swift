@@ -7,8 +7,8 @@
 //
 //===----------------------------------------------------------------------===//
 
+import TestKitCore
 import XCTest
-@testable import TestKitCore
 
 
 
@@ -80,12 +80,7 @@ internal final class ResultArbitraryTests: XCTestCaseStopOnFail
         
         for _ in 0..<1000
         {
-            let context = GenerationContext(
-                seed:   GenerationContext.randomSeed,
-                size:   size
-            )
-            
-            let value = TestResult.arbitrary(using: context)
+            let value = TestResult.arbitrary(using: .randomSeed(size: size))
             
             guard case let .success(n) = value
             else
@@ -106,12 +101,7 @@ internal final class ResultArbitraryTests: XCTestCaseStopOnFail
         
         for _ in 0..<1000
         {
-            let context = GenerationContext(
-                seed:   GenerationContext.randomSeed,
-                size:   size
-            )
-            
-            let value = TestResult.arbitrary(using: context)
+            let value = TestResult.arbitrary(using: .randomSeed(size: size))
             
             guard case let .failure(error) = value
             else
