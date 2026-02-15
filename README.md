@@ -317,10 +317,7 @@ XCTKAssertSatisfy(values, atLeast: 4)
 ## Property-Based Testing
 
 Describe properties that must hold for any given input, and SwiftTestKit and 
-XCTestKit will generate random test cases automatically. When an input causes 
-a property to fail, SwiftTestKit and XCTestKit will shrink the input to the 
-smallest value that still fails the property (the minimal counterexample), 
-and report it along with the full assertion output.
+XCTestKit will generate random test cases automatically. 
 
 ```swift
 XCTKForAll
@@ -332,9 +329,18 @@ XCTKForAll
 }
 ```
 
+### Counterexamples
+
+When an input causes a property to fail, SwiftTestKit and XCTestKit will shrink 
+the input to the smallest value that still fails the property (the minimal 
+counterexample).
+
 SwiftTestKit and XCTestKit assertions are automatically intercepted inside 
 property bodies, so counterexamples include the same diff output, expression 
 capture, and formatting used by standalone assertions.
+
+The counterexample is reported along with the seed used for generation, which 
+may be used to deterministically reproduce the failure.
 
 ```swift
 func customSort(_ array: [Int]) -> [Int] { /* ... */ }
@@ -364,6 +370,8 @@ XCTKForAll
 //     [1]: 1
 ```
 
+### Generators
+
 Use a `Generator` when `Arbitrary` conformance of a specific type does not 
 produce the necessary distribution of values. For example, a generator may be
 used to test only positive integers, or only non-empty arrays.
@@ -381,9 +389,20 @@ XCTKForAll(using: .nonEmptyArray(of: Int.self))
 }
 ```
 
-Built-in `Arbitrary` conformance is provided for many Swift standard library 
-types, including integers, floating-point numbers, strings, collections, 
-optionals, and more.
+### Conforming Types
+
+Built-in `Arbitrary` conformance is provided for many standard library types:
+
+- All integers (`Int`, `Int8` through `Int64`, `UInt`, `UInt8` through 
+`UInt64`)
+- Floating-point numbers (`Float`, `Float16`, `Double`, `Decimal`)
+- Collections (`Array`, `Set`, `Dictionary`, `CollectionOfOne`)
+- Ranges (`Range`, `ClosedRange`)
+- Foundation types (`Date`, `Data`, `UUID`)
+- `String`, `Substring`, `Character`, `Unicode.Scalar`
+- `Bool`
+- `Optional`
+- `Result`
 
 <!-- TODO: @Arbitrary macro example -->
 
