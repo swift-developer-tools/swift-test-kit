@@ -28,7 +28,17 @@ public final class GenerationContext
     }
     
     /// The seeded random number generator.
-    private var rng: SeededRNG
+    private var rng     : SeededRNG
+    
+    /// The current generation depth.
+    private var depth   : Int       = 0
+    
+    /// The maximum generation depth.
+    ///
+    /// A precondition failure is triggered if ``withReducedSize(by:_:)``
+    /// exceeds this depth. This guards against infinite recursion between
+    /// mutually recursive types that lack reachable base cases.
+    private static let maxDepth: Int = 500
     
     
     
@@ -70,6 +80,63 @@ public final class GenerationContext
     public var seed: UInt64
     {
         return rng.seed
+    }
+}
+
+
+
+// MARK: - Size
+
+extension GenerationContext
+{
+    /// Calls the given closure with a reduced generation size.
+    ///
+    /// The generation size is divided by the given divisor, then restored
+    /// after the closure returns.
+    ///
+    /// Use this to ensure termination when generating values for recursive
+    /// ``Arbitrary`` types.
+    ///
+    /// - Precondition: `divisor` must be greater than `1`.
+    /// - Precondition: The generation depth must not exceed the maximum
+    /// depth. Exceeding the maximum depth usually indicates mutual recursion
+    /// between types without a reachable base case.
+    ///
+    /// - Parameters:
+    ///   - divisor: The divisor by which to reduce the generation size.
+    ///   The default value is `2`.
+    ///   - body: The closure to call.
+    /// - Returns: The value returned by the given closure.
+    public func withReducedSize<T>(
+        by  divisor : Int       = 2,
+        _   body    : () -> T
+    ) -> T
+    {
+        precondition(
+            divisor > 1,
+            "divisor must be greater than 1"
+        )
+        
+        depth += 1
+        
+        precondition(
+            depth <= Self.maxDepth,
+            "GenerationContext exceeded maximum generation depth"
+            + " (\(Self.maxDepth)). This usually indicates mutual recursion"
+            + " between types without a reachable base case."
+        )
+        
+        let saved: Int = size
+        
+        size = size / divisor
+        
+        defer
+        {
+            size    = saved
+            depth   -= 1
+        }
+        
+        return body()
     }
 }
 
