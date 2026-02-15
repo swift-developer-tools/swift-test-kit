@@ -45,5 +45,6 @@ property bodies.
 ### Generating Values
 
 - ``Arbitrary``
+- ``Arbitrary()``
 - ``Generator``
 - ``GenerationContext``
