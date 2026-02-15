@@ -18,7 +18,13 @@ struct TestKitMacroPlugin: CompilerPlugin
 {
     let providingMacros: [any Macro.Type] =
     [
-        // MARK: - STK
+        // MARK: - Arbitrary
+        
+        ArbitraryMacro.self,
+        
+        
+        
+        // MARK: - STK assertions
         
         STKAssertMacro.self,
         STKAssertTrueMacro.self,
@@ -59,7 +65,7 @@ struct TestKitMacroPlugin: CompilerPlugin
         
         
         
-        // MARK: - XCTK
+        // MARK: - XCTK assertions
         
         XCTKAssertMacro.self,
         XCTKAssertTrueMacro.self,
