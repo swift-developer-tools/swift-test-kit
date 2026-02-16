@@ -16,7 +16,8 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
 {
     // MARK: - Passing
     
-    func testPassingPropertyReturnsPassed() throws
+    @Reasync
+    func testPassingPropertyReturnsPassed() async throws
     {
         let iterations  : Int       = 50
         let seed        : UInt64    = 99
@@ -26,10 +27,10 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
             seed:           seed
         )
         
-        let result: PropertyCheckResult<BoundInt> = PropertyRunner.run(
-            property:   { _ in },
-            options:    options
-        )
+        let result: PCR<BoundInt> = await PropertyRunner.run(
+                property:   { _ async in },
+                options:    options
+            )
         
         let passed: PassedValues = try XCTUnwrap(Self.assertPassed(result))
         
@@ -39,7 +40,8 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
     
     
     
-    func testZeroIterationsReturnsPassed() throws
+    @Reasync
+    func testZeroIterationsReturnsPassed() async throws
     {
         let iterations: Int = 0
         
@@ -48,10 +50,10 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
             seed:           Self.seed
         )
         
-        let result: PropertyCheckResult<BoundInt> = PropertyRunner.run(
-            property:   { _ in },
-            options:    options
-        )
+        let result: PCR<BoundInt> = await PropertyRunner.run(
+                property:   { _ async in },
+                options:    options
+            )
         
         let passed: PassedValues = try XCTUnwrap(Self.assertPassed(result))
         
@@ -60,7 +62,8 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
     
     
     
-    func testSinglePassingIterationReturnsPassed() throws
+    @Reasync
+    func testSinglePassingIterationReturnsPassed() async throws
     {
         let iterations: Int = 1
         
@@ -69,10 +72,10 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
             seed:           Self.seed
         )
         
-        let result: PropertyCheckResult<BoundInt> = PropertyRunner.run(
-            property:   { _ in },
-            options:    options
-        )
+        let result: PCR<BoundInt> = await PropertyRunner.run(
+                property:   { _ async in },
+                options:    options
+            )
         
         let passed: PassedValues = try XCTUnwrap(Self.assertPassed(result))
         
@@ -81,7 +84,8 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
     
     
     
-    func testLargeIterationCountCompletes() throws
+    @Reasync
+    func testLargeIterationCountCompletes() async throws
     {
         let iterations: Int = 1000
         
@@ -91,10 +95,10 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
             seed:           Self.seed
         )
         
-        let result: PropertyCheckResult<BoundInt> = PropertyRunner.run(
-            property:   { _ in },
-            options:    options
-        )
+        let result: PCR<BoundInt> = await PropertyRunner.run(
+                property:   { _ async in },
+                options:    options
+            )
         
         let passed: PassedValues = try XCTUnwrap(Self.assertPassed(result))
         
@@ -105,12 +109,13 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
     
     // MARK: - Failing
     
-    func testFailureOnFirstIteration() throws
+    @Reasync
+    func testFailureOnFirstIteration() async throws
     {
-        let result: PropertyCheckResult<BoundInt> = PropertyRunner.run(
+        let result: PCR<BoundInt> = await PropertyRunner.run(
             property:
             {
-                _ in
+                _ async in
                 
                 PropertyInterceptor.current?.record(
                     message:    "always fails",
@@ -129,7 +134,8 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
     
     
     
-    func testConditionallyFailingPropertyReturnsFailed() throws
+    @Reasync
+    func testConditionallyFailingPropertyReturnsFailed() async throws
     {
         let options: TestOptions = .propertyOptions(
             iterations:     200,
@@ -137,10 +143,10 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
             seed:           Self.seed
         )
         
-        let result: PropertyCheckResult<BoundInt> = PropertyRunner.run(
+        let result: PCR<BoundInt> = await PropertyRunner.run(
             property:
             {
-                boundInt in
+                boundInt async in
                 
                 if boundInt.value > 25
                 {
@@ -164,10 +170,11 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
     
     
     
-    func testThrowingPropertyReturnsFailed() throws
+    @Reasync
+    func testThrowingPropertyReturnsFailed() async throws
     {
-        let result: PropertyCheckResult<BoundInt> = PropertyRunner.run(
-            property:   { _ in throw TestError() },
+        let result: PCR<BoundInt> = await PropertyRunner.run(
+            property:   { _ async throws in throw TestError() },
             options:    .propertyOptions(seed: Self.seed)
         )
         
@@ -181,12 +188,13 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
     
     
     
-    func testFailureAndThrowCapturesBoth() throws
+    @Reasync
+    func testFailureAndThrowCapturesBoth() async throws
     {
-        let result: PropertyCheckResult<BoundInt> = PropertyRunner.run(
+        let result: PCR<BoundInt> = await PropertyRunner.run(
             property:
             {
-                _ in
+                _ async throws in
                 
                 PropertyInterceptor.current?.record(
                     message:    "recorded failure",
@@ -209,7 +217,8 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
     
     
     
-    func testMultipleFailuresCaptures() throws
+    @Reasync
+    func testMultipleFailuresCaptures() async throws
     {
         let records: [(String, StaticString, UInt)] =
         [
@@ -218,10 +227,10 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
             ("failure 3", "File3.swift", 3)
         ]
         
-        let result: PropertyCheckResult<BoundInt> = PropertyRunner.run(
+        let result: PCR<BoundInt> = await PropertyRunner.run(
             property:
             {
-                _ in
+                _ async in
                 
                 for record in records
                 {
@@ -250,7 +259,8 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
     
     
     
-    func testConditionalThrowWithDifferentThresholdFromFailure() throws
+    @Reasync
+    func testConditionalThrowWithDifferentThresholdFromFailure() async throws
     {
         let target: Int = 10
         
@@ -259,10 +269,10 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
             seed:       Self.seed
         )
         
-        let result: PropertyCheckResult<BoundInt> = PropertyRunner.run(
+        let result: PCR<BoundInt> = await PropertyRunner.run(
             property:
             {
-                boundInt in
+                boundInt async throws in
                 
                 if boundInt.value > target
                 {
@@ -291,7 +301,8 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
     
     
     
-    func testIterationPropertyReflectsExactFailurePoint() throws
+    @Reasync
+    func testIterationPropertyReflectsExactFailurePoint() async throws
     {
         let target: Int = 50
         
@@ -301,10 +312,10 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
             seed:           Self.seed
         )
         
-        let result: PropertyCheckResult<SizeCapture> = PropertyRunner.run(
+        let result: PCR<SizeCapture> = await PropertyRunner.run(
             property:
             {
-                capture in
+                capture async in
                 
                 if capture.size >= target
                 {
@@ -327,7 +338,8 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
     
     
     
-    func testInterceptorIsolationBetweenIterations() throws
+    @Reasync
+    func testInterceptorIsolationBetweenIterations() async throws
     {
         /// If the interceptor from one iteration bled into the next iteration,
         /// the runner would falsely report a failure on the first iteration,
@@ -342,10 +354,10 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
             seed:       Self.seed
         )
         
-        let result: PropertyCheckResult<BoundInt> = PropertyRunner.run(
+        let result: PCR<BoundInt> = await PropertyRunner.run(
             property:
             {
-                boundInt in
+                boundInt async in
                 
                 if boundInt.value > target
                 {
@@ -370,11 +382,12 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
     
     // MARK: - Exhaustion/Precondition
     
-    func testPreconditionAcceptingAllInputsReturnsPassed() throws
+    @Reasync
+    func testPreconditionAcceptingAllInputsReturnsPassed() async throws
     {
-        let result: PropertyCheckResult<BoundInt> = PropertyRunner.run(
+        let result: PCR<BoundInt> = await PropertyRunner.run(
             where:      { _ in true },
-            property:   { _ in },
+            property:   { _ async in },
             options:    .propertyOptions(seed: Self.seed)
         )
         
@@ -383,15 +396,16 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
     
     
     
-    func testPreconditionFilteringSomeInputReturnsPassed() throws
+    @Reasync
+    func testPreconditionFilteringSomeInputReturnsPassed() async throws
     {
         /// A precondition that filters some inputs still passes when
         /// enough inputs exist within the discard ratio. With ``BoundInt``
         /// generating values in the range `0...context.size`, about half
         /// the values are even.
-        let result: PropertyCheckResult<BoundInt> = PropertyRunner.run(
+        let result: PCR<BoundInt> = await PropertyRunner.run(
             where:      { boundInt in boundInt.value % 2 == 0 },
-            property:   { _ in },
+            property:   { _ async in },
             options:    .propertyOptions(seed: Self.seed)
         )
         
@@ -400,7 +414,8 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
     
     
     
-    func testPreconditionRejectingAllInputsReturnsExhausted() throws
+    @Reasync
+    func testPreconditionRejectingAllInputsReturnsExhausted() async throws
     {
         let maxDiscardRatio: Int = 2
         
@@ -410,9 +425,9 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
             seed:               Self.seed
         )
         
-        let result: PropertyCheckResult<BoundInt> = PropertyRunner.run(
+        let result: PCR<BoundInt> = await PropertyRunner.run(
             where:      { _ in false },
-            property:   { _ in },
+            property:   { _ async in },
             options:    options
         )
         
@@ -427,7 +442,8 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
     
     
     
-    func testExhaustionThresholdBasedOnDiscardRatio() throws
+    @Reasync
+    func testExhaustionThresholdBasedOnDiscardRatio() async throws
     {
         let iterations      : Int   = 10
         let maxDiscardRatio : Int   = 2
@@ -439,9 +455,9 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
             seed:               Self.seed
         )
         
-        let result: PropertyCheckResult<BoundInt> = PropertyRunner.run(
+        let result: PCR<BoundInt> = await PropertyRunner.run(
             where:      { _ in false },
-            property:   { _ in },
+            property:   { _ async in },
             options:    options
         )
         
@@ -454,7 +470,8 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
     
     
     
-    func testMaxDiscardRatioZeroExhaustsOnFirstDiscard() throws
+    @Reasync
+    func testMaxDiscardRatioZeroExhaustsOnFirstDiscard() async throws
     {
         let maxDiscardRatio: Int = 0
         
@@ -463,9 +480,9 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
             seed:               Self.seed
         )
         
-        let result: PropertyCheckResult<BoundInt> = PropertyRunner.run(
+        let result: PCR<BoundInt> = await PropertyRunner.run(
             where:      { boundInt in boundInt.value > 1000 },
-            property:   { _ in },
+            property:   { _ async in },
             options:    options
         )
         
@@ -479,18 +496,19 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
     
     
     
-    func testConditionalPropertyWithFailingInputsReturnsFailed() throws
+    @Reasync
+    func testConditionalPropertyWithFailingInputsReturnsFailed() async throws
     {
         let options: TestOptions = .propertyOptions(
             maxSize:    200,
             seed:       Self.seed
         )
         
-        let result: PropertyCheckResult<BoundInt> = PropertyRunner.run(
+        let result: PCR<BoundInt> = await PropertyRunner.run(
             where: { boundInt in boundInt.value % 2 == 0 },
             property:
             {
-                boundInt in
+                boundInt async in
                 
                 if boundInt.value > 20
                 {
@@ -517,7 +535,8 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
     
     
     
-    func testExhaustionAfterPartialSuccess() throws
+    @Reasync
+    func testExhaustionAfterPartialSuccess() async throws
     {
         let target          : Int   = 5
         let maxSize         : Int   = 100
@@ -532,9 +551,9 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
             seed:               Self.seed
         )
         
-        let result: PropertyCheckResult<SizeCapture> = PropertyRunner.run(
+        let result: PCR<SizeCapture> = await PropertyRunner.run(
             where:      { capture in capture.size <= target },
-            property:   { _ in },
+            property:   { _ async in },
             options:    options
         )
         
@@ -548,7 +567,8 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
     
     
     
-    func testSingleIterationWithPreconditionRejectionExhauts() throws
+    @Reasync
+    func testSingleIterationWithPreconditionRejectionExhauts() async throws
     {
         let maxDiscardRatio: Int = 0
         
@@ -558,9 +578,9 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
             seed:               Self.seed
         )
         
-        let result: PropertyCheckResult<SizeCapture> = PropertyRunner.run(
+        let result: PCR<SizeCapture> = await PropertyRunner.run(
             where:      { _ in false },
-            property:   { _ in },
+            property:   { _ async in },
             options:    options
         )
         
@@ -576,15 +596,16 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
     
     // MARK: - Seed
     
-    func testSameSeedDeterminism()
+    @Reasync
+    func testSameSeedDeterminism() async
     {
         let target  : Int           = 7
         let options : TestOptions   = .propertyOptions(seed: Self.seed)
         
-        let resultA: PropertyCheckResult<BoundInt> = PropertyRunner.run(
+        let resultA: PCR<BoundInt> = await PropertyRunner.run(
             property:
             {
-                boundInt in
+                boundInt async in
                 
                 if boundInt.value == target
                 {
@@ -598,10 +619,10 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
             options: options
         )
         
-        let resultB: PropertyCheckResult<BoundInt> = PropertyRunner.run(
+        let resultB: PCR<BoundInt> = await PropertyRunner.run(
             property:
             {
-                boundInt in
+                boundInt async in
                 
                 if boundInt.value == target
                 {
@@ -636,12 +657,13 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
     
     
     
-    func testRandomSeeds() throws
+    @Reasync
+    func testRandomSeeds() async throws
     {
         for _ in 0..<1000
         {
-            let result: PropertyCheckResult<BoundInt> = PropertyRunner.run(
-                property:   { _ in },
+            let result: PCR<BoundInt> = await PropertyRunner.run(
+                property:   { _ async in },
                 options:    .propertyOptions(seed: nil)
             )
             
@@ -653,20 +675,21 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
     
     
     
-    func testDifferentSeedsProduceDifferentSequences() throws
+    @Reasync
+    func testDifferentSeedsProduceDifferentSequences() async throws
     {
         var valuesA     : [Int]         = []
         var valuesB     : [Int]         = []
         let optionsA    : TestOptions   = .propertyOptions(seed: 111)
         let optionsB    : TestOptions   = .propertyOptions(seed: 222)
         
-        let resultA: PropertyCheckResult<BoundInt> = PropertyRunner.run(
-            property:   { boundInt in valuesA.append(boundInt.value) },
+        let resultA: PCR<BoundInt> = await PropertyRunner.run(
+            property:   { boundInt async in valuesA.append(boundInt.value) },
             options:    optionsA
         )
         
-        let resultB: PropertyCheckResult<BoundInt> = PropertyRunner.run(
-            property:   { boundInt in valuesB.append(boundInt.value) },
+        let resultB: PCR<BoundInt> = await PropertyRunner.run(
+            property:   { boundInt async in valuesB.append(boundInt.value) },
             options:    optionsB
         )
         
@@ -679,12 +702,13 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
     
     
     
-    func testCounterexampleSeedMatchesConfiguredSeed() throws
+    @Reasync
+    func testCounterexampleSeedMatchesConfiguredSeed() async throws
     {
-        let result: PropertyCheckResult<BoundInt> = PropertyRunner.run(
+        let result: PCR<BoundInt> = await PropertyRunner.run(
             property:
             {
-                _ in
+                _ async in
                 
                 PropertyInterceptor.current?.record(
                     message:    "always fails",
@@ -703,7 +727,8 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
     
     
     
-    func testExhaustionSeedMatchesConfiguredSeed() throws
+    @Reasync
+    func testExhaustionSeedMatchesConfiguredSeed() async throws
     {
         let maxDiscardRatio: Int = 1
         
@@ -713,9 +738,9 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
             seed:               Self.seed
         )
         
-        let result: PropertyCheckResult<BoundInt> = PropertyRunner.run(
+        let result: PCR<BoundInt> = await PropertyRunner.run(
             where:      { _ in false },
-            property:   { _ in },
+            property:   { _ async in },
             options:    options
         )
         
@@ -728,12 +753,13 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
     
     
     
-    func testFailureWithNilSeed() throws
+    @Reasync
+    func testFailureWithNilSeed() async throws
     {
-        let result: PropertyCheckResult<BoundInt> = PropertyRunner.run(
+        let result: PCR<BoundInt> = await PropertyRunner.run(
             property:
             {
-                _ in
+                _ async in
                 
                 PropertyInterceptor.current?.record(
                     message:    "always fails",
@@ -751,7 +777,8 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
     
     // MARK: - Shrinking
     
-    func testShrinkingReducesToMinimalCounterexample() throws
+    @Reasync
+    func testShrinkingReducesToMinimalCounterexample() async throws
     {
         let target: Int = 10
         
@@ -760,10 +787,10 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
             seed:       Self.seed
         )
         
-        let result: PropertyCheckResult<BoundInt> = PropertyRunner.run(
+        let result: PCR<BoundInt> = await PropertyRunner.run(
             property:
             {
-                boundInt in
+                boundInt async in
                 
                 if boundInt.value > target
                 {
@@ -786,25 +813,25 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
     
     
     
-    func testNoShrinkReturnsOriginalValue() throws
+    @Reasync
+    func testNoShrinkReturnsOriginalValue() async throws
     {
-        let result: PropertyCheckResult<BoundIntNoShrink>
-            = PropertyRunner.run(
-                property:
+        let result: PCR<BoundIntNoShrink> = await PropertyRunner.run(
+            property:
+            {
+                boundInt async in
+                
+                if boundInt.value > 10
                 {
-                    boundInt in
-                    
-                    if boundInt.value > 10
-                    {
-                        PropertyInterceptor.current?.record(
-                            message:    "too large",
-                            file:       "File.swift",
-                            line:       1
-                        )
-                    }
-                },
-                options: .propertyOptions(seed: Self.seed)
-            )
+                    PropertyInterceptor.current?.record(
+                        message:    "too large",
+                        file:       "File.swift",
+                        line:       1
+                    )
+                }
+            },
+            options: .propertyOptions(seed: Self.seed)
+        )
         
         let counterexample: Counterexample<BoundIntNoShrink>
             = try XCTUnwrap(Self.assertFailed(result))
@@ -815,7 +842,8 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
     
     
     
-    func testMaxShrinkStepsLimitsShrinking() throws
+    @Reasync
+    func testMaxShrinkStepsLimitsShrinking() async throws
     {
         let generator = Generator<Int>(
             generate:   { _ in 1000 },
@@ -827,11 +855,11 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
             seed:               Self.seed
         )
         
-        let result: PropertyCheckResult<Int> = PropertyRunner.run(
+        let result: PCR<Int> = await PropertyRunner.run(
             using: generator,
             property:
             {
-                int in
+                int async in
                 
                 if int > 0
                 {
@@ -858,17 +886,18 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
     
     
     
-    func testZeroMaxShrinkStepsDisablesShrinking() throws
+    @Reasync
+    func testZeroMaxShrinkStepsDisablesShrinking() async throws
     {
         let options: TestOptions = .propertyOptions(
             maxShrinkSteps:     0,
             seed:               Self.seed
         )
         
-        let result: PropertyCheckResult<BoundInt> = PropertyRunner.run(
+        let result: PCR<BoundInt> = await PropertyRunner.run(
             property:
             {
-                boundInt in
+                boundInt async in
                 
                 if boundInt.value > 5
                 {
@@ -891,7 +920,8 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
     
     
     
-    func testShrunkCounterexampleCapturesAssertionOutput() throws
+    @Reasync
+    func testShrunkCounterexampleCapturesAssertionOutput() async throws
     {
         let target: Int = 0
         
@@ -900,10 +930,10 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
             seed:       Self.seed
         )
         
-        let result: PropertyCheckResult<BoundInt> = PropertyRunner.run(
+        let result: PCR<BoundInt> = await PropertyRunner.run(
             property:
             {
-                boundInt in
+                boundInt async in
                 
                 if boundInt.value > target
                 {
@@ -930,7 +960,8 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
     
     
     
-    func testThrowDuringShrinkingContinuesShrinking() throws
+    @Reasync
+    func testThrowDuringShrinkingContinuesShrinking() async throws
     {
         let target: Int = 10
         
@@ -939,10 +970,10 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
             seed:       Self.seed
         )
         
-        let result: PropertyCheckResult<BoundInt> = PropertyRunner.run(
+        let result: PCR<BoundInt> = await PropertyRunner.run(
             property:
             {
-                boundInt in
+                boundInt async throws in
                 
                 if boundInt.value > target
                 {
@@ -964,7 +995,8 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
     
     
     
-    func testShrinkCandidatesAllPassReturnsOriginal() throws
+    @Reasync
+    func testShrinkCandidatesAllPassReturnsOriginal() async throws
     {
         let target: Int = 50
         
@@ -973,11 +1005,11 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
             shrink:     { _ in [1, 2, 3] }
         )
         
-        let result: PropertyCheckResult<Int> = PropertyRunner.run(
+        let result: PCR<Int> = await PropertyRunner.run(
             using: generator,
             property:
             {
-                int in
+                int async in
                 
                 if int >= target
                 {
@@ -1001,7 +1033,8 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
     
     
     
-    func testMaxShrinkStepsOnePerformsExactlyOneStep() throws
+    @Reasync
+    func testMaxShrinkStepsOnePerformsExactlyOneStep() async throws
     {
         let generator = Generator<Int>(
             generate:   { _ in 1000 },
@@ -1013,11 +1046,11 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
             seed:               Self.seed
         )
         
-        let result: PropertyCheckResult<Int> = PropertyRunner.run(
+        let result: PCR<Int> = await PropertyRunner.run(
             using: generator,
             property:
             {
-                int in
+                int async in
                 
                 if int > 0
                 {
@@ -1043,17 +1076,18 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
     
     
     
-    func testSingleFailingIterationReturnsFailed() throws
+    @Reasync
+    func testSingleFailingIterationReturnsFailed() async throws
     {
         let options: TestOptions = .propertyOptions(
             iterations:     1,
             seed:           Self.seed
         )
         
-        let result: PropertyCheckResult<BoundInt> = PropertyRunner.run(
+        let result: PCR<BoundInt> = await PropertyRunner.run(
             property:
             {
-                _ in
+                _ async in
                 
                 PropertyInterceptor.current?.record(
                     message:    "always fails",
@@ -1073,7 +1107,8 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
     
     
     
-    func testShrinkingSkipsCandidatesFailingPrecondition() throws
+    @Reasync
+    func testShrinkingSkipsCandidatesFailingPrecondition() async throws
     {
         /// The generator always produces `100`. Shrink candidates are a fixed
         /// descending list, filtered to values less than the current value.
@@ -1091,12 +1126,12 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
             seed:           Self.seed
         )
         
-        let result: PropertyCheckResult<Int> = PropertyRunner.run(
+        let result: PCR<Int> = await PropertyRunner.run(
             using:  generator,
             where:  { $0 >= 20 },
             property:
             {
-                int in
+                int async in
                 
                 if int > 5
                 {
@@ -1119,7 +1154,8 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
     
     
     
-    func testShrunkenCounterexampleCapturesBothFailureAndThrow() throws
+    @Reasync
+    func testShrunkenCounterexampleCapturesBothFailureAndThrow() async throws
     {
         let target: Int = 10
         
@@ -1128,10 +1164,10 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
             seed:       Self.seed
         )
         
-        let result: PropertyCheckResult<BoundInt> = PropertyRunner.run(
+        let result: PCR<BoundInt> = await PropertyRunner.run(
             property:
             {
-                boundInt in
+                boundInt async throws in
                 
                 if boundInt.value > target
                 {
@@ -1166,7 +1202,8 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
     
     
     
-    func testBrokenShrinkReturningCurrentValueRespectsStepLimit() throws
+    @Reasync
+    func testBrokenShrinkReturningCurrentValueRespectsStepLimit() async throws
     {
         let generated       : Int   = 30
         let maxShrinkSteps  : Int   = 10
@@ -1181,11 +1218,11 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
             seed:               Self.seed
         )
         
-        let result: PropertyCheckResult<Int> = PropertyRunner.run(
+        let result: PCR<Int> = await PropertyRunner.run(
             using: generator,
             property:
             {
-                _ in
+                _ async in
                 
                 PropertyInterceptor.current?.record(
                     message:    "always fails",
@@ -1208,7 +1245,8 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
     
     
     
-    func testOriginalValueDiffersFromShrunkenValue() throws
+    @Reasync
+    func testOriginalValueDiffersFromShrunkenValue() async throws
     {
         let target: Int = 10
         
@@ -1217,10 +1255,10 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
             seed:       Self.seed
         )
         
-        let result: PropertyCheckResult<BoundInt> = PropertyRunner.run(
+        let result: PCR<BoundInt> = await PropertyRunner.run(
             property:
             {
-                boundInt in
+                boundInt async in
                 
                 if boundInt.value > target
                 {
@@ -1252,7 +1290,8 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
     
     
     
-    func testShrinkingWithPreconditionRejectingAllCandidates() throws
+    @Reasync
+    func testShrinkingWithPreconditionRejectingAllCandidates() async throws
     {
         /// The generator always produces `100`. Shrink candidates are
         /// `[0, 50, 75...]`, all of which fail the precondtion `>= 100`.
@@ -1268,12 +1307,12 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
             seed:           Self.seed
         )
         
-        let result: PropertyCheckResult<Int> = PropertyRunner.run(
+        let result: PCR<Int> = await PropertyRunner.run(
             using:  generator,
             where:  { int in int >= 100 },
             property:
             {
-                _ in
+                _ async in
                 
                 PropertyInterceptor.current?.record(
                     message:    "always fails",
@@ -1293,7 +1332,8 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
     
     
     
-    func testShrinkingRestartsFromImprovedValue() throws
+    @Reasync
+    func testShrinkingRestartsFromImprovedValue() async throws
     {
         /// A generator with a controlled shrink tree that requires multiple
         /// restarts to reach the minimum. If the process restarts correctly,
@@ -1318,11 +1358,11 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
             }
         )
         
-        let result: PropertyCheckResult<Int> = PropertyRunner.run(
+        let result: PCR<Int> = await PropertyRunner.run(
             using: generator,
             property:
             {
-                int in
+                int async in
                 
                 if int > 5
                 {
@@ -1349,7 +1389,8 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
     
     // MARK: - Custom generator
     
-    func testCustomGeneratorProducesAndShrinks() throws
+    @Reasync
+    func testCustomGeneratorProducesAndShrinks() async throws
     {
         let target: Int = 0
         
@@ -1358,11 +1399,11 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
             shrink:     { value in value.shrinkTowardZero() }
         )
         
-        let result: PropertyCheckResult<Int> = PropertyRunner.run(
+        let result: PCR<Int> = await PropertyRunner.run(
             using: generator,
             property:
             {
-                int in
+                int async in
                 
                 if int > target
                 {
@@ -1384,18 +1425,19 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
     
     
     
-    func testCustomGeneratorWithoutShrinking() throws
+    @Reasync
+    func testCustomGeneratorWithoutShrinking() async throws
     {
         let generator = Generator<Int>(
             generate:   { context in context.random(in: 50...100) },
             shrink:     { _ in [] }
         )
         
-        let result: PropertyCheckResult<Int> = PropertyRunner.run(
+        let result: PCR<Int> = await PropertyRunner.run(
             using: generator,
             property:
             {
-                _ in
+                _ async in
                 
                 PropertyInterceptor.current?.record(
                     message:    "always fails",
@@ -1415,17 +1457,18 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
     
     
     
-    func testCustomGeneratorWithPreconditionReturnsPassed() throws
+    @Reasync
+    func testCustomGeneratorWithPreconditionReturnsPassed() async throws
     {
         let generator = Generator<Int>(
             generate:   { context in context.random(in: 0...100) },
             shrink:     { value in value.shrinkTowardZero() }
         )
         
-        let result: PropertyCheckResult<Int> = PropertyRunner.run(
+        let result: PCR<Int> = await PropertyRunner.run(
             using:      generator,
             where:      { int in int % 2 == 0 },
-            property:   { _ in },
+            property:   { _ async in },
             options:    .propertyOptions(seed: Self.seed)
         )
         
@@ -1434,7 +1477,8 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
     
     
     
-    func testCustomGeneratorWithPreconditionRespectsFilter() throws
+    @Reasync
+    func testCustomGeneratorWithPreconditionRespectsFilter() async throws
     {
         let target: Int = 10
         
@@ -1443,12 +1487,12 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
             shrink:     { value in value.shrinkTowardZero() }
         )
         
-        let result: PropertyCheckResult<Int> = PropertyRunner.run(
+        let result: PCR<Int> = await PropertyRunner.run(
             using:      generator,
             where:      { int in int % 2 == 0 },
             property:
             {
-                int in
+                int async in
                 
                 if int > target
                 {
@@ -1471,7 +1515,8 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
     
     
     
-    func testCustomGeneratorWithPreconditionExhaustion() throws
+    @Reasync
+    func testCustomGeneratorWithPreconditionExhaustion() async throws
     {
         let iterations      : Int   = 10
         let maxDiscardRatio : Int   = 2
@@ -1488,10 +1533,10 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
             shrink:     { _ in [] }
         )
         
-        let result: PropertyCheckResult<Int> = PropertyRunner.run(
+        let result: PCR<Int> = await PropertyRunner.run(
             using:      generator,
             where:      { _ in false },
-            property:   { _ in },
+            property:   { _ async in },
             options:    options
         )
         
@@ -1507,14 +1552,15 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
     
     // MARK: - Size
     
-    func testSizeStartsAtZero() throws
+    @Reasync
+    func testSizeStartsAtZero() async throws
     {
         var firstSize: Int? = nil
         
-        let result: PropertyCheckResult<SizeCapture> = PropertyRunner.run(
+        let result: PCR<SizeCapture> = await PropertyRunner.run(
             property:
             {
-                capture in
+                capture async in
                 
                 if firstSize == nil
                 {
@@ -1532,7 +1578,8 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
     
     
     
-    func testSizeGrowsAcrossIterations() throws
+    @Reasync
+    func testSizeGrowsAcrossIterations() async throws
     {
         var sizes       : [Int]     = []
         let iterations  : Int       = 50
@@ -1543,8 +1590,8 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
             seed:           Self.seed
         )
         
-        let result: PropertyCheckResult<SizeCapture> = PropertyRunner.run(
-            property:   { capture in sizes.append(capture.size) },
+        let result: PCR<SizeCapture> = await PropertyRunner.run(
+            property:   { capture async in sizes.append(capture.size) },
             options:    options
         )
         
@@ -1563,7 +1610,8 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
     
     
     
-    func testMaxSizeControlsUpperBound() throws
+    @Reasync
+    func testMaxSizeControlsUpperBound() async throws
     {
         let maxSize : Int       = 25
         var sizes   : [Int]     = []
@@ -1573,8 +1621,8 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
             seed:       Self.seed
         )
         
-        let result: PropertyCheckResult<SizeCapture> = PropertyRunner.run(
-            property:   { capture in sizes.append(capture.size) },
+        let result: PCR<SizeCapture> = await PropertyRunner.run(
+            property:   { capture async in sizes.append(capture.size) },
             options:    options
         )
         
@@ -1588,7 +1636,8 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
     
     
     
-    func testMaxSizeZeroKeepsSizeAtZero() throws
+    @Reasync
+    func testMaxSizeZeroKeepsSizeAtZero() async throws
     {
         let maxSize : Int       = 0
         var sizes   : [Int]     = []
@@ -1598,8 +1647,8 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
             seed:       Self.seed
         )
         
-        let result: PropertyCheckResult<SizeCapture> = PropertyRunner.run(
-            property:   { capture in sizes.append(capture.size) },
+        let result: PCR<SizeCapture> = await PropertyRunner.run(
+            property:   { capture async in sizes.append(capture.size) },
             options:    options
         )
         
@@ -1613,7 +1662,8 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
     
     
     
-    func testSizeNeverReachesMaxSize() throws
+    @Reasync
+    func testSizeNeverReachesMaxSize() async throws
     {
         let maxSize     : Int       = 100
         let iterations  : Int       = 100
@@ -1625,8 +1675,8 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
             seed:           Self.seed
         )
         
-        let result: PropertyCheckResult<SizeCapture> = PropertyRunner.run(
-            property:   { capture in sizes.append(capture.size) },
+        let result: PCR<SizeCapture> = await PropertyRunner.run(
+            property:   { capture async in sizes.append(capture.size) },
             options:    options
         )
         
@@ -1642,12 +1692,13 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
     
     
     
-    func testFailureAtSizeZero() throws
+    @Reasync
+    func testFailureAtSizeZero() async throws
     {
-        let result: PropertyCheckResult<SizeCapture> = PropertyRunner.run(
+        let result: PCR<SizeCapture> = await PropertyRunner.run(
             property:
             {
-                capture in
+                capture async in
                 
                 if capture.size == 0
                 {
@@ -1673,7 +1724,8 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
     
     
     
-    func testSizeStaircaseWhenIterationsExceedMaxSize() throws
+    @Reasync
+    func testSizeStaircaseWhenIterationsExceedMaxSize() async throws
     {
         let maxSize     : Int       = 3
         let iterations  : Int       = 10
@@ -1685,8 +1737,8 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
             seed:           Self.seed
         )
         
-        let result: PropertyCheckResult<SizeCapture> = PropertyRunner.run(
-            property:   { capture in sizes.append(capture.size) },
+        let result: PCR<SizeCapture> = await PropertyRunner.run(
+            property:   { capture async in sizes.append(capture.size) },
             options:    options
         )
         
@@ -1708,7 +1760,8 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
     
     
     
-    func testSizeJumpsWhenMaxSizeExceedsIterations() throws
+    @Reasync
+    func testSizeJumpsWhenMaxSizeExceedsIterations() async throws
     {
         let maxSize     : Int       = 100
         let iterations  : Int       = 5
@@ -1720,8 +1773,8 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
             seed:           Self.seed
         )
         
-        let result: PropertyCheckResult<SizeCapture> = PropertyRunner.run(
-            property:   { capture in sizes.append(capture.size) },
+        let result: PCR<SizeCapture> = await PropertyRunner.run(
+            property:   { capture async in sizes.append(capture.size) },
             options:    options
         )
         
@@ -1742,7 +1795,8 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
     
     
     
-    func testSizeProgressionUsesSucceededNotIteration() throws
+    @Reasync
+    func testSizeProgressionUsesSucceededNotIteration() async throws
     {
         let maxSize     : Int       = 100
         let iterations  : Int       = 10
@@ -1768,7 +1822,7 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
         /// none are discarded. Use ``SizeCapture`` to observe any discards,
         /// and reject specific sizes that the formula were produced if
         /// `iteration` were used incorrectly.
-        let result: PropertyCheckResult<SizeCapture> = PropertyRunner.run(
+        let result: PCR<SizeCapture> = await PropertyRunner.run(
             where:
             {
                 capture in
@@ -1777,7 +1831,7 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
                 
                 return capture.size % 2 == 0
             },
-            property:   { _ in },
+            property:   { _ async in },
             options:    options
         )
         
@@ -1798,7 +1852,8 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
     
     
     
-    func testSizeProgressionWithGenuineDiscards() throws
+    @Reasync
+    func testSizeProgressionWithGenuineDiscards() async throws
     {
         let maxSize     : Int       = 100
         let iterations  : Int       = 10
@@ -1818,9 +1873,9 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
         /// Discards do not advance `succeeded`, so the size formula
         /// `succeeded * maxSize / iterations` should produce the same
         /// progression regardless of how many discards occur.
-        let result: PropertyCheckResult<BoundInt> = PropertyRunner.run(
+        let result: PCR<BoundInt> = await PropertyRunner.run(
             where:      { boundInt in  boundInt.value % 2 == 0 },
-            property:   { _ in accepted.append(accepted.count) },
+            property:   { _ async in accepted.append(accepted.count) },
             options:    options
         )
         
@@ -1836,6 +1891,10 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
 
 extension PropertyRunnerTests
 {
+    private typealias PCR = PropertyCheckResult
+    
+    
+    
     /// A wrapper around `Int` that provides controllable shrinking.
     ///
     /// This is different from `Int: Arbitrary` since `Int.arbitrary(using:)`
@@ -1931,7 +1990,7 @@ extension PropertyRunnerTests
     /// the result did not pass.
     @discardableResult
     private static func assertPassed<T>(
-        _ result: PropertyCheckResult<T>
+        _ result: PCR<T>
     ) -> PassedValues?
     {
         guard case let .passed(iterations, seed) = result
@@ -1956,7 +2015,7 @@ extension PropertyRunnerTests
     /// result did not fail.
     @discardableResult
     private static func assertFailed<T>(
-        _ result: PropertyCheckResult<T>
+        _ result: PCR<T>
     ) -> Counterexample<T>?
     {
         guard case let .failed(counterexample) = result
@@ -1989,7 +2048,7 @@ extension PropertyRunnerTests
     /// result did not fail.
     @discardableResult
     private static func assertExhausted<T>(
-        _ result: PropertyCheckResult<T>
+        _ result: PCR<T>
     ) -> ExhaustedValues?
     {
         guard case let .exhausted(discarded, succeeded, ratio, seed) = result
