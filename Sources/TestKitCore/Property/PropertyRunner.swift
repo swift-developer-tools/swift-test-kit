@@ -21,12 +21,13 @@ package struct PropertyRunner
     ///   - property: The property body.
     ///   - options: The options for testing.
     /// - Returns: The result of the property check.
+    @Reasync
     package static func run<T>(
-        property    : (T) throws -> Void,
+        property    : (T) async throws -> Void,
         options     : TestOptions
-    ) -> PropertyCheckResult<T> where T : Arbitrary
+    ) async -> PropertyCheckResult<T> where T : Arbitrary
     {
-        return run(
+        return await run(
             generate:       { context in T.arbitrary(using: context) },
             shrink:         { value in value.shrink() },
             precondition:   nil,
@@ -43,13 +44,14 @@ package struct PropertyRunner
     ///   - property: The property body.
     ///   - options: The options for testing.
     /// - Returns: The result of the property check.
+    @Reasync
     package static func run<T>(
         using generator : Generator<T>,
-        property        : (T) throws -> Void,
+        property        : (T) async throws -> Void,
         options         : TestOptions
-    ) -> PropertyCheckResult<T>
+    ) async -> PropertyCheckResult<T>
     {
-        return run(
+        return await run(
             generate:       generator.generate,
             shrink:         generator.shrink,
             precondition:   nil,
@@ -66,13 +68,14 @@ package struct PropertyRunner
     ///   - property: The property body.
     ///   - options: The options for testing.
     /// - Returns: The result of the property check.
+    @Reasync
     package static func run<T>(
         where precondition  : @escaping (T) -> Bool,
-        property            : (T) throws -> Void,
+        property            : (T) async throws -> Void,
         options             : TestOptions
-    ) -> PropertyCheckResult<T> where T : Arbitrary
+    ) async -> PropertyCheckResult<T> where T : Arbitrary
     {
-        return run(
+        return await run(
             generate:       { context in T.arbitrary(using: context) },
             shrink:         { value in value.shrink() },
             precondition:   precondition,
@@ -90,14 +93,15 @@ package struct PropertyRunner
     ///   - property: The property body.
     ///   - options: The options for testing.
     /// - Returns: The result of the property check.
+    @Reasync
     package static func run<T>(
         using generator     : Generator<T>,
         where precondition  : @escaping (T) -> Bool,
-        property            : (T) throws -> Void,
+        property            : (T) async throws -> Void,
         options             : TestOptions
-    ) -> PropertyCheckResult<T>
+    ) async -> PropertyCheckResult<T>
     {
-        return run(
+        return await run(
             generate:       generator.generate,
             shrink:         generator.shrink,
             precondition:   precondition,
@@ -116,13 +120,14 @@ package struct PropertyRunner
     ///   - property: The property body.
     ///   - options: The options for testing.
     /// - Returns: The result of the property check.
+    @Reasync
     private static func run<T>(
         generate            : (GenerationContext) -> T,
         shrink              : @escaping (T) -> [T],
         precondition        : ((T) -> Bool)?,
-        property            : (T) throws -> Void,
+        property            : (T) async throws -> Void,
         options             : TestOptions
-    ) -> PropertyCheckResult<T>
+    ) async -> PropertyCheckResult<T>
     {
         let opts: PropertyOptions = options.propertyOptions
         
@@ -165,17 +170,18 @@ package struct PropertyRunner
                 continue
             }
             
-            if didPropertyFail(property, with: value)
+            if await didPropertyFail(property, with: value)
             {
-                let counterexample: Counterexample<T> = makeCounterexample(
-                    value:          value,
-                    shrink:         shrink,
-                    precondition:   precondition,
-                    seed:           seed,
-                    iteration:      iteration,
-                    property:       property,
-                    options:        options
-                )
+                let counterexample: Counterexample<T>
+                    = await makeCounterexample(
+                        value:          value,
+                        shrink:         shrink,
+                        precondition:   precondition,
+                        seed:           seed,
+                        iteration:      iteration,
+                        property:       property,
+                        options:        options
+                    )
                 
                 return .failed(counterexample: counterexample)
             }
@@ -218,19 +224,20 @@ package struct PropertyRunner
     ///   - value: The value with which to call the property body.
     /// - Returns: Whether the given property fails when called with the
     /// given value.
+    @Reasync
     private static func didPropertyFail<T>(
-        _       property    : (T) throws -> Void,
+        _       property    : (T) async throws -> Void,
         with    value       : T
-    ) -> Bool
+    ) async -> Bool
     {
         let interceptor : PropertyInterceptor   = .init()
         var threwError  : Bool                  = false
         
-        PropertyInterceptor.$current.withValue(interceptor)
+        await PropertyInterceptor.$current.withValue(interceptor)
         {
             do
             {
-                try property(value)
+                try await property(value)
             }
             catch
             {
@@ -254,15 +261,16 @@ package struct PropertyRunner
     ///   - property: The property body.
     ///   - options: The options for testing.
     /// - Returns: The minimal counterexample for the given value.
+    @Reasync
     private static func makeCounterexample<T>(
         value           : T,
         shrink          : @escaping (T) -> [T],
         precondition    : ((T) -> Bool)?,
         seed            : UInt64,
         iteration       : Int,
-        property        : (T) throws -> Void,
+        property        : (T) async throws -> Void,
         options         : TestOptions
-    ) -> Counterexample<T>
+    ) async -> Counterexample<T>
     {
         var current : T     = value
         var steps   : Int   = 0
@@ -281,7 +289,7 @@ package struct PropertyRunner
                     continue
                 }
                 
-                if didPropertyFail(property, with: candidate)
+                if await didPropertyFail(property, with: candidate)
                 {
                     current     = candidate
                     improved    = true
@@ -304,11 +312,11 @@ package struct PropertyRunner
         let interceptor : PropertyInterceptor   = .init()
         var thrownError : Error?                = nil
         
-        PropertyInterceptor.$current.withValue(interceptor)
+        await PropertyInterceptor.$current.withValue(interceptor)
         {
             do
             {
-                try property(current)
+                try await property(current)
             }
             catch
             {
