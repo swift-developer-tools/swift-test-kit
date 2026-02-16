@@ -389,7 +389,7 @@ XCTKForAll(using: .nonEmptyArray(of: Int.self))
 }
 ```
 
-### Conforming Types
+### Built-In Conformance
 
 Built-in `Arbitrary` conformance is provided for many standard library types:
 
@@ -404,7 +404,47 @@ Built-in `Arbitrary` conformance is provided for many standard library types:
 - `Optional`
 - `Result`
 
-<!-- TODO: @Arbitrary macro example -->
+### Custom Type Conformance
+
+Apply the `@Arbitrary` macro to a struct or enum to automatically generate 
+`Arbitrary` conformance for custom types.
+
+Generic parameters that appear in stored properties or associated values are 
+automatically constrained to `Arbitrary`.
+
+```swift
+@Arbitrary
+struct User<T>: Equatable where T : Equatable & Hashable
+{
+    let name    : String
+    let id      : T
+}
+
+XCTKForAll
+{
+    (user: User<UUID>) in
+    
+    // Test properties that must hold for any user.
+}
+```
+
+Recursive and `indirect` enums are also supported.
+
+```swift
+@Arbitrary
+indirect enum Tree: Equatable
+{
+    case leaf
+    case node(Tree, Tree)
+}
+
+XCTKForAll
+{
+    (a: Tree, b: Tree) in
+    
+    // Test properties that must hold for any pair of trees.
+}
+```
 
 
 
