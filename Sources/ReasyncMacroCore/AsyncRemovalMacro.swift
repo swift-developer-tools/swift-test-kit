@@ -149,11 +149,11 @@ private enum AsyncRemovalDiagnosticKind: DiagnosticMessage
         {
             case .requiresFunction:
                 
-                return "@Reasync can only be applied to functions."
+                return "@Reasync can only be applied to functions"
                 
             case .requiresAsync:
                 
-                return "@Reasync can only be applied to async functions."
+                return "@Reasync can only be applied to async functions"
         }
     }
     

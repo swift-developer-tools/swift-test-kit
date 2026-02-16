@@ -986,21 +986,19 @@ private enum ArbitraryDiagnosticKind: DiagnosticMessage
         {
             case .classNotSupported:
                 
-                return "@Arbitrary cannot be applied to classes."
-                    + " Use a struct or enum instead."
+                return "@Arbitrary cannot be applied to classes"
                 
             case .uninhabitedEnum:
                 
-                return "@Arbitrary cannot be applied to enums with no cases."
+                return "@Arbitrary cannot be applied to enums with no cases"
                 
-            case let .missingTypeAnnotation(typeName):
+            case .missingTypeAnnotation:
                 
                 return "@Arbitrary requires an explicit type annotation"
-                    + " for '\(typeName)'."
                 
             case .unsupportedDeclaration:
                 
-                return "@Arbitrary can only be applied to structs and enums."
+                return "@Arbitrary can only be applied to structs and enums"
         }
     }
     
