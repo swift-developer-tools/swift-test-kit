@@ -38,8 +38,37 @@ let package = Package(
     targets:
     [
         .target(
+            name: "ReasyncMacroCore",
+            dependencies:
+            [
+                .product(
+                    name: "SwiftSyntax",
+                    package: "swift-syntax"
+                ),
+                
+                .product(
+                    name: "SwiftSyntaxMacros",
+                    package: "swift-syntax"
+                )
+            ]
+        ),
+        
+        .macro(
+            name: "ReasyncMacro",
+            dependencies:
+            [
+                "ReasyncMacroCore",
+                
+                .product(
+                    name: "SwiftCompilerPlugin",
+                    package: "swift-syntax"
+                )
+            ]
+        ),
+        
+        .target(
             name: "TestKitCore",
-            dependencies: []
+            dependencies: ["ReasyncMacro"]
         ),
         
         .target(
@@ -86,6 +115,7 @@ let package = Package(
             name: "TestKitTests",
             dependencies:
             [
+                "ReasyncMacroCore",
                 "TestKitCore",
                 "TestKitMacroCore",
                 "XCTestKit"
