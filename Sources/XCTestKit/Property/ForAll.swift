@@ -30,29 +30,31 @@ import TestKitCore
 ///   - options: The options for testing. The default value is `nil`, which
 ///   falls back to using global options.
 ///   - property: The property to evaluate.
+@Reasync
 public func XCTKForAll<each T>(
-    _ message   : @autoclosure () -> String         = "",
-    file        : StaticString                      = #filePath,
-    line        : UInt                              = #line,
-    options     : TestOptions?                      = nil,
-    _ property  : (repeat each T) throws -> Void
-) where repeat each T : Arbitrary
+    _ message   : @autoclosure () -> String             = "",
+    file        : StaticString                          = #filePath,
+    line        : UInt                                  = #line,
+    options     : TestOptions?                          = nil,
+    _ property  : (repeat each T) async throws -> Void
+) async where repeat each T : Arbitrary
 {
     let generator: Generator<(repeat each T)>
         = .zip(repeat Generator<each T>.arbitrary())
     
-    let wrappedProperty: ((repeat each T)) throws -> Void =
+    let wrappedProperty: ((repeat each T)) async throws -> Void =
     {
         tuple in
         
-        try property(repeat each tuple)
+        try await property(repeat each tuple)
     }
     
-    let result: PropertyCheckResult<(repeat each T)> = PropertyRunner.run(
-        using:      generator,
-        property:   wrappedProperty,
-        options:    options ?? XCTKConfig.global
-    )
+    let result: PropertyCheckResult<(repeat each T)>
+        = await PropertyRunner.run(
+            using:      generator,
+            property:   wrappedProperty,
+            options:    options ?? XCTKConfig.global
+        )
     
     result.emit(
         context:    failureContext,
@@ -90,30 +92,32 @@ public func XCTKForAll<each T>(
 ///   - options: The options for testing. The default value is `nil`, which
 ///   falls back to using global options.
 ///   - property: The property to evaluate.
+@Reasync
 public func XCTKForAll<each T>(
     using generators    : repeat Generator<each T>,
-    message             : @autoclosure () -> String         = "",
-    file                : StaticString                      = #filePath,
-    line                : UInt                              = #line,
-    options             : TestOptions?                      = nil,
-    _ property          : (repeat each T) throws -> Void
-)
+    message             : @autoclosure () -> String             = "",
+    file                : StaticString                          = #filePath,
+    line                : UInt                                  = #line,
+    options             : TestOptions?                          = nil,
+    _ property          : (repeat each T) async throws -> Void
+) async
 {
     let generator: Generator<(repeat each T)>
         = .zip(repeat each generators)
     
-    let wrappedProperty: ((repeat each T)) throws -> Void =
+    let wrappedProperty: ((repeat each T)) async throws -> Void =
     {
         tuple in
         
-        try property(repeat each tuple)
+        try await property(repeat each tuple)
     }
     
-    let result: PropertyCheckResult<(repeat each T)> = PropertyRunner.run(
-        using:      generator,
-        property:   wrappedProperty,
-        options:    options ?? XCTKConfig.global
-    )
+    let result: PropertyCheckResult<(repeat each T)>
+        = await PropertyRunner.run(
+            using:      generator,
+            property:   wrappedProperty,
+            options:    options ?? XCTKConfig.global
+        )
     
     result.emit(
         context:    failureContext,
@@ -154,23 +158,24 @@ public func XCTKForAll<each T>(
 ///   - options: The options for testing. The default value is `nil`, which
 ///   falls back to using global options.
 ///   - property: The property to evaluate.
+@Reasync
 public func XCTKForAll<each T>(
     where precondition  : @escaping (repeat each T) -> Bool,
-    message             : @autoclosure () -> String         = "",
-    file                : StaticString                      = #filePath,
-    line                : UInt                              = #line,
-    options             : TestOptions?                      = nil,
-    _ property          : (repeat each T) throws -> Void
-) where repeat each T : Arbitrary
+    message             : @autoclosure () -> String             = "",
+    file                : StaticString                          = #filePath,
+    line                : UInt                                  = #line,
+    options             : TestOptions?                          = nil,
+    _ property          : (repeat each T) async throws -> Void
+) async where repeat each T : Arbitrary
 {
     let generator: Generator<(repeat each T)>
         = .zip(repeat Generator<each T>.arbitrary())
     
-    let wrappedProperty: ((repeat each T)) throws -> Void =
+    let wrappedProperty: ((repeat each T)) async throws -> Void =
     {
         tuple in
         
-        try property(repeat each tuple)
+        try await property(repeat each tuple)
     }
     
     let wrappedPrecondition: ((repeat each T)) -> Bool =
@@ -180,12 +185,13 @@ public func XCTKForAll<each T>(
         return precondition(repeat each tuple)
     }
     
-    let result: PropertyCheckResult<(repeat each T)> = PropertyRunner.run(
-        using:      generator,
-        where:      wrappedPrecondition,
-        property:   wrappedProperty,
-        options:    options ?? XCTKConfig.global
-    )
+    let result: PropertyCheckResult<(repeat each T)>
+        = await PropertyRunner.run(
+            using:      generator,
+            where:      wrappedPrecondition,
+            property:   wrappedProperty,
+            options:    options ?? XCTKConfig.global
+        )
     
     result.emit(
         context:    failureContext,
@@ -228,24 +234,25 @@ public func XCTKForAll<each T>(
 ///   - options: The options for testing. The default value is `nil`, which
 ///   falls back to using global options.
 ///   - property: The property to evaluate.
+@Reasync
 public func XCTKForAll<each T>(
     using generators    : repeat Generator<each T>,
     where precondition  : @escaping (repeat each T) -> Bool,
-    message             : @autoclosure () -> String         = "",
-    file                : StaticString                      = #filePath,
-    line                : UInt                              = #line,
-    options             : TestOptions?                      = nil,
-    _ property          : (repeat each T) throws -> Void
-)
+    message             : @autoclosure () -> String             = "",
+    file                : StaticString                          = #filePath,
+    line                : UInt                                  = #line,
+    options             : TestOptions?                          = nil,
+    _ property          : (repeat each T) async throws -> Void
+) async
 {
     let generator: Generator<(repeat each T)>
         = .zip(repeat each generators)
     
-    let wrappedProperty: ((repeat each T)) throws -> Void =
+    let wrappedProperty: ((repeat each T)) async throws -> Void =
     {
         tuple in
         
-        try property(repeat each tuple)
+        try await property(repeat each tuple)
     }
     
     let wrappedPrecondition: ((repeat each T)) -> Bool =
@@ -255,12 +262,13 @@ public func XCTKForAll<each T>(
         return precondition(repeat each tuple)
     }
     
-    let result: PropertyCheckResult<(repeat each T)> = PropertyRunner.run(
-        using:      generator,
-        where:      wrappedPrecondition,
-        property:   wrappedProperty,
-        options:    options ?? XCTKConfig.global
-    )
+    let result: PropertyCheckResult<(repeat each T)>
+        = await PropertyRunner.run(
+            using:      generator,
+            where:      wrappedPrecondition,
+            property:   wrappedProperty,
+            options:    options ?? XCTKConfig.global
+        )
     
     result.emit(
         context:    failureContext,
