@@ -11,11 +11,11 @@ import OSLog
 
 
 
-// MARK: - PropertyRunner
-
 /// Runs property-based tests.
 package struct PropertyRunner
 {
+    // MARK: - Run
+    
     /// Runs a property check using the given ``Arbitrary`` type.
     /// - Parameters:
     ///   - property: The property body.
@@ -202,6 +202,8 @@ package struct PropertyRunner
     
     
     
+    // MARK: - Support
+    
     private static let logger = Logger(
         subsystem:  "swift-test-kit",
         category:   "PropertyRunner"
@@ -324,70 +326,4 @@ package struct PropertyRunner
             thrownError:    thrownError
         )
     }
-}
-
-
-
-// MARK: - PropertyCheckResult
-
-/// The result of a property check.
-package enum PropertyCheckResult<T>
-{
-    /// All iterations passed.
-    /// - Parameters:
-    ///   - iterations: The number of iterations.
-    ///   - seed: The seed used to initialize the random number generator.
-    case passed(
-        iterations  : Int,
-        seed        : UInt64
-    )
-    
-    /// A counterexample was found.
-    /// - Parameter counterexample: The found counterexample.
-    case failed(
-        counterexample: Counterexample<T>
-    )
-    
-    /// Too many inputs did not meet the preconditions of conditional
-    /// properties.
-    /// - Parameters:
-    ///   - discarded: The number of discarded inputs.
-    ///   - succeeded: The number of successful inputs.
-    ///   - ratio: The maximum ratio of discarded inputs to successful inputs.
-    ///   - seed: The seed used to initialize the random number generator.
-    case exhausted(
-        discarded   : Int,
-        succeeded   : Int,
-        ratio       : Int,
-        seed        : UInt64
-    )
-}
-
-
-
-// MARK: - Counterexample
-
-/// Information about a failing counterexample.
-package struct Counterexample<T>
-{
-    /// The minimal counterexample (after shrinking).
-    package let value           : T
-    
-    /// The original counterexample (before shrinking).
-    package let originalValue   : T
-    
-    /// The seed used to initialize the random number generator.
-    package let seed            : UInt64
-    
-    /// The 1-indexed iteration at which the original counterexample was found.
-    package let iteration       : Int
-    
-    /// The number of shrink steps performed.
-    package let shrinkSteps     : Int
-    
-    /// The assertion failures from the final run with the shrunken value.
-    package let failures        : [InterceptedFailure]
-    
-    /// The error thrown by the property body, if any.
-    package let thrownError     : Error?
 }

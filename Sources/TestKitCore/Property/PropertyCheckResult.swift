@@ -1,0 +1,41 @@
+//===----------------------------------------------------------------------===//
+//
+// This source file is part of the swift-test-kit open source project.
+//
+// Copyright (c) Margins Technologies LLC.
+// Licensed under the Apache License, Version 2.0.
+//
+//===----------------------------------------------------------------------===//
+
+/// The result of a property check.
+package enum PropertyCheckResult<T>
+{
+    /// All iterations passed.
+    /// - Parameters:
+    ///   - iterations: The number of iterations.
+    ///   - seed: The seed used to initialize the random number generator.
+    case passed(
+        iterations  : Int,
+        seed        : UInt64
+    )
+    
+    /// A counterexample was found.
+    /// - Parameter counterexample: The found counterexample.
+    case failed(
+        counterexample: Counterexample<T>
+    )
+    
+    /// Too many inputs did not meet the preconditions of conditional
+    /// properties.
+    /// - Parameters:
+    ///   - discarded: The number of discarded inputs.
+    ///   - succeeded: The number of successful inputs.
+    ///   - ratio: The maximum ratio of discarded inputs to successful inputs.
+    ///   - seed: The seed used to initialize the random number generator.
+    case exhausted(
+        discarded   : Int,
+        succeeded   : Int,
+        ratio       : Int,
+        seed        : UInt64
+    )
+}
