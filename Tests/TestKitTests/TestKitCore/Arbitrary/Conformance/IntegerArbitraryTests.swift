@@ -18,70 +18,70 @@ internal final class IntegerArbitraryTests: XCTestCaseStopOnFail
     
     func testIntGeneration()
     {
-        testGeneration(of: Int.self)
+        validateGeneration(of: Int.self)
     }
     
     
     
     func testInt8Generation()
     {
-        testGeneration(of: Int8.self)
+        validateGeneration(of: Int8.self)
     }
     
     
     
     func testInt16Generation()
     {
-        testGeneration(of: Int16.self)
+        validateGeneration(of: Int16.self)
     }
     
     
     
     func testInt32Generation()
     {
-        testGeneration(of: Int32.self)
+        validateGeneration(of: Int32.self)
     }
     
     
     
     func testInt64Generation()
     {
-        testGeneration(of: Int64.self)
+        validateGeneration(of: Int64.self)
     }
     
     
     
     func testUIntGeneration()
     {
-        testGeneration(of: UInt.self)
+        validateGeneration(of: UInt.self)
     }
     
     
     
     func testUInt8Generation()
     {
-        testGeneration(of: UInt8.self)
+        validateGeneration(of: UInt8.self)
     }
     
     
     
     func testUInt16Generation()
     {
-        testGeneration(of: UInt16.self)
+        validateGeneration(of: UInt16.self)
     }
     
     
     
     func testUInt32Generation()
     {
-        testGeneration(of: UInt32.self)
+        validateGeneration(of: UInt32.self)
     }
     
     
     
     func testUInt64Generation()
     {
-        testGeneration(of: UInt64.self)
+        validateGeneration(of: UInt64.self)
     }
     
     
@@ -90,70 +90,70 @@ internal final class IntegerArbitraryTests: XCTestCaseStopOnFail
     
     func testIntShrinking()
     {
-        testShrinking(of: Int.self)
+        validateShrinking(of: Int.self)
     }
     
     
     
     func testInt8Shrinking()
     {
-        testShrinking(of: Int8.self)
+        validateShrinking(of: Int8.self)
     }
     
     
     
     func testInt16Shrinking()
     {
-        testShrinking(of: Int16.self)
+        validateShrinking(of: Int16.self)
     }
     
     
     
     func testInt32Shrinking()
     {
-        testShrinking(of: Int32.self)
+        validateShrinking(of: Int32.self)
     }
     
     
     
     func testInt64Shrinking()
     {
-        testShrinking(of: Int64.self)
+        validateShrinking(of: Int64.self)
     }
     
     
     
     func testUIntShrinking()
     {
-        testShrinking(of: UInt.self)
+        validateShrinking(of: UInt.self)
     }
     
     
     
     func testUInt8Shrinking()
     {
-        testShrinking(of: UInt8.self)
+        validateShrinking(of: UInt8.self)
     }
     
     
     
     func testUInt16Shrinking()
     {
-        testShrinking(of: UInt16.self)
+        validateShrinking(of: UInt16.self)
     }
     
     
     
     func testUInt32Shrinking()
     {
-        testShrinking(of: UInt32.self)
+        validateShrinking(of: UInt32.self)
     }
     
     
     
     func testUInt64Shrinking()
     {
-        testShrinking(of: UInt64.self)
+        validateShrinking(of: UInt64.self)
     }
 }
 
@@ -167,7 +167,7 @@ extension IntegerArbitraryTests
     
     /// Validates arbitrary value generation of the given type.
     /// - Parameter type: The type to evaluate.
-    private func testGeneration<T>(
+    private func validateGeneration<T>(
         of type: T.Type
     ) where T : Arbitrary & FixedWidthInteger
     {
@@ -291,7 +291,7 @@ extension IntegerArbitraryTests
     
     /// Validates the shrink candidates of the given type.
     /// - Parameter type: The type to test.
-    private func testShrinking<T>(
+    private func validateShrinking<T>(
         of type: T.Type
     ) where T : Arbitrary & FixedWidthInteger
     {

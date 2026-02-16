@@ -18,21 +18,21 @@ internal final class FloatingArbitraryTests: XCTestCaseStopOnFail
     
     func testDoubleGeneration()
     {
-        testGeneration(of: Double.self)
+        validateGeneration(of: Double.self)
     }
     
     
     
     func testFloatGeneration()
     {
-        testGeneration(of: Float.self)
+        validateGeneration(of: Float.self)
     }
     
     
     
     func testFloat16Generation()
     {
-        testGeneration(of: Float16.self)
+        validateGeneration(of: Float16.self)
     }
     
     
@@ -41,21 +41,21 @@ internal final class FloatingArbitraryTests: XCTestCaseStopOnFail
     
     func testDoubleShrinking()
     {
-        testShrinking(of: Double.self)
+        validateShrinking(of: Double.self)
     }
     
     
     
     func testFloatShrinking()
     {
-        testShrinking(of: Float.self)
+        validateShrinking(of: Float.self)
     }
     
     
     
     func testFloat16Shrinking()
     {
-        testShrinking(of: Float16.self)
+        validateShrinking(of: Float16.self)
     }
 }
 
@@ -69,7 +69,7 @@ extension FloatingArbitraryTests
     
     /// Validates arbitrary value generation of the given type.
     /// - Parameter type: The type to evaluate.
-    private func testGeneration<T>(
+    private func validateGeneration<T>(
         of type: T.Type
     ) where T : Arbitrary & BinaryFloatingPoint
     {
@@ -309,7 +309,7 @@ extension FloatingArbitraryTests
     
     /// Validates the shrink candidates of the given type.
     /// - Parameter type: The type to test.
-    private func testShrinking<T>(
+    private func validateShrinking<T>(
         of type: T.Type
     ) where T : Arbitrary & BinaryFloatingPoint
     {

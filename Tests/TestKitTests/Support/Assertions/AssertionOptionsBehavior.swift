@@ -25,7 +25,7 @@ extension XCTestKitCase
     /// validated for all assertions as part of the error-throwing tests.
     ///
     /// - Parameter kind: The assertion to test.
-    internal func testFunctionAssertionOptionsBehavior(
+    internal func assertFuncAssertionOptionsBehavior(
         _ kind: AssertionKind
     )
     {
@@ -411,7 +411,7 @@ extension XCTestKitCase
     /// validated for all assertions as part of the error-throwing tests.
     ///
     /// - Parameter kind: The assertion to test.
-    internal func testMacroAssertionOptionsBehavior(
+    internal func assertMacroAssertionOptionsBehavior(
         _ kind: AssertionKind
     )
     {

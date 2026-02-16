@@ -13,7 +13,7 @@ internal final class FunctionAssertionOptionsTests: XCTestKitCase
     
     func testAssertEqualOptionsBehavior()
     {
-        testFunctionAssertionOptionsBehavior(.equal)
+        assertFuncAssertionOptionsBehavior(.equal)
     }
     
     
@@ -22,69 +22,69 @@ internal final class FunctionAssertionOptionsTests: XCTestKitCase
     
     func testAssertSatisfyAllOptionsBehavior()
     {
-        testFunctionAssertionOptionsBehavior(.satisfyAll)
+        assertFuncAssertionOptionsBehavior(.satisfyAll)
     }
     
     
     
     func testAssertSatisfyAnyOptionsBehavior()
     {
-        testFunctionAssertionOptionsBehavior(.satisfyAny)
+        assertFuncAssertionOptionsBehavior(.satisfyAny)
     }
     
     
     
     func testAssertSatisfyNoneOptionsBehavior()
     {
-        testFunctionAssertionOptionsBehavior(.satisfyNone)
+        assertFuncAssertionOptionsBehavior(.satisfyNone)
     }
     
     
     
     func testAssertSatisfyAtLeastOptionsBehavior()
     {
-        testFunctionAssertionOptionsBehavior(.satisfyAtLeast)
+        assertFuncAssertionOptionsBehavior(.satisfyAtLeast)
     }
     
     
     
     func testAssertSatisfyAtMostOptionsBehavior()
     {
-        testFunctionAssertionOptionsBehavior(.satisfyAtMost)
+        assertFuncAssertionOptionsBehavior(.satisfyAtMost)
     }
     
     
     
     func testAssertSatisfyRangeOptionsBehavior()
     {
-        testFunctionAssertionOptionsBehavior(.satisfyRange)
+        assertFuncAssertionOptionsBehavior(.satisfyRange)
     }
     
     
     
     func testAssertExactlyOptionsBehavior()
     {
-        testFunctionAssertionOptionsBehavior(.exactly)
+        assertFuncAssertionOptionsBehavior(.exactly)
     }
     
     
     
     func testAssertExactlyOneOptionsBehavior()
     {
-        testFunctionAssertionOptionsBehavior(.exactlyOne)
+        assertFuncAssertionOptionsBehavior(.exactlyOne)
     }
     
     
     
     func testAssertUniqueBehavior()
     {
-        testFunctionAssertionOptionsBehavior(.unique)
+        assertFuncAssertionOptionsBehavior(.unique)
     }
     
     
     
     func testAssertUniqueByKeyBehavior()
     {
-        testFunctionAssertionOptionsBehavior(.uniqueByKey)
+        assertFuncAssertionOptionsBehavior(.uniqueByKey)
     }
 }

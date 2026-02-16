@@ -28,7 +28,7 @@ extension XCTestKitCase
     ///   - kind: The assertion to test.
     ///   - useFloats: Whether to use floating-point numbers when testing for
     ///   equality with accuracy. Otherwise, integers will be used.
-    internal func testFunctionAssertionMessageNotEvalOnSuccess(
+    internal func assertFuncAssertionMessageNotEvalOnSuccess(
         _ kind      : AssertionKind,
         useFloats   : Bool          = false
     )
@@ -355,7 +355,7 @@ extension XCTestKitCase
     ///   - kind: The assertion to test.
     ///   - useFloats: Whether to use floating-point numbers when testing for
     ///   equality with accuracy. Otherwise, integers will be used.
-    internal func testFunctionAssertionMessageEvalOnceOnFailure(
+    internal func assertFuncAssertionMessageEvalOnceOnFailure(
         _ kind      : AssertionKind,
         useFloats   : Bool          = false
     )
@@ -659,7 +659,7 @@ extension XCTestKitCase
     ///   - kind: The assertion to test.
     ///   - useFloats: Whether to use floating-point numbers when testing for
     ///   equality with accuracy. Otherwise, integers will be used.
-    internal func testMacroAssertionMessageNotEvalOnSuccess(
+    internal func assertMacroAssertionMessageNotEvalOnSuccess(
         _ kind      : AssertionKind,
         useFloats   : Bool          = false
     )
@@ -987,7 +987,7 @@ extension XCTestKitCase
     ///   - kind: The assertion to test.
     ///   - useFloats: Whether to use floating-point numbers when testing for
     ///   equality with accuracy. Otherwise, integers will be used.
-    internal func testMacroAssertionMessageEvalOnceOnFailure(
+    internal func assertMacroAssertionMessageEvalOnceOnFailure(
         _ kind      : AssertionKind,
         useFloats   : Bool          = false
     )

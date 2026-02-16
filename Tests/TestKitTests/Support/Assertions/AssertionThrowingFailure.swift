@@ -23,7 +23,7 @@ extension XCTestKitCase
     /// ``AssertionKind/throwsError``.
     ///
     /// - Parameter kind: The assertion to test.
-    internal func testFunctionAssertionFailsOnThrow(
+    internal func assertFuncAssertionFailsOnThrow(
         _ kind: AssertionKind
     )
     {
@@ -236,7 +236,7 @@ extension XCTestKitCase
     /// ``AssertionKind/throwsError``.
     ///
     /// - Parameter kind: The assertion to test.
-    internal func testMacroAssertionFailsOnThrow(
+    internal func assertMacroAssertionFailsOnThrow(
         _ kind: AssertionKind
     )
     {

@@ -18,70 +18,70 @@ internal final class IntegerGeneratorTests: XCTestCaseStopOnFail
     
     func testIntClosedRange()
     {
-        testClosedRange(of: Int.self)
+        validateClosedRange(of: Int.self)
     }
     
     
     
     func testInt8ClosedRange()
     {
-        testClosedRange(of: Int8.self)
+        validateClosedRange(of: Int8.self)
     }
     
     
     
     func testInt16ClosedRange()
     {
-        testClosedRange(of: Int16.self)
+        validateClosedRange(of: Int16.self)
     }
     
     
     
     func testInt32ClosedRange()
     {
-        testClosedRange(of: Int32.self)
+        validateClosedRange(of: Int32.self)
     }
     
     
     
     func testInt64ClosedRange()
     {
-        testClosedRange(of: Int64.self)
+        validateClosedRange(of: Int64.self)
     }
     
     
     
     func testUIntClosedRange()
     {
-        testClosedRange(of: UInt.self)
+        validateClosedRange(of: UInt.self)
     }
     
     
     
     func testUInt8ClosedRange()
     {
-        testClosedRange(of: UInt8.self)
+        validateClosedRange(of: UInt8.self)
     }
     
     
     
     func testUInt16ClosedRange()
     {
-        testClosedRange(of: UInt16.self)
+        validateClosedRange(of: UInt16.self)
     }
     
     
     
     func testUInt32ClosedRange()
     {
-        testClosedRange(of: UInt32.self)
+        validateClosedRange(of: UInt32.self)
     }
     
     
     
     func testUInt64ClosedRange()
     {
-        testClosedRange(of: UInt64.self)
+        validateClosedRange(of: UInt64.self)
     }
     
     
@@ -90,70 +90,70 @@ internal final class IntegerGeneratorTests: XCTestCaseStopOnFail
     
     func testIntRange()
     {
-        testRange(of: Int.self)
+        validateRange(of: Int.self)
     }
     
     
     
     func testInt8Range()
     {
-        testRange(of: Int8.self)
+        validateRange(of: Int8.self)
     }
     
     
     
     func testInt16Range()
     {
-        testRange(of: Int16.self)
+        validateRange(of: Int16.self)
     }
     
     
     
     func testInt32Range()
     {
-        testRange(of: Int32.self)
+        validateRange(of: Int32.self)
     }
     
     
     
     func testInt64Range()
     {
-        testRange(of: Int64.self)
+        validateRange(of: Int64.self)
     }
     
     
     
     func testUIntRange()
     {
-        testRange(of: UInt.self)
+        validateRange(of: UInt.self)
     }
     
     
     
     func testUInt8Range()
     {
-        testRange(of: UInt8.self)
+        validateRange(of: UInt8.self)
     }
     
     
     
     func testUInt16Range()
     {
-        testRange(of: UInt16.self)
+        validateRange(of: UInt16.self)
     }
     
     
     
     func testUInt32Range()
     {
-        testRange(of: UInt32.self)
+        validateRange(of: UInt32.self)
     }
     
     
     
     func testUInt64Range()
     {
-        testRange(of: UInt64.self)
+        validateRange(of: UInt64.self)
     }
 }
 
@@ -167,7 +167,7 @@ extension IntegerGeneratorTests
     
     /// Validates closed ranges of the given type.
     /// - Parameter type: The type to evaluate.
-    private func testClosedRange<T>(
+    private func validateClosedRange<T>(
         of type: T.Type
     ) where T : Arbitrary & FixedWidthInteger
     {
@@ -240,7 +240,7 @@ extension IntegerGeneratorTests
     
     /// Validates ranges of the given type.
     /// - Parameter type: The type to evaluate.
-    private func testRange<T>(
+    private func validateRange<T>(
         of type: T.Type
     ) where T : Arbitrary & FixedWidthInteger
     {

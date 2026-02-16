@@ -18,21 +18,21 @@ internal final class FloatingGeneratorTests: XCTestCaseStopOnFail
     
     func testDoubleClosedRange()
     {
-        testClosedRange(of: Double.self)
+        validateClosedRange(of: Double.self)
     }
     
     
     
     func testFloatClosedRange()
     {
-        testClosedRange(of: Float.self)
+        validateClosedRange(of: Float.self)
     }
     
     
     
     func testFloat16ClosedRange()
     {
-        testClosedRange(of: Float16.self)
+        validateClosedRange(of: Float16.self)
     }
     
     
@@ -41,21 +41,21 @@ internal final class FloatingGeneratorTests: XCTestCaseStopOnFail
     
     func testDoubleRange()
     {
-        testRange(of: Double.self)
+        validateRange(of: Double.self)
     }
     
     
     
     func testFloatRange()
     {
-        testRange(of: Float.self)
+        validateRange(of: Float.self)
     }
     
     
     
     func testFloat16Range()
     {
-        testRange(of: Float16.self)
+        validateRange(of: Float16.self)
     }
 }
 
@@ -69,7 +69,7 @@ extension FloatingGeneratorTests
     
     /// Validates closed ranges of the given type.
     /// - Parameter type: The type to evaluate.
-    private func testClosedRange<T>(
+    private func validateClosedRange<T>(
         of type: T.Type
     ) where T : Arbitrary & BinaryFloatingPoint,
             T.RawSignificand : FixedWidthInteger
@@ -139,7 +139,7 @@ extension FloatingGeneratorTests
     
     /// Validates ranges of the given type.
     /// - Parameter type: The type to evaluate.
-    private func testRange<T>(
+    private func validateRange<T>(
         of type: T.Type
     ) where T : Arbitrary & BinaryFloatingPoint,
             T.RawSignificand : FixedWidthInteger

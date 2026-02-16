@@ -18,21 +18,21 @@ internal final class CollectionArbitraryTests: XCTestCaseStopOnFail
     
     func testArrayGeneration()
     {
-        testGeneration(of: Array<Int>.self)
+        validateGeneration(of: Array<Int>.self)
     }
     
     
     
     func testDictionaryGeneration()
     {
-        testGeneration(of: Dictionary<Int, Int>.self)
+        validateGeneration(of: Dictionary<Int, Int>.self)
     }
     
     
     
     func testSetGeneration()
     {
-        testGeneration(of: Set<Int>.self)
+        validateGeneration(of: Set<Int>.self)
     }
     
     
@@ -690,7 +690,7 @@ extension CollectionArbitraryTests
 {
     /// Validates arbitrary value generation of the given type.
     /// - Parameter type: The type to evaluate.
-    private func testGeneration<T>(
+    private func validateGeneration<T>(
         of type: T.Type
     ) where T : Arbitrary & Collection & Equatable
     {

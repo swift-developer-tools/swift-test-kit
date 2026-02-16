@@ -13,21 +13,21 @@ internal final class MacroAssertionThrowingTests: XCTestKitCase
     
     func testAssertFailsOnThrow()
     {
-        testMacroAssertionFailsOnThrow(.assert)
+        assertMacroAssertionFailsOnThrow(.assert)
     }
     
     
     
     func testAssertTrueFailsOnThrow()
     {
-        testMacroAssertionFailsOnThrow(.true)
+        assertMacroAssertionFailsOnThrow(.true)
     }
     
     
     
     func testAssertFalseFailsOnThrow()
     {
-        testMacroAssertionFailsOnThrow(.false)
+        assertMacroAssertionFailsOnThrow(.false)
     }
     
     
@@ -36,21 +36,21 @@ internal final class MacroAssertionThrowingTests: XCTestKitCase
     
     func testAssertNilFailsOnThrow()
     {
-        testMacroAssertionFailsOnThrow(.nil)
+        assertMacroAssertionFailsOnThrow(.nil)
     }
     
     
     
     func testAssertNotNilFailsOnThrow()
     {
-        testMacroAssertionFailsOnThrow(.notNil)
+        assertMacroAssertionFailsOnThrow(.notNil)
     }
     
     
     
     func testUnwrapFailsOnThrow()
     {
-        testMacroAssertionFailsOnThrow(.unwrap)
+        assertMacroAssertionFailsOnThrow(.unwrap)
     }
     
     
@@ -59,56 +59,56 @@ internal final class MacroAssertionThrowingTests: XCTestKitCase
     
     func testAssertEqualFailsOnThrow()
     {
-        testMacroAssertionFailsOnThrow(.equal)
+        assertMacroAssertionFailsOnThrow(.equal)
     }
     
     
     
     func testAssertNotEqualFailsOnThrow()
     {
-        testMacroAssertionFailsOnThrow(.notEqual)
+        assertMacroAssertionFailsOnThrow(.notEqual)
     }
     
     
     
     func testAssertIdenticalFailsOnThrow()
     {
-        testMacroAssertionFailsOnThrow(.identical)
+        assertMacroAssertionFailsOnThrow(.identical)
     }
     
     
     
     func testAssertNotIdenticalFailsOnThrow()
     {
-        testMacroAssertionFailsOnThrow(.notIdentical)
+        assertMacroAssertionFailsOnThrow(.notIdentical)
     }
     
     
     
     func testAssertEqualFloatAccFailsOnThrow()
     {
-        testMacroAssertionFailsOnThrow(.equalWithAccuracy)
+        assertMacroAssertionFailsOnThrow(.equalWithAccuracy)
     }
     
     
     
     func testAssertEqualIntAccFailsOnThrow()
     {
-        testMacroAssertionFailsOnThrow(.equalWithAccuracy)
+        assertMacroAssertionFailsOnThrow(.equalWithAccuracy)
     }
     
     
     
     func testAssertNotEqualFloatAccFailsOnThrow()
     {
-        testMacroAssertionFailsOnThrow(.notEqualWithAccuracy )
+        assertMacroAssertionFailsOnThrow(.notEqualWithAccuracy )
     }
     
     
     
     func testAssertNotEqualIntAccFailsOnThrow()
     {
-        testMacroAssertionFailsOnThrow(.notEqualWithAccuracy)
+        assertMacroAssertionFailsOnThrow(.notEqualWithAccuracy)
     }
     
     
@@ -117,28 +117,28 @@ internal final class MacroAssertionThrowingTests: XCTestKitCase
     
     func testAssertGreaterFailsOnThrow()
     {
-        testMacroAssertionFailsOnThrow(.greaterThan)
+        assertMacroAssertionFailsOnThrow(.greaterThan)
     }
     
     
     
     func testAssertGreaterEqualFailsOnThrow()
     {
-        testMacroAssertionFailsOnThrow(.greaterThanOrEqual)
+        assertMacroAssertionFailsOnThrow(.greaterThanOrEqual)
     }
     
     
     
     func testAssertLessEqualFailsOnThrow()
     {
-        testMacroAssertionFailsOnThrow(.lessThanOrEqual)
+        assertMacroAssertionFailsOnThrow(.lessThanOrEqual)
     }
     
     
     
     func testAssertLessFailsOnThrow()
     {
-        testMacroAssertionFailsOnThrow(.lessThan)
+        assertMacroAssertionFailsOnThrow(.lessThan)
     }
     
     
@@ -147,7 +147,7 @@ internal final class MacroAssertionThrowingTests: XCTestKitCase
     
     func testAssertNoThrowFailsOnThrow()
     {
-        testMacroAssertionFailsOnThrow(.noThrow)
+        assertMacroAssertionFailsOnThrow(.noThrow)
     }
     
     
@@ -156,76 +156,76 @@ internal final class MacroAssertionThrowingTests: XCTestKitCase
     
     func testAssertSatisfyAllFailsOnThrow()
     {
-        testMacroAssertionFailsOnThrow(.satisfyAll)
+        assertMacroAssertionFailsOnThrow(.satisfyAll)
     }
     
     
     
     func testAssertSatisfyAnyFailsOnThrow()
     {
-        testMacroAssertionFailsOnThrow(.satisfyAny)
+        assertMacroAssertionFailsOnThrow(.satisfyAny)
     }
     
     
     
     func testAssertSatisfyNoneFailsOnThrow()
     {
-        testMacroAssertionFailsOnThrow(.satisfyNone)
+        assertMacroAssertionFailsOnThrow(.satisfyNone)
     }
     
     
     
     func testAssertSatisfyAtLeastFailsOnThrow()
     {
-        testMacroAssertionFailsOnThrow(.satisfyAtLeast)
+        assertMacroAssertionFailsOnThrow(.satisfyAtLeast)
     }
     
     
     
     func testAssertSatisfyAtMostFailsOnThrow()
     {
-        testMacroAssertionFailsOnThrow(.satisfyAtMost)
+        assertMacroAssertionFailsOnThrow(.satisfyAtMost)
     }
     
     
     
     func testAssertSatisfyRangeFailsOnThrow()
     {
-        testMacroAssertionFailsOnThrow(.satisfyRange)
+        assertMacroAssertionFailsOnThrow(.satisfyRange)
     }
     
     
     
     func testAssertExactlyFailsOnThrow()
     {
-        testMacroAssertionFailsOnThrow(.exactly)
+        assertMacroAssertionFailsOnThrow(.exactly)
     }
     
     
     
     func testAssertExactlyOneFailsOnThrow()
     {
-        testMacroAssertionFailsOnThrow(.exactlyOne)
+        assertMacroAssertionFailsOnThrow(.exactlyOne)
     }
     
     
     
     func testAssertSortedFailsOnThrow()
     {
-        testMacroAssertionFailsOnThrow(.sorted)
+        assertMacroAssertionFailsOnThrow(.sorted)
     }
     
     
     
     func testAssertUniqueFailsOnThrow()
     {
-        testMacroAssertionFailsOnThrow(.unique)
+        assertMacroAssertionFailsOnThrow(.unique)
     }
     
     
     
     func testAssertUniqueByKeyFailsOnThrow()
     {
-        testMacroAssertionFailsOnThrow(.uniqueByKey)
+        assertMacroAssertionFailsOnThrow(.uniqueByKey)
     }
 }
