@@ -962,7 +962,7 @@ extension ArbitraryExtensionMacro
 
 // MARK: - ArbitraryDiagnosticKind
 
-/// Diagnostics for ``Arbitrary`` macro expansion.
+/// Diagnostics for ``Arbitrary()`` macro expansion.
 private enum ArbitraryDiagnosticKind: DiagnosticMessage
 {
     /// Classes are not supported.
