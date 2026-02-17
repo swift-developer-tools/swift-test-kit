@@ -15,72 +15,92 @@ import XCTest
 
 internal final class ForAllMessageTests: XCTestKitCase
 {
-    func testArbitraryMessageNotEvalOnSuccess()
+    override func setUp()
     {
-        testMessageNotEvalOnSuccess(.arbitrary)
+        super.setUp()
+        
+        /// Must be true when expecting errors in an async context. XCTest bug.
+        continueAfterFailure = true
     }
     
     
     
-    func testArbitraryMessageEvalOnceOnFailure()
+    @Reasync
+    func testArbitraryMessageNotEvalOnSuccess() async
     {
-        testMessageEvalOnceOnFailure(.arbitrary)
+        await assertMessageNotEvalOnSuccess(.arbitrary)
     }
     
     
     
-    func testGeneratorMessageNotEvalOnSuccess()
+    @Reasync
+    func testArbitraryMessageEvalOnceOnFailure() async
     {
-        testMessageNotEvalOnSuccess(.generator)
+        await assertMessageEvalOnceOnFailure(.arbitrary)
     }
     
     
     
-    func testGeneratorMessageEvalOnceOnFailure()
+    @Reasync
+    func testGeneratorMessageNotEvalOnSuccess() async
     {
-        testMessageEvalOnceOnFailure(.generator)
+        await assertMessageNotEvalOnSuccess(.generator)
     }
     
     
     
-    func testPreconditionMessageNotEvalOnSuccess()
+    @Reasync
+    func testGeneratorMessageEvalOnceOnFailure() async
     {
-        testMessageNotEvalOnSuccess(.precondition)
+        await assertMessageEvalOnceOnFailure(.generator)
     }
     
     
     
-    func testPreconditionMessageEvalOnceOnFailure()
+    @Reasync
+    func testPreconditionMessageNotEvalOnSuccess() async
     {
-        testMessageEvalOnceOnFailure(.precondition)
+        await assertMessageNotEvalOnSuccess(.precondition)
     }
     
     
     
-    func testPreconditionMessageEvalOnceOnExhaustion()
+    @Reasync
+    func testPreconditionMessageEvalOnceOnFailure() async
     {
-        testMessageEvalOnceOnExhaustion(useGenerator: false)
+        await assertMessageEvalOnceOnFailure(.precondition)
     }
     
     
     
-    func testPreconditionGeneratorMessageNotEvalOnSuccess()
+    @Reasync
+    func testPreconditionMessageEvalOnceOnExhaustion() async
     {
-        testMessageNotEvalOnSuccess(.preconditionGenerator)
+        await assertMessageEvalOnceOnExhaustion(useGenerator: false)
     }
     
     
     
-    func testPreconditionGeneratorMessageEvalOnceOnFailure()
+    @Reasync
+    func testPreconditionGeneratorMessageNotEvalOnSuccess() async
     {
-        testMessageEvalOnceOnFailure(.preconditionGenerator)
+        await assertMessageNotEvalOnSuccess(.preconditionGenerator)
     }
     
     
     
-    func testPreconditionGeneratorMessageEvalOnceOnExhaustion()
+    @Reasync
+    func testPreconditionGeneratorMessageEvalOnceOnFailure() async
     {
-        testMessageEvalOnceOnExhaustion(useGenerator: true)
+        await assertMessageEvalOnceOnFailure(.preconditionGenerator)
+    }
+    
+    
+    
+    @Reasync
+    func testPreconditionGeneratorMessageEvalOnceOnExhaustion() async
+    {
+        await assertMessageEvalOnceOnExhaustion(useGenerator: true)
     }
 }
 
@@ -111,9 +131,10 @@ extension ForAllMessageTests
     /// Asserts that the message of the specified property evaluator is not
     /// evaluated when the evaluator succeeds.
     /// - Parameter kind: The property evaluator to test.
-    private func testMessageNotEvalOnSuccess(
+    @Reasync
+    private func assertMessageNotEvalOnSuccess(
         _ kind: ForAllKind
-    )
+    ) async
     {
         var count   : Int           = 0
         let message : () -> String  = { count += 1; return "msg" }
@@ -127,46 +148,46 @@ extension ForAllMessageTests
         {
             case .arbitrary:
                 
-                XCTKForAll(
+                await XCTKForAll(
                     message(),
                     options: options
                 )
                 {
-                    (_: Int) in
+                    (_: Int) async in
                 }
                 
             case .generator:
                 
-                XCTKForAll(
+                await XCTKForAll(
                     using:      Generator<Int>.arbitrary(),
                     message:    message(),
                     options:    options
                 )
                 {
-                    (_: Int) in
+                    (_: Int) async in
                 }
                 
             case .precondition:
                 
-                XCTKForAll(
+                await XCTKForAll(
                     where:      { (_: Int) in true },
                     message:    message(),
                     options:    options
                 )
                 {
-                    (_: Int) in
+                    (_: Int) async in
                 }
                 
             case .preconditionGenerator:
                 
-                XCTKForAll(
+                await XCTKForAll(
                     using:      Generator<Int>.arbitrary(),
                     where:      { (_: Int) in true },
                     message:    message(),
                     options:    options
                 )
                 {
-                    (_: Int) in
+                    (_: Int) async in
                 }
         }
         
@@ -178,9 +199,10 @@ extension ForAllMessageTests
     /// Asserts that the message of the specified property evaluator is
     /// evaluated only once when the evaluator fails.
     /// - Parameter kind: The property evaluator to test.
-    private func testMessageEvalOnceOnFailure(
+    @Reasync
+    private func assertMessageEvalOnceOnFailure(
         _ kind: ForAllKind
-    )
+    ) async
     {
         var count   : Int           = 0
         let message : () -> String  = { count += 1; return "msg" }
@@ -190,58 +212,58 @@ extension ForAllMessageTests
             seed:           50
         )
         
-        withOneExpectedFailure
+        await withOneExpectedFailure
         {
             switch kind
             {
                 case .arbitrary:
                     
-                    XCTKForAll(
+                    await XCTKForAll(
                         message(),
                         options: options
                     )
                     {
-                        (_: Int) in
+                        (_: Int) async in
                         
                         XCTKAssertTrue(false)
                     }
                     
                 case .generator:
                     
-                    XCTKForAll(
+                    await XCTKForAll(
                         using:      Generator<Int>.arbitrary(),
                         message:    message(),
                         options:    options
                     )
                     {
-                        (_: Int) in
+                        (_: Int) async in
                         
                         XCTKAssertTrue(false)
                     }
                     
                 case .precondition:
                     
-                    XCTKForAll(
+                    await XCTKForAll(
                         where:      { (_: Int) in true },
                         message:    message(),
                         options:    options
                     )
                     {
-                        (_: Int) in
+                        (_: Int) async in
                         
                         XCTKAssertTrue(false)
                     }
                     
                 case .preconditionGenerator:
                     
-                    XCTKForAll(
+                    await XCTKForAll(
                         using:      Generator<Int>.arbitrary(),
                         where:      { (_: Int) in true },
                         message:    message(),
                         options:    options
                     )
                     {
-                        (_: Int) in
+                        (_: Int) async in
                         
                         XCTKAssertTrue(false)
                     }
@@ -256,9 +278,10 @@ extension ForAllMessageTests
     /// Asserts that the message of the specified property evaluator is
     /// evaluated only once when the evaluator fails due to exhaustion.
     /// - Parameter useGenerator: Whether to use a generator evaluator.
-    private func testMessageEvalOnceOnExhaustion(
+    @Reasync
+    private func assertMessageEvalOnceOnExhaustion(
         useGenerator: Bool
-    )
+    ) async
     {
         var count   : Int           = 0
         let message : () -> String  = { count += 1; return "msg" }
@@ -269,29 +292,29 @@ extension ForAllMessageTests
             seed:               50
         )
         
-        withOneExpectedFailure
+        await withOneExpectedFailure
         {
             if useGenerator
             {
-                XCTKForAll(
+                await XCTKForAll(
                     using:      Generator<Int>.arbitrary(),
                     where:      { (_: Int) in false },
                     message:    message(),
                     options:    options
                 )
                 {
-                    (_: Int) in
+                    (_: Int) async in
                 }
             }
             else
             {
-                XCTKForAll(
+                await XCTKForAll(
                     where:      { (_: Int) in false },
                     message:    message(),
                     options:    options
                 )
                 {
-                    (_: Int) in
+                    (_: Int) async in
                 }
             }
         }

@@ -46,9 +46,10 @@ internal class XCTestKitCase: XCTestCase
     ///
     /// - Parameter body: The closure to call.
     /// - Returns: The return value of the given closure.
+    @Reasync
     func withContinuationAfterFailure<T>(
-        _ body: () throws -> T
-    ) rethrows -> T
+        _ body: () async throws -> T
+    ) async rethrows -> T
     {
         let originalContinueAfterFailure: Bool = continueAfterFailure
         
@@ -59,7 +60,7 @@ internal class XCTestKitCase: XCTestCase
             continueAfterFailure = originalContinueAfterFailure
         }
         
-        return try body()
+        return try await body()
     }
     
     
@@ -72,12 +73,13 @@ internal class XCTestKitCase: XCTestCase
     ///
     /// - Parameter body: The closure to call.
     /// - Returns: The failure message of the given closure.
+    @Reasync
     @discardableResult
     func withOneExpectedFailure(
-        _ body: () throws -> Void
-    ) -> String?
+        _ body: () async throws -> Void
+    ) async -> String?
     {
-        return withContinuationAfterFailure
+        return await withContinuationAfterFailure
         {
             var capturedMessage     : String?   = nil
             var isInsideBodyClosure : Bool      = false
@@ -119,7 +121,7 @@ internal class XCTestKitCase: XCTestCase
             }
             
             isInsideBodyClosure = true
-            try? body()
+            try? await body()
             isInsideBodyClosure = false
             
             return capturedMessage

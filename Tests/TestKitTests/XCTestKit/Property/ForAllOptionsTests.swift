@@ -15,28 +15,39 @@ import XCTest
 
 internal final class ForAllOptionsTests: XCTestKitCase
 {
+    override func setUp()
+    {
+        super.setUp()
+        
+        /// Must be true when expecting errors in an async context. XCTest bug.
+        continueAfterFailure = true
+    }
+    
+    
+    
     // MARK: - Global fallback
     
-    func testNilOptionsFallsBackToGlobal()
+    @Reasync
+    func testNilOptionsFallsBackToGlobal() async
     {
         /// With `iterations` set to zero, the property vacuously passes.
         XCTKConfig.global.propertyOptions.iterations    = 0
         XCTKConfig.global.propertyOptions.seed          = 50
         
-        XCTKForAll(options: nil)
+        await XCTKForAll(options: nil)
         {
-            (_: Int) in
+            (_: Int) async in
             
             XCTKAssertTrue(false)
         }
         
         XCTKConfig.global.propertyOptions.iterations = 1
         
-        let output: String? = withOneExpectedFailure
+        let output: String? = await withOneExpectedFailure
         {
-            XCTKForAll(options: nil)
+            await XCTKForAll(options: nil)
             {
-                (_: Int) in
+                (_: Int) async in
                 
                 XCTKAssertTrue(false)
             }
@@ -47,7 +58,8 @@ internal final class ForAllOptionsTests: XCTestKitCase
     
     
     
-    func testExplicitOptionsOverrideGlobal()
+    @Reasync
+    func testExplicitOptionsOverrideGlobal() async
     {
         /// With `iterations` set to zero, the property vacuously passes.
         XCTKConfig.global.propertyOptions.iterations = 0
@@ -57,9 +69,9 @@ internal final class ForAllOptionsTests: XCTestKitCase
             seed:           50
         )
         
-        let output: String? = withCapturedOutput(options: options)
+        let output: String? = await withCapturedOutput(options: options)
         {
-            _ in
+            _ async in
 
             XCTKAssertTrue(false)
         }
@@ -71,26 +83,27 @@ internal final class ForAllOptionsTests: XCTestKitCase
     
     // MARK: - Seed
     
-    func testSeedDeterminism()
+    @Reasync
+    func testSeedDeterminism() async
     {
         let options: TestOptions = .propertyOptions(
             iterations:     1,
             seed:           12345
         )
         
-        let property: (Int) throws -> Void =
+        let property: (Int) async throws -> Void =
         {
-            (_: Int) in
+            (_: Int) async in
             
             XCTKAssertTrue(false)
         }
         
-        let output1: String? = withCapturedOutput(
+        let output1: String? = await withCapturedOutput(
             options:    options,
             property:   property
         )
         
-        let output2: String? = withCapturedOutput(
+        let output2: String? = await withCapturedOutput(
             options:    options,
             property:   property
         )
@@ -102,7 +115,8 @@ internal final class ForAllOptionsTests: XCTestKitCase
     
     
     
-    func testSeedAppearsInOutput()
+    @Reasync
+    func testSeedAppearsInOutput() async
     {
         let seed: UInt64 = 9876543210
         
@@ -111,9 +125,9 @@ internal final class ForAllOptionsTests: XCTestKitCase
             seed:           seed
         )
         
-        let output: String? = withCapturedOutput(options: options)
+        let output: String? = await withCapturedOutput(options: options)
         {
-            _ in
+            _ async in
 
             XCTKAssertTrue(false)
         }
@@ -126,7 +140,8 @@ internal final class ForAllOptionsTests: XCTestKitCase
     
     // MARK: - Generation size
     
-    func testMaxSizeAffectsGeneration()
+    @Reasync
+    func testMaxSizeAffectsGeneration() async
     {
         /// With `maxSize` set to zero, every iteration generates at size zero.
         /// ``Int/arbitrary(using:)`` produces `0` at size zero, so the
@@ -137,9 +152,9 @@ internal final class ForAllOptionsTests: XCTestKitCase
             seed:           50
         )
         
-        XCTKForAll(options: options)
+        await XCTKForAll(options: options)
         {
-            (n: Int) in
+            (n: Int) async in
             
             XCTKAssertEqual(n, 0)
         }
@@ -150,9 +165,9 @@ internal final class ForAllOptionsTests: XCTestKitCase
         /// values, so the property fails.
         options.propertyOptions.maxSize = 100
         
-        let output: String? = withCapturedOutput(options: options)
+        let output: String? = await withCapturedOutput(options: options)
         {
-            (n: Int) in
+            (n: Int) async in
             
             XCTKAssertEqual(n, 0)
         }
@@ -164,7 +179,8 @@ internal final class ForAllOptionsTests: XCTestKitCase
     
     // MARK: - Shrinking
     
-    func testMaxShrinkStepsZeroDisablesShrinking()
+    @Reasync
+    func testMaxShrinkStepsZeroDisablesShrinking() async
     {
         let options: TestOptions = .propertyOptions(
             iterations:         100,
@@ -172,9 +188,9 @@ internal final class ForAllOptionsTests: XCTestKitCase
             seed:               50
         )
         
-        let output: String? = withCapturedOutput(options: options)
+        let output: String? = await withCapturedOutput(options: options)
         {
-            (n: Int) in
+            (n: Int) async in
 
             XCTKAssertTrue(n <= 5)
         }
@@ -185,7 +201,8 @@ internal final class ForAllOptionsTests: XCTestKitCase
     
     
     
-    func testMaxShrinkStepsEnablesShrinking()
+    @Reasync
+    func testMaxShrinkStepsEnablesShrinking() async
     {
         let options: TestOptions = .propertyOptions(
             iterations:         100,
@@ -193,9 +210,9 @@ internal final class ForAllOptionsTests: XCTestKitCase
             seed:               50
         )
         
-        let output: String? = withCapturedOutput(options: options)
+        let output: String? = await withCapturedOutput(options: options)
         {
-            (n: Int) in
+            (n: Int) async in
 
             XCTKAssertTrue(n <= 5)
         }
@@ -208,7 +225,8 @@ internal final class ForAllOptionsTests: XCTestKitCase
     
     // MARK: - Exhaustion
     
-    func testMaxDiscardRatioTriggersExhaustion()
+    @Reasync
+    func testMaxDiscardRatioTriggersExhaustion() async
     {
         let options: TestOptions = .propertyOptions(
             iterations:         1,
@@ -216,7 +234,7 @@ internal final class ForAllOptionsTests: XCTestKitCase
             seed:               50
         )
         
-        let output: String? = withCapturedOutput(
+        let output: String? = await withCapturedOutput(
             precondition:   { _ in false },
             options:        options
         )
@@ -239,18 +257,19 @@ extension ForAllOptionsTests
     ///   - property: The property body.
     /// - Returns: The captured failure message, or `nil` if no failure
     /// occurred.
+    @Reasync
     private func withCapturedOutput(
         options     : TestOptions?,
-        property    : @escaping (Int) throws -> Void
-    ) -> String?
+        property    : @escaping (Int) async throws -> Void
+    ) async -> String?
     {
-        return withOneExpectedFailure
+        return await withOneExpectedFailure
         {
-            XCTKForAll(options: options)
+            await XCTKForAll(options: options)
             {
-                (n: Int) in
+                (n: Int) async throws in
                 
-                try property(n)
+                try await property(n)
             }
         }
     }
@@ -265,22 +284,23 @@ extension ForAllOptionsTests
     ///   - property: The property body.
     /// - Returns: The captured failure message, or `nil` if no failure
     /// occurred.
+    @Reasync
     private func withCapturedOutput(
         precondition    : @escaping (Int) -> Bool,
         options         : TestOptions?,
-        property        : @escaping (Int) throws -> Void    = { _ in }
-    ) -> String?
+        property        : @escaping (Int) async throws -> Void = { _ async in }
+    ) async -> String?
     {
-        return withOneExpectedFailure
+        return await withOneExpectedFailure
         {
-            XCTKForAll(
+            await XCTKForAll(
                 where:      precondition,
                 options:    options
             )
             {
-                (n: Int) in
+                (n: Int) async throws in
                 
-                try property(n)
+                try await property(n)
             }
         }
     }

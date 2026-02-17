@@ -15,20 +15,31 @@ import XCTest
 
 internal final class ForAllOutputTests: XCTestKitCase
 {
+    override func setUp()
+    {
+        super.setUp()
+        
+        /// Must be true when expecting errors in an async context. XCTest bug.
+        continueAfterFailure = true
+    }
+    
+    
+    
     // MARK: - Counterexample
     
-    func testCounterexampleNoShrinking() throws
+    @Reasync
+    func testCounterexampleNoShrinking() async throws
     {
         let options: TestOptions = .propertyOptions(
             iterations:     1,
             seed:           Self.seed
         )
         
-        let output: String? = withOneExpectedFailure
+        let output: String? = await withOneExpectedFailure
         {
-            XCTKForAll(options: options)
+            await XCTKForAll(options: options)
             {
-                (_: Int) in
+                (_: Int) async in
                 
                 XCTKAssertTrue(false)
             }
@@ -59,7 +70,8 @@ internal final class ForAllOutputTests: XCTestKitCase
     
     
     
-    func testCounterexampleWithShrinking() throws
+    @Reasync
+    func testCounterexampleWithShrinking() async throws
     {
         let options: TestOptions = .propertyOptions(
             iterations:     1,
@@ -71,14 +83,14 @@ internal final class ForAllOutputTests: XCTestKitCase
             shrink:     { value in value.shrink() }
         )
         
-        let output: String? = withOneExpectedFailure
+        let output: String? = await withOneExpectedFailure
         {
-            XCTKForAll(
+            await XCTKForAll(
                 using:      generator,
                 options:    options
             )
             {
-                (n: Int) in
+                (n: Int) async in
                 
                 XCTKAssertLessThan(n, 10)
             }
@@ -109,7 +121,8 @@ internal final class ForAllOutputTests: XCTestKitCase
     
     
     
-    func testCounterexampleAtLaterIteration() throws
+    @Reasync
+    func testCounterexampleAtLaterIteration() async throws
     {
         let options: TestOptions = .propertyOptions(
             iterations:     10,
@@ -125,14 +138,14 @@ internal final class ForAllOutputTests: XCTestKitCase
             shrink:     { value in value.shrink() }
         )
         
-        let output: String? = withOneExpectedFailure
+        let output: String? = await withOneExpectedFailure
         {
-            XCTKForAll(
+            await XCTKForAll(
                 using:      generator,
                 options:    options
             )
             {
-                (n: Int) in
+                (n: Int) async in
                 
                 XCTKAssertLessThan(n, 10)
             }
@@ -163,18 +176,19 @@ internal final class ForAllOutputTests: XCTestKitCase
     
     
     
-    func testCounterexampleWithThrownError()
+    @Reasync
+    func testCounterexampleWithThrownError() async
     {
         let options: TestOptions = .propertyOptions(
             iterations:     1,
             seed:           Self.seed
         )
         
-        let actual: String? = withOneExpectedFailure
+        let actual: String? = await withOneExpectedFailure
         {
-            XCTKForAll(options: options)
+            await XCTKForAll(options: options)
             {
-                (_: Int) in
+                (_: Int) async throws in
                 
                 throw TestError()
             }
@@ -199,21 +213,22 @@ internal final class ForAllOutputTests: XCTestKitCase
     
     
     
-    func testCounterexampleWithMessage()
+    @Reasync
+    func testCounterexampleWithMessage() async
     {
         let options: TestOptions = .propertyOptions(
             iterations:     1,
             seed:           Self.seed
         )
         
-        let actual: String? = withOneExpectedFailure
+        let actual: String? = await withOneExpectedFailure
         {
-            XCTKForAll(
+            await XCTKForAll(
                 "hello world",
                 options: options
             )
             {
-                (_: Int) in
+                (_: Int) async throws in
                 
                 throw TestError()
             }
@@ -240,21 +255,22 @@ internal final class ForAllOutputTests: XCTestKitCase
     
     
     
-    func testCounterexampleWithMessageAndAssertionFailure() throws
+    @Reasync
+    func testCounterexampleWithMessageAndAssertionFailure() async throws
     {
         let options: TestOptions = .propertyOptions(
             iterations:     1,
             seed:           Self.seed
         )
         
-        let output: String? = withOneExpectedFailure
+        let output: String? = await withOneExpectedFailure
         {
-            XCTKForAll(
+            await XCTKForAll(
                 "hello world",
                 options: options
             )
             {
-                (_: Int) in
+                (_: Int) async in
                 
                 XCTKAssertTrue(false)
             }
@@ -286,7 +302,8 @@ internal final class ForAllOutputTests: XCTestKitCase
     
     
     
-    func testPreconditionGeneratorCounterexample() throws
+    @Reasync
+    func testPreconditionGeneratorCounterexample() async throws
     {
         let options: TestOptions = .propertyOptions(
             iterations:     1,
@@ -298,15 +315,15 @@ internal final class ForAllOutputTests: XCTestKitCase
             shrink:     { value in value.shrink() }
         )
         
-        let output: String? = withOneExpectedFailure
+        let output: String? = await withOneExpectedFailure
         {
-            XCTKForAll(
+            await XCTKForAll(
                 using:      generator,
                 where:      { $0 >= 50 },
                 options:    options
             )
             {
-                (_: Int) in
+                (_: Int) async in
                 
                 XCTKAssertTrue(false)
             }
@@ -337,21 +354,22 @@ internal final class ForAllOutputTests: XCTestKitCase
     
     
     
-    func testPreconditionCounterexample() throws
+    @Reasync
+    func testPreconditionCounterexample() async throws
     {
         let options: TestOptions = .propertyOptions(
             iterations:     1,
             seed:           Self.seed
         )
         
-        let output: String? = withOneExpectedFailure
+        let output: String? = await withOneExpectedFailure
         {
-            XCTKForAll(
+            await XCTKForAll(
                 where:      { _ in true },
                 options:    options
             )
             {
-                (_: Int) in
+                (_: Int) async in
                 
                 XCTKAssertTrue(false)
             }
@@ -382,18 +400,19 @@ internal final class ForAllOutputTests: XCTestKitCase
     
     
     
-    func testTwoParameterArbitraryCounterexample() throws
+    @Reasync
+    func testTwoParameterArbitraryCounterexample() async throws
     {
         let options: TestOptions = .propertyOptions(
             iterations:     1,
             seed:           Self.seed
         )
         
-        let output: String? = withOneExpectedFailure
+        let output: String? = await withOneExpectedFailure
         {
-            XCTKForAll(options: options)
+            await XCTKForAll(options: options)
             {
-                (_: Int, _: Int) in
+                (_: Int, _: Int) async in
                 
                 XCTKAssertTrue(false)
             }
@@ -425,7 +444,8 @@ internal final class ForAllOutputTests: XCTestKitCase
     
     
     
-    func testTwoParameterCounterexampleNoShrinking() throws
+    @Reasync
+    func testTwoParameterCounterexampleNoShrinking() async throws
     {
         let options: TestOptions = .propertyOptions(
             iterations:     1,
@@ -435,14 +455,14 @@ internal final class ForAllOutputTests: XCTestKitCase
         let gen1    = Generator<Int>.constant(50)
         let gen2    = Generator<String>.constant("abc")
         
-        let output: String? = withOneExpectedFailure
+        let output: String? = await withOneExpectedFailure
         {
-            XCTKForAll(
+            await XCTKForAll(
                 using:      gen1, gen2,
                 options:    options
             )
             {
-                (_: Int, _: String) in
+                (_: Int, _: String) async in
                 
                 XCTKAssertTrue(false)
             }
@@ -474,7 +494,8 @@ internal final class ForAllOutputTests: XCTestKitCase
     
     
     
-    func testTwoParameterCounterexampleWithShrinking() throws
+    @Reasync
+    func testTwoParameterCounterexampleWithShrinking() async throws
     {
         let options: TestOptions = .propertyOptions(
             iterations:     1,
@@ -488,14 +509,14 @@ internal final class ForAllOutputTests: XCTestKitCase
         
         let gen2 = Generator<String>.constant("abc")
         
-        let output: String? = withOneExpectedFailure
+        let output: String? = await withOneExpectedFailure
         {
-            XCTKForAll(
+            await XCTKForAll(
                 using:      gen1, gen2,
                 options:    options
             )
             {
-                (a: Int, _: String) in
+                (a: Int, _: String) async in
                 
                 XCTKAssertLessThan(a, 10)
             }
@@ -527,7 +548,8 @@ internal final class ForAllOutputTests: XCTestKitCase
     
     
     
-    func testThreeParameterCounterexampleNoShrinking() throws
+    @Reasync
+    func testThreeParameterCounterexampleNoShrinking() async throws
     {
         let options: TestOptions = .propertyOptions(
             iterations:     1,
@@ -538,14 +560,14 @@ internal final class ForAllOutputTests: XCTestKitCase
         let gen2    = Generator<String>.constant("abc")
         let gen3    = Generator<Bool>.constant(true)
         
-        let output: String? = withOneExpectedFailure
+        let output: String? = await withOneExpectedFailure
         {
-            XCTKForAll(
+            await XCTKForAll(
                 using:      gen1, gen2, gen3,
                 options:    options
             )
             {
-                (_: Int, _: String, _: Bool) in
+                (_: Int, _: String, _: Bool) async in
                 
                 XCTKAssertTrue(false)
             }
@@ -578,7 +600,8 @@ internal final class ForAllOutputTests: XCTestKitCase
     
     
     
-    func testThreeParameterCounterexampleWithShrinking() throws
+    @Reasync
+    func testThreeParameterCounterexampleWithShrinking() async throws
     {
         let options: TestOptions = .propertyOptions(
             iterations:     1,
@@ -593,14 +616,14 @@ internal final class ForAllOutputTests: XCTestKitCase
         let gen2    = Generator<String>.constant("abc")
         let gen3    = Generator<Bool>.constant(true)
         
-        let output: String? = withOneExpectedFailure
+        let output: String? = await withOneExpectedFailure
         {
-            XCTKForAll(
+            await XCTKForAll(
                 using:      gen1, gen2, gen3,
                 options:    options
             )
             {
-                (a: Int, _: String, _: Bool) in
+                (a: Int, _: String, _: Bool) async in
                 
                 XCTKAssertLessThan(a, 10)
             }
@@ -633,7 +656,8 @@ internal final class ForAllOutputTests: XCTestKitCase
     
     
     
-    func testAssertionFailurePriorityOverThrownError() throws
+    @Reasync
+    func testAssertionFailurePriorityOverThrownError() async throws
     {
         let options: TestOptions = .propertyOptions(
             iterations:         1,
@@ -641,11 +665,11 @@ internal final class ForAllOutputTests: XCTestKitCase
             seed:               Self.seed
         )
         
-        let output: String? = withOneExpectedFailure
+        let output: String? = await withOneExpectedFailure
         {
-            XCTKForAll(options: options)
+            await XCTKForAll(options: options)
             {
-                (_: Int) in
+                (_: Int) async throws in
                 
                 XCTKAssertTrue(false)
                 
@@ -679,7 +703,8 @@ internal final class ForAllOutputTests: XCTestKitCase
     
     
     
-    func testFirstAssertionFailureShown() throws
+    @Reasync
+    func testFirstAssertionFailureShown() async throws
     {
         let options: TestOptions = .propertyOptions(
             iterations:         1,
@@ -687,11 +712,11 @@ internal final class ForAllOutputTests: XCTestKitCase
             seed:               Self.seed
         )
         
-        let output: String? = withOneExpectedFailure
+        let output: String? = await withOneExpectedFailure
         {
-            XCTKForAll(options: options)
+            await XCTKForAll(options: options)
             {
-                (_: Int) in
+                (_: Int) async in
                 
                 XCTKAssertTrue(false)
                 XCTKAssertEqual(1, 2)
@@ -724,7 +749,8 @@ internal final class ForAllOutputTests: XCTestKitCase
     
     
     
-    func testCollectionCounterexample() throws
+    @Reasync
+    func testCollectionCounterexample() async throws
     {
         let options: TestOptions = .propertyOptions(
             iterations:     1,
@@ -733,14 +759,14 @@ internal final class ForAllOutputTests: XCTestKitCase
         
         let generator = Generator<[Int]>.constant([1, 2, 3])
         
-        let output: String? = withOneExpectedFailure
+        let output: String? = await withOneExpectedFailure
         {
-            XCTKForAll(
+            await XCTKForAll(
                 using:      generator,
                 options:    options
             )
             {
-                (_: [Int]) in
+                (_: [Int]) async in
                 
                 XCTKAssertTrue(false)
             }
@@ -771,7 +797,8 @@ internal final class ForAllOutputTests: XCTestKitCase
     
     
     
-    func testMaxShrinkStepsLimitsSearch() throws
+    @Reasync
+    func testMaxShrinkStepsLimitsSearch() async throws
     {
         /// Each shrink step decrements by one. Without the limit, this would
         /// shrink from `100` down to `10`. With `maxShrinkSteps` of `2`,
@@ -788,14 +815,14 @@ internal final class ForAllOutputTests: XCTestKitCase
             shrink:     { value in value > 0 ? [value - 1] : [] }
         )
         
-        let output: String? = withOneExpectedFailure
+        let output: String? = await withOneExpectedFailure
         {
-            XCTKForAll(
+            await XCTKForAll(
                 using:      generator,
                 options:    options
             )
             {
-                (n: Int) in
+                (n: Int) async in
                 
                 XCTKAssertLessThan(n, 10)
             }
@@ -826,14 +853,9 @@ internal final class ForAllOutputTests: XCTestKitCase
     
     
     
-    func testUserDefinedTypeCounterexample() throws
+    @Reasync
+    func testUserDefinedTypeCounterexample() async throws
     {
-        struct Point: Equatable
-        {
-            let x   : Int
-            let y   : Int
-        }
-        
         let options: TestOptions = .propertyOptions(
             iterations:     1,
             seed:           Self.seed
@@ -841,14 +863,14 @@ internal final class ForAllOutputTests: XCTestKitCase
         
         let generator = Generator<Point>.constant(Point(x: 5, y: 10))
         
-        let output: String? = withOneExpectedFailure
+        let output: String? = await withOneExpectedFailure
         {
-            XCTKForAll(
+            await XCTKForAll(
                 using:      generator,
                 options:    options
             )
             {
-                (_: Point) in
+                (_: Point) async in
                 
                 XCTKAssertTrue(false)
             }
@@ -879,7 +901,8 @@ internal final class ForAllOutputTests: XCTestKitCase
     
     
     
-    func testCollectionCounterexampleWithShrinking() throws
+    @Reasync
+    func testCollectionCounterexampleWithShrinking() async throws
     {
         let options: TestOptions = .propertyOptions(
             iterations:     1,
@@ -896,14 +919,14 @@ internal final class ForAllOutputTests: XCTestKitCase
             }
         )
         
-        let output: String? = withOneExpectedFailure
+        let output: String? = await withOneExpectedFailure
         {
-            XCTKForAll(
+            await XCTKForAll(
                 using:      generator,
                 options:    options
             )
             {
-                (_: [Int]) in
+                (_: [Int]) async in
                 
                 XCTKAssertTrue(false)
             }
@@ -934,7 +957,8 @@ internal final class ForAllOutputTests: XCTestKitCase
     
     
     
-    func testThrownErrorShrinks()
+    @Reasync
+    func testThrownErrorShrinks() async
     {
         let options: TestOptions = .propertyOptions(
             iterations:     1,
@@ -946,14 +970,14 @@ internal final class ForAllOutputTests: XCTestKitCase
             shrink:     { value in value > 0 ? [value / 2] : [] }
         )
         
-        let actual: String? = withOneExpectedFailure
+        let actual: String? = await withOneExpectedFailure
         {
-            XCTKForAll(
+            await XCTKForAll(
                 using:      generator,
                 options:    options
             )
             {
-                (n: Int) in
+                (n: Int) async throws in
                 
                 if n >= 10
                 {
@@ -983,7 +1007,8 @@ internal final class ForAllOutputTests: XCTestKitCase
     
     
     
-    func testMultiParameterBothShrink() throws
+    @Reasync
+    func testMultiParameterBothShrink() async throws
     {
         let options: TestOptions = .propertyOptions(
             iterations:     1,
@@ -1031,14 +1056,14 @@ internal final class ForAllOutputTests: XCTestKitCase
             }
         )
         
-        let output: String? = withOneExpectedFailure
+        let output: String? = await withOneExpectedFailure
         {
-            XCTKForAll(
+            await XCTKForAll(
                 using:      gen1, gen2,
                 options:    options
             )
             {
-                (a: Int, b: Int) in
+                (a: Int, b: Int) async in
                 
                 XCTKAssertTrue(a < 5 || b < 3)
             }
@@ -1070,7 +1095,8 @@ internal final class ForAllOutputTests: XCTestKitCase
     
     
     
-    func testPreconditionGeneratorCounterexampleIncludesDiscards() throws
+    @Reasync
+    func testPreconditionGeneratorCounterexampleIncludesDiscards() async throws
     {
         let options: TestOptions = .propertyOptions(
             iterations:         1,
@@ -1100,15 +1126,15 @@ internal final class ForAllOutputTests: XCTestKitCase
             shrink: { value in value.shrink() }
         )
         
-        let output: String? = withOneExpectedFailure
+        let output: String? = await withOneExpectedFailure
         {
-            XCTKForAll(
+            await XCTKForAll(
                 using:      generator,
                 where:      { $0 >= 10 },
                 options:    options
             )
             {
-                (_: Int) in
+                (_: Int) async in
                 
                 XCTKAssertTrue(false)
             }
@@ -1141,7 +1167,8 @@ internal final class ForAllOutputTests: XCTestKitCase
     
     // MARK: - Exhaustion
     
-    func testExhaustion()
+    @Reasync
+    func testExhaustion() async
     {
         let options: TestOptions = .propertyOptions(
             iterations:         1,
@@ -1149,14 +1176,14 @@ internal final class ForAllOutputTests: XCTestKitCase
             seed:               Self.seed
         )
         
-        let actual: String? = withOneExpectedFailure
+        let actual: String? = await withOneExpectedFailure
         {
-            XCTKForAll(
+            await XCTKForAll(
                 where:      { _ in false },
                 options:    options
             )
             {
-                (_: Int) in
+                (_: Int) async in
             }
         }
         
@@ -1176,7 +1203,8 @@ internal final class ForAllOutputTests: XCTestKitCase
     
     
     
-    func testExhaustionWithMessage()
+    @Reasync
+    func testExhaustionWithMessage() async
     {
         let options: TestOptions = .propertyOptions(
             iterations:         1,
@@ -1184,15 +1212,15 @@ internal final class ForAllOutputTests: XCTestKitCase
             seed:               Self.seed
         )
         
-        let actual: String? = withOneExpectedFailure
+        let actual: String? = await withOneExpectedFailure
         {
-            XCTKForAll(
+            await XCTKForAll(
                 where:      { _ in false },
                 message:    "hello world",
                 options:    options
             )
             {
-                (_: Int) in
+                (_: Int) async in
             }
         }
         
@@ -1214,7 +1242,8 @@ internal final class ForAllOutputTests: XCTestKitCase
     
     
     
-    func testExhaustionAfterPartialSuccess()
+    @Reasync
+    func testExhaustionAfterPartialSuccess() async
     {
         let options: TestOptions = .propertyOptions(
             iterations:         5,
@@ -1230,15 +1259,15 @@ internal final class ForAllOutputTests: XCTestKitCase
             shrink:     { _ in [] }
         )
         
-        let actual: String? = withOneExpectedFailure
+        let actual: String? = await withOneExpectedFailure
         {
-            XCTKForAll(
+            await XCTKForAll(
                 using:      generator,
                 where:      { $0 < 30 },
                 options:    options
             )
             {
-                (_: Int) in
+                (_: Int) async in
             }
         }
         
@@ -1258,7 +1287,8 @@ internal final class ForAllOutputTests: XCTestKitCase
     
     
     
-    func testSingularInputDiscarded()
+    @Reasync
+    func testSingularInputDiscarded() async
     {
         /// With a `maxDiscardRatio` of `0` and `iterations` of `1`, the
         /// discard limit is `0 * 1 = 0`. The first discarded input exceeds
@@ -1270,14 +1300,14 @@ internal final class ForAllOutputTests: XCTestKitCase
             seed:               Self.seed
         )
         
-        let actual: String? = withOneExpectedFailure
+        let actual: String? = await withOneExpectedFailure
         {
-            XCTKForAll(
+            await XCTKForAll(
                 where:      { _ in false },
                 options:    options
             )
             {
-                (_: Int) in
+                (_: Int) async in
             }
         }
         
@@ -1306,6 +1336,15 @@ extension ForAllOutputTests
     ///
     /// Use a fixed seed rather than a random seed for deterministic tests.
     private static let seed: UInt64 = 50
+    
+    
+    
+    /// A user defined type used to test output.
+    private struct Point: Equatable
+    {
+        let x   : Int
+        let y   : Int
+    }
     
     
     

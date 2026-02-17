@@ -7,6 +7,7 @@
 //
 //===----------------------------------------------------------------------===//
 
+import TestKitCore
 import XCTestKit
 import XCTest
 
@@ -14,13 +15,24 @@ import XCTest
 
 internal final class ForAllIntegrationTests: XCTestKitCase
 {
+    override func setUp()
+    {
+        super.setUp()
+        
+        /// Must be true when expecting errors in an async context. XCTest bug.
+        continueAfterFailure = true
+    }
+    
+    
+    
     // MARK: - Arbitrary
     
-    func testArbitrarySuccess()
+    @Reasync
+    func testArbitrarySuccess() async
     {
-        XCTKForAll
+        await XCTKForAll
         {
-            (n: Int) in
+            (n: Int) async in
             
             XCTKAssertEqual(n + 0, n)
         }
@@ -28,25 +40,28 @@ internal final class ForAllIntegrationTests: XCTestKitCase
     
     
     
-    func testArbitraryFailure()
+    @Reasync
+    func testArbitraryFailure() async
     {
-        XCTExpectFailure()
-        
-        XCTKForAll
+        await withOneExpectedFailure
         {
-            (_: Int) in
-            
-            XCTKAssertTrue(false)
+            await XCTKForAll
+            {
+                (_: Int) async in
+                
+                XCTKAssertTrue(false)
+            }
         }
     }
     
     
     
-    func testArbitraryOneParameterSuccess()
+    @Reasync
+    func testArbitraryOneParameterSuccess() async
     {
-        XCTKForAll
+        await XCTKForAll
         {
-            (s: String) in
+            (s: String) async in
             
             XCTKAssertEqual(s + "", s)
         }
@@ -54,11 +69,12 @@ internal final class ForAllIntegrationTests: XCTestKitCase
     
     
     
-    func testArbitraryTwoParameterSuccess()
+    @Reasync
+    func testArbitraryTwoParameterSuccess() async
     {
-        XCTKForAll
+        await XCTKForAll
         {
-            (a: Int, b: Int) in
+            (a: Int, b: Int) async in
             
             XCTKAssertEqual(a + b, b + a)
         }
@@ -66,11 +82,12 @@ internal final class ForAllIntegrationTests: XCTestKitCase
     
     
     
-    func testArbitraryThreeParameterSuccess()
+    @Reasync
+    func testArbitraryThreeParameterSuccess() async
     {
-        XCTKForAll
+        await XCTKForAll
         {
-            (a: Int, b: Int, c: Int) in
+            (a: Int, b: Int, c: Int) async in
             
             XCTKAssertEqual((a + b) + c, a + (b + c))
         }
@@ -78,29 +95,33 @@ internal final class ForAllIntegrationTests: XCTestKitCase
     
     
     
-    func testArbitraryTwoParameterFailure()
+    @Reasync
+    func testArbitraryTwoParameterFailure() async
     {
-        XCTExpectFailure()
-        
-        XCTKForAll
+        await withOneExpectedFailure
         {
-            (a: Int, b: Int) in
-            
-            XCTKAssertEqual(a - b, b - a)
+            await XCTKForAll
+            {
+                (a: Int, b: Int) async in
+                
+                XCTKAssertEqual(a - b, b - a)
+            }
         }
     }
     
     
     
-    func testArbitraryThreeParameterFailure()
+    @Reasync
+    func testArbitraryThreeParameterFailure() async
     {
-        XCTExpectFailure()
-        
-        XCTKForAll
+        await withOneExpectedFailure
         {
-            (_: Int, _: String, _: Bool) in
-            
-            XCTKAssertTrue(false)
+            await XCTKForAll
+            {
+                (_: Int, _: String, _: Bool) async in
+                
+                XCTKAssertTrue(false)
+            }
         }
     }
     
@@ -108,11 +129,12 @@ internal final class ForAllIntegrationTests: XCTestKitCase
     
     // MARK: - Generator
     
-    func testGeneratorSuccess()
+    @Reasync
+    func testGeneratorSuccess() async
     {
-        XCTKForAll(using: Generator<Int>.integer(in: 1...100))
+        await XCTKForAll(using: Generator<Int>.integer(in: 1...100))
         {
-            (n: Int) in
+            (n: Int) async in
             
             XCTKAssertGreaterThan(n, 0)
         }
@@ -120,28 +142,31 @@ internal final class ForAllIntegrationTests: XCTestKitCase
     
     
     
-    func testGeneratorFailure()
+    @Reasync
+    func testGeneratorFailure() async
     {
-        XCTExpectFailure()
-        
-        XCTKForAll(using: Generator<Int>.integer(in: 1...100))
+        await withOneExpectedFailure
         {
-            (n: Int) in
-            
-            XCTKAssertGreaterThan(n, 200)
+            await XCTKForAll(using: Generator<Int>.integer(in: 1...100))
+            {
+                (n: Int) async in
+                
+                XCTKAssertGreaterThan(n, 200)
+            }
         }
     }
     
     
     
-    func testMultiParameterGeneratorSuccess()
+    @Reasync
+    func testMultiParameterGeneratorSuccess() async
     {
-        XCTKForAll(
+        await XCTKForAll(
             using:  Generator<Int>.integer(in: 1...100),
                     Generator<Int>.integer(in: 1...100)
         )
         {
-            (a: Int, b: Int) in
+            (a: Int, b: Int) async in
             
             XCTKAssertGreaterThan(a + b, 0)
         }
@@ -151,11 +176,12 @@ internal final class ForAllIntegrationTests: XCTestKitCase
     
     // MARK: - Precondition
     
-    func testPreconditionSuccess()
+    @Reasync
+    func testPreconditionSuccess() async
     {
-        XCTKForAll(where: { $0 % 2 == 0 })
+        await XCTKForAll(where: { $0 % 2 == 0 })
         {
-            (n: Int) in
+            (n: Int) async in
             
             XCTKAssertEqual(n % 2, 0)
         }
@@ -163,25 +189,30 @@ internal final class ForAllIntegrationTests: XCTestKitCase
     
     
     
-    func testPreconditionFailure()
+    @Reasync
+    func testPreconditionFailure() async
     {
-        XCTExpectFailure()
-        
-        XCTKForAll(where: { $0 >= 0 })
+        await withOneExpectedFailure
         {
-            (n: Int) in
-            
-            XCTKAssertGreaterThan(n, 50)
+            await XCTKForAll(where: { $0 >= 0 })
+            {
+                (n: Int) async in
+                
+                XCTKAssertGreaterThan(n, 50)
+            }
         }
     }
     
     
     
-    func testPreconditionMultiParameterSuccess()
+    @Reasync
+    func testPreconditionMultiParameterSuccess() async
     {
-        XCTKForAll(where: { (a: Int, b: Int) in (a % 2 == 0) && (b % 2 == 0) })
+        await XCTKForAll(
+            where: { (a: Int, b: Int) in (a % 2 == 0) && (b % 2 == 0) }
+        )
         {
-            (a: Int, b: Int) in
+            (a: Int, b: Int) async in
             
             XCTKAssertEqual(a % 2, 0)
             XCTKAssertEqual(b % 2, 0)
@@ -190,15 +221,17 @@ internal final class ForAllIntegrationTests: XCTestKitCase
     
     
     
-    func testPreconditionMultiParameterFailure()
+    @Reasync
+    func testPreconditionMultiParameterFailure() async
     {
-        XCTExpectFailure()
-        
-        XCTKForAll(where: { $0 >= 0 && $1 >= 0 })
+        await withOneExpectedFailure
         {
-            (a: Int, b: Int) in
-            
-            XCTKAssertEqual(a, b)
+            await XCTKForAll(where: { $0 >= 0 && $1 >= 0 })
+            {
+                (a: Int, b: Int) async in
+                
+                XCTKAssertEqual(a, b)
+            }
         }
     }
     
@@ -206,14 +239,15 @@ internal final class ForAllIntegrationTests: XCTestKitCase
     
     // MARK: - Precondition generator
     
-    func testPreconditionGeneratorSuccess()
+    @Reasync
+    func testPreconditionGeneratorSuccess() async
     {
-        XCTKForAll(
+        await XCTKForAll(
             using:  Generator<Int>.integer(in: 0...100),
             where:  { $0 > 10 }
         )
         {
-            (n: Int) in
+            (n: Int) async in
             
             XCTKAssertGreaterThan(n, 10)
         }
@@ -221,32 +255,35 @@ internal final class ForAllIntegrationTests: XCTestKitCase
     
     
     
-    func testPreconditionGeneratorFailure()
+    @Reasync
+    func testPreconditionGeneratorFailure() async
     {
-        XCTExpectFailure()
-        
-        XCTKForAll(
-            using:  Generator<Int>.integer(in: 0...100),
-            where:  { $0 > 10 }
-        )
+        await withOneExpectedFailure
         {
-            (n: Int) in
-            
-            XCTKAssertGreaterThan(n, 200)
+            await XCTKForAll(
+                using:  Generator<Int>.integer(in: 0...100),
+                where:  { $0 > 10 }
+            )
+            {
+                (n: Int) async in
+                
+                XCTKAssertGreaterThan(n, 200)
+            }
         }
     }
     
     
     
-    func testMultiParameterPreconditionGeneratorSuccess()
+    @Reasync
+    func testMultiParameterPreconditionGeneratorSuccess() async
     {
-        XCTKForAll(
+        await XCTKForAll(
             using:  Generator<Int>.integer(in: 0...100),
                     Generator<Int>.integer(in: 0...100),
             where:  { $0 <= $1 }
         )
         {
-            (a: Int, b: Int) in
+            (a: Int, b: Int) async in
             
             XCTKAssertLessThanOrEqual(a, b)
         }
@@ -254,19 +291,21 @@ internal final class ForAllIntegrationTests: XCTestKitCase
     
     
     
-    func testMultiParameterPreconditionGeneratorFailure()
+    @Reasync
+    func testMultiParameterPreconditionGeneratorFailure() async
     {
-        XCTExpectFailure()
-        
-        XCTKForAll(
-            using:  Generator<Int>.integer(in: 0...100),
-                    Generator<Int>.integer(in: 0...100),
-            where:  { $0 <= $1 }
-        )
+        await withOneExpectedFailure
         {
-            (a: Int, b: Int) in
-            
-            XCTKAssertEqual(a, b)
+            await XCTKForAll(
+                using:  Generator<Int>.integer(in: 0...100),
+                        Generator<Int>.integer(in: 0...100),
+                where:  { $0 <= $1 }
+            )
+            {
+                (a: Int, b: Int) async in
+                
+                XCTKAssertEqual(a, b)
+            }
         }
     }
     
@@ -274,25 +313,28 @@ internal final class ForAllIntegrationTests: XCTestKitCase
     
     // MARK: - Throwing
     
-    func testThrowingPropertyTreatedAsFailure()
+    @Reasync
+    func testThrowingPropertyTreatedAsFailure() async
     {
-        XCTExpectFailure()
-        
-        XCTKForAll
+        await withOneExpectedFailure
         {
-            (_: Int) in
-            
-            throw TestError()
+            await XCTKForAll
+            {
+                (_: Int) async throws in
+                
+                throw TestError()
+            }
         }
     }
     
     
     
-    func testUnwrapSuccessInsideBody()
+    @Reasync
+    func testUnwrapSuccessInsideBody() async
     {
-        XCTKForAll
+        await XCTKForAll
         {
-            (n: Int) in
+            (n: Int) async throws in
             
             let value: Int = try XCTKUnwrap(Optional(n))
             
@@ -302,15 +344,17 @@ internal final class ForAllIntegrationTests: XCTestKitCase
     
     
     
-    func testUnwrapNilInsideBodyTreatedAsFailure()
+    @Reasync
+    func testUnwrapNilInsideBodyTreatedAsFailure() async
     {
-        XCTExpectFailure()
-        
-        XCTKForAll
+        await withOneExpectedFailure
         {
-            (_: Int) in
-            
-            _ = try XCTKUnwrap(Optional<Int>(nil))
+            await XCTKForAll
+            {
+                (_: Int) async throws in
+                
+                _ = try XCTKUnwrap(Optional<Int>(nil))
+            }
         }
     }
     
@@ -318,7 +362,8 @@ internal final class ForAllIntegrationTests: XCTestKitCase
     
     // MARK: - Seed replay
     
-    func testSeedReplayProducesSameOutput()
+    @Reasync
+    func testSeedReplayProducesSameOutput() async
     {
         let seed: UInt64 = 12345
         
@@ -327,21 +372,21 @@ internal final class ForAllIntegrationTests: XCTestKitCase
             seed:           seed
         )
         
-        let output1: String? = withOneExpectedFailure
+        let output1: String? = await withOneExpectedFailure
         {
-            XCTKForAll(options: options)
+            await XCTKForAll(options: options)
             {
-                (n: Int) in
+                (n: Int) async in
                 
                 XCTKAssertEqual(n, 0)
             }
         }
         
-        let output2: String? = withOneExpectedFailure
+        let output2: String? = await withOneExpectedFailure
         {
-            XCTKForAll(options: options)
+            await XCTKForAll(options: options)
             {
-                (n: Int) in
+                (n: Int) async in
                 
                 XCTKAssertEqual(n, 0)
             }
@@ -356,7 +401,8 @@ internal final class ForAllIntegrationTests: XCTestKitCase
     
     // MARK: - Interception
     
-    func testAssertionInsideBodyDoesNotLeakAsSeparateFailure()
+    @Reasync
+    func testAssertionInsideBodyDoesNotLeakAsSeparateFailure() async
     {
         let options: TestOptions = .propertyOptions(
             iterations:     10,
@@ -366,11 +412,11 @@ internal final class ForAllIntegrationTests: XCTestKitCase
         /// If assertion failures are not intercepted, the assertion will
         /// report its failure directly to XCTest, producing more than one
         /// expected failure.
-        withOneExpectedFailure
+        await withOneExpectedFailure
         {
-            XCTKForAll(options: options)
+            await XCTKForAll(options: options)
             {
-                (_: Int) in
+                (_: Int) async in
                 
                 XCTKAssertEqual(1, 2)
             }
@@ -381,14 +427,15 @@ internal final class ForAllIntegrationTests: XCTestKitCase
     
     // MARK: - Iteration count
     
-    func testIterationCount()
+    @Reasync
+    func testIterationCount() async
     {
-        let iterations  : Int   = 0
+        let iterations  : Int   = 1000
         var count       : Int   = 0
         
-        XCTKForAll(options: .propertyOptions(iterations: iterations))
+        await XCTKForAll(options: .propertyOptions(iterations: iterations))
         {
-            (_: Int) in
+            (_: Int) async in
             
             count += 1
         }
@@ -398,13 +445,14 @@ internal final class ForAllIntegrationTests: XCTestKitCase
     
     
     
-    func testZeroIterationsVacuouslyPasses()
+    @Reasync
+    func testZeroIterationsVacuouslyPasses() async
     {
         var count: Int = 0
         
-        XCTKForAll(options: .propertyOptions(iterations: 0))
+        await XCTKForAll(options: .propertyOptions(iterations: 0))
         {
-            (_: Int) in
+            (_: Int) async in
             
             count += 1
         }
@@ -416,21 +464,23 @@ internal final class ForAllIntegrationTests: XCTestKitCase
     
     // MARK: - Exhaustion
     
-    func testExhaustionTreatedAsFailure()
+    @Reasync
+    func testExhaustionTreatedAsFailure() async
     {
-        XCTExpectFailure()
-        
         let options: TestOptions = .propertyOptions(
             iterations:     1,
             seed:           1
         )
         
-        XCTKForAll(
-            where:      { (_: Int) in false },
-            options:    options
-        )
+        await withOneExpectedFailure
         {
-            (_: Int) in
+            await XCTKForAll(
+                where:      { (_: Int) in false },
+                options:    options
+            )
+            {
+                (_: Int) async in
+            }
         }
     }
     
@@ -438,11 +488,12 @@ internal final class ForAllIntegrationTests: XCTestKitCase
     
     // MARK: - No assertion
     
-    func testArbitraryBodyWithNoAssertionVacuouslyPasses()
+    @Reasync
+    func testArbitraryBodyWithNoAssertionVacuouslyPasses() async
     {
-        XCTKForAll
+        await XCTKForAll
         {
-            (n: Int) in
+            (n: Int) async in
             
             _ = n * 2
         }
@@ -452,7 +503,8 @@ internal final class ForAllIntegrationTests: XCTestKitCase
     
     // MARK: - Nested
     
-    func testNestedProducesOneFailure()
+    @Reasync
+    func testNestedProducesOneFailure() async
     {
         let options: TestOptions = .propertyOptions(
             iterations:     1,
@@ -465,15 +517,15 @@ internal final class ForAllIntegrationTests: XCTestKitCase
         /// interceptor.Only the outer evaluator should report to XCTest.
         /// If `@TaskLocal` scoping is broken, the inner's assertion failures
         /// would leak as separate XCTest failures.
-        withOneExpectedFailure
+        await withOneExpectedFailure
         {
-            XCTKForAll(options: options)
+            await XCTKForAll(options: options)
             {
-                (_: Int) in
+                (_: Int) async in
                 
-                XCTKForAll(options: options)
+                await XCTKForAll(options: options)
                 {
-                    (_: Int) in
+                    (_: Int) async in
                     
                     XCTKAssertTrue(false)
                 }
@@ -485,7 +537,8 @@ internal final class ForAllIntegrationTests: XCTestKitCase
     
     // MARK: - Sequential
     
-    func testSequentialNoLeakFromPriorFailure()
+    @Reasync
+    func testSequentialNoLeakFromPriorFailure() async
     {
         let options: TestOptions = .propertyOptions(
             iterations:     10,
@@ -495,19 +548,19 @@ internal final class ForAllIntegrationTests: XCTestKitCase
         /// The first evaluator fails on the first assertion. The second
         /// evaluator succeeds on all assertions. The interceptor state must
         /// not leak into subsequent calls.
-        withOneExpectedFailure
+        await withOneExpectedFailure
         {
-            XCTKForAll(options: options)
+            await XCTKForAll(options: options)
             {
-                (_: Int) in
+                (_: Int) async in
                 
                 XCTKAssertTrue(false)
             }
         }
         
-        XCTKForAll(options: options)
+        await XCTKForAll(options: options)
         {
-            (n: Int) in
+            (n: Int) async in
             
             XCTKAssertEqual(n + 0, n)
         }
