@@ -322,6 +322,20 @@ XCTKForAll
 }
 ```
 
+Asynchronous and throwing tests are also supported.
+
+```swift
+await XCTKForAll
+{
+    (value: String) async throws in
+    
+    try await db.save(value, forKey: "test")
+    let loaded: String? = try await db.load(forKey: "test")
+    
+    XCTKAssertEqual(loaded, value)
+}
+```
+
 ### Counterexamples
 
 When an input causes a property to fail, XCTestKit will shrink the input to the 

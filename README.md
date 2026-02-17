@@ -35,7 +35,7 @@ assertion output used by standalone assertions.
 
 > [!NOTE]
 > All examples below use XCTestKit. SwiftTestKit provides an identical API 
-> (simply replace the `XCTK` prefix with `STK`).
+> (replace the `XCTK` prefix with `STK`).
 
 
 
@@ -326,6 +326,20 @@ XCTKForAll
     
     // Addition is commutative. The assertion passes for all inputs.
     XCTKAssertEqual(a + b, b + a)
+}
+```
+
+Asynchronous and throwing tests are also supported.
+
+```swift
+await XCTKForAll
+{
+    (value: String) async throws in
+    
+    try await db.save(value, forKey: "test")
+    let loaded: String? = try await db.load(forKey: "test")
+    
+    XCTKAssertEqual(loaded, value)
 }
 ```
 
