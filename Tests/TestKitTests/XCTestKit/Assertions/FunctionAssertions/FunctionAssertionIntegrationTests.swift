@@ -27,8 +27,10 @@ internal final class FunctionAssertionIntegrationTests: XCTestKitCase
     
     func testAssertWithFalseExpr()
     {
-        XCTExpectFailure()
-        XCTKAssert(false)
+        withOneExpectedFailure
+        {
+            XCTKAssert(false)
+        }
     }
     
     
@@ -44,8 +46,10 @@ internal final class FunctionAssertionIntegrationTests: XCTestKitCase
     
     func testAssertTrueWithFalseExpr()
     {
-        XCTExpectFailure()
-        XCTKAssertTrue(false)
+        withOneExpectedFailure
+        {
+            XCTKAssertTrue(false)
+        }
     }
     
     
@@ -61,8 +65,10 @@ internal final class FunctionAssertionIntegrationTests: XCTestKitCase
     
     func testAssertFalseWithTrueExpr()
     {
-        XCTExpectFailure()
-        XCTKAssertFalse(true)
+        withOneExpectedFailure
+        {
+            XCTKAssertFalse(true)
+        }
     }
     
     
@@ -79,8 +85,10 @@ internal final class FunctionAssertionIntegrationTests: XCTestKitCase
     
     func testAssertNilWithNonNilExpr()
     {
-        XCTExpectFailure()
-        XCTKAssertNil(false)
+        withOneExpectedFailure
+        {
+            XCTKAssertNil(false)
+        }
     }
     
     
@@ -96,16 +104,20 @@ internal final class FunctionAssertionIntegrationTests: XCTestKitCase
     
     func testAssertNotNilWithNilExpr()
     {
-        XCTExpectFailure()
-        XCTKAssertNotNil(nil)
+        withOneExpectedFailure
+        {
+            XCTKAssertNotNil(nil)
+        }
     }
     
     
     
     func testUnwrapWithNilExpr() throws
     {
-        XCTExpectFailure()
-        _ = try XCTKUnwrap(Optional<Int>(nil))
+        withOneExpectedFailure
+        {
+            _ = try XCTKUnwrap(Optional<Int>(nil))
+        }
     }
     
     
@@ -179,8 +191,10 @@ internal final class FunctionAssertionIntegrationTests: XCTestKitCase
     
     func testAssertEqualWithUnequalExpr()
     {
-        XCTExpectFailure()
-        XCTKAssertEqual(0, 1)
+        withOneExpectedFailure
+        {
+            XCTKAssertEqual(0, 1)
+        }
     }
     
     
@@ -195,8 +209,10 @@ internal final class FunctionAssertionIntegrationTests: XCTestKitCase
     
     func testAssertNotEqualWithEqualExpr()
     {
-        XCTExpectFailure()
-        XCTKAssertNotEqual(1, 1)
+        withOneExpectedFailure
+        {
+            XCTKAssertNotEqual(1, 1)
+        }
     }
     
     
@@ -212,12 +228,13 @@ internal final class FunctionAssertionIntegrationTests: XCTestKitCase
     
     func testAssertIdenticalWithUnidenticalExpr()
     {
-        XCTExpectFailure()
-
         let object1     = TestError() as AnyObject
         let object2     = TestError() as AnyObject
         
-        XCTKAssertIdentical(object1, object2)
+        withOneExpectedFailure
+        {
+            XCTKAssertIdentical(object1, object2)
+        }
     }
     
     
@@ -234,11 +251,12 @@ internal final class FunctionAssertionIntegrationTests: XCTestKitCase
     
     func testAssertNotIdenticalWithIdenticalExpr()
     {
-        XCTExpectFailure()
-        
         let object = TestError() as AnyObject
         
-        XCTKAssertNotIdentical(object, object)
+        withOneExpectedFailure
+        {
+            XCTKAssertNotIdentical(object, object)
+        }
     }
     
     
@@ -254,8 +272,10 @@ internal final class FunctionAssertionIntegrationTests: XCTestKitCase
     
     func testAssertEqualFloatAccWithUnequalExpr()
     {
-        XCTExpectFailure()
-        XCTKAssertEqual(0.0, 1.0, accuracy: 0.5)
+        withOneExpectedFailure
+        {
+            XCTKAssertEqual(0.0, 1.0, accuracy: 0.5)
+        }
     }
     
     
@@ -274,12 +294,13 @@ internal final class FunctionAssertionIntegrationTests: XCTestKitCase
     
     func testAssertEqualIntAccWithUnequalExpr()
     {
-        XCTExpectFailure()
-        
         let expr1   : Int   = 0
         let expr2   : Int   = 2
         
-        XCTKAssertEqual(expr1, expr2, accuracy: 1)
+        withOneExpectedFailure
+        {
+            XCTKAssertEqual(expr1, expr2, accuracy: 1)
+        }
     }
     
     
@@ -295,8 +316,10 @@ internal final class FunctionAssertionIntegrationTests: XCTestKitCase
     
     func testAssertNotEqualFloatAccWithEqualExpr()
     {
-        XCTExpectFailure()
-        XCTKAssertNotEqual(0.0, 1.0, accuracy: 1.0)
+        withOneExpectedFailure
+        {
+            XCTKAssertNotEqual(0.0, 1.0, accuracy: 1.0)
+        }
     }
     
     
@@ -314,12 +337,13 @@ internal final class FunctionAssertionIntegrationTests: XCTestKitCase
     
     func testAssertNotEqualIntAccWithEqualExpr()
     {
-        XCTExpectFailure()
-        
         let expr1   : Int   = 0
         let expr2   : Int   = 1
         
-        XCTKAssertNotEqual(expr1, expr2, accuracy: 1)
+        withOneExpectedFailure
+        {
+            XCTKAssertNotEqual(expr1, expr2, accuracy: 1)
+        }
     }
     
     
@@ -337,8 +361,10 @@ internal final class FunctionAssertionIntegrationTests: XCTestKitCase
     
     func testAssertGreaterWithFalseExpr()
     {
-        XCTExpectFailure()
-        XCTKAssertGreaterThan(1, 1)
+        withOneExpectedFailure
+        {
+            XCTKAssertGreaterThan(1, 1)
+        }
     }
     
     
@@ -354,8 +380,10 @@ internal final class FunctionAssertionIntegrationTests: XCTestKitCase
     
     func testAssertGreaterEqualWithFalseExpr()
     {
-        XCTExpectFailure()
-        XCTKAssertGreaterThanOrEqual(0, 1)
+        withOneExpectedFailure
+        {
+            XCTKAssertGreaterThanOrEqual(0, 1)
+        }
     }
     
     
@@ -371,8 +399,10 @@ internal final class FunctionAssertionIntegrationTests: XCTestKitCase
     
     func testAssertLessEqualWithFalseExpr()
     {
-        XCTExpectFailure()
-        XCTKAssertLessThanOrEqual(1, 0)
+        withOneExpectedFailure
+        {
+            XCTKAssertLessThanOrEqual(1, 0)
+        }
     }
     
     
@@ -388,8 +418,10 @@ internal final class FunctionAssertionIntegrationTests: XCTestKitCase
     
     func testAssertLessWithFalseExpr()
     {
-        XCTExpectFailure()
-        XCTKAssertLessThan(1, 1)
+        withOneExpectedFailure
+        {
+            XCTKAssertLessThan(1, 1)
+        }
     }
     
     
@@ -409,8 +441,10 @@ internal final class FunctionAssertionIntegrationTests: XCTestKitCase
     {
         let expr: () throws -> Int = { return 0 }
         
-        XCTExpectFailure()
-        XCTKAssertThrowsError(expr)
+        withOneExpectedFailure
+        {
+            XCTKAssertThrowsError(expr)
+        }
     }
     
     
@@ -426,11 +460,12 @@ internal final class FunctionAssertionIntegrationTests: XCTestKitCase
     
     func testAssertNoThrowWithThrowingExpr()
     {
-        XCTExpectFailure()
-
         let expr: () throws -> Int = { throw TestError() }
         
-        XCTKAssertNoThrow(try expr())
+        withOneExpectedFailure
+        {
+            XCTKAssertNoThrow(try expr())
+        }
     }
     
     
@@ -520,8 +555,10 @@ internal final class FunctionAssertionIntegrationTests: XCTestKitCase
     
     func testFail()
     {
-        XCTExpectFailure()
-        XCTKFail()
+        withOneExpectedFailure
+        {
+            XCTKFail()
+        }
     }
     
     
@@ -538,8 +575,10 @@ internal final class FunctionAssertionIntegrationTests: XCTestKitCase
     
     func testAssertAllSatisfyWithFailingExpr()
     {
-        XCTExpectFailure()
-        XCTKAssertAllSatisfy([2, 3, 6]) { $0 % 2 == 0 }
+        withOneExpectedFailure
+        {
+            XCTKAssertAllSatisfy([2, 3, 6]) { $0 % 2 == 0 }
+        }
     }
     
     
@@ -554,8 +593,10 @@ internal final class FunctionAssertionIntegrationTests: XCTestKitCase
     
     func testAssertAnySatisfyWithFailingExpr()
     {
-        XCTExpectFailure()
-        XCTKAssertAnySatisfy([1, 3, 5]) { $0 % 2 == 0 }
+        withOneExpectedFailure
+        {
+            XCTKAssertAnySatisfy([1, 3, 5]) { $0 % 2 == 0 }
+        }
     }
     
     
@@ -570,8 +611,10 @@ internal final class FunctionAssertionIntegrationTests: XCTestKitCase
     
     func testAssertNoneSatisfyWithFailingExpr()
     {
-        XCTExpectFailure()
-        XCTKAssertNoneSatisfy([1, 2, 3]) { $0 % 2 == 0 }
+        withOneExpectedFailure
+        {
+            XCTKAssertNoneSatisfy([1, 2, 3]) { $0 % 2 == 0 }
+        }
     }
     
     
@@ -586,8 +629,10 @@ internal final class FunctionAssertionIntegrationTests: XCTestKitCase
     
     func testAssertSatisfyAtLeastWithFailingExpr()
     {
-        XCTExpectFailure()
-        XCTKAssertSatisfy([1, 2, 3, 4], atLeast: 3) { $0 > 2 }
+        withOneExpectedFailure
+        {
+            XCTKAssertSatisfy([1, 2, 3, 4], atLeast: 3) { $0 > 2 }
+        }
     }
     
     
@@ -602,8 +647,10 @@ internal final class FunctionAssertionIntegrationTests: XCTestKitCase
     
     func testAssertSatisfyAtMostWithFailingExpr()
     {
-        XCTExpectFailure()
-        XCTKAssertSatisfy([1, 2, 3, 4], atMost: 1) { $0 > 2 }
+        withOneExpectedFailure
+        {
+            XCTKAssertSatisfy([1, 2, 3, 4], atMost: 1) { $0 > 2 }
+        }
     }
     
     
@@ -618,8 +665,10 @@ internal final class FunctionAssertionIntegrationTests: XCTestKitCase
     
     func testAssertSatisfyRangeWithFailingExpr()
     {
-        XCTExpectFailure()
-        XCTKAssertSatisfy([1, 2, 3, 4, 5], range: 0...1) { $0 > 2 }
+        withOneExpectedFailure
+        {
+            XCTKAssertSatisfy([1, 2, 3, 4, 5], range: 0...1) { $0 > 2 }
+        }
     }
     
     
@@ -634,8 +683,10 @@ internal final class FunctionAssertionIntegrationTests: XCTestKitCase
     
     func testAssertExactlyWithFailingExpr()
     {
-        XCTExpectFailure()
-        XCTKAssertExactly([1, 2, 3, 4], count: 3) { $0 > 2 }
+        withOneExpectedFailure
+        {
+            XCTKAssertExactly([1, 2, 3, 4], count: 3) { $0 > 2 }
+        }
     }
     
     
@@ -650,8 +701,10 @@ internal final class FunctionAssertionIntegrationTests: XCTestKitCase
     
     func testAssertExactlyOneWithFailingExpr()
     {
-        XCTExpectFailure()
-        XCTKAssertExactlyOne([1, 2, 3]) { $0 > 1 }
+        withOneExpectedFailure
+        {
+            XCTKAssertExactlyOne([1, 2, 3]) { $0 > 1 }
+        }
     }
     
     
@@ -668,8 +721,10 @@ internal final class FunctionAssertionIntegrationTests: XCTestKitCase
     
     func testAssertSortedWithFailingExpr()
     {
-        XCTExpectFailure()
-        XCTKAssertSorted([1, 3, 2, 4], by: <)
+        withOneExpectedFailure
+        {
+            XCTKAssertSorted([1, 3, 2, 4], by: <)
+        }
     }
     
     
@@ -685,8 +740,10 @@ internal final class FunctionAssertionIntegrationTests: XCTestKitCase
     
     func testAssertUniqueWithFailingExpr()
     {
-        XCTExpectFailure()
-        XCTKAssertUnique([1, 2, 3, 2])
+        withOneExpectedFailure
+        {
+            XCTKAssertUnique([1, 2, 3, 2])
+        }
     }
     
     
@@ -702,7 +759,9 @@ internal final class FunctionAssertionIntegrationTests: XCTestKitCase
     
     func testAssertUniqueByKeyWithFailingExpr()
     {
-        XCTExpectFailure()
-        XCTKAssertUnique(["a", "b", "cc"], by: { $0.count })
+        withOneExpectedFailure
+        {
+            XCTKAssertUnique(["a", "b", "cc"], by: { $0.count })
+        }
     }
 }
