@@ -39,28 +39,13 @@ public func XCTKForAll<each T>(
     _ property  : (repeat each T) async throws -> Void
 ) async where repeat each T : Arbitrary
 {
-    let generator: Generator<(repeat each T)>
-        = .zip(repeat Generator<each T>.arbitrary())
-    
-    let wrappedProperty: ((repeat each T)) async throws -> Void =
-    {
-        tuple in
-        
-        try await property(repeat each tuple)
-    }
-    
-    let result: PropertyCheckResult<(repeat each T)>
-        = await PropertyRunner.run(
-            using:      generator,
-            property:   wrappedProperty,
-            options:    options ?? XCTKConfig.global
-        )
-    
-    result.emit(
-        context:    failureContext,
+    await TKForAll(
         message:    message,
         file:       file,
-        line:       line
+        line:       line,
+        options:    options ?? XCTKConfig.global,
+        property:   property,
+        context:    failureContext
     )
 }
 
@@ -102,28 +87,14 @@ public func XCTKForAll<each T>(
     _ property          : (repeat each T) async throws -> Void
 ) async
 {
-    let generator: Generator<(repeat each T)>
-        = .zip(repeat each generators)
-    
-    let wrappedProperty: ((repeat each T)) async throws -> Void =
-    {
-        tuple in
-        
-        try await property(repeat each tuple)
-    }
-    
-    let result: PropertyCheckResult<(repeat each T)>
-        = await PropertyRunner.run(
-            using:      generator,
-            property:   wrappedProperty,
-            options:    options ?? XCTKConfig.global
-        )
-    
-    result.emit(
-        context:    failureContext,
-        message:    message,
-        file:       file,
-        line:       line
+    await TKForAll(
+        generators:     repeat each generators,
+        message:        message,
+        file:           file,
+        line:           line,
+        options:        options ?? XCTKConfig.global,
+        property:       property,
+        context:        failureContext
     )
 }
 
@@ -168,36 +139,14 @@ public func XCTKForAll<each T>(
     _ property          : (repeat each T) async throws -> Void
 ) async where repeat each T : Arbitrary
 {
-    let generator: Generator<(repeat each T)>
-        = .zip(repeat Generator<each T>.arbitrary())
-    
-    let wrappedProperty: ((repeat each T)) async throws -> Void =
-    {
-        tuple in
-        
-        try await property(repeat each tuple)
-    }
-    
-    let wrappedPrecondition: ((repeat each T)) -> Bool =
-    {
-        tuple in
-        
-        return precondition(repeat each tuple)
-    }
-    
-    let result: PropertyCheckResult<(repeat each T)>
-        = await PropertyRunner.run(
-            using:      generator,
-            where:      wrappedPrecondition,
-            property:   wrappedProperty,
-            options:    options ?? XCTKConfig.global
-        )
-    
-    result.emit(
-        context:    failureContext,
-        message:    message,
-        file:       file,
-        line:       line
+    await TKForAll(
+        precondition:   precondition,
+        message:        message,
+        file:           file,
+        line:           line,
+        options:        options ?? XCTKConfig.global,
+        property:       property,
+        context:        failureContext
     )
 }
 
@@ -245,35 +194,14 @@ public func XCTKForAll<each T>(
     _ property          : (repeat each T) async throws -> Void
 ) async
 {
-    let generator: Generator<(repeat each T)>
-        = .zip(repeat each generators)
-    
-    let wrappedProperty: ((repeat each T)) async throws -> Void =
-    {
-        tuple in
-        
-        try await property(repeat each tuple)
-    }
-    
-    let wrappedPrecondition: ((repeat each T)) -> Bool =
-    {
-        tuple in
-        
-        return precondition(repeat each tuple)
-    }
-    
-    let result: PropertyCheckResult<(repeat each T)>
-        = await PropertyRunner.run(
-            using:      generator,
-            where:      wrappedPrecondition,
-            property:   wrappedProperty,
-            options:    options ?? XCTKConfig.global
-        )
-    
-    result.emit(
-        context:    failureContext,
-        message:    message,
-        file:       file,
-        line:       line
+    await TKForAll(
+        generators:     repeat each generators,
+        precondition:   precondition,
+        message:        message,
+        file:           file,
+        line:           line,
+        options:        options ?? XCTKConfig.global,
+        property:       property,
+        context:        failureContext
     )
 }
