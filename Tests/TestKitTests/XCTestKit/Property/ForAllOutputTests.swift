@@ -1345,29 +1345,4 @@ extension ForAllOutputTests
         let x   : Int
         let y   : Int
     }
-    
-    
-    
-    /// Extracts the property-related component of the given output, excluding
-    /// the embedded assertion failure message.
-    /// - Parameters:
-    ///   - output: The full property evaluator output.
-    ///   - marker: The text on which to split the given output.
-    /// - Returns: The property-related component of the given output.
-    /// - Throws: An error if the given marker is not found.
-    private func getPropertyOutput(
-        from    output  : String,
-        before  marker  : String
-    ) throws -> String
-    {
-        guard let range: Range<String.Index> = output.range(of: "\n\(marker)")
-        else
-        {
-            XCTFail("Expected marker \"\(marker)\" not found in output")
-            
-            throw TestError()
-        }
-        
-        return String(output[..<range.lowerBound])
-    }
 }
