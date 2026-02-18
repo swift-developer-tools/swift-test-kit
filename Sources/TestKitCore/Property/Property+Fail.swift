@@ -258,18 +258,18 @@ extension PropertyCheckResult
         {
             let percentageString = String(percentage)
             
-            let paddedLabel = label.padding(
-                toLength:       maxLabelWidth,
-                withPad:        " ",
-                startingAt:     0
-            )
-            
             let paddedPercentage = String(
                 repeating:  " ",
                 count:      max(0, maxPercentageWidth - percentageString.count)
             ) + percentageString
             
-            var line: String = "    \(paddedLabel): \(paddedPercentage)%"
+            let paddedLabel = "\(label):".padding(
+                toLength:       maxLabelWidth + 1,
+                withPad:        " ",
+                startingAt:     0
+            )
+            
+            var line: String = "    \(paddedLabel) \(paddedPercentage)%"
             
             if unmetLabels.contains(label)
             {
@@ -444,13 +444,13 @@ extension PropertyCheckResult
             
             let formatted: String = formatPercentage(percentage)
             
-            let paddedLabel: String = label.padding(
-                toLength:       maxLabelWidth,
+            let paddedLabel = "\(label):".padding(
+                toLength:       maxLabelWidth + 1,
                 withPad:        " ",
                 startingAt:     0
             )
             
-            return "    \(paddedLabel): \(count) (\(formatted)%)"
+            return "    \(paddedLabel) \(count) (\(formatted)%)"
         }
     }
 }
