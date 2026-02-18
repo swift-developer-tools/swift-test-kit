@@ -92,3 +92,56 @@ public func XCTKCollect<T>(
 {
     TKCollect(value: value)
 }
+
+
+
+/// Tags the current iteration with the given label in the specified table.
+///
+/// An iteration can receive multiple labels. Calling this function multiple
+/// times with the same table and label within a single iteration is idempotent.
+///
+/// - Note: This function does nothing when called outside a property body.
+///
+/// - Parameters:
+///   - table: The table to update.
+///   - label: The label to apply.
+public func XCTKTabulate(
+    _   table   : String,
+    _   label   : String
+)
+{
+    TKTabulate(
+        table:  table,
+        label:  label
+    )
+}
+
+
+
+/// Registers minimum coverage percentages for the given labels in the
+/// specified table.
+///
+/// If the specified percentage for a label is not met after all iterations,
+/// the test fails.
+///
+/// If the same label is covered multiple times with different thresholds,
+/// the maximum threshold is used.
+///
+/// - Note: This function does nothing when called outside a property body.
+///
+/// - Parameters:
+///   - table: The table to update.
+///   - requirements: The minimum coverage requirements. Each pair contains a
+///   percentage and a label. The percentage represents the minimum percentage
+///   of iterations that must be tagged with that label. Percentages are
+///   clamped to the range `0.0...100.0`.
+public func XCTKCoverTable(
+    _   table           : String,
+    _   requirements    : (Double, String)...
+)
+{
+    TKCoverTable(
+        table:          table,
+        requirements:   requirements
+    )
+}

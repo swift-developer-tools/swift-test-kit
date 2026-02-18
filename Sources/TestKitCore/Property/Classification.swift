@@ -11,13 +11,6 @@ import OSLog
 
 
 
-private let logger = Logger(
-    subsystem:  "swift-test-kit",
-    category:   "Classification"
-)
-
-
-
 /// Tags the current iteration with the given label when the given condition
 /// is true.
 package func TKClassify(
@@ -28,7 +21,7 @@ package func TKClassify(
     guard let interceptor = PropertyInterceptor.current
     else
     {
-        logger.warning("Classify called outside a property body (no-op)")
+        warnNoOp(for: "Classify")
         return
     }
     
@@ -51,7 +44,7 @@ package func TKCover(
     guard let interceptor = PropertyInterceptor.current
     else
     {
-        logger.warning("Cover called outside a property body (no-op)")
+        warnNoOp(for: "Cover")
         return
     }
     
@@ -76,7 +69,7 @@ package func TKLabel(
     guard let interceptor = PropertyInterceptor.current
     else
     {
-        logger.warning("Label called outside a property body (no-op)")
+        warnNoOp(for: "Label")
         return
     }
     
@@ -92,4 +85,71 @@ package func TKCollect<T>(
 )
 {
     TKLabel(label: "\(value)")
+}
+
+
+
+/// Tags the current iteration with the given label in the specified table.
+package func TKTabulate(
+    table   : String,
+    label   : String
+)
+{
+    guard let interceptor = PropertyInterceptor.current
+    else
+    {
+        warnNoOp(for: "Tabulate")
+        return
+    }
+    
+    interceptor.recordTableLabel(
+        label,
+        table: table
+    )
+}
+
+
+
+/// Registers minimum coverage percentages for the given labels in the
+/// specified table.
+package func TKCoverTable(
+    table           : String,
+    requirements    : [(Double, String)]
+)
+{
+    guard let interceptor = PropertyInterceptor.current
+    else
+    {
+        warnNoOp(for: "CoverTable")
+        return
+    }
+    
+    for (percentage, label) in requirements
+    {
+        interceptor.recordTableCoverageRequirement(
+            percentage,
+            for:    label,
+            in:     table
+        )
+    }
+}
+
+
+
+// MARK: - Support
+
+private let logger = Logger(
+    subsystem:  "swift-test-kit",
+    category:   "Classification"
+)
+
+
+
+/// Warns that the specified function was called outside a property body.
+/// - Parameter functionName: The function name.
+private func warnNoOp(
+    for functionName: String
+)
+{
+    logger.warning("\(functionName) called outside a property body (no-op)")
 }

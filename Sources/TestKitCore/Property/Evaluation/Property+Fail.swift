@@ -9,6 +9,8 @@
 
 extension PropertyCheckResult
 {
+    // MARK: - Emit
+    
     /// Emits the property check result.
     /// - Parameters:
     ///   - context: The assertion failure context.
@@ -33,38 +35,41 @@ extension PropertyCheckResult
                 
                 return
                 
-            case let .failed(counterexample, distribution):
+            case let .failed(counterexample, dist, tableDist):
                 
                 text = formatCounterexample(
                     counterexample,
-                    functionName:   functionName,
-                    message:        message,
-                    distribution:   distribution
+                    functionName:       functionName,
+                    message:            message,
+                    distribution:       dist,
+                    tableDistribution:  tableDist
                 )
                 
             case let .exhausted(
-                discarded, succeeded, ratio, seed, distribution
+                discarded, succeeded, ratio, seed, dist, tableDist
             ):
                 
                 text = formatExhausted(
-                    functionName:   functionName,
-                    message:        message,
-                    discarded:      discarded,
-                    succeeded:      succeeded,
-                    ratio:          ratio,
-                    seed:           seed,
-                    distribution:   distribution
+                    functionName:       functionName,
+                    message:            message,
+                    discarded:          discarded,
+                    succeeded:          succeeded,
+                    ratio:              ratio,
+                    seed:               seed,
+                    distribution:       dist,
+                    tableDistribution:  tableDist
                 )
                 
-            case let .coverageNotMet(unmet, iterations, seed, distribution):
+            case let .coverageNotMet(unmet, iterations, seed, dist, tableDist):
                 
                 text = formatCoverageNotMet(
-                    functionName:   functionName,
-                    message:        message,
-                    unmet:          unmet,
-                    iterations:     iterations,
-                    seed:           seed,
-                    distribution:   distribution
+                    functionName:       functionName,
+                    message:            message,
+                    unmet:              unmet,
+                    iterations:         iterations,
+                    seed:               seed,
+                    distribution:       dist,
+                    tableDistribution:  tableDist
                 )
         }
         
@@ -77,6 +82,8 @@ extension PropertyCheckResult
     
     
     
+    // MARK: - Counterexample
+    
     /// Creates a counterexample failure message.
     /// - Parameters:
     ///   - counterexample: The counterexample to format.
@@ -84,12 +91,16 @@ extension PropertyCheckResult
     ///   - message: The description of a failure.
     ///   - distribution: The accumulated count of iterations that matched
     ///   each label.
+    ///   - tableDistribution: The accumulated count of iterations that
+    ///   matched each table value, mapping the table name to a map of values
+    ///   and their counts.
     /// - Returns: The counterexample failure message.
     private func formatCounterexample(
         _ counterexample    : Counterexample<T>,
         functionName        : String,
         message             : () -> String,
-        distribution        : [String : Int]
+        distribution        : [String : Int],
+        tableDistribution   : [String : [String : Int]]
     ) -> String
     {
         var lines: [String] = []
@@ -144,7 +155,9 @@ extension PropertyCheckResult
         
         
         
-        if !distribution.isEmpty
+        if
+            !distribution.isEmpty
+            || !tableDistribution.isEmpty
         {
             lines.append("")
             
@@ -158,6 +171,13 @@ extension PropertyCheckResult
             )
             
             lines.append(contentsOf: distributionLines)
+            
+            let tableLines: [String] = Self.formatTableDistribution(
+                tableDistribution,
+                iterations: counterexample.iteration
+            )
+            
+            lines.append(contentsOf: tableLines)
         }
         
         
@@ -188,6 +208,91 @@ extension PropertyCheckResult
     
     
     
+    // MARK: - Exhausted
+    
+    /// Creates an exhaustion failure message.
+    /// - Parameters:
+    ///   - functionName: The name of the property-based function.
+    ///   - message: The description of a failure.
+    ///   - discarded: The number of discarded inputs.
+    ///   - succeeded: The number of successful inputs.
+    ///   - ratio: The maximum ratio of discarded inputs to successful inputs.
+    ///   - seed: The seed used to initialize the random number generator.
+    ///   - distribution: The accumulated count of iterations that matched
+    ///   each label.
+    ///   - tableDistribution: The accumulated count of iterations that
+    ///   matched each table value, mapping the table name to a map of values
+    ///   and their counts.
+    /// - Returns: The exhaustion failure message.
+    private func formatExhausted(
+        functionName        : String,
+        message             : () -> String,
+        discarded           : Int,
+        succeeded           : Int,
+        ratio               : Int,
+        seed                : UInt64,
+        distribution        : [String : Int],
+        tableDistribution   : [String : [String : Int]]
+    ) -> String
+    {
+        var lines: [String] = []
+        
+        lines.append(
+            "\(functionName) exhausted after \(succeeded) successful"
+            + " iteration\(succeeded == 1 ? "" : "s")"
+        )
+        
+        lines.append("")
+        
+        lines.append(
+            "    \(discarded) input\(discarded == 1 ? "" : "s") discarded"
+            + " (max ratio: \(ratio))"
+        )
+        
+        lines.append("")
+        lines.append(Self.makeSeedLine(seed: seed))
+        
+        
+        
+        if
+            !distribution.isEmpty
+            || !tableDistribution.isEmpty
+        {
+            lines.append("")
+            lines.append(Self.makeDistributionHeader(iterations: succeeded))
+            
+            let distributionLines: [String] = Self.formatDistribution(
+                distribution,
+                iterations: succeeded
+            )
+            
+            lines.append(contentsOf: distributionLines)
+            
+            let tableLines: [String] = Self.formatTableDistribution(
+                tableDistribution,
+                iterations: succeeded
+            )
+            
+            lines.append(contentsOf: tableLines)
+        }
+        
+        
+        
+        let msg: String = message()
+        
+        if !msg.isEmpty
+        {
+            lines.append("")
+            lines.append(msg)
+        }
+        
+        return lines.joined(separator: "\n")
+    }
+    
+    
+    
+    // MARK: - Coverage
+    
     /// Creates an unmet coverage failure message.
     /// - Parameters:
     ///   - functionName: The name of the property-based function.
@@ -197,14 +302,18 @@ extension PropertyCheckResult
     ///   - seed: The seed used to initialize the random number generator.
     ///   - distribution: The accumulated count of iterations that matched
     ///   each label.
+    ///   - tableDistribution: The accumulated count of iterations that
+    ///   matched each table value, mapping the table name to a map of values
+    ///   and their counts.
     /// - Returns: The unmet coverage failure message.
     private func formatCoverageNotMet(
-        functionName    : String,
-        message         : () -> String,
-        unmet           : [UnmetCoverage],
-        iterations      : Int,
-        seed            : UInt64,
-        distribution    : [String : Int]
+        functionName        : String,
+        message             : () -> String,
+        unmet               : [UnmetCoverage],
+        iterations          : Int,
+        seed                : UInt64,
+        distribution        : [String : Int],
+        tableDistribution   : [String : [String : Int]]
     ) -> String
     {
         var lines: [String] = []
@@ -214,13 +323,117 @@ extension PropertyCheckResult
             + " iteration\(iterations == 1 ? "" : "s")"
         )
         
+        lines.append("")
+        lines.append("Coverage:")
+        
+        let flatLines: [String] = Self.formatCoverageLines(
+            distribution,
+            unmet:          unmet.filter { $0.table == nil },
+            iterations:     iterations,
+            indent:         "    "
+        )
+        
+        lines.append(contentsOf: flatLines)
+        
+        let tableLines: [String] = Self.formatTableCoverage(
+            tableDistribution,
+            unmet:          unmet,
+            iterations:     iterations
+        )
+        
+        lines.append(contentsOf: tableLines)
         
         
-        let unmetLabels: Set<String> = Set(unmet.map { $0.label })
         
-        /// All labels from `distribution`, plus any unmet labels that had
-        /// zero occurences.
-        var allLabels: Set<String> = Set(distribution.keys)
+        lines.append("")
+        lines.append(Self.makeSeedLine(seed: seed))
+        
+        
+        
+        let msg: String = message()
+        
+        if !msg.isEmpty
+        {
+            lines.append("")
+            lines.append(msg)
+        }
+        
+        return lines.joined(separator: "\n")
+    }
+    
+    
+    
+    /// Formats the given table distribution data as coverage lines with
+    /// the given unmet requirements marked.
+    /// - Parameters:
+    ///   - tableDistribution: The accumulated count of iterations that
+    ///   matched each table value, mapping the table name to a map of values
+    ///   and their counts.
+    ///   - unmet: The unmet coverage requirements.
+    ///   - iterations: The number of iterations.
+    /// - Returns: The formatted lines.
+    private static func formatTableCoverage(
+        _ tableDistribution : [String : [String : Int]],
+        unmet               : [UnmetCoverage],
+        iterations          : Int
+    ) -> [String]
+    {
+        /// Group the unmet requirements by table name.
+        let unmetByTable: [String : [UnmetCoverage]] = Dictionary(
+            grouping:   unmet.filter { $0.table != nil },
+            by:         { $0.table! }
+        )
+        
+        var allTables: Set<String> = Set(tableDistribution.keys)
+        
+        allTables.formUnion(unmetByTable.keys)
+        
+        guard !allTables.isEmpty
+        else
+        {
+            return []
+        }
+        
+        
+        
+        var lines: [String] = []
+        
+        for tableName in allTables.sorted()
+        {
+            lines.append("")
+            lines.append("    Table \(quote(tableName)):")
+            
+            let tableLines: [String] = formatCoverageLines(
+                tableDistribution[tableName] ?? [:],
+                unmet:          unmetByTable[tableName] ?? [],
+                iterations:     iterations,
+                indent:         "        "
+            )
+            
+            lines.append(contentsOf: tableLines)
+        }
+        
+        return lines
+    }
+    
+    
+    
+    /// Formats coverage lines for a single scope (flat labels or one table).
+    /// - Parameters:
+    ///   - distribution: The label counts for this scope.
+    ///   - unmet: The pre-filtered unmet requirements for this scope.
+    ///   - iterations: The number of iterations.
+    ///   - indent: The indentation prefix for each line.
+    /// - Returns: The formatted lines.
+    private static func formatCoverageLines(
+        _ distribution  : [String : Int],
+        unmet           : [UnmetCoverage],
+        iterations      : Int,
+        indent          : String
+    ) -> [String]
+    {
+        let unmetLabels : Set<String>   = Set(unmet.map { $0.label })
+        var allLabels   : Set<String>   = Set(distribution.keys)
         
         allLabels.formUnion(unmetLabels)
         
@@ -251,11 +464,10 @@ extension PropertyCheckResult
         
         
         
-        lines.append("")
-        lines.append("Coverage:")
-        
-        for (label, percentage) in percentages
+        return percentages.map
         {
+            label, percentage in
+            
             let percentageString = String(percentage)
             
             let paddedPercentage = String(
@@ -269,7 +481,7 @@ extension PropertyCheckResult
                 startingAt:     0
             )
             
-            var line: String = "    \(paddedLabel) \(paddedPercentage)%"
+            var line: String = "\(indent)\(paddedLabel) \(paddedPercentage)%"
             
             if unmetLabels.contains(label)
             {
@@ -279,97 +491,13 @@ extension PropertyCheckResult
                 line += " ←"
             }
             
-            lines.append(line)
+            return line
         }
-        
-        
-        
-        lines.append("")
-        lines.append(Self.makeSeedLine(seed: seed))
-        
-        
-        
-        let msg: String = message()
-        
-        if !msg.isEmpty
-        {
-            lines.append("")
-            lines.append(msg)
-        }
-        
-        return lines.joined(separator: "\n")
     }
     
     
     
-    /// Creates an exhaustion failure message.
-    /// - Parameters:
-    ///   - functionName: The name of the property-based function.
-    ///   - message: The description of a failure.
-    ///   - discarded: The number of discarded inputs.
-    ///   - succeeded: The number of successful inputs.
-    ///   - ratio: The maximum ratio of discarded inputs to successful inputs.
-    ///   - seed: The seed used to initialize the random number generator.
-    ///   - distribution: The accumulated count of iterations that matched
-    ///   each label.
-    /// - Returns: The exhaustion failure message.
-    private func formatExhausted(
-        functionName    : String,
-        message         : () -> String,
-        discarded       : Int,
-        succeeded       : Int,
-        ratio           : Int,
-        seed            : UInt64,
-        distribution    : [String : Int]
-    ) -> String
-    {
-        var lines: [String] = []
-        
-        lines.append(
-            "\(functionName) exhausted after \(succeeded) successful"
-            + " iteration\(succeeded == 1 ? "" : "s")"
-        )
-        
-        lines.append("")
-        
-        lines.append(
-            "    \(discarded) input\(discarded == 1 ? "" : "s") discarded"
-            + " (max ratio: \(ratio))"
-        )
-        
-        lines.append("")
-        lines.append(Self.makeSeedLine(seed: seed))
-        
-        
-        
-        if !distribution.isEmpty
-        {
-            lines.append("")
-            lines.append(Self.makeDistributionHeader(iterations: succeeded))
-            
-            let distributionLines: [String] = Self.formatDistribution(
-                distribution,
-                iterations: succeeded
-            )
-            
-            lines.append(contentsOf: distributionLines)
-        }
-        
-        
-        
-        let msg: String = message()
-        
-        if !msg.isEmpty
-        {
-            lines.append("")
-            lines.append(msg)
-        }
-        
-        return lines.joined(separator: "\n")
-    }
-    
-    
-    
+    // MARK: - Support
     
     /// Creates a distribution header with the given number of iterations.
     /// - Parameter iterations: The number of iterations.
@@ -452,5 +580,36 @@ extension PropertyCheckResult
             
             return "    \(paddedLabel) \(count) (\(formatted)%)"
         }
+    }
+    
+    
+    
+    /// Formats the given table distribution data as indented lines.
+    /// - Parameters:
+    ///   - tableDistribution: The accumulated count of iterations that
+    ///   matched each table value, mapping the table name to a map of values
+    ///   and their counts.
+    ///   - iterations: The number of iterations.
+    /// - Returns: The formatted lines.
+    internal static func formatTableDistribution(
+        _ tableDistribution : [String : [String : Int]],
+        iterations          : Int
+    ) -> [String]
+    {
+        var lines: [String] = []
+        
+        for tableName in tableDistribution.keys.sorted()
+        {
+            let tableLines: [String] = formatDistribution(
+                tableDistribution[tableName]!,
+                iterations: iterations
+            )
+            
+            lines.append("")
+            lines.append("    Table \(quote(tableName)):")
+            lines.append(contentsOf: tableLines)
+        }
+        
+        return lines
     }
 }

@@ -83,7 +83,34 @@ package final class PropertyInterceptor: Sendable
     
     
     
-    /// Records an assertion failure.
+    /// Table labels applied to the current iteration, mapping the table
+    /// name to values.
+    package var tableLabels: [String : Set<String>]
+    {
+        return state.withLock { $0.tableLabels }
+    }
+    
+    
+    
+    /// The accumulated count of iterations that matched each table value,
+    /// mapping the table name to a map of values and their counts.
+    package var tableDistribution: [String : [String : Int]]
+    {
+        return state.withLock { $0.tableDistribution }
+    }
+    
+    
+    
+    /// The minimum percentage required for each table value, mapping the
+    /// table name to a map of values and their minimum percentages.
+    package var tableCoverageRequirements: [String : [String : Double]]
+    {
+        return state.withLock { $0.tableCoverageRequirements }
+    }
+    
+    
+    
+    /// Records the specified assertion failure.
     /// - Parameters:
     ///   - message: The failure message.
     ///   - file: The file where the failure occurred.
@@ -105,7 +132,7 @@ package final class PropertyInterceptor: Sendable
     
     
     
-    /// Records a label for the current iteration.
+    /// Records the given label for the current iteration.
     ///
     /// Multiple calls with the same label within a single iteration are
     /// idempotent.
@@ -153,6 +180,63 @@ package final class PropertyInterceptor: Sendable
     
     
     
+    /// Records the given label in the specified table for the current
+    /// iteration.
+    ///
+    /// Multiple calls with the same label within a single iteration are
+    /// idempotent.
+    ///
+    /// - Parameters:
+    ///   - label: The label to record.
+    ///   - table: The table to update.
+    package func recordTableLabel(
+        _ label : String,
+        table   : String
+    )
+    {
+        _ = state.withLock { $0.tableLabels[table, default: []].insert(label) }
+    }
+    
+    
+    
+    /// Records the given minimum coverage percentage for the given label
+    /// in the specified table.
+    ///
+    /// If the label already has a requirement, the maximum of the existing
+    /// and new thresholds is kept.
+    ///
+    /// - Parameters:
+    ///   - percentage: The minimum percentage required. This is clamped to
+    ///   the range `0.0...100.0`.
+    ///   - label: The label to which the requirement applies.
+    ///   - table: The table to update.
+    package func recordTableCoverageRequirement(
+        _       percentage  : Double,
+        for     label       : String,
+        in      table       : String
+    )
+    {
+        let clamped: Double = percentage.clamped(to: 0.0...100.0)
+        
+        if clamped == 0.0
+        {
+            Self.logger.warning(
+                "Cover passed vacuously - percentage is 0% for \(quote(label))"
+            )
+        }
+        
+        state.withLock
+        {
+            let existing: Double = $0.tableCoverageRequirements[table]?[label]
+                ?? 0.0
+            
+            $0.tableCoverageRequirements[table, default: [:]][label]
+                = max(existing, clamped)
+        }
+    }
+    
+    
+    
     /// Gets the unmet coverage requirements.
     /// - Parameter iterations: The total number of successful iterations.
     /// - Returns: The unmet coverage requirements, or an empty array if
@@ -165,29 +249,53 @@ package final class PropertyInterceptor: Sendable
         {
             state in
             
-            return state.coverageRequirements.compactMap
+            var unmet: [UnmetCoverage] = []
+            
+            for (label, required) in state.coverageRequirements
             {
-                label, required in
-                
                 let count: Int = state.distribution[label] ?? 0
                 
                 let actual: Double = iterations > 0
                     ? Double(count) / Double(iterations) * 100.0
                     : 0.0
                 
-                guard actual < required
-                else
+                if actual < required
                 {
-                    return nil
+                    unmet.append(UnmetCoverage(
+                        label:      label,
+                        required:   required,
+                        actual:     actual,
+                        table:      nil
+                    ))
                 }
-                
-                return UnmetCoverage(
-                    label:      label,
-                    required:   required,
-                    actual:     actual,
-                    table:      nil
-                )
             }
+            
+            for (table, requirements) in state.tableCoverageRequirements
+            {
+                let tableCounts: [String : Int]
+                    = state.tableDistribution[table] ?? [:]
+                
+                for (label, required) in requirements
+                {
+                    let count: Int = tableCounts[label] ?? 0
+                    
+                    let actual: Double = iterations > 0
+                        ? Double(count) / Double(iterations) * 100.0
+                        : 0.0
+                    
+                    if actual < required
+                    {
+                        unmet.append(UnmetCoverage(
+                            label:      label,
+                            required:   required,
+                            actual:     actual,
+                            table:      table
+                        ))
+                    }
+                }
+            }
+            
+            return unmet
         }
     }
     
@@ -202,12 +310,25 @@ package final class PropertyInterceptor: Sendable
     {
         state.withLock
         {
-            for label in $0.labels
+            state in
+            
+            for label in state.labels
             {
-                $0.distribution[label, default: 0] += 1
+                state.distribution[label, default: 0] += 1
             }
             
-            $0.labels = []
+            for (tableName, labels) in state.tableLabels
+            {
+                for label in labels
+                {
+                    state.tableDistribution[
+                        tableName, default: [:]
+                    ][label, default: 0] += 1
+                }
+            }
+            
+            state.labels       = []
+            state.tableLabels  = [:]
         }
     }
     
@@ -225,6 +346,7 @@ package final class PropertyInterceptor: Sendable
         {
             $0.failures     = []
             $0.labels       = []
+            $0.tableLabels  = [:]
         }
     }
 }
@@ -237,16 +359,28 @@ package final class PropertyInterceptor: Sendable
 private struct InterceptorState: Equatable, Sendable
 {
     /// Assertion failures for the current iteration.
-    var failures                : [InterceptedFailure]  = []
+    var failures                    : [InterceptedFailure]          = []
     
     /// Labels applied to the current iteration.
-    var labels                  : Set<String>           = []
+    var labels                      : Set<String>                   = []
     
     /// The accumulated count of iterations that matched each label.
-    var distribution            : [String : Int]        = [:]
+    var distribution                : [String : Int]                = [:]
     
     /// The minimum percentage required for each label.
-    var coverageRequirements    : [String : Double]     = [:]
+    var coverageRequirements        : [String : Double]             = [:]
+    
+    /// Table labels applied to the current iteration, mapping the table
+    /// name to labels.
+    var tableLabels                 : [String : Set<String>]        = [:]
+    
+    /// The accumulated count of iterations that matched each table, mapping
+    /// the table name to a map of labels and their counts.
+    var tableDistribution           : [String : [String : Int]]     = [:]
+    
+    /// The minimum percentage required for each table value, mapping the
+    /// table name to a map of labels and their minimum percentages.
+    var tableCoverageRequirements   : [String : [String : Double]]  = [:]
 }
 
 

@@ -16,10 +16,14 @@ package enum PropertyCheckResult<T>
     ///   - seed: The seed used to initialize the random number generator.
     ///   - distribution: The accumulated count of iterations that matched
     ///   each label.
+    ///   - tableDistribution: The accumulated count of iterations that
+    ///   matched each table value, mapping the table name to a map of values
+    ///   and their counts.
     case passed(
-        iterations      : Int,
-        seed            : UInt64,
-        distribution    : [String : Int]
+        iterations          : Int,
+        seed                : UInt64,
+        distribution        : [String : Int],
+        tableDistribution   : [String : [String : Int]]
     )
     
     /// A counterexample was found.
@@ -27,9 +31,13 @@ package enum PropertyCheckResult<T>
     ///   - counterexample: The found counterexample.
     ///   - distribution: The accumulated count of iterations that matched
     ///   each label.
+    ///   - tableDistribution: The accumulated count of iterations that
+    ///   matched each table value, mapping the table name to a map of values
+    ///   and their counts.
     case failed(
-        counterexample  : Counterexample<T>,
-        distribution    : [String : Int]
+        counterexample      : Counterexample<T>,
+        distribution        : [String : Int],
+        tableDistribution   : [String : [String : Int]]
     )
     
     /// Too many inputs did not meet the preconditions of conditional
@@ -41,12 +49,16 @@ package enum PropertyCheckResult<T>
     ///   - seed: The seed used to initialize the random number generator.
     ///   - distribution: The accumulated count of iterations that matched
     ///   each label.
+    ///   - tableDistribution: The accumulated count of iterations that
+    ///   matched each table value, mapping the table name to a map of values
+    ///   and their counts.
     case exhausted(
-        discarded       : Int,
-        succeeded       : Int,
-        ratio           : Int,
-        seed            : UInt64,
-        distribution    : [String : Int]
+        discarded           : Int,
+        succeeded           : Int,
+        ratio               : Int,
+        seed                : UInt64,
+        distribution        : [String : Int],
+        tableDistribution   : [String : [String : Int]]
     )
     
     /// All iterations passed, but one or more coverage requirements were
@@ -57,10 +69,14 @@ package enum PropertyCheckResult<T>
     ///   - seed: The seed used to initialize the random number generator.
     ///   - distribution: The accumulated count of iterations that matched
     ///   each label.
+    ///   - tableDistribution: The accumulated count of iterations that
+    ///   matched each table value, mapping the table name to a map of values
+    ///   and their counts.
     case coverageNotMet(
-        unmet           : [UnmetCoverage],
-        iterations      : Int,
-        seed            : UInt64,
-        distribution    : [String : Int]
+        unmet               : [UnmetCoverage],
+        iterations          : Int,
+        seed                : UInt64,
+        distribution        : [String : Int],
+        tableDistribution   : [String : [String : Int]]
     )
 }

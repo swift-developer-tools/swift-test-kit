@@ -161,11 +161,12 @@ package struct PropertyRunner
                 if discarded > maxDiscardRatio * iterations
                 {
                     return .exhausted(
-                        discarded:      discarded,
-                        succeeded:      succeeded,
-                        ratio:          maxDiscardRatio,
-                        seed:           seed,
-                        distribution:   interceptor.distribution
+                        discarded:          discarded,
+                        succeeded:          succeeded,
+                        ratio:              maxDiscardRatio,
+                        seed:               seed,
+                        distribution:       interceptor.distribution,
+                        tableDistribution:  interceptor.tableDistribution
                     )
                 }
                 
@@ -193,7 +194,8 @@ package struct PropertyRunner
                 
                 return .failed(
                     counterexample:     counterexample,
-                    distribution:       interceptor.distribution
+                    distribution:       interceptor.distribution,
+                    tableDistribution:  interceptor.tableDistribution
                 )
             }
             else
@@ -220,21 +222,34 @@ package struct PropertyRunner
         if !unmet.isEmpty
         {
             return .coverageNotMet(
-                unmet:          unmet,
-                iterations:     iterations,
-                seed:           seed,
-                distribution:   interceptor.distribution
+                unmet:              unmet,
+                iterations:         iterations,
+                seed:               seed,
+                distribution:       interceptor.distribution,
+                tableDistribution:  interceptor.tableDistribution
             )
         }
         
         
         
-        if !interceptor.distribution.isEmpty
+        if
+            !interceptor.distribution.isEmpty
+            || !interceptor.tableDistribution.isEmpty
         {
-            let summary: String = PropertyCheckResult<T>.formatDistribution(
-                interceptor.distribution,
-                iterations: iterations
-            ).joined(separator: "\n")
+            var summaryLines: [String]
+                = PropertyCheckResult<T>.formatDistribution(
+                    interceptor.distribution,
+                    iterations: iterations
+                )
+            
+            summaryLines.append(contentsOf:
+                PropertyCheckResult<T>.formatTableDistribution(
+                    interceptor.tableDistribution,
+                    iterations: iterations
+                )
+            )
+            
+            let summary: String = summaryLines.joined(separator: "\n")
             
             logger.info("Property passed \(iterations) iterations\n\(summary)")
         }
@@ -242,9 +257,10 @@ package struct PropertyRunner
         
         
         return .passed(
-            iterations:     iterations,
-            seed:           seed,
-            distribution:   interceptor.distribution
+            iterations:         iterations,
+            seed:               seed,
+            distribution:       interceptor.distribution,
+            tableDistribution:  interceptor.tableDistribution
         )
     }
     

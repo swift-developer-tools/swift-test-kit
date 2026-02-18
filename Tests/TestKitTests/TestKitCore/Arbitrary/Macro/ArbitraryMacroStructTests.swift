@@ -1426,7 +1426,7 @@ internal final class ArbitraryMacroStructTests: XCTestCaseStopOnFail
             options: options
         )
         
-        guard case let .failed(counterexample, _) = result
+        guard case let .failed(counterexample, _, _) = result
         else
         {
             XCTFail("Expected .failed, got \(result)")

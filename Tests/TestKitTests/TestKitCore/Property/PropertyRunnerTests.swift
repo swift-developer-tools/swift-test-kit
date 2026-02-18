@@ -439,7 +439,7 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
         XCTAssertGreaterThan(exhausted.discarded, 0)
         XCTAssertEqual(exhausted.ratio, maxDiscardRatio)
         XCTAssertEqual(exhausted.seed, Self.seed)
-        XCTAssertEqual(exhausted.distribution, [:])
+        XCTAssertEqual(exhausted.dist, [:])
     }
     
     
@@ -470,7 +470,7 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
         XCTAssertEqual(exhausted.discarded, threshold + 1)
         XCTAssertEqual(exhausted.ratio, maxDiscardRatio)
         XCTAssertEqual(exhausted.seed, Self.seed)
-        XCTAssertEqual(exhausted.distribution, [:])
+        XCTAssertEqual(exhausted.dist, [:])
     }
     
     
@@ -498,7 +498,7 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
         XCTAssertEqual(exhausted.discarded, 1)
         XCTAssertEqual(exhausted.ratio, maxDiscardRatio)
         XCTAssertEqual(exhausted.seed, Self.seed)
-        XCTAssertEqual(exhausted.distribution, [:])
+        XCTAssertEqual(exhausted.dist, [:])
     }
     
     
@@ -571,7 +571,7 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
         XCTAssertEqual(exhausted.discarded, threshold + 1)
         XCTAssertEqual(exhausted.ratio, maxDiscardRatio)
         XCTAssertEqual(exhausted.seed, Self.seed)
-        XCTAssertEqual(exhausted.distribution, [:])
+        XCTAssertEqual(exhausted.dist, [:])
     }
     
     
@@ -600,7 +600,7 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
         XCTAssertEqual(exhausted.discarded, 1)
         XCTAssertEqual(exhausted.ratio, maxDiscardRatio)
         XCTAssertEqual(exhausted.seed, Self.seed)
-        XCTAssertEqual(exhausted.distribution, [:])
+        XCTAssertEqual(exhausted.dist, [:])
     }
     
     
@@ -629,7 +629,7 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
         
         let passed: PassedValues = try XCTUnwrap(Self.assertPassed(result))
         
-        XCTAssertEqual(passed.distribution["always"], iterations)
+        XCTAssertEqual(passed.dist["always"], iterations)
     }
     
     
@@ -663,8 +663,8 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
         
         let passed: PassedValues = try XCTUnwrap(Self.assertPassed(result))
         
-        XCTAssertEqual(passed.distribution["all"], iterations)
-        XCTAssertEqual(passed.distribution["large"], target)
+        XCTAssertEqual(passed.dist["all"], iterations)
+        XCTAssertEqual(passed.dist["large"], target)
     }
     
     
@@ -679,7 +679,7 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
         
         let passed: PassedValues = try XCTUnwrap(Self.assertPassed(result))
         
-        XCTAssertTrue(passed.distribution.isEmpty)
+        XCTAssertTrue(passed.dist.isEmpty)
     }
     
     
@@ -703,7 +703,7 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
             options: .propertyOptions(seed: Self.seed)
         )
         
-        guard case let .failed(counterexample, distribution) = result
+        guard case let .failed(counterexample, distribution, _) = result
         else
         {
             XCTFail("Expected .failed, got \(result)")
@@ -750,7 +750,7 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
             options: options
         )
         
-        guard case let .failed(counterexample, distribution) = result
+        guard case let .failed(counterexample, distribution, _) = result
         else
         {
             XCTFail("Expected .failed, got \(result)")
@@ -791,7 +791,7 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
             = try XCTUnwrap(Self.assertExhausted(result))
         
         XCTAssertEqual(exhausted.succeeded, target + 1)
-        XCTAssertEqual(exhausted.distribution["accepted"], target + 1)
+        XCTAssertEqual(exhausted.dist["accepted"], target + 1)
     }
     
     
@@ -824,7 +824,7 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
         
         let passed: PassedValues = try XCTUnwrap(Self.assertPassed(result))
         
-        XCTAssertEqual(passed.distribution["always"], iterations)
+        XCTAssertEqual(passed.dist["always"], iterations)
     }
     
     
@@ -870,7 +870,7 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
         XCTAssertEqual(coverageNotMet.unmet.first?.label, "large")
         XCTAssertEqual(coverageNotMet.unmet.first?.required, required)
         XCTAssertEqual(coverageNotMet.unmet.first?.actual, Double(target))
-        XCTAssertEqual(coverageNotMet.distribution["large"], target)
+        XCTAssertEqual(coverageNotMet.dist["large"], target)
     }
     
     
@@ -961,8 +961,8 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
         
         XCTAssertEqual(coverageNotMet.unmet.count, 1)
         XCTAssertEqual(coverageNotMet.unmet.first?.label, "large")
-        XCTAssertEqual(coverageNotMet.distribution["all"], iterations)
-        XCTAssertEqual(coverageNotMet.distribution["large"], target)
+        XCTAssertEqual(coverageNotMet.dist["all"], iterations)
+        XCTAssertEqual(coverageNotMet.dist["large"], target)
     }
     
     
@@ -998,7 +998,7 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
             options: options
         )
         
-        guard case let .failed(counterexample, distribution) = result
+        guard case let .failed(counterexample, distribution, _) = result
         else
         {
             XCTFail("Expected .failed, got \(result)")
@@ -1070,7 +1070,7 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
         
         let passed: PassedValues = try XCTUnwrap(Self.assertPassed(result))
         
-        XCTAssertEqual(passed.distribution["accepted"], iterations)
+        XCTAssertEqual(passed.dist["accepted"], iterations)
     }
     
     
@@ -1109,7 +1109,7 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
             options: options
         )
         
-        guard case let .failed(counterexample, distribution) = result
+        guard case let .failed(counterexample, distribution, _) = result
         else
         {
             XCTFail("Expected .failed, got \(result)")
@@ -1156,7 +1156,7 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
             options: options
         )
         
-        guard case let .failed(counterexample, distribution) = result
+        guard case let .failed(counterexample, distribution, _) = result
         else
         {
             XCTFail("Expected .failed, got \(result)")
@@ -1231,7 +1231,7 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
         
         let passed: PassedValues = try XCTUnwrap(Self.assertPassed(result))
         
-        XCTAssertEqual(passed.distribution["duplicate"], iterations)
+        XCTAssertEqual(passed.dist["duplicate"], iterations)
     }
     
     
@@ -1297,13 +1297,13 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
             = try XCTUnwrap(Self.assertExhausted(result))
         
         XCTAssertEqual(exhausted.succeeded, 0)
-        XCTAssertTrue(exhausted.distribution.isEmpty)
+        XCTAssertTrue(exhausted.dist.isEmpty)
     }
     
     
     
     @Reasync
-    func testXCTKClassifyIntegration() async throws
+    func testClassifyIntegration() async throws
     {
         let target      : Int   = 50
         let iterations  : Int   = 100
@@ -1327,14 +1327,14 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
         
         let passed: PassedValues = try XCTUnwrap(Self.assertPassed(result))
         
-        XCTAssertEqual(passed.distribution["small"], target)
-        XCTAssertEqual(passed.distribution["large"], target)
+        XCTAssertEqual(passed.dist["small"], target)
+        XCTAssertEqual(passed.dist["large"], target)
     }
     
     
     
     @Reasync
-    func testXCTKClassifyFalseConditionDoesNotRecord() async throws
+    func testClassifyFalseConditionDoesNotRecord() async throws
     {
         let iterations: Int = 100
         
@@ -1356,14 +1356,14 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
         
         let passed: PassedValues = try XCTUnwrap(Self.assertPassed(result))
         
-        XCTAssertNil(passed.distribution["never"])
-        XCTAssertEqual(passed.distribution["always"], iterations)
+        XCTAssertNil(passed.dist["never"])
+        XCTAssertEqual(passed.dist["always"], iterations)
     }
     
     
     
     @Reasync
-    func testXCTKCoverMetReturnsPassed() async throws
+    func testCoverMetReturnsPassed() async throws
     {
         let target      : Double    = 50
         let iterations  : Int       = 100
@@ -1387,14 +1387,14 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
         
         let passed: PassedValues = try XCTUnwrap(Self.assertPassed(result))
         
-        XCTAssertEqual(passed.distribution["small"], Int(target))
-        XCTAssertEqual(passed.distribution["large"], Int(target))
+        XCTAssertEqual(passed.dist["small"], Int(target))
+        XCTAssertEqual(passed.dist["large"], Int(target))
     }
     
     
     
     @Reasync
-    func testXCTKCoverNotMetReturnsCoverageNotMet() async throws
+    func testCoverNotMetReturnsCoverageNotMet() async throws
     {
         let target      : Int   = 50
         let iterations  : Int   = 100
@@ -1427,7 +1427,7 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
     
     
     @Reasync
-    func testXCTKCoverMaximumThresholdOverrides() async throws
+    func testCoverMaximumThresholdOverrides() async throws
     {
         let iterations: Int = 100
         
@@ -1461,7 +1461,7 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
     
     
     @Reasync
-    func testXCTKLabelAndCollectIntegration() async throws
+    func testLabelAndCollectIntegration() async throws
     {
         let iterations  : Int   = 100
         let maxSize     : Int   = 10
@@ -1485,7 +1485,7 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
         
         let passed: PassedValues = try XCTUnwrap(Self.assertPassed(result))
         
-        XCTAssertEqual(passed.distribution["all"], iterations)
+        XCTAssertEqual(passed.dist["all"], iterations)
         
         /// Collect records the string representation of each size. With a
         /// max size of `10`, and `100` iterations, sizes are in the range
@@ -1494,12 +1494,12 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
         
         for label in sizeLabels
         {
-            XCTAssertNotNil(passed.distribution[label])
+            XCTAssertNotNil(passed.dist[label])
         }
         
         let sizeTotal: Int = sizeLabels.reduce(0)
         {
-            return $0 + (passed.distribution[$1] ?? 0)
+            return $0 + (passed.dist[$1] ?? 0)
         }
         
         XCTAssertEqual(sizeTotal, iterations)
@@ -1536,8 +1536,8 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
         
         let passed: PassedValues = try XCTUnwrap(Self.assertPassed(result))
         
-        let low     : Int   = passed.distribution["low"]    ?? 0
-        let high    : Int   = passed.distribution["high"]   ?? 0
+        let low     : Int   = passed.dist["low"]    ?? 0
+        let high    : Int   = passed.dist["high"]   ?? 0
         
         XCTAssertEqual(low + high, iterations)
     }
@@ -1580,7 +1580,7 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
             options: options
         )
         
-        guard case let .failed(counterexample, distribution) = result
+        guard case let .failed(counterexample, distribution, _) = result
         else
         {
             XCTFail("Expected .failed, got \(result)")
@@ -1623,7 +1623,7 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
         
         let passed: PassedValues = try XCTUnwrap(Self.assertPassed(result))
         
-        XCTAssertEqual(passed.distribution["present"], iterations)
+        XCTAssertEqual(passed.dist["present"], iterations)
     }
     
     
@@ -1682,9 +1682,9 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
         
         let passed: PassedValues = try XCTUnwrap(Self.assertPassed(result))
         
-        XCTAssertEqual(passed.distribution["all"], iterations)
-        XCTAssertEqual(passed.distribution["small"], target)
-        XCTAssertEqual(passed.distribution["large"], target)
+        XCTAssertEqual(passed.dist["all"], iterations)
+        XCTAssertEqual(passed.dist["small"], target)
+        XCTAssertEqual(passed.dist["large"], target)
     }
     
     
@@ -1714,7 +1714,7 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
         
         let passed: PassedValues = try XCTUnwrap(Self.assertPassed(result))
         
-        XCTAssertEqual(passed.distribution["even"], iterations)
+        XCTAssertEqual(passed.dist["even"], iterations)
     }
     
     
@@ -1763,12 +1763,18 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
         
         switch (resultA, resultB)
         {
-            case let (.passed(iterA, seedA, _), .passed(iterB, seedB, _)):
+            case let (
+                .passed(iterA, seedA, _, _),
+                .passed(iterB, seedB, _, _)
+            ):
                 
                 XCTAssertEqual(iterA, iterB)
                 XCTAssertEqual(seedA, seedB)
                 
-            case let (.failed(counterA, _), .failed(counterB, _)):
+            case let (
+                .failed(counterA, _, _),
+                .failed(counterB, _, _)
+            ):
                 
                 XCTAssertEqual(counterA.iteration, counterB.iteration)
                 XCTAssertEqual(counterA.seed, counterB.seed)
@@ -3107,9 +3113,10 @@ extension PropertyRunnerTests
     /// The associated values of a passed ``PropertyCheckResult``.
     private struct PassedValues
     {
-        let iterations      : Int
-        let seed            : UInt64
-        let distribution    : [String : Int]
+        let iterations  : Int
+        let seed        : UInt64
+        let dist        : [String : Int]
+        let tableDist   : [String : [String : Int]]
     }
     
     
@@ -3124,7 +3131,7 @@ extension PropertyRunnerTests
         _ result: PCR<T>
     ) -> PassedValues?
     {
-        guard case let .passed(iterations, seed, distribution) = result
+        guard case let .passed(iterations, seed, dist, tableDist) = result
         else
         {
             XCTFail("Expected .passed, got \(result)")
@@ -3134,7 +3141,8 @@ extension PropertyRunnerTests
         return PassedValues(
             iterations:     iterations,
             seed:           seed,
-            distribution:   distribution
+            dist:           dist,
+            tableDist:      tableDist
         )
     }
     
@@ -3150,7 +3158,7 @@ extension PropertyRunnerTests
         _ result: PCR<T>
     ) -> Counterexample<T>?
     {
-        guard case let .failed(counterexample, _) = result
+        guard case let .failed(counterexample, _, _) = result
         else
         {
             XCTFail("Expected .failed, got \(result)")
@@ -3165,11 +3173,12 @@ extension PropertyRunnerTests
     /// The associated values of an exhausted ``PropertyCheckResult``.
     private struct ExhaustedValues
     {
-        let discarded       : Int
-        let succeeded       : Int
-        let ratio           : Int
-        let seed            : UInt64
-        let distribution    : [String : Int]
+        let discarded   : Int
+        let succeeded   : Int
+        let ratio       : Int
+        let seed        : UInt64
+        let dist        : [String : Int]
+        let tableDist   : [String : [String : Int]]
     }
     
     
@@ -3184,7 +3193,7 @@ extension PropertyRunnerTests
     ) -> ExhaustedValues?
     {
         guard case let .exhausted(
-            discarded, succeeded, ratio, seed, distribution
+            discarded, succeeded, ratio, seed, dist, tableDist
         ) = result
         else
         {
@@ -3193,11 +3202,12 @@ extension PropertyRunnerTests
         }
         
         return ExhaustedValues(
-            discarded:      discarded,
-            succeeded:      succeeded,
-            ratio:          ratio,
-            seed:           seed,
-            distribution:   distribution
+            discarded:  discarded,
+            succeeded:  succeeded,
+            ratio:      ratio,
+            seed:       seed,
+            dist:       dist,
+            tableDist:  tableDist
         )
     }
     
@@ -3206,10 +3216,11 @@ extension PropertyRunnerTests
     /// The associated values of a coverage-not-met ``PropertyCheckResult``.
     private struct CoverageNotMetValues
     {
-        let unmet           : [UnmetCoverage]
-        let iterations      : Int
-        let seed            : UInt64
-        let distribution    : [String : Int]
+        let unmet       : [UnmetCoverage]
+        let iterations  : Int
+        let seed        : UInt64
+        let dist        : [String : Int]
+        let tableDist   : [String : [String : Int]]
     }
     
     
@@ -3224,8 +3235,9 @@ extension PropertyRunnerTests
         _ result: PCR<T>
     ) -> CoverageNotMetValues?
     {
-        guard case let .coverageNotMet(unmet, iterations, seed, distribution)
-                = result
+        guard case let .coverageNotMet(
+            unmet, iterations, seed, dist, tableDist
+        ) = result
         else
         {
             XCTFail("Expected .coverageNotMet, got \(result)")
@@ -3236,7 +3248,8 @@ extension PropertyRunnerTests
             unmet:          unmet,
             iterations:     iterations,
             seed:           seed,
-            distribution:   distribution
+            dist:           dist,
+            tableDist:      tableDist
         )
     }
 }
