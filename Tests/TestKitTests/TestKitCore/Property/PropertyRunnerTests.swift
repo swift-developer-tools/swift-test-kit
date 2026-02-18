@@ -33,7 +33,7 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
                 options:    options
             )
         
-        let passed: PassedValues = try XCTUnwrap(Self.assertPassed(result))
+        let passed: PassedValues = try XCTUnwrap(result.assertPassed())
         
         XCTAssertEqual(passed.iterations, iterations)
         XCTAssertEqual(passed.seed, seed)
@@ -56,7 +56,7 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
                 options:    options
             )
         
-        let passed: PassedValues = try XCTUnwrap(Self.assertPassed(result))
+        let passed: PassedValues = try XCTUnwrap(result.assertPassed())
         
         XCTAssertEqual(passed.iterations, iterations)
     }
@@ -78,7 +78,7 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
                 options:    options
             )
         
-        let passed: PassedValues = try XCTUnwrap(Self.assertPassed(result))
+        let passed: PassedValues = try XCTUnwrap(result.assertPassed())
         
         XCTAssertEqual(passed.iterations, iterations)
     }
@@ -101,7 +101,7 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
                 options:    options
             )
         
-        let passed: PassedValues = try XCTUnwrap(Self.assertPassed(result))
+        let passed: PassedValues = try XCTUnwrap(result.assertPassed())
         
         XCTAssertEqual(passed.iterations, iterations)
     }
@@ -128,7 +128,7 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
         )
         
         let counterexample: Counterexample<BoundInt>
-            = try XCTUnwrap(Self.assertFailed(result))
+            = try XCTUnwrap(result.assertFailed())
         
         XCTAssertEqual(counterexample.iteration, 1)
     }
@@ -162,7 +162,7 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
         )
         
         let counterexample: Counterexample<BoundInt>
-            = try XCTUnwrap(Self.assertFailed(result))
+            = try XCTUnwrap(result.assertFailed())
         
         /// The failure should not be on the first iteration, since early
         /// iterations have small sizes and generate small values.
@@ -180,7 +180,7 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
         )
         
         let counterexample: Counterexample<BoundInt>
-            = try XCTUnwrap(Self.assertFailed(result))
+            = try XCTUnwrap(result.assertFailed())
         
         XCTAssertNotNil(counterexample.thrownError)
         XCTAssertTrue(counterexample.thrownError is TestError)
@@ -209,7 +209,7 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
         )
         
         let counterexample: Counterexample<BoundInt>
-            = try XCTUnwrap(Self.assertFailed(result))
+            = try XCTUnwrap(result.assertFailed())
         
         XCTAssertNotNil(counterexample.thrownError)
         XCTAssertTrue(counterexample.thrownError is TestError)
@@ -246,7 +246,7 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
         )
         
         let counterexample: Counterexample<BoundInt>
-            = try XCTUnwrap(Self.assertFailed(result))
+            = try XCTUnwrap(result.assertFailed())
         
         XCTAssertEqual(counterexample.failures.count, records.count)
         
@@ -293,7 +293,7 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
         )
         
         let counterexample: Counterexample<BoundInt>
-            = try XCTUnwrap(Self.assertFailed(result))
+            = try XCTUnwrap(result.assertFailed())
         
         XCTAssertEqual(counterexample.value, BoundInt(target + 1))
         XCTAssertNil(counterexample.thrownError)
@@ -331,7 +331,7 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
         )
         
         let counterexample: Counterexample<SizeCapture>
-            = try XCTUnwrap(Self.assertFailed(result))
+            = try XCTUnwrap(result.assertFailed())
         
         XCTAssertEqual(counterexample.iteration, target + 1)
         XCTAssertEqual(counterexample.value.size, target)
@@ -373,7 +373,7 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
         )
         
         let counterexample: Counterexample<BoundInt>
-            = try XCTUnwrap(Self.assertFailed(result))
+            = try XCTUnwrap(result.assertFailed())
         
         XCTAssertGreaterThan(counterexample.iteration, 1)
         XCTAssertEqual(counterexample.value, BoundInt(target + 1))
@@ -392,7 +392,7 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
             options:    .propertyOptions(seed: Self.seed)
         )
         
-        _ = try XCTUnwrap(Self.assertPassed(result))
+        _ = try XCTUnwrap(result.assertPassed())
     }
     
     
@@ -410,7 +410,7 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
             options:    .propertyOptions(seed: Self.seed)
         )
         
-        _ = try XCTUnwrap(Self.assertPassed(result))
+        _ = try XCTUnwrap(result.assertPassed())
     }
     
     
@@ -433,7 +433,7 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
         )
         
         let exhausted: ExhaustedValues
-            = try XCTUnwrap(Self.assertExhausted(result))
+            = try XCTUnwrap(result.assertExhausted())
         
         XCTAssertEqual(exhausted.succeeded, 0)
         XCTAssertGreaterThan(exhausted.discarded, 0)
@@ -464,7 +464,7 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
         )
         
         let exhausted: ExhaustedValues
-            = try XCTUnwrap(Self.assertExhausted(result))
+            = try XCTUnwrap(result.assertExhausted())
         
         XCTAssertEqual(exhausted.succeeded, 0)
         XCTAssertEqual(exhausted.discarded, threshold + 1)
@@ -492,7 +492,7 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
         )
         
         let exhausted: ExhaustedValues
-            = try XCTUnwrap(Self.assertExhausted(result))
+            = try XCTUnwrap(result.assertExhausted())
         
         XCTAssertEqual(exhausted.succeeded, 0)
         XCTAssertEqual(exhausted.discarded, 1)
@@ -530,7 +530,7 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
         )
         
         let counterexample: Counterexample<BoundInt>
-            = try XCTUnwrap(Self.assertFailed(result))
+            = try XCTUnwrap(result.assertFailed())
         
         /// The minimal even ``BoundInt`` greater than `20` is `22`, but the
         /// halving shrink stategy converges to `26` since from that point,
@@ -565,7 +565,7 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
         )
         
         let exhausted: ExhaustedValues
-            = try XCTUnwrap(Self.assertExhausted(result))
+            = try XCTUnwrap(result.assertExhausted())
         
         XCTAssertEqual(exhausted.succeeded, target + 1)
         XCTAssertEqual(exhausted.discarded, threshold + 1)
@@ -594,1127 +594,13 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
         )
         
         let exhausted: ExhaustedValues
-            = try XCTUnwrap(Self.assertExhausted(result))
+            = try XCTUnwrap(result.assertExhausted())
         
         XCTAssertEqual(exhausted.succeeded, 0)
         XCTAssertEqual(exhausted.discarded, 1)
         XCTAssertEqual(exhausted.ratio, maxDiscardRatio)
         XCTAssertEqual(exhausted.seed, Self.seed)
         XCTAssertEqual(exhausted.dist, [:])
-    }
-    
-    
-    
-    // MARK: - Classification
-    
-    @Reasync
-    func testPassedResultIncludesDistribution() async throws
-    {
-        let iterations: Int = 50
-        
-        let options: TestOptions = .propertyOptions(
-            iterations:     iterations,
-            seed:           Self.seed
-        )
-        
-        let result: PCR<BoundInt> = await PropertyRunner.run(
-            property:
-            {
-                _ async in
-                
-                PropertyInterceptor.current?.recordLabel("always")
-            },
-            options: options
-        )
-        
-        let passed: PassedValues = try XCTUnwrap(Self.assertPassed(result))
-        
-        XCTAssertEqual(passed.dist["always"], iterations)
-    }
-    
-    
-    
-    @Reasync
-    func testPassedResultWithMultipleLabelsPerIteration() async throws
-    {
-        let target      : Int   = 50
-        let iterations  : Int   = 100
-        
-        let options: TestOptions = .propertyOptions(
-            iterations:     iterations,
-            maxSize:        100,
-            seed:           Self.seed
-        )
-        
-        let result: PCR<SizeCapture> = await PropertyRunner.run(
-            property:
-            {
-                capture async in
-                
-                PropertyInterceptor.current?.recordLabel("all")
-                
-                if capture.size >= target
-                {
-                    PropertyInterceptor.current?.recordLabel("large")
-                }
-            },
-            options: options
-        )
-        
-        let passed: PassedValues = try XCTUnwrap(Self.assertPassed(result))
-        
-        XCTAssertEqual(passed.dist["all"], iterations)
-        XCTAssertEqual(passed.dist["large"], target)
-    }
-    
-    
-    
-    @Reasync
-    func testPassedResultWithNoLabelsHasEmptyDist() async throws
-    {
-        let result: PCR<SizeCapture> = await PropertyRunner.run(
-            property:   { _ async in },
-            options:    .propertyOptions(seed: Self.seed)
-        )
-        
-        let passed: PassedValues = try XCTUnwrap(Self.assertPassed(result))
-        
-        XCTAssertTrue(passed.dist.isEmpty)
-    }
-    
-    
-    
-    @Reasync
-    func testFailureOnFirstIterationHasEmptyDist() async
-    {
-        let result: PCR<BoundInt> = await PropertyRunner.run(
-            property:
-            {
-                _ async in
-                
-                PropertyInterceptor.current?.recordLabel("labeled")
-                
-                PropertyInterceptor.current?.recordFailure(
-                    message:    "always fails",
-                    file:       "File.swift",
-                    line:       1
-                )
-            },
-            options: .propertyOptions(seed: Self.seed)
-        )
-        
-        guard case let .failed(counterexample, distribution, _) = result
-        else
-        {
-            XCTFail("Expected .failed, got \(result)")
-            return
-        }
-        
-        XCTAssertEqual(counterexample.iteration, 1)
-        XCTAssertTrue(distribution.isEmpty)
-    }
-    
-    
-    
-    @Reasync
-    func testCounterexampleDistReflectsSuccessfulIterations() async
-    {
-        /// Labels from successful iterations before the failure must appear
-        /// in the distribution. The failing iteration's labels are not
-        /// finalized and must not be counted.
-        
-        let target: Int = 50
-        
-        let options: TestOptions = .propertyOptions(
-            iterations:     100,
-            maxSize:        100,
-            seed:           Self.seed
-        )
-        
-        let result: PCR<SizeCapture> = await PropertyRunner.run(
-            property:
-            {
-                capture async in
-                
-                PropertyInterceptor.current?.recordLabel("tested")
-                
-                if capture.size >= target
-                {
-                    PropertyInterceptor.current?.recordFailure(
-                        message:    "too large",
-                        file:       "File.swift",
-                        line:       1
-                    )
-                }
-            },
-            options: options
-        )
-        
-        guard case let .failed(counterexample, distribution, _) = result
-        else
-        {
-            XCTFail("Expected .failed, got \(result)")
-            return
-        }
-        
-        XCTAssertEqual(counterexample.iteration, target + 1)
-        XCTAssertEqual(distribution["tested"], target)
-    }
-    
-    
-    
-    @Reasync
-    func testExhaustionIncludesDistFromSuccessfulIterations() async throws
-    {
-        let target      : Int   = 5
-        let iterations  : Int   = 100
-        
-        let options: TestOptions = .propertyOptions(
-            iterations:         iterations,
-            maxSize:            100,
-            maxDiscardRatio:    1,
-            seed:               Self.seed
-        )
-        
-        let result: PCR<SizeCapture> = await PropertyRunner.run(
-            where: { capture in capture.size <= target },
-            property:
-            {
-                _ async in
-                
-                PropertyInterceptor.current?.recordLabel("accepted")
-            },
-            options: options
-        )
-        
-        let exhausted: ExhaustedValues
-            = try XCTUnwrap(Self.assertExhausted(result))
-        
-        XCTAssertEqual(exhausted.succeeded, target + 1)
-        XCTAssertEqual(exhausted.dist["accepted"], target + 1)
-    }
-    
-    
-    
-    @Reasync
-    func testCoverageMetReturnsPassed() async throws
-    {
-        let iterations: Int = 100
-        
-        let options: TestOptions = .propertyOptions(
-            iterations:     iterations,
-            maxSize:        100,
-            seed:           Self.seed
-        )
-        
-        /// Every iteration is labeled `always`, and the requirement is 100%.
-        /// Since all iterations receive the label, the coverage is exactly met.
-        let result: PCR<BoundInt> = await PropertyRunner.run(
-            property:
-            {
-                _ async in
-                
-                PropertyInterceptor.current?
-                    .recordCoverageRequirement(100, for: "always")
-                
-                PropertyInterceptor.current?.recordLabel("always")
-            },
-            options: options
-        )
-        
-        let passed: PassedValues = try XCTUnwrap(Self.assertPassed(result))
-        
-        XCTAssertEqual(passed.dist["always"], iterations)
-    }
-    
-    
-    
-    @Reasync
-    func testCoverageNotMetReturnsCoverageNotMet() async throws
-    {
-        let target      : Int       = 50
-        let required    : Double    = 90
-        let iterations  : Int       = 100
-        
-        let options: TestOptions = .propertyOptions(
-            iterations:     iterations,
-            maxSize:        100,
-            seed:           Self.seed
-        )
-        
-        /// Require 90% `large`, but only iterations with `size >= 50` are
-        /// labeled. With `100` as the iterations and max size, the sizes
-        /// are in the range `0...99`. Only 50% qualify as `large`.
-        let result: PCR<SizeCapture> = await PropertyRunner.run(
-            property:
-            {
-                capture async in
-                
-                PropertyInterceptor.current?
-                    .recordCoverageRequirement(required, for: "large")
-                
-                if capture.size >= target
-                {
-                    PropertyInterceptor.current?.recordLabel("large")
-                }
-            },
-            options: options
-        )
-        
-        let coverageNotMet: CoverageNotMetValues
-            = try XCTUnwrap(Self.assertCoverageNotMet(result))
-        
-        XCTAssertEqual(coverageNotMet.iterations, iterations)
-        XCTAssertEqual(coverageNotMet.seed, Self.seed)
-        XCTAssertEqual(coverageNotMet.unmet.count, 1)
-        XCTAssertEqual(coverageNotMet.unmet.first?.label, "large")
-        XCTAssertEqual(coverageNotMet.unmet.first?.required, required)
-        XCTAssertEqual(coverageNotMet.unmet.first?.actual, Double(target))
-        XCTAssertEqual(coverageNotMet.dist["large"], target)
-    }
-    
-    
-    
-    @Reasync
-    func testMultipleUnmetCoverageReqs() async throws
-    {
-        let iterations: Int = 100
-        
-        let options: TestOptions = .propertyOptions(
-            iterations:     iterations,
-            maxSize:        100,
-            seed:           Self.seed
-        )
-        
-        /// 80% required for both labels, but each gets only about 50%.
-        let result: PCR<SizeCapture> = await PropertyRunner.run(
-            property:
-            {
-                capture async in
-                
-                PropertyInterceptor.current?
-                    .recordCoverageRequirement(80, for: "small")
-                
-                PropertyInterceptor.current?
-                    .recordCoverageRequirement(80, for: "large")
-                
-                if capture.size < 50
-                {
-                    PropertyInterceptor.current?.recordLabel("small")
-                }
-                else
-                {
-                    PropertyInterceptor.current?.recordLabel("large")
-                }
-            },
-            options: options
-        )
-        
-        let coverageNotMet: CoverageNotMetValues
-            = try XCTUnwrap(Self.assertCoverageNotMet(result))
-        
-        XCTAssertEqual(coverageNotMet.unmet.count, 2)
-        
-        let labels: Set<String> = Set(coverageNotMet.unmet.map { $0.label })
-        
-        XCTAssertEqual(labels, ["small", "large"])
-    }
-    
-    
-    
-    @Reasync
-    func testCoveragePartiallyMetReportsOnlyUnmet() async throws
-    {
-        let target      : Int   = 50
-        let iterations  : Int   = 100
-        
-        let options: TestOptions = .propertyOptions(
-            iterations:     iterations,
-            maxSize:        100,
-            seed:           Self.seed
-        )
-        
-        /// `all` gets 100% (always met). `large` gets 50%, but requires 90%.
-        let result: PCR<SizeCapture> = await PropertyRunner.run(
-            property:
-            {
-                capture async in
-                
-                PropertyInterceptor.current?
-                    .recordCoverageRequirement(50, for: "all")
-                
-                PropertyInterceptor.current?.recordLabel("all")
-                
-                PropertyInterceptor.current?
-                    .recordCoverageRequirement(90, for: "large")
-                
-                if capture.size >= target
-                {
-                    PropertyInterceptor.current?.recordLabel("large")
-                }
-            },
-            options: options
-        )
-        
-        let coverageNotMet: CoverageNotMetValues
-            = try XCTUnwrap(Self.assertCoverageNotMet(result))
-        
-        XCTAssertEqual(coverageNotMet.unmet.count, 1)
-        XCTAssertEqual(coverageNotMet.unmet.first?.label, "large")
-        XCTAssertEqual(coverageNotMet.dist["all"], iterations)
-        XCTAssertEqual(coverageNotMet.dist["large"], target)
-    }
-    
-    
-    
-    @Reasync
-    func testFailureOverridesCoverageNotMet() async
-    {
-        let target: Int = 50
-        
-        let options: TestOptions = .propertyOptions(
-            iterations:     100,
-            maxSize:        100,
-            seed:           Self.seed
-        )
-        
-        let result: PCR<SizeCapture> = await PropertyRunner.run(
-            property:
-            {
-                capture async in
-                
-                PropertyInterceptor.current?
-                    .recordCoverageRequirement(99, for: "never")
-                
-                if capture.size >= target
-                {
-                    PropertyInterceptor.current?.recordFailure(
-                        message:    "too large",
-                        file:       "File.swift",
-                        line:       1
-                    )
-                }
-            },
-            options: options
-        )
-        
-        guard case let .failed(counterexample, distribution, _) = result
-        else
-        {
-            XCTFail("Expected .failed, got \(result)")
-            return
-        }
-        
-        XCTAssertEqual(counterexample.value.size, target)
-        XCTAssertNil(distribution["never"])
-    }
-    
-    
-    
-    @Reasync
-    func testCoverageZeroPercentAlwaysMet() async throws
-    {
-        let iterations: Int = 50
-        
-        let options: TestOptions = .propertyOptions(
-            iterations:     iterations,
-            seed:           Self.seed
-        )
-        
-        /// A 0% requirement vacuously passes, even if the label is
-        /// never recorded.
-        let result: PCR<BoundInt> = await PropertyRunner.run(
-            property:
-            {
-                _ async in
-                
-                PropertyInterceptor.current?
-                    .recordCoverageRequirement(0, for: "never-labeled")
-            },
-            options: options
-        )
-        
-        let passed: PassedValues = try XCTUnwrap(Self.assertPassed(result))
-        
-        XCTAssertEqual(passed.iterations, iterations)
-    }
-    
-    
-    
-    @Reasync
-    func testClassificationWithPreconditionCountOnlyAccepted() async throws
-    {
-        let iterations: Int = 50
-        
-        let options: TestOptions = .propertyOptions(
-            iterations:         iterations,
-            maxSize:            100,
-            maxDiscardRatio:    100,
-            seed:               Self.seed
-        )
-        
-        /// The precondition rejects odd sizes. Classification must count only
-        /// the accepted iterations. Since iterations are finalized only for
-        /// successful iterations, the distribution should match the number of
-        /// iterations.
-        let result: PCR<SizeCapture> = await PropertyRunner.run(
-            where: { capture in capture.size % 2 == 0 },
-            property:
-            {
-                _ async in
-                
-                PropertyInterceptor.current?.recordLabel("accepted")
-            },
-            options: options
-        )
-        
-        let passed: PassedValues = try XCTUnwrap(Self.assertPassed(result))
-        
-        XCTAssertEqual(passed.dist["accepted"], iterations)
-    }
-    
-    
-    
-    @Reasync
-    func testClassificationAfterFailingAssertionNotCounted() async
-    {
-        let target: Int = 50
-        
-        let options: TestOptions = .propertyOptions(
-            iterations:     100,
-            maxSize:        100,
-            seed:           Self.seed
-        )
-        
-        /// The label is recorded after the failure. Since the property body
-        /// continues executing, the label is added to the per-iteration set.
-        /// Since the iteration is marked as failure, it is never finalized.
-        /// Only the first `target` iterations succeed and are finalized.
-        let result: PCR<SizeCapture> = await PropertyRunner.run(
-            property:
-            {
-                capture async in
-                
-                if capture.size >= target
-                {
-                    PropertyInterceptor.current?.recordFailure(
-                        message:    "too large",
-                        file:       "File.swift",
-                        line:       1
-                    )
-                }
-                
-                PropertyInterceptor.current?.recordLabel("after-failure")
-            },
-            options: options
-        )
-        
-        guard case let .failed(counterexample, distribution, _) = result
-        else
-        {
-            XCTFail("Expected .failed, got \(result)")
-            return
-        }
-        
-        XCTAssertEqual(counterexample.value.size, target)
-        XCTAssertEqual(distribution["after-failure"], target)
-    }
-    
-    
-    
-    @Reasync
-    func testDistributionPreservedDuringShrinking() async throws
-    {
-        /// The distribution should reflect only the successful iterations.
-        /// Shrinking re-runs the property but uses fresh interceptors, so
-        /// shrink iterations should not pollute the distribution.
-        
-        let target: Int = 10
-        
-        let options: TestOptions = .propertyOptions(
-            iterations:     100,
-            maxSize:        200,
-            seed:           Self.seed
-        )
-        
-        let result: PCR<BoundInt> = await PropertyRunner.run(
-            property:
-            {
-                bountInt async in
-                
-                PropertyInterceptor.current?.recordLabel("tested")
-                
-                if bountInt.value > target
-                {
-                    PropertyInterceptor.current?.recordFailure(
-                        message:    "too large",
-                        file:       "File.swift",
-                        line:       1
-                    )
-                }
-            },
-            options: options
-        )
-        
-        guard case let .failed(counterexample, distribution, _) = result
-        else
-        {
-            XCTFail("Expected .failed, got \(result)")
-            return
-        }
-        
-        XCTAssertEqual(counterexample.value, BoundInt(target + 1))
-        XCTAssertGreaterThan(counterexample.shrinkSteps, 0)
-        
-        /// The distribution count for `tested` must equal the number of
-        /// successful iterations before the failure, and must not be inflated
-        /// by shrinking.
-        let testedCount: Int = try XCTUnwrap(distribution["tested"])
-        
-        XCTAssertEqual(testedCount, counterexample.iteration - 1)
-    }
-    
-    
-    
-    @Reasync
-    func testCoverageNotMetSeedMatchesConfiguredSeed() async throws
-    {
-        let iterations: Int = 100
-        
-        let options: TestOptions = .propertyOptions(
-            iterations:     iterations,
-            maxSize:        100,
-            seed:           Self.seed
-        )
-        
-        let result: PCR<SizeCapture> = await PropertyRunner.run(
-            property:
-            {
-                _ async in
-                
-                PropertyInterceptor.current?
-                    .recordCoverageRequirement(100, for: "never-labeled")
-            },
-            options: options
-        )
-        
-        let coverageNotMet: CoverageNotMetValues
-            = try XCTUnwrap(Self.assertCoverageNotMet(result))
-        
-        XCTAssertEqual(coverageNotMet.seed, Self.seed)
-        XCTAssertEqual(coverageNotMet.iterations, iterations)
-    }
-    
-    
-    
-    @Reasync
-    func testDuplicateLabelWithinIterationCountedOnce() async throws
-    {
-        let iterations: Int = 100
-        
-        let options: TestOptions = .propertyOptions(
-            iterations:     iterations,
-            seed:           Self.seed
-        )
-        
-        let result: PCR<BoundInt> = await PropertyRunner.run(
-            property:
-            {
-                _ async in
-                
-                PropertyInterceptor.current?.recordLabel("duplicate")
-                PropertyInterceptor.current?.recordLabel("duplicate")
-                PropertyInterceptor.current?.recordLabel("duplicate")
-            },
-            options: options
-        )
-        
-        let passed: PassedValues = try XCTUnwrap(Self.assertPassed(result))
-        
-        XCTAssertEqual(passed.dist["duplicate"], iterations)
-    }
-    
-    
-    
-    @Reasync
-    func testZeroIterationsWithCoverageReqsReturnsCovergeNotMet() async throws
-    {
-        let iterations: Int = 0
-        
-        let options: TestOptions = .propertyOptions(
-            iterations:     iterations,
-            seed:           Self.seed
-        )
-        
-        /// With zero iterations, no labels are ever recorded. A non-zero
-        /// coverage requirement produces 0% actual, which is unmet.
-        let result: PCR<BoundInt> = await PropertyRunner.run(
-            property:
-            {
-                _ async in
-                
-                PropertyInterceptor.current?
-                    .recordCoverageRequirement(10, for: "something")
-            },
-            options: options
-        )
-        
-        let passed: PassedValues = try XCTUnwrap(Self.assertPassed(result))
-        
-        XCTAssertEqual(passed.iterations, iterations)
-    }
-    
-    
-    
-    @Reasync
-    func testExhaustionWithCoverageReqDoesNotCheckCoverage() async throws
-    {
-        let maxDiscardRatio: Int = 1
-        
-        let options: TestOptions = .propertyOptions(
-            iterations:         100,
-            maxDiscardRatio:    maxDiscardRatio,
-            seed:               Self.seed
-        )
-        
-        /// The precondition rejects everything, leading to exhaustion.
-        /// A coverage requirement is registered, but the property body never
-        /// runs, since the precondition is checked first. The result must be
-        /// an exhaustion error, not unmet coverage.
-        let result: PCR<BoundInt> = await PropertyRunner.run(
-            where: { _ in false },
-            property:
-            {
-                _ async in
-                
-                PropertyInterceptor.current?
-                    .recordCoverageRequirement(100, for: "unreachable")
-            },
-            options: options
-        )
-        
-        let exhausted: ExhaustedValues
-            = try XCTUnwrap(Self.assertExhausted(result))
-        
-        XCTAssertEqual(exhausted.succeeded, 0)
-        XCTAssertTrue(exhausted.dist.isEmpty)
-    }
-    
-    
-    
-    @Reasync
-    func testClassifyIntegration() async throws
-    {
-        let target      : Int   = 50
-        let iterations  : Int   = 100
-        
-        let options: TestOptions = .propertyOptions(
-            iterations:     iterations,
-            maxSize:        100,
-            seed:           Self.seed
-        )
-        
-        let result: PCR<SizeCapture> = await PropertyRunner.run(
-            property:
-            {
-                capture async in
-                
-                XCTKClassify("small", when: capture.size < target)
-                XCTKClassify("large", when: capture.size >= target)
-            },
-            options: options
-        )
-        
-        let passed: PassedValues = try XCTUnwrap(Self.assertPassed(result))
-        
-        XCTAssertEqual(passed.dist["small"], target)
-        XCTAssertEqual(passed.dist["large"], target)
-    }
-    
-    
-    
-    @Reasync
-    func testClassifyFalseConditionDoesNotRecord() async throws
-    {
-        let iterations: Int = 100
-        
-        let options: TestOptions = .propertyOptions(
-            iterations:     iterations,
-            seed:           Self.seed
-        )
-        
-        let result: PCR<BoundInt> = await PropertyRunner.run(
-            property:
-            {
-                _ async in
-                
-                XCTKClassify("never", when: false)
-                XCTKClassify("always", when: true)
-            },
-            options: options
-        )
-        
-        let passed: PassedValues = try XCTUnwrap(Self.assertPassed(result))
-        
-        XCTAssertNil(passed.dist["never"])
-        XCTAssertEqual(passed.dist["always"], iterations)
-    }
-    
-    
-    
-    @Reasync
-    func testCoverMetReturnsPassed() async throws
-    {
-        let target      : Double    = 50
-        let iterations  : Int       = 100
-        
-        let options: TestOptions = .propertyOptions(
-            iterations:     iterations,
-            maxSize:        100,
-            seed:           Self.seed
-        )
-        
-        let result: PCR<SizeCapture> = await PropertyRunner.run(
-            property:
-            {
-                capture async in
-                
-                XCTKCover(target, "small", when: capture.size < Int(target))
-                XCTKCover(target, "large", when: capture.size >= Int(target))
-            },
-            options: options
-        )
-        
-        let passed: PassedValues = try XCTUnwrap(Self.assertPassed(result))
-        
-        XCTAssertEqual(passed.dist["small"], Int(target))
-        XCTAssertEqual(passed.dist["large"], Int(target))
-    }
-    
-    
-    
-    @Reasync
-    func testCoverNotMetReturnsCoverageNotMet() async throws
-    {
-        let target      : Int   = 50
-        let iterations  : Int   = 100
-        
-        let options: TestOptions = .propertyOptions(
-            iterations:     iterations,
-            maxSize:        100,
-            seed:           Self.seed
-        )
-        
-        let result: PCR<SizeCapture> = await PropertyRunner.run(
-            property:
-            {
-                capture async in
-                
-                XCTKCover(80, "small", when: capture.size < target)
-            },
-            options: options
-        )
-        
-        let coverageNotMet: CoverageNotMetValues
-            = try XCTUnwrap(Self.assertCoverageNotMet(result))
-        
-        XCTAssertEqual(coverageNotMet.unmet.count, 1)
-        XCTAssertEqual(coverageNotMet.unmet.first?.label, "small")
-        XCTAssertEqual(coverageNotMet.unmet.first?.required, 80)
-        XCTAssertEqual(coverageNotMet.unmet.first?.actual, Double(target))
-    }
-    
-    
-    
-    @Reasync
-    func testCoverMaximumThresholdOverrides() async throws
-    {
-        let iterations: Int = 100
-        
-        let options: TestOptions = .propertyOptions(
-            iterations:     iterations,
-            maxSize:        100,
-            seed:           Self.seed
-        )
-        
-        /// `small` gets 50%. The first call requires 40% (met), and the
-        /// second call requires 90% (unmet). The result is coverage not met.
-        let result: PCR<SizeCapture> = await PropertyRunner.run(
-            property:
-            {
-                capture async in
-                
-                XCTKCover(40, "small", when: capture.size < 50)
-                XCTKCover(90, "small", when: capture.size < 50)
-            },
-            options: options
-        )
-        
-        let coverageNotMet: CoverageNotMetValues
-            = try XCTUnwrap(Self.assertCoverageNotMet(result))
-        
-        XCTAssertEqual(coverageNotMet.unmet.count, 1)
-        XCTAssertEqual(coverageNotMet.unmet.first?.label, "small")
-        XCTAssertEqual(coverageNotMet.unmet.first?.required, 90)
-    }
-    
-    
-    
-    @Reasync
-    func testLabelAndCollectIntegration() async throws
-    {
-        let iterations  : Int   = 100
-        let maxSize     : Int   = 10
-        
-        let options: TestOptions = .propertyOptions(
-            iterations:     iterations,
-            maxSize:        maxSize,
-            seed:           Self.seed
-        )
-        
-        let result: PCR<SizeCapture> = await PropertyRunner.run(
-            property:
-            {
-                capture async in
-                
-                XCTKLabel("all")
-                XCTKCollect(capture.size)
-            },
-            options: options
-        )
-        
-        let passed: PassedValues = try XCTUnwrap(Self.assertPassed(result))
-        
-        XCTAssertEqual(passed.dist["all"], iterations)
-        
-        /// Collect records the string representation of each size. With a
-        /// max size of `10`, and `100` iterations, sizes are in the range
-        /// `0...9`. Each size string must appear in the distribution.
-        let sizeLabels: [String] = (0..<maxSize).map { String($0) }
-        
-        for label in sizeLabels
-        {
-            XCTAssertNotNil(passed.dist[label])
-        }
-        
-        let sizeTotal: Int = sizeLabels.reduce(0)
-        {
-            return $0 + (passed.dist[$1] ?? 0)
-        }
-        
-        XCTAssertEqual(sizeTotal, iterations)
-    }
-    
-    
-    
-    @Reasync
-    func testClassificationWithCustomGenerator() async throws
-    {
-        let iterations: Int = 100
-        
-        let generator = Generator<Int>(
-            generate:   { context in context.random(in: 0...100) },
-            shrink:     { value in value.shrinkTowardZero() }
-        )
-        
-        let options: TestOptions = .propertyOptions(
-            iterations:     iterations,
-            seed:           Self.seed
-        )
-        
-        let result: PCR<Int> = await PropertyRunner.run(
-            using: generator,
-            property:
-            {
-                int async in
-                
-                XCTKClassify("low", when: int <= 50)
-                XCTKClassify("high", when: int > 50)
-            },
-            options: options
-        )
-        
-        let passed: PassedValues = try XCTUnwrap(Self.assertPassed(result))
-        
-        let low     : Int   = passed.dist["low"]    ?? 0
-        let high    : Int   = passed.dist["high"]   ?? 0
-        
-        XCTAssertEqual(low + high, iterations)
-    }
-    
-    
-    
-    @Reasync
-    func testClassificationWithCustomGeneratorAndFailure() async
-    {
-        let target: Int = 50
-        
-        let generator = Generator<Int>(
-            generate:   { context in context.random(in: 0...100) },
-            shrink:     { value in value.shrinkTowardZero() }
-        )
-        
-        let options: TestOptions = .propertyOptions(
-            iterations:     100,
-            seed:           Self.seed
-        )
-        
-        let result: PCR<Int> = await PropertyRunner.run(
-            using: generator,
-            property:
-            {
-                int async in
-                
-                XCTKClassify("low", when: int <= target)
-                XCTKClassify("high", when: int > target)
-                
-                if int > target
-                {
-                    PropertyInterceptor.current?.recordFailure(
-                        message:    "too large",
-                        file:       "File.swift",
-                        line:       1
-                    )
-                }
-            },
-            options: options
-        )
-        
-        guard case let .failed(counterexample, distribution, _) = result
-        else
-        {
-            XCTFail("Expected .failed, got \(result)")
-            return
-        }
-        
-        XCTAssertEqual(counterexample.value, target + 1)
-        
-        /// The failing iteration is not finalized. Only successful iterations
-        /// contribute to the distribution. `high` must not appear, since any
-        /// iteration with that label must trigger a failure.
-        let low     : Int   = distribution["low"]    ?? 0
-        let high    : Int   = distribution["high"]   ?? 0
-        
-        XCTAssertEqual(low, counterexample.iteration - 1)
-        XCTAssertEqual(high, 0)
-    }
-    
-    
-    
-    @Reasync
-    func testCoverageWithSingleIteration() async throws
-    {
-        let iterations: Int = 1
-        
-        let options: TestOptions = .propertyOptions(
-            iterations:     iterations,
-            seed:           Self.seed
-        )
-        
-        let result: PCR<BoundInt> = await PropertyRunner.run(
-            property:
-            {
-                _ async in
-                
-                XCTKCover(100, "present", when: true)
-            },
-            options: options
-        )
-        
-        let passed: PassedValues = try XCTUnwrap(Self.assertPassed(result))
-        
-        XCTAssertEqual(passed.dist["present"], iterations)
-    }
-    
-    
-    
-    @Reasync
-    func testCoverageNotMetWithSingleIteration() async throws
-    {
-        let options: TestOptions = .propertyOptions(
-            iterations:     1,
-            seed:           Self.seed
-        )
-        
-        let result: PCR<BoundInt> = await PropertyRunner.run(
-            property:
-            {
-                _ async in
-                
-                XCTKCover(50, "absent", when: false)
-            },
-            options: options
-        )
-        
-        let coverageNotMet: CoverageNotMetValues
-            = try XCTUnwrap(Self.assertCoverageNotMet(result))
-        
-        XCTAssertEqual(coverageNotMet.unmet.count, 1)
-        XCTAssertEqual(coverageNotMet.unmet.first?.label, "absent")
-        XCTAssertEqual(coverageNotMet.unmet.first?.actual, 0)
-    }
-    
-    
-    
-    @Reasync
-    func testMixedClassifyCoverAndLabel() async throws
-    {
-        let target      : Int   = 50
-        let iterations  : Int   = 100
-        
-        let options: TestOptions = .propertyOptions(
-            iterations:     iterations,
-            maxSize:        100,
-            seed:           Self.seed
-        )
-        
-        let result: PCR<SizeCapture> = await PropertyRunner.run(
-            property:
-            {
-                capture async in
-                
-                XCTKLabel("all")
-                XCTKClassify("small", when: capture.size < target)
-                XCTKCover(10, "large", when: capture.size >= target)
-            },
-            options: options
-        )
-        
-        let passed: PassedValues = try XCTUnwrap(Self.assertPassed(result))
-        
-        XCTAssertEqual(passed.dist["all"], iterations)
-        XCTAssertEqual(passed.dist["small"], target)
-        XCTAssertEqual(passed.dist["large"], target)
-    }
-    
-    
-    
-    @Reasync
-    func testCoverageWithConditionalPropertyAndDiscards() async throws
-    {
-        let iterations: Int = 100
-        
-        let options: TestOptions = .propertyOptions(
-            iterations:         iterations,
-            maxSize:            100,
-            maxDiscardRatio:    100,
-            seed:               Self.seed
-        )
-        
-        let result: PCR<BoundInt> = await PropertyRunner.run(
-            where: { boundInt in boundInt.value % 2 == 0 },
-            property:
-            {
-                _ async in
-                
-                XCTKCover(100, "even", when: true)
-            },
-            options: options
-        )
-        
-        let passed: PassedValues = try XCTUnwrap(Self.assertPassed(result))
-        
-        XCTAssertEqual(passed.dist["even"], iterations)
     }
     
     
@@ -1798,7 +684,7 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
                 options:    .propertyOptions(seed: nil)
             )
             
-            let passed: PassedValues = try XCTUnwrap(Self.assertPassed(result))
+            let passed: PassedValues = try XCTUnwrap(result.assertPassed())
             
             XCTAssertNotNil(passed.seed)
         }
@@ -1824,8 +710,8 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
             options:    optionsB
         )
         
-        _ = try XCTUnwrap(Self.assertPassed(resultA))
-        _ = try XCTUnwrap(Self.assertPassed(resultB))
+        _ = try XCTUnwrap(resultA.assertPassed())
+        _ = try XCTUnwrap(resultB.assertPassed())
         
         XCTAssertEqual(valuesA.count, valuesB.count)
         XCTAssertNotEqual(valuesA, valuesB)
@@ -1851,7 +737,7 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
         )
         
         let counterexample: Counterexample<BoundInt>
-            = try XCTUnwrap(Self.assertFailed(result))
+            = try XCTUnwrap(result.assertFailed())
         
         XCTAssertEqual(counterexample.seed, Self.seed)
     }
@@ -1876,7 +762,7 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
         )
         
         let exhausted: ExhaustedValues
-            = try XCTUnwrap(Self.assertExhausted(result))
+            = try XCTUnwrap(result.assertExhausted())
         
         XCTAssertEqual(exhausted.seed, Self.seed)
         XCTAssertEqual(exhausted.ratio, maxDiscardRatio)
@@ -1901,7 +787,7 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
             options: .propertyOptions(seed: nil)
         )
         
-        _ = try XCTUnwrap(Self.assertFailed(result))
+        _ = try XCTUnwrap(result.assertFailed())
     }
     
     
@@ -1936,7 +822,7 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
         )
         
         let counterexample: Counterexample<BoundInt>
-            = try XCTUnwrap(Self.assertFailed(result))
+            = try XCTUnwrap(result.assertFailed())
         
         XCTAssertEqual(counterexample.value, BoundInt(target + 1))
         XCTAssertGreaterThan(counterexample.shrinkSteps, 0)
@@ -1965,7 +851,7 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
         )
         
         let counterexample: Counterexample<BoundIntNoShrink>
-            = try XCTUnwrap(Self.assertFailed(result))
+            = try XCTUnwrap(result.assertFailed())
         
         XCTAssertEqual(counterexample.value, counterexample.originalValue)
         XCTAssertEqual(counterexample.shrinkSteps, 0)
@@ -2005,7 +891,7 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
         )
         
         let counterexample: Counterexample<Int>
-            = try XCTUnwrap(Self.assertFailed(result))
+            = try XCTUnwrap(result.assertFailed())
         
         /// The initial value is always `1000`. After three halving steps:
         /// `1000` → `500` (first failing candidate) → `250` → `125`.
@@ -2043,7 +929,7 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
         )
         
         let counterexample: Counterexample<BoundInt>
-            = try XCTUnwrap(Self.assertFailed(result))
+            = try XCTUnwrap(result.assertFailed())
         
         XCTAssertEqual(counterexample.value, counterexample.originalValue)
         XCTAssertEqual(counterexample.shrinkSteps, 0)
@@ -2079,7 +965,7 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
         )
         
         let counterexample: Counterexample<BoundInt>
-            = try XCTUnwrap(Self.assertFailed(result))
+            = try XCTUnwrap(result.assertFailed())
         
         let failure: InterceptedFailure
             = try XCTUnwrap(counterexample.failures.first)
@@ -2115,7 +1001,7 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
         )
         
         let counterexample: Counterexample<BoundInt>
-            = try XCTUnwrap(Self.assertFailed(result))
+            = try XCTUnwrap(result.assertFailed())
         
         XCTAssertEqual(counterexample.value, BoundInt(target + 1))
         XCTAssertGreaterThan(counterexample.shrinkSteps, 0)
@@ -2155,7 +1041,7 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
         )
         
         let counterexample: Counterexample<Int>
-            = try XCTUnwrap(Self.assertFailed(result))
+            = try XCTUnwrap(result.assertFailed())
         
         XCTAssertEqual(counterexample.value, target)
         XCTAssertEqual(counterexample.originalValue, target)
@@ -2196,7 +1082,7 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
         )
         
         let counterexample: Counterexample<Int>
-            = try XCTUnwrap(Self.assertFailed(result))
+            = try XCTUnwrap(result.assertFailed())
         
         /// From `1000`, the shrink candidates are `[0, 500, 750,...]`.
         /// The first candidate (`0`) passes, since `0 > 0` is `false`.
@@ -2230,7 +1116,7 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
         )
         
         let counterexample: Counterexample<BoundInt>
-            = try XCTUnwrap(Self.assertFailed(result))
+            = try XCTUnwrap(result.assertFailed())
         
         XCTAssertEqual(counterexample.iteration, 1)
         XCTAssertGreaterThan(counterexample.failures.count, 0)
@@ -2277,7 +1163,7 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
         )
         
         let counterexample: Counterexample<Int>
-            = try XCTUnwrap(Self.assertFailed(result))
+            = try XCTUnwrap(result.assertFailed())
         
         XCTAssertEqual(counterexample.value, 20)
         XCTAssertGreaterThan(counterexample.shrinkSteps, 0)
@@ -2315,7 +1201,7 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
         )
         
         let counterexample: Counterexample<BoundInt>
-            = try XCTUnwrap(Self.assertFailed(result))
+            = try XCTUnwrap(result.assertFailed())
         
         XCTAssertEqual(counterexample.value, BoundInt(target + 1))
         XCTAssertGreaterThan(counterexample.shrinkSteps, 0)
@@ -2365,7 +1251,7 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
         )
         
         let counterexample: Counterexample<Int>
-            = try XCTUnwrap(Self.assertFailed(result))
+            = try XCTUnwrap(result.assertFailed())
         
         /// The value never changes, but each iteration is considered improved
         /// since each candidate still fails. It should stop after exactly
@@ -2404,7 +1290,7 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
         )
         
         let counterexample: Counterexample<BoundInt>
-            = try XCTUnwrap(Self.assertFailed(result))
+            = try XCTUnwrap(result.assertFailed())
         
         XCTAssertEqual(counterexample.value, BoundInt(target + 1))
         
@@ -2455,7 +1341,7 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
         )
         
         let counterexample: Counterexample<Int>
-            = try XCTUnwrap(Self.assertFailed(result))
+            = try XCTUnwrap(result.assertFailed())
         
         XCTAssertEqual(counterexample.originalValue, counterexample.value)
         XCTAssertEqual(counterexample.shrinkSteps, 0)
@@ -2508,7 +1394,7 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
         )
         
         let counterexample: Counterexample<Int>
-            = try XCTUnwrap(Self.assertFailed(result))
+            = try XCTUnwrap(result.assertFailed())
         
         /// `10` is the minimal failing counterexample. The path is
         /// `100` → `60` (first failing candidate) → `20` → `10`. 3 restarts.
@@ -2549,7 +1435,7 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
         )
         
         let counterexample: Counterexample<Int>
-            = try XCTUnwrap(Self.assertFailed(result))
+            = try XCTUnwrap(result.assertFailed())
         
         XCTAssertEqual(counterexample.value, target + 1)
     }
@@ -2580,7 +1466,7 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
         )
         
         let counterexample: Counterexample<Int>
-            = try XCTUnwrap(Self.assertFailed(result))
+            = try XCTUnwrap(result.assertFailed())
         
         XCTAssertEqual(counterexample.value, counterexample.originalValue)
         XCTAssertEqual(counterexample.shrinkSteps, 0)
@@ -2603,7 +1489,7 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
             options:    .propertyOptions(seed: Self.seed)
         )
         
-        _ = try XCTUnwrap(Self.assertPassed(result))
+        _ = try XCTUnwrap(result.assertPassed())
     }
     
     
@@ -2638,7 +1524,7 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
         )
         
         let counterexample: Counterexample<Int>
-            = try XCTUnwrap(Self.assertFailed(result))
+            = try XCTUnwrap(result.assertFailed())
         
         XCTAssertEqual(counterexample.value % 2, 0)
         XCTAssertGreaterThan(counterexample.value, target)
@@ -2672,7 +1558,7 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
         )
         
         let exhausted: ExhaustedValues
-            = try XCTUnwrap(Self.assertExhausted(result))
+            = try XCTUnwrap(result.assertExhausted())
         
         XCTAssertEqual(exhausted.succeeded, 0)
         XCTAssertEqual(exhausted.discarded, threshold + 1)
@@ -2701,7 +1587,7 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
             options: .propertyOptions(seed: Self.seed)
         )
         
-        _ = try XCTUnwrap(Self.assertPassed(result))
+        _ = try XCTUnwrap(result.assertPassed())
         
         XCTAssertNotNil(firstSize)
         XCTAssertEqual(firstSize, 0)
@@ -2726,7 +1612,7 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
             options:    options
         )
         
-        _ = try XCTUnwrap(Self.assertPassed(result))
+        _ = try XCTUnwrap(result.assertPassed())
         
         XCTAssertEqual(sizes.count, iterations)
         
@@ -2757,7 +1643,7 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
             options:    options
         )
         
-        _ = try XCTUnwrap(Self.assertPassed(result))
+        _ = try XCTUnwrap(result.assertPassed())
         
         for size in sizes
         {
@@ -2783,7 +1669,7 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
             options:    options
         )
         
-        _ = try XCTUnwrap(Self.assertPassed(result))
+        _ = try XCTUnwrap(result.assertPassed())
         
         for size in sizes
         {
@@ -2811,7 +1697,7 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
             options:    options
         )
         
-        _ = try XCTUnwrap(Self.assertPassed(result))
+        _ = try XCTUnwrap(result.assertPassed())
         
         for size in sizes
         {
@@ -2844,7 +1730,7 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
         )
         
         let counterexample: Counterexample<SizeCapture>
-            = try XCTUnwrap(Self.assertFailed(result))
+            = try XCTUnwrap(result.assertFailed())
         
         XCTAssertEqual(counterexample.value.size, 0)
         XCTAssertEqual(counterexample.iteration, 1)
@@ -2873,7 +1759,7 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
             options:    options
         )
         
-        _ = try XCTUnwrap(Self.assertPassed(result))
+        _ = try XCTUnwrap(result.assertPassed())
         
         /// Size formula: `succeeded * maxSize / iterations`
         /// Expected: `[0, 0, 0, 0, 1, 1, 1, 2, 2, 2]`
@@ -2909,7 +1795,7 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
             options:    options
         )
         
-        _ = try XCTUnwrap(Self.assertPassed(result))
+        _ = try XCTUnwrap(result.assertPassed())
         
         /// Size formula: `succeeded * maxSize / iterations`
         /// Expected: `[0, 20, 40, 60, 80]`
@@ -2966,7 +1852,7 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
             options:    options
         )
         
-        _ = try XCTUnwrap(Self.assertPassed(result))
+        _ = try XCTUnwrap(result.assertPassed())
         
         let acceptedSizes: [Int] = sizes.filter { $0 % 2 == 0 }
         
@@ -3010,7 +1896,7 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
             options:    options
         )
         
-        _ = try XCTUnwrap(Self.assertPassed(result))
+        _ = try XCTUnwrap(result.assertPassed())
         
         XCTAssertEqual(accepted.count, iterations)
     }
@@ -3024,232 +1910,8 @@ extension PropertyRunnerTests
 {
     private typealias PCR = PropertyCheckResult
     
-    
-    
-    /// A wrapper around `Int` that provides controllable shrinking.
-    ///
-    /// This is different from `Int: Arbitrary` since `Int.arbitrary(using:)`
-    /// generates values in the range `-context.size...context.size`, which
-    /// makes it harder to reason about value distributions in tests. This
-    /// wrapper always generates values in the range `0...context.size`.
-    private struct BoundInt: Arbitrary, Equatable, CustomStringConvertible
-    {
-        let value: Int
-        
-        init(
-            _ value: Int
-        )
-        {
-            self.value = value
-        }
-        
-        var description: String
-        {
-            return "BoundInt: \(value)"
-        }
-        
-        static func arbitrary(
-            using context: GenerationContext
-        ) -> BoundInt
-        {
-            return BoundInt(context.random(in: 0...max(1, context.size)))
-        }
-        
-        func shrink() -> [BoundInt]
-        {
-            return value.shrinkTowardZero().map { BoundInt($0) }
-        }
-    }
-    
-    
-    
-    /// A wrapper around `Int` that does not shrink.
-    ///
-    /// See ``BoundInt`` for more information regarding the range of values.
-    private struct BoundIntNoShrink:
-        Arbitrary, Equatable, CustomStringConvertible
-    {
-        let value: Int
-        
-        var description: String
-        {
-            return "BoundIntNoShrink - \(value)"
-        }
-        
-        static func arbitrary(
-            using context: GenerationContext
-        ) -> BoundIntNoShrink
-        {
-            return BoundIntNoShrink(value:
-                context.random(in: 0...max(1, context.size))
-            )
-        }
-    }
-    
-    
-    
-    /// Captures the generation size directly for testing size progression.
-    private struct SizeCapture: Arbitrary, Equatable
-    {
-        let size: Int
-        
-        static func arbitrary(
-            using context: GenerationContext
-        ) -> SizeCapture
-        {
-            return SizeCapture(size: context.size)
-        }
-    }
-    
-    
-    
     /// The seed used to initialize the random number generator.
     ///
     /// Use a fixed seed rather than a random seed for deterministic tests.
     private static let seed: UInt64 = 12345
-    
-    
-    
-    /// The associated values of a passed ``PropertyCheckResult``.
-    private struct PassedValues
-    {
-        let iterations  : Int
-        let seed        : UInt64
-        let dist        : [String : Int]
-        let tableDist   : [String : [String : Int]]
-    }
-    
-    
-    
-    /// Asserts that the given property check result passed, and returns the
-    /// associated values.
-    /// - Parameter result: The property check result to evaluate.
-    /// - Returns: The associated values of the passed result, or `nil` if
-    /// the result did not pass.
-    @discardableResult
-    private static func assertPassed<T>(
-        _ result: PCR<T>
-    ) -> PassedValues?
-    {
-        guard case let .passed(iterations, seed, dist, tableDist) = result
-        else
-        {
-            XCTFail("Expected .passed, got \(result)")
-            return nil
-        }
-        
-        return PassedValues(
-            iterations:     iterations,
-            seed:           seed,
-            dist:           dist,
-            tableDist:      tableDist
-        )
-    }
-    
-    
-    
-    /// Asserts that the given property check result failed, and returns the
-    /// counterexample.
-    /// - Parameter result: The property check result to evaluate.
-    /// - Returns: The counterexample of the failed result, `nil` if the
-    /// result did not fail.
-    @discardableResult
-    private static func assertFailed<T>(
-        _ result: PCR<T>
-    ) -> Counterexample<T>?
-    {
-        guard case let .failed(counterexample, _, _) = result
-        else
-        {
-            XCTFail("Expected .failed, got \(result)")
-            return nil
-        }
-        
-        return counterexample
-    }
-    
-    
-    
-    /// The associated values of an exhausted ``PropertyCheckResult``.
-    private struct ExhaustedValues
-    {
-        let discarded   : Int
-        let succeeded   : Int
-        let ratio       : Int
-        let seed        : UInt64
-        let dist        : [String : Int]
-        let tableDist   : [String : [String : Int]]
-    }
-    
-    
-    
-    /// Asserts that the given property check result was exhausted, and returns
-    /// the associated values.
-    /// - Parameter result: The property check result to evaluate.
-    /// - Returns: The associated values, `nil` if the result was not exhausted.
-    @discardableResult
-    private static func assertExhausted<T>(
-        _ result: PCR<T>
-    ) -> ExhaustedValues?
-    {
-        guard case let .exhausted(
-            discarded, succeeded, ratio, seed, dist, tableDist
-        ) = result
-        else
-        {
-            XCTFail("Expected .exhausted, got \(result)")
-            return nil
-        }
-        
-        return ExhaustedValues(
-            discarded:  discarded,
-            succeeded:  succeeded,
-            ratio:      ratio,
-            seed:       seed,
-            dist:       dist,
-            tableDist:  tableDist
-        )
-    }
-    
-    
-    
-    /// The associated values of a coverage-not-met ``PropertyCheckResult``.
-    private struct CoverageNotMetValues
-    {
-        let unmet       : [UnmetCoverage]
-        let iterations  : Int
-        let seed        : UInt64
-        let dist        : [String : Int]
-        let tableDist   : [String : [String : Int]]
-    }
-    
-    
-    
-    /// Asserts that the given property check result has unmet coverage,
-    /// and returns the associated values.
-    /// - Parameter result: The property check result to evaluate.
-    /// - Returns: The associated values, `nil` if the result did not have
-    /// unmet coverage.
-    @discardableResult
-    private static func assertCoverageNotMet<T>(
-        _ result: PCR<T>
-    ) -> CoverageNotMetValues?
-    {
-        guard case let .coverageNotMet(
-            unmet, iterations, seed, dist, tableDist
-        ) = result
-        else
-        {
-            XCTFail("Expected .coverageNotMet, got \(result)")
-            return nil
-        }
-        
-        return CoverageNotMetValues(
-            unmet:          unmet,
-            iterations:     iterations,
-            seed:           seed,
-            dist:           dist,
-            tableDist:      tableDist
-        )
-    }
 }
