@@ -22,6 +22,9 @@ internal final class PropertyInterceptorTests: XCTestCaseStopOnFail
         
         XCTAssertFalse(interceptor.didFail)
         XCTAssertTrue(interceptor.failures.isEmpty)
+        XCTAssertTrue(interceptor.labels.isEmpty)
+        XCTAssertTrue(interceptor.distribution.isEmpty)
+        XCTAssertTrue(interceptor.coverageRequirements.isEmpty)
     }
     
     
@@ -117,24 +120,63 @@ internal final class PropertyInterceptorTests: XCTestCaseStopOnFail
     
     // MARK: - Reset
     
-    func testResetClearsFailures()
+    func testResetClearsFailuresAndLabels()
     {
         let interceptor = PropertyInterceptor()
         
         interceptor.record(
-            message:    "some error",
+            message:    "error",
             file:       "File.swift",
             line:       100
         )
         
+        interceptor.recordLabel("label")
+        interceptor.recordCoverageRequirement(50, for: "req")
+        
         XCTAssertTrue(interceptor.didFail)
         XCTAssertEqual(interceptor.failures.count, 1)
+        XCTAssertEqual(interceptor.labels, ["label"])
+        XCTAssertEqual(interceptor.coverageRequirements, ["req": 50])
         
         interceptor.reset()
         
         XCTAssertFalse(interceptor.didFail)
         XCTAssertTrue(interceptor.failures.isEmpty)
+        XCTAssertTrue(interceptor.labels.isEmpty)
+        XCTAssertEqual(interceptor.coverageRequirements, ["req": 50])
     }
+    
+    
+    
+    func testResetPreservesDistributionAndCoverage()
+    {
+        let interceptor = PropertyInterceptor()
+        
+        interceptor.recordCoverageRequirement(50, for: "a")
+        
+        interceptor.recordLabel("a")
+        interceptor.finalizeIteration()
+        
+        interceptor.recordLabel("b")
+        interceptor.finalizeIteration()
+        
+        interceptor.recordLabel("c")
+        
+        interceptor.record(
+            message:    "error",
+            file:       "File.swift",
+            line:       100
+        )
+        
+        interceptor.reset()
+        
+        XCTAssertFalse(interceptor.didFail)
+        XCTAssertTrue(interceptor.failures.isEmpty)
+        XCTAssertTrue(interceptor.labels.isEmpty)
+        XCTAssertEqual(interceptor.coverageRequirements, ["a": 50])
+        XCTAssertEqual(interceptor.distribution, ["a": 1, "b": 1])
+    }
+    
     
     
     func testResetNewInstance()
@@ -216,6 +258,318 @@ internal final class PropertyInterceptorTests: XCTestCaseStopOnFail
         
         XCTAssertFalse(interceptor.didFail)
         XCTAssertTrue(interceptor.failures.isEmpty)
+    }
+    
+    
+    
+    // MARK: - Labels
+    
+    func testRecordLabelAddsToCurrentIteration()
+    {
+        let interceptor = PropertyInterceptor()
+        
+        interceptor.recordLabel("a")
+        
+        XCTAssertEqual(interceptor.labels, ["a"])
+        XCTAssertTrue(interceptor.distribution.isEmpty)
+    }
+    
+    
+    
+    func testRecordMultipleLabels()
+    {
+        let interceptor = PropertyInterceptor()
+        
+        interceptor.recordLabel("a")
+        interceptor.recordLabel("b")
+        interceptor.recordLabel("c")
+        
+        XCTAssertEqual(interceptor.labels, ["a", "b", "c"])
+    }
+    
+    
+    
+    func testRecordDuplicateLabelIdempotency()
+    {
+        let interceptor = PropertyInterceptor()
+        
+        interceptor.recordLabel("a")
+        interceptor.recordLabel("a")
+        interceptor.recordLabel("a")
+        
+        XCTAssertEqual(interceptor.labels, ["a"])
+    }
+    
+    
+    
+    // MARK: - Finalize iteration
+    
+    func testFinalizeIterationDuplicateLabelsIdempotency()
+    {
+        let interceptor = PropertyInterceptor()
+        
+        interceptor.recordLabel("a")
+        interceptor.recordLabel("a")
+        interceptor.recordLabel("a")
+        interceptor.finalizeIteration()
+        
+        XCTAssertEqual(interceptor.distribution, ["a": 1])
+    }
+    
+    
+    
+    func testFinalizeIterationFlushesLabels()
+    {
+        let interceptor = PropertyInterceptor()
+        
+        interceptor.recordLabel("a")
+        interceptor.recordLabel("b")
+        
+        XCTAssertEqual(interceptor.labels, ["a", "b"])
+        XCTAssertTrue(interceptor.distribution.isEmpty)
+        
+        interceptor.finalizeIteration()
+        
+        XCTAssertTrue(interceptor.labels.isEmpty)
+        XCTAssertEqual(interceptor.distribution, ["a": 1, "b": 1])
+    }
+    
+    
+    
+    func testFinalizeIterationAccumulatesAcrossIterations()
+    {
+        let interceptor = PropertyInterceptor()
+        
+        interceptor.recordLabel("a")
+        interceptor.recordLabel("b")
+        interceptor.finalizeIteration()
+        
+        interceptor.recordLabel("a")
+        interceptor.recordLabel("c")
+        interceptor.finalizeIteration()
+        
+        interceptor.recordLabel("b")
+        interceptor.recordLabel("d")
+        interceptor.finalizeIteration()
+        
+        XCTAssertEqual(
+            interceptor.distribution,
+            ["a": 2, "b": 2, "c": 1, "d": 1]
+        )
+    }
+    
+    
+    
+    func testFinalizeIterationWithNoLabels()
+    {
+        let interceptor = PropertyInterceptor()
+        
+        interceptor.finalizeIteration()
+        interceptor.finalizeIteration()
+        interceptor.finalizeIteration()
+        
+        XCTAssertTrue(interceptor.labels.isEmpty)
+        XCTAssertTrue(interceptor.distribution.isEmpty)
+    }
+    
+    
+    
+    // MARK: - Coverage requirements
+    
+    func testRecordCoverageReq()
+    {
+        let interceptor = PropertyInterceptor()
+        
+        interceptor.recordCoverageRequirement(5, for: "a")
+        
+        XCTAssertEqual(interceptor.coverageRequirements, ["a": 5])
+    }
+    
+    
+    
+    func testRecordCoverageReqMaxOverrides()
+    {
+        let interceptor = PropertyInterceptor()
+        
+        interceptor.recordCoverageRequirement(5, for: "a")
+        interceptor.recordCoverageRequirement(10, for: "a")
+        interceptor.recordCoverageRequirement(2, for: "a")
+        
+        XCTAssertEqual(interceptor.coverageRequirements, ["a": 10])
+    }
+    
+    
+    
+    func testRecordCoverageReqMultipleLabels()
+    {
+        let interceptor = PropertyInterceptor()
+        
+        interceptor.recordCoverageRequirement(5, for: "a")
+        interceptor.recordCoverageRequirement(10, for: "b")
+        interceptor.recordCoverageRequirement(2, for: "c")
+        
+        XCTAssertEqual(
+            interceptor.coverageRequirements,
+            ["a": 5, "b": 10, "c": 2]
+        )
+    }
+    
+    
+    
+    func testRecordCoverageReqClampsAbove()
+    {
+        let interceptor = PropertyInterceptor()
+        
+        interceptor.recordCoverageRequirement(150, for: "a")
+        
+        XCTAssertEqual(interceptor.coverageRequirements, ["a": 100])
+    }
+    
+    
+    
+    func testRecordCoverageReqClampsBelow()
+    {
+        let interceptor = PropertyInterceptor()
+        
+        interceptor.recordCoverageRequirement(-150, for: "a")
+        
+        XCTAssertEqual(interceptor.coverageRequirements, ["a": 0])
+    }
+    
+    
+    
+    // MARK: - Check coverage
+    
+    func testCheckCoverageReturnsEmptyWhenMet()
+    {
+        let interceptor = PropertyInterceptor()
+        
+        interceptor.recordCoverageRequirement(10, for: "a")
+        
+        for index in 0..<100
+        {
+            if index < 20
+            {
+                interceptor.recordLabel("a")
+            }
+            
+            interceptor.finalizeIteration()
+        }
+        
+        let unmet: [UnmetCoverage] = interceptor.checkCoverage(iterations: 100)
+        
+        XCTAssertTrue(unmet.isEmpty)
+    }
+    
+    
+    
+    func testCheckCoverageReturnsUnmetReqs()
+    {
+        let interceptor = PropertyInterceptor()
+        
+        interceptor.recordCoverageRequirement(50, for: "a")
+        interceptor.recordCoverageRequirement(10, for: "b")
+        
+        for index in 0..<100
+        {
+            if index < 10
+            {
+                interceptor.recordLabel("a")
+            }
+            else if index < 40
+            {
+                interceptor.recordLabel("b")
+            }
+            
+            interceptor.finalizeIteration()
+        }
+        
+        let unmet: [UnmetCoverage] = interceptor.checkCoverage(iterations: 100)
+        
+        XCTAssertEqual(unmet.count, 1)
+        XCTAssertEqual(unmet[0].label, "a")
+        XCTAssertEqual(unmet[0].required, 50)
+        XCTAssertEqual(unmet[0].actual, 10)
+        XCTAssertNil(unmet[0].table)
+    }
+    
+    
+    
+    func testCheckCoverageWithZeroPercentageAlwaysMet()
+    {
+        let interceptor = PropertyInterceptor()
+        
+        interceptor.recordCoverageRequirement(0, for: "a")
+        
+        for _ in 0..<100
+        {
+            interceptor.finalizeIteration()
+        }
+        
+        let unmet: [UnmetCoverage] = interceptor.checkCoverage(iterations: 100)
+        
+        XCTAssertTrue(unmet.isEmpty)
+    }
+    
+    
+    
+    func testCheckCoverageExactlyAtThreshold()
+    {
+        let interceptor = PropertyInterceptor()
+        
+        interceptor.recordCoverageRequirement(10, for: "a")
+        
+        for index in 0..<100
+        {
+            /// Exactly 10%.
+            if index < 10
+            {
+                interceptor.recordLabel("a")
+            }
+            
+            interceptor.finalizeIteration()
+        }
+        
+        let unmet: [UnmetCoverage] = interceptor.checkCoverage(iterations: 100)
+        
+        XCTAssertTrue(unmet.isEmpty)
+    }
+    
+    
+    
+    func testCheckCoverageWithNoReqs()
+    {
+        let interceptor = PropertyInterceptor()
+        
+        interceptor.recordLabel("a")
+        interceptor.finalizeIteration()
+        
+        let unmet: [UnmetCoverage] = interceptor.checkCoverage(iterations: 1)
+        
+        XCTAssertTrue(unmet.isEmpty)
+    }
+    
+    
+    
+    func testCheckCoverageUnrecordedLabelWithReq()
+    {
+        let interceptor = PropertyInterceptor()
+        
+        interceptor.recordCoverageRequirement(5, for: "a")
+        
+        for _ in 0..<100
+        {
+            interceptor.recordLabel("b")
+            interceptor.finalizeIteration()
+        }
+        
+        let unmet: [UnmetCoverage] = interceptor.checkCoverage(iterations: 100)
+        
+        XCTAssertEqual(unmet.count, 1)
+        XCTAssertEqual(unmet[0].label, "a")
+        XCTAssertEqual(unmet[0].required, 5)
+        XCTAssertEqual(unmet[0].actual, 0)
+        XCTAssertNil(unmet[0].table)
     }
     
     
