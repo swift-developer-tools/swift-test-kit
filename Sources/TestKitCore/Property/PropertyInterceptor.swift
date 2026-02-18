@@ -7,6 +7,7 @@
 //
 //===----------------------------------------------------------------------===//
 
+import OSLog
 import Synchronization
 
 
@@ -26,6 +27,11 @@ package final class PropertyInterceptor: Sendable
     
     /// The current interceptor state.
     private let state           : Mutex<InterceptorState>
+    
+    private static let logger = Logger(
+        subsystem:  "swift-test-kit",
+        category:   "PropertyInterceptor"
+    )
     
     
     
@@ -129,6 +135,13 @@ package final class PropertyInterceptor: Sendable
     )
     {
         let clamped: Double = percentage.clamped(to: 0.0...100.0)
+        
+        if clamped == 0.0
+        {
+            Self.logger.warning(
+                "Cover passed vacuously - percentage is 0% for \(quote(label))"
+            )
+        }
         
         state.withLock
         {
