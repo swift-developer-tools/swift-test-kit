@@ -49,6 +49,13 @@ property bodies.
 - ``XCTKForAll(where:message:file:line:options:_:)-64dm8``
 - ``XCTKForAll(using:where:message:file:line:options:_:)-57tax``
 
+### Classifying Properties
+
+- ``XCTKClassify(_:when:)``
+- ``XCTKCover(_:_:when:)``
+- ``XCTKLabel(_:)``
+- ``XCTKCollect(_:)``
+
 ### Generating Values
 
 - ``Arbitrary``
