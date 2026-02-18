@@ -104,7 +104,7 @@ extension Generator
                 preconditionFailure(
                     "Generator.filter(_:) failed to produce a matching value"
                     + " after 1000 attempts. The predicate may be too"
-                    + " restrictive for this generator."
+                    + " restrictive for this generator"
                 )
             },
             shrink:

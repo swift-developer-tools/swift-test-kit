@@ -208,7 +208,7 @@ package struct PropertyRunner
         if iterations == 0
         {
             logger.warning(
-                "Test passed vacuously - PropertyOptions.iterations is zero."
+                "Test passed vacuously - PropertyOptions.iterations is zero"
             )
         }
         

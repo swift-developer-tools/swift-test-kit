@@ -40,7 +40,7 @@ public func XCTKClassify(
     guard let interceptor = PropertyInterceptor.current
     else
     {
-        logger.warning("XCTKClassify called outside a property body (no-op).")
+        logger.warning("XCTKClassify called outside a property body (no-op)")
         return
     }
     
@@ -78,7 +78,7 @@ public func XCTKCover(
     guard let interceptor = PropertyInterceptor.current
     else
     {
-        logger.warning("XCTKCover called outside a property body (no-op).")
+        logger.warning("XCTKCover called outside a property body (no-op)")
         return
     }
     
@@ -109,7 +109,7 @@ public func XCTKLabel(
     guard let interceptor = PropertyInterceptor.current
     else
     {
-        logger.warning("XCTKLabel called outside a property body (no-op).")
+        logger.warning("XCTKLabel called outside a property body (no-op)")
         return
     }
     

@@ -38,7 +38,7 @@ extension ClosedRange: Arbitrary where Bound : Arbitrary & Comparable
         preconditionFailure(
             "ClosedRange.arbitrary(using:) failed to produce a valid range"
             + " after 1000 attempts. Bound.arbitrary(using:) may be"
-            + " producing incomparable values too frequently."
+            + " producing incomparable values too frequently"
         )
     }
     

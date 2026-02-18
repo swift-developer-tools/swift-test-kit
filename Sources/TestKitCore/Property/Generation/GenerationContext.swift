@@ -123,7 +123,7 @@ extension GenerationContext
             depth <= Self.maxDepth,
             "GenerationContext exceeded maximum generation depth"
             + " (\(Self.maxDepth)). This usually indicates mutual recursion"
-            + " between types without a reachable base case."
+            + " between types without a reachable base case"
         )
         
         let saved: Int = size
