@@ -39,7 +39,7 @@ internal final class PropertyInterceptorTests: XCTestCaseStopOnFail
         let file    : StaticString  = "File.swift"
         let line    : UInt          = 100
         
-        interceptor.record(
+        interceptor.recordFailure(
             message:    message,
             file:       file,
             line:       line
@@ -71,7 +71,7 @@ internal final class PropertyInterceptorTests: XCTestCaseStopOnFail
         
         for record in records
         {
-            interceptor.record(
+            interceptor.recordFailure(
                 message:    record.0,
                 file:       record.1,
                 line:       record.2
@@ -99,7 +99,7 @@ internal final class PropertyInterceptorTests: XCTestCaseStopOnFail
         let file    : StaticString  = "File.swift"
         let line    : UInt          = 100
         
-        interceptor.record(
+        interceptor.recordFailure(
             message:    message,
             file:       file,
             line:       line
@@ -124,7 +124,7 @@ internal final class PropertyInterceptorTests: XCTestCaseStopOnFail
     {
         let interceptor = PropertyInterceptor()
         
-        interceptor.record(
+        interceptor.recordFailure(
             message:    "error",
             file:       "File.swift",
             line:       100
@@ -162,7 +162,7 @@ internal final class PropertyInterceptorTests: XCTestCaseStopOnFail
         
         interceptor.recordLabel("c")
         
-        interceptor.record(
+        interceptor.recordFailure(
             message:    "error",
             file:       "File.swift",
             line:       100
@@ -204,7 +204,7 @@ internal final class PropertyInterceptorTests: XCTestCaseStopOnFail
         
         for record in records
         {
-            interceptor.record(
+            interceptor.recordFailure(
                 message:    record.0,
                 file:       record.1,
                 line:       record.2
@@ -218,7 +218,7 @@ internal final class PropertyInterceptorTests: XCTestCaseStopOnFail
         
         for record in records
         {
-            interceptor.record(
+            interceptor.recordFailure(
                 message:    record.0,
                 file:       record.1,
                 line:       record.2
@@ -243,7 +243,7 @@ internal final class PropertyInterceptorTests: XCTestCaseStopOnFail
         {
             let message: String = "failure \(index)"
             
-            interceptor.record(
+            interceptor.recordFailure(
                 message:    message,
                 file:       "File.swift",
                 line:       UInt(index)
@@ -648,7 +648,7 @@ internal final class PropertyInterceptorTests: XCTestCaseStopOnFail
         
         PropertyInterceptor.$current.withValue(outer)
         {
-            outer.record(
+            outer.recordFailure(
                 message:    records[0].0,
                 file:       records[0].1,
                 line:       records[0].2
@@ -656,7 +656,7 @@ internal final class PropertyInterceptorTests: XCTestCaseStopOnFail
             
             PropertyInterceptor.$current.withValue(inner)
             {
-                inner.record(
+                inner.recordFailure(
                     message:    records[1].0,
                     file:       records[1].1,
                     line:       records[1].2
@@ -699,7 +699,7 @@ internal final class PropertyInterceptorTests: XCTestCaseStopOnFail
             
             for index in 0..<iterations
             {
-                interceptor.record(
+                interceptor.recordFailure(
                     message:    "failure \(index)",
                     file:       "File.swift",
                     line:       UInt(index)
@@ -729,7 +729,7 @@ internal final class PropertyInterceptorTests: XCTestCaseStopOnFail
             XCTAssertIdentical(PropertyInterceptor.current, interceptorA)
             XCTAssertNotIdentical(PropertyInterceptor.current, interceptorB)
             
-            interceptorA.record(
+            interceptorA.recordFailure(
                 message:    "Task A",
                 file:       "A.swift",
                 line:       1
@@ -742,7 +742,7 @@ internal final class PropertyInterceptorTests: XCTestCaseStopOnFail
             XCTAssertNotIdentical(PropertyInterceptor.current, interceptorA)
             XCTAssertIdentical(PropertyInterceptor.current, interceptorB)
             
-            interceptorB.record(
+            interceptorB.recordFailure(
                 message:    "Task B",
                 file:       "B.swift",
                 line:       2

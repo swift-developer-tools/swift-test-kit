@@ -21,7 +21,7 @@ internal let failureContext = FailureContext(
         
         if let interceptor = PropertyInterceptor.current
         {
-            interceptor.record(
+            interceptor.recordFailure(
                 message:    message,
                 file:       file,
                 line:       line

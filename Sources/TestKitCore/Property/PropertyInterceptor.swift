@@ -88,7 +88,7 @@ package final class PropertyInterceptor: Sendable
     ///   - message: The failure message.
     ///   - file: The file where the failure occurred.
     ///   - line: The line where the failure occurred.
-    package func record(
+    package func recordFailure(
         message : String,
         file    : StaticString,
         line    : UInt

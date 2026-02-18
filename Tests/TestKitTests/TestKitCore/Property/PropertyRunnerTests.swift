@@ -118,7 +118,7 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
             {
                 _ async in
                 
-                PropertyInterceptor.current?.record(
+                PropertyInterceptor.current?.recordFailure(
                     message:    "always fails",
                     file:       "File.swift",
                     line:       1
@@ -151,7 +151,7 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
                 
                 if boundInt.value > 25
                 {
-                    PropertyInterceptor.current?.record(
+                    PropertyInterceptor.current?.recordFailure(
                         message:    "too large",
                         file:       "File.swift",
                         line:       1
@@ -197,7 +197,7 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
             {
                 _ async throws in
                 
-                PropertyInterceptor.current?.record(
+                PropertyInterceptor.current?.recordFailure(
                     message:    "recorded failure",
                     file:       "File.swift",
                     line:       1
@@ -235,7 +235,7 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
                 
                 for record in records
                 {
-                    PropertyInterceptor.current?.record(
+                    PropertyInterceptor.current?.recordFailure(
                         message:    record.0,
                         file:       record.1,
                         line:       record.2
@@ -277,7 +277,7 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
                 
                 if boundInt.value > target
                 {
-                    PropertyInterceptor.current?.record(
+                    PropertyInterceptor.current?.recordFailure(
                         message:    "too large",
                         file:       "File.swift",
                         line:       1
@@ -320,7 +320,7 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
                 
                 if capture.size >= target
                 {
-                    PropertyInterceptor.current?.record(
+                    PropertyInterceptor.current?.recordFailure(
                         message:    "too large",
                         file:       "File.swift",
                         line:       1
@@ -362,7 +362,7 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
                 
                 if boundInt.value > target
                 {
-                    PropertyInterceptor.current?.record(
+                    PropertyInterceptor.current?.recordFailure(
                         message:    "too large",
                         file:       "File.swift",
                         line:       1
@@ -519,7 +519,7 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
                 
                 if boundInt.value > 20
                 {
-                    PropertyInterceptor.current?.record(
+                    PropertyInterceptor.current?.recordFailure(
                         message:    "too large",
                         file:       "File.swift",
                         line:       1
@@ -694,7 +694,7 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
                 
                 PropertyInterceptor.current?.recordLabel("labeled")
                 
-                PropertyInterceptor.current?.record(
+                PropertyInterceptor.current?.recordFailure(
                     message:    "always fails",
                     file:       "File.swift",
                     line:       1
@@ -740,7 +740,7 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
                 
                 if capture.size >= target
                 {
-                    PropertyInterceptor.current?.record(
+                    PropertyInterceptor.current?.recordFailure(
                         message:    "too large",
                         file:       "File.swift",
                         line:       1
@@ -988,7 +988,7 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
                 
                 if capture.size >= target
                 {
-                    PropertyInterceptor.current?.record(
+                    PropertyInterceptor.current?.recordFailure(
                         message:    "too large",
                         file:       "File.swift",
                         line:       1
@@ -1097,7 +1097,7 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
                 
                 if capture.size >= target
                 {
-                    PropertyInterceptor.current?.record(
+                    PropertyInterceptor.current?.recordFailure(
                         message:    "too large",
                         file:       "File.swift",
                         line:       1
@@ -1146,7 +1146,7 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
                 
                 if bountInt.value > target
                 {
-                    PropertyInterceptor.current?.record(
+                    PropertyInterceptor.current?.recordFailure(
                         message:    "too large",
                         file:       "File.swift",
                         line:       1
@@ -1570,7 +1570,7 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
                 
                 if int > target
                 {
-                    PropertyInterceptor.current?.record(
+                    PropertyInterceptor.current?.recordFailure(
                         message:    "too large",
                         file:       "File.swift",
                         line:       1
@@ -1734,7 +1734,7 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
                 
                 if boundInt.value == target
                 {
-                    PropertyInterceptor.current?.record(
+                    PropertyInterceptor.current?.recordFailure(
                         message:    "found target",
                         file:       "File.swift",
                         line:       1
@@ -1751,7 +1751,7 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
                 
                 if boundInt.value == target
                 {
-                    PropertyInterceptor.current?.record(
+                    PropertyInterceptor.current?.recordFailure(
                         message:    "found target",
                         file:       "File.swift",
                         line:       1
@@ -1835,7 +1835,7 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
             {
                 _ async in
                 
-                PropertyInterceptor.current?.record(
+                PropertyInterceptor.current?.recordFailure(
                     message:    "always fails",
                     file:       "File.swift",
                     line:       1
@@ -1886,7 +1886,7 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
             {
                 _ async in
                 
-                PropertyInterceptor.current?.record(
+                PropertyInterceptor.current?.recordFailure(
                     message:    "always fails",
                     file:       "File.swift",
                     line:       1
@@ -1919,7 +1919,7 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
                 
                 if boundInt.value > target
                 {
-                    PropertyInterceptor.current?.record(
+                    PropertyInterceptor.current?.recordFailure(
                         message:    "too large",
                         file:       "File.swift",
                         line:       1
@@ -1948,7 +1948,7 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
                 
                 if boundInt.value > 10
                 {
-                    PropertyInterceptor.current?.record(
+                    PropertyInterceptor.current?.recordFailure(
                         message:    "too large",
                         file:       "File.swift",
                         line:       1
@@ -1988,7 +1988,7 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
                 
                 if int > 0
                 {
-                    PropertyInterceptor.current?.record(
+                    PropertyInterceptor.current?.recordFailure(
                         message:    "positive",
                         file:       "File.swift",
                         line:       1
@@ -2026,7 +2026,7 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
                 
                 if boundInt.value > 5
                 {
-                    PropertyInterceptor.current?.record(
+                    PropertyInterceptor.current?.recordFailure(
                         message:    "too large",
                         file:       "File.swift",
                         line:       1
@@ -2062,7 +2062,7 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
                 
                 if boundInt.value > target
                 {
-                    PropertyInterceptor.current?.record(
+                    PropertyInterceptor.current?.recordFailure(
                         message:    "value \(boundInt.value) is positive",
                         file:       "File.swift",
                         line:       99
@@ -2138,7 +2138,7 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
                 
                 if int >= target
                 {
-                    PropertyInterceptor.current?.record(
+                    PropertyInterceptor.current?.recordFailure(
                         message:    "too large",
                         file:       "File.swift",
                         line:       1
@@ -2179,7 +2179,7 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
                 
                 if int > 0
                 {
-                    PropertyInterceptor.current?.record(
+                    PropertyInterceptor.current?.recordFailure(
                         message:    "positive",
                         file:       "File.swift",
                         line:       1
@@ -2214,7 +2214,7 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
             {
                 _ async in
                 
-                PropertyInterceptor.current?.record(
+                PropertyInterceptor.current?.recordFailure(
                     message:    "always fails",
                     file:       "File.swift",
                     line:       1
@@ -2260,7 +2260,7 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
                 
                 if int > 5
                 {
-                    PropertyInterceptor.current?.record(
+                    PropertyInterceptor.current?.recordFailure(
                         message:    "too large",
                         file:       "File.swift",
                         line:       1
@@ -2296,7 +2296,7 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
                 
                 if boundInt.value > target
                 {
-                    PropertyInterceptor.current?.record(
+                    PropertyInterceptor.current?.recordFailure(
                         message:    "value \(boundInt.value) is too large",
                         file:       "File.swift",
                         line:       1
@@ -2349,7 +2349,7 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
             {
                 _ async in
                 
-                PropertyInterceptor.current?.record(
+                PropertyInterceptor.current?.recordFailure(
                     message:    "always fails",
                     file:       "File.swift",
                     line:       1
@@ -2387,7 +2387,7 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
                 
                 if boundInt.value > target
                 {
-                    PropertyInterceptor.current?.record(
+                    PropertyInterceptor.current?.recordFailure(
                         message:    "positive",
                         file:       "File.swift",
                         line:       1
@@ -2439,7 +2439,7 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
             {
                 _ async in
                 
-                PropertyInterceptor.current?.record(
+                PropertyInterceptor.current?.recordFailure(
                     message:    "always fails",
                     file:       "File.swift",
                     line:       1
@@ -2491,7 +2491,7 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
                 
                 if int > 5
                 {
-                    PropertyInterceptor.current?.record(
+                    PropertyInterceptor.current?.recordFailure(
                         message:    "too large",
                         file:       "File.swift",
                         line:       1
@@ -2532,7 +2532,7 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
                 
                 if int > target
                 {
-                    PropertyInterceptor.current?.record(
+                    PropertyInterceptor.current?.recordFailure(
                         message:    "positive",
                         file:       "File.swift",
                         line:       1
@@ -2564,7 +2564,7 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
             {
                 _ async in
                 
-                PropertyInterceptor.current?.record(
+                PropertyInterceptor.current?.recordFailure(
                     message:    "always fails",
                     file:       "File.swift",
                     line:       1
@@ -2621,7 +2621,7 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
                 
                 if int > target
                 {
-                    PropertyInterceptor.current?.record(
+                    PropertyInterceptor.current?.recordFailure(
                         message:    "too large",
                         file:       "File.swift",
                         line:       1
@@ -2827,7 +2827,7 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
                 
                 if capture.size == 0
                 {
-                    PropertyInterceptor.current?.record(
+                    PropertyInterceptor.current?.recordFailure(
                         message:    "size zero fails",
                         file:       "File.swift",
                         line:       1
