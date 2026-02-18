@@ -50,7 +50,7 @@ internal final class ForAllOutputTests: XCTestKitCase
         
         
         let actual: String = try getPropertyOutput(
-            from:       output!,
+            from:       output,
             before:     "XCTKAssertTrue"
         )
         
@@ -101,7 +101,7 @@ internal final class ForAllOutputTests: XCTestKitCase
         
         
         let actual: String = try getPropertyOutput(
-            from:       output!,
+            from:       output,
             before:     "XCTKAssertLessThan"
         )
         
@@ -156,7 +156,7 @@ internal final class ForAllOutputTests: XCTestKitCase
         
         
         let actual: String = try getPropertyOutput(
-            from:       output!,
+            from:       output,
             before:     "XCTKAssertLessThan"
         )
         
@@ -277,12 +277,12 @@ internal final class ForAllOutputTests: XCTestKitCase
         }
         
         XCTAssertNotNil(output)
-        XCTAssertTrue(output!.hasSuffix("\nhello world"))
+        XCTAssertTrue(output?.hasSuffix("\nhello world") ?? false)
         
         
         
         let actual: String = try getPropertyOutput(
-            from:       output!,
+            from:       output,
             before:     "XCTKAssertTrue"
         )
         
@@ -334,7 +334,7 @@ internal final class ForAllOutputTests: XCTestKitCase
         
         
         let actual: String = try getPropertyOutput(
-            from:       output!,
+            from:       output,
             before:     "XCTKAssertTrue"
         )
         
@@ -380,7 +380,7 @@ internal final class ForAllOutputTests: XCTestKitCase
         
         
         let actual: String = try getPropertyOutput(
-            from:       output!,
+            from:       output,
             before:     "XCTKAssertTrue"
         )
         
@@ -423,7 +423,7 @@ internal final class ForAllOutputTests: XCTestKitCase
         
         
         let actual: String = try getPropertyOutput(
-            from:       output!,
+            from:       output,
             before:     "XCTKAssertTrue"
         )
         
@@ -473,7 +473,7 @@ internal final class ForAllOutputTests: XCTestKitCase
         
         
         let actual: String = try getPropertyOutput(
-            from:       output!,
+            from:       output,
             before:     "XCTKAssertTrue"
         )
         
@@ -527,7 +527,7 @@ internal final class ForAllOutputTests: XCTestKitCase
         
         
         let actual: String = try getPropertyOutput(
-            from:       output!,
+            from:       output,
             before:     "XCTKAssertLessThan"
         )
         
@@ -578,7 +578,7 @@ internal final class ForAllOutputTests: XCTestKitCase
         
         
         let actual: String = try getPropertyOutput(
-            from:       output!,
+            from:       output,
             before:     "XCTKAssertTrue"
         )
         
@@ -634,7 +634,7 @@ internal final class ForAllOutputTests: XCTestKitCase
         
         
         let actual: String = try getPropertyOutput(
-            from:       output!,
+            from:       output,
             before:     "XCTKAssertLessThan"
         )
         
@@ -678,12 +678,12 @@ internal final class ForAllOutputTests: XCTestKitCase
         }
         
         XCTAssertNotNil(output)
-        XCTAssertFalse(output!.contains("Threw error:"))
+        XCTAssertFalse(output?.contains("Threw error:") ?? true)
         
         
         
         let actual: String = try getPropertyOutput(
-            from:       output!,
+            from:       output,
             before:     "XCTKAssertTrue"
         )
         
@@ -724,12 +724,12 @@ internal final class ForAllOutputTests: XCTestKitCase
         }
         
         XCTAssertNotNil(output)
-        XCTAssertFalse(output!.contains("XCTKAssertEqual"))
+        XCTAssertFalse(output?.contains("XCTKAssertEqual") ?? true)
         
         
         
         let actual: String = try getPropertyOutput(
-            from:       output!,
+            from:       output,
             before:     "XCTKAssertTrue"
         )
         
@@ -777,7 +777,7 @@ internal final class ForAllOutputTests: XCTestKitCase
         
         
         let actual: String = try getPropertyOutput(
-            from:       output!,
+            from:       output,
             before:     "XCTKAssertTrue"
         )
         
@@ -833,7 +833,7 @@ internal final class ForAllOutputTests: XCTestKitCase
         
         
         let actual: String = try getPropertyOutput(
-            from:       output!,
+            from:       output,
             before:     "XCTKAssertLessThan"
         )
         
@@ -881,7 +881,7 @@ internal final class ForAllOutputTests: XCTestKitCase
         
         
         let actual: String = try getPropertyOutput(
-            from:       output!,
+            from:       output,
             before:     "XCTKAssertTrue"
         )
         
@@ -937,7 +937,7 @@ internal final class ForAllOutputTests: XCTestKitCase
         
         
         let actual: String = try getPropertyOutput(
-            from:       output!,
+            from:       output,
             before:     "XCTKAssertTrue"
         )
         
@@ -1074,7 +1074,7 @@ internal final class ForAllOutputTests: XCTestKitCase
         
         
         let actual: String = try getPropertyOutput(
-            from:       output!,
+            from:       output,
             before:     "XCTKAssertTrue"
         )
         
@@ -1145,7 +1145,7 @@ internal final class ForAllOutputTests: XCTestKitCase
         
         
         let actual: String = try getPropertyOutput(
-            from:       output!,
+            from:       output,
             before:     "XCTKAssertTrue"
         )
         

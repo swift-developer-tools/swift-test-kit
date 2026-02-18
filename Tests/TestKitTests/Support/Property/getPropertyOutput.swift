@@ -19,10 +19,18 @@ import XCTest
 /// - Returns: The property-related component of the given output.
 /// - Throws: An error if the given marker is not found.
 internal func getPropertyOutput(
-    from    output  : String,
+    from    output  : String?,
     before  marker  : String
 ) throws -> String
 {
+    guard let output
+    else
+    {
+        XCTFail("Expected non-nil output")
+        
+        throw TestError()
+    }
+    
     guard let range: Range<String.Index> = output.range(of: "\n\(marker)")
     else
     {

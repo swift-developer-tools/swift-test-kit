@@ -133,7 +133,7 @@ internal final class ForAllOptionsTests: XCTestKitCase
         }
         
         XCTAssertNotNil(output)
-        XCTAssertTrue(output!.contains("Seed: \(seed)"))
+        XCTAssertTrue(output?.contains("Seed: \(seed)") ?? false)
     }
     
     
@@ -196,7 +196,7 @@ internal final class ForAllOptionsTests: XCTestKitCase
         }
         
         XCTAssertNotNil(output)
-        XCTAssertFalse(output!.contains("shrunk in"))
+        XCTAssertFalse(output?.contains("shrunk in") ?? true)
     }
     
     
@@ -218,7 +218,7 @@ internal final class ForAllOptionsTests: XCTestKitCase
         }
         
         XCTAssertNotNil(output)
-        XCTAssertTrue(output!.contains("shrunk in"))
+        XCTAssertTrue(output?.contains("shrunk in") ?? false)
     }
     
     
@@ -240,7 +240,7 @@ internal final class ForAllOptionsTests: XCTestKitCase
         )
         
         XCTAssertNotNil(output)
-        XCTAssertTrue(output!.contains("exhausted"))
+        XCTAssertTrue(output?.contains("exhausted") ?? false)
     }
 }
 
