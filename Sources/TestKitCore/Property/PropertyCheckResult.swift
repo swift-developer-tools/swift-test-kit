@@ -14,15 +14,22 @@ package enum PropertyCheckResult<T>
     /// - Parameters:
     ///   - iterations: The number of iterations.
     ///   - seed: The seed used to initialize the random number generator.
+    ///   - distribution: The accumulated count of iterations that matched
+    ///   each label.
     case passed(
-        iterations  : Int,
-        seed        : UInt64
+        iterations      : Int,
+        seed            : UInt64,
+        distribution    : [String : Int]
     )
     
     /// A counterexample was found.
-    /// - Parameter counterexample: The found counterexample.
+    /// - Parameters:
+    ///   - counterexample: The found counterexample.
+    ///   - distribution: The accumulated count of iterations that matched
+    ///   each label.
     case failed(
-        counterexample: Counterexample<T>
+        counterexample  : Counterexample<T>,
+        distribution    : [String : Int]
     )
     
     /// Too many inputs did not meet the preconditions of conditional
@@ -32,10 +39,28 @@ package enum PropertyCheckResult<T>
     ///   - succeeded: The number of successful inputs.
     ///   - ratio: The maximum ratio of discarded inputs to successful inputs.
     ///   - seed: The seed used to initialize the random number generator.
+    ///   - distribution: The accumulated count of iterations that matched
+    ///   each label.
     case exhausted(
-        discarded   : Int,
-        succeeded   : Int,
-        ratio       : Int,
-        seed        : UInt64
+        discarded       : Int,
+        succeeded       : Int,
+        ratio           : Int,
+        seed            : UInt64,
+        distribution    : [String : Int]
+    )
+    
+    /// All iterations passed, but one or more coverage requirements were
+    /// not met.
+    /// - Parameters:
+    ///   - unmet: The unmet coverage requirements.
+    ///   - iterations: The number of iterations.
+    ///   - seed: The seed used to initialize the random number generator.
+    ///   - distribution: The accumulated count of iterations that matched
+    ///   each label.
+    case coverageNotMet(
+        unmet           : [UnmetCoverage],
+        iterations      : Int,
+        seed            : UInt64,
+        distribution    : [String : Int]
     )
 }

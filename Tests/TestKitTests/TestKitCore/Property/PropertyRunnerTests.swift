@@ -638,12 +638,12 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
         
         switch (resultA, resultB)
         {
-            case let (.passed(iterA, seedA), .passed(iterB, seedB)):
+            case let (.passed(iterA, seedA, _), .passed(iterB, seedB, _)):
                 
                 XCTAssertEqual(iterA, iterB)
                 XCTAssertEqual(seedA, seedB)
                 
-            case let (.failed(counterA), .failed(counterB)):
+            case let (.failed(counterA, _), .failed(counterB, _)):
                 
                 XCTAssertEqual(counterA.iteration, counterB.iteration)
                 XCTAssertEqual(counterA.seed, counterB.seed)
@@ -1993,7 +1993,7 @@ extension PropertyRunnerTests
         _ result: PCR<T>
     ) -> PassedValues?
     {
-        guard case let .passed(iterations, seed) = result
+        guard case let .passed(iterations, seed, _) = result
         else
         {
             XCTFail("Expected .passed, got \(result)")
@@ -2018,7 +2018,7 @@ extension PropertyRunnerTests
         _ result: PCR<T>
     ) -> Counterexample<T>?
     {
-        guard case let .failed(counterexample) = result
+        guard case let .failed(counterexample, _) = result
         else
         {
             XCTFail("Expected .failed, got \(result)")
@@ -2051,7 +2051,8 @@ extension PropertyRunnerTests
         _ result: PCR<T>
     ) -> ExhaustedValues?
     {
-        guard case let .exhausted(discarded, succeeded, ratio, seed) = result
+        guard case let .exhausted(discarded, succeeded, ratio, seed, _)
+                = result
         else
         {
             XCTFail("Expected .exhausted, got \(result)")

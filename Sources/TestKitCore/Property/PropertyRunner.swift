@@ -134,6 +134,7 @@ package struct PropertyRunner
         let seed: UInt64 = opts.seed
             ?? .random(in: UInt64.min...UInt64.max)
         
+        let interceptor     : PropertyInterceptor   = .init()
         let context         : GenerationContext     = .init(seed: seed)
         let maxSize         : Int                   = opts.maxSize
         let maxDiscardRatio : Int                   = opts.maxDiscardRatio
@@ -160,17 +161,24 @@ package struct PropertyRunner
                 if discarded > maxDiscardRatio * iterations
                 {
                     return .exhausted(
-                        discarded:  discarded,
-                        succeeded:  succeeded,
-                        ratio:      maxDiscardRatio,
-                        seed:       seed
+                        discarded:      discarded,
+                        succeeded:      succeeded,
+                        ratio:          maxDiscardRatio,
+                        seed:           seed,
+                        distribution:   interceptor.distribution
                     )
                 }
                 
                 continue
             }
             
-            if await didPropertyFail(property, with: value)
+            let didFail: Bool = await didPropertyFail(
+                property,
+                with:   value,
+                using:  interceptor
+            )
+            
+            if didFail
             {
                 let counterexample: Counterexample<T>
                     = await makeCounterexample(
@@ -183,10 +191,14 @@ package struct PropertyRunner
                         options:        options
                     )
                 
-                return .failed(counterexample: counterexample)
+                return .failed(
+                    counterexample:     counterexample,
+                    distribution:       interceptor.distribution
+                )
             }
             else
             {
+                interceptor.finalizeIteration()
                 succeeded += 1
             }
         }
@@ -200,9 +212,39 @@ package struct PropertyRunner
             )
         }
         
+        
+        
+        let unmet: [UnmetCoverage]
+            = interceptor.checkCoverage(iterations: iterations)
+        
+        if !unmet.isEmpty
+        {
+            return .coverageNotMet(
+                unmet:          unmet,
+                iterations:     iterations,
+                seed:           seed,
+                distribution:   interceptor.distribution
+            )
+        }
+        
+        
+        
+        if !interceptor.distribution.isEmpty
+        {
+            let summary: String = PropertyCheckResult<T>.formatDistribution(
+                interceptor.distribution,
+                iterations: iterations
+            ).joined(separator: "\n")
+            
+            logger.info("Property passed \(iterations) iterations\n\(summary)")
+        }
+        
+        
+        
         return .passed(
             iterations:     iterations,
-            seed:           seed
+            seed:           seed,
+            distribution:   interceptor.distribution
         )
     }
     
@@ -222,16 +264,22 @@ package struct PropertyRunner
     /// - Parameters:
     ///   - property: The property body.
     ///   - value: The value with which to call the property body.
+    ///   - interceptor: The property interceptor to use, or `nil` to create
+    ///   a new interceptor.
     /// - Returns: Whether the given property fails when called with the
     /// given value.
     @Reasync
     private static func didPropertyFail<T>(
         _       property    : (T) async throws -> Void,
-        with    value       : T
+        with    value       : T,
+        using   interceptor : PropertyInterceptor?      = nil
     ) async -> Bool
     {
-        let interceptor : PropertyInterceptor   = .init()
-        var threwError  : Bool                  = false
+        let interceptor: PropertyInterceptor = interceptor ?? .init()
+        
+        interceptor.reset()
+        
+        var threwError: Bool = false
         
         await PropertyInterceptor.$current.withValue(interceptor)
         {
