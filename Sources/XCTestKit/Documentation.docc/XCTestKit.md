@@ -395,6 +395,34 @@ XCTKForAll(using: .nonEmptyArray(of: Int.self))
 }
 ```
 
+### Classification
+
+Classification functions conditionally tag iterations with descriptive labels, 
+tracking the distribution of generated values across categories. Minimum 
+coverage requirements can be set to fail the test with a distribution summary 
+if the requirement is not met.
+
+```swift
+let generator = Generator<[Int]>(
+    generate:   { /* ... */ },
+    shrink:     { /* ... */ }
+)
+
+XCTKForAll(using: generator)
+{
+    (array: [Int]) in
+    
+    // Label empty arrays.
+    // 10% of generated arrays must be empty. Otherwise, the test fails.
+    XCTKCover(10, "empty", when: array.isEmpty)
+    
+    // Label non-empty arrays.
+    XCTKClassify("non-empty", when: !array.isEmpty)
+    
+    // Test properties that must hold for any array.
+}
+```
+
 ### Built-In Conformance
 
 Built-in ``Arbitrary`` conformance is provided for many standard library types:
