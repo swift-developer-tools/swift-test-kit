@@ -295,7 +295,7 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
         let counterexample: Counterexample<BoundInt>
             = try XCTUnwrap(Self.assertFailed(result))
         
-        XCTAssertEqual(counterexample.value, BoundInt(value: target + 1))
+        XCTAssertEqual(counterexample.value, BoundInt(target + 1))
         XCTAssertNil(counterexample.thrownError)
         XCTAssertEqual(counterexample.failures.count, 1)
     }
@@ -376,7 +376,7 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
             = try XCTUnwrap(Self.assertFailed(result))
         
         XCTAssertGreaterThan(counterexample.iteration, 1)
-        XCTAssertEqual(counterexample.value, BoundInt(value: target + 1))
+        XCTAssertEqual(counterexample.value, BoundInt(target + 1))
     }
     
     
@@ -537,7 +537,7 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
         /// the shrink candidates are `[0, 13, 20, 23, 25]`, which is filtered
         /// to `[0, 20]` by the precondition. Both these candidates pass the
         /// property, so the minimal even value is `26`.
-        XCTAssertEqual(counterexample.value, BoundInt(value: 26))
+        XCTAssertEqual(counterexample.value, BoundInt(26))
     }
     
     
@@ -1163,7 +1163,7 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
             return
         }
         
-        XCTAssertEqual(counterexample.value, BoundInt(value: target + 1))
+        XCTAssertEqual(counterexample.value, BoundInt(target + 1))
         XCTAssertGreaterThan(counterexample.shrinkSteps, 0)
         
         /// The distribution count for `tested` must equal the number of
@@ -1932,7 +1932,7 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
         let counterexample: Counterexample<BoundInt>
             = try XCTUnwrap(Self.assertFailed(result))
         
-        XCTAssertEqual(counterexample.value, BoundInt(value: target + 1))
+        XCTAssertEqual(counterexample.value, BoundInt(target + 1))
         XCTAssertGreaterThan(counterexample.shrinkSteps, 0)
     }
     
@@ -2111,7 +2111,7 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
         let counterexample: Counterexample<BoundInt>
             = try XCTUnwrap(Self.assertFailed(result))
         
-        XCTAssertEqual(counterexample.value, BoundInt(value: target + 1))
+        XCTAssertEqual(counterexample.value, BoundInt(target + 1))
         XCTAssertGreaterThan(counterexample.shrinkSteps, 0)
         XCTAssertNotNil(counterexample.thrownError)
         XCTAssertTrue(counterexample.thrownError is TestError)
@@ -2311,7 +2311,7 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
         let counterexample: Counterexample<BoundInt>
             = try XCTUnwrap(Self.assertFailed(result))
         
-        XCTAssertEqual(counterexample.value, BoundInt(value: target + 1))
+        XCTAssertEqual(counterexample.value, BoundInt(target + 1))
         XCTAssertGreaterThan(counterexample.shrinkSteps, 0)
         
         XCTAssertNotNil(counterexample.thrownError)
@@ -2400,7 +2400,7 @@ internal final class PropertyRunnerTests: XCTestCaseStopOnFail
         let counterexample: Counterexample<BoundInt>
             = try XCTUnwrap(Self.assertFailed(result))
         
-        XCTAssertEqual(counterexample.value, BoundInt(value: target + 1))
+        XCTAssertEqual(counterexample.value, BoundInt(target + 1))
         
         /// The original value should be whatever was first generated at a
         /// size large enough to produce a value `> target`, which is larger
@@ -3030,6 +3030,13 @@ extension PropertyRunnerTests
     {
         let value: Int
         
+        init(
+            _ value: Int
+        )
+        {
+            self.value = value
+        }
+        
         var description: String
         {
             return "BoundInt: \(value)"
@@ -3039,14 +3046,12 @@ extension PropertyRunnerTests
             using context: GenerationContext
         ) -> BoundInt
         {
-            return BoundInt(value:
-                context.random(in: 0...max(1, context.size))
-            )
+            return BoundInt(context.random(in: 0...max(1, context.size)))
         }
         
         func shrink() -> [BoundInt]
         {
-            return value.shrinkTowardZero().map { BoundInt(value: $0) }
+            return value.shrinkTowardZero().map { BoundInt($0) }
         }
     }
     
