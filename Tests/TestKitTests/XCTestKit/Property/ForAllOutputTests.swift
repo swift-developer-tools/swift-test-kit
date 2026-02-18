@@ -61,7 +61,7 @@ internal final class ForAllOutputTests: XCTestKitCase
         Counterexample:
             Int = 0
         
-        Seed: \(Self.seed) (re-run with PropertyOptions.seed)
+        \(Self.seedMessage)
         
         """
         
@@ -112,7 +112,7 @@ internal final class ForAllOutputTests: XCTestKitCase
         Counterexample:
             Int = 10
         
-        Seed: \(Self.seed) (re-run with PropertyOptions.seed)
+        \(Self.seedMessage)
         
         """
         
@@ -167,7 +167,7 @@ internal final class ForAllOutputTests: XCTestKitCase
         Counterexample:
             Int = 10
         
-        Seed: \(Self.seed) (re-run with PropertyOptions.seed)
+        \(Self.seedMessage)
         
         """
         
@@ -203,7 +203,7 @@ internal final class ForAllOutputTests: XCTestKitCase
         Counterexample:
             Int = 0
         
-        Seed: \(Self.seed) (re-run with PropertyOptions.seed)
+        \(Self.seedMessage)
         
         Threw error: TestError()
         """
@@ -243,7 +243,7 @@ internal final class ForAllOutputTests: XCTestKitCase
         Counterexample:
             Int = 0
         
-        Seed: \(Self.seed) (re-run with PropertyOptions.seed)
+        \(Self.seedMessage)
         
         Threw error: TestError()
         
@@ -293,7 +293,7 @@ internal final class ForAllOutputTests: XCTestKitCase
         Counterexample:
             Int = 0
         
-        Seed: \(Self.seed) (re-run with PropertyOptions.seed)
+        \(Self.seedMessage)
         
         """
         
@@ -345,7 +345,7 @@ internal final class ForAllOutputTests: XCTestKitCase
         Counterexample:
             Int = 50
         
-        Seed: \(Self.seed) (re-run with PropertyOptions.seed)
+        \(Self.seedMessage)
         
         """
         
@@ -391,7 +391,7 @@ internal final class ForAllOutputTests: XCTestKitCase
         Counterexample:
             Int = 0
         
-        Seed: \(Self.seed) (re-run with PropertyOptions.seed)
+        \(Self.seedMessage)
         
         """
         
@@ -435,7 +435,7 @@ internal final class ForAllOutputTests: XCTestKitCase
             Int = 0
             Int = 0
         
-        Seed: \(Self.seed) (re-run with PropertyOptions.seed)
+        \(Self.seedMessage)
         
         """
         
@@ -485,7 +485,7 @@ internal final class ForAllOutputTests: XCTestKitCase
             Int = 50
             String = abc
         
-        Seed: \(Self.seed) (re-run with PropertyOptions.seed)
+        \(Self.seedMessage)
         
         """
         
@@ -539,7 +539,7 @@ internal final class ForAllOutputTests: XCTestKitCase
             Int = 10
             String = abc
         
-        Seed: \(Self.seed) (re-run with PropertyOptions.seed)
+        \(Self.seedMessage)
         
         """
         
@@ -591,7 +591,7 @@ internal final class ForAllOutputTests: XCTestKitCase
             String = abc
             Bool = true
         
-        Seed: \(Self.seed) (re-run with PropertyOptions.seed)
+        \(Self.seedMessage)
         
         """
         
@@ -647,7 +647,7 @@ internal final class ForAllOutputTests: XCTestKitCase
             String = abc
             Bool = true
         
-        Seed: \(Self.seed) (re-run with PropertyOptions.seed)
+        \(Self.seedMessage)
         
         """
         
@@ -694,7 +694,7 @@ internal final class ForAllOutputTests: XCTestKitCase
         Counterexample:
             Int = 0
         
-        Seed: \(Self.seed) (re-run with PropertyOptions.seed)
+        \(Self.seedMessage)
         
         """
         
@@ -740,7 +740,7 @@ internal final class ForAllOutputTests: XCTestKitCase
         Counterexample:
             Int = 0
         
-        Seed: \(Self.seed) (re-run with PropertyOptions.seed)
+        \(Self.seedMessage)
         
         """
         
@@ -788,7 +788,7 @@ internal final class ForAllOutputTests: XCTestKitCase
         Counterexample:
             Array<Int> = [1, 2, 3]
         
-        Seed: \(Self.seed) (re-run with PropertyOptions.seed)
+        \(Self.seedMessage)
         
         """
         
@@ -844,7 +844,7 @@ internal final class ForAllOutputTests: XCTestKitCase
         Counterexample:
             Int = 98
         
-        Seed: \(Self.seed) (re-run with PropertyOptions.seed)
+        \(Self.seedMessage)
         
         """
         
@@ -892,7 +892,7 @@ internal final class ForAllOutputTests: XCTestKitCase
         Counterexample:
             Point = Point(x: 5, y: 10)
         
-        Seed: \(Self.seed) (re-run with PropertyOptions.seed)
+        \(Self.seedMessage)
         
         """
         
@@ -948,7 +948,7 @@ internal final class ForAllOutputTests: XCTestKitCase
         Counterexample:
             Array<Int> = [1]
         
-        Seed: \(Self.seed) (re-run with PropertyOptions.seed)
+        \(Self.seedMessage)
         
         """
         
@@ -997,7 +997,7 @@ internal final class ForAllOutputTests: XCTestKitCase
         Counterexample:
             Int = 12
         
-        Seed: \(Self.seed) (re-run with PropertyOptions.seed)
+        \(Self.seedMessage)
         
         Threw error: TestError()
         """
@@ -1086,7 +1086,7 @@ internal final class ForAllOutputTests: XCTestKitCase
             Int = 5
             Int = 3
         
-        Seed: \(Self.seed) (re-run with PropertyOptions.seed)
+        \(Self.seedMessage)
         
         """
         
@@ -1156,7 +1156,7 @@ internal final class ForAllOutputTests: XCTestKitCase
         Counterexample:
             Int = 10
         
-        Seed: \(Self.seed) (re-run with PropertyOptions.seed)
+        \(Self.seedMessage)
         
         """
         
@@ -1195,7 +1195,7 @@ internal final class ForAllOutputTests: XCTestKitCase
         
             2 inputs discarded (max ratio: 1)
         
-        Seed: \(Self.seed) (re-run with PropertyOptions.seed)
+        \(Self.seedMessage)
         """
         
         XCTAssertEqual(expected, actual)
@@ -1232,7 +1232,7 @@ internal final class ForAllOutputTests: XCTestKitCase
         
             2 inputs discarded (max ratio: 1)
         
-        Seed: \(Self.seed) (re-run with PropertyOptions.seed)
+        \(Self.seedMessage)
         
         hello world
         """
@@ -1279,7 +1279,7 @@ internal final class ForAllOutputTests: XCTestKitCase
         
             6 inputs discarded (max ratio: 1)
         
-        Seed: \(Self.seed) (re-run with PropertyOptions.seed)
+        \(Self.seedMessage)
         """
         
         XCTAssertEqual(expected, actual)
@@ -1319,7 +1319,7 @@ internal final class ForAllOutputTests: XCTestKitCase
         
             1 input discarded (max ratio: 0)
         
-        Seed: \(Self.seed) (re-run with PropertyOptions.seed)
+        \(Self.seedMessage)
         """
         
         XCTAssertEqual(expected, actual)
@@ -1336,6 +1336,10 @@ extension ForAllOutputTests
     ///
     /// Use a fixed seed rather than a random seed for deterministic tests.
     private static let seed: UInt64 = 50
+    
+    /// The re-run message.
+    private static let seedMessage: String =
+        "Seed: \(seed) (re-run with PropertyOptions.seed)"
     
     
     
