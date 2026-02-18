@@ -757,12 +757,10 @@ internal final class ForAllOutputTests: XCTestKitCase
             seed:           Self.seed
         )
         
-        let generator = Generator<[Int]>.constant([1, 2, 3])
-        
         let output: String? = await withOneExpectedFailure
         {
             await XCTKForAll(
-                using:      generator,
+                using:      Generator<[Int]>.constant([1, 2, 3]),
                 options:    options
             )
             {
@@ -861,12 +859,10 @@ internal final class ForAllOutputTests: XCTestKitCase
             seed:           Self.seed
         )
         
-        let generator = Generator<Point>.constant(Point(x: 5, y: 10))
-        
         let output: String? = await withOneExpectedFailure
         {
             await XCTKForAll(
-                using:      generator,
+                using:      Generator<Point>.constant(Point(x: 5, y: 10)),
                 options:    options
             )
             {
