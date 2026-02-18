@@ -8,18 +8,8 @@
 //===----------------------------------------------------------------------===//
 
 import TestKitCore
-import OSLog
 
 
-
-private let logger = Logger(
-    subsystem:  "swift-test-kit",
-    category:   "Classification"
-)
-
-
-
-// MARK: - XCTKClassify
 
 /// Tags the current iteration with the given label when the given condition
 /// is true.
@@ -37,22 +27,13 @@ public func XCTKClassify(
     when    condition   : @autoclosure () -> Bool
 )
 {
-    guard let interceptor = PropertyInterceptor.current
-    else
-    {
-        logger.warning("XCTKClassify called outside a property body (no-op)")
-        return
-    }
-    
-    if condition()
-    {
-        interceptor.recordLabel(label)
-    }
+    TKClassify(
+        label:      label,
+        condition:  condition
+    )
 }
 
 
-
-// MARK: - XCTKCover
 
 /// Tags the current iteration with the given label when the given condition
 /// is true, and registers a minimum coverage percentage for that label.
@@ -75,27 +56,14 @@ public func XCTKCover(
     when    condition   : @autoclosure () -> Bool
 )
 {
-    guard let interceptor = PropertyInterceptor.current
-    else
-    {
-        logger.warning("XCTKCover called outside a property body (no-op)")
-        return
-    }
-    
-    interceptor.recordCoverageRequirement(
-        percentage,
-        for: label
+    TKCover(
+        percentage:     percentage,
+        label:          label,
+        condition:      condition
     )
-    
-    if condition()
-    {
-        interceptor.recordLabel(label)
-    }
 }
 
 
-
-// MARK: - XCTKLabel
 
 /// Tags the current iteration with the given label.
 ///
@@ -106,19 +74,10 @@ public func XCTKLabel(
     _ label: String
 )
 {
-    guard let interceptor = PropertyInterceptor.current
-    else
-    {
-        logger.warning("XCTKLabel called outside a property body (no-op)")
-        return
-    }
-    
-    interceptor.recordLabel(label)
+    TKLabel(label: label)
 }
 
 
-
-// MARK: - XCTKCollect
 
 /// Tags the current iteration with the string representation of the given
 /// value.
@@ -131,5 +90,5 @@ public func XCTKCollect<T>(
     _ value: T
 )
 {
-    XCTKLabel("\(value)")
+    TKCollect(value: value)
 }
