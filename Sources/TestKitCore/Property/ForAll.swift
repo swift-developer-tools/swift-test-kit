@@ -7,7 +7,6 @@
 //
 //===----------------------------------------------------------------------===//
 
-/// Asserts that the given property holds for all generated inputs.
 @Reasync
 package func TKForAll<each T>(
     _ message   : () -> String,
@@ -45,8 +44,6 @@ package func TKForAll<each T>(
 
 
 
-/// Asserts that the given property holds for all inputs produced by the
-/// given generators.
 @Reasync
 package func TKForAll<each T>(
     using generators    : repeat Generator<each T>,
@@ -85,8 +82,6 @@ package func TKForAll<each T>(
 
 
 
-/// Asserts that the given property holds for all generated inputs that satisfy
-/// the given precondition.
 @Reasync
 package func TKForAll<each T>(
     where precondition  : @escaping (repeat each T) -> Bool,
@@ -133,8 +128,6 @@ package func TKForAll<each T>(
 
 
 
-/// Asserts that the given property holds for all inputs produced by the given
-/// generators that satisfy the given precondition.
 @Reasync
 package func TKForAll<each T>(
     using generators    : repeat Generator<each T>,
