@@ -236,20 +236,28 @@ package struct PropertyRunner
             !interceptor.distribution.isEmpty
             || !interceptor.tableDistribution.isEmpty
         {
-            var summaryLines: [String]
+            var flatLines: [String]
                 = PropertyCheckResult<T>.formatDistribution(
                     interceptor.distribution,
                     iterations: iterations
                 )
             
-            summaryLines.append(contentsOf:
-                PropertyCheckResult<T>.formatTableDistribution(
+            let tableLines: [String]
+                = PropertyCheckResult<T>.formatTableDistribution(
                     interceptor.tableDistribution,
                     iterations: iterations
                 )
-            )
             
-            let summary: String = summaryLines.joined(separator: "\n")
+            if
+                !flatLines.isEmpty,
+                !tableLines.isEmpty
+            {
+                flatLines.append("")
+            }
+            
+            flatLines.append(contentsOf: tableLines)
+            
+            let summary: String = flatLines.joined(separator: "\n")
             
             logger.info("Property passed \(iterations) iterations\n\(summary)")
         }

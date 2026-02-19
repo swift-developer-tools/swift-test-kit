@@ -165,17 +165,24 @@ extension PropertyCheckResult
                 iterations: counterexample.iteration
             ))
             
-            let distributionLines: [String] = Self.formatDistribution(
+            let flatLines: [String] = Self.formatDistribution(
                 distribution,
                 iterations: counterexample.iteration
             )
             
-            lines.append(contentsOf: distributionLines)
+            lines.append(contentsOf: flatLines)
             
             let tableLines: [String] = Self.formatTableDistribution(
                 tableDistribution,
                 iterations: counterexample.iteration
             )
+            
+            if
+                !flatLines.isEmpty,
+                !tableLines.isEmpty
+            {
+                lines.append("")
+            }
             
             lines.append(contentsOf: tableLines)
         }
@@ -261,17 +268,24 @@ extension PropertyCheckResult
             lines.append("")
             lines.append(Self.makeDistributionHeader(iterations: succeeded))
             
-            let distributionLines: [String] = Self.formatDistribution(
+            let flatLines: [String] = Self.formatDistribution(
                 distribution,
                 iterations: succeeded
             )
             
-            lines.append(contentsOf: distributionLines)
+            lines.append(contentsOf: flatLines)
             
             let tableLines: [String] = Self.formatTableDistribution(
                 tableDistribution,
                 iterations: succeeded
             )
+            
+            if
+                !flatLines.isEmpty,
+                !tableLines.isEmpty
+            {
+                lines.append("")
+            }
             
             lines.append(contentsOf: tableLines)
         }
@@ -341,6 +355,13 @@ extension PropertyCheckResult
             iterations:     iterations
         )
         
+        if
+            !flatLines.isEmpty,
+            !tableLines.isEmpty
+        {
+            lines.append("")
+        }
+        
         lines.append(contentsOf: tableLines)
         
         
@@ -396,11 +417,18 @@ extension PropertyCheckResult
         
         
         
-        var lines: [String] = []
+        var lines   : [String]  = []
+        var isFirst : Bool      = true
         
         for tableName in allTables.sorted()
         {
-            lines.append("")
+            if !isFirst
+            {
+                lines.append("")
+            }
+            
+            isFirst = false
+            
             lines.append("    Table \(quote(tableName)):")
             
             let tableLines: [String] = formatCoverageLines(
@@ -596,7 +624,8 @@ extension PropertyCheckResult
         iterations          : Int
     ) -> [String]
     {
-        var lines: [String] = []
+        var lines   : [String]  = []
+        var isFirst : Bool      = true
         
         for tableName in tableDistribution.keys.sorted()
         {
@@ -605,9 +634,19 @@ extension PropertyCheckResult
                 iterations: iterations
             )
             
-            lines.append("")
+            if !isFirst
+            {
+                lines.append("")
+            }
+            
+            isFirst = false
+            
             lines.append("    Table \(quote(tableName)):")
-            lines.append(contentsOf: tableLines)
+            
+            for line in tableLines
+            {
+                lines.append("    \(line)")
+            }
         }
         
         return lines
