@@ -403,23 +403,21 @@ coverage requirements can be set to fail the test with a distribution summary
 if the requirement is not met.
 
 ```swift
-let generator = Generator<[Int]>(
-    generate:   { /* ... */ },
-    shrink:     { /* ... */ }
-)
-
 XCTKForAll(using: generator)
 {
     (array: [Int]) in
     
-    // Label empty arrays.
-    // 10% of generated arrays must be empty. Otherwise, the test fails.
-    XCTKCover(10, "empty", when: array.isEmpty)
+    // Discard empty arrays.
+    try XCTKAssume(!array.isEmpty)
     
-    // Label non-empty arrays.
-    XCTKClassify("non-empty", when: !array.isEmpty)
+    // 10% of arrays must have more than 5 elements.
+    // Otherwise, the test fails.
+    XCTKCover(10, "large", when: array.count > 5)
     
-    // Test properties that must hold for any array.
+    // Label single-element arrays.
+    XCTKClassify("non-empty", when: array.count == 1)
+    
+    // Test properties that must hold for any non-empty array.
 }
 ```
 
