@@ -1,19 +1,41 @@
 # ``XCTestKit``
 
-XCTestKit Summary
+Structural diff output, expression capture, predicate assertions, and 
+property-based testing for XCTest.
 
 
 
 ## Overview
 
-XCTestKit Overview
+XCTestKit extends the [XCTest](https://developer.apple.com/documentation/xctest) 
+framework with advanced assertions and property-based testing.
 
+When assertions fail, structural diffs pinpoint exactly where values diverge 
+within complex data structures, using path-based output that scales from flat 
+primitives to deeply-nested structs, collections, and multi-line strings. 
+
+Macro assertions capture the literal source text of expressions and decompose 
+compound boolean logic to identify which sub-expression caused the failure, 
+making CI/CD logs actionable without needing access to the source code.
+
+Predicate assertions verify conditions across collection elements and produce 
+element-level failure output, identifying which elements failed, which matched 
+unexpectedly, and which threw errors.
+
+Property-based testing generates random inputs automatically, shrinks failures 
+to minimal counterexamples, and reports failing inputs with the same rich 
+assertion output used by standalone assertions.
+
+- Note: To test with the 
+[Swift Testing](https://developer.apple.com/xcode/swift-testing) framework, use 
+[SwiftTestKit](https://swift-developer-tools.github.io/swift-test-kit/documentation/swifttestkit). 
+SwiftTestKit and XCTestKit provide identical APIs.
 
 
 ## Diff Output
 
-XCTestKit produces path-based diff output for assertion failures, providing 
-clear insight into where values differ within complex data structures.
+Assertion failures produce path-based diff output providing clear insight into 
+where values differ within complex data structures.
 
 Below are examples of diff output for several common data types. The number 
 of diffs shown, truncation behavior, and other formatting options may be 
@@ -35,18 +57,18 @@ struct Outer: Equatable
     let inner   : Inner
 }
 
-let expected    = Outer(tag: "a", inner: Inner(id: 1, value: 100, label: "x"))
-let actual      = Outer(tag: "a", inner: Inner(id: 1, value: 200, label: "x"))
+let expected    = Outer(tag: "a", inner: Inner(id: 1, value: 100, label: "b"))
+let actual      = Outer(tag: "a", inner: Inner(id: 1, value: 200, label: "b"))
 
 XCTKAssertEqual(expected, actual)
 
-/// XCTKAssertEqual failed
+// XCTKAssertEqual failed
 ///
-/// Outer differs at:
+// Outer differs at:
 ///
-///     .inner.value
-///         Expected:   100
-///         Actual:     200
+//     .inner.value
+//         Expected:   100
+//         Actual:     200
 ```
 
 ### Arrays
@@ -55,23 +77,23 @@ XCTKAssertEqual(expected, actual)
 let expected    = [1, 2, 3, 4, 5, 6, 7, 8]
 let actual      = [0, 0, 3, 4, 5, 6, 7, 0]
 
-let options = TKOptions(formatOptions: .init(maxDiffs: 2))
+let options = TestOptions(formatOptions: .init(maxDiffs: 2))
 
 XCTKAssertEqual(expected, actual, options: options)
 
-/// XCTKAssertEqual failed
+// XCTKAssertEqual failed
 ///
-/// Array<Int> differs at:
+// Array<Int> differs at:
 ///
-///     [0]
-///         Expected:   1
-///         Actual:     0
+//     [0]
+//         Expected:   1
+//         Actual:     0
 ///
-///     [1]
-///         Expected:   2
-///         Actual:     0
+//     [1]
+//         Expected:   2
+//         Actual:     0
 ///
-///     ... and 1 more difference
+//     ... and 1 more difference
 ```
 
 ### Multi-Line Strings
@@ -82,14 +104,14 @@ let actual      = "Line 1\nLine X\nLine 3"
 
 XCTKAssertEqual(expected, actual)
 
-/// XCTKAssertEqual failed
+// XCTKAssertEqual failed
 ///
-/// String differs at:
+// String differs at:
 ///
-///     line 2
-///         Expected:   "Line 2"
-///         Actual:     "Line X"
-///         Changed:    character 6 ("2" → "X")
+//     line 2
+//         Expected:   "Line 2"
+//         Actual:     "Line X"
+//         Changed:    character 6 ("2" → "X")
 ```
 
 ### Sets
@@ -100,14 +122,14 @@ let actual      : Set<String>   = ["a", "e", "f"]
 
 XCTKAssertEqual(expected, actual)
 
-/// XCTKAssertEqual failed
+// XCTKAssertEqual failed
 ///
-/// Set<String> differs:
+// Set<String> differs:
 ///
-///     Missing:    "b"
-///     Missing:    "c"
-///     Unexpected: "e"
-///     Unexpected: "f"
+//     Missing:    "b"
+//     Missing:    "c"
+//     Unexpected: "e"
+//     Unexpected: "f"
 ```
 
 
@@ -129,32 +151,32 @@ options may be configured at the global or assertion level.
 
 ```swift
 #XCTKAssertTrue(isValid() && hasAccess && count >= 10)
-/// where isValid() -> true, hasAccess == false, count == 20
+// where isValid() -> true, hasAccess == false, count == 20
 
-/// #XCTKAssertTrue failed
-/// 
-/// Expression: isValid() && hasAccess && count >= 10
-/// 
-///     isValid() = true
-///     hasAccess = false ←
-/// 
-///     (1 expression not evaluated)
+// #XCTKAssertTrue failed
+// 
+// Expression: isValid() && hasAccess && count >= 10
+// 
+//     isValid() = true
+//     hasAccess = false ←
+// 
+//     (1 expression not evaluated)
 ```
 
 ### Nested Expressions
 
 ```swift
 #XCTKAssertFalse((a || b) && (c || d))
-/// where a == true, b == false, c == true, d == false
+// where a == true, b == false, c == true, d == false
 
-/// #XCTKAssertFalse failed
-/// 
-/// Expression: (a || b) && (c || d)
-/// 
-///     a = true ←
-///     c = true ←
-/// 
-///     (2 expressions not evaluated)
+// #XCTKAssertFalse failed
+// 
+// Expression: (a || b) && (c || d)
+// 
+//     a = true ←
+//     c = true ←
+// 
+//     (2 expressions not evaluated)
 ```
 
 ### Non-Boolean Assertions
@@ -162,20 +184,20 @@ options may be configured at the global or assertion level.
 ```swift
 #XCTKAssertNoThrow(try getValue())
 
-/// #XCTKAssertNoThrow failed
-/// 
-/// Expression: try getValue()
-/// Threw:      RequestError.timeout
+// #XCTKAssertNoThrow failed
+// 
+// Expression: try getValue()
+// Threw:      RequestError.timeout
 ```
 
 ```swift
 #XCTKAssertNil(result.error)
-/// where result.error == RequestError.timeout
+// where result.error == RequestError.timeout
 
-/// #XCTKAssertNil failed
-/// 
-/// Expression: result.error
-/// Actual:     RequestError.timeout
+// #XCTKAssertNil failed
+// 
+// Expression: result.error
+// Actual:     RequestError.timeout
 ```
 
 
@@ -195,14 +217,14 @@ may be configured at the global or assertion level.
 ```swift
 XCTKAssertAllSatisfy([10, 15, 20, 25]) { $0.isMultiple(of: 10) }
 
-/// XCTKAssertAllSatisfy failed
-/// 
-/// Collection count: 4
-/// 
-/// Failed: 2 of 4
-/// 
-///     [1]: 15
-///     [3]: 25
+// XCTKAssertAllSatisfy failed
+// 
+// Collection count: 4
+// 
+// Failed: 2 of 4
+// 
+//     [1]: 15
+//     [3]: 25
 ```
 
 ### Exactly
@@ -210,17 +232,17 @@ XCTKAssertAllSatisfy([10, 15, 20, 25]) { $0.isMultiple(of: 10) }
 ```swift
 #XCTKAssertExactly([30, 25, 10, 35, 15], count: 2) { $0 > 20 }
 
-/// #XCTKAssertExactly failed
-/// 
-/// Collection count: 5
-/// 
-/// Collection: [30, 25, 10, 35, 15]
-/// Predicate:  { $0 > 20 }
-/// 
-/// Expected: exactly 2 matches
-/// Actual:   3 matched
-/// 
-///     Matched: [0-1], [3]
+// #XCTKAssertExactly failed
+// 
+// Collection count: 5
+// 
+// Collection: [30, 25, 10, 35, 15]
+// Predicate:  { $0 > 20 }
+// 
+// Expected: exactly 2 matches
+// Actual:   3 matched
+// 
+//     Matched: [0-1], [3]
 ```
 
 ### Sorted
@@ -228,14 +250,14 @@ XCTKAssertAllSatisfy([10, 15, 20, 25]) { $0.isMultiple(of: 10) }
 ```swift
 XCTKAssertSorted([10, 30, 20, 40], by: <)
 
-/// XCTKAssertSorted failed
-/// 
-/// Collection count: 4
-/// 
-/// Not sorted at:
-/// 
-///     [1]: 30
-///     [2]: 20
+// XCTKAssertSorted failed
+// 
+// Collection count: 4
+// 
+// Not sorted at:
+// 
+//     [1]: 30
+//     [2]: 20
 ```
 
 ### Unique
@@ -243,15 +265,15 @@ XCTKAssertSorted([10, 30, 20, 40], by: <)
 ```swift
 XCTKAssertUnique(["aa", "bb", "c"], by: { $0.count })
 
-/// XCTKAssertUnique failed
-/// 
-/// Collection count: 3
-/// 
-/// Duplicates: 1 key
-/// 
-///     Key 2:
-///         [0]: "aa"
-///         [1]: "bb"
+// XCTKAssertUnique failed
+// 
+// Collection count: 3
+// 
+// Duplicates: 1 key
+// 
+//     Key 2:
+//         [0]: "aa"
+//         [1]: "bb"
 ```
 
 ### Error Handling
@@ -269,27 +291,210 @@ XCTKAssertSatisfy(values, atLeast: 4)
     return value.isMultiple(of: 20)
 }
 
-/// XCTKAssertSatisfy failed
-/// 
-/// Collection count: 5
-/// 
-/// Expected: at least 4 matches
-/// Actual:   3 matched, 2 threw errors
-/// 
-///     Matched: [0], [2], [4]
-/// 
-///     Threw errors:
-///         [1]: -10 (threw error "invalid")
-///         [3]: -30 (threw error "invalid")
+// XCTKAssertSatisfy failed
+// 
+// Collection count: 5
+// 
+// Expected: at least 4 matches
+// Actual:   3 matched, 2 threw errors
+// 
+//     Matched: [0], [2], [4]
+// 
+//     Threw errors:
+//         [1]: -10 (threw error "invalid")
+//         [3]: -30 (threw error "invalid")
 ```
 
 
 
-## Documentation
+## Property-Based Testing
 
-See [SwiftTestKit documentation](https://swift-developer-tools.github.io/swift-test-kit/documentation/swifttestkit) 
-and [XCTestKit documentation](https://swift-developer-tools.github.io/swift-test-kit/documentation/xctestkit) 
-for the complete API reference. 
+Describe properties that must hold for any given input, and XCTestKit will 
+generate random test cases automatically. 
+
+```swift
+XCTKForAll
+{
+    (a: Int, b: Int) in
+    
+    // Addition is commutative. The assertion passes for all inputs.
+    XCTKAssertEqual(a + b, b + a)
+}
+```
+
+Asynchronous and throwing tests are also supported.
+
+```swift
+await XCTKForAll
+{
+    (value: String) async throws in
+    
+    try await db.save(value, forKey: "test")
+    let loaded: String? = try await db.load(forKey: "test")
+    
+    XCTKAssertEqual(loaded, value)
+}
+```
+
+### Counterexamples
+
+When an input causes a property to fail, XCTestKit will shrink the input to the 
+smallest value that still fails the property (the minimal counterexample).
+
+XCTestKit assertions are automatically intercepted inside property bodies, 
+so counterexamples include the same diff output, expression capture, and 
+formatting used by standalone assertions.
+
+The counterexample is reported along with the seed used for generation, which 
+may be used to deterministically reproduce the failure.
+
+```swift
+func customSort(_ array: [Int]) -> [Int] { /* ... */ }
+
+XCTKForAll
+{
+    (array: [Int]) in
+    
+    // Assert that a custom sort function is working correctly.
+    XCTKAssertSorted(customSort(array), by: >=)
+}
+
+// XCTKForAll failed after 4 iterations (shrunk in 2 steps)
+// 
+// Counterexample:
+//     Array<Int> = [1, 0]
+// 
+// Seed: 2188239925673862914 (re-run with PropertyOptions.seed)
+// 
+// XCTKAssertSorted failed
+// 
+// Collection count: 2
+// 
+// Not sorted at:
+// 
+//     [0]: 0
+//     [1]: 1
+```
+
+### Generators
+
+Use a ``Generator`` when ``Arbitrary`` conformance of a specific type does not 
+produce the necessary distribution of values. For example, a generator may be
+used to test only positive integers, or only non-empty arrays.
+
+```swift
+func customSort(_ array: [Int]) -> [Int] { /* ... */ }
+
+XCTKForAll(using: .nonEmptyArray(of: Int.self))
+{
+    (array: [Int]) in
+    
+    // Assert that a custom sort function is working correctly, 
+    // but test with only non-empty arrays.
+    XCTKAssertSorted(customSort(array), by: >=)
+}
+```
+
+### Classification
+
+Classification functions conditionally tag iterations with descriptive labels, 
+tracking the distribution of generated values across categories. Minimum 
+coverage requirements can be set to fail the test with a distribution summary 
+if the requirement is not met.
+
+```swift
+XCTKForAll(using: generator)
+{
+    (array: [Int]) in
+    
+    // Discard empty arrays.
+    try XCTKAssume(!array.isEmpty)
+    
+    // 10% of arrays must have more than 5 elements.
+    // Otherwise, the test fails.
+    XCTKCover(10, "large", when: array.count > 5)
+    
+    // Label single-element arrays.
+    XCTKClassify("non-empty", when: array.count == 1)
+    
+    // Test properties that must hold for any non-empty array.
+}
+```
+
+Tables track the distribution of generated values along independent named 
+dimensions, with optional coverage requirements.
+
+```swift
+XCTKForAll(using: generator)
+{
+    (n: Int) in
+    
+    // Track the parity of generated integers.
+    XCTKTabulate("parity", n.isMultiple(of: 2) ? "even" : "odd")
+    
+    // At least 50% of generated integers must be even.
+    XCTKCoverTable("parity", (50, "even"))
+    
+    // Test properties that must hold for any integer.
+}
+```
+
+### Built-In Conformance
+
+Built-in ``Arbitrary`` conformance is provided for many standard library types:
+
+- All integers (`Int`, `Int8` through `Int64`, `UInt`, `UInt8` through 
+`UInt64`)
+- Floating-point numbers (`Float`, `Float16`, `Double`, `Decimal`)
+- Collections (`Array`, `Set`, `Dictionary`, `CollectionOfOne`)
+- Ranges (`Range`, `ClosedRange`)
+- Foundation types (`Date`, `Data`, `UUID`)
+- `String`, `Substring`, `Character`, `Unicode.Scalar`
+- `Bool`
+- `Optional`
+- `Result`
+
+### Custom Type Conformance
+
+Apply the ``Arbitrary()`` macro to a struct or enum to automatically generate 
+``Arbitrary`` conformance for custom types.
+
+Generic parameters that appear in stored properties or associated values are 
+automatically constrained to ``Arbitrary``.
+
+```swift
+@Arbitrary
+struct User<T>: Equatable where T : Equatable & Hashable
+{
+    let name    : String
+    let id      : T
+}
+
+XCTKForAll
+{
+    (user: User<UUID>) in
+    
+    // Test properties that must hold for any user.
+}
+```
+
+Recursive and `indirect` enums are also supported.
+
+```swift
+@Arbitrary
+indirect enum Tree: Equatable
+{
+    case leaf
+    case node(Tree, Tree)
+}
+
+XCTKForAll
+{
+    (a: Tree, b: Tree) in
+    
+    // Test properties that must hold for any pair of trees.
+}
+```
 
 
 
@@ -297,8 +502,17 @@ for the complete API reference.
 
 ### Swift Package Manager
 
-XCTestKit may be installed using 
-[Swift Package Manager](https://docs.swift.org/swiftpm/documentation/packagemanagerdocs/).
+swift-test-kit may be installed using 
+[Swift Package Manager](https://docs.swift.org/swiftpm/documentation/packagemanagerdocs/). 
+The package includes both SwiftTestKit and XCTestKit.
+
+```swift
+// Use SwiftTestKit.
+import SwiftTestKit
+
+// Use XCTestKit.
+import XCTestKit
+```
 
 See [Xcode documentation](https://developer.apple.com/documentation/xcode/adding-package-dependencies-to-your-app) 
 for instructions on how to add package dependencies.
@@ -318,39 +532,12 @@ for instructions on how to add package dependencies.
 
 
 
-## Usage
-
-XCTestKit Usage
-
-
-
 ## License
 
-XCTestKit is licensed under the Apache License, Version 2.0.
+swift-test-kit is licensed under the Apache License, Version 2.0.
 
 See [LICENSE](https://github.com/swift-developer-tools/swift-test-kit/blob/main/LICENSE.txt) 
 for the complete license terms.
-
-
-
-## Attribution
-
-See [Licenses](https://github.com/swift-developer-tools/swift-test-kit/tree/main/Licenses) 
-for the complete third-party license terms.
-
-### Swift.org
-
-XCTestKit includes a numeric equality utility adapted from the 
-[Swift.org](https://www.swift.org) open source project under the Apache License, 
-Version 2.0, with Runtime Library Exception.
-
-Copyright &copy; 2014 - 2016 Apple Inc. and the Swift project authors.
-
-See [https://swift.org/LICENSE.txt](https://swift.org/LICENSE.txt) for license 
-information.
-
-See [https://swift.org/CONTRIBUTORS.txt](https://swift.org/CONTRIBUTORS.txt) 
-for the list of Swift project authors.
 
 
 
@@ -361,3 +548,4 @@ for the list of Swift project authors.
 - <doc:Configuration>
 - <doc:FunctionAssertions>
 - <doc:MacroAssertions>
+- <doc:PropertyBasedTesting>

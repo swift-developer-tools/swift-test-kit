@@ -17,7 +17,7 @@ internal final class ComparatorContext
     internal var visitedActual      : Set<ObjectIdentifier>
     
     /// The options for computing diffs.
-    internal let options            : TKDiffOptions
+    internal let options            : DiffOptions
     
     
     
@@ -26,7 +26,7 @@ internal final class ComparatorContext
     internal init(
         visitedExpected : Set<ObjectIdentifier>     = [],
         visitedActual   : Set<ObjectIdentifier>     = [],
-        options         : TKDiffOptions             = .init()
+        options         : DiffOptions               = .init()
     )
     {
         self.visitedExpected    = visitedExpected

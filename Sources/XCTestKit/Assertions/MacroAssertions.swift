@@ -17,12 +17,12 @@ import XCTest
 internal func _XCTKAssertMacro(
     result          : Bool,
     exprText        : String,
-    evaluated       : [TKBooleanExpr],
+    evaluated       : [BooleanExpr],
     notEvaluated    : Int,
     message         : @autoclosure () -> String,
     file            : StaticString,
     line            : UInt,
-    options         : TKOptions?
+    options         : TestOptions?
 )
 {
     evaluateXCTKAssert(
@@ -42,12 +42,12 @@ internal func _XCTKAssertMacro(
 internal func _XCTKAssertTrueMacro(
     result          : Bool,
     exprText        : String,
-    evaluated       : [TKBooleanExpr],
+    evaluated       : [BooleanExpr],
     notEvaluated    : Int,
     message         : @autoclosure () -> String,
     file            : StaticString,
     line            : UInt,
-    options         : TKOptions?
+    options         : TestOptions?
 )
 {
     evaluateXCTKAssertTrue(
@@ -67,12 +67,12 @@ internal func _XCTKAssertTrueMacro(
 internal func _XCTKAssertFalseMacro(
     result          : Bool,
     exprText        : String,
-    evaluated       : [TKBooleanExpr],
+    evaluated       : [BooleanExpr],
     notEvaluated    : Int,
     message         : @autoclosure () -> String,
     file            : StaticString,
     line            : UInt,
-    options         : TKOptions?
+    options         : TestOptions?
 )
 {
     evaluateXCTKAssertFalse(
@@ -97,7 +97,7 @@ internal func _XCTKAssertNilMacro(
     message     : @autoclosure () -> String,
     file        : StaticString,
     line        : UInt,
-    options     : TKOptions?
+    options     : TestOptions?
 )
 {
     evaluateXCTKAssertNil(
@@ -118,7 +118,7 @@ internal func _XCTKAssertNotNilMacro(
     message     : @autoclosure () -> String,
     file        : StaticString,
     line        : UInt,
-    options     : TKOptions?
+    options     : TestOptions?
 )
 {
     evaluateXCTKAssertNotNil(
@@ -139,7 +139,7 @@ internal func _XCTKUnwrapMacro<T>(
     message     : @autoclosure () -> String,
     file        : StaticString,
     line        : UInt,
-    options     : TKOptions?
+    options     : TestOptions?
 ) throws -> T
 {
     return try evaluateXCTKUnwrap(
@@ -164,7 +164,7 @@ internal func _XCTKAssertEqualMacro<T>(
     message         : @autoclosure () -> String,
     file            : StaticString,
     line            : UInt,
-    options         : TKOptions?
+    options         : TestOptions?
 ) where T : Equatable
 {
     evaluateXCTKAssertEqual(
@@ -188,7 +188,7 @@ internal func _XCTKAssertNotEqualMacro<T>(
     message     : @autoclosure () -> String,
     file        : StaticString,
     line        : UInt,
-    options     : TKOptions?
+    options     : TestOptions?
 ) where T : Equatable
 {
     evaluateXCTKAssertNotEqual(
@@ -212,7 +212,7 @@ internal func _XCTKAssertIdenticalMacro(
     message     : @autoclosure () -> String,
     file        : StaticString,
     line        : UInt,
-    options     : TKOptions?
+    options     : TestOptions?
 )
 {
     evaluateXCTKAssertIdentical(
@@ -236,7 +236,7 @@ internal func _XCTKAssertNotIdenticalMacro(
     message     : @autoclosure () -> String,
     file        : StaticString,
     line        : UInt,
-    options     : TKOptions?
+    options     : TestOptions?
 )
 {
     evaluateXCTKAssertNotIdentical(
@@ -261,7 +261,7 @@ internal func _XCTKAssertEqualMacro<T>(
     message     : @autoclosure () -> String,
     file        : StaticString,
     line        : UInt,
-    options     : TKOptions?
+    options     : TestOptions?
 ) where T : FloatingPoint
 {
     evaluateXCTKAssertEqual(
@@ -287,7 +287,7 @@ internal func _XCTKAssertEqualMacro<T>(
     message     : @autoclosure () -> String,
     file        : StaticString,
     line        : UInt,
-    options     : TKOptions?
+    options     : TestOptions?
 ) where T : Numeric
 {
     evaluateXCTKAssertEqual(
@@ -313,7 +313,7 @@ internal func _XCTKAssertNotEqualMacro<T>(
     message     : @autoclosure () -> String,
     file        : StaticString,
     line        : UInt,
-    options     : TKOptions?
+    options     : TestOptions?
 ) where T : FloatingPoint
 {
     evaluateXCTKAssertNotEqual(
@@ -339,7 +339,7 @@ internal func _XCTKAssertNotEqualMacro<T>(
     message     : @autoclosure () -> String,
     file        : StaticString,
     line        : UInt,
-    options     : TKOptions?
+    options     : TestOptions?
 ) where T : Numeric
 {
     evaluateXCTKAssertNotEqual(
@@ -366,7 +366,7 @@ internal func _XCTKAssertGreaterThanMacro<T>(
     message     : @autoclosure () -> String,
     file        : StaticString,
     line        : UInt,
-    options     : TKOptions?
+    options     : TestOptions?
 ) where T : Comparable
 {
     evaluateXCTKAssertGreaterThan(
@@ -390,7 +390,7 @@ internal func _XCTKAssertGreaterThanOrEqualMacro<T>(
     message     : @autoclosure () -> String,
     file        : StaticString,
     line        : UInt,
-    options     : TKOptions?
+    options     : TestOptions?
 ) where T : Comparable
 {
     evaluateXCTKAssertGreaterThanOrEqual(
@@ -414,7 +414,7 @@ internal func _XCTKAssertLessThanOrEqualMacro<T>(
     message     : @autoclosure () -> String,
     file        : StaticString,
     line        : UInt,
-    options     : TKOptions?
+    options     : TestOptions?
 ) where T : Comparable
 {
     evaluateXCTKAssertLessThanOrEqual(
@@ -438,7 +438,7 @@ internal func _XCTKAssertLessThanMacro<T>(
     message     : @autoclosure () -> String,
     file        : StaticString,
     line        : UInt,
-    options     : TKOptions?
+    options     : TestOptions?
 ) where T : Comparable
 {
     evaluateXCTKAssertLessThan(
@@ -462,7 +462,7 @@ internal func _XCTKAssertThrowsErrorMacro<T>(
     message         : @autoclosure () -> String,
     file            : StaticString,
     line            : UInt,
-    options         : TKOptions?,
+    options         : TestOptions?,
     errorHandler    : (any Error) -> Void
 )
 {
@@ -485,7 +485,7 @@ internal func _XCTKAssertNoThrowMacro<T>(
     message     : @autoclosure () -> String,
     file        : StaticString,
     line        : UInt,
-    options     : TKOptions?
+    options     : TestOptions?
 )
 {
     evaluateXCTKAssertNoThrow(
@@ -527,7 +527,7 @@ internal func _XCTKAssertAllSatisfyMacro<C>(
     message         : @autoclosure () -> String,
     file            : StaticString,
     line            : UInt,
-    options         : TKOptions?
+    options         : TestOptions?
 ) where C : Collection
 {
     evaluateXCTKAssertAllSatisfy(
@@ -551,7 +551,7 @@ internal func _XCTKAssertAnySatisfyMacro<C>(
     message         : @autoclosure () -> String,
     file            : StaticString,
     line            : UInt,
-    options         : TKOptions?
+    options         : TestOptions?
 ) where C : Collection
 {
     evaluateXCTKAssertAnySatisfy(
@@ -575,7 +575,7 @@ internal func _XCTKAssertNoneSatisfyMacro<C>(
     message         : @autoclosure () -> String,
     file            : StaticString,
     line            : UInt,
-    options         : TKOptions?
+    options         : TestOptions?
 ) where C : Collection
 {
     evaluateXCTKAssertNoneSatisfy(
@@ -600,7 +600,7 @@ internal func _XCTKAssertSatisfyMacro<C>(
     message         : @autoclosure () -> String,
     file            : StaticString,
     line            : UInt,
-    options         : TKOptions?
+    options         : TestOptions?
 ) where C : Collection
 {
     evaluateXCTKAssertSatisfy(
@@ -626,7 +626,7 @@ internal func _XCTKAssertSatisfyMacro<C>(
     message         : @autoclosure () -> String,
     file            : StaticString,
     line            : UInt,
-    options         : TKOptions?
+    options         : TestOptions?
 ) where C : Collection
 {
     evaluateXCTKAssertSatisfy(
@@ -652,7 +652,7 @@ internal func _XCTKAssertSatisfyMacro<C>(
     message         : @autoclosure () -> String,
     file            : StaticString,
     line            : UInt,
-    options         : TKOptions?
+    options         : TestOptions?
 ) where C : Collection
 {
     evaluateXCTKAssertSatisfy(
@@ -678,7 +678,7 @@ internal func _XCTKAssertExactlyMacro<C>(
     message         : @autoclosure () -> String,
     file            : StaticString,
     line            : UInt,
-    options         : TKOptions?
+    options         : TestOptions?
 ) where C : Collection
 {
     evaluateXCTKAssertExactly(
@@ -703,7 +703,7 @@ internal func _XCTKAssertExactlyOneMacro<C>(
     message         : @autoclosure () -> String,
     file            : StaticString,
     line            : UInt,
-    options         : TKOptions?
+    options         : TestOptions?
 ) where C : Collection
 {
     evaluateXCTKAssertExactlyOne(
@@ -727,7 +727,7 @@ internal func _XCTKAssertSortedMacro<C>(
     message         : @autoclosure () -> String,
     file            : StaticString,
     line            : UInt,
-    options         : TKOptions?        
+    options         : TestOptions?        
 ) where C : Collection
 {
     evaluateXCTKAssertSorted(
@@ -749,7 +749,7 @@ internal func _XCTKAssertUniqueMacro<C>(
     message         : @autoclosure () -> String,
     file            : StaticString,
     line            : UInt,
-    options         : TKOptions?
+    options         : TestOptions?
 ) where C : Collection, C.Element : Hashable
 {
     evaluateXCTKAssertUnique(
@@ -772,7 +772,7 @@ internal func _XCTKAssertUniqueMacro<C, K>(
     message         : @autoclosure () -> String,
     file            : StaticString,
     line            : UInt,
-    options         : TKOptions?
+    options         : TestOptions?
 ) where C : Collection, K : Hashable
 {
     evaluateXCTKAssertUnique(

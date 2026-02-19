@@ -8,10 +8,10 @@
 //===----------------------------------------------------------------------===//
 
 /// Computes diffs between strings.
-public struct StringComparator
+package struct StringComparator
 {
     /// The options for computing diffs.
-    private let options: TKDiffOptions
+    private let options: DiffOptions
     
     
     
@@ -24,13 +24,13 @@ public struct StringComparator
     /// - Parameters:
     ///   - expected: The expected string.
     ///   - actual: The actual string.
-    ///   - options: The diff options to use. The default value is a default-
-    ///   initialized ``TKDiffOptions`` instance.
+    ///   - options: The diff options to use. The default value is a
+    ///   default-initialized ``DiffOptions`` instance.
     /// - Returns: The diff node kind.
-    public static func compare(
+    package static func compare(
         expected    : String,
         actual      : String,
-        options     : TKDiffOptions     = .init()
+        options     : DiffOptions   = .init()
     ) -> DiffNodeKind
     {
         let comp = StringComparator(options: options)

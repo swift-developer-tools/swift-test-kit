@@ -29,7 +29,7 @@ public func XCTKAssert(
     _ message       : @autoclosure () -> String         = "",
     file            : StaticString                      = #filePath,
     line            : UInt                              = #line,
-    options         : TKOptions?                        = nil
+    options         : TestOptions?                      = nil
 )
 {
     evaluateXCTKAssert(
@@ -58,7 +58,7 @@ public func XCTKAssertTrue(
     _ message       : @autoclosure () -> String         = "",
     file            : StaticString                      = #filePath,
     line            : UInt                              = #line,
-    options         : TKOptions?                        = nil
+    options         : TestOptions?                      = nil
 )
 {
     evaluateXCTKAssertTrue(
@@ -87,7 +87,7 @@ public func XCTKAssertFalse(
     _ message       : @autoclosure () -> String         = "",
     file            : StaticString                      = #filePath,
     line            : UInt                              = #line,
-    options         : TKOptions?                        = nil
+    options         : TestOptions?                      = nil
 )
 {
     evaluateXCTKAssertFalse(
@@ -118,7 +118,7 @@ public func XCTKAssertNil(
     _ message       : @autoclosure () -> String         = "",
     file            : StaticString                      = #filePath,
     line            : UInt                              = #line,
-    options         : TKOptions?                        = nil
+    options         : TestOptions?                      = nil
 )
 {
     evaluateXCTKAssertNil(
@@ -148,7 +148,7 @@ public func XCTKAssertNotNil(
     _ message       : @autoclosure () -> String         = "",
     file            : StaticString                      = #filePath,
     line            : UInt                              = #line,
-    options         : TKOptions?                        = nil
+    options         : TestOptions?                      = nil
 )
 {
     evaluateXCTKAssertNotNil(
@@ -183,7 +183,7 @@ public func XCTKUnwrap<T>(
     _ message       : @autoclosure () -> String     = "",
     file            : StaticString                  = #filePath,
     line            : UInt                          = #line,
-    options         : TKOptions?                    = nil
+    options         : TestOptions?                  = nil
 ) throws -> T
 {
     return try evaluateXCTKUnwrap(
@@ -217,7 +217,7 @@ public func XCTKAssertEqual<T>(
     _ message   : @autoclosure () -> String     = "",
     file        : StaticString                  = #filePath,
     line        : UInt                          = #line,
-    options     : TKOptions?                    = nil
+    options     : TestOptions?                  = nil
 ) where T : Equatable
 {
     evaluateXCTKAssertEqual(
@@ -250,7 +250,7 @@ public func XCTKAssertNotEqual<T>(
     _ message       : @autoclosure () -> String     = "",
     file            : StaticString                  = #filePath,
     line            : UInt                          = #line,
-    options         : TKOptions?                    = nil
+    options         : TestOptions?                  = nil
 ) where T : Equatable
 {
     evaluateXCTKAssertNotEqual(
@@ -286,7 +286,7 @@ public func XCTKAssertIdentical(
     _ message       : @autoclosure () -> String             = "",
     file            : StaticString                          = #filePath,
     line            : UInt                                  = #line,
-    options         : TKOptions?                            = nil
+    options         : TestOptions?                  = nil
 )
 {
     evaluateXCTKAssertIdentical(
@@ -322,7 +322,7 @@ public func XCTKAssertNotIdentical(
     _ message       : @autoclosure () -> String             = "",
     file            : StaticString                          = #filePath,
     line            : UInt                                  = #line,
-    options         : TKOptions?                            = nil
+    options         : TestOptions?                  = nil
 )
 {
     evaluateXCTKAssertNotIdentical(
@@ -359,7 +359,7 @@ public func XCTKAssertEqual<T>(
     _ message       : @autoclosure () -> String     = "",
     file            : StaticString                  = #filePath,
     line            : UInt                          = #line,
-    options         : TKOptions?                    = nil
+    options         : TestOptions?                  = nil
 ) where T : FloatingPoint
 {
     evaluateXCTKAssertEqual(
@@ -396,7 +396,7 @@ public func XCTKAssertEqual<T>(
     _ message       : @autoclosure () -> String     = "",
     file            : StaticString                  = #filePath,
     line            : UInt                          = #line,
-    options         : TKOptions?                    = nil
+    options         : TestOptions?                  = nil
 ) where T : Numeric
 {
     evaluateXCTKAssertEqual(
@@ -434,7 +434,7 @@ public func XCTKAssertNotEqual<T>(
     _ message       : @autoclosure () -> String     = "",
     file            : StaticString                  = #filePath,
     line            : UInt                          = #line,
-    options         : TKOptions?                    = nil
+    options         : TestOptions?                  = nil
 ) where T : FloatingPoint
 {
     evaluateXCTKAssertNotEqual(
@@ -472,7 +472,7 @@ public func XCTKAssertNotEqual<T>(
     _ message       : @autoclosure () -> String     = "",
     file            : StaticString                  = #filePath,
     line            : UInt                          = #line,
-    options         : TKOptions?                    = nil
+    options         : TestOptions?                  = nil
 ) where T : Numeric
 {
     evaluateXCTKAssertNotEqual(
@@ -509,7 +509,7 @@ public func XCTKAssertGreaterThan<T>(
     _ message       : @autoclosure () -> String     = "",
     file            : StaticString                  = #filePath,
     line            : UInt                          = #line,
-    options         : TKOptions?                    = nil
+    options         : TestOptions?                  = nil
 ) where T : Comparable
 {
     evaluateXCTKAssertGreaterThan(
@@ -543,7 +543,7 @@ public func XCTKAssertGreaterThanOrEqual<T>(
     _ message       : @autoclosure () -> String     = "",
     file            : StaticString                  = #filePath,
     line            : UInt                          = #line,
-    options         : TKOptions?                    = nil
+    options         : TestOptions?                  = nil
 ) where T : Comparable
 {
     evaluateXCTKAssertGreaterThanOrEqual(
@@ -577,7 +577,7 @@ public func XCTKAssertLessThanOrEqual<T>(
     _ message       : @autoclosure () -> String     = "",
     file            : StaticString                  = #filePath,
     line            : UInt                          = #line,
-    options         : TKOptions?                    = nil
+    options         : TestOptions?                  = nil
 ) where T : Comparable
 {
     evaluateXCTKAssertLessThanOrEqual(
@@ -611,7 +611,7 @@ public func XCTKAssertLessThan<T>(
     _ message       : @autoclosure () -> String     = "",
     file            : StaticString                  = #filePath,
     line            : UInt                          = #line,
-    options         : TKOptions?                    = nil
+    options         : TestOptions?                  = nil
 ) where T : Comparable
 {
     evaluateXCTKAssertLessThan(
@@ -645,7 +645,7 @@ public func XCTKAssertThrowsError<T>(
     _ message       : @autoclosure () -> String     = "",
     file            : StaticString                  = #filePath,
     line            : UInt                          = #line,
-    options         : TKOptions?                    = nil,
+    options         : TestOptions?                  = nil,
     _ errorHandler  : (any Error) -> Void           = { _ in }
 )
 {
@@ -677,7 +677,7 @@ public func XCTKAssertNoThrow<T>(
     _ message       : @autoclosure () -> String     = "",
     file            : StaticString                  = #filePath,
     line            : UInt                          = #line,
-    options         : TKOptions?                    = nil
+    options         : TestOptions?                  = nil
 )
 {
     evaluateXCTKAssertNoThrow(
@@ -737,7 +737,7 @@ public func XCTKAssertAllSatisfy<C>(
     _ message       : @autoclosure () -> String     = "",
     file            : StaticString                  = #filePath,
     line            : UInt                          = #line,
-    options         : TKOptions?                    = nil
+    options         : TestOptions?                  = nil
 ) where C : Collection
 {
     evaluateXCTKAssertAllSatisfy(
@@ -772,7 +772,7 @@ public func XCTKAssertAnySatisfy<C>(
     _ message       : @autoclosure () -> String     = "",
     file            : StaticString                  = #filePath,
     line            : UInt                          = #line,
-    options         : TKOptions?                    = nil
+    options         : TestOptions?                  = nil
 ) where C : Collection
 {
     evaluateXCTKAssertAnySatisfy(
@@ -807,7 +807,7 @@ public func XCTKAssertNoneSatisfy<C>(
     _ message       : @autoclosure () -> String     = "",
     file            : StaticString                  = #filePath,
     line            : UInt                          = #line,
-    options         : TKOptions?                    = nil
+    options         : TestOptions?                  = nil
 ) where C : Collection
 {
     evaluateXCTKAssertNoneSatisfy(
@@ -825,6 +825,9 @@ public func XCTKAssertNoneSatisfy<C>(
 
 /// Asserts that at least the specified number of elements of the given
 /// collection satisfy the given predicate.
+///
+/// - Precondition: `atLeast` must be non-negative.
+///
 /// - Parameters:
 ///   - collection: The collection to evaluate.
 ///   - atLeast: The minimum number of elements of the collection that must
@@ -845,7 +848,7 @@ public func XCTKAssertSatisfy<C>(
     _ message       : @autoclosure () -> String     = "",
     file            : StaticString                  = #filePath,
     line            : UInt                          = #line,
-    options         : TKOptions?                    = nil
+    options         : TestOptions?                  = nil
 ) where C : Collection
 {
     evaluateXCTKAssertSatisfy(
@@ -864,6 +867,9 @@ public func XCTKAssertSatisfy<C>(
 
 /// Asserts that up to the specified number of elements of the given collection
 /// satisfy the given predicate.
+///
+/// - Precondition: `atMost` must be non-negative.
+///
 /// - Parameters:
 ///   - collection: The collection to evaluate.
 ///   - atMost: The maximum number of elements of the collection that must
@@ -884,7 +890,7 @@ public func XCTKAssertSatisfy<C>(
     _ message       : @autoclosure () -> String     = "",
     file            : StaticString                  = #filePath,
     line            : UInt                          = #line,
-    options         : TKOptions?                    = nil
+    options         : TestOptions?                  = nil
 ) where C : Collection
 {    
     evaluateXCTKAssertSatisfy(
@@ -903,6 +909,10 @@ public func XCTKAssertSatisfy<C>(
 
 /// Asserts that the number of elements of the given collection that satisfy
 /// the given predicate is within the specified range.
+///
+/// - Precondition: `range.lowerBound` must be less than or equal to
+/// `range.upperBound`, and non-negative.
+///
 /// - Parameters:
 ///   - collection: The collection to evaluate.
 ///   - range: The range within which the number of matching elements must fall.
@@ -922,7 +932,7 @@ public func XCTKAssertSatisfy<C>(
     _ message       : @autoclosure () -> String     = "",
     file            : StaticString                  = #filePath,
     line            : UInt                          = #line,
-    options         : TKOptions?                    = nil
+    options         : TestOptions?                  = nil
 ) where C : Collection
 {    
     evaluateXCTKAssertSatisfy(
@@ -941,6 +951,9 @@ public func XCTKAssertSatisfy<C>(
 
 /// Asserts that exactly the specified number of elements of the given
 /// collection satisfy the given predicate.
+///
+/// - Precondition: `count` must be non-negative.
+///
 /// - Parameters:
 ///   - collection: The collection to evaluate.
 ///   - count: The exact number of elements of the collection that must satisfy
@@ -961,7 +974,7 @@ public func XCTKAssertExactly<C>(
     _ message       : @autoclosure () -> String     = "",
     file            : StaticString                  = #filePath,
     line            : UInt                          = #line,
-    options         : TKOptions?                    = nil
+    options         : TestOptions?                  = nil
 ) where C : Collection
 {    
     evaluateXCTKAssertExactly(
@@ -997,7 +1010,7 @@ public func XCTKAssertExactlyOne<C>(
     _ message       : @autoclosure () -> String     = "",
     file            : StaticString                  = #filePath,
     line            : UInt                          = #line,
-    options         : TKOptions?                    = nil
+    options         : TestOptions?                  = nil
 ) where C : Collection
 {
     evaluateXCTKAssertExactlyOne(
@@ -1032,7 +1045,7 @@ public func XCTKAssertSorted<C>(
     _ message       : @autoclosure () -> String             = "",
     file            : StaticString                          = #filePath,
     line            : UInt                                  = #line,
-    options         : TKOptions?                            = nil
+    options         : TestOptions?                          = nil
 ) where C : Collection
 {
     evaluateXCTKAssertSorted(
@@ -1063,7 +1076,7 @@ public func XCTKAssertUnique<C>(
     _ message       : @autoclosure () -> String     = "",
     file            : StaticString                  = #filePath,
     line            : UInt                          = #line,
-    options         : TKOptions?                    = nil
+    options         : TestOptions?                  = nil
 ) where C : Collection, C.Element : Hashable
 {
     evaluateXCTKAssertUnique(
@@ -1097,7 +1110,7 @@ public func XCTKAssertUnique<C, K>(
     _ message       : @autoclosure () -> String     = "",
     file            : StaticString                  = #filePath,
     line            : UInt                          = #line,
-    options         : TKOptions?                    = nil
+    options         : TestOptions?                  = nil
 ) where C : Collection, K : Hashable
 {
     evaluateXCTKAssertUnique(

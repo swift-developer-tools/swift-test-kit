@@ -10,7 +10,7 @@
 //  MARK: - RenderedValueKind
 
 /// The kind of a rendered value.
-public enum RenderedValueKind: Equatable, Sendable
+package enum RenderedValueKind: Equatable, Sendable
 {
     /// A string or character value.
     ///
@@ -28,28 +28,28 @@ public enum RenderedValueKind: Equatable, Sendable
 // MARK: - RenderedValue
 
 /// Pre-rendered information about a value.
-public struct RenderedValue: Equatable, Sendable, CustomStringConvertible
+package struct RenderedValue: Equatable, Sendable, CustomStringConvertible
 {
     /// The string representation of the value.
     ///
     /// For strings, this is the string content with special characters
     /// escaped (`\n`, `\t`, `\r`, `\0`, `\\`), but without surrounding quotes.
     /// Quoting is handled by the formatter.
-    public let description  : String
+    package let description : String
     
     /// The name of the value's type.
     ///
     /// This uses the full generic signature (for example, `Array<String>`).
-    public let typeName     : String
+    package let typeName    : String
     
     /// The kind of value, used to determine the formatting behavior.
-    public let kind         : RenderedValueKind
+    package let kind        : RenderedValueKind
     
     
     
     /// Initializes a ``RenderedValue`` instance from the given value.
     /// - Parameter value: The value to use.
-    public init(
+    package init(
         _ value: Any
     )
     {
@@ -110,18 +110,18 @@ public struct RenderedValue: Equatable, Sendable, CustomStringConvertible
 /// The tradeoffs of this approach include increased memory usage, but this is
 /// generally acceptable since diff trees are short-lived, and the string
 /// overhead is relatively light compared to the overall test execution cost.
-public struct DiffValue: Equatable
+package struct DiffValue: Equatable
 {
     /// The underlying value.
-    public let value    : Any
+    package let value       : Any
     
     /// The pre-rendered information about the value.
-    public let rendered : RenderedValue
+    package let rendered    : RenderedValue
     
     
     
     /// Initializes a ``DiffValue`` instance from the given values.
-    public init(
+    package init(
         value       : Any,
         rendered    : RenderedValue
     )
@@ -133,7 +133,7 @@ public struct DiffValue: Equatable
     
     
     /// Initializes a ``DiffValue`` instance from the given value.
-    public init(
+    package init(
         _ value: Any
     )
     {
@@ -151,7 +151,7 @@ public struct DiffValue: Equatable
     ///   - lhs: The left-hand side value to compare.
     ///   - rhs: The right-hand side value to compare.
     /// - Returns: Whether the given values are equal.
-    public static func == (
+    package static func == (
         lhs : DiffValue,
         rhs : DiffValue
     ) -> Bool

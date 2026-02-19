@@ -19,7 +19,7 @@ extension AssertionKind
     ///   - reason: The optional failure reason.
     ///   - message: The description of a failure.
     /// - Returns: The reason-based failure message.
-    public func makeReasonFailure(
+    package func makeReasonFailure(
         context     : FailureContext,
         captureKind : ExprCaptureKind,
         reason      : String?,
@@ -82,12 +82,12 @@ extension AssertionKind
     ///   - options: The options for testing.
     /// - Returns: The diff-based failure message, or an ``UnhandledError``
     /// for ``ExprCaptureKind/single``.
-    public func makeDiffFailure(
+    package func makeDiffFailure(
         context     : FailureContext,
         captureKind : ExprCaptureKind,
         diff        : DiffNode,
         message     : () -> String?,
-        options     : TKOptions
+        options     : TestOptions
     ) -> Result<String, UnhandledError>
     {
         let diffOutput: String = Formatter.formatDiff(
@@ -151,7 +151,7 @@ extension AssertionKind
     /// - Returns: The single-expression-based failure message, or an
     /// ``UnhandledError`` for ``ExprCaptureKind/none`` and
     /// ``ExprCaptureKind/double``.
-    public func makeSingleExprFailure(
+    package func makeSingleExprFailure(
         context     : FailureContext,
         captureKind : ExprCaptureKind,
         actual      : String?,
@@ -207,13 +207,13 @@ extension AssertionKind
     ///   - message: The description of a failure.
     ///   - options: The options for testing.
     /// - Returns: The boolean-expression-based failure message.
-    public func makeBooleanExprFailure(
+    package func makeBooleanExprFailure(
         context         : FailureContext,
         exprText        : String,
-        evaluated       : [TKBooleanExpr],
+        evaluated       : [BooleanExpr],
         notEvaluated    : Int,
         message         : () -> String?,
-        options         : TKOptions
+        options         : TestOptions
     ) -> String
     {
         let output: String = Formatter.formatBooleanExpr(
@@ -248,12 +248,12 @@ extension AssertionKind
     ///   - message: The description of a failure.
     ///   - options: The options for testing.
     /// - Returns: The predicate-based failure message.
-    public func makePredicateFailure(
+    package func makePredicateFailure(
         context     : FailureContext,
         captureKind : ExprCaptureKind,
         failure     : PredicateFailure,
         message     : () -> String?,
-        options     : TKOptions
+        options     : TestOptions
     ) -> String
     {
         let output  : String
@@ -316,7 +316,7 @@ extension AssertionKind
     ///   - reason: The optional failure reason.
     ///   - message: The description of a failure.
     /// - Returns: The failure message.
-    public func makeMacroExpansionFailure(
+    package func makeMacroExpansionFailure(
         framework   : FrameworkKind,
         reason      : String?,
         message     : String?
@@ -399,7 +399,7 @@ extension AssertionKind
     
     
     /// An error for an unhandled ``ExprCaptureKind``.
-    public enum UnhandledError: Error, CustomStringConvertible
+    package enum UnhandledError: Error, CustomStringConvertible
     {
         case invalid(
             _ message: String
@@ -407,7 +407,7 @@ extension AssertionKind
         
         
         
-        public var description: String
+        package var description: String
         {
             switch self
             {
@@ -432,8 +432,8 @@ extension AssertionKind
     {
         let reason: String = "Unhandled expression capture kind for"
             + " assertion \(quote(name))."
-            + " Please submit an XCTestKit bug report"
-            + " (https://github.com/swift-developer-tools/swift-test-kit)."
+            + " Please submit a swift-test-kit bug report"
+            + " (https://github.com/swift-developer-tools/swift-test-kit)"
         
         var text: String = makeHeader(
             framework:  context.framework,

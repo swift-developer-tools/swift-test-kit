@@ -63,15 +63,8 @@
     {
       "target" : {
         "containerPath" : "container:",
-        "identifier" : "XCTKTests",
-        "name" : "XCTKTests"
-      }
-    },
-    {
-      "target" : {
-        "containerPath" : "container:",
-        "identifier" : "TKCoreTests",
-        "name" : "TKCoreTests"
+        "identifier" : "TestKitTests",
+        "name" : "TestKitTests"
       }
     }
   ],

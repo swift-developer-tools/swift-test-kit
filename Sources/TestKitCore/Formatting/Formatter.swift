@@ -10,7 +10,7 @@
 // MARK: - FormattedLine
 
 /// A formatted diff line.
-public struct FormattedLine
+package struct FormattedLine
 {
     /// The indentation level.
     let indent  : Int
@@ -59,8 +59,8 @@ public struct FormattedLine
 /// Currently, a closing quote is added to truncated strings by
 /// ``renderText(_:)``, since that implementation is trivial. Other
 /// behavior is acceptable and may be avoided by increasing the limit
-/// specified by ``TKFormatOptions/maxLineLength``.
-public struct Formatter
+/// specified by ``FormatOptions/maxLineLength``.
+package struct Formatter
 {
     /// The context for tracking state across recursive formatting calls.
     private let context: FormatterContext
@@ -72,9 +72,9 @@ public struct Formatter
     ///   - node: The root diff node.
     ///   - options: The formatting options.
     /// - Returns: The formatted failure.
-    public static func formatDiff(
+    package static func formatDiff(
         _ node  : DiffNode,
-        options : TKFormatOptions
+        options : FormatOptions
     ) -> String
     {
         let context = FormatterContext(
@@ -100,15 +100,15 @@ public struct Formatter
     ///   - expectedValue: The value expected by the assertion.
     ///   - options: The formatting options.
     /// - Returns: The formatted failure.
-    public static func formatBooleanExpr(
+    package static func formatBooleanExpr(
         exprText        : String,
-        evaluated       : [TKBooleanExpr],
+        evaluated       : [BooleanExpr],
         notEvaluated    : Int,
         expectedValue   : Bool,
-        options         : TKFormatOptions
+        options         : FormatOptions
     ) -> String
     {
-        let exprsToShow: [TKBooleanExpr] = options.showAllEvaluated
+        let exprsToShow: [BooleanExpr] = options.showAllEvaluated
             ? evaluated
             : evaluated.filter { $0.value != expectedValue }
         
@@ -144,11 +144,11 @@ public struct Formatter
     ///   function assertions.
     ///   - options: The options for testing.
     /// - Returns: The formatted predicate failure.
-    public static func formatPredicate(
+    package static func formatPredicate(
         _ failure       : PredicateFailure,
         collectionText  : String?           = nil,
         predicateText   : String?           = nil,
-        options         : TKFormatOptions
+        options         : FormatOptions
     ) -> String
     {
         let totalDiffCount: Int? = options.countDiffs
@@ -379,7 +379,7 @@ public struct Formatter
     /// also adding state synchronization complexity.
     ///
     /// Since path depth is generally not excessive (and is potentially
-    /// limited by ``TKDiffOptions/maxRecursionDepth``), and this method is
+    /// limited by ``DiffOptions/maxRecursionDepth``), and this method is
     /// called only once per leaf, the simpler approach is preferred.
     ///
     /// - Returns: The indentation level of the path, or `0` if it is empty.
@@ -453,7 +453,7 @@ public struct Formatter
         
         /// The path is emitted with one level of indentation and no label.
         /// Compute the available width to potentially truncate the path if
-        /// it exceeds ``TKFormatOptions/maxLineLength``.
+        /// it exceeds ``FormatOptions/maxLineLength``.
         let availableWidth: Int = computeAvailableWidth(
             indent:         1,
             labelWidth:     0
@@ -757,7 +757,7 @@ public struct Formatter
     ///   assertion to succeed.
     private func emitBooleanDecomposition(
         exprText        : String,
-        exprsToShow     : [TKBooleanExpr],
+        exprsToShow     : [BooleanExpr],
         notEvaluated    : Int,
         expectedValue   : Bool
     )
@@ -1245,7 +1245,7 @@ public struct Formatter
     // MARK: - Support
     
     /// The label kind.
-    public enum LabelKind: String, CaseIterable
+    package enum LabelKind: String, CaseIterable
     {
         case expected       = "Expected:   "
         case actual         = "Actual:     "
@@ -1259,7 +1259,10 @@ public struct Formatter
         ///
         /// Labels use trailing padding to align the labeled content, so
         /// all labels have the same number of characters.
-        static let length: Int =
+        ///
+        /// - Precondition: All `LabelKind` cases must have equal length for
+        /// alignment.
+        package static let length: Int =
         {
             let lengths: [Int] = LabelKind.allCases.map { $0.rawValue.count }
             
@@ -1354,7 +1357,7 @@ public struct Formatter
     /// - Returns: The number of diffs in the given predicate failure.
     private static func countPredicateDiffs(
         in failure  : PredicateFailure,
-        options     : TKFormatOptions
+        options     : FormatOptions
     ) -> Int
     {
         switch failure.kind

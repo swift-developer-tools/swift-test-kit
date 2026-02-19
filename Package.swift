@@ -38,17 +38,41 @@ let package = Package(
     targets:
     [
         .target(
-            name: "TestKitOptions",
-            dependencies: []
+            name: "ReasyncMacroCore",
+            dependencies:
+            [
+                .product(
+                    name: "SwiftSyntax",
+                    package: "swift-syntax"
+                ),
+                
+                .product(
+                    name: "SwiftSyntaxMacros",
+                    package: "swift-syntax"
+                )
+            ]
+        ),
+        
+        .macro(
+            name: "ReasyncMacro",
+            dependencies:
+            [
+                "ReasyncMacroCore",
+                
+                .product(
+                    name: "SwiftCompilerPlugin",
+                    package: "swift-syntax"
+                )
+            ]
         ),
         
         .target(
             name: "TestKitCore",
-            dependencies: ["TestKitOptions"]
+            dependencies: ["ReasyncMacro"]
         ),
         
         .target(
-            name: "TestKitMacros",
+            name: "TestKitMacroCore",
             dependencies:
             [
                 "TestKitCore",
@@ -66,10 +90,10 @@ let package = Package(
         ),
         
         .macro(
-            name: "XCTestKitMacros",
+            name: "TestKitMacros",
             dependencies:
             [
-                "TestKitMacros",
+                "TestKitMacroCore",
                 
                 .product(
                     name: "SwiftCompilerPlugin",
@@ -83,32 +107,18 @@ let package = Package(
             dependencies:
             [
                 "TestKitCore",
-                "XCTestKitMacros"
+                "TestKitMacros"
             ]
         ),
         
-        .target(
-            name: "TKTestSupport",
-            dependencies: ["TestKitCore"],
-            path: "Tests/TKTestSupport"
-        ),
-        
         .testTarget(
-            name: "TKCoreTests",
+            name: "TestKitTests",
             dependencies:
             [
+                "ReasyncMacroCore",
                 "TestKitCore",
-                "TKTestSupport"
-            ]
-        ),
-        
-        .testTarget(
-            name: "XCTKTests",
-            dependencies:
-            [
-                "XCTestKit",
-                "TestKitMacros",
-                "TKTestSupport"
+                "TestKitMacroCore",
+                "XCTestKit"
             ]
         )
     ]

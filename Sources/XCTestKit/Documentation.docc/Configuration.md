@@ -26,7 +26,7 @@ class.
 ```swift
 final class TestClass: XCTKCase
 {
-    override var options: TKOptions
+    override var options: TestOptions
     {
         var opts = super.options
         opts.formatOptions.maxDiffs = 5
@@ -47,7 +47,7 @@ final class TestClass: XCTKCase
     
     func testWithCustomOptions()
     {
-        let options = TKOptions(formatOptions: .init(maxDiffs: 10))
+        let options = TestOptions(formatOptions: .init(maxDiffs: 10))
 
         /// Pass assertion-level options to override the global options.
         XCTKAssertEqual(expected, actual, options: options)
@@ -64,6 +64,7 @@ final class TestClass: XCTKCase
 
 ### Options
 
-- ``TKOptions``
-- ``TKDiffOptions``
-- ``TKFormatOptions``
+- ``TestOptions``
+- ``DiffOptions``
+- ``FormatOptions``
+- ``PropertyOptions``

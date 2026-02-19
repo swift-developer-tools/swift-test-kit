@@ -22,7 +22,7 @@ open class XCTKCase: XCTestCase
     ///
     /// To define reusable options for a test class, override this property
     /// and pass it to any assertion that should not use global options.
-    open var options: TKOptions
+    open var options: TestOptions
     {
         XCTKConfig.global
     }
