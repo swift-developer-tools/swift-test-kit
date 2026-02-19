@@ -429,6 +429,24 @@ XCTKForAll(using: generator)
 }
 ```
 
+Tables track the distribution of generated values along independent named 
+dimensions, with optional coverage requirements.
+
+```swift
+XCTKForAll(using: generator)
+{
+    (n: Int) in
+    
+    // Track the parity of generated integers.
+    XCTKTabulate("parity", n.isMultiple(of: 2) ? "even" : "odd")
+    
+    // At least 50% of generated integers must be even.
+    XCTKCoverTable("parity", (50, "even"))
+    
+    // Test properties that must hold for any integer.
+}
+```
+
 ### Built-In Conformance
 
 Built-in `Arbitrary` conformance is provided for many standard library types:
