@@ -39,3 +39,7 @@ for the complete API references.
 - ``Arbitrary``
 - ``Generator``
 - ``GenerationContext``
+
+### Errors
+
+- ``UnwrapError``

@@ -43,6 +43,17 @@ public typealias PropertyOptions    = TestKitCore.PropertyOptions
 
 
 
+// MARK: - Assertions
+
+/// The error thrown when unwrapping a value that is `nil`.
+///
+/// - Note: See
+/// [`UnwrapError`](https://swift-developer-tools.github.io/swift-test-kit/documentation/testkitcore/unwraperror)
+/// for the complete API reference.
+public typealias UnwrapError        = TestKitCore.UnwrapError
+
+
+
 // MARK: - Property-based testing
 
 /// A type that can generate arbitrary random values.

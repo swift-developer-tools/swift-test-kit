@@ -131,7 +131,7 @@ internal final class FunctionAssertionIntegrationTests: XCTestKitCase
     
     
     
-    func testUnwrapThrowsXCTKUnwrapErrorOnNil()
+    func testUnwrapThrowsUnwrapErrorOnNil()
     {
         withOneExpectedFailure
         {
@@ -139,15 +139,15 @@ internal final class FunctionAssertionIntegrationTests: XCTestKitCase
             {
                 _ = try XCTKUnwrap(Optional<Int>(nil))
                 
-                XCTFail("Expected XCTKUnwrapError to be thrown")
+                XCTFail("Expected UnwrapError to be thrown")
             }
-            catch is XCTKUnwrapError
+            catch is UnwrapError
             {
                 /// Expected.
             }
             catch
             {
-                XCTFail("Expected XCTKUnwrapError, got \(type(of: error))")
+                XCTFail("Expected UnwrapError, got \(type(of: error))")
             }
         }
     }

@@ -33,7 +33,8 @@ internal func _XCTKAssertMacro(
         message:        message,
         file:           file,
         line:           line,
-        options:        options ?? XCTKConfig.global
+        options:        options ?? XCTKConfig.global,
+        context:        failureContext
     )
 }
 
@@ -58,7 +59,8 @@ internal func _XCTKAssertTrueMacro(
         message:        message,
         file:           file,
         line:           line,
-        options:        options ?? XCTKConfig.global
+        options:        options ?? XCTKConfig.global,
+        context:        failureContext
     )
 }
 
@@ -83,7 +85,8 @@ internal func _XCTKAssertFalseMacro(
         message:        message,
         file:           file,
         line:           line,
-        options:        options ?? XCTKConfig.global
+        options:        options ?? XCTKConfig.global,
+        context:        failureContext
     )
 }
 
@@ -106,7 +109,8 @@ internal func _XCTKAssertNilMacro(
         message:    message,
         file:       file,
         line:       line,
-        options:    options ?? XCTKConfig.global
+        options:    options ?? XCTKConfig.global,
+        context:    failureContext
     )
 }
 
@@ -127,7 +131,8 @@ internal func _XCTKAssertNotNilMacro(
         message:    message,
         file:       file,
         line:       line,
-        options:    options ?? XCTKConfig.global
+        options:    options ?? XCTKConfig.global,
+        context:    failureContext
     )
 }
 
@@ -148,7 +153,8 @@ internal func _XCTKUnwrapMacro<T>(
         message:    message,
         file:       file,
         line:       line,
-        options:    options ?? XCTKConfig.global
+        options:    options ?? XCTKConfig.global,
+        context:    failureContext
     )
 }
 
@@ -174,7 +180,8 @@ internal func _XCTKAssertEqualMacro<T>(
         message:    message,
         file:       file,
         line:       line,
-        options:    options ?? XCTKConfig.global
+        options:    options ?? XCTKConfig.global,
+        context:    failureContext
     )
 }
 
@@ -198,7 +205,8 @@ internal func _XCTKAssertNotEqualMacro<T>(
         message:    message,
         file:       file,
         line:       line,
-        options:    options ?? XCTKConfig.global
+        options:    options ?? XCTKConfig.global,
+        context:    failureContext
     )
 }
 
@@ -222,7 +230,8 @@ internal func _XCTKAssertIdenticalMacro(
         message:    message,
         file:       file,
         line:       line,
-        options:    options ?? XCTKConfig.global
+        options:    options ?? XCTKConfig.global,
+        context:    failureContext
     )
 }
 
@@ -246,7 +255,8 @@ internal func _XCTKAssertNotIdenticalMacro(
         message:    message,
         file:       file,
         line:       line,
-        options:    options ?? XCTKConfig.global
+        options:    options ?? XCTKConfig.global,
+        context:    failureContext
     )
 }
 
@@ -272,7 +282,8 @@ internal func _XCTKAssertEqualMacro<T>(
         message:    message,
         file:       file,
         line:       line,
-        options:    options ?? XCTKConfig.global
+        options:    options ?? XCTKConfig.global,
+        context:    failureContext
     )
 }
 
@@ -298,7 +309,8 @@ internal func _XCTKAssertEqualMacro<T>(
         message:    message,
         file:       file,
         line:       line,
-        options:    options ?? XCTKConfig.global
+        options:    options ?? XCTKConfig.global,
+        context:    failureContext
     )
 }
 
@@ -324,7 +336,8 @@ internal func _XCTKAssertNotEqualMacro<T>(
         message:    message,
         file:       file,
         line:       line,
-        options:    options ?? XCTKConfig.global
+        options:    options ?? XCTKConfig.global,
+        context:    failureContext
     )
 }
 
@@ -350,7 +363,8 @@ internal func _XCTKAssertNotEqualMacro<T>(
         message:    message,
         file:       file,
         line:       line,
-        options:    options ?? XCTKConfig.global
+        options:    options ?? XCTKConfig.global,
+        context:    failureContext
     )
 }
 
@@ -376,7 +390,8 @@ internal func _XCTKAssertGreaterThanMacro<T>(
         message:    message,
         file:       file,
         line:       line,
-        options:    options ?? XCTKConfig.global
+        options:    options ?? XCTKConfig.global,
+        context:    failureContext
     )
 }
 
@@ -400,7 +415,8 @@ internal func _XCTKAssertGreaterThanOrEqualMacro<T>(
         message:    message,
         file:       file,
         line:       line,
-        options:    options ?? XCTKConfig.global
+        options:    options ?? XCTKConfig.global,
+        context:    failureContext
     )
 }
 
@@ -424,7 +440,8 @@ internal func _XCTKAssertLessThanOrEqualMacro<T>(
         message:    message,
         file:       file,
         line:       line,
-        options:    options ?? XCTKConfig.global
+        options:    options ?? XCTKConfig.global,
+        context:    failureContext
     )
 }
 
@@ -448,7 +465,8 @@ internal func _XCTKAssertLessThanMacro<T>(
         message:    message,
         file:       file,
         line:       line,
-        options:    options ?? XCTKConfig.global
+        options:    options ?? XCTKConfig.global,
+        context:    failureContext
     )
 }
 
@@ -473,7 +491,8 @@ internal func _XCTKAssertThrowsErrorMacro<T>(
         file:           file,
         line:           line,
         options:        options ?? XCTKConfig.global,
-        errorHandler:   errorHandler
+        errorHandler:   errorHandler,
+        context:        failureContext
     )
 }
 
@@ -494,7 +513,8 @@ internal func _XCTKAssertNoThrowMacro<T>(
         message:    message,
         file:       file,
         line:       line,
-        options:    options ?? XCTKConfig.global
+        options:    options ?? XCTKConfig.global,
+        context:    failureContext
     )
 }
 
@@ -537,7 +557,8 @@ internal func _XCTKAssertAllSatisfyMacro<C>(
         message:        message,
         file:           file,
         line:           line,
-        options:        options ?? XCTKConfig.global
+        options:        options ?? XCTKConfig.global,
+        context:        failureContext
     )
 }
 
@@ -561,7 +582,8 @@ internal func _XCTKAssertAnySatisfyMacro<C>(
         message:        message,
         file:           file,
         line:           line,
-        options:        options ?? XCTKConfig.global
+        options:        options ?? XCTKConfig.global,
+        context:        failureContext
     )
 }
 
@@ -585,7 +607,8 @@ internal func _XCTKAssertNoneSatisfyMacro<C>(
         message:        message,
         file:           file,
         line:           line,
-        options:        options ?? XCTKConfig.global
+        options:        options ?? XCTKConfig.global,
+        context:        failureContext
     )
 }
 
@@ -611,7 +634,8 @@ internal func _XCTKAssertSatisfyMacro<C>(
         message:        message,
         file:           file,
         line:           line,
-        options:        options ?? XCTKConfig.global
+        options:        options ?? XCTKConfig.global,
+        context:        failureContext
     )
 }
 
@@ -637,7 +661,8 @@ internal func _XCTKAssertSatisfyMacro<C>(
         message:        message,
         file:           file,
         line:           line,
-        options:        options ?? XCTKConfig.global
+        options:        options ?? XCTKConfig.global,
+        context:        failureContext
     )
 }
 
@@ -663,7 +688,8 @@ internal func _XCTKAssertSatisfyMacro<C>(
         message:        message,
         file:           file,
         line:           line,
-        options:        options ?? XCTKConfig.global
+        options:        options ?? XCTKConfig.global,
+        context:        failureContext
     )
 }
 
@@ -689,7 +715,8 @@ internal func _XCTKAssertExactlyMacro<C>(
         message:        message,
         file:           file,
         line:           line,
-        options:        options ?? XCTKConfig.global
+        options:        options ?? XCTKConfig.global,
+        context:        failureContext
     )
 }
 
@@ -713,7 +740,8 @@ internal func _XCTKAssertExactlyOneMacro<C>(
         message:        message,
         file:           file,
         line:           line,
-        options:        options ?? XCTKConfig.global
+        options:        options ?? XCTKConfig.global,
+        context:        failureContext
     )
 }
 
@@ -737,7 +765,8 @@ internal func _XCTKAssertSortedMacro<C>(
         message:        message,
         file:           file,
         line:           line,
-        options:        options ?? XCTKConfig.global
+        options:        options ?? XCTKConfig.global,
+        context:        failureContext
     )
 }
 
@@ -758,7 +787,8 @@ internal func _XCTKAssertUniqueMacro<C>(
         message:        message,
         file:           file,
         line:           line,
-        options:        options ?? XCTKConfig.global
+        options:        options ?? XCTKConfig.global,
+        context:        failureContext
     )
 }
 
@@ -782,6 +812,7 @@ internal func _XCTKAssertUniqueMacro<C, K>(
         message:        message,
         file:           file,
         line:           line,
-        options:        options ?? XCTKConfig.global
+        options:        options ?? XCTKConfig.global,
+        context:        failureContext
     )
 }

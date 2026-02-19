@@ -148,8 +148,8 @@ public macro XCTKAssertNotNil(
 ///   falls back to using global options.
 /// - Returns: The result of evaluating and unwrapped the given expression.
 /// This only returns a value if the unwrapped value is not `nil`.
-/// - Throws: An ``XCTKUnwrapError`` if the unwrapped value is `nil`, or an
-/// error thrown by the given expression.
+/// - Throws: An ``UnwrapError`` if the unwrapped value is `nil`, or an error
+/// thrown by the given expression.
 @freestanding(expression)
 public macro XCTKUnwrap<T>(
     _ expression    : @autoclosure () throws -> T?,

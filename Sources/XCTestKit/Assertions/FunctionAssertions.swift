@@ -37,7 +37,8 @@ public func XCTKAssert(
         message:    message,
         file:       file,
         line:       line,
-        options:    options ?? XCTKConfig.global
+        options:    options ?? XCTKConfig.global,
+        context:    failureContext
     )
 }
 
@@ -66,7 +67,8 @@ public func XCTKAssertTrue(
         message:    message,
         file:       file,
         line:       line,
-        options:    options ?? XCTKConfig.global
+        options:    options ?? XCTKConfig.global,
+        context:    failureContext
     )
 }
 
@@ -95,7 +97,8 @@ public func XCTKAssertFalse(
         message:    message,
         file:       file,
         line:       line,
-        options:    options ?? XCTKConfig.global
+        options:    options ?? XCTKConfig.global,
+        context:    failureContext
     )
 }
 
@@ -127,7 +130,8 @@ public func XCTKAssertNil(
         message:    message,
         file:       file,
         line:       line,
-        options:    options ?? XCTKConfig.global
+        options:    options ?? XCTKConfig.global,
+        context:    failureContext
     )
 }
 
@@ -157,7 +161,8 @@ public func XCTKAssertNotNil(
         message:    message,
         file:       file,
         line:       line,
-        options:    options ?? XCTKConfig.global
+        options:    options ?? XCTKConfig.global,
+        context:    failureContext
     )
 }
 
@@ -176,8 +181,8 @@ public func XCTKAssertNotNil(
 ///   falls back to using global options.
 /// - Returns: The result of evaluating and unwrapped the given expression.
 /// This only returns a value if the unwrapped value is not `nil`.
-/// - Throws: An ``XCTKUnwrapError`` if the unwrapped value is `nil`, or an
-/// error thrown by the given expression.
+/// - Throws: An ``UnwrapError`` if the unwrapped value is `nil`, or an error
+/// thrown by the given expression.
 public func XCTKUnwrap<T>(
     _ expression    : @autoclosure () throws -> T?,
     _ message       : @autoclosure () -> String     = "",
@@ -192,7 +197,8 @@ public func XCTKUnwrap<T>(
         message:    message,
         file:       file,
         line:       line,
-        options:    options ?? XCTKConfig.global
+        options:    options ?? XCTKConfig.global,
+        context:    failureContext
     )
 }
 
@@ -227,7 +233,8 @@ public func XCTKAssertEqual<T>(
         message:    message,
         file:       file,
         line:       line,
-        options:    options ?? XCTKConfig.global
+        options:    options ?? XCTKConfig.global,
+        context:    failureContext
     )
 }
 
@@ -260,7 +267,8 @@ public func XCTKAssertNotEqual<T>(
         message:    message,
         file:       file,
         line:       line,
-        options:    options ?? XCTKConfig.global
+        options:    options ?? XCTKConfig.global,
+        context:    failureContext
     )
 }
 
@@ -296,7 +304,8 @@ public func XCTKAssertIdentical(
         message:    message,
         file:       file,
         line:       line,
-        options:    options ?? XCTKConfig.global
+        options:    options ?? XCTKConfig.global,
+        context:    failureContext
     )
 }
 
@@ -332,7 +341,8 @@ public func XCTKAssertNotIdentical(
         message:    message,
         file:       file,
         line:       line,
-        options:    options ?? XCTKConfig.global
+        options:    options ?? XCTKConfig.global,
+        context:    failureContext
     )
 }
 
@@ -370,7 +380,8 @@ public func XCTKAssertEqual<T>(
         message:    message,
         file:       file,
         line:       line,
-        options:    options ?? XCTKConfig.global
+        options:    options ?? XCTKConfig.global,
+        context:    failureContext
     )
 }
 
@@ -407,7 +418,8 @@ public func XCTKAssertEqual<T>(
         message:    message,
         file:       file,
         line:       line,
-        options:    options ?? XCTKConfig.global
+        options:    options ?? XCTKConfig.global,
+        context:    failureContext
     )
 }
 
@@ -445,7 +457,8 @@ public func XCTKAssertNotEqual<T>(
         message:    message,
         file:       file,
         line:       line,
-        options:    options ?? XCTKConfig.global
+        options:    options ?? XCTKConfig.global,
+        context:    failureContext
     )
 }
 
@@ -483,7 +496,8 @@ public func XCTKAssertNotEqual<T>(
         message:    message,
         file:       file,
         line:       line,
-        options:    options ?? XCTKConfig.global
+        options:    options ?? XCTKConfig.global,
+        context:    failureContext
     )
 }
 
@@ -519,7 +533,8 @@ public func XCTKAssertGreaterThan<T>(
         message:    message,
         file:       file,
         line:       line,
-        options:    options ?? XCTKConfig.global
+        options:    options ?? XCTKConfig.global,
+        context:    failureContext
     )
 }
 
@@ -553,7 +568,8 @@ public func XCTKAssertGreaterThanOrEqual<T>(
         message:    message,
         file:       file,
         line:       line,
-        options:    options ?? XCTKConfig.global
+        options:    options ?? XCTKConfig.global,
+        context:    failureContext
     )
 }
 
@@ -587,7 +603,8 @@ public func XCTKAssertLessThanOrEqual<T>(
         message:    message,
         file:       file,
         line:       line,
-        options:    options ?? XCTKConfig.global
+        options:    options ?? XCTKConfig.global,
+        context:    failureContext
     )
 }
 
@@ -621,7 +638,8 @@ public func XCTKAssertLessThan<T>(
         message:    message,
         file:       file,
         line:       line,
-        options:    options ?? XCTKConfig.global
+        options:    options ?? XCTKConfig.global,
+        context:    failureContext
     )
 }
 
@@ -656,7 +674,8 @@ public func XCTKAssertThrowsError<T>(
         file:           file,
         line:           line,
         options:        options ?? XCTKConfig.global,
-        errorHandler:   errorHandler
+        errorHandler:   errorHandler,
+        context:        failureContext
     )
 }
 
@@ -686,7 +705,8 @@ public func XCTKAssertNoThrow<T>(
         message:    message,
         file:       file,
         line:       line,
-        options:    options ?? XCTKConfig.global
+        options:    options ?? XCTKConfig.global,
+        context:    failureContext
     )
 }
 
@@ -747,7 +767,8 @@ public func XCTKAssertAllSatisfy<C>(
         message:        message,
         file:           file,
         line:           line,
-        options:        options ?? XCTKConfig.global
+        options:        options ?? XCTKConfig.global,
+        context:        failureContext
     )
 }
 
@@ -782,7 +803,8 @@ public func XCTKAssertAnySatisfy<C>(
         message:        message,
         file:           file,
         line:           line,
-        options:        options ?? XCTKConfig.global
+        options:        options ?? XCTKConfig.global,
+        context:        failureContext
     )
 }
 
@@ -817,7 +839,8 @@ public func XCTKAssertNoneSatisfy<C>(
         message:        message,
         file:           file,
         line:           line,
-        options:        options ?? XCTKConfig.global
+        options:        options ?? XCTKConfig.global,
+        context:        failureContext
     )
 }
 
@@ -859,7 +882,8 @@ public func XCTKAssertSatisfy<C>(
         message:        message,
         file:           file,
         line:           line,
-        options:        options ?? XCTKConfig.global
+        options:        options ?? XCTKConfig.global,
+        context:        failureContext
     )
 }
 
@@ -901,7 +925,8 @@ public func XCTKAssertSatisfy<C>(
         message:        message,
         file:           file,
         line:           line,
-        options:        options ?? XCTKConfig.global
+        options:        options ?? XCTKConfig.global,
+        context:        failureContext
     )
 }
 
@@ -943,7 +968,8 @@ public func XCTKAssertSatisfy<C>(
         message:        message,
         file:           file,
         line:           line,
-        options:        options ?? XCTKConfig.global
+        options:        options ?? XCTKConfig.global,
+        context:        failureContext
     )
 }
 
@@ -985,7 +1011,8 @@ public func XCTKAssertExactly<C>(
         message:        message,
         file:           file,
         line:           line,
-        options:        options ?? XCTKConfig.global
+        options:        options ?? XCTKConfig.global,
+        context:        failureContext
     )
 }
 
@@ -1020,7 +1047,8 @@ public func XCTKAssertExactlyOne<C>(
         message:        message,
         file:           file,
         line:           line,
-        options:        options ?? XCTKConfig.global
+        options:        options ?? XCTKConfig.global,
+        context:        failureContext
     )
 }
 
@@ -1055,7 +1083,8 @@ public func XCTKAssertSorted<C>(
         message:        message,
         file:           file,
         line:           line,
-        options:        options ?? XCTKConfig.global
+        options:        options ?? XCTKConfig.global,
+        context:        failureContext
     )
 }
 
@@ -1085,7 +1114,8 @@ public func XCTKAssertUnique<C>(
         message:        message,
         file:           file,
         line:           line,
-        options:        options ?? XCTKConfig.global
+        options:        options ?? XCTKConfig.global,
+        context:        failureContext
     )
 }
 
@@ -1120,6 +1150,7 @@ public func XCTKAssertUnique<C, K>(
         message:        message,
         file:           file,
         line:           line,
-        options:        options ?? XCTKConfig.global
+        options:        options ?? XCTKConfig.global,
+        context:        failureContext
     )
 }
