@@ -28,8 +28,8 @@ public func XCTKClassify(
 )
 {
     TKClassify(
-        label:      label,
-        condition:  condition
+        label,
+        when: condition
     )
 }
 
@@ -57,9 +57,9 @@ public func XCTKCover(
 )
 {
     TKCover(
-        percentage:     percentage,
-        label:          label,
-        condition:      condition
+        percentage,
+        label,
+        when: condition
     )
 }
 
@@ -74,7 +74,7 @@ public func XCTKLabel(
     _ label: String
 )
 {
-    TKLabel(label: label)
+    TKLabel(label)
 }
 
 
@@ -90,7 +90,7 @@ public func XCTKCollect<T>(
     _ value: T
 )
 {
-    TKCollect(value: value)
+    TKCollect(value)
 }
 
 
@@ -111,8 +111,8 @@ public func XCTKTabulate(
 )
 {
     TKTabulate(
-        table:  table,
-        label:  label
+        table,
+        label
     )
 }
 
@@ -141,7 +141,7 @@ public func XCTKCoverTable(
 )
 {
     TKCoverTable(
-        table:          table,
-        requirements:   requirements
+        table,
+        requirements
     )
 }

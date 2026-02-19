@@ -14,8 +14,8 @@ import OSLog
 /// Tags the current iteration with the given label when the given condition
 /// is true.
 package func TKClassify(
-    label       : String,
-    condition   : () -> Bool
+    _       label       : String,
+    when    condition   : () -> Bool
 )
 {
     guard let interceptor = PropertyInterceptor.current
@@ -36,9 +36,9 @@ package func TKClassify(
 /// Tags the current iteration with the given label when the given condition
 /// is true, and registers a minimum coverage percentage for that label.
 package func TKCover(
-    percentage  : Double,
-    label       : String,
-    condition   : () -> Bool
+    _       percentage  : Double,
+    _       label       : String,
+    when    condition   : () -> Bool
 )
 {
     guard let interceptor = PropertyInterceptor.current
@@ -63,7 +63,7 @@ package func TKCover(
 
 /// Tags the current iteration with the given label.
 package func TKLabel(
-    label: String
+    _ label: String
 )
 {
     guard let interceptor = PropertyInterceptor.current
@@ -81,18 +81,18 @@ package func TKLabel(
 /// Tags the current iteration with the string representation of the given
 /// value.
 package func TKCollect<T>(
-    value: T
+    _ value: T
 )
 {
-    TKLabel(label: "\(value)")
+    TKLabel("\(value)")
 }
 
 
 
 /// Tags the current iteration with the given label in the specified table.
 package func TKTabulate(
-    table   : String,
-    label   : String
+    _   table   : String,
+    _   label   : String
 )
 {
     guard let interceptor = PropertyInterceptor.current
@@ -113,8 +113,8 @@ package func TKTabulate(
 /// Registers minimum coverage percentages for the given labels in the
 /// specified table.
 package func TKCoverTable(
-    table           : String,
-    requirements    : [(Double, String)]
+    _   table           : String,
+    _   requirements    : [(Double, String)]
 )
 {
     guard let interceptor = PropertyInterceptor.current

@@ -10,11 +10,11 @@
 /// Asserts that the given property holds for all generated inputs.
 @Reasync
 package func TKForAll<each T>(
-    message     : () -> String,
+    _ message   : () -> String,
     file        : StaticString,
     line        : UInt,
     options     : TestOptions,
-    property    : (repeat each T) async throws -> Void,
+    _ property  : (repeat each T) async throws -> Void,
     context     : FailureContext
 ) async where repeat each T : Arbitrary
 {
@@ -49,13 +49,13 @@ package func TKForAll<each T>(
 /// given generators.
 @Reasync
 package func TKForAll<each T>(
-    generators  : repeat Generator<each T>,
-    message     : () -> String,
-    file        : StaticString,
-    line        : UInt,
-    options     : TestOptions,
-    property    : (repeat each T) async throws -> Void,
-    context     : FailureContext
+    using generators    : repeat Generator<each T>,
+    message             : () -> String,
+    file                : StaticString,
+    line                : UInt,
+    options             : TestOptions,
+    _ property          : (repeat each T) async throws -> Void,
+    context             : FailureContext
 ) async
 {
     let generator: Generator<(repeat each T)>
@@ -89,13 +89,13 @@ package func TKForAll<each T>(
 /// the given precondition.
 @Reasync
 package func TKForAll<each T>(
-    precondition    : @escaping (repeat each T) -> Bool,
-    message         : () -> String,
-    file            : StaticString,
-    line            : UInt,
-    options         : TestOptions,
-    property        : (repeat each T) async throws -> Void,
-    context         : FailureContext
+    where precondition  : @escaping (repeat each T) -> Bool,
+    message             : () -> String,
+    file                : StaticString,
+    line                : UInt,
+    options             : TestOptions,
+    _ property          : (repeat each T) async throws -> Void,
+    context             : FailureContext
 ) async where repeat each T : Arbitrary
 {
     let generator: Generator<(repeat each T)>
@@ -137,14 +137,14 @@ package func TKForAll<each T>(
 /// generators that satisfy the given precondition.
 @Reasync
 package func TKForAll<each T>(
-    generators      : repeat Generator<each T>,
-    precondition    : @escaping (repeat each T) -> Bool,
-    message         : () -> String,
-    file            : StaticString,
-    line            : UInt,
-    options         : TestOptions,
-    property        : (repeat each T) async throws -> Void,
-    context         : FailureContext
+    using generators    : repeat Generator<each T>,
+    where precondition  : @escaping (repeat each T) -> Bool,
+    message             : () -> String,
+    file                : StaticString,
+    line                : UInt,
+    options             : TestOptions,
+    _ property          : (repeat each T) async throws -> Void,
+    context             : FailureContext
 ) async
 {
     let generator: Generator<(repeat each T)>

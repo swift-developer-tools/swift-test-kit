@@ -40,11 +40,11 @@ public func XCTKForAll<each T>(
 ) async where repeat each T : Arbitrary
 {
     await TKForAll(
-        message:    message,
+        message,
         file:       file,
         line:       line,
         options:    options ?? XCTKConfig.global,
-        property:   property,
+        property,
         context:    failureContext
     )
 }
@@ -88,13 +88,13 @@ public func XCTKForAll<each T>(
 ) async
 {
     await TKForAll(
-        generators:     repeat each generators,
-        message:        message,
-        file:           file,
-        line:           line,
-        options:        options ?? XCTKConfig.global,
-        property:       property,
-        context:        failureContext
+        using:      repeat each generators,
+        message:    message,
+        file:       file,
+        line:       line,
+        options:    options ?? XCTKConfig.global,
+        property,
+        context:    failureContext
     )
 }
 
@@ -140,13 +140,13 @@ public func XCTKForAll<each T>(
 ) async where repeat each T : Arbitrary
 {
     await TKForAll(
-        precondition:   precondition,
-        message:        message,
-        file:           file,
-        line:           line,
-        options:        options ?? XCTKConfig.global,
-        property:       property,
-        context:        failureContext
+        where:      precondition,
+        message:    message,
+        file:       file,
+        line:       line,
+        options:    options ?? XCTKConfig.global,
+        property,
+        context:    failureContext
     )
 }
 
@@ -195,13 +195,13 @@ public func XCTKForAll<each T>(
 ) async
 {
     await TKForAll(
-        generators:     repeat each generators,
-        precondition:   precondition,
-        message:        message,
-        file:           file,
-        line:           line,
-        options:        options ?? XCTKConfig.global,
-        property:       property,
-        context:        failureContext
+        using:      repeat each generators,
+        where:      precondition,
+        message:    message,
+        file:       file,
+        line:       line,
+        options:    options ?? XCTKConfig.global,
+        property,
+        context:    failureContext
     )
 }
