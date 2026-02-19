@@ -8,7 +8,8 @@
 //===----------------------------------------------------------------------===//
 
 /// A boolean expression evaluated during macro expression decomposition.
-package struct BooleanExpr: Equatable, Sendable
+@_documentation(visibility: package)
+public struct BooleanExpr: Equatable, Sendable
 {
     /// The source text of the expression.
     package let text    : String
