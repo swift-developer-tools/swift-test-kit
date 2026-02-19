@@ -55,6 +55,8 @@ property bodies.
 - ``XCTKCover(_:_:when:)``
 - ``XCTKLabel(_:)``
 - ``XCTKCollect(_:)``
+- ``XCTKTabulate(_:_:)``
+- ``XCTKCoverTable(_:_:)``
 
 ### Generating Values
 
