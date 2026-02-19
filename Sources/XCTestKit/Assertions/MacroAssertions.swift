@@ -25,7 +25,7 @@ internal func _XCTKAssertMacro(
     options         : TestOptions?
 )
 {
-    evaluateXCTKAssert(
+    evaluateTKAssert(
         result:         result,
         exprText:       exprText,
         evaluated:      evaluated,
@@ -51,7 +51,7 @@ internal func _XCTKAssertTrueMacro(
     options         : TestOptions?
 )
 {
-    evaluateXCTKAssertTrue(
+    evaluateTKAssertTrue(
         result:         result,
         exprText:       exprText,
         evaluated:      evaluated,
@@ -77,7 +77,7 @@ internal func _XCTKAssertFalseMacro(
     options         : TestOptions?
 )
 {
-    evaluateXCTKAssertFalse(
+    evaluateTKAssertFalse(
         result:         result,
         exprText:       exprText,
         evaluated:      evaluated,
@@ -103,7 +103,7 @@ internal func _XCTKAssertNilMacro(
     options     : TestOptions?
 )
 {
-    evaluateXCTKAssertNil(
+    evaluateTKAssertNil(
         capture:    .single(exprText),
         expr:       expr,
         message:    message,
@@ -125,7 +125,7 @@ internal func _XCTKAssertNotNilMacro(
     options     : TestOptions?
 )
 {
-    evaluateXCTKAssertNotNil(
+    evaluateTKAssertNotNil(
         capture:    .single(exprText),
         expr:       expr,
         message:    message,
@@ -147,7 +147,7 @@ internal func _XCTKUnwrapMacro<T>(
     options     : TestOptions?
 ) throws -> T
 {
-    return try evaluateXCTKUnwrap(
+    return try evaluateTKUnwrap(
         capture:    .single(exprText),
         expr:       expr,
         message:    message,
@@ -173,7 +173,7 @@ internal func _XCTKAssertEqualMacro<T>(
     options         : TestOptions?
 ) where T : Equatable
 {
-    evaluateXCTKAssertEqual(
+    evaluateTKAssertEqual(
         capture:    .double(expectedText, actualText),
         expected:   expected,
         actual:     actual,
@@ -198,7 +198,7 @@ internal func _XCTKAssertNotEqualMacro<T>(
     options     : TestOptions?
 ) where T : Equatable
 {
-    evaluateXCTKAssertNotEqual(
+    evaluateTKAssertNotEqual(
         capture:    .double(expr1Text, expr2Text),
         expr1:      expr1,
         expr2:      expr2,
@@ -223,7 +223,7 @@ internal func _XCTKAssertIdenticalMacro(
     options     : TestOptions?
 )
 {
-    evaluateXCTKAssertIdentical(
+    evaluateTKAssertIdentical(
         capture:    .double(expr1Text, expr2Text),
         expr1:      expr1,
         expr2:      expr2,
@@ -248,7 +248,7 @@ internal func _XCTKAssertNotIdenticalMacro(
     options     : TestOptions?
 )
 {
-    evaluateXCTKAssertNotIdentical(
+    evaluateTKAssertNotIdentical(
         capture:    .double(expr1Text, expr2Text),
         expr1:      expr1,
         expr2:      expr2,
@@ -274,7 +274,7 @@ internal func _XCTKAssertEqualMacro<T>(
     options     : TestOptions?
 ) where T : FloatingPoint
 {
-    evaluateXCTKAssertEqual(
+    evaluateTKAssertEqual(
         capture:    .double(expr1Text, expr2Text),
         expr1:      expr1,
         expr2:      expr2,
@@ -301,7 +301,7 @@ internal func _XCTKAssertEqualMacro<T>(
     options     : TestOptions?
 ) where T : Numeric
 {
-    evaluateXCTKAssertEqual(
+    evaluateTKAssertEqual(
         capture:    .double(expr1Text, expr2Text),
         expr1:      expr1,
         expr2:      expr2,
@@ -328,7 +328,7 @@ internal func _XCTKAssertNotEqualMacro<T>(
     options     : TestOptions?
 ) where T : FloatingPoint
 {
-    evaluateXCTKAssertNotEqual(
+    evaluateTKAssertNotEqual(
         capture:    .double(expr1Text, expr2Text),
         expr1:      expr1,
         expr2:      expr2,
@@ -355,7 +355,7 @@ internal func _XCTKAssertNotEqualMacro<T>(
     options     : TestOptions?
 ) where T : Numeric
 {
-    evaluateXCTKAssertNotEqual(
+    evaluateTKAssertNotEqual(
         capture:    .double(expr1Text, expr2Text),
         expr1:      expr1,
         expr2:      expr2,
@@ -383,7 +383,7 @@ internal func _XCTKAssertGreaterThanMacro<T>(
     options     : TestOptions?
 ) where T : Comparable
 {
-    evaluateXCTKAssertGreaterThan(
+    evaluateTKAssertGreaterThan(
         capture:    .double(expr1Text, expr2Text),
         expr1:      expr1,
         expr2:      expr2,
@@ -408,7 +408,7 @@ internal func _XCTKAssertGreaterThanOrEqualMacro<T>(
     options     : TestOptions?
 ) where T : Comparable
 {
-    evaluateXCTKAssertGreaterThanOrEqual(
+    evaluateTKAssertGreaterThanOrEqual(
         capture:    .double(expr1Text, expr2Text),
         expr1:      expr1,
         expr2:      expr2,
@@ -433,7 +433,7 @@ internal func _XCTKAssertLessThanOrEqualMacro<T>(
     options     : TestOptions?
 ) where T : Comparable
 {
-    evaluateXCTKAssertLessThanOrEqual(
+    evaluateTKAssertLessThanOrEqual(
         capture:    .double(expr1Text, expr2Text),
         expr1:      expr1,
         expr2:      expr2,
@@ -458,7 +458,7 @@ internal func _XCTKAssertLessThanMacro<T>(
     options     : TestOptions?
 ) where T : Comparable
 {
-    evaluateXCTKAssertLessThan(
+    evaluateTKAssertLessThan(
         capture:    .double(expr1Text, expr2Text),
         expr1:      expr1,
         expr2:      expr2,
@@ -484,7 +484,7 @@ internal func _XCTKAssertThrowsErrorMacro<T>(
     errorHandler    : (any Error) -> Void
 )
 {
-    evaluateXCTKAssertThrowsError(
+    evaluateTKAssertThrowsError(
         capture:        .single(exprText),
         expr:           expr,
         message:        message,
@@ -507,7 +507,7 @@ internal func _XCTKAssertNoThrowMacro<T>(
     options     : TestOptions?
 )
 {
-    evaluateXCTKAssertNoThrow(
+    evaluateTKAssertNoThrow(
         capture:    .single(exprText),
         expr:       expr,
         message:    message,
@@ -550,7 +550,7 @@ internal func _XCTKAssertAllSatisfyMacro<C>(
     options         : TestOptions?
 ) where C : Collection
 {
-    evaluateXCTKAssertAllSatisfy(
+    evaluateTKAssertAllSatisfy(
         capture:        .double(collectionText, predicateText),
         collection:     collection,
         predicate:      predicate,
@@ -575,7 +575,7 @@ internal func _XCTKAssertAnySatisfyMacro<C>(
     options         : TestOptions?
 ) where C : Collection
 {
-    evaluateXCTKAssertAnySatisfy(
+    evaluateTKAssertAnySatisfy(
         capture:        .double(collectionText, predicateText),
         collection:     collection,
         predicate:      predicate,
@@ -600,7 +600,7 @@ internal func _XCTKAssertNoneSatisfyMacro<C>(
     options         : TestOptions?
 ) where C : Collection
 {
-    evaluateXCTKAssertNoneSatisfy(
+    evaluateTKAssertNoneSatisfy(
         capture:        .double(collectionText, predicateText),
         collection:     collection,
         predicate:      predicate,
@@ -626,7 +626,7 @@ internal func _XCTKAssertSatisfyMacro<C>(
     options         : TestOptions?
 ) where C : Collection
 {
-    evaluateXCTKAssertSatisfy(
+    evaluateTKAssertSatisfy(
         capture:        .double(collectionText, predicateText),
         collection:     collection,
         atLeast:        atLeast,
@@ -653,7 +653,7 @@ internal func _XCTKAssertSatisfyMacro<C>(
     options         : TestOptions?
 ) where C : Collection
 {
-    evaluateXCTKAssertSatisfy(
+    evaluateTKAssertSatisfy(
         capture:        .double(collectionText, predicateText),
         collection:     collection,
         atMost:         atMost,
@@ -680,7 +680,7 @@ internal func _XCTKAssertSatisfyMacro<C>(
     options         : TestOptions?
 ) where C : Collection
 {
-    evaluateXCTKAssertSatisfy(
+    evaluateTKAssertSatisfy(
         capture:        .double(collectionText, predicateText),
         collection:     collection,
         range:          range,
@@ -707,7 +707,7 @@ internal func _XCTKAssertExactlyMacro<C>(
     options         : TestOptions?
 ) where C : Collection
 {
-    evaluateXCTKAssertExactly(
+    evaluateTKAssertExactly(
         capture:        .double(collectionText, predicateText),
         collection:     collection,
         count:          count,
@@ -733,7 +733,7 @@ internal func _XCTKAssertExactlyOneMacro<C>(
     options         : TestOptions?
 ) where C : Collection
 {
-    evaluateXCTKAssertExactlyOne(
+    evaluateTKAssertExactlyOne(
         capture:        .double(collectionText, predicateText),
         collection:     collection,
         predicate:      predicate,
@@ -758,7 +758,7 @@ internal func _XCTKAssertSortedMacro<C>(
     options         : TestOptions?        
 ) where C : Collection
 {
-    evaluateXCTKAssertSorted(
+    evaluateTKAssertSorted(
         capture:        .double(collectionText, predicateText),
         collection:     collection,
         predicate:      predicate,
@@ -781,7 +781,7 @@ internal func _XCTKAssertUniqueMacro<C>(
     options         : TestOptions?
 ) where C : Collection, C.Element : Hashable
 {
-    evaluateXCTKAssertUnique(
+    evaluateTKAssertUnique(
         capture:        .single(collectionText),
         collection:     collection,
         message:        message,
@@ -805,7 +805,7 @@ internal func _XCTKAssertUniqueMacro<C, K>(
     options         : TestOptions?
 ) where C : Collection, K : Hashable
 {
-    evaluateXCTKAssertUnique(
+    evaluateTKAssertUnique(
         capture:        .double(collectionText, predicateText),
         collection:     collection,
         predicate:      predicate,

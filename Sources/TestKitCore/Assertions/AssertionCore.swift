@@ -13,7 +13,7 @@ import XCTest
 
 // MARK: - Boolean (functions)
 
-package func evaluateXCTKAssert(
+package func evaluateTKAssert(
     expr    : () throws -> Bool,
     message : () -> String,
     file    : StaticString,
@@ -57,7 +57,7 @@ package func evaluateXCTKAssert(
 
 
 
-package func evaluateXCTKAssertTrue(
+package func evaluateTKAssertTrue(
     expr    : () throws -> Bool,
     message : () -> String,
     file    : StaticString,
@@ -101,7 +101,7 @@ package func evaluateXCTKAssertTrue(
 
 
 
-package func evaluateXCTKAssertFalse(
+package func evaluateTKAssertFalse(
     expr    : () throws -> Bool,
     message : () -> String,
     file    : StaticString,
@@ -147,7 +147,7 @@ package func evaluateXCTKAssertFalse(
 
 // MARK: - Boolean (macros)
 
-package func evaluateXCTKAssert(
+package func evaluateTKAssert(
     result          : Bool,
     exprText        : String,
     evaluated       : [BooleanExpr],
@@ -178,7 +178,7 @@ package func evaluateXCTKAssert(
 
 
 
-package func evaluateXCTKAssertTrue(
+package func evaluateTKAssertTrue(
     result          : Bool,
     exprText        : String,
     evaluated       : [BooleanExpr],
@@ -209,7 +209,7 @@ package func evaluateXCTKAssertTrue(
 
 
 
-package func evaluateXCTKAssertFalse(
+package func evaluateTKAssertFalse(
     result          : Bool,
     exprText        : String,
     evaluated       : [BooleanExpr],
@@ -242,7 +242,7 @@ package func evaluateXCTKAssertFalse(
 
 // MARK: - Nil and non-nil
 
-package func evaluateXCTKAssertNil(
+package func evaluateTKAssertNil(
     capture : ExprCaptureKind,
     expr    : () throws -> Any?,
     message : () -> String,
@@ -305,7 +305,7 @@ package func evaluateXCTKAssertNil(
 
 
 
-package func evaluateXCTKAssertNotNil(
+package func evaluateTKAssertNotNil(
     capture : ExprCaptureKind,
     expr    : () throws -> Any?,
     message : () -> String,
@@ -368,7 +368,7 @@ package func evaluateXCTKAssertNotNil(
 
 
 
-package func evaluateXCTKUnwrap<T>(
+package func evaluateTKUnwrap<T>(
     capture : ExprCaptureKind,
     expr    : () throws -> T?,
     message : () -> String,
@@ -438,7 +438,7 @@ package func evaluateXCTKUnwrap<T>(
 
 // MARK: - Equality and inequality
 
-package func evaluateXCTKAssertEqual<T>(
+package func evaluateTKAssertEqual<T>(
     capture     : ExprCaptureKind,
     expected    : () throws -> T,
     actual      : () throws -> T,
@@ -528,7 +528,7 @@ package func evaluateXCTKAssertEqual<T>(
 
 
 
-package func evaluateXCTKAssertNotEqual<T>(
+package func evaluateTKAssertNotEqual<T>(
     capture : ExprCaptureKind,
     expr1   : () throws -> T,
     expr2   : () throws -> T,
@@ -594,7 +594,7 @@ package func evaluateXCTKAssertNotEqual<T>(
 
 
 
-package func evaluateXCTKAssertIdentical(
+package func evaluateTKAssertIdentical(
     capture : ExprCaptureKind,
     expr1   : () throws -> AnyObject?,
     expr2   : () throws -> AnyObject?,
@@ -667,7 +667,7 @@ package func evaluateXCTKAssertIdentical(
 
 
 
-package func evaluateXCTKAssertNotIdentical(
+package func evaluateTKAssertNotIdentical(
     capture : ExprCaptureKind,
     expr1   : () throws -> AnyObject?,
     expr2   : () throws -> AnyObject?,
@@ -740,7 +740,7 @@ package func evaluateXCTKAssertNotIdentical(
 
 
 
-package func evaluateXCTKAssertEqual<T>(
+package func evaluateTKAssertEqual<T>(
     capture     : ExprCaptureKind,
     expr1       : () throws -> T,
     expr2       : () throws -> T,
@@ -813,7 +813,7 @@ package func evaluateXCTKAssertEqual<T>(
 
 
 
-package func evaluateXCTKAssertEqual<T>(
+package func evaluateTKAssertEqual<T>(
     capture     : ExprCaptureKind,
     expr1       : () throws -> T,
     expr2       : () throws -> T,
@@ -886,7 +886,7 @@ package func evaluateXCTKAssertEqual<T>(
 
 
 
-package func evaluateXCTKAssertNotEqual<T>(
+package func evaluateTKAssertNotEqual<T>(
     capture     : ExprCaptureKind,
     expr1       : () throws -> T,
     expr2       : () throws -> T,
@@ -959,7 +959,7 @@ package func evaluateXCTKAssertNotEqual<T>(
 
 
 
-package func evaluateXCTKAssertNotEqual<T>(
+package func evaluateTKAssertNotEqual<T>(
     capture     : ExprCaptureKind,
     expr1       : () throws -> T,
     expr2       : () throws -> T,
@@ -1034,7 +1034,7 @@ package func evaluateXCTKAssertNotEqual<T>(
 
 // MARK: - Comparable
 
-package func evaluateXCTKAssertGreaterThan<T>(
+package func evaluateTKAssertGreaterThan<T>(
     capture : ExprCaptureKind,
     expr1   : () throws -> T,
     expr2   : () throws -> T,
@@ -1101,7 +1101,7 @@ package func evaluateXCTKAssertGreaterThan<T>(
 
 
 
-package func evaluateXCTKAssertGreaterThanOrEqual<T>(
+package func evaluateTKAssertGreaterThanOrEqual<T>(
     capture : ExprCaptureKind,
     expr1   : () throws -> T,
     expr2   : () throws -> T,
@@ -1168,7 +1168,7 @@ package func evaluateXCTKAssertGreaterThanOrEqual<T>(
 
 
 
-package func evaluateXCTKAssertLessThanOrEqual<T>(
+package func evaluateTKAssertLessThanOrEqual<T>(
     capture : ExprCaptureKind,
     expr1   : () throws -> T,
     expr2   : () throws -> T,
@@ -1235,7 +1235,7 @@ package func evaluateXCTKAssertLessThanOrEqual<T>(
 
 
 
-package func evaluateXCTKAssertLessThan<T>(
+package func evaluateTKAssertLessThan<T>(
     capture : ExprCaptureKind,
     expr1   : () throws -> T,
     expr2   : () throws -> T,
@@ -1304,7 +1304,7 @@ package func evaluateXCTKAssertLessThan<T>(
 
 // MARK: - Error
 
-package func evaluateXCTKAssertThrowsError<T>(
+package func evaluateTKAssertThrowsError<T>(
     capture         : ExprCaptureKind,
     expr            : () throws -> T,
     message         : () -> String,
@@ -1363,7 +1363,7 @@ package func evaluateXCTKAssertThrowsError<T>(
 
 
 
-package func evaluateXCTKAssertNoThrow<T>(
+package func evaluateTKAssertNoThrow<T>(
     capture : ExprCaptureKind,
     expr    : () throws -> T,
     message : () -> String,
@@ -1414,7 +1414,7 @@ package func evaluateXCTKAssertNoThrow<T>(
 
 // MARK: - Predicate
 
-package func evaluateXCTKAssertAllSatisfy<C>(
+package func evaluateTKAssertAllSatisfy<C>(
     capture     : ExprCaptureKind,
     collection  : () throws -> C,
     predicate   : (C.Element) throws -> Bool,
@@ -1476,7 +1476,7 @@ package func evaluateXCTKAssertAllSatisfy<C>(
 
 
 
-package func evaluateXCTKAssertAnySatisfy<C>(
+package func evaluateTKAssertAnySatisfy<C>(
     capture     : ExprCaptureKind,
     collection  : () throws -> C,
     predicate   : (C.Element) throws -> Bool,
@@ -1546,7 +1546,7 @@ package func evaluateXCTKAssertAnySatisfy<C>(
 
 
 
-package func evaluateXCTKAssertNoneSatisfy<C>(
+package func evaluateTKAssertNoneSatisfy<C>(
     capture     : ExprCaptureKind,
     collection  : () throws -> C,
     predicate   : (C.Element) throws -> Bool,
@@ -1627,7 +1627,7 @@ package func evaluateXCTKAssertNoneSatisfy<C>(
 
 
 
-package func evaluateXCTKAssertSatisfy<C>(
+package func evaluateTKAssertSatisfy<C>(
     capture     : ExprCaptureKind,
     collection  : () throws -> C,
     atLeast     : Int,
@@ -1703,7 +1703,7 @@ package func evaluateXCTKAssertSatisfy<C>(
 
 
 
-package func evaluateXCTKAssertSatisfy<C>(
+package func evaluateTKAssertSatisfy<C>(
     capture     : ExprCaptureKind,
     collection  : () throws -> C,
     atMost      : Int,
@@ -1779,7 +1779,7 @@ package func evaluateXCTKAssertSatisfy<C>(
 
 
 
-package func evaluateXCTKAssertSatisfy<C>(
+package func evaluateTKAssertSatisfy<C>(
     capture     : ExprCaptureKind,
     collection  : () throws -> C,
     range       : ClosedRange<Int>,
@@ -1861,7 +1861,7 @@ package func evaluateXCTKAssertSatisfy<C>(
 
 
 
-package func evaluateXCTKAssertExactly<C>(
+package func evaluateTKAssertExactly<C>(
     capture     : ExprCaptureKind,
     collection  : () throws -> C,
     count       : Int,
@@ -1937,7 +1937,7 @@ package func evaluateXCTKAssertExactly<C>(
 
 
 
-package func evaluateXCTKAssertExactlyOne<C>(
+package func evaluateTKAssertExactlyOne<C>(
     capture     : ExprCaptureKind,
     collection  : () throws -> C,
     predicate   : (C.Element) throws -> Bool,
@@ -2007,7 +2007,7 @@ package func evaluateXCTKAssertExactlyOne<C>(
 
 
 
-package func evaluateXCTKAssertSorted<C>(
+package func evaluateTKAssertSorted<C>(
     capture     : ExprCaptureKind,
     collection  : () throws -> C,
     predicate   : (C.Element, C.Element) throws -> Bool,
@@ -2136,7 +2136,7 @@ package func evaluateXCTKAssertSorted<C>(
 
 
 
-package func evaluateXCTKAssertUnique<C>(
+package func evaluateTKAssertUnique<C>(
     capture     : ExprCaptureKind,
     collection  : () throws -> C,
     message     : () -> String,
@@ -2228,7 +2228,7 @@ package func evaluateXCTKAssertUnique<C>(
 
 
 
-package func evaluateXCTKAssertUnique<C, K>(
+package func evaluateTKAssertUnique<C, K>(
     capture     : ExprCaptureKind,
     collection  : () throws -> C,
     predicate   : (C.Element) throws -> K,

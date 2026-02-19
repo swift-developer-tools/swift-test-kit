@@ -18,7 +18,7 @@ package func TKAssert(
     context         : FailureContext
 )
 {
-    evaluateXCTKAssert(
+    evaluateTKAssert(
         expr:       expression,
         message:    message,
         file:       file,
@@ -39,7 +39,7 @@ package func TKAssertTrue(
     context         : FailureContext
 )
 {
-    evaluateXCTKAssertTrue(
+    evaluateTKAssertTrue(
         expr:       expression,
         message:    message,
         file:       file,
@@ -60,7 +60,7 @@ package func TKAssertFalse(
     context         : FailureContext
 )
 {
-    evaluateXCTKAssertFalse(
+    evaluateTKAssertFalse(
         expr:       expression,
         message:    message,
         file:       file,
@@ -83,7 +83,7 @@ package func TKAssertNil(
     context         : FailureContext
 )
 {
-    evaluateXCTKAssertNil(
+    evaluateTKAssertNil(
         capture:    .none,
         expr:       expression,
         message:    message,
@@ -105,7 +105,7 @@ package func TKAssertNotNil(
     context         : FailureContext
 )
 {
-    evaluateXCTKAssertNotNil(
+    evaluateTKAssertNotNil(
         capture:    .none,
         expr:       expression,
         message:    message,
@@ -127,7 +127,7 @@ package func TKUnwrap<T>(
     context         : FailureContext
 ) throws -> T
 {
-    return try evaluateXCTKUnwrap(
+    return try evaluateTKUnwrap(
         capture:    .none,
         expr:       expression,
         message:    message,
@@ -152,7 +152,7 @@ package func TKAssertEqual<T>(
     context     : FailureContext
 ) where T : Equatable
 {
-    evaluateXCTKAssertEqual(
+    evaluateTKAssertEqual(
         capture:    .none,
         expected:   expected,
         actual:     actual,
@@ -176,7 +176,7 @@ package func TKAssertNotEqual<T>(
     context         : FailureContext
 ) where T : Equatable
 {
-    evaluateXCTKAssertNotEqual(
+    evaluateTKAssertNotEqual(
         capture:    .none,
         expr1:      expression1,
         expr2:      expression2,
@@ -200,7 +200,7 @@ package func TKAssertIdentical(
     context         : FailureContext
 )
 {
-    evaluateXCTKAssertIdentical(
+    evaluateTKAssertIdentical(
         capture:    .none,
         expr1:      expression1,
         expr2:      expression2,
@@ -224,7 +224,7 @@ package func TKAssertNotIdentical(
     context         : FailureContext
 )
 {
-    evaluateXCTKAssertNotIdentical(
+    evaluateTKAssertNotIdentical(
         capture:    .none,
         expr1:      expression1,
         expr2:      expression2,
@@ -249,7 +249,7 @@ package func TKAssertEqual<T>(
     context         : FailureContext
 ) where T : FloatingPoint
 {
-    evaluateXCTKAssertEqual(
+    evaluateTKAssertEqual(
         capture:    .none,
         expr1:      expression1,
         expr2:      expression2,
@@ -275,7 +275,7 @@ package func TKAssertEqual<T>(
     context         : FailureContext
 ) where T : Numeric
 {
-    evaluateXCTKAssertEqual(
+    evaluateTKAssertEqual(
         capture:    .none,
         expr1:      expression1,
         expr2:      expression2,
@@ -301,7 +301,7 @@ package func TKAssertNotEqual<T>(
     context         : FailureContext
 ) where T : FloatingPoint
 {
-    evaluateXCTKAssertNotEqual(
+    evaluateTKAssertNotEqual(
         capture:    .none,
         expr1:      expression1,
         expr2:      expression2,
@@ -327,7 +327,7 @@ package func TKAssertNotEqual<T>(
     context         : FailureContext
 ) where T : Numeric
 {
-    evaluateXCTKAssertNotEqual(
+    evaluateTKAssertNotEqual(
         capture:    .none,
         expr1:      expression1,
         expr2:      expression2,
@@ -354,7 +354,7 @@ package func TKAssertGreaterThan<T>(
     context         : FailureContext
 ) where T : Comparable
 {
-    evaluateXCTKAssertGreaterThan(
+    evaluateTKAssertGreaterThan(
         capture:    .none,
         expr1:      expression1,
         expr2:      expression2,
@@ -378,7 +378,7 @@ package func TKAssertGreaterThanOrEqual<T>(
     context         : FailureContext
 ) where T : Comparable
 {
-    evaluateXCTKAssertGreaterThanOrEqual(
+    evaluateTKAssertGreaterThanOrEqual(
         capture:    .none,
         expr1:      expression1,
         expr2:      expression2,
@@ -402,7 +402,7 @@ package func TKAssertLessThanOrEqual<T>(
     context         : FailureContext
 ) where T : Comparable
 {
-    evaluateXCTKAssertLessThanOrEqual(
+    evaluateTKAssertLessThanOrEqual(
         capture:    .none,
         expr1:      expression1,
         expr2:      expression2,
@@ -426,7 +426,7 @@ package func TKAssertLessThan<T>(
     context         : FailureContext
 ) where T : Comparable
 {
-    evaluateXCTKAssertLessThan(
+    evaluateTKAssertLessThan(
         capture:    .none,
         expr1:      expression1,
         expr2:      expression2,
@@ -452,7 +452,7 @@ package func TKAssertThrowsError<T>(
     context         : FailureContext
 )
 {
-    evaluateXCTKAssertThrowsError(
+    evaluateTKAssertThrowsError(
         capture:        .none,
         expr:           expression,
         message:        message,
@@ -475,7 +475,7 @@ package func TKAssertNoThrow<T>(
     context         : FailureContext
 )
 {
-    evaluateXCTKAssertNoThrow(
+    evaluateTKAssertNoThrow(
         capture:    .none,
         expr:       expression,
         message:    message,
@@ -518,7 +518,7 @@ package func TKAssertAllSatisfy<C>(
     context         : FailureContext
 ) where C : Collection
 {
-    evaluateXCTKAssertAllSatisfy(
+    evaluateTKAssertAllSatisfy(
         capture:        .none,
         collection:     collection,
         predicate:      predicate,
@@ -542,7 +542,7 @@ package func TKAssertAnySatisfy<C>(
     context         : FailureContext
 ) where C : Collection
 {
-    evaluateXCTKAssertAnySatisfy(
+    evaluateTKAssertAnySatisfy(
         capture:        .none,
         collection:     collection,
         predicate:      predicate,
@@ -566,7 +566,7 @@ package func TKAssertNoneSatisfy<C>(
     context         : FailureContext
 ) where C : Collection
 {
-    evaluateXCTKAssertNoneSatisfy(
+    evaluateTKAssertNoneSatisfy(
         capture:        .none,
         collection:     collection,
         predicate:      predicate,
@@ -591,7 +591,7 @@ package func TKAssertSatisfy<C>(
     context         : FailureContext
 ) where C : Collection
 {
-    evaluateXCTKAssertSatisfy(
+    evaluateTKAssertSatisfy(
         capture:        .none,
         collection:     collection,
         atLeast:        atLeast,
@@ -617,7 +617,7 @@ package func TKAssertSatisfy<C>(
     context         : FailureContext
 ) where C : Collection
 {    
-    evaluateXCTKAssertSatisfy(
+    evaluateTKAssertSatisfy(
         capture:        .none,
         collection:     collection,
         atMost:         atMost,
@@ -643,7 +643,7 @@ package func TKAssertSatisfy<C>(
     context         : FailureContext
 ) where C : Collection
 {    
-    evaluateXCTKAssertSatisfy(
+    evaluateTKAssertSatisfy(
         capture:        .none,
         collection:     collection,
         range:          range,
@@ -669,7 +669,7 @@ package func TKAssertExactly<C>(
     context         : FailureContext
 ) where C : Collection
 {    
-    evaluateXCTKAssertExactly(
+    evaluateTKAssertExactly(
         capture:        .none,
         collection:     collection,
         count:          count,
@@ -694,7 +694,7 @@ package func TKAssertExactlyOne<C>(
     context         : FailureContext
 ) where C : Collection
 {
-    evaluateXCTKAssertExactlyOne(
+    evaluateTKAssertExactlyOne(
         capture:        .none,
         collection:     collection,
         predicate:      predicate,
@@ -718,7 +718,7 @@ package func TKAssertSorted<C>(
     context         : FailureContext
 ) where C : Collection
 {
-    evaluateXCTKAssertSorted(
+    evaluateTKAssertSorted(
         capture:        .none,
         collection:     collection,
         predicate:      predicate,
@@ -741,7 +741,7 @@ package func TKAssertUnique<C>(
     context         : FailureContext
 ) where C : Collection, C.Element : Hashable
 {
-    evaluateXCTKAssertUnique(
+    evaluateTKAssertUnique(
         capture:        .none,
         collection:     collection,
         message:        message,
@@ -764,7 +764,7 @@ package func TKAssertUnique<C, K>(
     context         : FailureContext
 ) where C : Collection, K : Hashable
 {
-    evaluateXCTKAssertUnique(
+    evaluateTKAssertUnique(
         capture:        .none,
         collection:     collection,
         predicate:      predicate,
