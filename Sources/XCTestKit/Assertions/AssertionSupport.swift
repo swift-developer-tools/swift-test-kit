@@ -25,7 +25,7 @@ import TestKitCore
 /// - Parameters:
 ///   - expr: The expression to evaluate.
 ///   - assertionKind: The assertion kind.
-///   - captureKind: The kind of captured assertion expression.
+///   - capture: The kind of captured assertion expression.
 ///   - message: The description of a failure.
 ///   - file: The file where the failure occurs. The default value is the
 ///   filename of the test case in which this function was called.
@@ -37,7 +37,7 @@ import TestKitCore
 internal func evaluateExpr<T>(
     _ expr          : () throws -> T,
     assertionKind   : AssertionKind,
-    captureKind     : ExprCaptureKind,
+    capture         : ExprCaptureKind,
     message         : () -> String,
     file            : StaticString,
     line            : UInt,
@@ -57,12 +57,12 @@ internal func evaluateExpr<T>(
         else
         {
             assertionKind.fail(
-                context:        failureContext,
-                captureKind:    captureKind,
-                reason:         "threw error \(quote(error))",
-                message:        message,
-                file:           file,
-                line:           line
+                context:    failureContext,
+                capture:    capture,
+                reason:     "threw error \(quote(error))",
+                message:    message,
+                file:       file,
+                line:       line
             )
         }
         
@@ -82,7 +82,7 @@ internal func evaluateExpr<T>(
 /// - Parameters:
 ///   - collection: The collection to evaluate.
 ///   - assertionKind: The assertion kind.
-///   - captureKind: The kind of captured assertion expression.
+///   - capture: The kind of captured assertion expression.
 ///   - message: The description of a failure.
 ///   - file: The file where the failure occurs. The default value is the
 ///   filename of the test case in which this function was called.
@@ -93,7 +93,7 @@ internal func evaluateExpr<T>(
 internal func evaluateCollection<C>(
     _ collection    : () throws -> C,
     assertionKind   : AssertionKind,
-    captureKind     : ExprCaptureKind,
+    capture         : ExprCaptureKind,
     message         : () -> String,
     file            : StaticString,
     line            : UInt
@@ -106,12 +106,12 @@ internal func evaluateCollection<C>(
     catch
     {
         assertionKind.fail(
-            context:        failureContext,
-            captureKind:    captureKind,
-            reason:         "threw error \(quote(error))",
-            message:        message,
-            file:           file,
-            line:           line
+            context:    failureContext,
+            capture:    capture,
+            reason:     "threw error \(quote(error))",
+            message:    message,
+            file:       file,
+            line:       line
         )
         
         return .failure(error)

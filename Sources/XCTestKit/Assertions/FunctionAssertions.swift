@@ -122,12 +122,12 @@ public func XCTKAssertNil(
 )
 {
     evaluateXCTKAssertNil(
-        captureKind:    .none,
-        expr:           expression,
-        message:        message,
-        file:           file,
-        line:           line,
-        options:        options ?? XCTKConfig.global
+        capture:    .none,
+        expr:       expression,
+        message:    message,
+        file:       file,
+        line:       line,
+        options:    options ?? XCTKConfig.global
     )
 }
 
@@ -152,12 +152,12 @@ public func XCTKAssertNotNil(
 )
 {
     evaluateXCTKAssertNotNil(
-        captureKind:    .none,
-        expr:           expression,
-        message:        message,
-        file:           file,
-        line:           line,
-        options:        options ?? XCTKConfig.global
+        capture:    .none,
+        expr:       expression,
+        message:    message,
+        file:       file,
+        line:       line,
+        options:    options ?? XCTKConfig.global
     )
 }
 
@@ -187,12 +187,12 @@ public func XCTKUnwrap<T>(
 ) throws -> T
 {
     return try evaluateXCTKUnwrap(
-        captureKind:    .none,
-        expr:           expression,
-        message:        message,
-        file:           file,
-        line:           line,
-        options:        options ?? XCTKConfig.global
+        capture:    .none,
+        expr:       expression,
+        message:    message,
+        file:       file,
+        line:       line,
+        options:    options ?? XCTKConfig.global
     )
 }
 
@@ -221,13 +221,13 @@ public func XCTKAssertEqual<T>(
 ) where T : Equatable
 {
     evaluateXCTKAssertEqual(
-        captureKind:    .none,
-        expected:       expected,
-        actual:         actual,
-        message:        message,
-        file:           file,
-        line:           line,
-        options:        options ?? XCTKConfig.global
+        capture:    .none,
+        expected:   expected,
+        actual:     actual,
+        message:    message,
+        file:       file,
+        line:       line,
+        options:    options ?? XCTKConfig.global
     )
 }
 
@@ -254,13 +254,13 @@ public func XCTKAssertNotEqual<T>(
 ) where T : Equatable
 {
     evaluateXCTKAssertNotEqual(
-        captureKind:    .none,
-        expr1:          expression1,
-        expr2:          expression2,
-        message:        message,
-        file:           file,
-        line:           line,
-        options:        options ?? XCTKConfig.global
+        capture:    .none,
+        expr1:      expression1,
+        expr2:      expression2,
+        message:    message,
+        file:       file,
+        line:       line,
+        options:    options ?? XCTKConfig.global
     )
 }
 
@@ -290,13 +290,13 @@ public func XCTKAssertIdentical(
 )
 {
     evaluateXCTKAssertIdentical(
-        captureKind:    .none,
-        expr1:          expression1,
-        expr2:          expression2,
-        message:        message,
-        file:           file,
-        line:           line,
-        options:        options ?? XCTKConfig.global
+        capture:    .none,
+        expr1:      expression1,
+        expr2:      expression2,
+        message:    message,
+        file:       file,
+        line:       line,
+        options:    options ?? XCTKConfig.global
     )
 }
 
@@ -326,13 +326,13 @@ public func XCTKAssertNotIdentical(
 )
 {
     evaluateXCTKAssertNotIdentical(
-        captureKind:    .none,
-        expr1:          expression1,
-        expr2:          expression2,
-        message:        message,
-        file:           file,
-        line:           line,
-        options:        options ?? XCTKConfig.global
+        capture:    .none,
+        expr1:      expression1,
+        expr2:      expression2,
+        message:    message,
+        file:       file,
+        line:       line,
+        options:    options ?? XCTKConfig.global
     )
 }
 
@@ -363,14 +363,14 @@ public func XCTKAssertEqual<T>(
 ) where T : FloatingPoint
 {
     evaluateXCTKAssertEqual(
-        captureKind:    .none,
-        expr1:          expression1,
-        expr2:          expression2,
-        accuracy:       accuracy,
-        message:        message,
-        file:           file,
-        line:           line,
-        options:        options ?? XCTKConfig.global
+        capture:    .none,
+        expr1:      expression1,
+        expr2:      expression2,
+        accuracy:   accuracy,
+        message:    message,
+        file:       file,
+        line:       line,
+        options:    options ?? XCTKConfig.global
     )
 }
 
@@ -400,14 +400,14 @@ public func XCTKAssertEqual<T>(
 ) where T : Numeric
 {
     evaluateXCTKAssertEqual(
-        captureKind:    .none,
-        expr1:          expression1,
-        expr2:          expression2,
-        accuracy:       accuracy,
-        message:        message,
-        file:           file,
-        line:           line,
-        options:        options ?? XCTKConfig.global
+        capture:    .none,
+        expr1:      expression1,
+        expr2:      expression2,
+        accuracy:   accuracy,
+        message:    message,
+        file:       file,
+        line:       line,
+        options:    options ?? XCTKConfig.global
     )
 }
 
@@ -438,14 +438,14 @@ public func XCTKAssertNotEqual<T>(
 ) where T : FloatingPoint
 {
     evaluateXCTKAssertNotEqual(
-        captureKind:    .none,
-        expr1:          expression1,
-        expr2:          expression2,
-        accuracy:       accuracy,
-        message:        message,
-        file:           file,
-        line:           line,
-        options:        options ?? XCTKConfig.global
+        capture:    .none,
+        expr1:      expression1,
+        expr2:      expression2,
+        accuracy:   accuracy,
+        message:    message,
+        file:       file,
+        line:       line,
+        options:    options ?? XCTKConfig.global
     )
 }
 
@@ -476,14 +476,14 @@ public func XCTKAssertNotEqual<T>(
 ) where T : Numeric
 {
     evaluateXCTKAssertNotEqual(
-        captureKind:    .none,
-        expr1:          expression1,
-        expr2:          expression2,
-        accuracy:       accuracy,
-        message:        message,
-        file:           file,
-        line:           line,
-        options:        options ?? XCTKConfig.global
+        capture:    .none,
+        expr1:      expression1,
+        expr2:      expression2,
+        accuracy:   accuracy,
+        message:    message,
+        file:       file,
+        line:       line,
+        options:    options ?? XCTKConfig.global
     )
 }
 
@@ -513,13 +513,13 @@ public func XCTKAssertGreaterThan<T>(
 ) where T : Comparable
 {
     evaluateXCTKAssertGreaterThan(
-        captureKind:    .none,
-        expr1:          expression1,
-        expr2:          expression2,
-        message:        message,
-        file:           file,
-        line:           line,
-        options:        options ?? XCTKConfig.global
+        capture:    .none,
+        expr1:      expression1,
+        expr2:      expression2,
+        message:    message,
+        file:       file,
+        line:       line,
+        options:    options ?? XCTKConfig.global
     )
 }
 
@@ -547,13 +547,13 @@ public func XCTKAssertGreaterThanOrEqual<T>(
 ) where T : Comparable
 {
     evaluateXCTKAssertGreaterThanOrEqual(
-        captureKind:    .none,
-        expr1:          expression1,
-        expr2:          expression2,
-        message:        message,
-        file:           file,
-        line:           line,
-        options:        options ?? XCTKConfig.global
+        capture:    .none,
+        expr1:      expression1,
+        expr2:      expression2,
+        message:    message,
+        file:       file,
+        line:       line,
+        options:    options ?? XCTKConfig.global
     )
 }
 
@@ -581,13 +581,13 @@ public func XCTKAssertLessThanOrEqual<T>(
 ) where T : Comparable
 {
     evaluateXCTKAssertLessThanOrEqual(
-        captureKind:    .none,
-        expr1:          expression1,
-        expr2:          expression2,
-        message:        message,
-        file:           file,
-        line:           line,
-        options:        options ?? XCTKConfig.global
+        capture:    .none,
+        expr1:      expression1,
+        expr2:      expression2,
+        message:    message,
+        file:       file,
+        line:       line,
+        options:    options ?? XCTKConfig.global
     )
 }
 
@@ -615,13 +615,13 @@ public func XCTKAssertLessThan<T>(
 ) where T : Comparable
 {
     evaluateXCTKAssertLessThan(
-        captureKind:    .none,
-        expr1:          expression1,
-        expr2:          expression2,
-        message:        message,
-        file:           file,
-        line:           line,
-        options:        options ?? XCTKConfig.global
+        capture:    .none,
+        expr1:      expression1,
+        expr2:      expression2,
+        message:    message,
+        file:       file,
+        line:       line,
+        options:    options ?? XCTKConfig.global
     )
 }
 
@@ -650,7 +650,7 @@ public func XCTKAssertThrowsError<T>(
 )
 {
     evaluateXCTKAssertThrowsError(
-        captureKind:    .none,
+        capture:        .none,
         expr:           expression,
         message:        message,
         file:           file,
@@ -681,12 +681,12 @@ public func XCTKAssertNoThrow<T>(
 )
 {
     evaluateXCTKAssertNoThrow(
-        captureKind:    .none,
-        expr:           expression,
-        message:        message,
-        file:           file,
-        line:           line,
-        options:        options ?? XCTKConfig.global
+        capture:    .none,
+        expr:       expression,
+        message:    message,
+        file:       file,
+        line:       line,
+        options:    options ?? XCTKConfig.global
     )
 }
 
@@ -741,7 +741,7 @@ public func XCTKAssertAllSatisfy<C>(
 ) where C : Collection
 {
     evaluateXCTKAssertAllSatisfy(
-        captureKind:    .none,
+        capture:        .none,
         collection:     collection,
         predicate:      predicate,
         message:        message,
@@ -776,7 +776,7 @@ public func XCTKAssertAnySatisfy<C>(
 ) where C : Collection
 {
     evaluateXCTKAssertAnySatisfy(
-        captureKind:    .none,
+        capture:        .none,
         collection:     collection,
         predicate:      predicate,
         message:        message,
@@ -811,7 +811,7 @@ public func XCTKAssertNoneSatisfy<C>(
 ) where C : Collection
 {
     evaluateXCTKAssertNoneSatisfy(
-        captureKind:    .none,
+        capture:        .none,
         collection:     collection,
         predicate:      predicate,
         message:        message,
@@ -852,7 +852,7 @@ public func XCTKAssertSatisfy<C>(
 ) where C : Collection
 {
     evaluateXCTKAssertSatisfy(
-        captureKind:    .none,
+        capture:        .none,
         collection:     collection,
         atLeast:        atLeast,
         predicate:      predicate,
@@ -894,7 +894,7 @@ public func XCTKAssertSatisfy<C>(
 ) where C : Collection
 {    
     evaluateXCTKAssertSatisfy(
-        captureKind:    .none,
+        capture:        .none,
         collection:     collection,
         atMost:         atMost,
         predicate:      predicate,
@@ -936,7 +936,7 @@ public func XCTKAssertSatisfy<C>(
 ) where C : Collection
 {    
     evaluateXCTKAssertSatisfy(
-        captureKind:    .none,
+        capture:        .none,
         collection:     collection,
         range:          range,
         predicate:      predicate,
@@ -978,7 +978,7 @@ public func XCTKAssertExactly<C>(
 ) where C : Collection
 {    
     evaluateXCTKAssertExactly(
-        captureKind:    .none,
+        capture:        .none,
         collection:     collection,
         count:          count,
         predicate:      predicate,
@@ -1014,7 +1014,7 @@ public func XCTKAssertExactlyOne<C>(
 ) where C : Collection
 {
     evaluateXCTKAssertExactlyOne(
-        captureKind:    .none,
+        capture:        .none,
         collection:     collection,
         predicate:      predicate,
         message:        message,
@@ -1049,7 +1049,7 @@ public func XCTKAssertSorted<C>(
 ) where C : Collection
 {
     evaluateXCTKAssertSorted(
-        captureKind:    .none,
+        capture:        .none,
         collection:     collection,
         predicate:      predicate,
         message:        message,
@@ -1080,7 +1080,7 @@ public func XCTKAssertUnique<C>(
 ) where C : Collection, C.Element : Hashable
 {
     evaluateXCTKAssertUnique(
-        captureKind:    .none,
+        capture:        .none,
         collection:     collection,
         message:        message,
         file:           file,
@@ -1114,7 +1114,7 @@ public func XCTKAssertUnique<C, K>(
 ) where C : Collection, K : Hashable
 {
     evaluateXCTKAssertUnique(
-        captureKind:    .none,
+        capture:        .none,
         collection:     collection,
         predicate:      predicate,
         message:        message,

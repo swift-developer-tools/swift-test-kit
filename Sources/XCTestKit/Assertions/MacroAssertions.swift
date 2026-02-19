@@ -101,12 +101,12 @@ internal func _XCTKAssertNilMacro(
 )
 {
     evaluateXCTKAssertNil(
-        captureKind:    .single(exprText),
-        expr:           expr,
-        message:        message,
-        file:           file,
-        line:           line,
-        options:        options ?? XCTKConfig.global
+        capture:    .single(exprText),
+        expr:       expr,
+        message:    message,
+        file:       file,
+        line:       line,
+        options:    options ?? XCTKConfig.global
     )
 }
 
@@ -122,12 +122,12 @@ internal func _XCTKAssertNotNilMacro(
 )
 {
     evaluateXCTKAssertNotNil(
-        captureKind:    .single(exprText),
-        expr:           expr,
-        message:        message,
-        file:           file,
-        line:           line,
-        options:        options ?? XCTKConfig.global
+        capture:    .single(exprText),
+        expr:       expr,
+        message:    message,
+        file:       file,
+        line:       line,
+        options:    options ?? XCTKConfig.global
     )
 }
 
@@ -143,12 +143,12 @@ internal func _XCTKUnwrapMacro<T>(
 ) throws -> T
 {
     return try evaluateXCTKUnwrap(
-        captureKind:    .single(exprText),
-        expr:           expr,
-        message:        message,
-        file:           file,
-        line:           line,
-        options:        options ?? XCTKConfig.global
+        capture:    .single(exprText),
+        expr:       expr,
+        message:    message,
+        file:       file,
+        line:       line,
+        options:    options ?? XCTKConfig.global
     )
 }
 
@@ -168,13 +168,13 @@ internal func _XCTKAssertEqualMacro<T>(
 ) where T : Equatable
 {
     evaluateXCTKAssertEqual(
-        captureKind:    .double(expectedText, actualText),
-        expected:       expected,
-        actual:         actual,
-        message:        message,
-        file:           file,
-        line:           line,
-        options:        options ?? XCTKConfig.global
+        capture:    .double(expectedText, actualText),
+        expected:   expected,
+        actual:     actual,
+        message:    message,
+        file:       file,
+        line:       line,
+        options:    options ?? XCTKConfig.global
     )
 }
 
@@ -192,13 +192,13 @@ internal func _XCTKAssertNotEqualMacro<T>(
 ) where T : Equatable
 {
     evaluateXCTKAssertNotEqual(
-        captureKind:    .double(expr1Text, expr2Text),
-        expr1:          expr1,
-        expr2:          expr2,
-        message:        message,
-        file:           file,
-        line:           line,
-        options:        options ?? XCTKConfig.global
+        capture:    .double(expr1Text, expr2Text),
+        expr1:      expr1,
+        expr2:      expr2,
+        message:    message,
+        file:       file,
+        line:       line,
+        options:    options ?? XCTKConfig.global
     )
 }
 
@@ -216,13 +216,13 @@ internal func _XCTKAssertIdenticalMacro(
 )
 {
     evaluateXCTKAssertIdentical(
-        captureKind:    .double(expr1Text, expr2Text),
-        expr1:          expr1,
-        expr2:          expr2,
-        message:        message,
-        file:           file,
-        line:           line,
-        options:        options ?? XCTKConfig.global
+        capture:    .double(expr1Text, expr2Text),
+        expr1:      expr1,
+        expr2:      expr2,
+        message:    message,
+        file:       file,
+        line:       line,
+        options:    options ?? XCTKConfig.global
     )
 }
 
@@ -240,13 +240,13 @@ internal func _XCTKAssertNotIdenticalMacro(
 )
 {
     evaluateXCTKAssertNotIdentical(
-        captureKind:    .double(expr1Text, expr2Text),
-        expr1:          expr1,
-        expr2:          expr2,
-        message:        message,
-        file:           file,
-        line:           line,
-        options:        options ?? XCTKConfig.global
+        capture:    .double(expr1Text, expr2Text),
+        expr1:      expr1,
+        expr2:      expr2,
+        message:    message,
+        file:       file,
+        line:       line,
+        options:    options ?? XCTKConfig.global
     )
 }
 
@@ -265,14 +265,14 @@ internal func _XCTKAssertEqualMacro<T>(
 ) where T : FloatingPoint
 {
     evaluateXCTKAssertEqual(
-        captureKind:    .double(expr1Text, expr2Text),
-        expr1:          expr1,
-        expr2:          expr2,
-        accuracy:       accuracy,
-        message:        message,
-        file:           file,
-        line:           line,
-        options:        options ?? XCTKConfig.global
+        capture:    .double(expr1Text, expr2Text),
+        expr1:      expr1,
+        expr2:      expr2,
+        accuracy:   accuracy,
+        message:    message,
+        file:       file,
+        line:       line,
+        options:    options ?? XCTKConfig.global
     )
 }
 
@@ -291,14 +291,14 @@ internal func _XCTKAssertEqualMacro<T>(
 ) where T : Numeric
 {
     evaluateXCTKAssertEqual(
-        captureKind:    .double(expr1Text, expr2Text),
-        expr1:          expr1,
-        expr2:          expr2,
-        accuracy:       accuracy,
-        message:        message,
-        file:           file,
-        line:           line,
-        options:        options ?? XCTKConfig.global
+        capture:    .double(expr1Text, expr2Text),
+        expr1:      expr1,
+        expr2:      expr2,
+        accuracy:   accuracy,
+        message:    message,
+        file:       file,
+        line:       line,
+        options:    options ?? XCTKConfig.global
     )
 }
 
@@ -317,14 +317,14 @@ internal func _XCTKAssertNotEqualMacro<T>(
 ) where T : FloatingPoint
 {
     evaluateXCTKAssertNotEqual(
-        captureKind:    .double(expr1Text, expr2Text),
-        expr1:          expr1,
-        expr2:          expr2,
-        accuracy:       accuracy,
-        message:        message,
-        file:           file,
-        line:           line,
-        options:        options ?? XCTKConfig.global
+        capture:    .double(expr1Text, expr2Text),
+        expr1:      expr1,
+        expr2:      expr2,
+        accuracy:   accuracy,
+        message:    message,
+        file:       file,
+        line:       line,
+        options:    options ?? XCTKConfig.global
     )
 }
 
@@ -343,14 +343,14 @@ internal func _XCTKAssertNotEqualMacro<T>(
 ) where T : Numeric
 {
     evaluateXCTKAssertNotEqual(
-        captureKind:    .double(expr1Text, expr2Text),
-        expr1:          expr1,
-        expr2:          expr2,
-        accuracy:       accuracy,
-        message:        message,
-        file:           file,
-        line:           line,
-        options:        options ?? XCTKConfig.global
+        capture:    .double(expr1Text, expr2Text),
+        expr1:      expr1,
+        expr2:      expr2,
+        accuracy:   accuracy,
+        message:    message,
+        file:       file,
+        line:       line,
+        options:    options ?? XCTKConfig.global
     )
 }
 
@@ -370,13 +370,13 @@ internal func _XCTKAssertGreaterThanMacro<T>(
 ) where T : Comparable
 {
     evaluateXCTKAssertGreaterThan(
-        captureKind:    .double(expr1Text, expr2Text),
-        expr1:          expr1,
-        expr2:          expr2,
-        message:        message,
-        file:           file,
-        line:           line,
-        options:        options ?? XCTKConfig.global
+        capture:    .double(expr1Text, expr2Text),
+        expr1:      expr1,
+        expr2:      expr2,
+        message:    message,
+        file:       file,
+        line:       line,
+        options:    options ?? XCTKConfig.global
     )
 }
 
@@ -394,13 +394,13 @@ internal func _XCTKAssertGreaterThanOrEqualMacro<T>(
 ) where T : Comparable
 {
     evaluateXCTKAssertGreaterThanOrEqual(
-        captureKind:    .double(expr1Text, expr2Text),
-        expr1:          expr1,
-        expr2:          expr2,
-        message:        message,
-        file:           file,
-        line:           line,
-        options:        options ?? XCTKConfig.global
+        capture:    .double(expr1Text, expr2Text),
+        expr1:      expr1,
+        expr2:      expr2,
+        message:    message,
+        file:       file,
+        line:       line,
+        options:    options ?? XCTKConfig.global
     )
 }
 
@@ -418,13 +418,13 @@ internal func _XCTKAssertLessThanOrEqualMacro<T>(
 ) where T : Comparable
 {
     evaluateXCTKAssertLessThanOrEqual(
-        captureKind:    .double(expr1Text, expr2Text),
-        expr1:          expr1,
-        expr2:          expr2,
-        message:        message,
-        file:           file,
-        line:           line,
-        options:        options ?? XCTKConfig.global
+        capture:    .double(expr1Text, expr2Text),
+        expr1:      expr1,
+        expr2:      expr2,
+        message:    message,
+        file:       file,
+        line:       line,
+        options:    options ?? XCTKConfig.global
     )
 }
 
@@ -442,13 +442,13 @@ internal func _XCTKAssertLessThanMacro<T>(
 ) where T : Comparable
 {
     evaluateXCTKAssertLessThan(
-        captureKind:    .double(expr1Text, expr2Text),
-        expr1:          expr1,
-        expr2:          expr2,
-        message:        message,
-        file:           file,
-        line:           line,
-        options:        options ?? XCTKConfig.global
+        capture:    .double(expr1Text, expr2Text),
+        expr1:      expr1,
+        expr2:      expr2,
+        message:    message,
+        file:       file,
+        line:       line,
+        options:    options ?? XCTKConfig.global
     )
 }
 
@@ -467,7 +467,7 @@ internal func _XCTKAssertThrowsErrorMacro<T>(
 )
 {
     evaluateXCTKAssertThrowsError(
-        captureKind:    .single(exprText),
+        capture:        .single(exprText),
         expr:           expr,
         message:        message,
         file:           file,
@@ -489,12 +489,12 @@ internal func _XCTKAssertNoThrowMacro<T>(
 )
 {
     evaluateXCTKAssertNoThrow(
-        captureKind:    .single(exprText),
-        expr:           expr,
-        message:        message,
-        file:           file,
-        line:           line,
-        options:        options ?? XCTKConfig.global
+        capture:    .single(exprText),
+        expr:       expr,
+        message:    message,
+        file:       file,
+        line:       line,
+        options:    options ?? XCTKConfig.global
     )
 }
 
@@ -531,7 +531,7 @@ internal func _XCTKAssertAllSatisfyMacro<C>(
 ) where C : Collection
 {
     evaluateXCTKAssertAllSatisfy(
-        captureKind:    .double(collectionText, predicateText),
+        capture:        .double(collectionText, predicateText),
         collection:     collection,
         predicate:      predicate,
         message:        message,
@@ -555,7 +555,7 @@ internal func _XCTKAssertAnySatisfyMacro<C>(
 ) where C : Collection
 {
     evaluateXCTKAssertAnySatisfy(
-        captureKind:    .double(collectionText, predicateText),
+        capture:        .double(collectionText, predicateText),
         collection:     collection,
         predicate:      predicate,
         message:        message,
@@ -579,7 +579,7 @@ internal func _XCTKAssertNoneSatisfyMacro<C>(
 ) where C : Collection
 {
     evaluateXCTKAssertNoneSatisfy(
-        captureKind:    .double(collectionText, predicateText),
+        capture:        .double(collectionText, predicateText),
         collection:     collection,
         predicate:      predicate,
         message:        message,
@@ -604,7 +604,7 @@ internal func _XCTKAssertSatisfyMacro<C>(
 ) where C : Collection
 {
     evaluateXCTKAssertSatisfy(
-        captureKind:    .double(collectionText, predicateText),
+        capture:        .double(collectionText, predicateText),
         collection:     collection,
         atLeast:        atLeast,
         predicate:      predicate,
@@ -630,7 +630,7 @@ internal func _XCTKAssertSatisfyMacro<C>(
 ) where C : Collection
 {
     evaluateXCTKAssertSatisfy(
-        captureKind:    .double(collectionText, predicateText),
+        capture:        .double(collectionText, predicateText),
         collection:     collection,
         atMost:         atMost,
         predicate:      predicate,
@@ -656,7 +656,7 @@ internal func _XCTKAssertSatisfyMacro<C>(
 ) where C : Collection
 {
     evaluateXCTKAssertSatisfy(
-        captureKind:    .double(collectionText, predicateText),
+        capture:        .double(collectionText, predicateText),
         collection:     collection,
         range:          range,
         predicate:      predicate,
@@ -682,7 +682,7 @@ internal func _XCTKAssertExactlyMacro<C>(
 ) where C : Collection
 {
     evaluateXCTKAssertExactly(
-        captureKind:    .double(collectionText, predicateText),
+        capture:        .double(collectionText, predicateText),
         collection:     collection,
         count:          count,
         predicate:      predicate,
@@ -707,7 +707,7 @@ internal func _XCTKAssertExactlyOneMacro<C>(
 ) where C : Collection
 {
     evaluateXCTKAssertExactlyOne(
-        captureKind:    .double(collectionText, predicateText),
+        capture:        .double(collectionText, predicateText),
         collection:     collection,
         predicate:      predicate,
         message:        message,
@@ -731,7 +731,7 @@ internal func _XCTKAssertSortedMacro<C>(
 ) where C : Collection
 {
     evaluateXCTKAssertSorted(
-        captureKind:    .double(collectionText, predicateText),
+        capture:        .double(collectionText, predicateText),
         collection:     collection,
         predicate:      predicate,
         message:        message,
@@ -753,7 +753,7 @@ internal func _XCTKAssertUniqueMacro<C>(
 ) where C : Collection, C.Element : Hashable
 {
     evaluateXCTKAssertUnique(
-        captureKind:    .single(collectionText),
+        capture:        .single(collectionText),
         collection:     collection,
         message:        message,
         file:           file,
@@ -776,7 +776,7 @@ internal func _XCTKAssertUniqueMacro<C, K>(
 ) where C : Collection, K : Hashable
 {
     evaluateXCTKAssertUnique(
-        captureKind:    .double(collectionText, predicateText),
+        capture:        .double(collectionText, predicateText),
         collection:     collection,
         predicate:      predicate,
         message:        message,

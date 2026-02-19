@@ -15,20 +15,20 @@ extension AssertionKind
     /// Creates a reason-based failure message.
     /// - Parameters:
     ///   - context: The assertion failure context.
-    ///   - captureKind: The kind of captured assertion expression.
+    ///   - capture: The kind of captured assertion expression.
     ///   - reason: The optional failure reason.
     ///   - message: The description of a failure.
     /// - Returns: The reason-based failure message.
     package func makeReasonFailure(
-        context     : FailureContext,
-        captureKind : ExprCaptureKind,
-        reason      : String?,
-        message     : () -> String?
+        context : FailureContext,
+        capture : ExprCaptureKind,
+        reason  : String?,
+        message : () -> String?
     ) -> String
     {
         var text: String
         
-        switch captureKind
+        switch capture
         {
             case .none:
                 
@@ -76,18 +76,18 @@ extension AssertionKind
     /// Creates a diff-based failure message.
     /// - Parameters:
     ///   - context: The assertion failure context.
-    ///   - captureKind: The kind of captured assertion expression.
+    ///   - capture: The kind of captured assertion expression.
     ///   - diff: The computed diff.
     ///   - message: The description of a failure.
     ///   - options: The options for testing.
     /// - Returns: The diff-based failure message, or an ``UnhandledError``
     /// for ``ExprCaptureKind/single``.
     package func makeDiffFailure(
-        context     : FailureContext,
-        captureKind : ExprCaptureKind,
-        diff        : DiffNode,
-        message     : () -> String?,
-        options     : TestOptions
+        context : FailureContext,
+        capture : ExprCaptureKind,
+        diff    : DiffNode,
+        message : () -> String?,
+        options : TestOptions
     ) -> Result<String, UnhandledError>
     {
         let diffOutput: String = Formatter.formatDiff(
@@ -95,7 +95,7 @@ extension AssertionKind
             options: options.formatOptions
         )
         
-        switch captureKind
+        switch capture
         {
             case .none:
                 
@@ -128,9 +128,9 @@ extension AssertionKind
             case .single:
                 
                 let error: UnhandledError = makeUnhandledError(
-                    context:        context,
-                    captureKind:    captureKind,
-                    message:        message
+                    context:    context,
+                    capture:    capture,
+                    message:    message
                 )
                 
                 return .failure(error)
@@ -144,7 +144,7 @@ extension AssertionKind
     /// Creates a single-expression-based failure message.
     /// - Parameters:
     ///   - context: The assertion failure context.
-    ///   - captureKind: The kind of captured assertion expression.
+    ///   - capture: The kind of captured assertion expression.
     ///   - actual: The string representation of the actual value, or `nil`
     ///   to omit.
     ///   - message: The description of a failure.
@@ -152,13 +152,13 @@ extension AssertionKind
     /// ``UnhandledError`` for ``ExprCaptureKind/none`` and
     /// ``ExprCaptureKind/double``.
     package func makeSingleExprFailure(
-        context     : FailureContext,
-        captureKind : ExprCaptureKind,
-        actual      : String?,
-        message     : () -> String?
+        context : FailureContext,
+        capture : ExprCaptureKind,
+        actual  : String?,
+        message : () -> String?
     ) -> Result<String, UnhandledError>
     {
-        switch captureKind
+        switch capture
         {
             case let .single(exprText):
                 
@@ -185,9 +185,9 @@ extension AssertionKind
                 .double:
                 
                 let error: UnhandledError = makeUnhandledError(
-                    context:        context,
-                    captureKind:    captureKind,
-                    message:        message
+                    context:    context,
+                    capture:    capture,
+                    message:    message
                 )
                 
                 return .failure(error)
@@ -243,23 +243,23 @@ extension AssertionKind
     /// Creates a predicate-based failure message.
     /// - Parameters:
     ///   - context: The assertion failure context.
-    ///   - captureKind: The kind of captured assertion expression.
+    ///   - capture: The kind of captured assertion expression.
     ///   - failure: Information about the failed predicate.
     ///   - message: The description of a failure.
     ///   - options: The options for testing.
     /// - Returns: The predicate-based failure message.
     package func makePredicateFailure(
-        context     : FailureContext,
-        captureKind : ExprCaptureKind,
-        failure     : PredicateFailure,
-        message     : () -> String?,
-        options     : TestOptions
+        context : FailureContext,
+        capture : ExprCaptureKind,
+        failure : PredicateFailure,
+        message : () -> String?,
+        options : TestOptions
     ) -> String
     {
         let output  : String
         let isMacro : Bool
         
-        switch captureKind
+        switch capture
         {
             case .none:
                 
@@ -421,13 +421,13 @@ extension AssertionKind
     /// Creates an error for the given unhandled expression capture kind.
     /// - Parameters:
     ///   - context: The assertion failure context.
-    ///   - captureKind: The unhandled expression capture kind.
+    ///   - capture: The unhandled expression capture kind.
     ///   - message: The description of a failure.
     /// - Returns: The error for the given unhandled expression capture kind.
     private func makeUnhandledError(
-        context     : FailureContext,
-        captureKind : ExprCaptureKind,
-        message     : () -> String?
+        context : FailureContext,
+        capture : ExprCaptureKind,
+        message : () -> String?
     ) -> UnhandledError
     {
         let reason: String = "Unhandled expression capture kind for"
@@ -437,7 +437,7 @@ extension AssertionKind
         
         var text: String = makeHeader(
             framework:  context.framework,
-            isMacro:    captureKind != .none
+            isMacro:    capture != .none
         )
         
         appendReason(reason, to: &text)

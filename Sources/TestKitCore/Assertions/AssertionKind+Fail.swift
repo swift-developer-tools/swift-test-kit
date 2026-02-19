@@ -15,14 +15,14 @@ extension AssertionKind
     /// Reports a reason-based assertion failure.
     /// - Parameters:
     ///   - context: The assertion failure context.
-    ///   - captureKind: The kind of captured assertion expression.
+    ///   - capture: The kind of captured assertion expression.
     ///   - reason: The optional failure reason.
     ///   - message: The description of a failure.
     ///   - file: The file where the failure occurs.
     ///   - line: The line where the failure occurs.
     package func fail(
         context     : FailureContext,
-        captureKind : ExprCaptureKind,
+        capture     : ExprCaptureKind,
         reason      : String?,
         message     : () -> String,
         file        : StaticString,
@@ -30,10 +30,10 @@ extension AssertionKind
     )
     {
         let text: String = makeReasonFailure(
-            context:        context,
-            captureKind:    captureKind,
-            reason:         reason,
-            message:        message
+            context:    context,
+            capture:    capture,
+            reason:     reason,
+            message:    message
         )
         
         context.emit(
@@ -50,28 +50,28 @@ extension AssertionKind
     /// Reports a diff-based assertion failure.
     /// - Parameters:
     ///   - context: The assertion failure context.
-    ///   - captureKind: The kind of captured assertion expression.
+    ///   - capture: The kind of captured assertion expression.
     ///   - diff: The computed diff.
     ///   - message: The description of a failure.
     ///   - file: The file where the failure occurs.
     ///   - line: The line where the failure occurs.
     ///   - options: The options for testing.
     package func fail(
-        context     : FailureContext,
-        captureKind : ExprCaptureKind,
-        diff        : DiffNode,
-        message     : () -> String,
-        file        : StaticString,
-        line        : UInt,
-        options     : TestOptions
+        context : FailureContext,
+        capture : ExprCaptureKind,
+        diff    : DiffNode,
+        message : () -> String,
+        file    : StaticString,
+        line    : UInt,
+        options : TestOptions
     )
     {
         let result: Result<String, UnhandledError> = makeDiffFailure(
-            context:        context,
-            captureKind:    captureKind,
-            diff:           diff,
-            message:        message,
-            options:        options
+            context:    context,
+            capture:    capture,
+            diff:       diff,
+            message:    message,
+            options:    options
         )
         
         context.emit(
@@ -88,26 +88,26 @@ extension AssertionKind
     /// Reports a single-expression-based assertion failure.
     /// - Parameters:
     ///   - context: The assertion failure context.
-    ///   - captureKind: The kind of captured assertion expression.
+    ///   - capture: The kind of captured assertion expression.
     ///   - actual: The string representation of the actual value, or `nil`
     ///   to omit.
     ///   - message: The description of a failure.
     ///   - file: The file where the failure occurs.
     ///   - line: The line where the failure occurs.
     package func fail(
-        context     : FailureContext,
-        captureKind : ExprCaptureKind,
-        actual      : String?,
-        message     : () -> String,
-        file        : StaticString,
-        line        : UInt
+        context : FailureContext,
+        capture : ExprCaptureKind,
+        actual  : String?,
+        message : () -> String,
+        file    : StaticString,
+        line    : UInt
     )
     {
         let result: Result<String, UnhandledError> = makeSingleExprFailure(
-            context:        context,
-            captureKind:    captureKind,
-            actual:         actual,
-            message:        message
+            context:    context,
+            capture:    capture,
+            actual:     actual,
+            message:    message
         )
         
         context.emit(
@@ -165,28 +165,28 @@ extension AssertionKind
     /// Reports a predicate-based assertion failure.
     /// - Parameters:
     ///   - context: The assertion failure context.
-    ///   - captureKind: The kind of captured assertion expression.
+    ///   - capture: The kind of captured assertion expression.
     ///   - failure: Information about the failed predicate.
     ///   - message: The description of a failure.
     ///   - file: The file where the failure occurs.
     ///   - line: The line where the failure occurs.
     ///   - options: The options for testing.
     package func fail(
-        context     : FailureContext,
-        captureKind : ExprCaptureKind,
-        failure     : PredicateFailure,
-        message     : () -> String,
-        file        : StaticString,
-        line        : UInt,
-        options     : TestOptions
+        context : FailureContext,
+        capture : ExprCaptureKind,
+        failure : PredicateFailure,
+        message : () -> String,
+        file    : StaticString,
+        line    : UInt,
+        options : TestOptions
     )
     {
         let text: String = makePredicateFailure(
-            context:        context,
-            captureKind:    captureKind,
-            failure:        failure,
-            message:        message,
-            options:        options
+            context:    context,
+            capture:    capture,
+            failure:    failure,
+            message:    message,
+            options:    options
         )
         
         context.emit(
