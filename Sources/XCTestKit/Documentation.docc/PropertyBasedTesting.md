@@ -51,6 +51,7 @@ property bodies.
 
 ### Classifying Properties
 
+- ``XCTKAssume(_:)``
 - ``XCTKClassify(_:when:)``
 - ``XCTKCover(_:_:when:)``
 - ``XCTKLabel(_:)``
