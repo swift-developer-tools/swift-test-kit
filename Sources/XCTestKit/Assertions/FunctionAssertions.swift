@@ -8,7 +8,6 @@
 //===----------------------------------------------------------------------===//
 
 import TestKitCore
-import XCTest
 
 
 
@@ -32,9 +31,9 @@ public func XCTKAssert(
     options         : TestOptions?                      = nil
 )
 {
-    evaluateXCTKAssert(
-        expr:       expression,
-        message:    message,
+    TKAssert(
+        expression,
+        message,
         file:       file,
         line:       line,
         options:    options ?? XCTKConfig.global,
@@ -62,9 +61,9 @@ public func XCTKAssertTrue(
     options         : TestOptions?                      = nil
 )
 {
-    evaluateXCTKAssertTrue(
-        expr:       expression,
-        message:    message,
+    TKAssertTrue(
+        expression,
+        message,
         file:       file,
         line:       line,
         options:    options ?? XCTKConfig.global,
@@ -92,9 +91,9 @@ public func XCTKAssertFalse(
     options         : TestOptions?                      = nil
 )
 {
-    evaluateXCTKAssertFalse(
-        expr:       expression,
-        message:    message,
+    TKAssertFalse(
+        expression,
+        message,
         file:       file,
         line:       line,
         options:    options ?? XCTKConfig.global,
@@ -124,10 +123,9 @@ public func XCTKAssertNil(
     options         : TestOptions?                      = nil
 )
 {
-    evaluateXCTKAssertNil(
-        capture:    .none,
-        expr:       expression,
-        message:    message,
+    TKAssertNil(
+        expression,
+        message,
         file:       file,
         line:       line,
         options:    options ?? XCTKConfig.global,
@@ -155,10 +153,9 @@ public func XCTKAssertNotNil(
     options         : TestOptions?                      = nil
 )
 {
-    evaluateXCTKAssertNotNil(
-        capture:    .none,
-        expr:       expression,
-        message:    message,
+    TKAssertNotNil(
+        expression,
+        message,
         file:       file,
         line:       line,
         options:    options ?? XCTKConfig.global,
@@ -191,10 +188,9 @@ public func XCTKUnwrap<T>(
     options         : TestOptions?                  = nil
 ) throws -> T
 {
-    return try evaluateXCTKUnwrap(
-        capture:    .none,
-        expr:       expression,
-        message:    message,
+    return try TKUnwrap(
+        expression,
+        message,
         file:       file,
         line:       line,
         options:    options ?? XCTKConfig.global,
@@ -226,11 +222,10 @@ public func XCTKAssertEqual<T>(
     options     : TestOptions?                  = nil
 ) where T : Equatable
 {
-    evaluateXCTKAssertEqual(
-        capture:    .none,
-        expected:   expected,
-        actual:     actual,
-        message:    message,
+    TKAssertEqual(
+        expected,
+        actual,
+        message,
         file:       file,
         line:       line,
         options:    options ?? XCTKConfig.global,
@@ -260,11 +255,10 @@ public func XCTKAssertNotEqual<T>(
     options         : TestOptions?                  = nil
 ) where T : Equatable
 {
-    evaluateXCTKAssertNotEqual(
-        capture:    .none,
-        expr1:      expression1,
-        expr2:      expression2,
-        message:    message,
+    TKAssertNotEqual(
+        expression1,
+        expression2,
+        message,
         file:       file,
         line:       line,
         options:    options ?? XCTKConfig.global,
@@ -297,11 +291,10 @@ public func XCTKAssertIdentical(
     options         : TestOptions?                  = nil
 )
 {
-    evaluateXCTKAssertIdentical(
-        capture:    .none,
-        expr1:      expression1,
-        expr2:      expression2,
-        message:    message,
+    TKAssertIdentical(
+        expression1,
+        expression2,
+        message,
         file:       file,
         line:       line,
         options:    options ?? XCTKConfig.global,
@@ -334,11 +327,10 @@ public func XCTKAssertNotIdentical(
     options         : TestOptions?                  = nil
 )
 {
-    evaluateXCTKAssertNotIdentical(
-        capture:    .none,
-        expr1:      expression1,
-        expr2:      expression2,
-        message:    message,
+    TKAssertNotIdentical(
+        expression1,
+        expression2,
+        message,
         file:       file,
         line:       line,
         options:    options ?? XCTKConfig.global,
@@ -372,12 +364,11 @@ public func XCTKAssertEqual<T>(
     options         : TestOptions?                  = nil
 ) where T : FloatingPoint
 {
-    evaluateXCTKAssertEqual(
-        capture:    .none,
-        expr1:      expression1,
-        expr2:      expression2,
+    TKAssertEqual(
+        expression1,
+        expression2,
         accuracy:   accuracy,
-        message:    message,
+        message,
         file:       file,
         line:       line,
         options:    options ?? XCTKConfig.global,
@@ -410,12 +401,11 @@ public func XCTKAssertEqual<T>(
     options         : TestOptions?                  = nil
 ) where T : Numeric
 {
-    evaluateXCTKAssertEqual(
-        capture:    .none,
-        expr1:      expression1,
-        expr2:      expression2,
+    TKAssertEqual(
+        expression1,
+        expression2,
         accuracy:   accuracy,
-        message:    message,
+        message,
         file:       file,
         line:       line,
         options:    options ?? XCTKConfig.global,
@@ -449,12 +439,11 @@ public func XCTKAssertNotEqual<T>(
     options         : TestOptions?                  = nil
 ) where T : FloatingPoint
 {
-    evaluateXCTKAssertNotEqual(
-        capture:    .none,
-        expr1:      expression1,
-        expr2:      expression2,
+    TKAssertNotEqual(
+        expression1,
+        expression2,
         accuracy:   accuracy,
-        message:    message,
+        message,
         file:       file,
         line:       line,
         options:    options ?? XCTKConfig.global,
@@ -488,12 +477,11 @@ public func XCTKAssertNotEqual<T>(
     options         : TestOptions?                  = nil
 ) where T : Numeric
 {
-    evaluateXCTKAssertNotEqual(
-        capture:    .none,
-        expr1:      expression1,
-        expr2:      expression2,
+    TKAssertNotEqual(
+        expression1,
+        expression2,
         accuracy:   accuracy,
-        message:    message,
+        message,
         file:       file,
         line:       line,
         options:    options ?? XCTKConfig.global,
@@ -526,11 +514,10 @@ public func XCTKAssertGreaterThan<T>(
     options         : TestOptions?                  = nil
 ) where T : Comparable
 {
-    evaluateXCTKAssertGreaterThan(
-        capture:    .none,
-        expr1:      expression1,
-        expr2:      expression2,
-        message:    message,
+    TKAssertGreaterThan(
+        expression1,
+        expression2,
+        message,
         file:       file,
         line:       line,
         options:    options ?? XCTKConfig.global,
@@ -561,11 +548,10 @@ public func XCTKAssertGreaterThanOrEqual<T>(
     options         : TestOptions?                  = nil
 ) where T : Comparable
 {
-    evaluateXCTKAssertGreaterThanOrEqual(
-        capture:    .none,
-        expr1:      expression1,
-        expr2:      expression2,
-        message:    message,
+    TKAssertGreaterThanOrEqual(
+        expression1,
+        expression2,
+        message,
         file:       file,
         line:       line,
         options:    options ?? XCTKConfig.global,
@@ -596,11 +582,10 @@ public func XCTKAssertLessThanOrEqual<T>(
     options         : TestOptions?                  = nil
 ) where T : Comparable
 {
-    evaluateXCTKAssertLessThanOrEqual(
-        capture:    .none,
-        expr1:      expression1,
-        expr2:      expression2,
-        message:    message,
+    TKAssertLessThanOrEqual(
+        expression1,
+        expression2,
+        message,
         file:       file,
         line:       line,
         options:    options ?? XCTKConfig.global,
@@ -631,11 +616,10 @@ public func XCTKAssertLessThan<T>(
     options         : TestOptions?                  = nil
 ) where T : Comparable
 {
-    evaluateXCTKAssertLessThan(
-        capture:    .none,
-        expr1:      expression1,
-        expr2:      expression2,
-        message:    message,
+    TKAssertLessThan(
+        expression1,
+        expression2,
+        message,
         file:       file,
         line:       line,
         options:    options ?? XCTKConfig.global,
@@ -667,15 +651,14 @@ public func XCTKAssertThrowsError<T>(
     _ errorHandler  : (any Error) -> Void           = { _ in }
 )
 {
-    evaluateXCTKAssertThrowsError(
-        capture:        .none,
-        expr:           expression,
-        message:        message,
-        file:           file,
-        line:           line,
-        options:        options ?? XCTKConfig.global,
-        errorHandler:   errorHandler,
-        context:        failureContext
+    TKAssertThrowsError(
+        expression,
+        message,
+        file:       file,
+        line:       line,
+        options:    options ?? XCTKConfig.global,
+        errorHandler,
+        context:    failureContext
     )
 }
 
@@ -699,10 +682,9 @@ public func XCTKAssertNoThrow<T>(
     options         : TestOptions?                  = nil
 )
 {
-    evaluateXCTKAssertNoThrow(
-        capture:    .none,
-        expr:       expression,
-        message:    message,
+    TKAssertNoThrow(
+        expression,
+        message,
         file:       file,
         line:       line,
         options:    options ?? XCTKConfig.global,
@@ -727,10 +709,11 @@ public func XCTKFail(
     line        : UInt          = #line
 )
 {
-    XCTFail(
+    TKFail(
         message,
-        file:   file,
-        line:   line
+        file:       file,
+        line:       line,
+        context:    failureContext
     )
 }
 
@@ -760,15 +743,14 @@ public func XCTKAssertAllSatisfy<C>(
     options         : TestOptions?                  = nil
 ) where C : Collection
 {
-    evaluateXCTKAssertAllSatisfy(
-        capture:        .none,
-        collection:     collection,
-        predicate:      predicate,
-        message:        message,
-        file:           file,
-        line:           line,
-        options:        options ?? XCTKConfig.global,
-        context:        failureContext
+    TKAssertAllSatisfy(
+        collection,
+        predicate,
+        message,
+        file:       file,
+        line:       line,
+        options:    options ?? XCTKConfig.global,
+        context:    failureContext
     )
 }
 
@@ -796,15 +778,14 @@ public func XCTKAssertAnySatisfy<C>(
     options         : TestOptions?                  = nil
 ) where C : Collection
 {
-    evaluateXCTKAssertAnySatisfy(
-        capture:        .none,
-        collection:     collection,
-        predicate:      predicate,
-        message:        message,
-        file:           file,
-        line:           line,
-        options:        options ?? XCTKConfig.global,
-        context:        failureContext
+    TKAssertAnySatisfy(
+        collection,
+        predicate,
+        message,
+        file:       file,
+        line:       line,
+        options:    options ?? XCTKConfig.global,
+        context:    failureContext
     )
 }
 
@@ -832,15 +813,14 @@ public func XCTKAssertNoneSatisfy<C>(
     options         : TestOptions?                  = nil
 ) where C : Collection
 {
-    evaluateXCTKAssertNoneSatisfy(
-        capture:        .none,
-        collection:     collection,
-        predicate:      predicate,
-        message:        message,
-        file:           file,
-        line:           line,
-        options:        options ?? XCTKConfig.global,
-        context:        failureContext
+    TKAssertNoneSatisfy(
+        collection,
+        predicate,
+        message,
+        file:       file,
+        line:       line,
+        options:    options ?? XCTKConfig.global,
+        context:    failureContext
     )
 }
 
@@ -874,16 +854,15 @@ public func XCTKAssertSatisfy<C>(
     options         : TestOptions?                  = nil
 ) where C : Collection
 {
-    evaluateXCTKAssertSatisfy(
-        capture:        .none,
-        collection:     collection,
-        atLeast:        atLeast,
-        predicate:      predicate,
-        message:        message,
-        file:           file,
-        line:           line,
-        options:        options ?? XCTKConfig.global,
-        context:        failureContext
+    TKAssertSatisfy(
+        collection,
+        atLeast:    atLeast,
+        predicate,
+        message,
+        file:       file,
+        line:       line,
+        options:    options ?? XCTKConfig.global,
+        context:    failureContext
     )
 }
 
@@ -917,16 +896,15 @@ public func XCTKAssertSatisfy<C>(
     options         : TestOptions?                  = nil
 ) where C : Collection
 {    
-    evaluateXCTKAssertSatisfy(
-        capture:        .none,
-        collection:     collection,
-        atMost:         atMost,
-        predicate:      predicate,
-        message:        message,
-        file:           file,
-        line:           line,
-        options:        options ?? XCTKConfig.global,
-        context:        failureContext
+    TKAssertSatisfy(
+        collection,
+        atMost:     atMost,
+        predicate,
+        message,
+        file:       file,
+        line:       line,
+        options:    options ?? XCTKConfig.global,
+        context:    failureContext
     )
 }
 
@@ -960,16 +938,15 @@ public func XCTKAssertSatisfy<C>(
     options         : TestOptions?                  = nil
 ) where C : Collection
 {    
-    evaluateXCTKAssertSatisfy(
-        capture:        .none,
-        collection:     collection,
-        range:          range,
-        predicate:      predicate,
-        message:        message,
-        file:           file,
-        line:           line,
-        options:        options ?? XCTKConfig.global,
-        context:        failureContext
+    TKAssertSatisfy(
+        collection,
+        range:      range,
+        predicate,
+        message,
+        file:       file,
+        line:       line,
+        options:    options ?? XCTKConfig.global,
+        context:    failureContext
     )
 }
 
@@ -1003,16 +980,15 @@ public func XCTKAssertExactly<C>(
     options         : TestOptions?                  = nil
 ) where C : Collection
 {    
-    evaluateXCTKAssertExactly(
-        capture:        .none,
-        collection:     collection,
-        count:          count,
-        predicate:      predicate,
-        message:        message,
-        file:           file,
-        line:           line,
-        options:        options ?? XCTKConfig.global,
-        context:        failureContext
+    TKAssertExactly(
+        collection,
+        count:      count,
+        predicate,
+        message,
+        file:       file,
+        line:       line,
+        options:    options ?? XCTKConfig.global,
+        context:    failureContext
     )
 }
 
@@ -1040,15 +1016,14 @@ public func XCTKAssertExactlyOne<C>(
     options         : TestOptions?                  = nil
 ) where C : Collection
 {
-    evaluateXCTKAssertExactlyOne(
-        capture:        .none,
-        collection:     collection,
-        predicate:      predicate,
-        message:        message,
-        file:           file,
-        line:           line,
-        options:        options ?? XCTKConfig.global,
-        context:        failureContext
+    TKAssertExactlyOne(
+        collection,
+        predicate,
+        message,
+        file:       file,
+        line:       line,
+        options:    options ?? XCTKConfig.global,
+        context:    failureContext
     )
 }
 
@@ -1076,15 +1051,14 @@ public func XCTKAssertSorted<C>(
     options         : TestOptions?                          = nil
 ) where C : Collection
 {
-    evaluateXCTKAssertSorted(
-        capture:        .none,
-        collection:     collection,
-        predicate:      predicate,
-        message:        message,
-        file:           file,
-        line:           line,
-        options:        options ?? XCTKConfig.global,
-        context:        failureContext
+    TKAssertSorted(
+        collection,
+        by:         predicate,
+        message,
+        file:       file,
+        line:       line,
+        options:    options ?? XCTKConfig.global,
+        context:    failureContext
     )
 }
 
@@ -1108,14 +1082,13 @@ public func XCTKAssertUnique<C>(
     options         : TestOptions?                  = nil
 ) where C : Collection, C.Element : Hashable
 {
-    evaluateXCTKAssertUnique(
-        capture:        .none,
-        collection:     collection,
-        message:        message,
-        file:           file,
-        line:           line,
-        options:        options ?? XCTKConfig.global,
-        context:        failureContext
+    TKAssertUnique(
+        collection,
+        message,
+        file:       file,
+        line:       line,
+        options:    options ?? XCTKConfig.global,
+        context:    failureContext
     )
 }
 
@@ -1143,14 +1116,13 @@ public func XCTKAssertUnique<C, K>(
     options         : TestOptions?                  = nil
 ) where C : Collection, K : Hashable
 {
-    evaluateXCTKAssertUnique(
-        capture:        .none,
-        collection:     collection,
-        predicate:      predicate,
-        message:        message,
-        file:           file,
-        line:           line,
-        options:        options ?? XCTKConfig.global,
-        context:        failureContext
+    TKAssertUnique(
+        collection,
+        by:         predicate,
+        message,
+        file:       file,
+        line:       line,
+        options:    options ?? XCTKConfig.global,
+        context:    failureContext
     )
 }
