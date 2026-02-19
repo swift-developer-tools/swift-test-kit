@@ -15,6 +15,8 @@ import XCTest
 
 internal final class PropertyRunnerClassificationTests: XCTestCaseStopOnFail
 {
+    // MARK: - Non-table
+    
     @Reasync
     func testPassedResultIncludesDistribution() async throws
     {
@@ -111,7 +113,7 @@ internal final class PropertyRunnerClassificationTests: XCTestCaseStopOnFail
             options: .propertyOptions(seed: Self.seed)
         )
         
-        guard case let .failed(counterexample, distribution, _) = result
+        guard case let .failed(counterexample, dist, _) = result
         else
         {
             XCTFail("Expected .failed, got \(result)")
@@ -119,7 +121,7 @@ internal final class PropertyRunnerClassificationTests: XCTestCaseStopOnFail
         }
         
         XCTAssertEqual(counterexample.iteration, 1)
-        XCTAssertTrue(distribution.isEmpty)
+        XCTAssertTrue(dist.isEmpty)
     }
     
     
@@ -158,7 +160,7 @@ internal final class PropertyRunnerClassificationTests: XCTestCaseStopOnFail
             options: options
         )
         
-        guard case let .failed(counterexample, distribution, _) = result
+        guard case let .failed(counterexample, dist, _) = result
         else
         {
             XCTFail("Expected .failed, got \(result)")
@@ -166,7 +168,7 @@ internal final class PropertyRunnerClassificationTests: XCTestCaseStopOnFail
         }
         
         XCTAssertEqual(counterexample.iteration, target + 1)
-        XCTAssertEqual(distribution["tested"], target)
+        XCTAssertEqual(dist["tested"], target)
     }
     
     
@@ -406,7 +408,7 @@ internal final class PropertyRunnerClassificationTests: XCTestCaseStopOnFail
             options: options
         )
         
-        guard case let .failed(counterexample, distribution, _) = result
+        guard case let .failed(counterexample, dist, _) = result
         else
         {
             XCTFail("Expected .failed, got \(result)")
@@ -414,7 +416,7 @@ internal final class PropertyRunnerClassificationTests: XCTestCaseStopOnFail
         }
         
         XCTAssertEqual(counterexample.value.size, target)
-        XCTAssertNil(distribution["never"])
+        XCTAssertNil(dist["never"])
     }
     
     
@@ -517,7 +519,7 @@ internal final class PropertyRunnerClassificationTests: XCTestCaseStopOnFail
             options: options
         )
         
-        guard case let .failed(counterexample, distribution, _) = result
+        guard case let .failed(counterexample, dist, _) = result
         else
         {
             XCTFail("Expected .failed, got \(result)")
@@ -525,7 +527,7 @@ internal final class PropertyRunnerClassificationTests: XCTestCaseStopOnFail
         }
         
         XCTAssertEqual(counterexample.value.size, target)
-        XCTAssertEqual(distribution["after-failure"], target)
+        XCTAssertEqual(dist["after-failure"], target)
     }
     
     
@@ -564,7 +566,7 @@ internal final class PropertyRunnerClassificationTests: XCTestCaseStopOnFail
             options: options
         )
         
-        guard case let .failed(counterexample, distribution, _) = result
+        guard case let .failed(counterexample, dist, _) = result
         else
         {
             XCTFail("Expected .failed, got \(result)")
@@ -577,7 +579,7 @@ internal final class PropertyRunnerClassificationTests: XCTestCaseStopOnFail
         /// The distribution count for `tested` must equal the number of
         /// successful iterations before the failure, and must not be inflated
         /// by shrinking.
-        let testedCount: Int = try XCTUnwrap(distribution["tested"])
+        let testedCount: Int = try XCTUnwrap(dist["tested"])
         
         XCTAssertEqual(testedCount, counterexample.iteration - 1)
     }
@@ -988,7 +990,7 @@ internal final class PropertyRunnerClassificationTests: XCTestCaseStopOnFail
             options: options
         )
         
-        guard case let .failed(counterexample, distribution, _) = result
+        guard case let .failed(counterexample, dist, _) = result
         else
         {
             XCTFail("Expected .failed, got \(result)")
@@ -1000,8 +1002,8 @@ internal final class PropertyRunnerClassificationTests: XCTestCaseStopOnFail
         /// The failing iteration is not finalized. Only successful iterations
         /// contribute to the distribution. `high` must not appear, since any
         /// iteration with that label must trigger a failure.
-        let low     : Int   = distribution["low"]    ?? 0
-        let high    : Int   = distribution["high"]   ?? 0
+        let low     : Int   = dist["low"]   ?? 0
+        let high    : Int   = dist["high"]  ?? 0
         
         XCTAssertEqual(low, counterexample.iteration - 1)
         XCTAssertEqual(high, 0)
@@ -1123,6 +1125,640 @@ internal final class PropertyRunnerClassificationTests: XCTestCaseStopOnFail
         let passed: PassedValues = try XCTUnwrap(result.assertPassed())
         
         XCTAssertEqual(passed.dist["even"], iterations)
+    }
+    
+    
+    
+    // MARK: - Table
+    
+    @Reasync
+    func testTabulateIntegration() async throws
+    {
+        let iterations: Int = 100
+        
+        let options: TestOptions = .propertyOptions(
+            iterations:     iterations,
+            maxSize:        100,
+            seed:           Self.seed
+        )
+        
+        let result: PCR<SizeCapture> = await PropertyRunner.run(
+            property:
+            {
+                capture async in
+                
+                XCTKTabulate("parity", capture.size % 2 == 0 ? "even" : "odd")
+            },
+            options: options
+        )
+        
+        let passed: PassedValues = try XCTUnwrap(result.assertPassed())
+        
+        XCTAssertTrue(passed.dist.isEmpty)
+        
+        let parity: [String : Int]? = passed.tableDist["parity"]
+        
+        XCTAssertNotNil(parity)
+        
+        let even    : Int   = parity?["even"]   ?? 0
+        let odd     : Int   = parity?["odd"]    ?? 0
+        
+        XCTAssertEqual(even + odd, iterations)
+        XCTAssertGreaterThan(even, 0)
+        XCTAssertGreaterThan(odd, 0)
+    }
+    
+    
+    
+    @Reasync
+    func testTabulateMultipleTables() async throws
+    {
+        let iterations: Int = 100
+        
+        let options: TestOptions = .propertyOptions(
+            iterations:     iterations,
+            maxSize:        100,
+            seed:           Self.seed
+        )
+        
+        let result: PCR<SizeCapture> = await PropertyRunner.run(
+            property:
+            {
+                capture async in
+                
+                XCTKTabulate("parity", capture.size % 2 == 0 ? "even" : "odd")
+                XCTKTabulate("size", capture.size < 50 ? "small" : "large")
+            },
+            options: options
+        )
+        
+        let passed: PassedValues = try XCTUnwrap(result.assertPassed())
+        
+        let parity  : [String : Int]?   = passed.tableDist["parity"]
+        let size    : [String : Int]?   = passed.tableDist["size"]
+        
+        XCTAssertNotNil(parity)
+        XCTAssertNotNil(size)
+        
+        let even    : Int   = parity?["even"]   ?? 0
+        let odd     : Int   = parity?["odd"]    ?? 0
+        
+        XCTAssertEqual(even + odd, iterations)
+        XCTAssertGreaterThan(even, 0)
+        XCTAssertGreaterThan(odd, 0)
+        
+        let small   : Int   = size?["small"]    ?? 0
+        let large   : Int   = size?["large"]    ?? 0
+        
+        XCTAssertEqual(small + large, iterations)
+        XCTAssertGreaterThan(small, 0)
+        XCTAssertGreaterThan(large, 0)
+    }
+    
+    
+    
+    @Reasync
+    func testTabulateDuplicateLabelWithinIteration() async throws
+    {
+        let iterations: Int = 100
+        
+        let options: TestOptions = .propertyOptions(
+            iterations:     iterations,
+            seed:           Self.seed
+        )
+        
+        let result: PCR<BoundInt> = await PropertyRunner.run(
+            property:
+            {
+                _ async in
+                
+                XCTKTabulate("t", "a")
+                XCTKTabulate("t", "a")
+                XCTKTabulate("t", "a")
+            },
+            options: options
+        )
+        
+        let passed: PassedValues = try XCTUnwrap(result.assertPassed())
+        
+        XCTAssertEqual(passed.tableDist["t"]?["a"], iterations)
+    }
+    
+    
+    
+    @Reasync
+    func testTabulateWithFailureReflectsSuccessfulIteration() async
+    {
+        let target: Int = 50
+        
+        let options: TestOptions = .propertyOptions(
+            iterations:     100,
+            maxSize:        100,
+            seed:           Self.seed
+        )
+        
+        let result: PCR<SizeCapture> = await PropertyRunner.run(
+            property:
+            {
+                capture async in
+                
+                XCTKTabulate("parity", capture.size % 2 == 0 ? "even" : "odd")
+                
+                if capture.size >= target
+                {
+                    PropertyInterceptor.current?.recordFailure(
+                        message:    "too large",
+                        file:       "File.swift",
+                        line:       1
+                    )
+                }
+            },
+            options: options
+        )
+        
+        guard case let .failed(counterexample, _, tableDist) = result
+        else
+        {
+            XCTFail("Expected .failed, got \(result)")
+            return
+        }
+        
+        XCTAssertEqual(counterexample.value.size, target)
+        
+        let parity  : [String : Int]    = tableDist["parity"]   ?? [:]
+        let even    : Int               = parity["even"]        ?? 0
+        let odd     : Int               = parity["odd"]         ?? 0
+        
+        XCTAssertEqual(even + odd, target)
+    }
+    
+    
+    
+    @Reasync
+    func testTabulateWithPreconditionCountsOnlyAccepted() async throws
+    {
+        let iterations: Int = 50
+        
+        let options: TestOptions = .propertyOptions(
+            iterations:         iterations,
+            maxSize:            100,
+            maxDiscardRatio:    100,
+            seed:               Self.seed
+        )
+        
+        let result: PCR<SizeCapture> = await PropertyRunner.run(
+            where: { capture in capture.size % 2 == 0 },
+            property:
+            {
+                _ async in
+                
+                XCTKTabulate("group", "accepted")
+            },
+            options: options
+        )
+        
+        let passed: PassedValues = try XCTUnwrap(result.assertPassed())
+        
+        XCTAssertEqual(passed.tableDist["group"]?["accepted"], iterations)
+    }
+    
+    
+    
+    @Reasync
+    func testTableDistributionPreservedDuringShrinking() async
+    {
+        let target: Int = 10
+        
+        let options: TestOptions = .propertyOptions(
+            iterations:     100,
+            maxSize:        200,
+            seed:           Self.seed
+        )
+        
+        let result: PCR<BoundInt> = await PropertyRunner.run(
+            property:
+            {
+                boundInt async in
+                
+                XCTKTabulate("sign", boundInt.value > 0 ? "positive" : "zero")
+                
+                if boundInt.value > target
+                {
+                    PropertyInterceptor.current?.recordFailure(
+                        message:    "too large",
+                        file:       "File.swift",
+                        line:       1
+                    )
+                }
+            },
+            options: options
+        )
+        
+        guard case let .failed(counterexample, _, tableDist) = result
+        else
+        {
+            XCTFail("Expected .failed, got \(result)")
+            return
+        }
+        
+        XCTAssertEqual(counterexample.value, BoundInt(target + 1))
+        XCTAssertGreaterThan(counterexample.shrinkSteps, 0)
+        
+        let sign    : [String : Int]    = tableDist["sign"] ?? [:]
+        let total   : Int               = sign.values.reduce(0, +)
+        
+        /// The table distribution must equal the number of successful
+        /// iterations before the failure, and must not be inflated by
+        /// shrinking.
+        XCTAssertEqual(total, counterexample.iteration - 1)
+    }
+    
+    
+    
+    @Reasync
+    func testCoverTableMetReturnsPassed() async throws
+    {
+        let iterations: Int = 100
+        
+        let options: TestOptions = .propertyOptions(
+            iterations:     iterations,
+            maxSize:        100,
+            seed:           Self.seed
+        )
+        
+        let result: PCR<SizeCapture> = await PropertyRunner.run(
+            property:
+            {
+                capture async in
+                
+                XCTKCoverTable("parity", (40, "even"), (40, "odd"))
+                XCTKTabulate("parity", capture.size % 2 == 0 ? "even" : "odd")
+            },
+            options: options
+        )
+        
+        let passed  : PassedValues      = try XCTUnwrap(result.assertPassed())
+        let parity  : [String : Int]    = passed.tableDist["parity"] ?? [:]
+        
+        XCTAssertEqual(parity.values.reduce(0, +), iterations)
+    }
+    
+    
+    
+    @Reasync
+    func testCoverTableNotMetReturnsCoverageNotMet() async throws
+    {
+        let iterations: Int = 100
+        
+        let options: TestOptions = .propertyOptions(
+            iterations:     iterations,
+            maxSize:        100,
+            seed:           Self.seed
+        )
+        
+        /// Require 90% even, but only about 50% are even.
+        let result: PCR<SizeCapture> = await PropertyRunner.run(
+            property:
+            {
+                capture async in
+                
+                XCTKCoverTable("parity", (90, "even"))
+                XCTKTabulate("parity", capture.size % 2 == 0 ? "even" : "odd")
+            },
+            options: options
+        )
+        
+        let coverageNotMet: CoverageNotMetValues
+            = try XCTUnwrap(result.assertCoverageNotMet())
+        
+        XCTAssertEqual(coverageNotMet.iterations, iterations)
+        XCTAssertEqual(coverageNotMet.seed, Self.seed)
+        XCTAssertEqual(coverageNotMet.unmet.count, 1)
+        XCTAssertEqual(coverageNotMet.unmet.first?.label, "even")
+        XCTAssertEqual(coverageNotMet.unmet.first?.table, "parity")
+        XCTAssertEqual(coverageNotMet.unmet.first?.required, 90)
+    }
+    
+    
+    
+    @Reasync
+    func testCoverTableMultipleRequirementsPartiallyMet() async throws
+    {
+        let iterations: Int = 100
+        
+        let options: TestOptions = .propertyOptions(
+            iterations:     iterations,
+            maxSize:        100,
+            seed:           Self.seed
+        )
+        
+        /// Require 90% odd, but only about 50% are odd.
+        let result: PCR<SizeCapture> = await PropertyRunner.run(
+            property:
+            {
+                capture async in
+                
+                XCTKCoverTable("parity", (40, "even"), (90, "odd"))
+                XCTKTabulate("parity", capture.size % 2 == 0 ? "even" : "odd")
+            },
+            options: options
+        )
+        
+        let coverageNotMet: CoverageNotMetValues
+            = try XCTUnwrap(result.assertCoverageNotMet())
+        
+        XCTAssertEqual(coverageNotMet.iterations, iterations)
+        XCTAssertEqual(coverageNotMet.seed, Self.seed)
+        XCTAssertEqual(coverageNotMet.unmet.count, 1)
+        XCTAssertEqual(coverageNotMet.unmet.first?.label, "odd")
+        XCTAssertEqual(coverageNotMet.unmet.first?.table, "parity")
+        XCTAssertEqual(coverageNotMet.unmet.first?.required, 90)
+    }
+    
+    
+    
+    @Reasync
+    func testCoverTableMaximumThresholdOverrides() async throws
+    {
+        let iterations: Int = 100
+        
+        let options: TestOptions = .propertyOptions(
+            iterations:     iterations,
+            maxSize:        100,
+            seed:           Self.seed
+        )
+        
+        /// `even` gets 50%. The first call requires 40% (met), and the
+        /// second call requires 90% (unmet). The result is coverage not met.
+        let result: PCR<SizeCapture> = await PropertyRunner.run(
+            property:
+            {
+                capture async in
+                
+                XCTKCoverTable("parity", (40, "even"))
+                XCTKCoverTable("parity", (90, "even"))
+                XCTKTabulate("parity", capture.size % 2 == 0 ? "even" : "odd")
+            },
+            options: options
+        )
+        
+        let coverageNotMet: CoverageNotMetValues
+            = try XCTUnwrap(result.assertCoverageNotMet())
+        
+        XCTAssertEqual(coverageNotMet.iterations, iterations)
+        XCTAssertEqual(coverageNotMet.seed, Self.seed)
+        XCTAssertEqual(coverageNotMet.unmet.count, 1)
+        XCTAssertEqual(coverageNotMet.unmet.first?.label, "even")
+        XCTAssertEqual(coverageNotMet.unmet.first?.table, "parity")
+        XCTAssertEqual(coverageNotMet.unmet.first?.required, 90)
+    }
+    
+    
+    
+    @Reasync
+    func testCoverTableZeroPercentageVacuouslyPasses() async throws
+    {
+        let iterations: Int = 50
+        
+        let options: TestOptions = .propertyOptions(
+            iterations:     iterations,
+            seed:           Self.seed
+        )
+        
+        let result: PCR<BoundInt> = await PropertyRunner.run(
+            property:
+            {
+                _ async in
+                
+                XCTKCoverTable("t", (0, "never"))
+            },
+            options: options
+        )
+        
+        let passed: PassedValues = try XCTUnwrap(result.assertPassed())
+        
+        XCTAssertEqual(passed.iterations, iterations)
+    }
+    
+    
+    
+    @Reasync
+    func testFailureOverridesTableCoverageNotMet() async
+    {
+        let target: Int = 50
+        
+        let options: TestOptions = .propertyOptions(
+            iterations:     100,
+            maxSize:        100,
+            seed:           Self.seed
+        )
+        
+        let result: PCR<SizeCapture> = await PropertyRunner.run(
+            property:
+            {
+                capture async in
+                
+                XCTKCoverTable("t", (99, "never"))
+                
+                if capture.size >= target
+                {
+                    PropertyInterceptor.current?.recordFailure(
+                        message:    "too large",
+                        file:       "File.swift",
+                        line:       1
+                    )
+                }
+            },
+            options: options
+        )
+        
+        guard case let .failed(counterexample, _, tableDist) = result
+        else
+        {
+            XCTFail("Expected .failed, got \(result)")
+            return
+        }
+        
+        XCTAssertEqual(counterexample.value.size, target)
+        XCTAssertNil(tableDist["t"])
+    }
+    
+    
+    
+    @Reasync
+    func testExhaustionIncludesTableDistributionFromSuccesses() async throws
+    {
+        let target      : Int   = 5
+        let iterations  : Int   = 100
+        
+        let options: TestOptions = .propertyOptions(
+            iterations:         iterations,
+            maxSize:            100,
+            maxDiscardRatio:    1,
+            seed:               Self.seed
+        )
+        
+        let result: PCR<SizeCapture> = await PropertyRunner.run(
+            where: { capture in capture.size <= target },
+            property:
+            {
+                capture async in
+                
+                XCTKTabulate("group", "accepted")
+            },
+            options: options
+        )
+        
+        let exhausted: ExhaustedValues
+            = try XCTUnwrap(result.assertExhausted())
+        
+        XCTAssertEqual(exhausted.succeeded, target + 1)
+        XCTAssertEqual(exhausted.tableDist["group"]?["accepted"], target + 1)
+    }
+    
+    
+    
+    @Reasync
+    func testMixedFlatAndTableCoverageBothMet() async throws
+    {
+        let iterations: Int = 100
+        
+        let options: TestOptions = .propertyOptions(
+            iterations:     iterations,
+            maxSize:        100,
+            seed:           Self.seed
+        )
+        
+        let result: PCR<SizeCapture> = await PropertyRunner.run(
+            property:
+            {
+                capture async in
+                
+                XCTKCover(40, "small", when: capture.size < 50)
+                XCTKCoverTable("parity", (40, "even"), (40, "odd"))
+                XCTKTabulate("parity", capture.size % 2 == 0 ? "even" : "odd")
+            },
+            options: options
+        )
+        
+        let passed: PassedValues = try XCTUnwrap(result.assertPassed())
+        
+        XCTAssertEqual(passed.dist["small"], 50)
+        
+        let parity: [String : Int] = passed.tableDist["parity"] ?? [:]
+        
+        XCTAssertEqual(parity.values.reduce(0, +), iterations)
+    }
+    
+    
+    
+    @Reasync
+    func testMixedFlatMetTableUnmetReturnsCoverageNotMet() async throws
+    {
+        let iterations: Int = 100
+        
+        let options: TestOptions = .propertyOptions(
+            iterations:     iterations,
+            maxSize:        100,
+            seed:           Self.seed
+        )
+        
+        /// The flat coverage is met (40% `small`, actual 50%). The table
+        /// coverage is unmet (90% `even`, actual 50%).
+        let result: PCR<SizeCapture> = await PropertyRunner.run(
+            property:
+            {
+                capture async in
+                
+                XCTKCover(40, "small", when: capture.size < 50)
+                XCTKCoverTable("parity", (90, "even"))
+                XCTKTabulate("parity", capture.size % 2 == 0 ? "even" : "odd")
+            },
+            options: options
+        )
+        
+        let coverageNotMet: CoverageNotMetValues
+            = try XCTUnwrap(result.assertCoverageNotMet())
+        
+        XCTAssertEqual(coverageNotMet.unmet.count, 1)
+        XCTAssertEqual(coverageNotMet.unmet.first?.label, "even")
+        XCTAssertEqual(coverageNotMet.unmet.first?.table, "parity")
+    }
+    
+    
+    
+    @Reasync
+    func testMixedFlatUnmetTableMetReturnsCoverageNotMet() async throws
+    {
+        let iterations: Int = 100
+        
+        let options: TestOptions = .propertyOptions(
+            iterations:     iterations,
+            maxSize:        100,
+            seed:           Self.seed
+        )
+        
+        /// The flat coverage is unmet (90% `small`, actual 50%). The table
+        /// coverage is met (40% `even`, actual 50%).
+        let result: PCR<SizeCapture> = await PropertyRunner.run(
+            property:
+            {
+                capture async in
+                
+                XCTKCover(90, "small", when: capture.size < 50)
+                XCTKCoverTable("parity", (40, "even"))
+                XCTKTabulate("parity", capture.size % 2 == 0 ? "even" : "odd")
+            },
+            options: options
+        )
+        
+        let coverageNotMet: CoverageNotMetValues
+            = try XCTUnwrap(result.assertCoverageNotMet())
+        
+        XCTAssertEqual(coverageNotMet.unmet.count, 1)
+        XCTAssertEqual(coverageNotMet.unmet.first?.label, "small")
+        XCTAssertNil(coverageNotMet.unmet.first?.table)
+    }
+    
+    
+    
+    @Reasync
+    func testMixedTableClassificationIntegration() async throws
+    {
+        let target      : Int   = 50
+        let iterations  : Int   = 100
+        
+        let options: TestOptions = .propertyOptions(
+            iterations:     iterations,
+            maxSize:        100,
+            seed:           Self.seed
+        )
+        
+        let result: PCR<SizeCapture> = await PropertyRunner.run(
+            property:
+            {
+                capture async in
+                
+                XCTKLabel("all")
+                XCTKClassify("small", when: capture.size < target)
+                XCTKCover(10, "large", when: capture.size >= target)
+                XCTKCoverTable("parity", (40, "even"), (40, "odd"))
+                XCTKTabulate("parity", capture.size % 2 == 0 ? "even" : "odd")
+            },
+            options: options
+        )
+        
+        let passed: PassedValues = try XCTUnwrap(result.assertPassed())
+        
+        XCTAssertEqual(passed.dist["all"], iterations)
+        XCTAssertEqual(passed.dist["small"], target)
+        XCTAssertEqual(passed.dist["large"], target)
+        
+        let parity: [String : Int] = passed.tableDist["parity"] ?? [:]
+        
+        XCTAssertEqual(parity.values.reduce(0, +), iterations)
+        XCTAssertGreaterThan(parity["even"] ?? 0, 0)
+        XCTAssertGreaterThan(parity["odd"] ?? 0, 0)
     }
 }
 
