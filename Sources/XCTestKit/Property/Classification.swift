@@ -26,7 +26,7 @@ import TestKitCore
 ///
 /// - Parameter condition: The condition to evaluate.
 /// - Throws: An error if the given condition is false.
-package func XCTKAssume(
+public func XCTKAssume(
     _ condition: @autoclosure () -> Bool
 ) throws
 {
