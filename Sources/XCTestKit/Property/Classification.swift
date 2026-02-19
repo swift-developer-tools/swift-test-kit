@@ -11,6 +11,30 @@ import TestKitCore
 
 
 
+
+/// Discards the current iteration when the given condition is false.
+///
+/// Use this inside a property body to discard inputs based on conditions
+/// that depend on derived values. Inputs that do not satisfy the condition
+/// are counted against the maximum discard ratio.
+///
+/// - Important: Preconditions that reject most inputs waste iterations and
+/// can lead to exhaustion. Prefer constructing valid inputs using a custom
+/// ``Generator`` rather than discarding invalid inputs with a precondition.
+///
+/// - Note: This function does nothing when called outside a property body.
+///
+/// - Parameter condition: The condition to evaluate.
+/// - Throws: An error if the given condition is false.
+package func XCTKAssume(
+    _ condition: @autoclosure () -> Bool
+) throws
+{
+    try TKAssume(condition)
+}
+
+
+
 /// Tags the current iteration with the given label when the given condition
 /// is true.
 ///

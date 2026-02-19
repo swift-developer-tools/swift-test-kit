@@ -173,35 +173,53 @@ package struct PropertyRunner
                 continue
             }
             
-            let didFail: Bool = await didPropertyFail(
+            let result: IterationResult = await evaluateProperty(
                 property,
                 with:   value,
                 using:  interceptor
             )
             
-            if didFail
+            switch result
             {
-                let counterexample: Counterexample<T>
-                    = await makeCounterexample(
-                        value:          value,
-                        shrink:         shrink,
-                        precondition:   precondition,
-                        seed:           seed,
-                        iteration:      iteration,
-                        property:       property,
-                        options:        options
+                case .passed:
+                    
+                    interceptor.finalizeIteration()
+                    succeeded += 1
+                    
+                case .failed:
+                    
+                    let counterexample: Counterexample<T>
+                        = await makeCounterexample(
+                            value:          value,
+                            shrink:         shrink,
+                            precondition:   precondition,
+                            seed:           seed,
+                            iteration:      iteration,
+                            property:       property,
+                            options:        options
+                        )
+                    
+                    return .failed(
+                        counterexample:     counterexample,
+                        distribution:       interceptor.distribution,
+                        tableDistribution:  interceptor.tableDistribution
                     )
-                
-                return .failed(
-                    counterexample:     counterexample,
-                    distribution:       interceptor.distribution,
-                    tableDistribution:  interceptor.tableDistribution
-                )
-            }
-            else
-            {
-                interceptor.finalizeIteration()
-                succeeded += 1
+                    
+                case .discarded:
+                    
+                    discarded += 1
+                    
+                    if discarded > maxDiscardRatio * iterations
+                    {
+                        return .exhausted(
+                            discarded:          discarded,
+                            succeeded:          succeeded,
+                            ratio:              maxDiscardRatio,
+                            seed:               seed,
+                            distribution:       interceptor.distribution,
+                            tableDistribution:  interceptor.tableDistribution
+                        )
+                    }
             }
         }
         
@@ -283,27 +301,41 @@ package struct PropertyRunner
     
     
     
-    /// Checks whether the given property fails when called with the
-    /// given value.
+    /// The result of a single property iteration.
+    private enum IterationResult: Equatable, Sendable
+    {
+        /// The property passed.
+        case passed
+        
+        /// The property failed.
+        case failed
+        
+        /// The iteration was discarded.
+        case discarded
+    }
+    
+    
+    
+    /// Evaluates the given property with the given value.
     /// - Parameters:
-    ///   - property: The property body.
-    ///   - value: The value with which to call the property body.
+    ///   - property: The property to evaluate.
+    ///   - value: The value with which to call the property.
     ///   - interceptor: The property interceptor to use, or `nil` to create
     ///   a new interceptor.
-    /// - Returns: Whether the given property fails when called with the
-    /// given value.
+    /// - Returns: The iteration result.
     @Reasync
-    private static func didPropertyFail<T>(
+    private static func evaluateProperty<T>(
         _       property    : (T) async throws -> Void,
         with    value       : T,
         using   interceptor : PropertyInterceptor?      = nil
-    ) async -> Bool
+    ) async -> IterationResult
     {
         let interceptor: PropertyInterceptor = interceptor ?? .init()
         
         interceptor.reset()
         
-        var threwError: Bool = false
+        var threwError  : Bool  = false
+        var discarded   : Bool  = false
         
         await PropertyInterceptor.$current.withValue(interceptor)
         {
@@ -311,14 +343,28 @@ package struct PropertyRunner
             {
                 try await property(value)
             }
+            catch is DiscardError
+            {
+                discarded = true
+            }
             catch
             {
                 threwError = true
             }
         }
         
-        return interceptor.didFail
+        if discarded
+        {
+            return .discarded
+        }
+        else if
+            interceptor.didFail
             || threwError
+        {
+            return .failed
+        }
+        
+        return .passed
     }
     
     
@@ -361,7 +407,12 @@ package struct PropertyRunner
                     continue
                 }
                 
-                if await didPropertyFail(property, with: candidate)
+                let result: IterationResult = await evaluateProperty(
+                    property,
+                    with: candidate
+                )
+                
+                if result == .failed
                 {
                     current     = candidate
                     improved    = true

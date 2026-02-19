@@ -11,6 +11,26 @@ import OSLog
 
 
 
+/// Discards the current iteration when the given condition is false.
+package func TKAssume(
+    _ condition: () -> Bool
+) throws
+{
+    guard PropertyInterceptor.current != nil
+    else
+    {
+        warnNoOp(for: "Assume")
+        return
+    }
+    
+    if !condition()
+    {
+        throw DiscardError()
+    }
+}
+
+
+
 /// Tags the current iteration with the given label when the given condition
 /// is true.
 package func TKClassify(
