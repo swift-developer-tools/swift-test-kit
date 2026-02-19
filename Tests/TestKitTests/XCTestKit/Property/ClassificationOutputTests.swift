@@ -106,7 +106,7 @@ internal final class ClassificationOutputTests: XCTestKitCase
     
     
     @Reasync
-    func testCoverageNotMetWithMessage() async
+    func testCoverageNotMetMessage() async
     {
         let options: TestOptions = .propertyOptions(
             iterations:     10,
@@ -225,7 +225,7 @@ internal final class ClassificationOutputTests: XCTestKitCase
     
     
     @Reasync
-    func testCoverageNotMetNonIntegerReq() async
+    func testCoverageNotMetNonIntegerRequirement() async
     {
         let options: TestOptions = .propertyOptions(
             iterations:     10,
@@ -263,7 +263,7 @@ internal final class ClassificationOutputTests: XCTestKitCase
     
     
     @Reasync
-    func testCoverageNotMetWithClassifyLabels() async
+    func testCoverageNotMetClassifyLabels() async
     {
         let options: TestOptions = .propertyOptions(
             iterations:     10,
@@ -348,10 +348,406 @@ internal final class ClassificationOutputTests: XCTestKitCase
     
     
     
+    @Reasync
+    func testCoverageNotMetSingleTable() async
+    {
+        let options: TestOptions = .propertyOptions(
+            iterations:     10,
+            seed:           Self.seed
+        )
+        
+        let actual: String? = await withOneExpectedFailure
+        {
+            await XCTKForAll(
+                using:      Generator<Int>.constant(5),
+                options:    options
+            )
+            {
+                (n: Int) async in
+                
+                XCTKTabulate("sign", n > 0 ? "positive" : "non-positive")
+                XCTKCoverTable("sign", (50, "positive"), (50, "negative"))
+            }
+        }
+        
+        XCTAssertNotNil(actual)
+        
+        let expected: String =
+        """
+        XCTKForAll coverage not met after 10 iterations
+        
+        Coverage:
+            Table "sign":
+                negative:   0% (required: 50%) ←
+                positive: 100%
+        
+        \(Self.seedMessage)
+        """
+        
+        XCTAssertEqual(expected, actual)
+    }
+    
+    
+    
+    @Reasync
+    func testCoverageNotMetTableMultipleUnmetLabels() async
+    {
+        let options: TestOptions = .propertyOptions(
+            iterations:     10,
+            seed:           Self.seed
+        )
+        
+        let actual: String? = await withOneExpectedFailure
+        {
+            await XCTKForAll(
+                using:      Generator<Int>.constant(0),
+                options:    options
+            )
+            {
+                (n: Int) async in
+                
+                XCTKTabulate("sign", n > 0
+                    ? "positive" : n < 0
+                    ? "negative" : "zero"
+                )
+                
+                XCTKCoverTable("sign", (50, "positive"), (50, "negative"))
+            }
+        }
+        
+        XCTAssertNotNil(actual)
+        
+        let expected: String =
+        """
+        XCTKForAll coverage not met after 10 iterations
+        
+        Coverage:
+            Table "sign":
+                negative:   0% (required: 50%) ←
+                positive:   0% (required: 50%) ←
+                zero:     100%
+        
+        \(Self.seedMessage)
+        """
+        
+        XCTAssertEqual(expected, actual)
+    }
+    
+    
+    
+    @Reasync
+    func testCoverageNotMetTableAndFlatCoverage() async
+    {
+        let options: TestOptions = .propertyOptions(
+            iterations:     10,
+            seed:           Self.seed
+        )
+        
+        let actual: String? = await withOneExpectedFailure
+        {
+            await XCTKForAll(
+                using:      Generator<Int>.constant(5),
+                options:    options
+            )
+            {
+                (n: Int) async in
+                
+                XCTKCover(100, "negative", when: n < 0)
+                XCTKTabulate("size", n < 100 ? "small" : "large")
+                XCTKCoverTable("size", (50, "small"), (50, "large"))
+            }
+        }
+        
+        XCTAssertNotNil(actual)
+        
+        let expected: String =
+        """
+        XCTKForAll coverage not met after 10 iterations
+        
+        Coverage:
+            negative: 0% (required: 100%) ←
+        
+            Table "size":
+                large:   0% (required: 50%) ←
+                small: 100%
+        
+        \(Self.seedMessage)
+        """
+        
+        XCTAssertEqual(expected, actual)
+    }
+    
+    
+    
+    @Reasync
+    func testCoverageNotMetMultipleTables() async
+    {
+        let options: TestOptions = .propertyOptions(
+            iterations:     10,
+            seed:           Self.seed
+        )
+        
+        let actual: String? = await withOneExpectedFailure
+        {
+            await XCTKForAll(
+                using:      Generator<Int>.constant(5),
+                options:    options
+            )
+            {
+                (n: Int) async in
+                
+                XCTKTabulate("parity", n % 2 == 0 ? "even" : "odd")
+                XCTKCoverTable("parity", (50, "even"), (50, "odd"))
+                
+                XCTKTabulate("size", n > 0 ? "positive" : "negative")
+                XCTKCoverTable("size", (50, "positive"), (50, "negative"))
+            }
+        }
+        
+        XCTAssertNotNil(actual)
+        
+        let expected: String =
+        """
+        XCTKForAll coverage not met after 10 iterations
+        
+        Coverage:
+            Table "parity":
+                even:   0% (required: 50%) ←
+                odd:  100%
+        
+            Table "size":
+                negative:   0% (required: 50%) ←
+                positive: 100%
+        
+        \(Self.seedMessage)
+        """
+        
+        XCTAssertEqual(expected, actual)
+    }
+    
+    
+    
+    @Reasync
+    func testCoverageNotMetTableMessage() async
+    {
+        let options: TestOptions = .propertyOptions(
+            iterations:     1,
+            seed:           Self.seed
+        )
+        
+        let actual: String? = await withOneExpectedFailure
+        {
+            await XCTKForAll(
+                using:      Generator<Int>.constant(5),
+                message:    "hello world",
+                options:    options
+            )
+            {
+                (n: Int) async in
+                
+                XCTKTabulate("size", n > 0 ? "positive" : "negative")
+                XCTKCoverTable("size", (100, "negative"))
+            }
+        }
+        
+        XCTAssertNotNil(actual)
+        
+        let expected: String =
+        """
+        XCTKForAll coverage not met after 1 iteration
+        
+        Coverage:
+            Table "size":
+                negative:   0% (required: 100%) ←
+                positive: 100%
+        
+        \(Self.seedMessage)
+        
+        hello world
+        """
+        
+        XCTAssertEqual(expected, actual)
+    }
+    
+    
+    
+    @Reasync
+    func testCoverageNotMetTablePartialCoverage() async
+    {
+        let options: TestOptions = .propertyOptions(
+            iterations:     10,
+            maxSize:        100,
+            seed:           Self.seed
+        )
+        
+        /// The sizes produced are `0`, `10`, `20`, ... `90`. Only values
+        /// below `30` satisfy the `small` condition.
+        let generator = Generator<Int>(
+            generate:   { context in context.size },
+            shrink:     { _ in [] }
+        )
+        
+        let actual: String? = await withOneExpectedFailure
+        {
+            await XCTKForAll(
+                using:      generator,
+                options:    options
+            )
+            {
+                (n: Int) async in
+                
+                XCTKTabulate("size", n < 30 ? "small" : "large")
+                XCTKCoverTable("size", (50, "small"))
+            }
+        }
+        
+        XCTAssertNotNil(actual)
+        
+        let expected: String =
+        """
+        XCTKForAll coverage not met after 10 iterations
+        
+        Coverage:
+            Table "size":
+                large: 70%
+                small: 30% (required: 50%) ←
+        
+        \(Self.seedMessage)
+        """
+        
+        XCTAssertEqual(expected, actual)
+    }
+    
+    
+    
+    @Reasync
+    func testCoverageNotMetTableNonIntegerRequirement() async
+    {
+        let options: TestOptions = .propertyOptions(
+            iterations:     10,
+            seed:           Self.seed
+        )
+        
+        let actual: String? = await withOneExpectedFailure
+        {
+            await XCTKForAll(
+                using:      Generator<Int>.constant(5),
+                options:    options
+            )
+            {
+                (n: Int) async in
+                
+                XCTKTabulate("sign", n > 0 ? "positive" : "negative")
+                XCTKCoverTable("sign", (2.5, "negative"))
+            }
+        }
+        
+        XCTAssertNotNil(actual)
+        
+        let expected: String =
+        """
+        XCTKForAll coverage not met after 10 iterations
+        
+        Coverage:
+            Table "sign":
+                negative:   0% (required: 2.5%) ←
+                positive: 100%
+        
+        \(Self.seedMessage)
+        """
+        
+        XCTAssertEqual(expected, actual)
+    }
+    
+    
+    
+    @Reasync
+    func testCoverageNotMetTableWithoutTabulate() async
+    {
+        let options: TestOptions = .propertyOptions(
+            iterations:     10,
+            seed:           Self.seed
+        )
+        
+        /// The requirements are registered, but there are no calls to record
+        /// the labels, so the table has 0% for both labels.
+        let actual: String? = await withOneExpectedFailure
+        {
+            await XCTKForAll(
+                using:      Generator<Int>.constant(5),
+                options:    options
+            )
+            {
+                (_: Int) async in
+                
+                XCTKCoverTable("sign", (50, "positive"), (50, "negative"))
+            }
+        }
+        
+        XCTAssertNotNil(actual)
+        
+        let expected: String =
+        """
+        XCTKForAll coverage not met after 10 iterations
+        
+        Coverage:
+            Table "sign":
+                negative: 0% (required: 50%) ←
+                positive: 0% (required: 50%) ←
+        
+        \(Self.seedMessage)
+        """
+        
+        XCTAssertEqual(expected, actual)
+    }
+    
+    
+    
+    @Reasync
+    func testCoverageNotMetTableSingleIteration() async
+    {
+        let options: TestOptions = .propertyOptions(
+            iterations:     1,
+            seed:           Self.seed
+        )
+        
+        let actual: String? = await withOneExpectedFailure
+        {
+            await XCTKForAll(
+                using:      Generator<Int>.constant(5),
+                options:    options
+            )
+            {
+                (n: Int) async in
+                
+                XCTKTabulate("sign", n > 0 ? "positive" : "negative")
+                XCTKCoverTable("sign", (100, "negative"))
+            }
+        }
+        
+        XCTAssertNotNil(actual)
+        
+        let expected: String =
+        """
+        XCTKForAll coverage not met after 1 iteration
+        
+        Coverage:
+            Table "sign":
+                negative:   0% (required: 100%) ←
+                positive: 100%
+        
+        \(Self.seedMessage)
+        """
+        
+        XCTAssertEqual(expected, actual)
+    }
+    
+    
+    
     // MARK: - Counterexample
     
     @Reasync
-    func testCounterexampleWithDist() async throws
+    func testCounterexampleDistribution() async throws
     {
         let options: TestOptions = .propertyOptions(
             iterations:     2,
@@ -409,7 +805,7 @@ internal final class ClassificationOutputTests: XCTestKitCase
     
     
     @Reasync
-    func testCounterexampleWithMultipleDistLabels() async throws
+    func testCounterexampleMultipleDistributionLabels() async throws
     {
         let options: TestOptions = .propertyOptions(
             iterations:     5,
@@ -472,7 +868,7 @@ internal final class ClassificationOutputTests: XCTestKitCase
     
     
     @Reasync
-    func testCounterexampleWithShrinkingAndDist() async throws
+    func testCounterexampleShrinkingAndDistribution() async throws
     {
         let options: TestOptions = .propertyOptions(
             iterations:     2,
@@ -531,7 +927,7 @@ internal final class ClassificationOutputTests: XCTestKitCase
     
     
     @Reasync
-    func testCounterexampleDistWithNonIntegerPercentage() async throws
+    func testCounterexampleDistributionNonIntegerPercentage() async throws
     {
         let options: TestOptions = .propertyOptions(
             iterations:     3,
@@ -589,7 +985,7 @@ internal final class ClassificationOutputTests: XCTestKitCase
     
     
     @Reasync
-    func testCounterexampleWithThrownErrorAndDist() async
+    func testCounterexampleThrownErrorAndDistribution() async
     {
         let options: TestOptions = .propertyOptions(
             iterations:     2,
@@ -645,7 +1041,7 @@ internal final class ClassificationOutputTests: XCTestKitCase
     
     
     @Reasync
-    func testCounterexampleFirstIterationFailureOmitsDist() async throws
+    func testCounterexampleFirstFailureOmitsDistribution() async throws
     {
         let options: TestOptions = .propertyOptions(
             iterations:     2,
@@ -664,8 +1060,6 @@ internal final class ClassificationOutputTests: XCTestKitCase
         }
         
         XCTAssertNotNil(output)
-        XCTAssertFalse(output?.contains("Distribution") ?? true)
-        XCTAssertFalse(output?.contains("tracked") ?? true)
         
         
         
@@ -691,7 +1085,7 @@ internal final class ClassificationOutputTests: XCTestKitCase
     
     
     @Reasync
-    func testCounterexampleDistWithLabelsAfterAssertion() async throws
+    func testCounterexampleDistributionLabelsAfterAssertion() async throws
     {
         let options: TestOptions = .propertyOptions(
             iterations:     3,
@@ -753,7 +1147,7 @@ internal final class ClassificationOutputTests: XCTestKitCase
     
     
     @Reasync
-    func testCounterexampleDistWithLabelsAfterThrow() async throws
+    func testCounterexampleDistributionLabelsAfterThrow() async
     {
         let options: TestOptions = .propertyOptions(
             iterations:     3,
@@ -814,10 +1208,473 @@ internal final class ClassificationOutputTests: XCTestKitCase
     
     
     
+    @Reasync
+    func testCounterexampleTableDistribution() async throws
+    {
+        let options: TestOptions = .propertyOptions(
+            iterations:     2,
+            maxSize:        100,
+            seed:           Self.seed
+        )
+        
+        let generator = Generator<Int>(
+            generate:   { context in context.size },
+            shrink:     { _ in [] }
+        )
+        
+        let output: String? = await withOneExpectedFailure
+        {
+            await XCTKForAll(
+                using:      generator,
+                options:    options
+            )
+            {
+                (n: Int) async in
+                
+                XCTKTabulate("size", n < 30 ? "small" : "large")
+                XCTKAssertLessThan(n, 50)
+            }
+        }
+        
+        XCTAssertNotNil(output)
+        
+        
+        
+        let actual: String = try getPropertyOutput(
+            from:       output,
+            before:     "XCTKAssertLessThan"
+        )
+        
+        let expected: String =
+        """
+        XCTKForAll failed after 2 iterations
+        
+        Counterexample:
+            Int = 50
+        
+        \(Self.seedMessage)
+        
+        Distribution (2 iterations):
+            Table "size":
+                small: 1 (50%)
+        
+        """
+        
+        XCTAssertEqual(expected, actual)
+    }
+    
+    
+    
+    @Reasync
+    func testCounterexampleFlatAndTableDistribution() async throws
+    {
+        let options: TestOptions = .propertyOptions(
+            iterations:     2,
+            maxSize:        100,
+            seed:           Self.seed
+        )
+        
+        let generator = Generator<Int>(
+            generate:   { context in context.size },
+            shrink:     { _ in [] }
+        )
+        
+        let output: String? = await withOneExpectedFailure
+        {
+            await XCTKForAll(
+                using:      generator,
+                options:    options
+            )
+            {
+                (n: Int) async in
+                
+                XCTKLabel("tracked")
+                XCTKTabulate("size", n < 30 ? "small" : "large")
+                XCTKAssertLessThan(n, 50)
+            }
+        }
+        
+        XCTAssertNotNil(output)
+        
+        
+        
+        let actual: String = try getPropertyOutput(
+            from:       output,
+            before:     "XCTKAssertLessThan"
+        )
+        
+        let expected: String =
+        """
+        XCTKForAll failed after 2 iterations
+        
+        Counterexample:
+            Int = 50
+        
+        \(Self.seedMessage)
+        
+        Distribution (2 iterations):
+            tracked: 1 (50%)
+        
+            Table "size":
+                small: 1 (50%)
+        
+        """
+        
+        XCTAssertEqual(expected, actual)
+    }
+    
+    
+    
+    @Reasync
+    func testCounterexampleMultipleTableDistributions() async throws
+    {
+        let options: TestOptions = .propertyOptions(
+            iterations:     2,
+            maxSize:        100,
+            seed:           Self.seed
+        )
+        
+        let generator = Generator<Int>(
+            generate:   { context in context.size },
+            shrink:     { _ in [] }
+        )
+        
+        let output: String? = await withOneExpectedFailure
+        {
+            await XCTKForAll(
+                using:      generator,
+                options:    options
+            )
+            {
+                (n: Int) async in
+                
+                XCTKTabulate("parity", n % 2 == 0 ? "even" : "odd")
+                XCTKTabulate("size", n < 30 ? "small" : "large")
+                XCTKAssertLessThan(n, 50)
+            }
+        }
+        
+        XCTAssertNotNil(output)
+        
+        
+        
+        let actual: String = try getPropertyOutput(
+            from:       output,
+            before:     "XCTKAssertLessThan"
+        )
+        
+        let expected: String =
+        """
+        XCTKForAll failed after 2 iterations
+        
+        Counterexample:
+            Int = 50
+        
+        \(Self.seedMessage)
+        
+        Distribution (2 iterations):
+            Table "parity":
+                even: 1 (50%)
+        
+            Table "size":
+                small: 1 (50%)
+        
+        """
+        
+        XCTAssertEqual(expected, actual)
+    }
+    
+    
+    
+    @Reasync
+    func testCounterexampleFirstFailureOmitsTableDistribution() async throws
+    {
+        let options: TestOptions = .propertyOptions(
+            iterations:     2,
+            seed:           Self.seed
+        )
+        
+        let output: String? = await withOneExpectedFailure
+        {
+            await XCTKForAll(options: options)
+            {
+                (_: Int) async in
+                
+                XCTKTabulate("sign", "positive")
+                XCTKAssertTrue(false)
+            }
+        }
+        
+        XCTAssertNotNil(output)
+        
+        
+        
+        let actual: String = try getPropertyOutput(
+            from:       output,
+            before:     "XCTKAssertTrue"
+        )
+        
+        let expected: String =
+        """
+        XCTKForAll failed after 1 iteration
+        
+        Counterexample:
+            Int = 0
+        
+        \(Self.seedMessage)
+        
+        """
+        
+        XCTAssertEqual(expected, actual)
+    }
+    
+    
+    
+    @Reasync
+    func testCounterexampleShrinkingAndTableDistribution() async throws
+    {
+        let options: TestOptions = .propertyOptions(
+            iterations:     2,
+            maxSize:        100,
+            seed:           Self.seed
+        )
+        
+        /// The first iteration produces size `0` and generates `0`, and
+        /// passes with a label. The second iteration produces size `50` and
+        /// generates `100`, fails, and shrinks.
+        let generator = Generator<Int>(
+            generate:   { context in context.size >= 50 ? 100 : 0 },
+            shrink:     { value in value.shrink() }
+        )
+        
+        let output: String? = await withOneExpectedFailure
+        {
+            await XCTKForAll(
+                using:      generator,
+                options:    options
+            )
+            {
+                (n: Int) async in
+                
+                XCTKTabulate("size", n < 10 ? "small" : "large")
+                XCTKAssertLessThan(n, 10)
+            }
+        }
+        
+        XCTAssertNotNil(output)
+        
+        
+        
+        let actual: String = try getPropertyOutput(
+            from:       output,
+            before:     "XCTKAssertLessThan"
+        )
+        
+        let expected: String =
+        """
+        XCTKForAll failed after 2 iterations (shrunk in 4 steps)
+        
+        Counterexample:
+            Int = 10
+        
+        \(Self.seedMessage)
+        
+        Distribution (2 iterations):
+            Table "size":
+                small: 1 (50%)
+        
+        """
+        
+        XCTAssertEqual(expected, actual)
+    }
+    
+    
+    
+    @Reasync
+    func testCounterexampleThrownErrorAndTableDistribution() async
+    {
+        let options: TestOptions = .propertyOptions(
+            iterations:     2,
+            maxSize:        100,
+            seed:           Self.seed
+        )
+        
+        let generator = Generator<Int>(
+            generate:   { context in context.size },
+            shrink:     { _ in [] }
+        )
+        
+        let actual: String? = await withOneExpectedFailure
+        {
+            await XCTKForAll(
+                using:      generator,
+                options:    options
+            )
+            {
+                (n: Int) async throws in
+                
+                XCTKTabulate("size", n < 30 ? "small" : "large")
+                
+                if n >= 50
+                {
+                    throw TestError()
+                }
+            }
+        }
+        
+        XCTAssertNotNil(actual)
+        
+        let expected: String =
+        """
+        XCTKForAll failed after 2 iterations
+        
+        Counterexample:
+            Int = 50
+        
+        \(Self.seedMessage)
+        
+        Distribution (2 iterations):
+            Table "size":
+                small: 1 (50%)
+        
+        Threw error: TestError()
+        """
+        
+        XCTAssertEqual(expected, actual)
+    }
+    
+    
+    
+    @Reasync
+    func testCounterexampleTableDistributionLabelsAfterAssertion() async throws
+    {
+        let options: TestOptions = .propertyOptions(
+            iterations:     3,
+            maxSize:        100,
+            seed:           Self.seed
+        )
+        
+        /// The first two iterations produce sizes of `0` and `33` (both pass).
+        /// The third iteration produces a size of `66` and fails. Non-throwing
+        /// assertions record the failure, but do not stop execution, so any
+        /// labels placed after the assertion still execute on every iteration.
+        let generator = Generator<Int>(
+            generate:   { context in context.size },
+            shrink:     { _ in [] }
+        )
+        
+        let output: String? = await withOneExpectedFailure
+        {
+            await XCTKForAll(
+                using:      generator,
+                options:    options
+            )
+            {
+                (n: Int) async throws in
+                
+                XCTKTabulate("position", "before")
+                XCTKAssertLessThan(n, 60)
+                XCTKTabulate("position", "after")
+            }
+        }
+        
+        XCTAssertNotNil(output)
+        
+        
+        
+        let actual: String = try getPropertyOutput(
+            from:       output,
+            before:     "XCTKAssertLessThan"
+        )
+        
+        let expected: String =
+        """
+        XCTKForAll failed after 3 iterations
+        
+        Counterexample:
+            Int = 66
+        
+        \(Self.seedMessage)
+        
+        Distribution (3 iterations):
+            Table "position":
+                after:  2 (66.7%)
+                before: 2 (66.7%)
+        
+        """
+        
+        XCTAssertEqual(expected, actual)
+    }
+    
+    
+    
+    @Reasync
+    func testCounterexampleTableDistributionLabelsAfterThrow() async throws
+    {
+        let options: TestOptions = .propertyOptions(
+            iterations:     3,
+            maxSize:        100,
+            seed:           Self.seed
+        )
+        
+        /// The first two iterations produce sizes of `0` and `33` (both pass).
+        /// The third iteration produces a size of `66` and fails. Thrown
+        /// errors stop execution, so any labels placed after the `throw` do
+        /// not execute on the throwing iteration. Labels from passing
+        /// iterations are still finalized.
+        let generator = Generator<Int>(
+            generate:   { context in context.size },
+            shrink:     { _ in [] }
+        )
+        
+        let actual: String? = await withOneExpectedFailure
+        {
+            await XCTKForAll(
+                using:      generator,
+                options:    options
+            )
+            {
+                (n: Int) async throws in
+                
+                XCTKTabulate("position", "before")
+                
+                if n >= 60
+                {
+                    throw TestError()
+                }
+                
+                XCTKTabulate("position", "after")
+            }
+        }
+        
+        XCTAssertNotNil(actual)
+        
+        let expected: String =
+        """
+        XCTKForAll failed after 3 iterations
+        
+        Counterexample:
+            Int = 66
+        
+        \(Self.seedMessage)
+        
+        Distribution (3 iterations):
+            Table "position":
+                after:  2 (66.7%)
+                before: 2 (66.7%)
+        
+        Threw error: TestError()
+        """
+        
+        XCTAssertEqual(expected, actual)
+    }
+    
+    
+    
     // MARK: - Exhaustion
     
     @Reasync
-    func testExhaustionWithDist() async
+    func testExhaustionDistribution() async
     {
         let options: TestOptions = .propertyOptions(
             iterations:         5,
@@ -869,10 +1726,118 @@ internal final class ClassificationOutputTests: XCTestKitCase
     
     
     
+    @Reasync
+    func testExhaustionTableDistribution() async
+    {
+        let options: TestOptions = .propertyOptions(
+            iterations:         5,
+            maxSize:            100,
+            maxDiscardRatio:    1,
+            seed:               Self.seed
+        )
+        
+        /// The first two iterations produce sizes `0` and `20` (both pass the
+        /// precondition). The third iteration produces a size `40` (fails the
+        /// precondition), and all subsequent iterations remain at size `40`,
+        /// since the number of successful iterations does not advance. After
+        /// six discards, the test exhausts.
+        let generator = Generator<Int>(
+            generate:   { context in context.size },
+            shrink:     { _ in [] }
+        )
+        
+        let actual: String? = await withOneExpectedFailure
+        {
+            await XCTKForAll(
+                using:      generator,
+                where:      { $0 < 30 },
+                options:    options
+            )
+            {
+                (n: Int) async in
+                
+                XCTKTabulate("size", n < 15 ? "small" : "medium")
+            }
+        }
+        
+        XCTAssertNotNil(actual)
+        
+        let expected: String =
+        """
+        XCTKForAll exhausted after 2 successful iterations
+        
+            6 inputs discarded (max ratio: 1)
+        
+        \(Self.seedMessage)
+        
+        Distribution (2 iterations):
+            Table "size":
+                medium: 1 (50%)
+                small:  1 (50%)
+        """
+        
+        XCTAssertEqual(expected, actual)
+    }
+    
+    
+    
+    @Reasync
+    func testExhaustionFlatAndTableDistribution() async
+    {
+        let options: TestOptions = .propertyOptions(
+            iterations:         5,
+            maxSize:            100,
+            maxDiscardRatio:    1,
+            seed:               Self.seed
+        )
+        
+        let generator = Generator<Int>(
+            generate:   { context in context.size },
+            shrink:     { _ in [] }
+        )
+        
+        let actual: String? = await withOneExpectedFailure
+        {
+            await XCTKForAll(
+                using:      generator,
+                where:      { $0 < 30 },
+                options:    options
+            )
+            {
+                (n: Int) async in
+                
+                XCTKLabel("tracked")
+                XCTKTabulate("size", n < 15 ? "small" : "medium")
+            }
+        }
+        
+        XCTAssertNotNil(actual)
+        
+        let expected: String =
+        """
+        XCTKForAll exhausted after 2 successful iterations
+        
+            6 inputs discarded (max ratio: 1)
+        
+        \(Self.seedMessage)
+        
+        Distribution (2 iterations):
+            tracked: 2 (100%)
+        
+            Table "size":
+                medium: 1 (50%)
+                small:  1 (50%)
+        """
+        
+        XCTAssertEqual(expected, actual)
+    }
+    
+    
+    
     // MARK: - Failed iteration
     
     @Reasync
-    func testFailedIterationLabelsNotInDist() async throws
+    func testFailedIterationLabelsNotInDistribution() async throws
     {
         let options: TestOptions = .propertyOptions(
             iterations:     2,
@@ -933,10 +1898,66 @@ internal final class ClassificationOutputTests: XCTestKitCase
     
     
     
+    @Reasync
+    func testFailedIterationTableLabelsNotInDistribution() async throws
+    {
+        let options: TestOptions = .propertyOptions(
+            iterations:     2,
+            seed:           Self.seed
+        )
+        
+        let generator = Generator<Int>(
+            generate:   { context in context.size },
+            shrink:     { _ in [] }
+        )
+        
+        let output: String? = await withOneExpectedFailure
+        {
+            await XCTKForAll(
+                using:      generator,
+                options:    options
+            )
+            {
+                (n: Int) async in
+                
+                XCTKTabulate("size", n < 30 ? "small" : "large")
+                XCTKAssertLessThan(n, 50)
+            }
+        }
+        
+        XCTAssertNotNil(output)
+        
+        
+        
+        let actual: String = try getPropertyOutput(
+            from:       output,
+            before:     "XCTKAssertLessThan"
+        )
+        
+        let expected: String =
+        """
+        XCTKForAll failed after 2 iterations
+        
+        Counterexample:
+            Int = 50
+        
+        \(Self.seedMessage)
+        
+        Distribution (2 iterations):
+            Table "size":
+                small: 1 (50%)
+        
+        """
+        
+        XCTAssertEqual(expected, actual)
+    }
+    
+    
+    
     // MARK: - Collect
     
     @Reasync
-    func testCoverageNotMetWithCollect() async
+    func testCoverageNotMetCollect() async
     {
         let options: TestOptions = .propertyOptions(
             iterations:     10,
@@ -966,6 +1987,50 @@ internal final class ClassificationOutputTests: XCTestKitCase
         Coverage:
             5:        100%
             negative:   0% (required: 100%) ←
+        
+        \(Self.seedMessage)
+        """
+        
+        XCTAssertEqual(expected, actual)
+    }
+    
+    
+    
+    @Reasync
+    func testCoverageNotMetTableCollect() async
+    {
+        let options: TestOptions = .propertyOptions(
+            iterations:     10,
+            seed:           Self.seed
+        )
+        
+        let actual: String? = await withOneExpectedFailure
+        {
+            await XCTKForAll(
+                using:      Generator<Int>.constant(5),
+                options:    options
+            )
+            {
+                (n: Int) async in
+                
+                XCTKCollect(n)
+                XCTKTabulate("sign", n > 0 ? "positive" : "negative")
+                XCTKCoverTable("sign", (100, "negative"))
+            }
+        }
+        
+        XCTAssertNotNil(actual)
+        
+        let expected: String =
+        """
+        XCTKForAll coverage not met after 10 iterations
+        
+        Coverage:
+            5: 100%
+        
+            Table "sign":
+                negative:   0% (required: 100%) ←
+                positive: 100%
         
         \(Self.seedMessage)
         """
