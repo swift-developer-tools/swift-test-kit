@@ -24,7 +24,7 @@ import TestKitCore
 ///
 /// - Parameters:
 ///   - expr: The expression to evaluate.
-///   - assertionKind: The assertion kind.
+///   - assertion: The assertion kind.
 ///   - capture: The kind of captured assertion expression.
 ///   - message: The description of a failure.
 ///   - file: The file where the failure occurs. The default value is the
@@ -36,7 +36,7 @@ import TestKitCore
 /// the given expression.
 internal func evaluateExpr<T>(
     _ expr          : () throws -> T,
-    assertionKind   : AssertionKind,
+    assertion       : AssertionKind,
     capture         : ExprCaptureKind,
     message         : () -> String,
     file            : StaticString,
@@ -50,13 +50,13 @@ internal func evaluateExpr<T>(
     }
     catch
     {
-        if assertionKind == .throwsError
+        if assertion == .throwsError
         {
             errorHandler(error)
         }
         else
         {
-            assertionKind.fail(
+            assertion.fail(
                 context:    failureContext,
                 capture:    capture,
                 reason:     "threw error \(quote(error))",
@@ -81,7 +81,7 @@ internal func evaluateExpr<T>(
 ///
 /// - Parameters:
 ///   - collection: The collection to evaluate.
-///   - assertionKind: The assertion kind.
+///   - assertion: The assertion kind.
 ///   - capture: The kind of captured assertion expression.
 ///   - message: The description of a failure.
 ///   - file: The file where the failure occurs. The default value is the
@@ -92,7 +92,7 @@ internal func evaluateExpr<T>(
 /// the given collection expression.
 internal func evaluateCollection<C>(
     _ collection    : () throws -> C,
-    assertionKind   : AssertionKind,
+    assertion       : AssertionKind,
     capture         : ExprCaptureKind,
     message         : () -> String,
     file            : StaticString,
@@ -105,7 +105,7 @@ internal func evaluateCollection<C>(
     }
     catch
     {
-        assertionKind.fail(
+        assertion.fail(
             context:    failureContext,
             capture:    capture,
             reason:     "threw error \(quote(error))",
