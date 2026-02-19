@@ -15,6 +15,476 @@ import XCTest
 
 internal final class PropertyRunnerClassificationTests: XCTestCaseStopOnFail
 {
+    // MARK: - Assume
+    
+    @Reasync
+    func testAssumeTruePassesThrough() async throws
+    {
+        let iterations: Int = 50
+        
+        let options: TestOptions = .propertyOptions(
+            iterations:     iterations,
+            seed:           Self.seed
+        )
+        
+        let result: PCR<BoundInt> = await PropertyRunner.run(
+            property:
+            {
+                _ async throws in
+                
+                try XCTKAssume(true)
+            },
+            options: options
+        )
+        
+        let passed: PassedValues = try XCTUnwrap(result.assertPassed())
+        
+        XCTAssertEqual(passed.iterations, iterations)
+    }
+    
+    
+    
+    @Reasync
+    func testAssumeFalseExhausts() async throws
+    {
+        let options: TestOptions = .propertyOptions(
+            iterations:         100,
+            maxDiscardRatio:    1,
+            seed:               Self.seed
+        )
+        
+        let result: PCR<BoundInt> = await PropertyRunner.run(
+            property:
+            {
+                _ async throws in
+                
+                try XCTKAssume(false)
+            },
+            options: options
+        )
+        
+        let exhausted: ExhaustedValues
+            = try XCTUnwrap(result.assertExhausted())
+        
+        XCTAssertEqual(exhausted.succeeded, 0)
+    }
+    
+    
+    
+    @Reasync
+    func testAssumeBasedOnDerivedValue() async throws
+    {
+        let iterations: Int = 50
+        
+        let options: TestOptions = .propertyOptions(
+            iterations:         iterations,
+            maxSize:            100,
+            maxDiscardRatio:    100,
+            seed:               Self.seed
+        )
+        
+        let result: PCR<SizeCapture> = await PropertyRunner.run(
+            property:
+            {
+                capture async throws in
+                
+                try XCTKAssume(capture.size % 2 == 0)
+                
+                XCTKLabel("accepted")
+            },
+            options: options
+        )
+        
+        let passed: PassedValues = try XCTUnwrap(result.assertPassed())
+        
+        XCTAssertEqual(passed.dist["accepted"], iterations)
+    }
+    
+    
+    
+    @Reasync
+    func testAssumeExhaustionRespectsDiscardRatio() async throws
+    {
+        let iterations      : Int   = 100
+        let maxDiscardRatio : Int   = 2
+        
+        let options: TestOptions = .propertyOptions(
+            iterations:         iterations,
+            maxDiscardRatio:    maxDiscardRatio,
+            seed:               Self.seed
+        )
+        
+        let result: PCR<BoundInt> = await PropertyRunner.run(
+            property:
+            {
+                _ async throws in
+                
+                try XCTKAssume(false)
+            },
+            options: options
+        )
+        
+        let exhausted: ExhaustedValues
+            = try XCTUnwrap(result.assertExhausted())
+        
+        XCTAssertEqual(exhausted.succeeded, 0)
+        XCTAssertGreaterThan(exhausted.discarded, maxDiscardRatio * iterations)
+    }
+    
+    
+    
+    @Reasync
+    func testLabelsBeforeASsumeDiscardNotFinalized() async throws
+    {
+        let options: TestOptions = .propertyOptions(
+            iterations:         100,
+            maxDiscardRatio:    1,
+            seed:               Self.seed
+        )
+        
+        /// A label recorded before a discarding assumption must not appear
+        /// in the distribution, since the discarded iteration is never
+        /// finalized.
+        let result: PCR<BoundInt> = await PropertyRunner.run(
+            property:
+            {
+                _ async throws in
+                
+                XCTKLabel("ghost")
+                
+                try XCTKAssume(false)
+            },
+            options: options
+        )
+        
+        let exhausted: ExhaustedValues
+            = try XCTUnwrap(result.assertExhausted())
+        
+        XCTAssertEqual(exhausted.succeeded, 0)
+        XCTAssertTrue(exhausted.dist.isEmpty)
+    }
+    
+    
+    
+    @Reasync
+    func testTableLabelsBeforeASsumeDiscardNotFinalized() async throws
+    {
+        let options: TestOptions = .propertyOptions(
+            iterations:         100,
+            maxDiscardRatio:    1,
+            seed:               Self.seed
+        )
+        
+        /// A label recorded before a discarding assumption must not appear
+        /// in the distribution, since the discarded iteration is never
+        /// finalized.
+        let result: PCR<BoundInt> = await PropertyRunner.run(
+            property:
+            {
+                _ async throws in
+                
+                XCTKTabulate("table", "ghost")
+                
+                try XCTKAssume(false)
+            },
+            options: options
+        )
+        
+        let exhausted: ExhaustedValues
+            = try XCTUnwrap(result.assertExhausted())
+        
+        XCTAssertEqual(exhausted.succeeded, 0)
+        XCTAssertTrue(exhausted.tableDist.isEmpty)
+    }
+    
+    
+    
+    @Reasync
+    func testCoverageWithAssumeCountsOnlyAccepted() async throws
+    {
+        let iterations: Int = 100
+        
+        let generator = Generator<Int>(
+            generate:   { context in context.random(in: 0...100) },
+            shrink:     { value in value.shrinkTowardZero() }
+        )
+        
+        let options: TestOptions = .propertyOptions(
+            iterations:     iterations,
+            maxSize:        100,
+            seed:           Self.seed
+        )
+        
+        /// Assumption discards odd sizes. The coverage requirement of 100%
+        /// is met since every non-discarded iteration receives the label.
+        let result: PCR<Int> = await PropertyRunner.run(
+            using: generator,
+            property:
+            {
+                int async throws in
+                
+                try XCTKAssume(int % 2 == 0)
+                
+                XCTKCover(100, "accepted", when: true)
+            },
+            options: options
+        )
+        
+        let passed: PassedValues = try XCTUnwrap(result.assertPassed())
+        
+        XCTAssertEqual(passed.dist["accepted"], iterations)
+    }
+    
+    
+    
+    @Reasync
+    func testAssumeTrueThenFailureProducesFailure() async
+    {
+        let options: TestOptions = .propertyOptions(
+            iterations:     100,
+            seed:           Self.seed
+        )
+        
+        let result: PCR<BoundInt> = await PropertyRunner.run(
+            property:
+            {
+                _ async throws in
+                
+                try XCTKAssume(true)
+                
+                PropertyInterceptor.current?.recordFailure(
+                    message:    "always fails",
+                    file:       "File.swift",
+                    line:       1
+                )
+            },
+            options: options
+        )
+        
+        guard case let .failed(counterexample, _, _) = result
+        else
+        {
+            XCTFail("Expected .failed, got \(result)")
+            return
+        }
+        
+        XCTAssertEqual(counterexample.iteration, 1)
+    }
+    
+    
+    
+    @Reasync
+    func testShrinkingSkipsCandidatesFailingAssumption() async
+    {
+        let target: Int = 20
+        
+        let generator = Generator<Int>(
+            generate:   { _ in 100 },
+            shrink:     { value in value.shrinkTowardZero() }
+        )
+        
+        let options: TestOptions = .propertyOptions(
+            iterations:     100,
+            maxSize:        200,
+            seed:           Self.seed
+        )
+        
+        let result: PCR<Int> = await PropertyRunner.run(
+            using: generator,
+            property:
+            {
+                int async throws in
+                
+                try XCTKAssume(int % 2 == 0)
+                
+                if int > target
+                {
+                    PropertyInterceptor.current?.recordFailure(
+                        message:    "too large",
+                        file:       "File.swift",
+                        line:       1
+                    )
+                }
+            },
+            options: options
+        )
+        
+        guard case let .failed(counterexample, _, _) = result
+        else
+        {
+            XCTFail("Expected .failed, got \(result)")
+            return
+        }
+        
+        XCTAssertEqual(counterexample.value % 2, 0)
+        XCTAssertGreaterThan(counterexample.value, target)
+        XCTAssertGreaterThan(counterexample.shrinkSteps, 0)
+    }
+    
+    
+    
+    @Reasync
+    func testDistributionNotInflatedByDiscardedAssumptions() async
+    {
+        let target: Int = 10
+        
+        /// Generate only even values so the main loop never discards them.
+        /// The odd candidates are discarded by the assumption. Discarded
+        /// inputs during shrinking must not inflate the distribution.
+        let generator = Generator<Int>(
+            generate:
+            {
+                context in
+                
+                return context.random(in: 0...max(1, context.size) * 2)
+            },
+            shrink: { value in value.shrinkTowardZero() }
+        )
+        
+        let options: TestOptions = .propertyOptions(
+            iterations:     100,
+            maxSize:        200,
+            seed:           Self.seed
+        )
+        
+        let result: PCR<Int> = await PropertyRunner.run(
+            using: generator,
+            property:
+            {
+                int async throws in
+                
+                try XCTKAssume(int % 2 == 0)
+                
+                PropertyInterceptor.current?.recordLabel("tested")
+                
+                if int > target
+                {
+                    PropertyInterceptor.current?.recordFailure(
+                        message:    "too large",
+                        file:       "File.swift",
+                        line:       1
+                    )
+                }
+            },
+            options: options
+        )
+        
+        guard case let .failed(counterexample, dist, _) = result
+        else
+        {
+            XCTFail("Expected .failed, got \(result)")
+            return
+        }
+        
+        XCTAssertGreaterThan(counterexample.shrinkSteps, 0)
+        
+        let testedCount: Int? = dist["tested"]
+        
+        XCTAssertNotNil(testedCount)
+        XCTAssertLessThan(testedCount!, counterexample.iteration)
+    }
+    
+    
+    
+    @Reasync
+    func testAssumeWithZeroIterationsVacuouslyPasses() async throws
+    {
+        let iterations: Int = 0
+        
+        let options: TestOptions = .propertyOptions(
+            iterations:     iterations,
+            seed:           Self.seed
+        )
+        
+        let result: PCR<BoundInt> = await PropertyRunner.run(
+            property:
+            {
+                _ async throws in
+                
+                try XCTKAssume(false)
+            },
+            options: options
+        )
+        
+        let passed: PassedValues = try XCTUnwrap(result.assertPassed())
+        
+        XCTAssertEqual(passed.iterations, iterations)
+    }
+    
+    
+    
+    @Reasync
+    func testAssumeWithPrecondition() async throws
+    {
+        let options: TestOptions = .propertyOptions(
+            iterations:         100,
+            maxSize:            100,
+            maxDiscardRatio:    1,
+            seed:               Self.seed
+        )
+        
+        /// The precondition rejects odd sizes and the assumption rejects
+        /// everything else. Discards from both paths contribute to the
+        /// discard count and trigger exhaustion.
+        let result: PCR<SizeCapture> = await PropertyRunner.run(
+            where: { capture in capture.size % 2 == 0 },
+            property:
+            {
+                _ async throws in
+                
+                try XCTKAssume(false)
+            },
+            options: options
+        )
+        
+        let exhausted: ExhaustedValues
+            = try XCTUnwrap(result.assertExhausted())
+        
+        XCTAssertEqual(exhausted.succeeded, 0)
+    }
+    
+    
+    
+    @Reasync
+    func testAssumeWithPreconditionPartialAcceptance() async throws
+    {
+        let iterations: Int = 50
+        
+        let generator = Generator<Int>(
+            generate:   { context in context.random(in: 0...100) },
+            shrink:     { value in value.shrinkTowardZero() }
+        )
+        
+        let options: TestOptions = .propertyOptions(
+            iterations:     iterations,
+            maxSize:        100,
+            seed:           Self.seed
+        )
+        
+        /// The precondition rejects odd sizes and the assumption rejects
+        /// sizes not divisible by `4`. Discards from both paths contribute to
+        /// the discard count, but enough iterations pass to complete.
+        let result: PCR<Int> = await PropertyRunner.run(
+            using:  generator,
+            where:  { int in int % 2 == 0 },
+            property:
+            {
+                int async throws in
+                
+                try XCTKAssume(int % 4 == 0)
+                
+                XCTKLabel("accepted")
+            },
+            options: options
+        )
+        
+        let passed: PassedValues = try XCTUnwrap(result.assertPassed())
+        
+        XCTAssertEqual(passed.dist["accepted"], iterations)
+    }
+    
+    
+    
     // MARK: - Non-table
     
     @Reasync

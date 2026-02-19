@@ -33,6 +33,15 @@ internal final class ClassificationIntegrationTests: XCTestKitCase
         XCTKCollect(50)
         XCTKTabulate("table", "label")
         XCTKCoverTable("table", (50, "label"))
+        
+        do
+        {
+            try XCTKAssume(false)
+        }
+        catch
+        {
+            XCTFail("Expected no error to be thrown from assumption")
+        }
     }
     
     
@@ -561,6 +570,200 @@ internal final class ClassificationIntegrationTests: XCTestKitCase
             XCTKCover(100, "positive", when: n > 0)
             XCTKTabulate("sign", n > 0 ? "positive" : "negative")
             XCTKCoverTable("sign", (100, "positive"))
+        }
+    }
+    
+    
+    
+    @Reasync
+    func testAssumeTruePassesThrough() async
+    {
+        await XCTKForAll(
+            using:      Generator<Int>.constant(5),
+            options:    .propertyOptions(iterations: 10, seed: 1)
+        )
+        {
+            (_: Int) async throws in
+            
+            try XCTKAssume(true)
+        }
+    }
+    
+    
+    
+    @Reasync
+    func testAssumeFalseExhausts() async
+    {
+        let options: TestOptions = .propertyOptions(
+            iterations:         10,
+            maxDiscardRatio:    1,
+            seed:               1
+        )
+        
+        await withOneExpectedFailure
+        {
+            await XCTKForAll(
+                using:      Generator<Int>.constant(5),
+                options:    options
+            )
+            {
+                (_: Int) async throws in
+                
+                try XCTKAssume(false)
+            }
+        }
+    }
+    
+    
+    
+    @Reasync
+    func testAssumeWithDerivedConditionPasses() async
+    {
+        await XCTKForAll(
+            using:      Generator<Int>.integer(in: 0...100),
+            options:    .propertyOptions(iterations: 10, seed: 1)
+        )
+        {
+            (n: Int) async throws in
+            
+            try XCTKAssume(n % 2 == 0)
+        }
+    }
+    
+    
+    
+    @Reasync
+    func testAssumeWithPreconditionBothFilter() async
+    {
+        let options: TestOptions = .propertyOptions(
+            iterations:         10,
+            maxDiscardRatio:    1,
+            seed:               1
+        )
+        
+        await withOneExpectedFailure
+        {
+            await XCTKForAll(
+                using:      Generator<Int>.integer(in: 0...100),
+                where:      { $0 % 2 == 0 },
+                options:    options
+            )
+            {
+                (_: Int) async throws in
+                
+                try XCTKAssume(false)
+            }
+        }
+    }
+    
+    
+    
+    @Reasync
+    func testAssumeDoesNotInterfereWithInterception() async
+    {
+        await withOneExpectedFailure
+        {
+            await XCTKForAll(
+                using:      Generator<Int>.constant(5),
+                options:    .propertyOptions(iterations: 10, seed: 1)
+            )
+            {
+                (_: Int) async throws in
+                
+                try XCTKAssume(true)
+                XCTKAssertEqual(1, 2)
+            }
+        }
+    }
+    
+    
+    
+    @Reasync
+    func testClassificationContinuesAfterPassingAssume() async
+    {
+        await XCTKForAll(
+            using:      Generator<Int>.constant(5),
+            options:    .propertyOptions(iterations: 10, seed: 1)
+        )
+        {
+            (_: Int) async throws in
+            
+            try XCTKAssume(true)
+            XCTKCover(100, "after-assume", when: true)
+        }
+    }
+    
+    
+    
+    @Reasync
+    func testAssumeWithCoverageCountsOnlyAccepted() async
+    {
+        await XCTKForAll(
+            using:      Generator<Int>.integer(in: 0...100),
+            options:    .propertyOptions(iterations: 10, seed: 1)
+        )
+        {
+            (n: Int) async throws in
+            
+            try XCTKAssume(n % 2 == 0)
+            XCTKCover(100, "even", when: n % 2 == 0)
+        }
+    }
+    
+    
+    
+    @Reasync
+    func testAssumeWithTableCoverageCountsOnlyAccepted() async
+    {
+        await XCTKForAll(
+            using:      Generator<Int>.integer(in: 0...100),
+            options:    .propertyOptions(iterations: 10, seed: 1)
+        )
+        {
+            (n: Int) async throws in
+            
+            try XCTKAssume(n % 2 == 0)
+            XCTKTabulate("parity", "even")
+            XCTKCoverTable("parity", (100, "even"))
+        }
+    }
+    
+    
+    
+    @Reasync
+    func testSequentialPropertiesDoNotLeakAssumeState() async
+    {
+        let options: TestOptions = .propertyOptions(
+            iterations:         10,
+            maxDiscardRatio:    1,
+            seed:               1
+        )
+        
+        /// The first property exhausts by assumption. The second property
+        /// passes normally. If the state leaks, the second property would
+        /// be affected by the first property's discards.
+        await withOneExpectedFailure
+        {
+            await XCTKForAll(
+                using:      Generator<Int>.constant(5),
+                options:    options
+            )
+            {
+                (_: Int) async throws in
+                
+                try XCTKAssume(false)
+            }
+        }
+        
+        await XCTKForAll(
+            using:      Generator<Int>.constant(5),
+            options:    .propertyOptions(iterations: 10, seed: 1)
+        )
+        {
+            (_: Int) async throws in
+            
+            try XCTKAssume(true)
+            XCTKCover(100, "always", when: true)
         }
     }
 }

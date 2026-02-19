@@ -1834,6 +1834,244 @@ internal final class ClassificationOutputTests: XCTestKitCase
     
     
     
+    @Reasync
+    func testExhaustionByAssumption() async
+    {
+        let options: TestOptions = .propertyOptions(
+            iterations:         5,
+            maxDiscardRatio:    1,
+            seed:               Self.seed
+        )
+        
+        let actual: String? = await withOneExpectedFailure
+        {
+            await XCTKForAll(
+                using:      Generator<Int>.constant(5),
+                options:    options
+            )
+            {
+                (_: Int) async throws in
+                
+                try XCTKAssume(false)
+            }
+        }
+        
+        XCTAssertNotNil(actual)
+        
+        let expected: String =
+        """
+        XCTKForAll exhausted after 0 successful iterations
+        
+            6 inputs discarded (max ratio: 1)
+        
+        \(Self.seedMessage)
+        """
+        
+        XCTAssertEqual(expected, actual)
+    }
+    
+    
+    
+    @Reasync
+    func testExhaustionByAssumptionWithDistribution() async
+    {
+        let options: TestOptions = .propertyOptions(
+            iterations:         5,
+            maxSize:            100,
+            maxDiscardRatio:    1,
+            seed:               Self.seed
+        )
+        
+        /// The first two iterations produce sizes `0` and `20` (both pass the
+        /// precondition). The third iteration produces a size `40` (fails the
+        /// precondition), and all subsequent iterations remain at size `40`,
+        /// since the number of successful iterations does not advance. After
+        /// six discards, the test exhausts.
+        let generator = Generator<Int>(
+            generate:   { context in context.size },
+            shrink:     { _ in [] }
+        )
+        
+        let actual: String? = await withOneExpectedFailure
+        {
+            await XCTKForAll(
+                using:      generator,
+                options:    options
+            )
+            {
+                (n: Int) async throws in
+                
+                try XCTKAssume(n < 30)
+                
+                XCTKLabel("tracked")
+            }
+        }
+        
+        XCTAssertNotNil(actual)
+        
+        let expected: String =
+        """
+        XCTKForAll exhausted after 2 successful iterations
+        
+            6 inputs discarded (max ratio: 1)
+        
+        \(Self.seedMessage)
+        
+        Distribution (2 iterations):
+            tracked: 2 (100%)
+        """
+        
+        XCTAssertEqual(expected, actual)
+    }
+    
+    
+    
+    @Reasync
+    func testExhaustionByAssumptionWithTableDistribution() async
+    {
+        let options: TestOptions = .propertyOptions(
+            iterations:         5,
+            maxSize:            100,
+            maxDiscardRatio:    1,
+            seed:               Self.seed
+        )
+        
+        /// The first two iterations produce sizes `0` and `20` (both pass the
+        /// precondition). The third iteration produces a size `40` (fails the
+        /// precondition), and all subsequent iterations remain at size `40`,
+        /// since the number of successful iterations does not advance. After
+        /// six discards, the test exhausts.
+        let generator = Generator<Int>(
+            generate:   { context in context.size },
+            shrink:     { _ in [] }
+        )
+        
+        let actual: String? = await withOneExpectedFailure
+        {
+            await XCTKForAll(
+                using:      generator,
+                options:    options
+            )
+            {
+                (n: Int) async throws in
+                
+                try XCTKAssume(n < 30)
+                
+                XCTKTabulate("size", n < 15 ? "small" : "medium")
+            }
+        }
+        
+        XCTAssertNotNil(actual)
+        
+        let expected: String =
+        """
+        XCTKForAll exhausted after 2 successful iterations
+        
+            6 inputs discarded (max ratio: 1)
+        
+        \(Self.seedMessage)
+        
+        Distribution (2 iterations):
+            Table "size":
+                medium: 1 (50%)
+                small:  1 (50%)
+        """
+        
+        XCTAssertEqual(expected, actual)
+    }
+    
+    
+    
+    @Reasync
+    func testExhaustionByAssumptionWithMessage() async
+    {
+        let options: TestOptions = .propertyOptions(
+            iterations:         5,
+            maxDiscardRatio:    1,
+            seed:               Self.seed
+        )
+        
+        let actual: String? = await withOneExpectedFailure
+        {
+            await XCTKForAll(
+                using:      Generator<Int>.constant(5),
+                message:    "hello world",
+                options:    options
+            )
+            {
+                (_: Int) async throws in
+                
+                try XCTKAssume(false)
+            }
+        }
+        
+        XCTAssertNotNil(actual)
+        
+        let expected: String =
+        """
+        XCTKForAll exhausted after 0 successful iterations
+        
+            6 inputs discarded (max ratio: 1)
+        
+        \(Self.seedMessage)
+        
+        hello world
+        """
+        
+        XCTAssertEqual(expected, actual)
+    }
+    
+    
+    
+    @Reasync
+    func testExhaustionByAssumptionSingleSuccessfulIteration() async
+    {
+        let options: TestOptions = .propertyOptions(
+            iterations:         5,
+            maxSize:            100,
+            maxDiscardRatio:    1,
+            seed:               Self.seed
+        )
+        
+        /// The first two iterations produce sizes `0` and `20` (both pass the
+        /// precondition). The third iteration produces a size `40` (fails the
+        /// precondition), and all subsequent iterations remain at size `40`,
+        /// since the number of successful iterations does not advance. After
+        /// six discards, the test exhausts.
+        let generator = Generator<Int>(
+            generate:   { context in context.size },
+            shrink:     { _ in [] }
+        )
+        
+        let actual: String? = await withOneExpectedFailure
+        {
+            await XCTKForAll(
+                using:      generator,
+                options:    options
+            )
+            {
+                (n: Int) async throws in
+                
+                try XCTKAssume(n < 5)
+            }
+        }
+        
+        XCTAssertNotNil(actual)
+        
+        let expected: String =
+        """
+        XCTKForAll exhausted after 1 successful iteration
+        
+            6 inputs discarded (max ratio: 1)
+        
+        \(Self.seedMessage)
+        """
+        
+        XCTAssertEqual(expected, actual)
+    }
+    
+    
+    
     // MARK: - Failed iteration
     
     @Reasync
