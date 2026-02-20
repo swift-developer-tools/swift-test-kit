@@ -6,10 +6,10 @@ Assert whether a value is nil.
 
 ### Tests for a Nil Condition
 
-- ``XCTKAssertNil(_:_:file:line:options:)-func``
+- ``XCTKAssertNil(_:_:fileID:file:line:column:options:)-func``
 
 ### Test for a Non-Nil Condition
 
-- ``XCTKAssertNotNil(_:_:file:line:options:)-func``
-- ``XCTKUnwrap(_:_:file:line:options:)-func``
+- ``XCTKAssertNotNil(_:_:fileID:file:line:column:options:)-func``
+- ``XCTKUnwrap(_:_:fileID:file:line:column:options:)-func``
 - ``UnwrapError``

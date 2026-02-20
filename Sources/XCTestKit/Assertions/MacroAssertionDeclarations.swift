@@ -17,18 +17,24 @@ import TestKitCore
 /// - Parameters:
 ///   - expression: The expression to evaluate.
 ///   - message: An optional description of a failure.
+///   - fileID: The ID of the file where the failure occurs. The default value
+///   is the ID of the file of the test case in which this macro was called.
 ///   - file: The file where the failure occurs. The default value is the
 ///   filename of the test case in which this macro was called.
 ///   - line: The line where the failure occurs. The default value is the line
 ///   number where this macro was called.
+///   - column: The column where the failure occurs. The default value is the
+///   column number where this macro was called.
 ///   - options: The options for testing. The default value is `nil`, which
 ///   falls back to using global options.
 @freestanding(expression)
 public macro XCTKAssert(
     _ expression    : @autoclosure () throws -> Bool,
     _ message       : @autoclosure () -> String         = "",
+    fileID          : StaticString                      = #fileID,
     file            : StaticString                      = #filePath,
     line            : UInt                              = #line,
+    column          : UInt                              = #column,
     options         : TestOptions?                      = nil
 ) = #externalMacro(
     module:     "TestKitMacros",
@@ -41,18 +47,24 @@ public macro XCTKAssert(
 /// - Parameters:
 ///   - expression: The expression to evaluate.
 ///   - message: An optional description of a failure.
+///   - fileID: The ID of the file where the failure occurs. The default value
+///   is the ID of the file of the test case in which this macro was called.
 ///   - file: The file where the failure occurs. The default value is the
 ///   filename of the test case in which this macro was called.
 ///   - line: The line where the failure occurs. The default value is the line
 ///   number where this macro was called.
+///   - column: The column where the failure occurs. The default value is the
+///   column number where this macro was called.
 ///   - options: The options for testing. The default value is `nil`, which
 ///   falls back to using global options.
 @freestanding(expression)
 public macro XCTKAssertTrue(
     _ expression    : @autoclosure () throws -> Bool,
     _ message       : @autoclosure () -> String         = "",
+    fileID          : StaticString                      = #fileID,
     file            : StaticString                      = #filePath,
     line            : UInt                              = #line,
+    column          : UInt                              = #column,
     options         : TestOptions?                      = nil
 ) = #externalMacro(
     module:     "TestKitMacros",
@@ -65,18 +77,24 @@ public macro XCTKAssertTrue(
 /// - Parameters:
 ///   - expression: The expression to evaluate.
 ///   - message: An optional description of a failure.
+///   - fileID: The ID of the file where the failure occurs. The default value
+///   is the ID of the file of the test case in which this macro was called.
 ///   - file: The file where the failure occurs. The default value is the
 ///   filename of the test case in which this macro was called.
 ///   - line: The line where the failure occurs. The default value is the line
 ///   number where this macro was called.
+///   - column: The column where the failure occurs. The default value is the
+///   column number where this macro was called.
 ///   - options: The options for testing. The default value is `nil`, which
 ///   falls back to using global options.
 @freestanding(expression)
 public macro XCTKAssertFalse(
     _ expression    : @autoclosure () throws -> Bool,
     _ message       : @autoclosure () -> String         = "",
+    fileID          : StaticString                      = #fileID,
     file            : StaticString                      = #filePath,
     line            : UInt                              = #line,
+    column          : UInt                              = #column,
     options         : TestOptions?                      = nil
 ) = #externalMacro(
     module:     "TestKitMacros",
@@ -91,18 +109,24 @@ public macro XCTKAssertFalse(
 /// - Parameters:
 ///   - expression: The expression to evaluate.
 ///   - message: An optional description of a failure.
+///   - fileID: The ID of the file where the failure occurs. The default value
+///   is the ID of the file of the test case in which this macro was called.
 ///   - file: The file where the failure occurs. The default value is the
 ///   filename of the test case in which this macro was called.
 ///   - line: The line where the failure occurs. The default value is the line
 ///   number where this macro was called.
+///   - column: The column where the failure occurs. The default value is the
+///   column number where this macro was called.
 ///   - options: The options for testing. The default value is `nil`, which
 ///   falls back to using global options.
 @freestanding(expression)
 public macro XCTKAssertNil(
     _ expression    : @autoclosure () throws -> Any?,
     _ message       : @autoclosure () -> String         = "",
+    fileID          : StaticString                      = #fileID,
     file            : StaticString                      = #filePath,
     line            : UInt                              = #line,
+    column          : UInt                              = #column,
     options         : TestOptions?                      = nil
 ) = #externalMacro(
     module:     "TestKitMacros",
@@ -115,18 +139,24 @@ public macro XCTKAssertNil(
 /// - Parameters:
 ///   - expression: The expression to evaluate.
 ///   - message: An optional description of a failure.
+///   - fileID: The ID of the file where the failure occurs. The default value
+///   is the ID of the file of the test case in which this macro was called.
 ///   - file: The file where the failure occurs. The default value is the
 ///   filename of the test case in which this macro was called.
 ///   - line: The line where the failure occurs. The default value is the line
 ///   number where this macro was called.
+///   - column: The column where the failure occurs. The default value is the
+///   column number where this macro was called.
 ///   - options: The options for testing. The default value is `nil`, which
 ///   falls back to using global options.
 @freestanding(expression)
 public macro XCTKAssertNotNil(
     _ expression    : @autoclosure () throws -> Any?,
     _ message       : @autoclosure () -> String         = "",
+    fileID          : StaticString                      = #fileID,
     file            : StaticString                      = #filePath,
     line            : UInt                              = #line,
+    column          : UInt                              = #column,
     options         : TestOptions?                      = nil
 ) = #externalMacro(
     module:     "TestKitMacros",
@@ -140,10 +170,14 @@ public macro XCTKAssertNotNil(
 /// - Parameters:
 ///   - expression: The expression to evaluate.
 ///   - message: An optional description of a failure.
+///   - fileID: The ID of the file where the failure occurs. The default value
+///   is the ID of the file of the test case in which this macro was called.
 ///   - file: The file where the failure occurs. The default value is the
 ///   filename of the test case in which this macro was called.
 ///   - line: The line where the failure occurs. The default value is the line
 ///   number where this macro was called.
+///   - column: The column where the failure occurs. The default value is the
+///   column number where this macro was called.
 ///   - options: The options for testing. The default value is `nil`, which
 ///   falls back to using global options.
 /// - Returns: The result of evaluating and unwrapped the given expression.
@@ -154,8 +188,10 @@ public macro XCTKAssertNotNil(
 public macro XCTKUnwrap<T>(
     _ expression    : @autoclosure () throws -> T?,
     _ message       : @autoclosure () -> String     = "",
+    fileID          : StaticString                  = #fileID,
     file            : StaticString                  = #filePath,
     line            : UInt                          = #line,
+    column          : UInt                          = #column,
     options         : TestOptions?                  = nil
 ) -> T = #externalMacro(
             module:     "TestKitMacros",
@@ -171,10 +207,14 @@ public macro XCTKUnwrap<T>(
 ///   - expected: The expected value.
 ///   - actual: The actual value.
 ///   - message: An optional description of a failure.
+///   - fileID: The ID of the file where the failure occurs. The default value
+///   is the ID of the file of the test case in which this macro was called.
 ///   - file: The file where the failure occurs. The default value is the
 ///   filename of the test case in which this macro was called.
 ///   - line: The line where the failure occurs. The default value is the line
 ///   number where this macro was called.
+///   - column: The column where the failure occurs. The default value is the
+///   column number where this macro was called.
 ///   - options: The options for testing. The default value is `nil`, which
 ///   falls back to using global options.
 @freestanding(expression)
@@ -182,8 +222,10 @@ public macro XCTKAssertEqual<T>(
     _ expected  : @autoclosure () throws -> T,
     _ actual    : @autoclosure () throws -> T,
     _ message   : @autoclosure () -> String     = "",
+    fileID      : StaticString                  = #fileID,
     file        : StaticString                  = #filePath,
     line        : UInt                          = #line,
+    column      : UInt                          = #column,
     options     : TestOptions?                  = nil
 ) = #externalMacro(
     module:     "TestKitMacros",
@@ -197,10 +239,14 @@ public macro XCTKAssertEqual<T>(
 ///   - expression1: The first expression to evaluate.
 ///   - expression2: The second expression to evaluate.
 ///   - message: An optional description of a failure.
+///   - fileID: The ID of the file where the failure occurs. The default value
+///   is the ID of the file of the test case in which this macro was called.
 ///   - file: The file where the failure occurs. The default value is the
 ///   filename of the test case in which this macro was called.
 ///   - line: The line where the failure occurs. The default value is the line
 ///   number where this macro was called.
+///   - column: The column where the failure occurs. The default value is the
+///   column number where this macro was called.
 ///   - options: The options for testing. The default value is `nil`, which
 ///   falls back to using global options.
 @freestanding(expression)
@@ -208,8 +254,10 @@ public macro XCTKAssertNotEqual<T>(
     _ expression1   : @autoclosure () throws -> T,
     _ expression2   : @autoclosure () throws -> T,
     _ message       : @autoclosure () -> String     = "",
+    fileID          : StaticString                  = #fileID,
     file            : StaticString                  = #filePath,
     line            : UInt                          = #line,
+    column          : UInt                          = #column,
     options         : TestOptions?                  = nil
 ) = #externalMacro(
     module:     "TestKitMacros",
@@ -226,10 +274,14 @@ public macro XCTKAssertNotEqual<T>(
 ///   - expression1: The first expression to evaluate.
 ///   - expression2: The second expression to evaluate.
 ///   - message: An optional description of a failure.
+///   - fileID: The ID of the file where the failure occurs. The default value
+///   is the ID of the file of the test case in which this macro was called.
 ///   - file: The file where the failure occurs. The default value is the
 ///   filename of the test case in which this macro was called.
 ///   - line: The line where the failure occurs. The default value is the line
 ///   number where this macro was called.
+///   - column: The column where the failure occurs. The default value is the
+///   column number where this macro was called.
 ///   - options: The options for testing. The default value is `nil`, which
 ///   falls back to using global options.
 @freestanding(expression)
@@ -237,8 +289,10 @@ public macro XCTKAssertIdentical(
     _ expression1   : @autoclosure () throws -> AnyObject?,
     _ expression2   : @autoclosure () throws -> AnyObject?,
     _ message       : @autoclosure () -> String             = "",
+    fileID          : StaticString                          = #fileID,
     file            : StaticString                          = #filePath,
     line            : UInt                                  = #line,
+    column          : UInt                                  = #column,
     options         : TestOptions?                          = nil
 ) = #externalMacro(
     module:     "TestKitMacros",
@@ -255,10 +309,14 @@ public macro XCTKAssertIdentical(
 ///   - expression1: The first expression to evaluate.
 ///   - expression2: The second expression to evaluate.
 ///   - message: An optional description of a failure.
+///   - fileID: The ID of the file where the failure occurs. The default value
+///   is the ID of the file of the test case in which this macro was called.
 ///   - file: The file where the failure occurs. The default value is the
 ///   filename of the test case in which this macro was called.
 ///   - line: The line where the failure occurs. The default value is the line
 ///   number where this macro was called.
+///   - column: The column where the failure occurs. The default value is the
+///   column number where this macro was called.
 ///   - options: The options for testing. The default value is `nil`, which
 ///   falls back to using global options.
 @freestanding(expression)
@@ -266,8 +324,10 @@ public macro XCTKAssertNotIdentical(
     _ expression1   : @autoclosure () throws -> AnyObject?,
     _ expression2   : @autoclosure () throws -> AnyObject?,
     _ message       : @autoclosure () -> String             = "",
+    fileID          : StaticString                          = #fileID,
     file            : StaticString                          = #filePath,
     line            : UInt                                  = #line,
+    column          : UInt                                  = #column,
     options         : TestOptions?                          = nil
 ) = #externalMacro(
     module:     "TestKitMacros",
@@ -284,10 +344,14 @@ public macro XCTKAssertNotIdentical(
 ///   - accuracy: The maximum difference between the given expressions for
 ///   them to be considered equal.
 ///   - message: An optional description of a failure.
+///   - fileID: The ID of the file where the failure occurs. The default value
+///   is the ID of the file of the test case in which this macro was called.
 ///   - file: The file where the failure occurs. The default value is the
 ///   filename of the test case in which this macro was called.
 ///   - line: The line where the failure occurs. The default value is the line
 ///   number where this macro was called.
+///   - column: The column where the failure occurs. The default value is the
+///   column number where this macro was called.
 ///   - options: The options for testing. The default value is `nil`, which
 ///   falls back to using global options.
 @freestanding(expression)
@@ -296,8 +360,10 @@ public macro XCTKAssertEqual<T>(
     _ expression2   : @autoclosure () throws -> T,
     accuracy        : T,
     _ message       : @autoclosure () -> String     = "",
+    fileID          : StaticString                  = #fileID,
     file            : StaticString                  = #filePath,
     line            : UInt                          = #line,
+    column          : UInt                          = #column,
     options         : TestOptions?                  = nil
 ) = #externalMacro(
     module:     "TestKitMacros",
@@ -313,10 +379,14 @@ public macro XCTKAssertEqual<T>(
 ///   - accuracy: The maximum difference between the given expressions for
 ///   them to be considered equal.
 ///   - message: An optional description of a failure.
+///   - fileID: The ID of the file where the failure occurs. The default value
+///   is the ID of the file of the test case in which this macro was called.
 ///   - file: The file where the failure occurs. The default value is the
 ///   filename of the test case in which this macro was called.
 ///   - line: The line where the failure occurs. The default value is the line
 ///   number where this macro was called.
+///   - column: The column where the failure occurs. The default value is the
+///   column number where this macro was called.
 ///   - options: The options for testing. The default value is `nil`, which
 ///   falls back to using global options.
 @freestanding(expression)
@@ -325,8 +395,10 @@ public macro XCTKAssertEqual<T>(
     _ expression2   : @autoclosure () throws -> T,
     accuracy        : T,
     _ message       : @autoclosure () -> String     = "",
+    fileID          : StaticString                  = #fileID,
     file            : StaticString                  = #filePath,
     line            : UInt                          = #line,
+    column          : UInt                          = #column,
     options         : TestOptions?                  = nil
 ) = #externalMacro(
     module:     "TestKitMacros",
@@ -343,10 +415,14 @@ public macro XCTKAssertEqual<T>(
 ///   - accuracy: The maximum difference between the given expressions for
 ///   them to be considered not equal.
 ///   - message: An optional description of a failure.
+///   - fileID: The ID of the file where the failure occurs. The default value
+///   is the ID of the file of the test case in which this macro was called.
 ///   - file: The file where the failure occurs. The default value is the
 ///   filename of the test case in which this macro was called.
 ///   - line: The line where the failure occurs. The default value is the line
 ///   number where this macro was called.
+///   - column: The column where the failure occurs. The default value is the
+///   column number where this macro was called.
 ///   - options: The options for testing. The default value is `nil`, which
 ///   falls back to using global options.
 @freestanding(expression)
@@ -355,8 +431,10 @@ public macro XCTKAssertNotEqual<T>(
     _ expression2   : @autoclosure () throws -> T,
     accuracy        : T,
     _ message       : @autoclosure () -> String     = "",
+    fileID          : StaticString                  = #fileID,
     file            : StaticString                  = #filePath,
     line            : UInt                          = #line,
+    column          : UInt                          = #column,
     options         : TestOptions?                  = nil
 ) = #externalMacro(
     module:     "TestKitMacros",
@@ -373,10 +451,14 @@ public macro XCTKAssertNotEqual<T>(
 ///   - accuracy: The maximum difference between the given expressions for
 ///   them to be considered not equal.
 ///   - message: An optional description of a failure.
+///   - fileID: The ID of the file where the failure occurs. The default value
+///   is the ID of the file of the test case in which this macro was called.
 ///   - file: The file where the failure occurs. The default value is the
 ///   filename of the test case in which this macro was called.
 ///   - line: The line where the failure occurs. The default value is the line
 ///   number where this macro was called.
+///   - column: The column where the failure occurs. The default value is the
+///   column number where this macro was called.
 ///   - options: The options for testing. The default value is `nil`, which
 ///   falls back to using global options.
 @freestanding(expression)
@@ -385,8 +467,10 @@ public macro XCTKAssertNotEqual<T>(
     _ expression2   : @autoclosure () throws -> T,
     accuracy        : T,
     _ message       : @autoclosure () -> String     = "",
+    fileID          : StaticString                  = #fileID,
     file            : StaticString                  = #filePath,
     line            : UInt                          = #line,
+    column          : UInt                          = #column,
     options         : TestOptions?                  = nil
 ) = #externalMacro(
     module:     "TestKitMacros",
@@ -403,10 +487,14 @@ public macro XCTKAssertNotEqual<T>(
 ///   - expression1: The first expression to evaluate.
 ///   - expression2: The second expression to evaluate.
 ///   - message: An optional description of a failure.
+///   - fileID: The ID of the file where the failure occurs. The default value
+///   is the ID of the file of the test case in which this macro was called.
 ///   - file: The file where the failure occurs. The default value is the
 ///   filename of the test case in which this macro was called.
 ///   - line: The line where the failure occurs. The default value is the line
 ///   number where this macro was called.
+///   - column: The column where the failure occurs. The default value is the
+///   column number where this macro was called.
 ///   - options: The options for testing. The default value is `nil`, which
 ///   falls back to using global options.
 @freestanding(expression)
@@ -414,8 +502,10 @@ public macro XCTKAssertGreaterThan<T>(
     _ expression1   : @autoclosure () throws -> T,
     _ expression2   : @autoclosure () throws -> T,
     _ message       : @autoclosure () -> String     = "",
+    fileID          : StaticString                  = #fileID,
     file            : StaticString                  = #filePath,
     line            : UInt                          = #line,
+    column          : UInt                          = #column,
     options         : TestOptions?                  = nil
 ) = #externalMacro(
     module:     "TestKitMacros",
@@ -430,10 +520,14 @@ public macro XCTKAssertGreaterThan<T>(
 ///   - expression1: The first expression to evaluate.
 ///   - expression2: The second expression to evaluate.
 ///   - message: An optional description of a failure.
+///   - fileID: The ID of the file where the failure occurs. The default value
+///   is the ID of the file of the test case in which this macro was called.
 ///   - file: The file where the failure occurs. The default value is the
 ///   filename of the test case in which this macro was called.
 ///   - line: The line where the failure occurs. The default value is the line
 ///   number where this macro was called.
+///   - column: The column where the failure occurs. The default value is the
+///   column number where this macro was called.
 ///   - options: The options for testing. The default value is `nil`, which
 ///   falls back to using global options.
 @freestanding(expression)
@@ -441,8 +535,10 @@ public macro XCTKAssertGreaterThanOrEqual<T>(
     _ expression1   : @autoclosure () throws -> T,
     _ expression2   : @autoclosure () throws -> T,
     _ message       : @autoclosure () -> String     = "",
+    fileID          : StaticString                  = #fileID,
     file            : StaticString                  = #filePath,
     line            : UInt                          = #line,
+    column          : UInt                          = #column,
     options         : TestOptions?                  = nil
 ) = #externalMacro(
     module:     "TestKitMacros",
@@ -457,10 +553,14 @@ public macro XCTKAssertGreaterThanOrEqual<T>(
 ///   - expression1: The first expression to evaluate.
 ///   - expression2: The second expression to evaluate.
 ///   - message: An optional description of a failure.
+///   - fileID: The ID of the file where the failure occurs. The default value
+///   is the ID of the file of the test case in which this macro was called.
 ///   - file: The file where the failure occurs. The default value is the
 ///   filename of the test case in which this macro was called.
 ///   - line: The line where the failure occurs. The default value is the line
 ///   number where this macro was called.
+///   - column: The column where the failure occurs. The default value is the
+///   column number where this macro was called.
 ///   - options: The options for testing. The default value is `nil`, which
 ///   falls back to using global options.
 @freestanding(expression)
@@ -468,8 +568,10 @@ public macro XCTKAssertLessThanOrEqual<T>(
     _ expression1   : @autoclosure () throws -> T,
     _ expression2   : @autoclosure () throws -> T,
     _ message       : @autoclosure () -> String     = "",
+    fileID          : StaticString                  = #fileID,
     file            : StaticString                  = #filePath,
     line            : UInt                          = #line,
+    column          : UInt                          = #column,
     options         : TestOptions?                  = nil
 ) = #externalMacro(
     module:     "TestKitMacros",
@@ -484,10 +586,14 @@ public macro XCTKAssertLessThanOrEqual<T>(
 ///   - expression1: The first expression to evaluate.
 ///   - expression2: The second expression to evaluate.
 ///   - message: An optional description of a failure.
+///   - fileID: The ID of the file where the failure occurs. The default value
+///   is the ID of the file of the test case in which this macro was called.
 ///   - file: The file where the failure occurs. The default value is the
 ///   filename of the test case in which this macro was called.
 ///   - line: The line where the failure occurs. The default value is the line
 ///   number where this macro was called.
+///   - column: The column where the failure occurs. The default value is the
+///   column number where this macro was called.
 ///   - options: The options for testing. The default value is `nil`, which
 ///   falls back to using global options.
 @freestanding(expression)
@@ -495,8 +601,10 @@ public macro XCTKAssertLessThan<T>(
     _ expression1   : @autoclosure () throws -> T,
     _ expression2   : @autoclosure () throws -> T,
     _ message       : @autoclosure () -> String     = "",
+    fileID          : StaticString                  = #fileID,
     file            : StaticString                  = #filePath,
     line            : UInt                          = #line,
+    column          : UInt                          = #column,
     options         : TestOptions?                  = nil
 ) = #externalMacro(
     module:     "TestKitMacros",
@@ -511,10 +619,14 @@ public macro XCTKAssertLessThan<T>(
 /// - Parameters:
 ///   - expression: The expression to evaluate.
 ///   - message: An optional description of a failure.
+///   - fileID: The ID of the file where the failure occurs. The default value
+///   is the ID of the file of the test case in which this macro was called.
 ///   - file: The file where the failure occurs. The default value is the
 ///   filename of the test case in which this macro was called.
 ///   - line: The line where the failure occurs. The default value is the line
 ///   number where this macro was called.
+///   - column: The column where the failure occurs. The default value is the
+///   column number where this macro was called.
 ///   - options: The options for testing. The default value is `nil`, which
 ///   falls back to using global options.
 ///   - errorHandler: An optional handler for errors thrown by `expression`.
@@ -522,8 +634,10 @@ public macro XCTKAssertLessThan<T>(
 public macro XCTKAssertThrowsError<T>(
     _ expression    : @autoclosure () throws -> T,
     _ message       : @autoclosure () -> String     = "",
+    fileID          : StaticString                  = #fileID,
     file            : StaticString                  = #filePath,
     line            : UInt                          = #line,
+    column          : UInt                          = #column,
     options         : TestOptions?                  = nil,
     _ errorHandler  : (any Error) -> Void           = { _ in }
 ) = #externalMacro(
@@ -537,18 +651,24 @@ public macro XCTKAssertThrowsError<T>(
 /// - Parameters:
 ///   - expression: The expression to evaluate.
 ///   - message: An optional description of a failure.
+///   - fileID: The ID of the file where the failure occurs. The default value
+///   is the ID of the file of the test case in which this macro was called.
 ///   - file: The file where the failure occurs. The default value is the
 ///   filename of the test case in which this macro was called.
 ///   - line: The line where the failure occurs. The default value is the line
 ///   number where this macro was called.
+///   - column: The column where the failure occurs. The default value is the
+///   column number where this macro was called.
 ///   - options: The options for testing. The default value is `nil`, which
 ///   falls back to using global options.
 @freestanding(expression)
 public macro XCTKAssertNoThrow<T>(
     _ expression    : @autoclosure () throws -> T,
     _ message       : @autoclosure () -> String     = "",
+    fileID          : StaticString                  = #fileID,
     file            : StaticString                  = #filePath,
     line            : UInt                          = #line,
+    column          : UInt                          = #column,
     options         : TestOptions?                  = nil
 ) = #externalMacro(
     module:     "TestKitMacros",
@@ -562,15 +682,21 @@ public macro XCTKAssertNoThrow<T>(
 /// Immediately generates an unconditional failure.
 /// - Parameters:
 ///   - message: An optional description of a failure.
+///   - fileID: The ID of the file where the failure occurs. The default value
+///   is the ID of the file of the test case in which this macro was called.
 ///   - file: The file where the failure occurs. The default value is the
 ///   filename of the test case in which this macro was called.
 ///   - line: The line where the failure occurs. The default value is the line
 ///   number where this macro was called.
+///   - column: The column where the failure occurs. The default value is the
+///   column number where this macro was called.
 @freestanding(expression)
 public macro XCTKFail(
     _ message   : String        = "",
+    fileID      : StaticString  = #fileID,
     file        : StaticString  = #filePath,
-    line        : UInt          = #line
+    line        : UInt          = #line,
+    column      : UInt          = #column
 ) = #externalMacro(
     module:     "TestKitMacros",
     type:       "XCTKFailMacro"
@@ -587,10 +713,14 @@ public macro XCTKFail(
 ///   - predicate: A closure that returns `true` if the element represents a
 ///   match. Otherwise, it returns `false` or throws an error.
 ///   - message: An optional description of a failure.
+///   - fileID: The ID of the file where the failure occurs. The default value
+///   is the ID of the file of the test case in which this macro was called.
 ///   - file: The file where the failure occurs. The default value is the
 ///   filename of the test case in which this macro was called.
 ///   - line: The line where the failure occurs. The default value is the line
 ///   number where this macro was called.
+///   - column: The column where the failure occurs. The default value is the
+///   column number where this macro was called.
 ///   - options: The options for testing. The default value is `nil`, which
 ///   falls back to using global options.
 @freestanding(expression)
@@ -598,8 +728,10 @@ public macro XCTKAssertAllSatisfy<C>(
     _ collection    : @autoclosure () throws -> C,
     _ predicate     : (C.Element) throws -> Bool,
     _ message       : @autoclosure () -> String     = "",
+    fileID          : StaticString                  = #fileID,
     file            : StaticString                  = #filePath,
     line            : UInt                          = #line,
+    column          : UInt                          = #column,
     options         : TestOptions?                  = nil
 ) = #externalMacro(
     module:     "TestKitMacros",
@@ -615,10 +747,14 @@ public macro XCTKAssertAllSatisfy<C>(
 ///   - predicate: A closure that returns `true` if the element represents a
 ///   match. Otherwise, it returns `false` or throws an error.
 ///   - message: An optional description of a failure.
+///   - fileID: The ID of the file where the failure occurs. The default value
+///   is the ID of the file of the test case in which this macro was called.
 ///   - file: The file where the failure occurs. The default value is the
 ///   filename of the test case in which this macro was called.
 ///   - line: The line where the failure occurs. The default value is the line
 ///   number where this macro was called.
+///   - column: The column where the failure occurs. The default value is the
+///   column number where this macro was called.
 ///   - options: The options for testing. The default value is `nil`, which
 ///   falls back to using global options.
 @freestanding(expression)
@@ -626,8 +762,10 @@ public macro XCTKAssertAnySatisfy<C>(
     _ collection    : @autoclosure () throws -> C,
     _ predicate     : (C.Element) throws -> Bool,
     _ message       : @autoclosure () -> String     = "",
+    fileID          : StaticString                  = #fileID,
     file            : StaticString                  = #filePath,
     line            : UInt                          = #line,
+    column          : UInt                          = #column,
     options         : TestOptions?                  = nil
 ) = #externalMacro(
     module:     "TestKitMacros",
@@ -643,10 +781,14 @@ public macro XCTKAssertAnySatisfy<C>(
 ///   - predicate: A closure that returns `true` if the element represents a
 ///   match. Otherwise, it returns `false` or throws an error.
 ///   - message: An optional description of a failure.
+///   - fileID: The ID of the file where the failure occurs. The default value
+///   is the ID of the file of the test case in which this macro was called.
 ///   - file: The file where the failure occurs. The default value is the
 ///   filename of the test case in which this macro was called.
 ///   - line: The line where the failure occurs. The default value is the line
 ///   number where this macro was called.
+///   - column: The column where the failure occurs. The default value is the
+///   column number where this macro was called.
 ///   - options: The options for testing. The default value is `nil`, which
 ///   falls back to using global options.
 @freestanding(expression)
@@ -654,8 +796,10 @@ public macro XCTKAssertNoneSatisfy<C>(
     _ collection    : @autoclosure () throws -> C,
     _ predicate     : (C.Element) throws -> Bool,
     _ message       : @autoclosure () -> String     = "",
+    fileID          : StaticString                  = #fileID,
     file            : StaticString                  = #filePath,
     line            : UInt                          = #line,
+    column          : UInt                          = #column,
     options         : TestOptions?                  = nil
 ) = #externalMacro(
     module:     "TestKitMacros",
@@ -676,10 +820,14 @@ public macro XCTKAssertNoneSatisfy<C>(
 ///   - predicate: A closure that returns `true` if the element represents a
 ///   match. Otherwise, it returns `false` or throws an error.
 ///   - message: An optional description of a failure.
+///   - fileID: The ID of the file where the failure occurs. The default value
+///   is the ID of the file of the test case in which this macro was called.
 ///   - file: The file where the failure occurs. The default value is the
 ///   filename of the test case in which this macro was called.
 ///   - line: The line where the failure occurs. The default value is the line
 ///   number where this macro was called.
+///   - column: The column where the failure occurs. The default value is the
+///   column number where this macro was called.
 ///   - options: The options for testing. The default value is `nil`, which
 ///   falls back to using global options.
 @freestanding(expression)
@@ -688,8 +836,10 @@ public macro XCTKAssertSatisfy<C>(
     atLeast         : Int,
     _ predicate     : (C.Element) throws -> Bool,
     _ message       : @autoclosure () -> String     = "",
+    fileID          : StaticString                  = #fileID,
     file            : StaticString                  = #filePath,
     line            : UInt                          = #line,
+    column          : UInt                          = #column,
     options         : TestOptions?                  = nil
 ) = #externalMacro(
     module:     "TestKitMacros",
@@ -710,10 +860,14 @@ public macro XCTKAssertSatisfy<C>(
 ///   - predicate: A closure that returns `true` if the element represents a
 ///   match. Otherwise, it returns `false` or throws an error.
 ///   - message: An optional description of a failure.
+///   - fileID: The ID of the file where the failure occurs. The default value
+///   is the ID of the file of the test case in which this macro was called.
 ///   - file: The file where the failure occurs. The default value is the
 ///   filename of the test case in which this macro was called.
 ///   - line: The line where the failure occurs. The default value is the line
 ///   number where this macro was called.
+///   - column: The column where the failure occurs. The default value is the
+///   column number where this macro was called.
 ///   - options: The options for testing. The default value is `nil`, which
 ///   falls back to using global options.
 @freestanding(expression)
@@ -722,8 +876,10 @@ public macro XCTKAssertSatisfy<C>(
     atMost          : Int,
     _ predicate     : (C.Element) throws -> Bool,
     _ message       : @autoclosure () -> String     = "",
+    fileID          : StaticString                  = #fileID,
     file            : StaticString                  = #filePath,
     line            : UInt                          = #line,
+    column          : UInt                          = #column,
     options         : TestOptions?                  = nil
 ) = #externalMacro(
     module:     "TestKitMacros",
@@ -744,10 +900,14 @@ public macro XCTKAssertSatisfy<C>(
 ///   - predicate: A closure that returns `true` if the element represents a
 ///   match. Otherwise, it returns `false` or throws an error.
 ///   - message: An optional description of a failure.
+///   - fileID: The ID of the file where the failure occurs. The default value
+///   is the ID of the file of the test case in which this macro was called.
 ///   - file: The file where the failure occurs. The default value is the
 ///   filename of the test case in which this macro was called.
 ///   - line: The line where the failure occurs. The default value is the line
 ///   number where this macro was called.
+///   - column: The column where the failure occurs. The default value is the
+///   column number where this macro was called.
 ///   - options: The options for testing. The default value is `nil`, which
 ///   falls back to using global options.
 @freestanding(expression)
@@ -756,8 +916,10 @@ public macro XCTKAssertSatisfy<C>(
     range           : ClosedRange<Int>,
     _ predicate     : (C.Element) throws -> Bool,
     _ message       : @autoclosure () -> String     = "",
+    fileID          : StaticString                  = #fileID,
     file            : StaticString                  = #filePath,
     line            : UInt                          = #line,
+    column          : UInt                          = #column,
     options         : TestOptions?                  = nil
 ) = #externalMacro(
     module:     "TestKitMacros",
@@ -778,10 +940,14 @@ public macro XCTKAssertSatisfy<C>(
 ///   - predicate: A closure that returns `true` if the element represents a
 ///   match. Otherwise, it returns `false` or throws an error.
 ///   - message: An optional description of a failure.
+///   - fileID: The ID of the file where the failure occurs. The default value
+///   is the ID of the file of the test case in which this macro was called.
 ///   - file: The file where the failure occurs. The default value is the
 ///   filename of the test case in which this macro was called.
 ///   - line: The line where the failure occurs. The default value is the line
 ///   number where this macro was called.
+///   - column: The column where the failure occurs. The default value is the
+///   column number where this macro was called.
 ///   - options: The options for testing. The default value is `nil`, which
 ///   falls back to using global options.
 @freestanding(expression)
@@ -790,8 +956,10 @@ public macro XCTKAssertExactly<C>(
     count           : Int,
     _ predicate     : (C.Element) throws -> Bool,
     _ message       : @autoclosure () -> String     = "",
+    fileID          : StaticString                  = #fileID,
     file            : StaticString                  = #filePath,
     line            : UInt                          = #line,
+    column          : UInt                          = #column,
     options         : TestOptions?                  = nil
 ) = #externalMacro(
     module:     "TestKitMacros",
@@ -807,10 +975,14 @@ public macro XCTKAssertExactly<C>(
 ///   - predicate: A closure that returns `true` if the element represents a
 ///   match. Otherwise, it returns `false` or throws an error.
 ///   - message: An optional description of a failure.
+///   - fileID: The ID of the file where the failure occurs. The default value
+///   is the ID of the file of the test case in which this macro was called.
 ///   - file: The file where the failure occurs. The default value is the
 ///   filename of the test case in which this macro was called.
 ///   - line: The line where the failure occurs. The default value is the line
 ///   number where this macro was called.
+///   - column: The column where the failure occurs. The default value is the
+///   column number where this macro was called.
 ///   - options: The options for testing. The default value is `nil`, which
 ///   falls back to using global options.
 @freestanding(expression)
@@ -818,8 +990,10 @@ public macro XCTKAssertExactlyOne<C>(
     _ collection    : @autoclosure () throws -> C,
     _ predicate     : (C.Element) throws -> Bool,
     _ message       : @autoclosure () -> String     = "",
+    fileID          : StaticString                  = #fileID,
     file            : StaticString                  = #filePath,
     line            : UInt                          = #line,
+    column          : UInt                          = #column,
     options         : TestOptions?                  = nil
 ) = #externalMacro(
     module:     "TestKitMacros",
@@ -835,10 +1009,14 @@ public macro XCTKAssertExactlyOne<C>(
 ///   be ordered before its second argument. Otherwise, it returns `false` or
 ///   throws an error.
 ///   - message: An optional description of a failure.
+///   - fileID: The ID of the file where the failure occurs. The default value
+///   is the ID of the file of the test case in which this macro was called.
 ///   - file: The file where the failure occurs. The default value is the
 ///   filename of the test case in which this macro was called.
 ///   - line: The line where the failure occurs. The default value is the line
 ///   number where this macro was called.
+///   - column: The column where the failure occurs. The default value is the
+///   column number where this macro was called.
 ///   - options: The options for testing. The default value is `nil`, which
 ///   falls back to using global options.
 @freestanding(expression)
@@ -846,8 +1024,10 @@ public macro XCTKAssertSorted<C>(
     _ collection    : @autoclosure () throws -> C,
     by predicate    : (C.Element, C.Element) throws -> Bool,
     _ message       : @autoclosure () -> String             = "",
+    fileID          : StaticString                          = #fileID,
     file            : StaticString                          = #filePath,
     line            : UInt                                  = #line,
+    column          : UInt                                  = #column,
     options         : TestOptions?                          = nil
 ) = #externalMacro(
     module:     "TestKitMacros",
@@ -860,18 +1040,24 @@ public macro XCTKAssertSorted<C>(
 /// - Parameters:
 ///   - collection: The collection to evaluate.
 ///   - message: An optional description of a failure.
+///   - fileID: The ID of the file where the failure occurs. The default value
+///   is the ID of the file of the test case in which this macro was called.
 ///   - file: The file where the failure occurs. The default value is the
 ///   filename of the test case in which this macro was called.
 ///   - line: The line where the failure occurs. The default value is the line
 ///   number where this macro was called.
+///   - column: The column where the failure occurs. The default value is the
+///   column number where this macro was called.
 ///   - options: The options for testing. The default value is `nil`, which
 ///   falls back to using global options.
 @freestanding(expression)
 public macro XCTKAssertUnique<C>(
     _ collection    : @autoclosure () throws -> C,
     _ message       : @autoclosure () -> String     = "",
+    fileID          : StaticString                  = #fileID,
     file            : StaticString                  = #filePath,
     line            : UInt                          = #line,
+    column          : UInt                          = #column,
     options         : TestOptions?                  = nil
 ) = #externalMacro(
     module:     "TestKitMacros",
@@ -887,10 +1073,14 @@ public macro XCTKAssertUnique<C>(
 ///   - predicate: A closure that extracts a key from an element of the
 ///   collection. Elements are duplicates if they produce equal keys.
 ///   - message: An optional description of a failure.
+///   - fileID: The ID of the file where the failure occurs. The default value
+///   is the ID of the file of the test case in which this macro was called.
 ///   - file: The file where the failure occurs. The default value is the
 ///   filename of the test case in which this macro was called.
 ///   - line: The line where the failure occurs. The default value is the line
 ///   number where this macro was called.
+///   - column: The column where the failure occurs. The default value is the
+///   column number where this macro was called.
 ///   - options: The options for testing. The default value is `nil`, which
 ///   falls back to using global options.
 @freestanding(expression)
@@ -898,8 +1088,10 @@ public macro XCTKAssertUnique<C, K>(
     _ collection    : @autoclosure () throws -> C,
     by predicate    : (C.Element) throws -> K,
     _ message       : @autoclosure () -> String     = "",
+    fileID          : StaticString                  = #fileID,
     file            : StaticString                  = #filePath,
     line            : UInt                          = #line,
+    column          : UInt                          = #column,
     options         : TestOptions?                  = nil
 ) = #externalMacro(
     module:     "TestKitMacros",

@@ -17,25 +17,33 @@ import TestKitCore
 /// - Parameters:
 ///   - expression: The expression to evaluate.
 ///   - message: An optional description of a failure.
+///   - fileID: The ID of the file where the failure occurs. The default value
+///   is the ID of the file of the test case in which this function was called.
 ///   - file: The file where the failure occurs. The default value is the
 ///   filename of the test case in which this function was called.
 ///   - line: The line where the failure occurs. The default value is the line
 ///   number where this function was called.
+///   - column: The column where the failure occurs. The default value is the
+///   column number where this function was called.
 ///   - options: The options for testing. The default value is `nil`, which
 ///   falls back to using global options.
 public func XCTKAssert(
     _ expression    : @autoclosure () throws -> Bool,
     _ message       : @autoclosure () -> String         = "",
+    fileID          : StaticString                      = #fileID,
     file            : StaticString                      = #filePath,
     line            : UInt                              = #line,
+    column          : UInt                              = #column,
     options         : TestOptions?                      = nil
 )
 {
     TKAssert(
         expression,
         message,
+        fileID:     fileID,
         file:       file,
         line:       line,
+        column:     column,
         options:    options ?? XCTKConfig.global,
         context:    failureContext
     )
@@ -47,25 +55,33 @@ public func XCTKAssert(
 /// - Parameters:
 ///   - expression: The expression to evaluate.
 ///   - message: An optional description of a failure.
+///   - fileID: The ID of the file where the failure occurs. The default value
+///   is the ID of the file of the test case in which this function was called.
 ///   - file: The file where the failure occurs. The default value is the
 ///   filename of the test case in which this function was called.
 ///   - line: The line where the failure occurs. The default value is the line
 ///   number where this function was called.
+///   - column: The column where the failure occurs. The default value is the
+///   column number where this function was called.
 ///   - options: The options for testing. The default value is `nil`, which
 ///   falls back to using global options.
 public func XCTKAssertTrue(
     _ expression    : @autoclosure () throws -> Bool,
     _ message       : @autoclosure () -> String         = "",
+    fileID          : StaticString                      = #fileID,
     file            : StaticString                      = #filePath,
     line            : UInt                              = #line,
+    column          : UInt                              = #column,
     options         : TestOptions?                      = nil
 )
 {
     TKAssertTrue(
         expression,
         message,
+        fileID:     fileID,
         file:       file,
         line:       line,
+        column:     column,
         options:    options ?? XCTKConfig.global,
         context:    failureContext
     )
@@ -77,25 +93,33 @@ public func XCTKAssertTrue(
 /// - Parameters:
 ///   - expression: The expression to evaluate.
 ///   - message: An optional description of a failure.
+///   - fileID: The ID of the file where the failure occurs. The default value
+///   is the ID of the file of the test case in which this function was called.
 ///   - file: The file where the failure occurs. The default value is the
 ///   filename of the test case in which this function was called.
 ///   - line: The line where the failure occurs. The default value is the line
 ///   number where this function was called.
+///   - column: The column where the failure occurs. The default value is the
+///   column number where this function was called.
 ///   - options: The options for testing. The default value is `nil`, which
 ///   falls back to using global options.
 public func XCTKAssertFalse(
     _ expression    : @autoclosure () throws -> Bool,
     _ message       : @autoclosure () -> String         = "",
+    fileID          : StaticString                      = #fileID,
     file            : StaticString                      = #filePath,
     line            : UInt                              = #line,
+    column          : UInt                              = #column,
     options         : TestOptions?                      = nil
 )
 {
     TKAssertFalse(
         expression,
         message,
+        fileID:     fileID,
         file:       file,
         line:       line,
+        column:     column,
         options:    options ?? XCTKConfig.global,
         context:    failureContext
     )
@@ -109,25 +133,33 @@ public func XCTKAssertFalse(
 /// - Parameters:
 ///   - expression: The expression to evaluate.
 ///   - message: An optional description of a failure.
+///   - fileID: The ID of the file where the failure occurs. The default value
+///   is the ID of the file of the test case in which this function was called.
 ///   - file: The file where the failure occurs. The default value is the
 ///   filename of the test case in which this function was called.
 ///   - line: The line where the failure occurs. The default value is the line
 ///   number where this function was called.
+///   - column: The column where the failure occurs. The default value is the
+///   column number where this function was called.
 ///   - options: The options for testing. The default value is `nil`, which
 ///   falls back to using global options.
 public func XCTKAssertNil(
     _ expression    : @autoclosure () throws -> Any?,
     _ message       : @autoclosure () -> String         = "",
+    fileID          : StaticString                      = #fileID,
     file            : StaticString                      = #filePath,
     line            : UInt                              = #line,
+    column          : UInt                              = #column,
     options         : TestOptions?                      = nil
 )
 {
     TKAssertNil(
         expression,
         message,
+        fileID:     fileID,
         file:       file,
         line:       line,
+        column:     column,
         options:    options ?? XCTKConfig.global,
         context:    failureContext
     )
@@ -139,25 +171,33 @@ public func XCTKAssertNil(
 /// - Parameters:
 ///   - expression: The expression to evaluate.
 ///   - message: An optional description of a failure.
+///   - fileID: The ID of the file where the failure occurs. The default value
+///   is the ID of the file of the test case in which this function was called.
 ///   - file: The file where the failure occurs. The default value is the
 ///   filename of the test case in which this function was called.
 ///   - line: The line where the failure occurs. The default value is the line
 ///   number where this function was called.
+///   - column: The column where the failure occurs. The default value is the
+///   column number where this function was called.
 ///   - options: The options for testing. The default value is `nil`, which
 ///   falls back to using global options.
 public func XCTKAssertNotNil(
     _ expression    : @autoclosure () throws -> Any?,
     _ message       : @autoclosure () -> String         = "",
+    fileID          : StaticString                      = #fileID,
     file            : StaticString                      = #filePath,
     line            : UInt                              = #line,
+    column          : UInt                              = #column,
     options         : TestOptions?                      = nil
 )
 {
     TKAssertNotNil(
         expression,
         message,
+        fileID:     fileID,
         file:       file,
         line:       line,
+        column:     column,
         options:    options ?? XCTKConfig.global,
         context:    failureContext
     )
@@ -170,10 +210,14 @@ public func XCTKAssertNotNil(
 /// - Parameters:
 ///   - expression: The expression to evaluate.
 ///   - message: An optional description of a failure.
+///   - fileID: The ID of the file where the failure occurs. The default value
+///   is the ID of the file of the test case in which this function was called.
 ///   - file: The file where the failure occurs. The default value is the
 ///   filename of the test case in which this function was called.
 ///   - line: The line where the failure occurs. The default value is the line
 ///   number where this function was called.
+///   - column: The column where the failure occurs. The default value is the
+///   column number where this function was called.
 ///   - options: The options for testing. The default value is `nil`, which
 ///   falls back to using global options.
 /// - Returns: The result of evaluating and unwrapped the given expression.
@@ -183,16 +227,20 @@ public func XCTKAssertNotNil(
 public func XCTKUnwrap<T>(
     _ expression    : @autoclosure () throws -> T?,
     _ message       : @autoclosure () -> String     = "",
-    file            : StaticString                  = #filePath,
-    line            : UInt                          = #line,
+    fileID          : StaticString                      = #fileID,
+    file            : StaticString                      = #filePath,
+    line            : UInt                              = #line,
+    column          : UInt                              = #column,
     options         : TestOptions?                  = nil
 ) throws -> T
 {
     return try TKUnwrap(
         expression,
         message,
+        fileID:     fileID,
         file:       file,
         line:       line,
+        column:     column,
         options:    options ?? XCTKConfig.global,
         context:    failureContext
     )
@@ -207,18 +255,24 @@ public func XCTKUnwrap<T>(
 ///   - expected: The expected value.
 ///   - actual: The actual value.
 ///   - message: An optional description of a failure.
+///   - fileID: The ID of the file where the failure occurs. The default value
+///   is the ID of the file of the test case in which this function was called.
 ///   - file: The file where the failure occurs. The default value is the
 ///   filename of the test case in which this function was called.
 ///   - line: The line where the failure occurs. The default value is the line
 ///   number where this function was called.
+///   - column: The column where the failure occurs. The default value is the
+///   column number where this function was called.
 ///   - options: The options for testing. The default value is `nil`, which
 ///   falls back to using global options.
 public func XCTKAssertEqual<T>(
     _ expected  : @autoclosure () throws -> T,
     _ actual    : @autoclosure () throws -> T,
     _ message   : @autoclosure () -> String     = "",
+    fileID      : StaticString                  = #fileID,
     file        : StaticString                  = #filePath,
     line        : UInt                          = #line,
+    column      : UInt                          = #column,
     options     : TestOptions?                  = nil
 ) where T : Equatable
 {
@@ -226,8 +280,10 @@ public func XCTKAssertEqual<T>(
         expected,
         actual,
         message,
+        fileID:     fileID,
         file:       file,
         line:       line,
+        column:     column,
         options:    options ?? XCTKConfig.global,
         context:    failureContext
     )
@@ -240,18 +296,24 @@ public func XCTKAssertEqual<T>(
 ///   - expression1: The first expression to evaluate.
 ///   - expression2: The second expression to evaluate.
 ///   - message: An optional description of a failure.
+///   - fileID: The ID of the file where the failure occurs. The default value
+///   is the ID of the file of the test case in which this function was called.
 ///   - file: The file where the failure occurs. The default value is the
 ///   filename of the test case in which this function was called.
 ///   - line: The line where the failure occurs. The default value is the line
 ///   number where this function was called.
+///   - column: The column where the failure occurs. The default value is the
+///   column number where this function was called.
 ///   - options: The options for testing. The default value is `nil`, which
 ///   falls back to using global options.
 public func XCTKAssertNotEqual<T>(
     _ expression1   : @autoclosure () throws -> T,
     _ expression2   : @autoclosure () throws -> T,
     _ message       : @autoclosure () -> String     = "",
+    fileID          : StaticString                  = #fileID,
     file            : StaticString                  = #filePath,
     line            : UInt                          = #line,
+    column          : UInt                          = #column,
     options         : TestOptions?                  = nil
 ) where T : Equatable
 {
@@ -259,8 +321,10 @@ public func XCTKAssertNotEqual<T>(
         expression1,
         expression2,
         message,
+        fileID:     fileID,
         file:       file,
         line:       line,
+        column:     column,
         options:    options ?? XCTKConfig.global,
         context:    failureContext
     )
@@ -276,27 +340,35 @@ public func XCTKAssertNotEqual<T>(
 ///   - expression1: The first expression to evaluate.
 ///   - expression2: The second expression to evaluate.
 ///   - message: An optional description of a failure.
+///   - fileID: The ID of the file where the failure occurs. The default value
+///   is the ID of the file of the test case in which this function was called.
 ///   - file: The file where the failure occurs. The default value is the
 ///   filename of the test case in which this function was called.
 ///   - line: The line where the failure occurs. The default value is the line
 ///   number where this function was called.
+///   - column: The column where the failure occurs. The default value is the
+///   column number where this function was called.
 ///   - options: The options for testing. The default value is `nil`, which
 ///   falls back to using global options.
 public func XCTKAssertIdentical(
     _ expression1   : @autoclosure () throws -> AnyObject?,
     _ expression2   : @autoclosure () throws -> AnyObject?,
     _ message       : @autoclosure () -> String             = "",
+    fileID          : StaticString                          = #fileID,
     file            : StaticString                          = #filePath,
     line            : UInt                                  = #line,
-    options         : TestOptions?                  = nil
+    column          : UInt                                  = #column,
+    options         : TestOptions?                          = nil
 )
 {
     TKAssertIdentical(
         expression1,
         expression2,
         message,
+        fileID:     fileID,
         file:       file,
         line:       line,
+        column:     column,
         options:    options ?? XCTKConfig.global,
         context:    failureContext
     )
@@ -312,27 +384,35 @@ public func XCTKAssertIdentical(
 ///   - expression1: The first expression to evaluate.
 ///   - expression2: The second expression to evaluate.
 ///   - message: An optional description of a failure.
+///   - fileID: The ID of the file where the failure occurs. The default value
+///   is the ID of the file of the test case in which this function was called.
 ///   - file: The file where the failure occurs. The default value is the
 ///   filename of the test case in which this function was called.
 ///   - line: The line where the failure occurs. The default value is the line
 ///   number where this function was called.
+///   - column: The column where the failure occurs. The default value is the
+///   column number where this function was called.
 ///   - options: The options for testing. The default value is `nil`, which
 ///   falls back to using global options.
 public func XCTKAssertNotIdentical(
     _ expression1   : @autoclosure () throws -> AnyObject?,
     _ expression2   : @autoclosure () throws -> AnyObject?,
     _ message       : @autoclosure () -> String             = "",
+    fileID          : StaticString                          = #fileID,
     file            : StaticString                          = #filePath,
     line            : UInt                                  = #line,
-    options         : TestOptions?                  = nil
+    column          : UInt                                  = #column,
+    options         : TestOptions?                          = nil
 )
 {
     TKAssertNotIdentical(
         expression1,
         expression2,
         message,
+        fileID:     fileID,
         file:       file,
         line:       line,
+        column:     column,
         options:    options ?? XCTKConfig.global,
         context:    failureContext
     )
@@ -348,10 +428,14 @@ public func XCTKAssertNotIdentical(
 ///   - accuracy: The maximum difference between the given expressions for
 ///   them to be considered equal.
 ///   - message: An optional description of a failure.
+///   - fileID: The ID of the file where the failure occurs. The default value
+///   is the ID of the file of the test case in which this function was called.
 ///   - file: The file where the failure occurs. The default value is the
 ///   filename of the test case in which this function was called.
 ///   - line: The line where the failure occurs. The default value is the line
 ///   number where this function was called.
+///   - column: The column where the failure occurs. The default value is the
+///   column number where this function was called.
 ///   - options: The options for testing. The default value is `nil`, which
 ///   falls back to using global options.
 public func XCTKAssertEqual<T>(
@@ -359,8 +443,10 @@ public func XCTKAssertEqual<T>(
     _ expression2   : @autoclosure () throws -> T,
     accuracy        : T,
     _ message       : @autoclosure () -> String     = "",
+    fileID          : StaticString                  = #fileID,
     file            : StaticString                  = #filePath,
     line            : UInt                          = #line,
+    column          : UInt                          = #column,
     options         : TestOptions?                  = nil
 ) where T : FloatingPoint
 {
@@ -369,8 +455,10 @@ public func XCTKAssertEqual<T>(
         expression2,
         accuracy:   accuracy,
         message,
+        fileID:     fileID,
         file:       file,
         line:       line,
+        column:     column,
         options:    options ?? XCTKConfig.global,
         context:    failureContext
     )
@@ -385,10 +473,14 @@ public func XCTKAssertEqual<T>(
 ///   - accuracy: The maximum difference between the given expressions for
 ///   them to be considered equal.
 ///   - message: An optional description of a failure.
+///   - fileID: The ID of the file where the failure occurs. The default value
+///   is the ID of the file of the test case in which this function was called.
 ///   - file: The file where the failure occurs. The default value is the
 ///   filename of the test case in which this function was called.
 ///   - line: The line where the failure occurs. The default value is the line
 ///   number where this function was called.
+///   - column: The column where the failure occurs. The default value is the
+///   column number where this function was called.
 ///   - options: The options for testing. The default value is `nil`, which
 ///   falls back to using global options.
 public func XCTKAssertEqual<T>(
@@ -396,8 +488,10 @@ public func XCTKAssertEqual<T>(
     _ expression2   : @autoclosure () throws -> T,
     accuracy        : T,
     _ message       : @autoclosure () -> String     = "",
+    fileID          : StaticString                  = #fileID,
     file            : StaticString                  = #filePath,
     line            : UInt                          = #line,
+    column          : UInt                          = #column,
     options         : TestOptions?                  = nil
 ) where T : Numeric
 {
@@ -406,8 +500,10 @@ public func XCTKAssertEqual<T>(
         expression2,
         accuracy:   accuracy,
         message,
+        fileID:     fileID,
         file:       file,
         line:       line,
+        column:     column,
         options:    options ?? XCTKConfig.global,
         context:    failureContext
     )
@@ -423,10 +519,14 @@ public func XCTKAssertEqual<T>(
 ///   - accuracy: The maximum difference between the given expressions for
 ///   them to be considered not equal.
 ///   - message: An optional description of a failure.
+///   - fileID: The ID of the file where the failure occurs. The default value
+///   is the ID of the file of the test case in which this function was called.
 ///   - file: The file where the failure occurs. The default value is the
 ///   filename of the test case in which this function was called.
 ///   - line: The line where the failure occurs. The default value is the line
 ///   number where this function was called.
+///   - column: The column where the failure occurs. The default value is the
+///   column number where this function was called.
 ///   - options: The options for testing. The default value is `nil`, which
 ///   falls back to using global options.
 public func XCTKAssertNotEqual<T>(
@@ -434,8 +534,10 @@ public func XCTKAssertNotEqual<T>(
     _ expression2   : @autoclosure () throws -> T,
     accuracy        : T,
     _ message       : @autoclosure () -> String     = "",
+    fileID          : StaticString                  = #fileID,
     file            : StaticString                  = #filePath,
     line            : UInt                          = #line,
+    column          : UInt                          = #column,
     options         : TestOptions?                  = nil
 ) where T : FloatingPoint
 {
@@ -444,8 +546,10 @@ public func XCTKAssertNotEqual<T>(
         expression2,
         accuracy:   accuracy,
         message,
+        fileID:     fileID,
         file:       file,
         line:       line,
+        column:     column,
         options:    options ?? XCTKConfig.global,
         context:    failureContext
     )
@@ -461,10 +565,14 @@ public func XCTKAssertNotEqual<T>(
 ///   - accuracy: The maximum difference between the given expressions for
 ///   them to be considered not equal.
 ///   - message: An optional description of a failure.
+///   - fileID: The ID of the file where the failure occurs. The default value
+///   is the ID of the file of the test case in which this function was called.
 ///   - file: The file where the failure occurs. The default value is the
 ///   filename of the test case in which this function was called.
 ///   - line: The line where the failure occurs. The default value is the line
 ///   number where this function was called.
+///   - column: The column where the failure occurs. The default value is the
+///   column number where this function was called.
 ///   - options: The options for testing. The default value is `nil`, which
 ///   falls back to using global options.
 public func XCTKAssertNotEqual<T>(
@@ -472,8 +580,10 @@ public func XCTKAssertNotEqual<T>(
     _ expression2   : @autoclosure () throws -> T,
     accuracy        : T,
     _ message       : @autoclosure () -> String     = "",
+    fileID          : StaticString                  = #fileID,
     file            : StaticString                  = #filePath,
     line            : UInt                          = #line,
+    column          : UInt                          = #column,
     options         : TestOptions?                  = nil
 ) where T : Numeric
 {
@@ -482,8 +592,10 @@ public func XCTKAssertNotEqual<T>(
         expression2,
         accuracy:   accuracy,
         message,
+        fileID:     fileID,
         file:       file,
         line:       line,
+        column:     column,
         options:    options ?? XCTKConfig.global,
         context:    failureContext
     )
@@ -499,18 +611,24 @@ public func XCTKAssertNotEqual<T>(
 ///   - expression1: The first expression to evaluate.
 ///   - expression2: The second expression to evaluate.
 ///   - message: An optional description of a failure.
+///   - fileID: The ID of the file where the failure occurs. The default value
+///   is the ID of the file of the test case in which this function was called.
 ///   - file: The file where the failure occurs. The default value is the
 ///   filename of the test case in which this function was called.
 ///   - line: The line where the failure occurs. The default value is the line
 ///   number where this function was called.
+///   - column: The column where the failure occurs. The default value is the
+///   column number where this function was called.
 ///   - options: The options for testing. The default value is `nil`, which
 ///   falls back to using global options.
 public func XCTKAssertGreaterThan<T>(
     _ expression1   : @autoclosure () throws -> T,
     _ expression2   : @autoclosure () throws -> T,
     _ message       : @autoclosure () -> String     = "",
+    fileID          : StaticString                  = #fileID,
     file            : StaticString                  = #filePath,
     line            : UInt                          = #line,
+    column          : UInt                          = #column,
     options         : TestOptions?                  = nil
 ) where T : Comparable
 {
@@ -518,8 +636,10 @@ public func XCTKAssertGreaterThan<T>(
         expression1,
         expression2,
         message,
+        fileID:     fileID,
         file:       file,
         line:       line,
+        column:     column,
         options:    options ?? XCTKConfig.global,
         context:    failureContext
     )
@@ -533,18 +653,24 @@ public func XCTKAssertGreaterThan<T>(
 ///   - expression1: The first expression to evaluate.
 ///   - expression2: The second expression to evaluate.
 ///   - message: An optional description of a failure.
+///   - fileID: The ID of the file where the failure occurs. The default value
+///   is the ID of the file of the test case in which this function was called.
 ///   - file: The file where the failure occurs. The default value is the
 ///   filename of the test case in which this function was called.
 ///   - line: The line where the failure occurs. The default value is the line
 ///   number where this function was called.
+///   - column: The column where the failure occurs. The default value is the
+///   column number where this function was called.
 ///   - options: The options for testing. The default value is `nil`, which
 ///   falls back to using global options.
 public func XCTKAssertGreaterThanOrEqual<T>(
     _ expression1   : @autoclosure () throws -> T,
     _ expression2   : @autoclosure () throws -> T,
     _ message       : @autoclosure () -> String     = "",
+    fileID          : StaticString                  = #fileID,
     file            : StaticString                  = #filePath,
     line            : UInt                          = #line,
+    column          : UInt                          = #column,
     options         : TestOptions?                  = nil
 ) where T : Comparable
 {
@@ -552,8 +678,10 @@ public func XCTKAssertGreaterThanOrEqual<T>(
         expression1,
         expression2,
         message,
+        fileID:     fileID,
         file:       file,
         line:       line,
+        column:     column,
         options:    options ?? XCTKConfig.global,
         context:    failureContext
     )
@@ -567,18 +695,24 @@ public func XCTKAssertGreaterThanOrEqual<T>(
 ///   - expression1: The first expression to evaluate.
 ///   - expression2: The second expression to evaluate.
 ///   - message: An optional description of a failure.
+///   - fileID: The ID of the file where the failure occurs. The default value
+///   is the ID of the file of the test case in which this function was called.
 ///   - file: The file where the failure occurs. The default value is the
 ///   filename of the test case in which this function was called.
 ///   - line: The line where the failure occurs. The default value is the line
 ///   number where this function was called.
+///   - column: The column where the failure occurs. The default value is the
+///   column number where this function was called.
 ///   - options: The options for testing. The default value is `nil`, which
 ///   falls back to using global options.
 public func XCTKAssertLessThanOrEqual<T>(
     _ expression1   : @autoclosure () throws -> T,
     _ expression2   : @autoclosure () throws -> T,
     _ message       : @autoclosure () -> String     = "",
+    fileID          : StaticString                  = #fileID,
     file            : StaticString                  = #filePath,
     line            : UInt                          = #line,
+    column          : UInt                          = #column,
     options         : TestOptions?                  = nil
 ) where T : Comparable
 {
@@ -586,8 +720,10 @@ public func XCTKAssertLessThanOrEqual<T>(
         expression1,
         expression2,
         message,
+        fileID:     fileID,
         file:       file,
         line:       line,
+        column:     column,
         options:    options ?? XCTKConfig.global,
         context:    failureContext
     )
@@ -601,18 +737,24 @@ public func XCTKAssertLessThanOrEqual<T>(
 ///   - expression1: The first expression to evaluate.
 ///   - expression2: The second expression to evaluate.
 ///   - message: An optional description of a failure.
+///   - fileID: The ID of the file where the failure occurs. The default value
+///   is the ID of the file of the test case in which this function was called.
 ///   - file: The file where the failure occurs. The default value is the
 ///   filename of the test case in which this function was called.
 ///   - line: The line where the failure occurs. The default value is the line
 ///   number where this function was called.
+///   - column: The column where the failure occurs. The default value is the
+///   column number where this function was called.
 ///   - options: The options for testing. The default value is `nil`, which
 ///   falls back to using global options.
 public func XCTKAssertLessThan<T>(
     _ expression1   : @autoclosure () throws -> T,
     _ expression2   : @autoclosure () throws -> T,
     _ message       : @autoclosure () -> String     = "",
+    fileID          : StaticString                  = #fileID,
     file            : StaticString                  = #filePath,
     line            : UInt                          = #line,
+    column          : UInt                          = #column,
     options         : TestOptions?                  = nil
 ) where T : Comparable
 {
@@ -620,8 +762,10 @@ public func XCTKAssertLessThan<T>(
         expression1,
         expression2,
         message,
+        fileID:     fileID,
         file:       file,
         line:       line,
+        column:     column,
         options:    options ?? XCTKConfig.global,
         context:    failureContext
     )
@@ -635,18 +779,24 @@ public func XCTKAssertLessThan<T>(
 /// - Parameters:
 ///   - expression: The expression to evaluate.
 ///   - message: An optional description of a failure.
+///   - fileID: The ID of the file where the failure occurs. The default value
+///   is the ID of the file of the test case in which this function was called.
 ///   - file: The file where the failure occurs. The default value is the
 ///   filename of the test case in which this function was called.
 ///   - line: The line where the failure occurs. The default value is the line
 ///   number where this function was called.
+///   - column: The column where the failure occurs. The default value is the
+///   column number where this function was called.
 ///   - options: The options for testing. The default value is `nil`, which
 ///   falls back to using global options.
 ///   - errorHandler: An optional handler for errors thrown by `expression`.
 public func XCTKAssertThrowsError<T>(
     _ expression    : @autoclosure () throws -> T,
     _ message       : @autoclosure () -> String     = "",
+    fileID          : StaticString                  = #fileID,
     file            : StaticString                  = #filePath,
     line            : UInt                          = #line,
+    column          : UInt                          = #column,
     options         : TestOptions?                  = nil,
     _ errorHandler  : (any Error) -> Void           = { _ in }
 )
@@ -654,8 +804,10 @@ public func XCTKAssertThrowsError<T>(
     TKAssertThrowsError(
         expression,
         message,
+        fileID:     fileID,
         file:       file,
         line:       line,
+        column:     column,
         options:    options ?? XCTKConfig.global,
         errorHandler,
         context:    failureContext
@@ -668,25 +820,33 @@ public func XCTKAssertThrowsError<T>(
 /// - Parameters:
 ///   - expression: The expression to evaluate.
 ///   - message: An optional description of a failure.
+///   - fileID: The ID of the file where the failure occurs. The default value
+///   is the ID of the file of the test case in which this function was called.
 ///   - file: The file where the failure occurs. The default value is the
 ///   filename of the test case in which this function was called.
 ///   - line: The line where the failure occurs. The default value is the line
 ///   number where this function was called.
+///   - column: The column where the failure occurs. The default value is the
+///   column number where this function was called.
 ///   - options: The options for testing. The default value is `nil`, which
 ///   falls back to using global options.
 public func XCTKAssertNoThrow<T>(
     _ expression    : @autoclosure () throws -> T,
     _ message       : @autoclosure () -> String     = "",
+    fileID          : StaticString                  = #fileID,
     file            : StaticString                  = #filePath,
     line            : UInt                          = #line,
+    column          : UInt                          = #column,
     options         : TestOptions?                  = nil
 )
 {
     TKAssertNoThrow(
         expression,
         message,
+        fileID:     fileID,
         file:       file,
         line:       line,
+        column:     column,
         options:    options ?? XCTKConfig.global,
         context:    failureContext
     )
@@ -699,20 +859,28 @@ public func XCTKAssertNoThrow<T>(
 /// Immediately generates an unconditional failure.
 /// - Parameters:
 ///   - message: An optional description of a failure.
+///   - fileID: The ID of the file where the failure occurs. The default value
+///   is the ID of the file of the test case in which this function was called.
 ///   - file: The file where the failure occurs. The default value is the
 ///   filename of the test case in which this function was called.
 ///   - line: The line where the failure occurs. The default value is the line
 ///   number where this function was called.
+///   - column: The column where the failure occurs. The default value is the
+///   column number where this function was called.
 public func XCTKFail(
     _ message   : String        = "",
+    fileID      : StaticString  = #fileID,
     file        : StaticString  = #filePath,
-    line        : UInt          = #line
+    line        : UInt          = #line,
+    column      : UInt          = #column
 )
 {
     TKFail(
         message,
+        fileID:     fileID,
         file:       file,
         line:       line,
+        column:     column,
         context:    failureContext
     )
 }
@@ -728,18 +896,24 @@ public func XCTKFail(
 ///   - predicate: A closure that returns `true` if the element represents a
 ///   match. Otherwise, it returns `false` or throws an error.
 ///   - message: An optional description of a failure.
+///   - fileID: The ID of the file where the failure occurs. The default value
+///   is the ID of the file of the test case in which this function was called.
 ///   - file: The file where the failure occurs. The default value is the
 ///   filename of the test case in which this function was called.
 ///   - line: The line where the failure occurs. The default value is the line
 ///   number where this function was called.
+///   - column: The column where the failure occurs. The default value is the
+///   column number where this function was called.
 ///   - options: The options for testing. The default value is `nil`, which
 ///   falls back to using global options.
 public func XCTKAssertAllSatisfy<C>(
     _ collection    : @autoclosure () throws -> C,
     _ predicate     : (C.Element) throws -> Bool,
     _ message       : @autoclosure () -> String     = "",
+    fileID          : StaticString                  = #fileID,
     file            : StaticString                  = #filePath,
     line            : UInt                          = #line,
+    column          : UInt                          = #column,
     options         : TestOptions?                  = nil
 ) where C : Collection
 {
@@ -747,8 +921,10 @@ public func XCTKAssertAllSatisfy<C>(
         collection,
         predicate,
         message,
+        fileID:     fileID,
         file:       file,
         line:       line,
+        column:     column,
         options:    options ?? XCTKConfig.global,
         context:    failureContext
     )
@@ -763,18 +939,24 @@ public func XCTKAssertAllSatisfy<C>(
 ///   - predicate: A closure that returns `true` if the element represents a
 ///   match. Otherwise, it returns `false` or throws an error.
 ///   - message: An optional description of a failure.
+///   - fileID: The ID of the file where the failure occurs. The default value
+///   is the ID of the file of the test case in which this function was called.
 ///   - file: The file where the failure occurs. The default value is the
 ///   filename of the test case in which this function was called.
 ///   - line: The line where the failure occurs. The default value is the line
 ///   number where this function was called.
+///   - column: The column where the failure occurs. The default value is the
+///   column number where this function was called.
 ///   - options: The options for testing. The default value is `nil`, which
 ///   falls back to using global options.
 public func XCTKAssertAnySatisfy<C>(
     _ collection    : @autoclosure () throws -> C,
     _ predicate     : (C.Element) throws -> Bool,
     _ message       : @autoclosure () -> String     = "",
+    fileID          : StaticString                  = #fileID,
     file            : StaticString                  = #filePath,
     line            : UInt                          = #line,
+    column          : UInt                          = #column,
     options         : TestOptions?                  = nil
 ) where C : Collection
 {
@@ -782,8 +964,10 @@ public func XCTKAssertAnySatisfy<C>(
         collection,
         predicate,
         message,
+        fileID:     fileID,
         file:       file,
         line:       line,
+        column:     column,
         options:    options ?? XCTKConfig.global,
         context:    failureContext
     )
@@ -798,18 +982,24 @@ public func XCTKAssertAnySatisfy<C>(
 ///   - predicate: A closure that returns `true` if the element represents a
 ///   match. Otherwise, it returns `false` or throws an error.
 ///   - message: An optional description of a failure.
+///   - fileID: The ID of the file where the failure occurs. The default value
+///   is the ID of the file of the test case in which this function was called.
 ///   - file: The file where the failure occurs. The default value is the
 ///   filename of the test case in which this function was called.
 ///   - line: The line where the failure occurs. The default value is the line
 ///   number where this function was called.
+///   - column: The column where the failure occurs. The default value is the
+///   column number where this function was called.
 ///   - options: The options for testing. The default value is `nil`, which
 ///   falls back to using global options.
 public func XCTKAssertNoneSatisfy<C>(
     _ collection    : @autoclosure () throws -> C,
     _ predicate     : (C.Element) throws -> Bool,
     _ message       : @autoclosure () -> String     = "",
+    fileID          : StaticString                  = #fileID,
     file            : StaticString                  = #filePath,
     line            : UInt                          = #line,
+    column          : UInt                          = #column,
     options         : TestOptions?                  = nil
 ) where C : Collection
 {
@@ -817,8 +1007,10 @@ public func XCTKAssertNoneSatisfy<C>(
         collection,
         predicate,
         message,
+        fileID:     fileID,
         file:       file,
         line:       line,
+        column:     column,
         options:    options ?? XCTKConfig.global,
         context:    failureContext
     )
@@ -838,10 +1030,14 @@ public func XCTKAssertNoneSatisfy<C>(
 ///   - predicate: A closure that returns `true` if the element represents a
 ///   match. Otherwise, it returns `false` or throws an error.
 ///   - message: An optional description of a failure.
+///   - fileID: The ID of the file where the failure occurs. The default value
+///   is the ID of the file of the test case in which this function was called.
 ///   - file: The file where the failure occurs. The default value is the
 ///   filename of the test case in which this function was called.
 ///   - line: The line where the failure occurs. The default value is the line
 ///   number where this function was called.
+///   - column: The column where the failure occurs. The default value is the
+///   column number where this function was called.
 ///   - options: The options for testing. The default value is `nil`, which
 ///   falls back to using global options.
 public func XCTKAssertSatisfy<C>(
@@ -849,8 +1045,10 @@ public func XCTKAssertSatisfy<C>(
     atLeast         : Int,
     _ predicate     : (C.Element) throws -> Bool,
     _ message       : @autoclosure () -> String     = "",
+    fileID          : StaticString                  = #fileID,
     file            : StaticString                  = #filePath,
     line            : UInt                          = #line,
+    column          : UInt                          = #column,
     options         : TestOptions?                  = nil
 ) where C : Collection
 {
@@ -859,8 +1057,10 @@ public func XCTKAssertSatisfy<C>(
         atLeast:    atLeast,
         predicate,
         message,
+        fileID:     fileID,
         file:       file,
         line:       line,
+        column:     column,
         options:    options ?? XCTKConfig.global,
         context:    failureContext
     )
@@ -880,10 +1080,14 @@ public func XCTKAssertSatisfy<C>(
 ///   - predicate: A closure that returns `true` if the element represents a
 ///   match. Otherwise, it returns `false` or throws an error.
 ///   - message: An optional description of a failure.
+///   - fileID: The ID of the file where the failure occurs. The default value
+///   is the ID of the file of the test case in which this function was called.
 ///   - file: The file where the failure occurs. The default value is the
 ///   filename of the test case in which this function was called.
 ///   - line: The line where the failure occurs. The default value is the line
 ///   number where this function was called.
+///   - column: The column where the failure occurs. The default value is the
+///   column number where this function was called.
 ///   - options: The options for testing. The default value is `nil`, which
 ///   falls back to using global options.
 public func XCTKAssertSatisfy<C>(
@@ -891,8 +1095,10 @@ public func XCTKAssertSatisfy<C>(
     atMost          : Int,
     _ predicate     : (C.Element) throws -> Bool,
     _ message       : @autoclosure () -> String     = "",
+    fileID          : StaticString                  = #fileID,
     file            : StaticString                  = #filePath,
     line            : UInt                          = #line,
+    column          : UInt                          = #column,
     options         : TestOptions?                  = nil
 ) where C : Collection
 {    
@@ -901,8 +1107,10 @@ public func XCTKAssertSatisfy<C>(
         atMost:     atMost,
         predicate,
         message,
+        fileID:     fileID,
         file:       file,
         line:       line,
+        column:     column,
         options:    options ?? XCTKConfig.global,
         context:    failureContext
     )
@@ -922,10 +1130,14 @@ public func XCTKAssertSatisfy<C>(
 ///   - predicate: A closure that returns `true` if the element represents a
 ///   match. Otherwise, it returns `false` or throws an error.
 ///   - message: An optional description of a failure.
+///   - fileID: The ID of the file where the failure occurs. The default value
+///   is the ID of the file of the test case in which this function was called.
 ///   - file: The file where the failure occurs. The default value is the
 ///   filename of the test case in which this function was called.
 ///   - line: The line where the failure occurs. The default value is the line
 ///   number where this function was called.
+///   - column: The column where the failure occurs. The default value is the
+///   column number where this function was called.
 ///   - options: The options for testing. The default value is `nil`, which
 ///   falls back to using global options.
 public func XCTKAssertSatisfy<C>(
@@ -933,8 +1145,10 @@ public func XCTKAssertSatisfy<C>(
     range           : ClosedRange<Int>,
     _ predicate     : (C.Element) throws -> Bool,
     _ message       : @autoclosure () -> String     = "",
+    fileID          : StaticString                  = #fileID,
     file            : StaticString                  = #filePath,
     line            : UInt                          = #line,
+    column          : UInt                          = #column,
     options         : TestOptions?                  = nil
 ) where C : Collection
 {    
@@ -943,8 +1157,10 @@ public func XCTKAssertSatisfy<C>(
         range:      range,
         predicate,
         message,
+        fileID:     fileID,
         file:       file,
         line:       line,
+        column:     column,
         options:    options ?? XCTKConfig.global,
         context:    failureContext
     )
@@ -964,10 +1180,14 @@ public func XCTKAssertSatisfy<C>(
 ///   - predicate: A closure that returns `true` if the element represents a
 ///   match. Otherwise, it returns `false` or throws an error.
 ///   - message: An optional description of a failure.
+///   - fileID: The ID of the file where the failure occurs. The default value
+///   is the ID of the file of the test case in which this function was called.
 ///   - file: The file where the failure occurs. The default value is the
 ///   filename of the test case in which this function was called.
 ///   - line: The line where the failure occurs. The default value is the line
 ///   number where this function was called.
+///   - column: The column where the failure occurs. The default value is the
+///   column number where this function was called.
 ///   - options: The options for testing. The default value is `nil`, which
 ///   falls back to using global options.
 public func XCTKAssertExactly<C>(
@@ -975,8 +1195,10 @@ public func XCTKAssertExactly<C>(
     count           : Int,
     _ predicate     : (C.Element) throws -> Bool,
     _ message       : @autoclosure () -> String     = "",
+    fileID          : StaticString                  = #fileID,
     file            : StaticString                  = #filePath,
     line            : UInt                          = #line,
+    column          : UInt                          = #column,
     options         : TestOptions?                  = nil
 ) where C : Collection
 {    
@@ -985,8 +1207,10 @@ public func XCTKAssertExactly<C>(
         count:      count,
         predicate,
         message,
+        fileID:     fileID,
         file:       file,
         line:       line,
+        column:     column,
         options:    options ?? XCTKConfig.global,
         context:    failureContext
     )
@@ -1001,18 +1225,24 @@ public func XCTKAssertExactly<C>(
 ///   - predicate: A closure that returns `true` if the element represents a
 ///   match. Otherwise, it returns `false` or throws an error.
 ///   - message: An optional description of a failure.
+///   - fileID: The ID of the file where the failure occurs. The default value
+///   is the ID of the file of the test case in which this function was called.
 ///   - file: The file where the failure occurs. The default value is the
 ///   filename of the test case in which this function was called.
 ///   - line: The line where the failure occurs. The default value is the line
 ///   number where this function was called.
+///   - column: The column where the failure occurs. The default value is the
+///   column number where this function was called.
 ///   - options: The options for testing. The default value is `nil`, which
 ///   falls back to using global options.
 public func XCTKAssertExactlyOne<C>(
     _ collection    : @autoclosure () throws -> C,
     _ predicate     : (C.Element) throws -> Bool,
     _ message       : @autoclosure () -> String     = "",
+    fileID          : StaticString                  = #fileID,
     file            : StaticString                  = #filePath,
     line            : UInt                          = #line,
+    column          : UInt                          = #column,
     options         : TestOptions?                  = nil
 ) where C : Collection
 {
@@ -1020,8 +1250,10 @@ public func XCTKAssertExactlyOne<C>(
         collection,
         predicate,
         message,
+        fileID:     fileID,
         file:       file,
         line:       line,
+        column:     column,
         options:    options ?? XCTKConfig.global,
         context:    failureContext
     )
@@ -1036,18 +1268,24 @@ public func XCTKAssertExactlyOne<C>(
 ///   be ordered before its second argument. Otherwise, it returns `false` or
 ///   throws an error.
 ///   - message: An optional description of a failure.
+///   - fileID: The ID of the file where the failure occurs. The default value
+///   is the ID of the file of the test case in which this function was called.
 ///   - file: The file where the failure occurs. The default value is the
 ///   filename of the test case in which this function was called.
 ///   - line: The line where the failure occurs. The default value is the line
 ///   number where this function was called.
+///   - column: The column where the failure occurs. The default value is the
+///   column number where this function was called.
 ///   - options: The options for testing. The default value is `nil`, which
 ///   falls back to using global options.
 public func XCTKAssertSorted<C>(
     _ collection    : @autoclosure () throws -> C,
     by predicate    : (C.Element, C.Element) throws -> Bool,
     _ message       : @autoclosure () -> String             = "",
+    fileID          : StaticString                          = #fileID,
     file            : StaticString                          = #filePath,
     line            : UInt                                  = #line,
+    column          : UInt                                  = #column,
     options         : TestOptions?                          = nil
 ) where C : Collection
 {
@@ -1055,8 +1293,10 @@ public func XCTKAssertSorted<C>(
         collection,
         by:         predicate,
         message,
+        fileID:     fileID,
         file:       file,
         line:       line,
+        column:     column,
         options:    options ?? XCTKConfig.global,
         context:    failureContext
     )
@@ -1068,25 +1308,33 @@ public func XCTKAssertSorted<C>(
 /// - Parameters:
 ///   - collection: The collection to evaluate.
 ///   - message: An optional description of a failure.
+///   - fileID: The ID of the file where the failure occurs. The default value
+///   is the ID of the file of the test case in which this function was called.
 ///   - file: The file where the failure occurs. The default value is the
 ///   filename of the test case in which this function was called.
 ///   - line: The line where the failure occurs. The default value is the line
 ///   number where this function was called.
+///   - column: The column where the failure occurs. The default value is the
+///   column number where this function was called.
 ///   - options: The options for testing. The default value is `nil`, which
 ///   falls back to using global options.
 public func XCTKAssertUnique<C>(
     _ collection    : @autoclosure () throws -> C,
     _ message       : @autoclosure () -> String     = "",
+    fileID          : StaticString                  = #fileID,
     file            : StaticString                  = #filePath,
     line            : UInt                          = #line,
+    column          : UInt                          = #column,
     options         : TestOptions?                  = nil
 ) where C : Collection, C.Element : Hashable
 {
     TKAssertUnique(
         collection,
         message,
+        fileID:     fileID,
         file:       file,
         line:       line,
+        column:     column,
         options:    options ?? XCTKConfig.global,
         context:    failureContext
     )
@@ -1101,18 +1349,24 @@ public func XCTKAssertUnique<C>(
 ///   - predicate: A closure that extracts a key from an element of the
 ///   collection. Elements are duplicates if they produce equal keys.
 ///   - message: An optional description of a failure.
+///   - fileID: The ID of the file where the failure occurs. The default value
+///   is the ID of the file of the test case in which this function was called.
 ///   - file: The file where the failure occurs. The default value is the
 ///   filename of the test case in which this function was called.
 ///   - line: The line where the failure occurs. The default value is the line
 ///   number where this function was called.
+///   - column: The column where the failure occurs. The default value is the
+///   column number where this function was called.
 ///   - options: The options for testing. The default value is `nil`, which
 ///   falls back to using global options.
 public func XCTKAssertUnique<C, K>(
     _ collection    : @autoclosure () throws -> C,
     by predicate    : (C.Element) throws -> K,
     _ message       : @autoclosure () -> String     = "",
+    fileID          : StaticString                  = #fileID,
     file            : StaticString                  = #filePath,
     line            : UInt                          = #line,
+    column          : UInt                          = #column,
     options         : TestOptions?                  = nil
 ) where C : Collection, K : Hashable
 {
@@ -1120,8 +1374,10 @@ public func XCTKAssertUnique<C, K>(
         collection,
         by:         predicate,
         message,
+        fileID:     fileID,
         file:       file,
         line:       line,
+        column:     column,
         options:    options ?? XCTKConfig.global,
         context:    failureContext
     )

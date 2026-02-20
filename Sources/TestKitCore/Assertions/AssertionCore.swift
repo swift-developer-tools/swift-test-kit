@@ -16,8 +16,10 @@ import XCTest
 internal func evaluateTKAssert(
     expr    : () throws -> Bool,
     message : () -> String,
+    fileID  : StaticString,
     file    : StaticString,
     line    : UInt,
+    column  : UInt,
     options : TestOptions,
     context : FailureContext
 )
@@ -30,8 +32,10 @@ internal func evaluateTKAssert(
         context:    context,
         capture:    .none,
         message:    message,
+        fileID:     fileID,
         file:       file,
-        line:       line
+        line:       line,
+        column:     column
     )
     
     guard case let .success(value) = result
@@ -50,8 +54,10 @@ internal func evaluateTKAssert(
         capture:    .none,
         reason:     nil,
         message:    message,
+        fileID:     fileID,
         file:       file,
-        line:       line
+        line:       line,
+        column:     column
     )
 }
 
@@ -60,8 +66,10 @@ internal func evaluateTKAssert(
 internal func evaluateTKAssertTrue(
     expr    : () throws -> Bool,
     message : () -> String,
+    fileID  : StaticString,
     file    : StaticString,
     line    : UInt,
+    column  : UInt,
     options : TestOptions,
     context : FailureContext
 )
@@ -74,8 +82,10 @@ internal func evaluateTKAssertTrue(
         context:    context,
         capture:    .none,
         message:    message,
+        fileID:     fileID,
         file:       file,
-        line:       line
+        line:       line,
+        column:     column
     )
     
     guard case let .success(value) = result
@@ -94,8 +104,10 @@ internal func evaluateTKAssertTrue(
         capture:    .none,
         reason:     nil,
         message:    message,
+        fileID:     fileID,
         file:       file,
-        line:       line
+        line:       line,
+        column:     column
     )
 }
 
@@ -104,8 +116,10 @@ internal func evaluateTKAssertTrue(
 internal func evaluateTKAssertFalse(
     expr    : () throws -> Bool,
     message : () -> String,
+    fileID  : StaticString,
     file    : StaticString,
     line    : UInt,
+    column  : UInt,
     options : TestOptions,
     context : FailureContext
 )
@@ -118,8 +132,10 @@ internal func evaluateTKAssertFalse(
         context:    context,
         capture:    .none,
         message:    message,
+        fileID:     fileID,
         file:       file,
-        line:       line
+        line:       line,
+        column:     column
     )
     
     guard case let .success(value) = result
@@ -138,8 +154,10 @@ internal func evaluateTKAssertFalse(
         capture:    .none,
         reason:     nil,
         message:    message,
+        fileID:     fileID,
         file:       file,
-        line:       line
+        line:       line,
+        column:     column
     )
 }
 
@@ -153,8 +171,10 @@ internal func evaluateTKAssert(
     evaluated       : [BooleanExpr],
     notEvaluated    : Int,
     message         : () -> String,
+    fileID          : StaticString,
     file            : StaticString,
     line            : UInt,
+    column          : UInt,
     options         : TestOptions,
     context         : FailureContext
 )
@@ -170,8 +190,10 @@ internal func evaluateTKAssert(
         evaluated:      evaluated,
         notEvaluated:   notEvaluated,
         message:        message,
+        fileID:         fileID,
         file:           file,
         line:           line,
+        column:         column,
         options:        options
     )
 }
@@ -184,8 +206,10 @@ internal func evaluateTKAssertTrue(
     evaluated       : [BooleanExpr],
     notEvaluated    : Int,
     message         : () -> String,
+    fileID          : StaticString,
     file            : StaticString,
     line            : UInt,
+    column          : UInt,
     options         : TestOptions,
     context         : FailureContext
 )
@@ -201,8 +225,10 @@ internal func evaluateTKAssertTrue(
         evaluated:      evaluated,
         notEvaluated:   notEvaluated,
         message:        message,
+        fileID:         fileID,
         file:           file,
         line:           line,
+        column:         column,
         options:        options
     )
 }
@@ -215,8 +241,10 @@ internal func evaluateTKAssertFalse(
     evaluated       : [BooleanExpr],
     notEvaluated    : Int,
     message         : () -> String,
+    fileID          : StaticString,
     file            : StaticString,
     line            : UInt,
+    column          : UInt,
     options         : TestOptions,
     context         : FailureContext
 )
@@ -232,8 +260,10 @@ internal func evaluateTKAssertFalse(
         evaluated:      evaluated,
         notEvaluated:   notEvaluated,
         message:        message,
+        fileID:         fileID,
         file:           file,
         line:           line,
+        column:         column,
         options:        options
     )
 }
@@ -246,8 +276,10 @@ internal func evaluateTKAssertNil(
     capture : ExprCaptureKind,
     expr    : () throws -> Any?,
     message : () -> String,
+    fileID  : StaticString,
     file    : StaticString,
     line    : UInt,
+    column  : UInt,
     options : TestOptions,
     context : FailureContext
 )
@@ -260,8 +292,10 @@ internal func evaluateTKAssertNil(
         context:    context,
         capture:    capture,
         message:    message,
+        fileID:     fileID,
         file:       file,
-        line:       line
+        line:       line,
+        column:     column
     )
     
     guard case let .success(value) = result
@@ -284,8 +318,10 @@ internal func evaluateTKAssertNil(
                 capture:    capture,
                 reason:     nil,
                 message:    message,
+                fileID:     fileID,
                 file:       file,
-                line:       line
+                line:       line,
+                column:     column
             )
             
         case
@@ -297,8 +333,10 @@ internal func evaluateTKAssertNil(
                 capture:    capture,
                 actual:     String(describing: value!),
                 message:    message,
+                fileID:     fileID,
                 file:       file,
-                line:       line
+                line:       line,
+                column:     column
             )
     }
 }
@@ -309,8 +347,10 @@ internal func evaluateTKAssertNotNil(
     capture : ExprCaptureKind,
     expr    : () throws -> Any?,
     message : () -> String,
+    fileID  : StaticString,
     file    : StaticString,
     line    : UInt,
+    column  : UInt,
     options : TestOptions,
     context : FailureContext
 )
@@ -323,8 +363,10 @@ internal func evaluateTKAssertNotNil(
         context:    context,
         capture:    capture,
         message:    message,
+        fileID:     fileID,
         file:       file,
-        line:       line
+        line:       line,
+        column:     column
     )
     
     guard case let .success(value) = result
@@ -347,8 +389,10 @@ internal func evaluateTKAssertNotNil(
                 capture:    capture,
                 reason:     nil,
                 message:    message,
+                fileID:     fileID,
                 file:       file,
-                line:       line
+                line:       line,
+                column:     column
             )
             
         case
@@ -360,8 +404,10 @@ internal func evaluateTKAssertNotNil(
                 capture:    capture,
                 actual:     nil,
                 message:    message,
+                fileID:     fileID,
                 file:       file,
-                line:       line
+                line:       line,
+                column:     column
             )
     }
 }
@@ -372,8 +418,10 @@ internal func evaluateTKUnwrap<T>(
     capture : ExprCaptureKind,
     expr    : () throws -> T?,
     message : () -> String,
+    fileID  : StaticString,
     file    : StaticString,
     line    : UInt,
+    column  : UInt,
     options : TestOptions,
     context : FailureContext
 ) throws -> T
@@ -386,8 +434,10 @@ internal func evaluateTKUnwrap<T>(
         context:    context,
         capture:    capture,
         message:    message,
+        fileID:     fileID,
         file:       file,
-        line:       line
+        line:       line,
+        column:     column
     )
     
     switch result
@@ -408,8 +458,10 @@ internal func evaluateTKUnwrap<T>(
                         capture:    capture,
                         reason:     nil,
                         message:    message,
+                        fileID:     fileID,
                         file:       file,
-                        line:       line
+                        line:       line,
+                        column:     column
                     )
                     
                 case
@@ -421,8 +473,10 @@ internal func evaluateTKUnwrap<T>(
                         capture:    capture,
                         actual:     nil,
                         message:    message,
+                        fileID:     fileID,
                         file:       file,
-                        line:       line
+                        line:       line,
+                        column:     column
                     )
             }
             
@@ -443,8 +497,10 @@ internal func evaluateTKAssertEqual<T>(
     expected    : () throws -> T,
     actual      : () throws -> T,
     message     : () -> String,
+    fileID      : StaticString,
     file        : StaticString,
     line        : UInt,
+    column      : UInt,
     options     : TestOptions,
     context     : FailureContext
 ) where T : Equatable
@@ -457,8 +513,10 @@ internal func evaluateTKAssertEqual<T>(
         context:    context,
         capture:    capture,
         message:    message,
+        fileID:     fileID,
         file:       file,
-        line:       line
+        line:       line,
+        column:     column
     )
     
     guard case let .success(exp) = expResult
@@ -475,8 +533,10 @@ internal func evaluateTKAssertEqual<T>(
         context:    context,
         capture:    capture,
         message:    message,
+        fileID:     fileID,
         file:       file,
-        line:       line
+        line:       line,
+        column:     column
     )
     
     guard case let .success(act) = actResult
@@ -502,8 +562,10 @@ internal func evaluateTKAssertEqual<T>(
             capture:    capture,
             reason:     "(\(quote(exp))) is not equal to (\(quote(act)))",
             message:    message,
+            fileID:     fileID,
             file:       file,
-            line:       line
+            line:       line,
+            column:     column
         )
         
         return
@@ -520,8 +582,10 @@ internal func evaluateTKAssertEqual<T>(
         capture:    capture,
         diff:       diff,
         message:    message,
+        fileID:     fileID,
         file:       file,
         line:       line,
+        column:     column,
         options:    options
     )
 }
@@ -533,8 +597,10 @@ internal func evaluateTKAssertNotEqual<T>(
     expr1   : () throws -> T,
     expr2   : () throws -> T,
     message : () -> String,
+    fileID  : StaticString,
     file    : StaticString,
     line    : UInt,
+    column  : UInt,
     options : TestOptions,
     context : FailureContext
 ) where T : Equatable
@@ -547,8 +613,10 @@ internal func evaluateTKAssertNotEqual<T>(
         context:    context,
         capture:    capture,
         message:    message,
+        fileID:     fileID,
         file:       file,
-        line:       line
+        line:       line,
+        column:     column
     )
     
     guard case let .success(value1) = result1
@@ -565,8 +633,10 @@ internal func evaluateTKAssertNotEqual<T>(
         context:    context,
         capture:    capture,
         message:    message,
+        fileID:     fileID,
         file:       file,
-        line:       line
+        line:       line,
+        column:     column
     )
     
     guard case let .success(value2) = result2
@@ -587,8 +657,10 @@ internal func evaluateTKAssertNotEqual<T>(
         capture:    capture,
         reason:     "both values equal (\(quote(value1)))",
         message:    message,
+        fileID:     fileID,
         file:       file,
-        line:       line
+        line:       line,
+        column:     column
     )
 }
 
@@ -599,8 +671,10 @@ internal func evaluateTKAssertIdentical(
     expr1   : () throws -> AnyObject?,
     expr2   : () throws -> AnyObject?,
     message : () -> String,
+    fileID  : StaticString,
     file    : StaticString,
     line    : UInt,
+    column  : UInt,
     options : TestOptions,
     context : FailureContext
 )
@@ -619,8 +693,10 @@ internal func evaluateTKAssertIdentical(
             capture:    capture,
             reason:     "threw error \(quote(error))",
             message:    message,
+            fileID:     fileID,
             file:       file,
-            line:       line
+            line:       line,
+            column:     column
         )
         
         return
@@ -641,8 +717,10 @@ internal func evaluateTKAssertIdentical(
             capture:    capture,
             reason:     "threw error \(quote(error))",
             message:    message,
+            fileID:     fileID,
             file:       file,
-            line:       line
+            line:       line,
+            column:     column
         )
         
         return
@@ -660,8 +738,10 @@ internal func evaluateTKAssertIdentical(
         capture:    capture,
         reason:     "(\(quote(value1))) is not identical to (\(quote(value2)))",
         message:    message,
+        fileID:     fileID,
         file:       file,
-        line:       line
+        line:       line,
+        column:     column
     )
 }
 
@@ -672,8 +752,10 @@ internal func evaluateTKAssertNotIdentical(
     expr1   : () throws -> AnyObject?,
     expr2   : () throws -> AnyObject?,
     message : () -> String,
+    fileID  : StaticString,
     file    : StaticString,
     line    : UInt,
+    column  : UInt,
     options : TestOptions,
     context : FailureContext
 )
@@ -692,8 +774,10 @@ internal func evaluateTKAssertNotIdentical(
             capture:    capture,
             reason:     "threw error \(quote(error))",
             message:    message,
+            fileID:     fileID,
             file:       file,
-            line:       line
+            line:       line,
+            column:     column
         )
         
         return
@@ -714,8 +798,10 @@ internal func evaluateTKAssertNotIdentical(
             capture:    capture,
             reason:     "threw error \(quote(error))",
             message:    message,
+            fileID:     fileID,
             file:       file,
-            line:       line
+            line:       line,
+            column:     column
         )
         
         return
@@ -733,8 +819,10 @@ internal func evaluateTKAssertNotIdentical(
         capture:    capture,
         reason:     "both values are identical (\(quote(value1)))",
         message:    message,
+        fileID:     fileID,
         file:       file,
-        line:       line
+        line:       line,
+        column:     column
     )
 }
 
@@ -746,8 +834,10 @@ internal func evaluateTKAssertEqual<T>(
     expr2       : () throws -> T,
     accuracy    : T,
     message     : () -> String,
+    fileID      : StaticString,
     file        : StaticString,
     line        : UInt,
+    column      : UInt,
     options     : TestOptions,
     context     : FailureContext
 ) where T : FloatingPoint
@@ -760,8 +850,10 @@ internal func evaluateTKAssertEqual<T>(
         context:    context,
         capture:    capture,
         message:    message,
+        fileID:     fileID,
         file:       file,
-        line:       line
+        line:       line,
+        column:     column
     )
     
     guard case let .success(value1) = result1
@@ -778,8 +870,10 @@ internal func evaluateTKAssertEqual<T>(
         context:    context,
         capture:    capture,
         message:    message,
+        fileID:     fileID,
         file:       file,
-        line:       line
+        line:       line,
+        column:     column
     )
     
     guard case let .success(value2) = result2
@@ -806,8 +900,10 @@ internal func evaluateTKAssertEqual<T>(
         reason:     "(\(quote(value1))) is not equal to (\(quote(value2)))"
                     + " +/- (\(quote(accuracy)))",
         message:    message,
+        fileID:     fileID,
         file:       file,
-        line:       line
+        line:       line,
+        column:     column
     )
 }
 
@@ -819,8 +915,10 @@ internal func evaluateTKAssertEqual<T>(
     expr2       : () throws -> T,
     accuracy    : T,
     message     : () -> String,
+    fileID      : StaticString,
     file        : StaticString,
     line        : UInt,
+    column      : UInt,
     options     : TestOptions,
     context     : FailureContext
 ) where T : Numeric
@@ -833,8 +931,10 @@ internal func evaluateTKAssertEqual<T>(
         context:    context,
         capture:    capture,
         message:    message,
+        fileID:     fileID,
         file:       file,
-        line:       line
+        line:       line,
+        column:     column
     )
     
     guard case let .success(value1) = result1
@@ -851,8 +951,10 @@ internal func evaluateTKAssertEqual<T>(
         context:    context,
         capture:    capture,
         message:    message,
+        fileID:     fileID,
         file:       file,
-        line:       line
+        line:       line,
+        column:     column
     )
     
     guard case let .success(value2) = result2
@@ -879,8 +981,10 @@ internal func evaluateTKAssertEqual<T>(
         reason:     "(\(quote(value1))) is not equal to (\(quote(value2)))"
                     + " +/- (\(quote(accuracy)))",
         message:    message,
+        fileID:     fileID,
         file:       file,
-        line:       line
+        line:       line,
+        column:     column
     )
 }
 
@@ -892,8 +996,10 @@ internal func evaluateTKAssertNotEqual<T>(
     expr2       : () throws -> T,
     accuracy    : T,
     message     : () -> String,
+    fileID      : StaticString,
     file        : StaticString,
     line        : UInt,
+    column      : UInt,
     options     : TestOptions,
     context     : FailureContext
 ) where T : FloatingPoint
@@ -906,8 +1012,10 @@ internal func evaluateTKAssertNotEqual<T>(
         context:    context,
         capture:    capture,
         message:    message,
+        fileID:     fileID,
         file:       file,
-        line:       line
+        line:       line,
+        column:     column
     )
     
     guard case let .success(value1) = result1
@@ -924,8 +1032,10 @@ internal func evaluateTKAssertNotEqual<T>(
         context:    context,
         capture:    capture,
         message:    message,
+        fileID:     fileID,
         file:       file,
-        line:       line
+        line:       line,
+        column:     column
     )
     
     guard case let .success(value2) = result2
@@ -952,8 +1062,10 @@ internal func evaluateTKAssertNotEqual<T>(
         reason:     "both values equal (\(quote(value1)))"
                     + " +/- (\(quote(accuracy)))",
         message:    message,
+        fileID:     fileID,
         file:       file,
-        line:       line
+        line:       line,
+        column:     column
     )
 }
 
@@ -965,8 +1077,10 @@ internal func evaluateTKAssertNotEqual<T>(
     expr2       : () throws -> T,
     accuracy    : T,
     message     : () -> String,
+    fileID      : StaticString,
     file        : StaticString,
     line        : UInt,
+    column      : UInt,
     options     : TestOptions,
     context     : FailureContext
 ) where T : Numeric
@@ -979,8 +1093,10 @@ internal func evaluateTKAssertNotEqual<T>(
         context:    context,
         capture:    capture,
         message:    message,
+        fileID:     fileID,
         file:       file,
-        line:       line
+        line:       line,
+        column:     column
     )
     
     guard case let .success(value1) = result1
@@ -997,8 +1113,10 @@ internal func evaluateTKAssertNotEqual<T>(
         context:    context,
         capture:    capture,
         message:    message,
+        fileID:     fileID,
         file:       file,
-        line:       line
+        line:       line,
+        column:     column
     )
     
     guard case let .success(value2) = result2
@@ -1025,8 +1143,10 @@ internal func evaluateTKAssertNotEqual<T>(
         reason:     "both values equal (\(quote(value1)))"
                     + " +/- (\(quote(accuracy)))",
         message:    message,
+        fileID:     fileID,
         file:       file,
-        line:       line
+        line:       line,
+        column:     column
     )
 }
 
@@ -1039,8 +1159,10 @@ internal func evaluateTKAssertGreaterThan<T>(
     expr1   : () throws -> T,
     expr2   : () throws -> T,
     message : () -> String,
+    fileID  : StaticString,
     file    : StaticString,
     line    : UInt,
+    column  : UInt,
     options : TestOptions,
     context : FailureContext
 ) where T : Comparable
@@ -1053,8 +1175,10 @@ internal func evaluateTKAssertGreaterThan<T>(
         context:    context,
         capture:    capture,
         message:    message,
+        fileID:     fileID,
         file:       file,
-        line:       line
+        line:       line,
+        column:     column
     )
     
     guard case let .success(value1) = result1
@@ -1071,8 +1195,10 @@ internal func evaluateTKAssertGreaterThan<T>(
         context:    context,
         capture:    capture,
         message:    message,
+        fileID:     fileID,
         file:       file,
-        line:       line
+        line:       line,
+        column:     column
     )
     
     guard case let .success(value2) = result2
@@ -1094,8 +1220,10 @@ internal func evaluateTKAssertGreaterThan<T>(
         reason:     "(\(quote(value1))) is not greater than"
                     + " (\(quote(value2)))",
         message:    message,
+        fileID:     fileID,
         file:       file,
-        line:       line
+        line:       line,
+        column:     column
     )
 }
 
@@ -1106,8 +1234,10 @@ internal func evaluateTKAssertGreaterThanOrEqual<T>(
     expr1   : () throws -> T,
     expr2   : () throws -> T,
     message : () -> String,
+    fileID  : StaticString,
     file    : StaticString,
     line    : UInt,
+    column  : UInt,
     options : TestOptions,
     context : FailureContext
 ) where T : Comparable
@@ -1120,8 +1250,10 @@ internal func evaluateTKAssertGreaterThanOrEqual<T>(
         context:    context,
         capture:    capture,
         message:    message,
+        fileID:     fileID,
         file:       file,
-        line:       line
+        line:       line,
+        column:     column
     )
     
     guard case let .success(value1) = result1
@@ -1138,8 +1270,10 @@ internal func evaluateTKAssertGreaterThanOrEqual<T>(
         context:    context,
         capture:    capture,
         message:    message,
+        fileID:     fileID,
         file:       file,
-        line:       line
+        line:       line,
+        column:     column
     )
     
     guard case let .success(value2) = result2
@@ -1161,8 +1295,10 @@ internal func evaluateTKAssertGreaterThanOrEqual<T>(
         reason:     "(\(quote(value1))) is not greater than or equal to"
                     + " (\(quote(value2)))",
         message:    message,
+        fileID:     fileID,
         file:       file,
-        line:       line
+        line:       line,
+        column:     column
     )
 }
 
@@ -1173,8 +1309,10 @@ internal func evaluateTKAssertLessThanOrEqual<T>(
     expr1   : () throws -> T,
     expr2   : () throws -> T,
     message : () -> String,
+    fileID  : StaticString,
     file    : StaticString,
     line    : UInt,
+    column  : UInt,
     options : TestOptions,
     context : FailureContext
 ) where T : Comparable
@@ -1187,8 +1325,10 @@ internal func evaluateTKAssertLessThanOrEqual<T>(
         context:    context,
         capture:    capture,
         message:    message,
+        fileID:     fileID,
         file:       file,
-        line:       line
+        line:       line,
+        column:     column
     )
     
     guard case let .success(value1) = result1
@@ -1205,8 +1345,10 @@ internal func evaluateTKAssertLessThanOrEqual<T>(
         context:    context,
         capture:    capture,
         message:    message,
+        fileID:     fileID,
         file:       file,
-        line:       line
+        line:       line,
+        column:     column
     )
     
     guard case let .success(value2) = result2
@@ -1228,8 +1370,10 @@ internal func evaluateTKAssertLessThanOrEqual<T>(
         reason:     "(\(quote(value1))) is not less than or equal to"
                     + " (\(quote(value2)))",
         message:    message,
+        fileID:     fileID,
         file:       file,
-        line:       line
+        line:       line,
+        column:     column
     )
 }
 
@@ -1240,8 +1384,10 @@ internal func evaluateTKAssertLessThan<T>(
     expr1   : () throws -> T,
     expr2   : () throws -> T,
     message : () -> String,
+    fileID  : StaticString,
     file    : StaticString,
     line    : UInt,
+    column  : UInt,
     options : TestOptions,
     context : FailureContext
 ) where T : Comparable
@@ -1254,8 +1400,10 @@ internal func evaluateTKAssertLessThan<T>(
         context:    context,
         capture:    capture,
         message:    message,
+        fileID:     fileID,
         file:       file,
-        line:       line
+        line:       line,
+        column:     column
     )
     
     guard case let .success(value1) = result1
@@ -1272,8 +1420,10 @@ internal func evaluateTKAssertLessThan<T>(
         context:    context,
         capture:    capture,
         message:    message,
+        fileID:     fileID,
         file:       file,
-        line:       line
+        line:       line,
+        column:     column
     )
     
     guard case let .success(value2) = result2
@@ -1295,8 +1445,10 @@ internal func evaluateTKAssertLessThan<T>(
         reason:     "(\(quote(value1))) is not less than"
                     + " (\(quote(value2)))",
         message:    message,
+        fileID:     fileID,
         file:       file,
-        line:       line
+        line:       line,
+        column:     column
     )
 }
 
@@ -1308,8 +1460,10 @@ internal func evaluateTKAssertThrowsError<T>(
     capture         : ExprCaptureKind,
     expr            : () throws -> T,
     message         : () -> String,
+    fileID          : StaticString,
     file            : StaticString,
     line            : UInt,
+    column          : UInt,
     options         : TestOptions,
     errorHandler    : (any Error) -> Void,
     context         : FailureContext
@@ -1320,11 +1474,13 @@ internal func evaluateTKAssertThrowsError<T>(
     let result: Result<T, Error> = evaluateExpr(
         expr,
         assertion:      assertion,
-        context:    context,
+        context:        context,
         capture:        capture,
         message:        message,
+        fileID:         fileID,
         file:           file,
         line:           line,
+        column:         column,
         errorHandler:   errorHandler
     )
     
@@ -1342,8 +1498,10 @@ internal func evaluateTKAssertThrowsError<T>(
                 capture:    capture,
                 reason:     nil,
                 message:    message,
+                fileID:     fileID,
                 file:       file,
-                line:       line
+                line:       line,
+                column:     column
             )
             
         case
@@ -1355,8 +1513,10 @@ internal func evaluateTKAssertThrowsError<T>(
                 capture:    capture,
                 actual:     nil,
                 message:    message,
+                fileID:     fileID,
                 file:       file,
-                line:       line
+                line:       line,
+                column:     column
             )
     }
 }
@@ -1367,8 +1527,10 @@ internal func evaluateTKAssertNoThrow<T>(
     capture : ExprCaptureKind,
     expr    : () throws -> T,
     message : () -> String,
+    fileID  : StaticString,
     file    : StaticString,
     line    : UInt,
+    column  : UInt,
     options : TestOptions,
     context : FailureContext
 )
@@ -1390,8 +1552,10 @@ internal func evaluateTKAssertNoThrow<T>(
                     capture:    capture,
                     reason:     "threw error \(quote(error))",
                     message:    message,
+                    fileID:     fileID,
                     file:       file,
-                    line:       line
+                    line:       line,
+                    column:     column
                 )
                 
             case
@@ -1403,8 +1567,10 @@ internal func evaluateTKAssertNoThrow<T>(
                     capture:    capture,
                     actual:     String(describing: error),
                     message:    message,
+                    fileID:     fileID,
                     file:       file,
-                    line:       line
+                    line:       line,
+                    column:     column
                 )
         }
     }
@@ -1419,8 +1585,10 @@ internal func evaluateTKAssertAllSatisfy<C>(
     collection  : () throws -> C,
     predicate   : (C.Element) throws -> Bool,
     message     : () -> String,
+    fileID      : StaticString,
     file        : StaticString,
     line        : UInt,
+    column      : UInt,
     options     : TestOptions,
     context     : FailureContext
 ) where C : Collection
@@ -1433,8 +1601,10 @@ internal func evaluateTKAssertAllSatisfy<C>(
         context:    context,
         capture:    capture,
         message:    message,
+        fileID:     fileID,
         file:       file,
-        line:       line
+        line:       line,
+        column:     column
     )
     
     guard case let .success(elements) = collectionResult
@@ -1468,8 +1638,10 @@ internal func evaluateTKAssertAllSatisfy<C>(
         capture:    capture,
         failure:    failure,
         message:    message,
+        fileID:     fileID,
         file:       file,
         line:       line,
+        column:     column,
         options:    options
     )
 }
@@ -1481,8 +1653,10 @@ internal func evaluateTKAssertAnySatisfy<C>(
     collection  : () throws -> C,
     predicate   : (C.Element) throws -> Bool,
     message     : () -> String,
+    fileID      : StaticString,
     file        : StaticString,
     line        : UInt,
+    column      : UInt,
     options     : TestOptions,
     context     : FailureContext
 ) where C : Collection
@@ -1495,8 +1669,10 @@ internal func evaluateTKAssertAnySatisfy<C>(
         context:    context,
         capture:    capture,
         message:    message,
+        fileID:     fileID,
         file:       file,
-        line:       line
+        line:       line,
+        column:     column
     )
     
     guard case let .success(elements) = collectionResult
@@ -1538,8 +1714,10 @@ internal func evaluateTKAssertAnySatisfy<C>(
         capture:    capture,
         failure:    failure,
         message:    message,
+        fileID:     fileID,
         file:       file,
         line:       line,
+        column:     column,
         options:    options
     )
 }
@@ -1551,8 +1729,10 @@ internal func evaluateTKAssertNoneSatisfy<C>(
     collection  : () throws -> C,
     predicate   : (C.Element) throws -> Bool,
     message     : () -> String,
+    fileID      : StaticString,
     file        : StaticString,
     line        : UInt,
+    column      : UInt,
     options     : TestOptions,
     context     : FailureContext
 ) where C : Collection
@@ -1565,8 +1745,10 @@ internal func evaluateTKAssertNoneSatisfy<C>(
         context:    context,
         capture:    capture,
         message:    message,
+        fileID:     fileID,
         file:       file,
-        line:       line
+        line:       line,
+        column:     column
     )
     
     guard case let .success(elements) = collectionResult
@@ -1619,8 +1801,10 @@ internal func evaluateTKAssertNoneSatisfy<C>(
         capture:    capture,
         failure:    failure,
         message:    message,
+        fileID:     fileID,
         file:       file,
         line:       line,
+        column:     column,
         options:    options
     )
 }
@@ -1633,8 +1817,10 @@ internal func evaluateTKAssertSatisfy<C>(
     atLeast     : Int,
     predicate   : (C.Element) throws -> Bool,
     message     : () -> String,
+    fileID      : StaticString,
     file        : StaticString,
     line        : UInt,
+    column      : UInt,
     options     : TestOptions,
     context     : FailureContext
 ) where C : Collection
@@ -1652,8 +1838,10 @@ internal func evaluateTKAssertSatisfy<C>(
         context:    context,
         capture:    capture,
         message:    message,
+        fileID:     fileID,
         file:       file,
-        line:       line
+        line:       line,
+        column:     column
     )
     
     guard case let .success(elements) = collectionResult
@@ -1695,8 +1883,10 @@ internal func evaluateTKAssertSatisfy<C>(
         capture:    capture,
         failure:    failure,
         message:    message,
+        fileID:     fileID,
         file:       file,
         line:       line,
+        column:     column,
         options:    options
     )
 }
@@ -1709,8 +1899,10 @@ internal func evaluateTKAssertSatisfy<C>(
     atMost      : Int,
     predicate   : (C.Element) throws -> Bool,
     message     : () -> String,
+    fileID      : StaticString,
     file        : StaticString,
     line        : UInt,
+    column      : UInt,
     options     : TestOptions,
     context     : FailureContext
 ) where C : Collection
@@ -1728,8 +1920,10 @@ internal func evaluateTKAssertSatisfy<C>(
         context:    context,
         capture:    capture,
         message:    message,
+        fileID:     fileID,
         file:       file,
-        line:       line
+        line:       line,
+        column:     column
     )
     
     guard case let .success(elements) = collectionResult
@@ -1771,8 +1965,10 @@ internal func evaluateTKAssertSatisfy<C>(
         capture:    capture,
         failure:    failure,
         message:    message,
+        fileID:     fileID,
         file:       file,
         line:       line,
+        column:     column,
         options:    options
     )
 }
@@ -1785,8 +1981,10 @@ internal func evaluateTKAssertSatisfy<C>(
     range       : ClosedRange<Int>,
     predicate   : (C.Element) throws -> Bool,
     message     : () -> String,
+    fileID      : StaticString,
     file        : StaticString,
     line        : UInt,
+    column      : UInt,
     options     : TestOptions,
     context     : FailureContext
 ) where C : Collection
@@ -1809,8 +2007,10 @@ internal func evaluateTKAssertSatisfy<C>(
         context:    context,
         capture:    capture,
         message:    message,
+        fileID:     fileID,
         file:       file,
-        line:       line
+        line:       line,
+        column:     column
     )
     
     guard case let .success(elements) = collectionResult
@@ -1853,8 +2053,10 @@ internal func evaluateTKAssertSatisfy<C>(
         capture:    capture,
         failure:    failure,
         message:    message,
+        fileID:     fileID,
         file:       file,
         line:       line,
+        column:     column,
         options:    options
     )
 }
@@ -1867,8 +2069,10 @@ internal func evaluateTKAssertExactly<C>(
     count       : Int,
     predicate   : (C.Element) throws -> Bool,
     message     : () -> String,
+    fileID      : StaticString,
     file        : StaticString,
     line        : UInt,
+    column      : UInt,
     options     : TestOptions,
     context     : FailureContext
 ) where C : Collection
@@ -1886,8 +2090,10 @@ internal func evaluateTKAssertExactly<C>(
         context:    context,
         capture:    capture,
         message:    message,
+        fileID:     fileID,
         file:       file,
-        line:       line
+        line:       line,
+        column:     column
     )
     
     guard case let .success(elements) = collectionResult
@@ -1929,8 +2135,10 @@ internal func evaluateTKAssertExactly<C>(
         capture:    capture,
         failure:    failure,
         message:    message,
+        fileID:     fileID,
         file:       file,
         line:       line,
+        column:     column,
         options:    options
     )
 }
@@ -1942,8 +2150,10 @@ internal func evaluateTKAssertExactlyOne<C>(
     collection  : () throws -> C,
     predicate   : (C.Element) throws -> Bool,
     message     : () -> String,
+    fileID      : StaticString,
     file        : StaticString,
     line        : UInt,
+    column      : UInt,
     options     : TestOptions,
     context     : FailureContext
 ) where C : Collection
@@ -1956,8 +2166,10 @@ internal func evaluateTKAssertExactlyOne<C>(
         context:    context,
         capture:    capture,
         message:    message,
+        fileID:     fileID,
         file:       file,
-        line:       line
+        line:       line,
+        column:     column
     )
     
     guard case let .success(elements) = collectionResult
@@ -1999,8 +2211,10 @@ internal func evaluateTKAssertExactlyOne<C>(
         capture:    capture,
         failure:    failure,
         message:    message,
+        fileID:     fileID,
         file:       file,
         line:       line,
+        column:     column,
         options:    options
     )
 }
@@ -2012,8 +2226,10 @@ internal func evaluateTKAssertSorted<C>(
     collection  : () throws -> C,
     predicate   : (C.Element, C.Element) throws -> Bool,
     message     : () -> String,
+    fileID      : StaticString,
     file        : StaticString,
     line        : UInt,
+    column      : UInt,
     options     : TestOptions,
     context     : FailureContext
 ) where C : Collection
@@ -2026,8 +2242,10 @@ internal func evaluateTKAssertSorted<C>(
         context:    context,
         capture:    capture,
         message:    message,
+        fileID:     fileID,
         file:       file,
-        line:       line
+        line:       line,
+        column:     column
     )
     
     guard case let .success(elements) = collectionResult
@@ -2047,8 +2265,10 @@ internal func evaluateTKAssertSorted<C>(
             capture:    capture,
             reason:     "unordered collection type (\(typeName))",
             message:    message,
+            fileID:     fileID,
             file:       file,
-            line:       line
+            line:       line,
+            column:     column
         )
         
         return
@@ -2093,8 +2313,10 @@ internal func evaluateTKAssertSorted<C>(
                     capture:    capture,
                     failure:    failure,
                     message:    message,
+                    fileID:     fileID,
                     file:       file,
                     line:       line,
+                    column:     column,
                     options:    options
                 )
                 
@@ -2121,8 +2343,10 @@ internal func evaluateTKAssertSorted<C>(
                 capture:    capture,
                 failure:    failure,
                 message:    message,
+                fileID:     fileID,
                 file:       file,
                 line:       line,
+                column:     column,
                 options:    options
             )
             
@@ -2140,8 +2364,10 @@ internal func evaluateTKAssertUnique<C>(
     capture     : ExprCaptureKind,
     collection  : () throws -> C,
     message     : () -> String,
+    fileID      : StaticString,
     file        : StaticString,
     line        : UInt,
+    column      : UInt,
     options     : TestOptions,
     context     : FailureContext
 ) where C : Collection, C.Element : Hashable
@@ -2154,8 +2380,10 @@ internal func evaluateTKAssertUnique<C>(
         context:    context,
         capture:    capture,
         message:    message,
+        fileID:     fileID,
         file:       file,
-        line:       line
+        line:       line,
+        column:     column
     )
     
     guard case let .success(elements) = collectionResult
@@ -2220,8 +2448,10 @@ internal func evaluateTKAssertUnique<C>(
         capture:    capture,
         failure:    failure,
         message:    message,
+        fileID:     fileID,
         file:       file,
         line:       line,
+        column:     column,
         options:    options
     )
 }
@@ -2233,8 +2463,10 @@ internal func evaluateTKAssertUnique<C, K>(
     collection  : () throws -> C,
     predicate   : (C.Element) throws -> K,
     message     : () -> String,
+    fileID      : StaticString,
     file        : StaticString,
     line        : UInt,
+    column      : UInt,
     options     : TestOptions,
     context     : FailureContext
 ) where C : Collection, K : Hashable
@@ -2247,8 +2479,10 @@ internal func evaluateTKAssertUnique<C, K>(
         context:    context,
         capture:    capture,
         message:    message,
+        fileID:     fileID,
         file:       file,
-        line:       line
+        line:       line,
+        column:     column
     )
     
     guard case let .success(elements) = collectionResult
@@ -2284,8 +2518,10 @@ internal func evaluateTKAssertUnique<C, K>(
                 capture:    capture,
                 reason:     "threw error \(quote(error)) at index \(index)",
                 message:    message,
+                fileID:     fileID,
                 file:       file,
-                line:       line
+                line:       line,
+                column:     column
             )
             
             return
@@ -2334,8 +2570,10 @@ internal func evaluateTKAssertUnique<C, K>(
         capture:    capture,
         failure:    failure,
         message:    message,
+        fileID:     fileID,
         file:       file,
         line:       line,
+        column:     column,
         options:    options
     )
 }
@@ -2359,10 +2597,14 @@ internal func evaluateTKAssertUnique<C, K>(
 ///   - context: The assertion failure context.
 ///   - capture: The kind of captured assertion expression.
 ///   - message: The description of a failure.
+///   - fileID: The ID of the file where the failure occurs. The default value
+///   is the ID of the file of the test case in which this function was called.
 ///   - file: The file where the failure occurs. The default value is the
 ///   filename of the test case in which this function was called.
 ///   - line: The line where the failure occurs. The default value is the line
 ///   number where this function was called.
+///   - column: The column where the failure occurs. The default value is the
+///   column number where this function was called.
 ///   - errorHandler: An optional handler for errors thrown by `expr`.
 /// - Returns: A `Result` containing the value or error produced by evaluating
 /// the given expression.
@@ -2372,8 +2614,10 @@ private func evaluateExpr<T>(
     context         : FailureContext,
     capture         : ExprCaptureKind,
     message         : () -> String,
+    fileID          : StaticString,
     file            : StaticString,
     line            : UInt,
+    column          : UInt,
     errorHandler    : (any Error) -> Void   = { _ in }
 ) -> Result<T, Error>
 {
@@ -2394,8 +2638,10 @@ private func evaluateExpr<T>(
                 capture:    capture,
                 reason:     "threw error \(quote(error))",
                 message:    message,
+                fileID:     fileID,
                 file:       file,
-                line:       line
+                line:       line,
+                column:     column
             )
         }
         
@@ -2416,10 +2662,14 @@ private func evaluateExpr<T>(
 ///   - context: The assertion failure context.
 ///   - capture: The kind of captured assertion expression.
 ///   - message: The description of a failure.
+///   - fileID: The ID of the file where the failure occurs. The default value
+///   is the ID of the file of the test case in which this function was called.
 ///   - file: The file where the failure occurs. The default value is the
 ///   filename of the test case in which this function was called.
 ///   - line: The line where the failure occurs. The default value is the line
 ///   number where this function was called.
+///   - column: The column where the failure occurs. The default value is the
+///   column number where this function was called.
 /// - Returns: A `Result` containing the value or error produced by evaluating
 /// the given collection expression.
 private func evaluateCollection<C>(
@@ -2428,8 +2678,10 @@ private func evaluateCollection<C>(
     context         : FailureContext,
     capture         : ExprCaptureKind,
     message         : () -> String,
+    fileID          : StaticString,
     file            : StaticString,
-    line            : UInt
+    line            : UInt,
+    column          : UInt
 ) -> Result<C, Error> where C : Collection
 {
     do
@@ -2443,8 +2695,10 @@ private func evaluateCollection<C>(
             capture:    capture,
             reason:     "threw error \(quote(error))",
             message:    message,
+            fileID:     fileID,
             file:       file,
-            line:       line
+            line:       line,
+            column:     column
         )
         
         return .failure(error)

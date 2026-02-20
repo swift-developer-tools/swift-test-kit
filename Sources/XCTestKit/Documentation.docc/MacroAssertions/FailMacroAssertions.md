@@ -6,4 +6,4 @@ Immediately generate an unconditional failure.
 
 ### Unconditional Test Failures
 
-- ``XCTKFail(_:file:line:)-macro``
+- ``XCTKFail(_:fileID:file:line:column:)-macro``

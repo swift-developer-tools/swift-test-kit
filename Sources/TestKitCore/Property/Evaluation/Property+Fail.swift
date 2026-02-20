@@ -15,13 +15,17 @@ extension PropertyCheckResult
     /// - Parameters:
     ///   - context: The assertion failure context.
     ///   - message: The description of a failure.
+    ///   - fileID: The ID of the file where the failure occurs.
     ///   - file: The file where the failure occurs.
     ///   - line: The line where the failure occurs.
+    ///   - column: The column where the failure occurs.
     package func emit(
         context : FailureContext,
         message : () -> String,
+        fileID  : StaticString,
         file    : StaticString,
-        line    : UInt
+        line    : UInt,
+        column  : UInt
     )
     {
         /// If there are more property-based assertions, this should change.
@@ -75,8 +79,10 @@ extension PropertyCheckResult
         
         context.emit(
             text,
+            fileID,
             file,
-            line
+            line,
+            column
         )
     }
     

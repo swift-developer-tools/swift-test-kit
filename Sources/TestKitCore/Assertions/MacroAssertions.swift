@@ -15,8 +15,10 @@ package func TKAssertMacro(
     evaluated       : [BooleanExpr],
     notEvaluated    : Int,
     message         : () -> String,
+    fileID          : StaticString,
     file            : StaticString,
     line            : UInt,
+    column          : UInt,
     options         : TestOptions,
     context         : FailureContext
 )
@@ -27,8 +29,10 @@ package func TKAssertMacro(
         evaluated:      evaluated,
         notEvaluated:   notEvaluated,
         message:        message,
+        fileID:         fileID,
         file:           file,
         line:           line,
+        column:         column,
         options:        options,
         context:        context
     )
@@ -42,8 +46,10 @@ package func TKAssertTrueMacro(
     evaluated       : [BooleanExpr],
     notEvaluated    : Int,
     message         : () -> String,
+    fileID          : StaticString,
     file            : StaticString,
     line            : UInt,
+    column          : UInt,
     options         : TestOptions,
     context         : FailureContext
 )
@@ -54,8 +60,10 @@ package func TKAssertTrueMacro(
         evaluated:      evaluated,
         notEvaluated:   notEvaluated,
         message:        message,
+        fileID:         fileID,
         file:           file,
         line:           line,
+        column:         column,
         options:        options,
         context:        context
     )
@@ -69,8 +77,10 @@ package func TKAssertFalseMacro(
     evaluated       : [BooleanExpr],
     notEvaluated    : Int,
     message         : () -> String,
+    fileID          : StaticString,
     file            : StaticString,
     line            : UInt,
+    column          : UInt,
     options         : TestOptions,
     context         : FailureContext
 )
@@ -81,8 +91,10 @@ package func TKAssertFalseMacro(
         evaluated:      evaluated,
         notEvaluated:   notEvaluated,
         message:        message,
+        fileID:         fileID,
         file:           file,
         line:           line,
+        column:         column,
         options:        options,
         context:        context
     )
@@ -96,8 +108,10 @@ package func TKAssertNilMacro(
     expr        : () throws -> Any?,
     exprText    : String,
     message     : () -> String,
-    file        : StaticString,
-    line        : UInt,
+    fileID          : StaticString,
+    file            : StaticString,
+    line            : UInt,
+    column          : UInt,
     options     : TestOptions,
     context     : FailureContext
 )
@@ -106,8 +120,10 @@ package func TKAssertNilMacro(
         capture:    .single(exprText),
         expr:       expr,
         message:    message,
+        fileID:     fileID,
         file:       file,
         line:       line,
+        column:     column,
         options:    options,
         context:    context
     )
@@ -119,8 +135,10 @@ package func TKAssertNotNilMacro(
     expr        : () throws -> Any?,
     exprText    : String,
     message     : () -> String,
+    fileID      : StaticString,
     file        : StaticString,
     line        : UInt,
+    column      : UInt,
     options     : TestOptions,
     context     : FailureContext
 )
@@ -129,8 +147,10 @@ package func TKAssertNotNilMacro(
         capture:    .single(exprText),
         expr:       expr,
         message:    message,
+        fileID:     fileID,
         file:       file,
         line:       line,
+        column:     column,
         options:    options,
         context:    context
     )
@@ -142,8 +162,10 @@ package func TKUnwrapMacro<T>(
     expr        : () throws -> T?,
     exprText    : String,
     message     : () -> String,
+    fileID      : StaticString,
     file        : StaticString,
     line        : UInt,
+    column      : UInt,
     options     : TestOptions,
     context     : FailureContext
 ) throws -> T
@@ -152,8 +174,10 @@ package func TKUnwrapMacro<T>(
         capture:    .single(exprText),
         expr:       expr,
         message:    message,
+        fileID:     fileID,
         file:       file,
         line:       line,
+        column:     column,
         options:    options,
         context:    context
     )
@@ -169,8 +193,10 @@ package func TKAssertEqualMacro<T>(
     expectedText    : String,
     actualText      : String,
     message         : () -> String,
+    fileID          : StaticString,
     file            : StaticString,
     line            : UInt,
+    column          : UInt,
     options         : TestOptions,
     context     : FailureContext
 ) where T : Equatable
@@ -180,8 +206,10 @@ package func TKAssertEqualMacro<T>(
         expected:   expected,
         actual:     actual,
         message:    message,
+        fileID:     fileID,
         file:       file,
         line:       line,
+        column:     column,
         options:    options,
         context:    context
     )
@@ -195,8 +223,10 @@ package func TKAssertNotEqualMacro<T>(
     expr1Text   : String,
     expr2Text   : String,
     message     : () -> String,
+    fileID      : StaticString,
     file        : StaticString,
     line        : UInt,
+    column      : UInt,
     options     : TestOptions,
     context     : FailureContext
 ) where T : Equatable
@@ -206,8 +236,10 @@ package func TKAssertNotEqualMacro<T>(
         expr1:      expr1,
         expr2:      expr2,
         message:    message,
+        fileID:     fileID,
         file:       file,
         line:       line,
+        column:     column,
         options:    options,
         context:    context
     )
@@ -221,8 +253,10 @@ package func TKAssertIdenticalMacro(
     expr1Text   : String,
     expr2Text   : String,
     message     : () -> String,
+    fileID      : StaticString,
     file        : StaticString,
     line        : UInt,
+    column      : UInt,
     options     : TestOptions,
     context     : FailureContext
 )
@@ -232,8 +266,10 @@ package func TKAssertIdenticalMacro(
         expr1:      expr1,
         expr2:      expr2,
         message:    message,
+        fileID:     fileID,
         file:       file,
         line:       line,
+        column:     column,
         options:    options,
         context:    context
     )
@@ -247,8 +283,10 @@ package func TKAssertNotIdenticalMacro(
     expr1Text   : String,
     expr2Text   : String,
     message     : () -> String,
+    fileID      : StaticString,
     file        : StaticString,
     line        : UInt,
+    column      : UInt,
     options     : TestOptions,
     context     : FailureContext
 )
@@ -258,8 +296,10 @@ package func TKAssertNotIdenticalMacro(
         expr1:      expr1,
         expr2:      expr2,
         message:    message,
+        fileID:     fileID,
         file:       file,
         line:       line,
+        column:     column,
         options:    options,
         context:    context
     )
@@ -274,8 +314,10 @@ package func TKAssertEqualMacro<T>(
     expr2Text   : String,
     accuracy    : T,
     message     : () -> String,
+    fileID      : StaticString,
     file        : StaticString,
     line        : UInt,
+    column      : UInt,
     options     : TestOptions,
     context     : FailureContext
 ) where T : FloatingPoint
@@ -286,8 +328,10 @@ package func TKAssertEqualMacro<T>(
         expr2:      expr2,
         accuracy:   accuracy,
         message:    message,
+        fileID:     fileID,
         file:       file,
         line:       line,
+        column:     column,
         options:    options,
         context:    context
     )
@@ -302,8 +346,10 @@ package func TKAssertEqualMacro<T>(
     expr2Text   : String,
     accuracy    : T,
     message     : () -> String,
+    fileID      : StaticString,
     file        : StaticString,
     line        : UInt,
+    column      : UInt,
     options     : TestOptions,
     context     : FailureContext
 ) where T : Numeric
@@ -314,8 +360,10 @@ package func TKAssertEqualMacro<T>(
         expr2:      expr2,
         accuracy:   accuracy,
         message:    message,
+        fileID:     fileID,
         file:       file,
         line:       line,
+        column:     column,
         options:    options,
         context:    context
     )
@@ -330,8 +378,10 @@ package func TKAssertNotEqualMacro<T>(
     expr2Text   : String,
     accuracy    : T,
     message     : () -> String,
+    fileID      : StaticString,
     file        : StaticString,
     line        : UInt,
+    column      : UInt,
     options     : TestOptions,
     context     : FailureContext
 ) where T : FloatingPoint
@@ -342,8 +392,10 @@ package func TKAssertNotEqualMacro<T>(
         expr2:      expr2,
         accuracy:   accuracy,
         message:    message,
+        fileID:     fileID,
         file:       file,
         line:       line,
+        column:     column,
         options:    options,
         context:    context
     )
@@ -358,8 +410,10 @@ package func TKAssertNotEqualMacro<T>(
     expr2Text   : String,
     accuracy    : T,
     message     : () -> String,
+    fileID      : StaticString,
     file        : StaticString,
     line        : UInt,
+    column      : UInt,
     options     : TestOptions,
     context     : FailureContext
 ) where T : Numeric
@@ -370,8 +424,10 @@ package func TKAssertNotEqualMacro<T>(
         expr2:      expr2,
         accuracy:   accuracy,
         message:    message,
+        fileID:     fileID,
         file:       file,
         line:       line,
+        column:     column,
         options:    options,
         context:    context
     )
@@ -387,8 +443,10 @@ package func TKAssertGreaterThanMacro<T>(
     expr1Text   : String,
     expr2Text   : String,
     message     : () -> String,
+    fileID      : StaticString,
     file        : StaticString,
     line        : UInt,
+    column      : UInt,
     options     : TestOptions,
     context     : FailureContext
 ) where T : Comparable
@@ -398,8 +456,10 @@ package func TKAssertGreaterThanMacro<T>(
         expr1:      expr1,
         expr2:      expr2,
         message:    message,
+        fileID:     fileID,
         file:       file,
         line:       line,
+        column:     column,
         options:    options,
         context:    context
     )
@@ -413,8 +473,10 @@ package func TKAssertGreaterThanOrEqualMacro<T>(
     expr1Text   : String,
     expr2Text   : String,
     message     : () -> String,
+    fileID      : StaticString,
     file        : StaticString,
     line        : UInt,
+    column      : UInt,
     options     : TestOptions,
     context     : FailureContext
 ) where T : Comparable
@@ -424,8 +486,10 @@ package func TKAssertGreaterThanOrEqualMacro<T>(
         expr1:      expr1,
         expr2:      expr2,
         message:    message,
+        fileID:     fileID,
         file:       file,
         line:       line,
+        column:     column,
         options:    options,
         context:    context
     )
@@ -439,8 +503,10 @@ package func TKAssertLessThanOrEqualMacro<T>(
     expr1Text   : String,
     expr2Text   : String,
     message     : () -> String,
+    fileID      : StaticString,
     file        : StaticString,
     line        : UInt,
+    column      : UInt,
     options     : TestOptions,
     context     : FailureContext
 ) where T : Comparable
@@ -450,8 +516,10 @@ package func TKAssertLessThanOrEqualMacro<T>(
         expr1:      expr1,
         expr2:      expr2,
         message:    message,
+        fileID:     fileID,
         file:       file,
         line:       line,
+        column:     column,
         options:    options,
         context:    context
     )
@@ -465,8 +533,10 @@ package func TKAssertLessThanMacro<T>(
     expr1Text   : String,
     expr2Text   : String,
     message     : () -> String,
+    fileID      : StaticString,
     file        : StaticString,
     line        : UInt,
+    column      : UInt,
     options     : TestOptions,
     context     : FailureContext
 ) where T : Comparable
@@ -476,8 +546,10 @@ package func TKAssertLessThanMacro<T>(
         expr1:      expr1,
         expr2:      expr2,
         message:    message,
+        fileID:     fileID,
         file:       file,
         line:       line,
+        column:     column,
         options:    options,
         context:    context
     )
@@ -491,8 +563,10 @@ package func TKAssertThrowsErrorMacro<T>(
     expr            : () throws -> T,
     exprText        : String,
     message         : () -> String,
+    fileID          : StaticString,
     file            : StaticString,
     line            : UInt,
+    column          : UInt,
     options         : TestOptions,
     errorHandler    : (any Error) -> Void,
     context         : FailureContext
@@ -502,8 +576,10 @@ package func TKAssertThrowsErrorMacro<T>(
         capture:        .single(exprText),
         expr:           expr,
         message:        message,
+        fileID:         fileID,
         file:           file,
         line:           line,
+        column:         column,
         options:        options,
         errorHandler:   errorHandler,
         context:        context
@@ -516,8 +592,10 @@ package func TKAssertNoThrowMacro<T>(
     expr        : () throws -> T,
     exprText    : String,
     message     : () -> String,
+    fileID      : StaticString,
     file        : StaticString,
     line        : UInt,
+    column      : UInt,
     options     : TestOptions,
     context     : FailureContext
 )
@@ -526,8 +604,10 @@ package func TKAssertNoThrowMacro<T>(
         capture:    .single(exprText),
         expr:       expr,
         message:    message,
+        fileID:     fileID,
         file:       file,
         line:       line,
+        column:     column,
         options:    options,
         context:    context
     )
@@ -539,15 +619,19 @@ package func TKAssertNoThrowMacro<T>(
 
 package func TKFailMacro(
     message : String,
+    fileID  : StaticString,
     file    : StaticString,
     line    : UInt,
+    column  : UInt,
     context : FailureContext
 )
 {
     context.emit(
         message,
+        fileID,
         file,
-        line
+        line,
+        column
     )
 }
 
@@ -561,8 +645,10 @@ package func TKAssertAllSatisfyMacro<C>(
     collectionText  : String,
     predicateText   : String,
     message         : () -> String,
+    fileID          : StaticString,
     file            : StaticString,
     line            : UInt,
+    column          : UInt,
     options         : TestOptions,
     context         : FailureContext
 ) where C : Collection
@@ -572,8 +658,10 @@ package func TKAssertAllSatisfyMacro<C>(
         collection:     collection,
         predicate:      predicate,
         message:        message,
+        fileID:         fileID,
         file:           file,
         line:           line,
+        column:         column,
         options:        options,
         context:        context
     )
@@ -587,8 +675,10 @@ package func TKAssertAnySatisfyMacro<C>(
     collectionText  : String,
     predicateText   : String,
     message         : () -> String,
+    fileID          : StaticString,
     file            : StaticString,
     line            : UInt,
+    column          : UInt,
     options         : TestOptions,
     context         : FailureContext
 ) where C : Collection
@@ -598,8 +688,10 @@ package func TKAssertAnySatisfyMacro<C>(
         collection:     collection,
         predicate:      predicate,
         message:        message,
+        fileID:         fileID,
         file:           file,
         line:           line,
+        column:         column,
         options:        options,
         context:        context
     )
@@ -613,8 +705,10 @@ package func TKAssertNoneSatisfyMacro<C>(
     collectionText  : String,
     predicateText   : String,
     message         : () -> String,
+    fileID          : StaticString,
     file            : StaticString,
     line            : UInt,
+    column          : UInt,
     options         : TestOptions,
     context         : FailureContext
 ) where C : Collection
@@ -624,8 +718,10 @@ package func TKAssertNoneSatisfyMacro<C>(
         collection:     collection,
         predicate:      predicate,
         message:        message,
+        fileID:         fileID,
         file:           file,
         line:           line,
+        column:         column,
         options:        options,
         context:        context
     )
@@ -640,8 +736,10 @@ package func TKAssertSatisfyMacro<C>(
     collectionText  : String,
     predicateText   : String,
     message         : () -> String,
+    fileID          : StaticString,
     file            : StaticString,
     line            : UInt,
+    column          : UInt,
     options         : TestOptions,
     context         : FailureContext
 ) where C : Collection
@@ -652,8 +750,10 @@ package func TKAssertSatisfyMacro<C>(
         atLeast:        atLeast,
         predicate:      predicate,
         message:        message,
+        fileID:         fileID,
         file:           file,
         line:           line,
+        column:         column,
         options:        options,
         context:        context
     )
@@ -668,8 +768,10 @@ package func TKAssertSatisfyMacro<C>(
     collectionText  : String,
     predicateText   : String,
     message         : () -> String,
+    fileID          : StaticString,
     file            : StaticString,
     line            : UInt,
+    column          : UInt,
     options         : TestOptions,
     context         : FailureContext
 ) where C : Collection
@@ -680,8 +782,10 @@ package func TKAssertSatisfyMacro<C>(
         atMost:         atMost,
         predicate:      predicate,
         message:        message,
+        fileID:         fileID,
         file:           file,
         line:           line,
+        column:         column,
         options:        options,
         context:        context
     )
@@ -696,8 +800,10 @@ package func TKAssertSatisfyMacro<C>(
     collectionText  : String,
     predicateText   : String,
     message         : () -> String,
+    fileID          : StaticString,
     file            : StaticString,
     line            : UInt,
+    column          : UInt,
     options         : TestOptions,
     context         : FailureContext
 ) where C : Collection
@@ -708,8 +814,10 @@ package func TKAssertSatisfyMacro<C>(
         range:          range,
         predicate:      predicate,
         message:        message,
+        fileID:         fileID,
         file:           file,
         line:           line,
+        column:         column,
         options:        options,
         context:        context
     )
@@ -724,8 +832,10 @@ package func TKAssertExactlyMacro<C>(
     collectionText  : String,
     predicateText   : String,
     message         : () -> String,
+    fileID          : StaticString,
     file            : StaticString,
     line            : UInt,
+    column          : UInt,
     options         : TestOptions,
     context         : FailureContext
 ) where C : Collection
@@ -736,8 +846,10 @@ package func TKAssertExactlyMacro<C>(
         count:          count,
         predicate:      predicate,
         message:        message,
+        fileID:         fileID,
         file:           file,
         line:           line,
+        column:         column,
         options:        options,
         context:        context
     )
@@ -751,8 +863,10 @@ package func TKAssertExactlyOneMacro<C>(
     collectionText  : String,
     predicateText   : String,
     message         : () -> String,
+    fileID          : StaticString,
     file            : StaticString,
     line            : UInt,
+    column          : UInt,
     options         : TestOptions,
     context         : FailureContext
 ) where C : Collection
@@ -762,8 +876,10 @@ package func TKAssertExactlyOneMacro<C>(
         collection:     collection,
         predicate:      predicate,
         message:        message,
+        fileID:         fileID,
         file:           file,
         line:           line,
+        column:         column,
         options:        options,
         context:        context
     )
@@ -777,8 +893,10 @@ package func TKAssertSortedMacro<C>(
     collectionText  : String,
     predicateText   : String,
     message         : () -> String,
+    fileID          : StaticString,
     file            : StaticString,
     line            : UInt,
+    column          : UInt,
     options         : TestOptions,
     context         : FailureContext
 ) where C : Collection
@@ -788,8 +906,10 @@ package func TKAssertSortedMacro<C>(
         collection:     collection,
         predicate:      predicate,
         message:        message,
+        fileID:         fileID,
         file:           file,
         line:           line,
+        column:         column,
         options:        options,
         context:        context
     )
@@ -801,8 +921,10 @@ package func TKAssertUniqueMacro<C>(
     collection      : () throws -> C,
     collectionText  : String,
     message         : () -> String,
+    fileID          : StaticString,
     file            : StaticString,
     line            : UInt,
+    column          : UInt,
     options         : TestOptions,
     context         : FailureContext
 ) where C : Collection, C.Element : Hashable
@@ -811,8 +933,10 @@ package func TKAssertUniqueMacro<C>(
         capture:        .single(collectionText),
         collection:     collection,
         message:        message,
+        fileID:         fileID,
         file:           file,
         line:           line,
+        column:         column,
         options:        options,
         context:        context
     )
@@ -826,8 +950,10 @@ package func TKAssertUniqueMacro<C, K>(
     collectionText  : String,
     predicateText   : String,
     message         : () -> String,
+    fileID          : StaticString,
     file            : StaticString,
     line            : UInt,
+    column          : UInt,
     options         : TestOptions,
     context         : FailureContext
 ) where C : Collection, K : Hashable
@@ -837,8 +963,10 @@ package func TKAssertUniqueMacro<C, K>(
         collection:     collection,
         predicate:      predicate,
         message:        message,
+        fileID:         fileID,
         file:           file,
         line:           line,
+        column:         column,
         options:        options,
         context:        context
     )

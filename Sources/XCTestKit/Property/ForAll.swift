@@ -23,26 +23,34 @@ import TestKitCore
 ///
 /// - Parameters:
 ///   - message: An optional description of a failure.
+///   - fileID: The ID of the file where the failure occurs. The default value
+///   is the ID of the file of the test case in which this function was called.
 ///   - file: The file where the failure occurs. The default value is the
 ///   filename of the test case in which this function was called.
 ///   - line: The line where the failure occurs. The default value is the line
 ///   number where this function was called.
+///   - column: The column where the failure occurs. The default value is the
+///   column number where this function was called.
 ///   - options: The options for testing. The default value is `nil`, which
 ///   falls back to using global options.
 ///   - property: The property to evaluate.
 @Reasync
 public func XCTKForAll<each T>(
     _ message   : @autoclosure () -> String             = "",
+    fileID      : StaticString                          = #fileID,
     file        : StaticString                          = #filePath,
     line        : UInt                                  = #line,
+    column      : UInt                                  = #column,
     options     : TestOptions?                          = nil,
     _ property  : (repeat each T) async throws -> Void
 ) async where repeat each T : Arbitrary
 {
     await TKForAll(
         message,
+        fileID:     fileID,
         file:       file,
         line:       line,
+        column:     column,
         options:    options ?? XCTKConfig.global,
         property,
         context:    failureContext
@@ -70,10 +78,14 @@ public func XCTKForAll<each T>(
 /// - Parameters:
 ///   - generators: The generators to use to produce values.
 ///   - message: An optional description of a failure.
+///   - fileID: The ID of the file where the failure occurs. The default value
+///   is the ID of the file of the test case in which this function was called.
 ///   - file: The file where the failure occurs. The default value is the
 ///   filename of the test case in which this function was called.
 ///   - line: The line where the failure occurs. The default value is the line
 ///   number where this function was called.
+///   - column: The column where the failure occurs. The default value is the
+///   column number where this function was called.
 ///   - options: The options for testing. The default value is `nil`, which
 ///   falls back to using global options.
 ///   - property: The property to evaluate.
@@ -81,8 +93,10 @@ public func XCTKForAll<each T>(
 public func XCTKForAll<each T>(
     using generators    : repeat Generator<each T>,
     message             : @autoclosure () -> String             = "",
+    fileID              : StaticString                          = #fileID,
     file                : StaticString                          = #filePath,
     line                : UInt                                  = #line,
+    column              : UInt                                  = #column,
     options             : TestOptions?                          = nil,
     _ property          : (repeat each T) async throws -> Void
 ) async
@@ -90,8 +104,10 @@ public func XCTKForAll<each T>(
     await TKForAll(
         using:      repeat each generators,
         message:    message,
+        fileID:     fileID,
         file:       file,
         line:       line,
+        column:     column,
         options:    options ?? XCTKConfig.global,
         property,
         context:    failureContext
@@ -122,10 +138,14 @@ public func XCTKForAll<each T>(
 /// - Parameters:
 ///   - precondition: The condition which generated inputs must satisfy.
 ///   - message: An optional description of a failure.
+///   - fileID: The ID of the file where the failure occurs. The default value
+///   is the ID of the file of the test case in which this function was called.
 ///   - file: The file where the failure occurs. The default value is the
 ///   filename of the test case in which this function was called.
 ///   - line: The line where the failure occurs. The default value is the line
 ///   number where this function was called.
+///   - column: The column where the failure occurs. The default value is the
+///   column number where this function was called.
 ///   - options: The options for testing. The default value is `nil`, which
 ///   falls back to using global options.
 ///   - property: The property to evaluate.
@@ -133,8 +153,10 @@ public func XCTKForAll<each T>(
 public func XCTKForAll<each T>(
     where precondition  : @escaping (repeat each T) -> Bool,
     message             : @autoclosure () -> String             = "",
+    fileID              : StaticString                          = #fileID,
     file                : StaticString                          = #filePath,
     line                : UInt                                  = #line,
+    column              : UInt                                  = #column,
     options             : TestOptions?                          = nil,
     _ property          : (repeat each T) async throws -> Void
 ) async where repeat each T : Arbitrary
@@ -142,8 +164,10 @@ public func XCTKForAll<each T>(
     await TKForAll(
         where:      precondition,
         message:    message,
+        fileID:     fileID,
         file:       file,
         line:       line,
+        column:     column,
         options:    options ?? XCTKConfig.global,
         property,
         context:    failureContext
@@ -176,10 +200,14 @@ public func XCTKForAll<each T>(
 ///   - generators: The generators to use to produce values.
 ///   - precondition: The condition which generated inputs must satisfy.
 ///   - message: An optional description of a failure.
+///   - fileID: The ID of the file where the failure occurs. The default value
+///   is the ID of the file of the test case in which this function was called.
 ///   - file: The file where the failure occurs. The default value is the
 ///   filename of the test case in which this function was called.
 ///   - line: The line where the failure occurs. The default value is the line
 ///   number where this function was called.
+///   - column: The column where the failure occurs. The default value is the
+///   column number where this function was called.
 ///   - options: The options for testing. The default value is `nil`, which
 ///   falls back to using global options.
 ///   - property: The property to evaluate.
@@ -188,8 +216,10 @@ public func XCTKForAll<each T>(
     using generators    : repeat Generator<each T>,
     where precondition  : @escaping (repeat each T) -> Bool,
     message             : @autoclosure () -> String             = "",
+    fileID              : StaticString                          = #fileID,
     file                : StaticString                          = #filePath,
     line                : UInt                                  = #line,
+    column              : UInt                                  = #column,
     options             : TestOptions?                          = nil,
     _ property          : (repeat each T) async throws -> Void
 ) async
@@ -198,8 +228,10 @@ public func XCTKForAll<each T>(
         using:      repeat each generators,
         where:      precondition,
         message:    message,
+        fileID:     fileID,
         file:       file,
         line:       line,
+        column:     column,
         options:    options ?? XCTKConfig.global,
         property,
         context:    failureContext

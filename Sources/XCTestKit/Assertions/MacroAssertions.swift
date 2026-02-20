@@ -20,8 +20,10 @@ public func _XCTKAssertMacro(
     evaluated       : [BooleanExpr],
     notEvaluated    : Int,
     message         : @autoclosure () -> String,
+    fileID          : StaticString,
     file            : StaticString,
     line            : UInt,
+    column          : UInt,
     options         : TestOptions?
 )
 {
@@ -31,8 +33,10 @@ public func _XCTKAssertMacro(
         evaluated:      evaluated,
         notEvaluated:   notEvaluated,
         message:        message,
+        fileID:         fileID,
         file:           file,
         line:           line,
+        column:         column,
         options:        options ?? XCTKConfig.global,
         context:        failureContext
     )
@@ -47,8 +51,10 @@ public func _XCTKAssertTrueMacro(
     evaluated       : [BooleanExpr],
     notEvaluated    : Int,
     message         : @autoclosure () -> String,
+    fileID          : StaticString,
     file            : StaticString,
     line            : UInt,
+    column          : UInt,
     options         : TestOptions?
 )
 {
@@ -58,8 +64,10 @@ public func _XCTKAssertTrueMacro(
         evaluated:      evaluated,
         notEvaluated:   notEvaluated,
         message:        message,
+        fileID:         fileID,
         file:           file,
         line:           line,
+        column:         column,
         options:        options ?? XCTKConfig.global,
         context:        failureContext
     )
@@ -74,8 +82,10 @@ public func _XCTKAssertFalseMacro(
     evaluated       : [BooleanExpr],
     notEvaluated    : Int,
     message         : @autoclosure () -> String,
+    fileID          : StaticString,
     file            : StaticString,
     line            : UInt,
+    column          : UInt,
     options         : TestOptions?
 )
 {
@@ -85,8 +95,10 @@ public func _XCTKAssertFalseMacro(
         evaluated:      evaluated,
         notEvaluated:   notEvaluated,
         message:        message,
+        fileID:         fileID,
         file:           file,
         line:           line,
+        column:         column,
         options:        options ?? XCTKConfig.global,
         context:        failureContext
     )
@@ -101,8 +113,10 @@ public func _XCTKAssertNilMacro(
     expr        : @autoclosure () throws -> Any?,
     exprText    : String,
     message     : @autoclosure () -> String,
+    fileID      : StaticString,
     file        : StaticString,
     line        : UInt,
+    column      : UInt,
     options     : TestOptions?
 )
 {
@@ -110,8 +124,10 @@ public func _XCTKAssertNilMacro(
         expr:       expr,
         exprText:   exprText,
         message:    message,
+        fileID:     fileID,
         file:       file,
         line:       line,
+        column:     column,
         options:    options ?? XCTKConfig.global,
         context:    failureContext
     )
@@ -124,8 +140,10 @@ public func _XCTKAssertNotNilMacro(
     expr        : @autoclosure () throws -> Any?,
     exprText    : String,
     message     : @autoclosure () -> String,
+    fileID      : StaticString,
     file        : StaticString,
     line        : UInt,
+    column      : UInt,
     options     : TestOptions?
 )
 {
@@ -133,8 +151,10 @@ public func _XCTKAssertNotNilMacro(
         expr:       expr,
         exprText:   exprText,
         message:    message,
+        fileID:     fileID,
         file:       file,
         line:       line,
+        column:     column,
         options:    options ?? XCTKConfig.global,
         context:    failureContext
     )
@@ -147,8 +167,10 @@ public func _XCTKUnwrapMacro<T>(
     expr        : @autoclosure () throws -> T?,
     exprText    : String,
     message     : @autoclosure () -> String,
+    fileID      : StaticString,
     file        : StaticString,
     line        : UInt,
+    column      : UInt,
     options     : TestOptions?
 ) throws -> T
 {
@@ -156,8 +178,10 @@ public func _XCTKUnwrapMacro<T>(
         expr:       expr,
         exprText:   exprText,
         message:    message,
+        fileID:     fileID,
         file:       file,
         line:       line,
+        column:     column,
         options:    options ?? XCTKConfig.global,
         context:    failureContext
     )
@@ -174,8 +198,10 @@ public func _XCTKAssertEqualMacro<T>(
     expectedText    : String,
     actualText      : String,
     message         : @autoclosure () -> String,
+    fileID          : StaticString,
     file            : StaticString,
     line            : UInt,
+    column          : UInt,
     options         : TestOptions?
 ) where T : Equatable
 {
@@ -185,8 +211,10 @@ public func _XCTKAssertEqualMacro<T>(
         expectedText:   expectedText,
         actualText:     actualText,
         message:        message,
+        fileID:         fileID,
         file:           file,
         line:           line,
+        column:         column,
         options:        options ?? XCTKConfig.global,
         context:        failureContext
     )
@@ -201,8 +229,10 @@ public func _XCTKAssertNotEqualMacro<T>(
     expr1Text   : String,
     expr2Text   : String,
     message     : @autoclosure () -> String,
+    fileID      : StaticString,
     file        : StaticString,
     line        : UInt,
+    column      : UInt,
     options     : TestOptions?
 ) where T : Equatable
 {
@@ -212,8 +242,10 @@ public func _XCTKAssertNotEqualMacro<T>(
         expr1Text:  expr1Text,
         expr2Text:  expr2Text,
         message:    message,
+        fileID:     fileID,
         file:       file,
         line:       line,
+        column:     column,
         options:    options ?? XCTKConfig.global,
         context:    failureContext
     )
@@ -228,8 +260,10 @@ public func _XCTKAssertIdenticalMacro(
     expr1Text   : String,
     expr2Text   : String,
     message     : @autoclosure () -> String,
+    fileID      : StaticString,
     file        : StaticString,
     line        : UInt,
+    column      : UInt,
     options     : TestOptions?
 )
 {
@@ -239,8 +273,10 @@ public func _XCTKAssertIdenticalMacro(
         expr1Text:  expr1Text,
         expr2Text:  expr2Text,
         message:    message,
+        fileID:     fileID,
         file:       file,
         line:       line,
+        column:     column,
         options:    options ?? XCTKConfig.global,
         context:    failureContext
     )
@@ -255,8 +291,10 @@ public func _XCTKAssertNotIdenticalMacro(
     expr1Text   : String,
     expr2Text   : String,
     message     : @autoclosure () -> String,
+    fileID      : StaticString,
     file        : StaticString,
     line        : UInt,
+    column      : UInt,
     options     : TestOptions?
 )
 {
@@ -266,8 +304,10 @@ public func _XCTKAssertNotIdenticalMacro(
         expr1Text:  expr1Text,
         expr2Text:  expr2Text,
         message:    message,
+        fileID:     fileID,
         file:       file,
         line:       line,
+        column:     column,
         options:    options ?? XCTKConfig.global,
         context:    failureContext
     )
@@ -283,8 +323,10 @@ public func _XCTKAssertEqualMacro<T>(
     expr2Text   : String,
     accuracy    : T,
     message     : @autoclosure () -> String,
+    fileID      : StaticString,
     file        : StaticString,
     line        : UInt,
+    column      : UInt,
     options     : TestOptions?
 ) where T : FloatingPoint
 {
@@ -295,8 +337,10 @@ public func _XCTKAssertEqualMacro<T>(
         expr2Text:  expr2Text,
         accuracy:   accuracy,
         message:    message,
+        fileID:     fileID,
         file:       file,
         line:       line,
+        column:     column,
         options:    options ?? XCTKConfig.global,
         context:    failureContext
     )
@@ -312,8 +356,10 @@ public func _XCTKAssertEqualMacro<T>(
     expr2Text   : String,
     accuracy    : T,
     message     : @autoclosure () -> String,
+    fileID      : StaticString,
     file        : StaticString,
     line        : UInt,
+    column      : UInt,
     options     : TestOptions?
 ) where T : Numeric
 {
@@ -324,8 +370,10 @@ public func _XCTKAssertEqualMacro<T>(
         expr2Text:  expr2Text,
         accuracy:   accuracy,
         message:    message,
+        fileID:     fileID,
         file:       file,
         line:       line,
+        column:     column,
         options:    options ?? XCTKConfig.global,
         context:    failureContext
     )
@@ -341,8 +389,10 @@ public func _XCTKAssertNotEqualMacro<T>(
     expr2Text   : String,
     accuracy    : T,
     message     : @autoclosure () -> String,
+    fileID      : StaticString,
     file        : StaticString,
     line        : UInt,
+    column      : UInt,
     options     : TestOptions?
 ) where T : FloatingPoint
 {
@@ -353,8 +403,10 @@ public func _XCTKAssertNotEqualMacro<T>(
         expr2Text:  expr2Text,
         accuracy:   accuracy,
         message:    message,
+        fileID:     fileID,
         file:       file,
         line:       line,
+        column:     column,
         options:    options ?? XCTKConfig.global,
         context:    failureContext
     )
@@ -370,8 +422,10 @@ public func _XCTKAssertNotEqualMacro<T>(
     expr2Text   : String,
     accuracy    : T,
     message     : @autoclosure () -> String,
+    fileID      : StaticString,
     file        : StaticString,
     line        : UInt,
+    column      : UInt,
     options     : TestOptions?
 ) where T : Numeric
 {
@@ -382,8 +436,10 @@ public func _XCTKAssertNotEqualMacro<T>(
         expr2Text:  expr2Text,
         accuracy:   accuracy,
         message:    message,
+        fileID:     fileID,
         file:       file,
         line:       line,
+        column:     column,
         options:    options ?? XCTKConfig.global,
         context:    failureContext
     )
@@ -400,8 +456,10 @@ public func _XCTKAssertGreaterThanMacro<T>(
     expr1Text   : String,
     expr2Text   : String,
     message     : @autoclosure () -> String,
+    fileID      : StaticString,
     file        : StaticString,
     line        : UInt,
+    column      : UInt,
     options     : TestOptions?
 ) where T : Comparable
 {
@@ -411,8 +469,10 @@ public func _XCTKAssertGreaterThanMacro<T>(
         expr1Text:  expr1Text,
         expr2Text:  expr2Text,
         message:    message,
+        fileID:     fileID,
         file:       file,
         line:       line,
+        column:     column,
         options:    options ?? XCTKConfig.global,
         context:    failureContext
     )
@@ -427,8 +487,10 @@ public func _XCTKAssertGreaterThanOrEqualMacro<T>(
     expr1Text   : String,
     expr2Text   : String,
     message     : @autoclosure () -> String,
+    fileID      : StaticString,
     file        : StaticString,
     line        : UInt,
+    column      : UInt,
     options     : TestOptions?
 ) where T : Comparable
 {
@@ -438,8 +500,10 @@ public func _XCTKAssertGreaterThanOrEqualMacro<T>(
         expr1Text:  expr1Text,
         expr2Text:  expr2Text,
         message:    message,
+        fileID:     fileID,
         file:       file,
         line:       line,
+        column:     column,
         options:    options ?? XCTKConfig.global,
         context:    failureContext
     )
@@ -454,8 +518,10 @@ public func _XCTKAssertLessThanOrEqualMacro<T>(
     expr1Text   : String,
     expr2Text   : String,
     message     : @autoclosure () -> String,
+    fileID      : StaticString,
     file        : StaticString,
     line        : UInt,
+    column      : UInt,
     options     : TestOptions?
 ) where T : Comparable
 {
@@ -465,8 +531,10 @@ public func _XCTKAssertLessThanOrEqualMacro<T>(
         expr1Text:  expr1Text,
         expr2Text:  expr2Text,
         message:    message,
+        fileID:     fileID,
         file:       file,
         line:       line,
+        column:     column,
         options:    options ?? XCTKConfig.global,
         context:    failureContext
     )
@@ -481,8 +549,10 @@ public func _XCTKAssertLessThanMacro<T>(
     expr1Text   : String,
     expr2Text   : String,
     message     : @autoclosure () -> String,
+    fileID      : StaticString,
     file        : StaticString,
     line        : UInt,
+    column      : UInt,
     options     : TestOptions?
 ) where T : Comparable
 {
@@ -492,8 +562,10 @@ public func _XCTKAssertLessThanMacro<T>(
         expr1Text:  expr1Text,
         expr2Text:  expr2Text,
         message:    message,
+        fileID:     fileID,
         file:       file,
         line:       line,
+        column:     column,
         options:    options ?? XCTKConfig.global,
         context:    failureContext
     )
@@ -508,8 +580,10 @@ public func _XCTKAssertThrowsErrorMacro<T>(
     expr            : () throws -> T,
     exprText        : String,
     message         : @autoclosure () -> String,
+    fileID          : StaticString,
     file            : StaticString,
     line            : UInt,
+    column          : UInt,
     options         : TestOptions?,
     errorHandler    : (any Error) -> Void
 )
@@ -518,8 +592,10 @@ public func _XCTKAssertThrowsErrorMacro<T>(
         expr:           expr,
         exprText:       exprText,
         message:        message,
+        fileID:         fileID,
         file:           file,
         line:           line,
+        column:         column,
         options:        options ?? XCTKConfig.global,
         errorHandler:   errorHandler,
         context:        failureContext
@@ -533,8 +609,10 @@ public func _XCTKAssertNoThrowMacro<T>(
     expr        : () throws -> T,
     exprText    : String,
     message     : @autoclosure () -> String,
+    fileID      : StaticString,
     file        : StaticString,
     line        : UInt,
+    column      : UInt,
     options     : TestOptions?
 )
 {
@@ -542,8 +620,10 @@ public func _XCTKAssertNoThrowMacro<T>(
         expr:       expr,
         exprText:   exprText,
         message:    message,
+        fileID:     fileID,
         file:       file,
         line:       line,
+        column:     column,
         options:    options ?? XCTKConfig.global,
         context:    failureContext
     )
@@ -556,14 +636,18 @@ public func _XCTKAssertNoThrowMacro<T>(
 @_documentation(visibility: package)
 public func _XCTKFailMacro(
     message : String,
+    fileID  : StaticString,
     file    : StaticString,
-    line    : UInt
+    line    : UInt,
+    column  : UInt
 )
 {
     TKFailMacro(
         message:    message,
+        fileID:     fileID,
         file:       file,
         line:       line,
+        column:     column,
         context:    failureContext
     )
 }
@@ -579,8 +663,10 @@ public func _XCTKAssertAllSatisfyMacro<C>(
     collectionText  : String,
     predicateText   : String,
     message         : @autoclosure () -> String,
+    fileID          : StaticString,
     file            : StaticString,
     line            : UInt,
+    column          : UInt,
     options         : TestOptions?
 ) where C : Collection
 {
@@ -590,8 +676,10 @@ public func _XCTKAssertAllSatisfyMacro<C>(
         collectionText:     collectionText,
         predicateText:      predicateText,
         message:            message,
+        fileID:             fileID,
         file:               file,
         line:               line,
+        column:             column,
         options:            options ?? XCTKConfig.global,
         context:            failureContext
     )
@@ -606,8 +694,10 @@ public func _XCTKAssertAnySatisfyMacro<C>(
     collectionText  : String,
     predicateText   : String,
     message         : @autoclosure () -> String,
+    fileID          : StaticString,
     file            : StaticString,
     line            : UInt,
+    column          : UInt,
     options         : TestOptions?
 ) where C : Collection
 {
@@ -617,8 +707,10 @@ public func _XCTKAssertAnySatisfyMacro<C>(
         collectionText:     collectionText,
         predicateText:      predicateText,
         message:            message,
+        fileID:             fileID,
         file:               file,
         line:               line,
+        column:             column,
         options:            options ?? XCTKConfig.global,
         context:            failureContext
     )
@@ -633,8 +725,10 @@ public func _XCTKAssertNoneSatisfyMacro<C>(
     collectionText  : String,
     predicateText   : String,
     message         : @autoclosure () -> String,
+    fileID          : StaticString,
     file            : StaticString,
     line            : UInt,
+    column          : UInt,
     options         : TestOptions?
 ) where C : Collection
 {
@@ -644,8 +738,10 @@ public func _XCTKAssertNoneSatisfyMacro<C>(
         collectionText:     collectionText,
         predicateText:      predicateText,
         message:            message,
+        fileID:             fileID,
         file:               file,
         line:               line,
+        column:             column,
         options:            options ?? XCTKConfig.global,
         context:            failureContext
     )
@@ -661,8 +757,10 @@ public func _XCTKAssertSatisfyMacro<C>(
     collectionText  : String,
     predicateText   : String,
     message         : @autoclosure () -> String,
+    fileID          : StaticString,
     file            : StaticString,
     line            : UInt,
+    column          : UInt,
     options         : TestOptions?
 ) where C : Collection
 {
@@ -673,8 +771,10 @@ public func _XCTKAssertSatisfyMacro<C>(
         collectionText:     collectionText,
         predicateText:      predicateText,
         message:            message,
+        fileID:             fileID,
         file:               file,
         line:               line,
+        column:             column,
         options:            options ?? XCTKConfig.global,
         context:            failureContext
     )
@@ -690,8 +790,10 @@ public func _XCTKAssertSatisfyMacro<C>(
     collectionText  : String,
     predicateText   : String,
     message         : @autoclosure () -> String,
+    fileID          : StaticString,
     file            : StaticString,
     line            : UInt,
+    column          : UInt,
     options         : TestOptions?
 ) where C : Collection
 {
@@ -702,8 +804,10 @@ public func _XCTKAssertSatisfyMacro<C>(
         collectionText:     collectionText,
         predicateText:      predicateText,
         message:            message,
+        fileID:             fileID,
         file:               file,
         line:               line,
+        column:             column,
         options:            options ?? XCTKConfig.global,
         context:            failureContext
     )
@@ -719,8 +823,10 @@ public func _XCTKAssertSatisfyMacro<C>(
     collectionText  : String,
     predicateText   : String,
     message         : @autoclosure () -> String,
+    fileID          : StaticString,
     file            : StaticString,
     line            : UInt,
+    column          : UInt,
     options         : TestOptions?
 ) where C : Collection
 {
@@ -731,8 +837,10 @@ public func _XCTKAssertSatisfyMacro<C>(
         collectionText:     collectionText,
         predicateText:      predicateText,
         message:            message,
+        fileID:             fileID,
         file:               file,
         line:               line,
+        column:             column,
         options:            options ?? XCTKConfig.global,
         context:            failureContext
     )
@@ -748,8 +856,10 @@ public func _XCTKAssertExactlyMacro<C>(
     collectionText  : String,
     predicateText   : String,
     message         : @autoclosure () -> String,
+    fileID          : StaticString,
     file            : StaticString,
     line            : UInt,
+    column          : UInt,
     options         : TestOptions?
 ) where C : Collection
 {
@@ -760,8 +870,10 @@ public func _XCTKAssertExactlyMacro<C>(
         collectionText:     collectionText,
         predicateText:      predicateText,
         message:            message,
+        fileID:             fileID,
         file:               file,
         line:               line,
+        column:             column,
         options:            options ?? XCTKConfig.global,
         context:            failureContext
     )
@@ -776,8 +888,10 @@ public func _XCTKAssertExactlyOneMacro<C>(
     collectionText  : String,
     predicateText   : String,
     message         : @autoclosure () -> String,
+    fileID          : StaticString,
     file            : StaticString,
     line            : UInt,
+    column          : UInt,
     options         : TestOptions?
 ) where C : Collection
 {
@@ -787,8 +901,10 @@ public func _XCTKAssertExactlyOneMacro<C>(
         collectionText:     collectionText,
         predicateText:      predicateText,
         message:            message,
+        fileID:             fileID,
         file:               file,
         line:               line,
+        column:             column,
         options:            options ?? XCTKConfig.global,
         context:            failureContext
     )
@@ -803,9 +919,11 @@ public func _XCTKAssertSortedMacro<C>(
     collectionText  : String,
     predicateText   : String,
     message         : @autoclosure () -> String,
+    fileID          : StaticString,
     file            : StaticString,
     line            : UInt,
-    options         : TestOptions?        
+    column          : UInt,
+    options         : TestOptions?
 ) where C : Collection
 {
     TKAssertSortedMacro(
@@ -814,8 +932,10 @@ public func _XCTKAssertSortedMacro<C>(
         collectionText:     collectionText,
         predicateText:      predicateText,
         message:            message,
+        fileID:             fileID,
         file:               file,
         line:               line,
+        column:             column,
         options:            options ?? XCTKConfig.global,
         context:            failureContext
     )
@@ -828,8 +948,10 @@ public func _XCTKAssertUniqueMacro<C>(
     collection      : @autoclosure () throws -> C,
     collectionText  : String,
     message         : @autoclosure () -> String,
+    fileID          : StaticString,
     file            : StaticString,
     line            : UInt,
+    column          : UInt,
     options         : TestOptions?
 ) where C : Collection, C.Element : Hashable
 {
@@ -837,8 +959,10 @@ public func _XCTKAssertUniqueMacro<C>(
         collection:         collection,
         collectionText:     collectionText,
         message:            message,
+        fileID:             fileID,
         file:               file,
         line:               line,
+        column:             column,
         options:            options ?? XCTKConfig.global,
         context:            failureContext
     )
@@ -853,8 +977,10 @@ public func _XCTKAssertUniqueMacro<C, K>(
     collectionText  : String,
     predicateText   : String,
     message         : @autoclosure () -> String,
+    fileID          : StaticString,
     file            : StaticString,
     line            : UInt,
+    column          : UInt,
     options         : TestOptions?
 ) where C : Collection, K : Hashable
 {
@@ -864,8 +990,10 @@ public func _XCTKAssertUniqueMacro<C, K>(
         collectionText:     collectionText,
         predicateText:      predicateText,
         message:            message,
+        fileID:             fileID,
         file:               file,
         line:               line,
+        column:             column,
         options:            options ?? XCTKConfig.global,
         context:            failureContext
     )

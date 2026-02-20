@@ -87,8 +87,10 @@ internal struct BooleanExprWalker
                 evaluated:      [evaluated],
                 notEvaluated:   0,
                 message:        \(message),
+                fileID:         #fileID,
                 file:           #filePath,
                 line:           #line,
+                column:         #column,
                 options:        \(options)
             )
         """
@@ -142,8 +144,10 @@ internal struct BooleanExprWalker
                 evaluated:      _$evaluated,
                 notEvaluated:   _$notEvaluated,
                 message:        \(message),
+                fileID:         #fileID,
                 file:           #filePath,
                 line:           #line,
+                column:         #column,
                 options:        \(options)
             )
         """

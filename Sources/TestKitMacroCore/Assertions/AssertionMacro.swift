@@ -81,8 +81,10 @@ extension NoExprMacro
         return """
         \(raw: kind.macroInternalName(for: framework))(
             message:    \(message),
+            fileID:     #fileID,
             file:       #filePath,
-            line:       #line
+            line:       #line,
+            column:     #column
         )
         """
     }
@@ -150,8 +152,10 @@ extension SingleExprMacro
                     expr:       \(expr),
                     exprText:   \(literal: exprText),
                     message:    \(message),
+                    fileID:     #fileID,
                     file:       #filePath,
                     line:       #line,
+                    column:     #column,
                     options:    \(options)
                 )
                 """
@@ -196,8 +200,10 @@ extension SingleExprMacro
                     expr:           { \(expr) },
                     exprText:       \(literal: exprText),
                     message:        \(message),
+                    fileID:         #fileID,
                     file:           #filePath,
                     line:           #line,
+                    column:         #column,
                     options:        \(options),
                     errorHandler:   \(errorHandler)
                 )
@@ -210,8 +216,10 @@ extension SingleExprMacro
                     expr:       { \(expr) },
                     exprText:   \(literal: exprText),
                     message:    \(message),
+                    fileID:     #fileID,
                     file:       #filePath,
                     line:       #line,
+                    column:     #column,
                     options:    \(options)
                 )
                 """
@@ -223,8 +231,10 @@ extension SingleExprMacro
                     collection:         \(expr),
                     collectionText:     \(literal: exprText),
                     message:            \(message),
+                    fileID:             #fileID,
                     file:               #filePath,
                     line:               #line,
+                    column:             #column,
                     options:            \(options)
                 )
                 """
@@ -291,8 +301,10 @@ extension DoubleExprMacro
                     expectedText:   \(literal: expr1Text),
                     actualText:     \(literal: expr2Text),
                     message:        \(message),
+                    fileID:         #fileID,
                     file:           #filePath,
                     line:           #line,
+                    column:         #column,
                     options:        \(options)
                 )
                 """
@@ -313,8 +325,10 @@ extension DoubleExprMacro
                     expr1Text:  \(literal: expr1Text),
                     expr2Text:  \(literal: expr2Text),
                     message:    \(message),
+                    fileID:     #fileID,
                     file:       #filePath,
                     line:       #line,
+                    column:     #column,
                     options:    \(options)
                 )
                 """
@@ -338,8 +352,10 @@ extension DoubleExprMacro
                     expr2Text:  \(literal: expr2Text),
                     accuracy:   \(accuracy),
                     message:    \(message),
+                    fileID:     #fileID,
                     file:       #filePath,
                     line:       #line,
+                    column:     #column,
                     options:    \(options)
                 )
                 """
@@ -447,8 +463,10 @@ extension DoubleExprPredicateMacro
                     collectionText:     \(literal: collectionText),
                     predicateText:      \(literal: predicateText),
                     message:            \(message),
+                    fileID:             #fileID,
                     file:               #filePath,
                     line:               #line,
+                    column:             #column,
                     options:            \(options)
                 )
                 """
@@ -479,8 +497,10 @@ extension DoubleExprPredicateMacro
                     collectionText:     \(literal: collectionText),
                     predicateText:      \(literal: predicateText),
                     message:            \(message),
+                    fileID:             #fileID,
                     file:               #filePath,
                     line:               #line,
+                    column:             #column,
                     options:            \(options)
                 )
                 """

@@ -39,13 +39,17 @@ internal final class PropertyInterceptorTests: TestKitCase
         let interceptor = PropertyInterceptor()
         
         let message : String        = "some error"
+        let fileID  : StaticString  = "ID"
         let file    : StaticString  = "File.swift"
         let line    : UInt          = 100
+        let column  : UInt          = 50
         
         interceptor.recordFailure(
             message:    message,
+            fileID:     fileID,
             file:       file,
-            line:       line
+            line:       line,
+            column:     column
         )
         
         XCTAssertTrue(interceptor.didFail)
@@ -55,8 +59,10 @@ internal final class PropertyInterceptorTests: TestKitCase
             = try XCTUnwrap(interceptor.failures.first)
         
         XCTAssertEqual(failure.message, message)
+        XCTAssertEqual(failure.fileID.description, fileID.description)
         XCTAssertEqual(failure.file.description, file.description)
         XCTAssertEqual(failure.line, line)
+        XCTAssertEqual(failure.column, column)
     }
     
     
@@ -65,19 +71,21 @@ internal final class PropertyInterceptorTests: TestKitCase
     {
         let interceptor = PropertyInterceptor()
         
-        let records: [(String, StaticString, UInt)] =
+        let records: [(String, StaticString, StaticString, UInt, UInt)] =
         [
-            ("first", "A.swift", 1),
-            ("second", "B.swift", 2),
-            ("third", "C.swift", 3)
+            ("Message1", "ID1", "1.swift", 1, 10),
+            ("Message2", "ID2", "2.swift", 2, 20),
+            ("Message3", "ID3", "3.swift", 3, 30)
         ]
         
         for record in records
         {
             interceptor.recordFailure(
                 message:    record.0,
-                file:       record.1,
-                line:       record.2
+                fileID:     record.1,
+                file:       record.2,
+                line:       record.3,
+                column:     record.4
             )
         }
         
@@ -87,8 +95,10 @@ internal final class PropertyInterceptorTests: TestKitCase
         for (i, failure) in interceptor.failures.enumerated()
         {
             XCTAssertEqual(failure.message, records[i].0)
-            XCTAssertEqual(failure.file.description, records[i].1.description)
-            XCTAssertEqual(failure.line, records[i].2)
+            XCTAssertEqual(failure.fileID.description, records[i].1.description)
+            XCTAssertEqual(failure.file.description, records[i].2.description)
+            XCTAssertEqual(failure.line, records[i].3)
+            XCTAssertEqual(failure.column, records[i].4)
         }
     }
     
@@ -99,13 +109,17 @@ internal final class PropertyInterceptorTests: TestKitCase
         let interceptor = PropertyInterceptor()
         
         let message : String        = ""
+        let fileID  : StaticString  = "ID"
         let file    : StaticString  = "File.swift"
         let line    : UInt          = 100
+        let column  : UInt          = 50
         
         interceptor.recordFailure(
             message:    message,
+            fileID:     fileID,
             file:       file,
-            line:       line
+            line:       line,
+            column:     column
         )
         
         XCTAssertTrue(interceptor.didFail)
@@ -115,8 +129,10 @@ internal final class PropertyInterceptorTests: TestKitCase
             = try XCTUnwrap(interceptor.failures.first)
         
         XCTAssertEqual(failure.message, message)
+        XCTAssertEqual(failure.fileID.description, fileID.description)
         XCTAssertEqual(failure.file.description, file.description)
         XCTAssertEqual(failure.line, line)
+        XCTAssertEqual(failure.column, column)
     }
     
     
@@ -127,11 +143,7 @@ internal final class PropertyInterceptorTests: TestKitCase
     {
         let interceptor = PropertyInterceptor()
         
-        interceptor.recordFailure(
-            message:    "error",
-            file:       "File.swift",
-            line:       100
-        )
+        interceptor.recordFailure()
         
         interceptor.recordLabel("label")
         interceptor.recordCoverageRequirement(50, for: "req")
@@ -172,11 +184,7 @@ internal final class PropertyInterceptorTests: TestKitCase
         interceptor.recordLabel("c")
         interceptor.recordTableLabel("z", table: "t")
         
-        interceptor.recordFailure(
-            message:    "error",
-            file:       "File.swift",
-            line:       100
-        )
+        interceptor.recordFailure()
         
         interceptor.reset()
         
@@ -208,19 +216,21 @@ internal final class PropertyInterceptorTests: TestKitCase
     {
         let interceptor = PropertyInterceptor()
         
-        let records: [(String, StaticString, UInt)] =
+        let records: [(String, StaticString, StaticString, UInt, UInt)] =
         [
-            ("first", "A.swift", 1),
-            ("second", "B.swift", 2),
-            ("third", "C.swift", 3)
+            ("Message1", "ID1", "1.swift", 1, 10),
+            ("Message2", "ID2", "2.swift", 2, 20),
+            ("Message3", "ID3", "3.swift", 3, 30)
         ]
         
         for record in records
         {
             interceptor.recordFailure(
                 message:    record.0,
-                file:       record.1,
-                line:       record.2
+                fileID:     record.1,
+                file:       record.2,
+                line:       record.3,
+                column:     record.4
             )
         }
         
@@ -233,16 +243,20 @@ internal final class PropertyInterceptorTests: TestKitCase
         {
             interceptor.recordFailure(
                 message:    record.0,
-                file:       record.1,
-                line:       record.2
+                fileID:     record.1,
+                file:       record.2,
+                line:       record.3,
+                column:     record.4
             )
         }
         
         for (i, failure) in interceptor.failures.enumerated()
         {
             XCTAssertEqual(failure.message, records[i].0)
-            XCTAssertEqual(failure.file.description, records[i].1.description)
-            XCTAssertEqual(failure.line, records[i].2)
+            XCTAssertEqual(failure.fileID.description, records[i].1.description)
+            XCTAssertEqual(failure.file.description, records[i].2.description)
+            XCTAssertEqual(failure.line, records[i].3)
+            XCTAssertEqual(failure.column, records[i].4)
         }
     }
     
@@ -258,8 +272,10 @@ internal final class PropertyInterceptorTests: TestKitCase
             
             interceptor.recordFailure(
                 message:    message,
+                fileID:     "ID",
                 file:       "File.swift",
-                line:       UInt(index)
+                line:       UInt(index),
+                column:     UInt(index)
             )
             
             XCTAssertTrue(interceptor.didFail)
@@ -1113,26 +1129,31 @@ internal final class PropertyInterceptorTests: TestKitCase
         let outer   = PropertyInterceptor()
         let inner   = PropertyInterceptor()
         
-        let records: [(String, StaticString, UInt)] =
+        let records: [(String, StaticString, StaticString, UInt, UInt)] =
         [
-            ("first", "A.swift", 1),
-            ("second", "B.swift", 2)
+            ("Message1", "ID1", "1.swift", 1, 10),
+            ("Message2", "ID2", "2.swift", 2, 20),
+            ("Message3", "ID3", "3.swift", 3, 30)
         ]
         
         PropertyInterceptor.$current.withValue(outer)
         {
             outer.recordFailure(
                 message:    records[0].0,
-                file:       records[0].1,
-                line:       records[0].2
+                fileID:     records[0].1,
+                file:       records[0].2,
+                line:       records[0].3,
+                column:     records[0].4
             )
             
             PropertyInterceptor.$current.withValue(inner)
             {
                 inner.recordFailure(
                     message:    records[1].0,
-                    file:       records[1].1,
-                    line:       records[1].2
+                    fileID:     records[1].1,
+                    file:       records[1].2,
+                    line:       records[1].3,
+                    column:     records[1].4
                 )
             }
         }
@@ -1145,15 +1166,19 @@ internal final class PropertyInterceptorTests: TestKitCase
         for failure in outer.failures
         {
             XCTAssertEqual(failure.message, records[0].0)
-            XCTAssertEqual(failure.file.description, records[0].1.description)
-            XCTAssertEqual(failure.line, records[0].2)
+            XCTAssertEqual(failure.fileID.description, records[0].1.description)
+            XCTAssertEqual(failure.file.description, records[0].2.description)
+            XCTAssertEqual(failure.line, records[0].3)
+            XCTAssertEqual(failure.column, records[0].4)
         }
         
         for failure in inner.failures
         {
             XCTAssertEqual(failure.message, records[1].0)
-            XCTAssertEqual(failure.file.description, records[1].1.description)
-            XCTAssertEqual(failure.line, records[1].2)
+            XCTAssertEqual(failure.fileID.description, records[1].1.description)
+            XCTAssertEqual(failure.file.description, records[1].2.description)
+            XCTAssertEqual(failure.line, records[1].3)
+            XCTAssertEqual(failure.column, records[1].4)
         }
     }
     
@@ -1174,8 +1199,11 @@ internal final class PropertyInterceptorTests: TestKitCase
             {
                 interceptor.recordFailure(
                     message:    "failure \(index)",
+                    fileID:     "ID",
                     file:       "File.swift",
-                    line:       UInt(index)
+                    line:       UInt(index),
+                    column:     UInt(index)
+                    
                 )
             }
         }
@@ -1204,8 +1232,10 @@ internal final class PropertyInterceptorTests: TestKitCase
             
             interceptorA.recordFailure(
                 message:    "Task A",
+                fileID:     "ID-A",
                 file:       "A.swift",
-                line:       1
+                line:       1,
+                column:     2
             )
         }
         
@@ -1217,8 +1247,10 @@ internal final class PropertyInterceptorTests: TestKitCase
             
             interceptorB.recordFailure(
                 message:    "Task B",
+                fileID:     "ID-B",
                 file:       "B.swift",
-                line:       2
+                line:       2,
+                column:     3
             )
         }
         
@@ -1230,15 +1262,19 @@ internal final class PropertyInterceptorTests: TestKitCase
         for failure in interceptorA.failures
         {
             XCTAssertEqual(failure.message, "Task A")
+            XCTAssertEqual(failure.fileID.description, "ID-A")
             XCTAssertEqual(failure.file.description, "A.swift")
             XCTAssertEqual(failure.line, 1)
+            XCTAssertEqual(failure.column, 2)
         }
         
         for failure in interceptorB.failures
         {
             XCTAssertEqual(failure.message, "Task B")
+            XCTAssertEqual(failure.fileID.description, "ID-B")
             XCTAssertEqual(failure.file.description, "B.swift")
             XCTAssertEqual(failure.line, 2)
+            XCTAssertEqual(failure.column, 3)
         }
     }
 }

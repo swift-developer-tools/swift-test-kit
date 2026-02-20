@@ -19,16 +19,20 @@ import TestKitCore
 @Reasync
 internal func TKForAll<each T>(
     _ message   : @autoclosure () -> String             = "",
+    fileID      : StaticString                          = #fileID,
     file        : StaticString                          = #filePath,
     line        : UInt                                  = #line,
+    column      : UInt                                  = #column,
     options     : TestOptions                           = .init(),
     _ property  : (repeat each T) async throws -> Void
 ) async where repeat each T : Arbitrary
 {
     await TestKitCore.TKForAll(
         message,
+        fileID:     fileID,
         file:       file,
         line:       line,
+        column:     column,
         options:    options,
         property,
         context:    failureContext
@@ -41,8 +45,10 @@ internal func TKForAll<each T>(
 internal func TKForAll<each T>(
     using generators    : repeat Generator<each T>,
     message             : @autoclosure () -> String             = "",
+    fileID              : StaticString                          = #fileID,
     file                : StaticString                          = #filePath,
     line                : UInt                                  = #line,
+    column              : UInt                                  = #column,
     options             : TestOptions                           = .init(),
     _ property          : (repeat each T) async throws -> Void
 ) async
@@ -50,8 +56,10 @@ internal func TKForAll<each T>(
     await TestKitCore.TKForAll(
         using:      repeat each generators,
         message:    message,
+        fileID:     fileID,
         file:       file,
         line:       line,
+        column:     column,
         options:    options,
         property,
         context:    failureContext
@@ -64,8 +72,10 @@ internal func TKForAll<each T>(
 internal func TKForAll<each T>(
     where precondition  : @escaping (repeat each T) -> Bool,
     message             : @autoclosure () -> String             = "",
+    fileID              : StaticString                          = #fileID,
     file                : StaticString                          = #filePath,
     line                : UInt                                  = #line,
+    column              : UInt                                  = #column,
     options             : TestOptions                           = .init(),
     _ property          : (repeat each T) async throws -> Void
 ) async where repeat each T : Arbitrary
@@ -73,8 +83,10 @@ internal func TKForAll<each T>(
     await TestKitCore.TKForAll(
         where:      precondition,
         message:    message,
+        fileID:     fileID,
         file:       file,
         line:       line,
+        column:     column,
         options:    options,
         property,
         context:    failureContext
@@ -88,8 +100,10 @@ internal func TKForAll<each T>(
     using generators    : repeat Generator<each T>,
     where precondition  : @escaping (repeat each T) -> Bool,
     message             : @autoclosure () -> String             = "",
+    fileID              : StaticString                          = #fileID,
     file                : StaticString                          = #filePath,
     line                : UInt                                  = #line,
+    column              : UInt                                  = #column,
     options             : TestOptions                           = .init(),
     _ property          : (repeat each T) async throws -> Void
 ) async
@@ -98,8 +112,10 @@ internal func TKForAll<each T>(
         using:      repeat each generators,
         where:      precondition,
         message:    message,
+        fileID:     fileID,
         file:       file,
         line:       line,
+        column:     column,
         options:    options,
         property,
         context:    failureContext

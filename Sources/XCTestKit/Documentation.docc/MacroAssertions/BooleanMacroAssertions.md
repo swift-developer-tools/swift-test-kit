@@ -6,9 +6,9 @@ Assert that a condition generates a true or false result.
 
 ### Tests for True Conditions
 
-- ``XCTKAssert(_:_:file:line:options:)-macro``
-- ``XCTKAssertTrue(_:_:file:line:options:)-macro``
+- ``XCTKAssert(_:_:fileID:file:line:column:options:)-macro``
+- ``XCTKAssertTrue(_:_:fileID:file:line:column:options:)-macro``
 
 ### Tests for False Conditions
 
-- ``XCTKAssertFalse(_:_:file:line:options:)-macro``
+- ``XCTKAssertFalse(_:_:fileID:file:line:column:options:)-macro``

@@ -6,8 +6,8 @@ Assert whether a function call throws an error.
 
 ### Tests for Errors
 
-- ``XCTKAssertThrowsError(_:_:file:line:options:_:)-func``
+- ``XCTKAssertThrowsError(_:_:fileID:file:line:column:options:_:)-func``
 
 ### Test for No Errors
 
-- ``XCTKAssertNoThrow(_:_:file:line:options:)-func``
+- ``XCTKAssertNoThrow(_:_:fileID:file:line:column:options:)-func``

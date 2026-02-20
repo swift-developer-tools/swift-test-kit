@@ -18,15 +18,19 @@ extension AssertionKind
     ///   - capture: The kind of captured assertion expression.
     ///   - reason: The optional failure reason.
     ///   - message: The description of a failure.
+    ///   - fileID: The ID of the file where the failure occurs.
     ///   - file: The file where the failure occurs.
     ///   - line: The line where the failure occurs.
+    ///   - column: The column where the failure occurs.
     package func fail(
         context     : FailureContext,
         capture     : ExprCaptureKind,
         reason      : String?,
         message     : () -> String,
+        fileID      : StaticString,
         file        : StaticString,
-        line        : UInt
+        line        : UInt,
+        column      : UInt
     )
     {
         let text: String = makeReasonFailure(
@@ -38,8 +42,10 @@ extension AssertionKind
         
         context.emit(
             text,
+            fileID,
             file,
-            line
+            line,
+            column
         )
     }
     
@@ -53,16 +59,20 @@ extension AssertionKind
     ///   - capture: The kind of captured assertion expression.
     ///   - diff: The computed diff.
     ///   - message: The description of a failure.
+    ///   - fileID: The ID of the file where the failure occurs.
     ///   - file: The file where the failure occurs.
     ///   - line: The line where the failure occurs.
+    ///   - column: The column where the failure occurs.
     ///   - options: The options for testing.
     package func fail(
         context : FailureContext,
         capture : ExprCaptureKind,
         diff    : DiffNode,
         message : () -> String,
+        fileID  : StaticString,
         file    : StaticString,
         line    : UInt,
+        column  : UInt,
         options : TestOptions
     )
     {
@@ -76,8 +86,10 @@ extension AssertionKind
         
         context.emit(
             getFailureMessage(from: result),
+            fileID,
             file,
-            line
+            line,
+            column
         )
     }
     
@@ -92,15 +104,19 @@ extension AssertionKind
     ///   - actual: The string representation of the actual value, or `nil`
     ///   to omit.
     ///   - message: The description of a failure.
+    ///   - fileID: The ID of the file where the failure occurs.
     ///   - file: The file where the failure occurs.
     ///   - line: The line where the failure occurs.
+    ///   - column: The column where the failure occurs.
     package func fail(
         context : FailureContext,
         capture : ExprCaptureKind,
         actual  : String?,
         message : () -> String,
+        fileID  : StaticString,
         file    : StaticString,
-        line    : UInt
+        line    : UInt,
+        column  : UInt
     )
     {
         let result: Result<String, UnhandledError> = makeSingleExprFailure(
@@ -112,8 +128,10 @@ extension AssertionKind
         
         context.emit(
             getFailureMessage(from: result),
+            fileID,
             file,
-            line
+            line,
+            column
         )
     }
     
@@ -128,8 +146,10 @@ extension AssertionKind
     ///   - evaluated: The evaluated boolean expressions.
     ///   - notEvaluated: The number of unevaluated boolean expressions.
     ///   - message: The description of a failure.
+    ///   - fileID: The ID of the file where the failure occurs.
     ///   - file: The file where the failure occurs.
     ///   - line: The line where the failure occurs.
+    ///   - column: The column where the failure occurs.
     ///   - options: The options for testing.
     package func fail(
         context         : FailureContext,
@@ -137,8 +157,10 @@ extension AssertionKind
         evaluated       : [BooleanExpr],
         notEvaluated    : Int,
         message         : () -> String,
+        fileID          : StaticString,
         file            : StaticString,
         line            : UInt,
+        column          : UInt,
         options         : TestOptions
     )
     {
@@ -153,8 +175,10 @@ extension AssertionKind
         
         context.emit(
             text,
+            fileID,
             file,
-            line
+            line,
+            column
         )
     }
     
@@ -168,16 +192,20 @@ extension AssertionKind
     ///   - capture: The kind of captured assertion expression.
     ///   - failure: Information about the failed predicate.
     ///   - message: The description of a failure.
+    ///   - fileID: The ID of the file where the failure occurs.
     ///   - file: The file where the failure occurs.
     ///   - line: The line where the failure occurs.
+    ///   - column: The column where the failure occurs.
     ///   - options: The options for testing.
     package func fail(
         context : FailureContext,
         capture : ExprCaptureKind,
         failure : PredicateFailure,
         message : () -> String,
+        fileID  : StaticString,
         file    : StaticString,
         line    : UInt,
+        column  : UInt,
         options : TestOptions
     )
     {
@@ -191,8 +219,10 @@ extension AssertionKind
         
         context.emit(
             text,
+            fileID,
             file,
-            line
+            line,
+            column
         )
     }
     
