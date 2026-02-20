@@ -16,52 +16,39 @@ public struct TestOptions: Equatable, Sendable
     ///
     /// The default value is `true`. Pass `false` to delegate to the underlying
     /// XCTest equivalent.
-    public var diffEnabled          : Bool
-    
-    /// Whether tests keep running after an assertion failure.
-    ///
-    /// The default value is `true`. When `true`, tests keep running after an
-    /// assertion fails, equivalent to `#expect` in Swift Testing. When `false`,
-    /// failed assertions immediately stop the test, equivalent to `#require`.
-    ///
-    /// - Note: This option applies only to SwiftTestKit. For XCTestKit, use
-    /// [`continueAfterFailure`](https://developer.apple.com/documentation/xctest/xctestcase/continueafterfailure)
-    /// on [`XCTKCase`](https://swift-developer-tools.github.io/swift-test-kit/documentation/xctestkit/xctkcase).
-    public var continueAfterFailure : Bool
+    public var diffEnabled      : Bool
     
     /// The options for computing diffs.
     ///
     /// The default value is a default-initialized ``DiffOptions`` instance.
-    public var diffOptions          : DiffOptions
+    public var diffOptions      : DiffOptions
     
     /// The options for formatting diffs.
     ///
     /// The default value is a default-initialized ``FormatOptions`` instance.
-    public var formatOptions        : FormatOptions
+    public var formatOptions    : FormatOptions
     
     /// The options for property-based testing.
     ///
     /// The default value is a default-initialized ``PropertyOptions``
     /// instance.
-    public var propertyOptions      : PropertyOptions
+    public var propertyOptions  : PropertyOptions
     
     
     
     /// Initializes a ``TestOptions`` instance, optionally specifying values
     /// for its properties.
     public init(
-        diffEnabled             : Bool              = true,
-        continueAfterFailure    : Bool              = true,
-        diffOptions             : DiffOptions       = .init(),
-        formatOptions           : FormatOptions     = .init(),
-        propertyOptions         : PropertyOptions   = .init()
+        diffEnabled     : Bool              = true,
+        diffOptions     : DiffOptions       = .init(),
+        formatOptions   : FormatOptions     = .init(),
+        propertyOptions : PropertyOptions   = .init()
     )
     {
-        self.diffEnabled            = diffEnabled
-        self.continueAfterFailure   = continueAfterFailure
-        self.diffOptions            = diffOptions
-        self.formatOptions          = formatOptions
-        self.propertyOptions        = propertyOptions
+        self.diffEnabled        = diffEnabled
+        self.diffOptions        = diffOptions
+        self.formatOptions      = formatOptions
+        self.propertyOptions    = propertyOptions
     }
 }
 
