@@ -7,6 +7,7 @@
 //
 //===----------------------------------------------------------------------===//
 
+import TestKitCore
 import XCTest
 
 
@@ -15,12 +16,12 @@ import XCTest
 /// the embedded assertion failure message.
 /// - Parameters:
 ///   - output: The full property evaluator output.
-///   - marker: The text on which to split the given output.
+///   - assertion: The assertion name on which to split the given output.
 /// - Returns: The property-related component of the given output.
 /// - Throws: An error if the given marker is not found.
 internal func getPropertyOutput(
     from    output  : String?,
-    before  marker  : String
+    before  assertion  : AssertionKind
 ) throws -> String
 {
     guard let output
@@ -30,6 +31,8 @@ internal func getPropertyOutput(
         
         throw TestError()
     }
+    
+    let marker: String = assertion.name
     
     guard let range: Range<String.Index> = output.range(of: "\n\(marker)")
     else

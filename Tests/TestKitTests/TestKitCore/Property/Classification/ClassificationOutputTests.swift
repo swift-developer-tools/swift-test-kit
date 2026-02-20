@@ -8,12 +8,11 @@
 //===----------------------------------------------------------------------===//
 
 import TestKitCore
-import XCTestKit
 import XCTest
 
 
 
-internal final class ClassificationOutputTests: XCTestKitCase
+internal final class ClassificationOutputTests: TestKitCase
 {
     override func setUp()
     {
@@ -37,14 +36,14 @@ internal final class ClassificationOutputTests: XCTestKitCase
         
         let actual: String? = await withOneExpectedFailure
         {
-            await XCTKForAll(
+            await TKForAll(
                 using:      Generator<Int>.constant(5),
                 options:    options
             )
             {
                 (n: Int) async in
                 
-                XCTKCover(100, "negative", when: n < 0)
+                TKCover(100, "negative", when: n < 0)
             }
         }
         
@@ -75,15 +74,15 @@ internal final class ClassificationOutputTests: XCTestKitCase
         
         let actual: String? = await withOneExpectedFailure
         {
-            await XCTKForAll(
+            await TKForAll(
                 using:      Generator<Int>.constant(5),
                 options:    options
             )
             {
                 (n: Int) async in
                 
-                XCTKCover(100, "negative", when: n < 0)
-                XCTKCover(100, "positive", when: n > 0)
+                TKCover(100, "negative", when: n < 0)
+                TKCover(100, "positive", when: n > 0)
             }
         }
         
@@ -115,7 +114,7 @@ internal final class ClassificationOutputTests: XCTestKitCase
         
         let actual: String? = await withOneExpectedFailure
         {
-            await XCTKForAll(
+            await TKForAll(
                 using:      Generator<Int>.constant(5),
                 message:    "hello world",
                 options:    options
@@ -123,7 +122,7 @@ internal final class ClassificationOutputTests: XCTestKitCase
             {
                 (n: Int) async in
                 
-                XCTKCover(100, "negative", when: n < 0)
+                TKCover(100, "negative", when: n < 0)
             }
         }
         
@@ -156,14 +155,14 @@ internal final class ClassificationOutputTests: XCTestKitCase
         
         let actual: String? = await withOneExpectedFailure
         {
-            await XCTKForAll(
+            await TKForAll(
                 using:      Generator<Int>.constant(5),
                 options:    options
             )
             {
                 (n: Int) async in
                 
-                XCTKCover(100, "negative", when: n < 0)
+                TKCover(100, "negative", when: n < 0)
             }
         }
         
@@ -194,15 +193,15 @@ internal final class ClassificationOutputTests: XCTestKitCase
         
         let actual: String? = await withOneExpectedFailure
         {
-            await XCTKForAll(
+            await TKForAll(
                 using:      Generator<Int>.constant(0),
                 options:    options
             )
             {
                 (n: Int) async in
                 
-                XCTKCover(50, "negative", when: n < 0)
-                XCTKCover(50, "positive", when: n > 0)
+                TKCover(50, "negative", when: n < 0)
+                TKCover(50, "positive", when: n > 0)
             }
         }
         
@@ -234,14 +233,14 @@ internal final class ClassificationOutputTests: XCTestKitCase
         
         let actual: String? = await withOneExpectedFailure
         {
-            await XCTKForAll(
+            await TKForAll(
                 using:      Generator<Int>.constant(5),
                 options:    options
             )
             {
                 (n: Int) async in
                 
-                XCTKCover(2.5, "negative", when: n < 0)
+                TKCover(2.5, "negative", when: n < 0)
             }
         }
         
@@ -272,15 +271,15 @@ internal final class ClassificationOutputTests: XCTestKitCase
         
         let actual: String? = await withOneExpectedFailure
         {
-            await XCTKForAll(
+            await TKForAll(
                 using:      Generator<Int>.constant(5),
                 options:    options
             )
             {
                 (n: Int) async in
                 
-                XCTKClassify("positive", when: n > 0)
-                XCTKCover(100, "negative", when: n < 0)
+                TKClassify("positive", when: n > 0)
+                TKCover(100, "negative", when: n < 0)
             }
         }
         
@@ -320,14 +319,14 @@ internal final class ClassificationOutputTests: XCTestKitCase
         
         let actual: String? = await withOneExpectedFailure
         {
-            await XCTKForAll(
+            await TKForAll(
                 using:      generator,
                 options:    options
             )
             {
                 (n: Int) async in
                 
-                XCTKCover(50, "small", when: n < 30)
+                TKCover(50, "small", when: n < 30)
             }
         }
         
@@ -358,15 +357,15 @@ internal final class ClassificationOutputTests: XCTestKitCase
         
         let actual: String? = await withOneExpectedFailure
         {
-            await XCTKForAll(
+            await TKForAll(
                 using:      Generator<Int>.constant(5),
                 options:    options
             )
             {
                 (n: Int) async in
                 
-                XCTKTabulate("sign", n > 0 ? "positive" : "non-positive")
-                XCTKCoverTable("sign", (50, "positive"), (50, "negative"))
+                TKTabulate("sign", n > 0 ? "positive" : "non-positive")
+                TKCoverTable("sign", (50, "positive"), (50, "negative"))
             }
         }
         
@@ -399,19 +398,19 @@ internal final class ClassificationOutputTests: XCTestKitCase
         
         let actual: String? = await withOneExpectedFailure
         {
-            await XCTKForAll(
+            await TKForAll(
                 using:      Generator<Int>.constant(0),
                 options:    options
             )
             {
                 (n: Int) async in
                 
-                XCTKTabulate("sign", n > 0
+                TKTabulate("sign", n > 0
                     ? "positive" : n < 0
                     ? "negative" : "zero"
                 )
                 
-                XCTKCoverTable("sign", (50, "positive"), (50, "negative"))
+                TKCoverTable("sign", (50, "positive"), (50, "negative"))
             }
         }
         
@@ -445,16 +444,16 @@ internal final class ClassificationOutputTests: XCTestKitCase
         
         let actual: String? = await withOneExpectedFailure
         {
-            await XCTKForAll(
+            await TKForAll(
                 using:      Generator<Int>.constant(5),
                 options:    options
             )
             {
                 (n: Int) async in
                 
-                XCTKCover(100, "negative", when: n < 0)
-                XCTKTabulate("size", n < 100 ? "small" : "large")
-                XCTKCoverTable("size", (50, "small"), (50, "large"))
+                TKCover(100, "negative", when: n < 0)
+                TKTabulate("size", n < 100 ? "small" : "large")
+                TKCoverTable("size", (50, "small"), (50, "large"))
             }
         }
         
@@ -489,18 +488,18 @@ internal final class ClassificationOutputTests: XCTestKitCase
         
         let actual: String? = await withOneExpectedFailure
         {
-            await XCTKForAll(
+            await TKForAll(
                 using:      Generator<Int>.constant(5),
                 options:    options
             )
             {
                 (n: Int) async in
                 
-                XCTKTabulate("parity", n % 2 == 0 ? "even" : "odd")
-                XCTKCoverTable("parity", (50, "even"), (50, "odd"))
+                TKTabulate("parity", n % 2 == 0 ? "even" : "odd")
+                TKCoverTable("parity", (50, "even"), (50, "odd"))
                 
-                XCTKTabulate("size", n > 0 ? "positive" : "negative")
-                XCTKCoverTable("size", (50, "positive"), (50, "negative"))
+                TKTabulate("size", n > 0 ? "positive" : "negative")
+                TKCoverTable("size", (50, "positive"), (50, "negative"))
             }
         }
         
@@ -537,7 +536,7 @@ internal final class ClassificationOutputTests: XCTestKitCase
         
         let actual: String? = await withOneExpectedFailure
         {
-            await XCTKForAll(
+            await TKForAll(
                 using:      Generator<Int>.constant(5),
                 message:    "hello world",
                 options:    options
@@ -545,8 +544,8 @@ internal final class ClassificationOutputTests: XCTestKitCase
             {
                 (n: Int) async in
                 
-                XCTKTabulate("size", n > 0 ? "positive" : "negative")
-                XCTKCoverTable("size", (100, "negative"))
+                TKTabulate("size", n > 0 ? "positive" : "negative")
+                TKCoverTable("size", (100, "negative"))
             }
         }
         
@@ -589,15 +588,15 @@ internal final class ClassificationOutputTests: XCTestKitCase
         
         let actual: String? = await withOneExpectedFailure
         {
-            await XCTKForAll(
+            await TKForAll(
                 using:      generator,
                 options:    options
             )
             {
                 (n: Int) async in
                 
-                XCTKTabulate("size", n < 30 ? "small" : "large")
-                XCTKCoverTable("size", (50, "small"))
+                TKTabulate("size", n < 30 ? "small" : "large")
+                TKCoverTable("size", (50, "small"))
             }
         }
         
@@ -630,15 +629,15 @@ internal final class ClassificationOutputTests: XCTestKitCase
         
         let actual: String? = await withOneExpectedFailure
         {
-            await XCTKForAll(
+            await TKForAll(
                 using:      Generator<Int>.constant(5),
                 options:    options
             )
             {
                 (n: Int) async in
                 
-                XCTKTabulate("sign", n > 0 ? "positive" : "negative")
-                XCTKCoverTable("sign", (2.5, "negative"))
+                TKTabulate("sign", n > 0 ? "positive" : "negative")
+                TKCoverTable("sign", (2.5, "negative"))
             }
         }
         
@@ -673,14 +672,14 @@ internal final class ClassificationOutputTests: XCTestKitCase
         /// the labels, so the table has 0% for both labels.
         let actual: String? = await withOneExpectedFailure
         {
-            await XCTKForAll(
+            await TKForAll(
                 using:      Generator<Int>.constant(5),
                 options:    options
             )
             {
                 (_: Int) async in
                 
-                XCTKCoverTable("sign", (50, "positive"), (50, "negative"))
+                TKCoverTable("sign", (50, "positive"), (50, "negative"))
             }
         }
         
@@ -713,15 +712,15 @@ internal final class ClassificationOutputTests: XCTestKitCase
         
         let actual: String? = await withOneExpectedFailure
         {
-            await XCTKForAll(
+            await TKForAll(
                 using:      Generator<Int>.constant(5),
                 options:    options
             )
             {
                 (n: Int) async in
                 
-                XCTKTabulate("sign", n > 0 ? "positive" : "negative")
-                XCTKCoverTable("sign", (100, "negative"))
+                TKTabulate("sign", n > 0 ? "positive" : "negative")
+                TKCoverTable("sign", (100, "negative"))
             }
         }
         
@@ -764,15 +763,15 @@ internal final class ClassificationOutputTests: XCTestKitCase
         
         let output: String? = await withOneExpectedFailure
         {
-            await XCTKForAll(
+            await TKForAll(
                 using:      generator,
                 options:    options
             )
             {
                 (n: Int) async in
                 
-                XCTKLabel("tracked")
-                XCTKAssertLessThan(n, 50)
+                TKLabel("tracked")
+                TKAssertLessThan(n, 50)
             }
         }
         
@@ -782,7 +781,7 @@ internal final class ClassificationOutputTests: XCTestKitCase
         
         let actual: String = try getPropertyOutput(
             from:       output,
-            before:     "XCTKAssertLessThan"
+            before:     .lessThan
         )
         
         let expected: String =
@@ -825,16 +824,16 @@ internal final class ClassificationOutputTests: XCTestKitCase
         
         let output: String? = await withOneExpectedFailure
         {
-            await XCTKForAll(
+            await TKForAll(
                 using:      generator,
                 options:    options
             )
             {
                 (n: Int) async in
                 
-                XCTKClassify("small", when: n < 30)
-                XCTKClassify("large", when: n >= 30)
-                XCTKAssertLessThan(n, 60)
+                TKClassify("small", when: n < 30)
+                TKClassify("large", when: n >= 30)
+                TKAssertLessThan(n, 60)
             }
         }
         
@@ -844,7 +843,7 @@ internal final class ClassificationOutputTests: XCTestKitCase
         
         let actual: String = try getPropertyOutput(
             from:       output,
-            before:     "XCTKAssertLessThan"
+            before:     .lessThan
         )
         
         let expected: String =
@@ -886,15 +885,15 @@ internal final class ClassificationOutputTests: XCTestKitCase
         
         let output: String? = await withOneExpectedFailure
         {
-            await XCTKForAll(
+            await TKForAll(
                 using:      generator,
                 options:    options
             )
             {
                 (n: Int) async in
                 
-                XCTKLabel("tracked")
-                XCTKAssertLessThan(n, 10)
+                TKLabel("tracked")
+                TKAssertLessThan(n, 10)
             }
         }
         
@@ -904,7 +903,7 @@ internal final class ClassificationOutputTests: XCTestKitCase
         
         let actual: String = try getPropertyOutput(
             from:       output,
-            before:     "XCTKAssertLessThan"
+            before:     .lessThan
         )
         
         let expected: String =
@@ -944,15 +943,15 @@ internal final class ClassificationOutputTests: XCTestKitCase
         
         let output: String? = await withOneExpectedFailure
         {
-            await XCTKForAll(
+            await TKForAll(
                 using:      generator,
                 options:    options
             )
             {
                 (n: Int) async in
                 
-                XCTKLabel("tracked")
-                XCTKAssertLessThan(n, 50)
+                TKLabel("tracked")
+                TKAssertLessThan(n, 50)
             }
         }
         
@@ -962,7 +961,7 @@ internal final class ClassificationOutputTests: XCTestKitCase
         
         let actual: String = try getPropertyOutput(
             from:       output,
-            before:     "XCTKAssertLessThan"
+            before:     .lessThan
         )
         
         let expected: String =
@@ -1002,14 +1001,14 @@ internal final class ClassificationOutputTests: XCTestKitCase
         
         let actual: String? = await withOneExpectedFailure
         {
-            await XCTKForAll(
+            await TKForAll(
                 using:      generator,
                 options:    options
             )
             {
                 (n: Int) async throws in
                 
-                XCTKLabel("tracked")
+                TKLabel("tracked")
                 
                 if n >= 50
                 {
@@ -1050,12 +1049,12 @@ internal final class ClassificationOutputTests: XCTestKitCase
         
         let output: String? = await withOneExpectedFailure
         {
-            await XCTKForAll(options: options)
+            await TKForAll(options: options)
             {
                 (_: Int) async in
                 
-                XCTKLabel("tracked")
-                XCTKAssertTrue(false)
+                TKLabel("tracked")
+                TKAssertTrue(false)
             }
         }
         
@@ -1065,7 +1064,7 @@ internal final class ClassificationOutputTests: XCTestKitCase
         
         let actual: String = try getPropertyOutput(
             from:       output,
-            before:     "XCTKAssertTrue"
+            before:     .true
         )
         
         let expected: String =
@@ -1104,16 +1103,16 @@ internal final class ClassificationOutputTests: XCTestKitCase
         
         let output: String? = await withOneExpectedFailure
         {
-            await XCTKForAll(
+            await TKForAll(
                 using:      generator,
                 options:    options
             )
             {
                 (n: Int) async in
                 
-                XCTKLabel("before")
-                XCTKAssertLessThan(n, 60)
-                XCTKLabel("after")
+                TKLabel("before")
+                TKAssertLessThan(n, 60)
+                TKLabel("after")
             }
         }
         
@@ -1123,7 +1122,7 @@ internal final class ClassificationOutputTests: XCTestKitCase
         
         let actual: String = try getPropertyOutput(
             from:       output,
-            before:     "XCTKAssertLessThan"
+            before:     .lessThan
         )
         
         let expected: String =
@@ -1167,21 +1166,21 @@ internal final class ClassificationOutputTests: XCTestKitCase
         
         let actual: String? = await withOneExpectedFailure
         {
-            await XCTKForAll(
+            await TKForAll(
                 using:      generator,
                 options:    options
             )
             {
                 (n: Int) async throws in
                 
-                XCTKLabel("before")
+                TKLabel("before")
                 
                 if n >= 60
                 {
                     throw TestError()
                 }
                 
-                XCTKLabel("after")
+                TKLabel("after")
             }
         }
         
@@ -1224,15 +1223,15 @@ internal final class ClassificationOutputTests: XCTestKitCase
         
         let output: String? = await withOneExpectedFailure
         {
-            await XCTKForAll(
+            await TKForAll(
                 using:      generator,
                 options:    options
             )
             {
                 (n: Int) async in
                 
-                XCTKTabulate("size", n < 30 ? "small" : "large")
-                XCTKAssertLessThan(n, 50)
+                TKTabulate("size", n < 30 ? "small" : "large")
+                TKAssertLessThan(n, 50)
             }
         }
         
@@ -1242,7 +1241,7 @@ internal final class ClassificationOutputTests: XCTestKitCase
         
         let actual: String = try getPropertyOutput(
             from:       output,
-            before:     "XCTKAssertLessThan"
+            before:     .lessThan
         )
         
         let expected: String =
@@ -1281,16 +1280,16 @@ internal final class ClassificationOutputTests: XCTestKitCase
         
         let output: String? = await withOneExpectedFailure
         {
-            await XCTKForAll(
+            await TKForAll(
                 using:      generator,
                 options:    options
             )
             {
                 (n: Int) async in
                 
-                XCTKLabel("tracked")
-                XCTKTabulate("size", n < 30 ? "small" : "large")
-                XCTKAssertLessThan(n, 50)
+                TKLabel("tracked")
+                TKTabulate("size", n < 30 ? "small" : "large")
+                TKAssertLessThan(n, 50)
             }
         }
         
@@ -1300,7 +1299,7 @@ internal final class ClassificationOutputTests: XCTestKitCase
         
         let actual: String = try getPropertyOutput(
             from:       output,
-            before:     "XCTKAssertLessThan"
+            before:     .lessThan
         )
         
         let expected: String =
@@ -1341,16 +1340,16 @@ internal final class ClassificationOutputTests: XCTestKitCase
         
         let output: String? = await withOneExpectedFailure
         {
-            await XCTKForAll(
+            await TKForAll(
                 using:      generator,
                 options:    options
             )
             {
                 (n: Int) async in
                 
-                XCTKTabulate("parity", n % 2 == 0 ? "even" : "odd")
-                XCTKTabulate("size", n < 30 ? "small" : "large")
-                XCTKAssertLessThan(n, 50)
+                TKTabulate("parity", n % 2 == 0 ? "even" : "odd")
+                TKTabulate("size", n < 30 ? "small" : "large")
+                TKAssertLessThan(n, 50)
             }
         }
         
@@ -1360,7 +1359,7 @@ internal final class ClassificationOutputTests: XCTestKitCase
         
         let actual: String = try getPropertyOutput(
             from:       output,
-            before:     "XCTKAssertLessThan"
+            before:     .lessThan
         )
         
         let expected: String =
@@ -1396,12 +1395,12 @@ internal final class ClassificationOutputTests: XCTestKitCase
         
         let output: String? = await withOneExpectedFailure
         {
-            await XCTKForAll(options: options)
+            await TKForAll(options: options)
             {
                 (_: Int) async in
                 
-                XCTKTabulate("sign", "positive")
-                XCTKAssertTrue(false)
+                TKTabulate("sign", "positive")
+                TKAssertTrue(false)
             }
         }
         
@@ -1411,7 +1410,7 @@ internal final class ClassificationOutputTests: XCTestKitCase
         
         let actual: String = try getPropertyOutput(
             from:       output,
-            before:     "XCTKAssertTrue"
+            before:     .true
         )
         
         let expected: String =
@@ -1449,15 +1448,15 @@ internal final class ClassificationOutputTests: XCTestKitCase
         
         let output: String? = await withOneExpectedFailure
         {
-            await XCTKForAll(
+            await TKForAll(
                 using:      generator,
                 options:    options
             )
             {
                 (n: Int) async in
                 
-                XCTKTabulate("size", n < 10 ? "small" : "large")
-                XCTKAssertLessThan(n, 10)
+                TKTabulate("size", n < 10 ? "small" : "large")
+                TKAssertLessThan(n, 10)
             }
         }
         
@@ -1467,7 +1466,7 @@ internal final class ClassificationOutputTests: XCTestKitCase
         
         let actual: String = try getPropertyOutput(
             from:       output,
-            before:     "XCTKAssertLessThan"
+            before:     .lessThan
         )
         
         let expected: String =
@@ -1506,14 +1505,14 @@ internal final class ClassificationOutputTests: XCTestKitCase
         
         let actual: String? = await withOneExpectedFailure
         {
-            await XCTKForAll(
+            await TKForAll(
                 using:      generator,
                 options:    options
             )
             {
                 (n: Int) async throws in
                 
-                XCTKTabulate("size", n < 30 ? "small" : "large")
+                TKTabulate("size", n < 30 ? "small" : "large")
                 
                 if n >= 50
                 {
@@ -1565,16 +1564,16 @@ internal final class ClassificationOutputTests: XCTestKitCase
         
         let output: String? = await withOneExpectedFailure
         {
-            await XCTKForAll(
+            await TKForAll(
                 using:      generator,
                 options:    options
             )
             {
                 (n: Int) async throws in
                 
-                XCTKTabulate("position", "before")
-                XCTKAssertLessThan(n, 60)
-                XCTKTabulate("position", "after")
+                TKTabulate("position", "before")
+                TKAssertLessThan(n, 60)
+                TKTabulate("position", "after")
             }
         }
         
@@ -1584,7 +1583,7 @@ internal final class ClassificationOutputTests: XCTestKitCase
         
         let actual: String = try getPropertyOutput(
             from:       output,
-            before:     "XCTKAssertLessThan"
+            before:     .lessThan
         )
         
         let expected: String =
@@ -1629,21 +1628,21 @@ internal final class ClassificationOutputTests: XCTestKitCase
         
         let actual: String? = await withOneExpectedFailure
         {
-            await XCTKForAll(
+            await TKForAll(
                 using:      generator,
                 options:    options
             )
             {
                 (n: Int) async throws in
                 
-                XCTKTabulate("position", "before")
+                TKTabulate("position", "before")
                 
                 if n >= 60
                 {
                     throw TestError()
                 }
                 
-                XCTKTabulate("position", "after")
+                TKTabulate("position", "after")
             }
         }
         
@@ -1695,7 +1694,7 @@ internal final class ClassificationOutputTests: XCTestKitCase
         
         let actual: String? = await withOneExpectedFailure
         {
-            await XCTKForAll(
+            await TKForAll(
                 using:      generator,
                 where:      { $0 < 30 },
                 options:    options
@@ -1703,7 +1702,7 @@ internal final class ClassificationOutputTests: XCTestKitCase
             {
                 (n: Int) async in
                 
-                XCTKLabel("tracked")
+                TKLabel("tracked")
             }
         }
         
@@ -1748,7 +1747,7 @@ internal final class ClassificationOutputTests: XCTestKitCase
         
         let actual: String? = await withOneExpectedFailure
         {
-            await XCTKForAll(
+            await TKForAll(
                 using:      generator,
                 where:      { $0 < 30 },
                 options:    options
@@ -1756,7 +1755,7 @@ internal final class ClassificationOutputTests: XCTestKitCase
             {
                 (n: Int) async in
                 
-                XCTKTabulate("size", n < 15 ? "small" : "medium")
+                TKTabulate("size", n < 15 ? "small" : "medium")
             }
         }
         
@@ -1798,7 +1797,7 @@ internal final class ClassificationOutputTests: XCTestKitCase
         
         let actual: String? = await withOneExpectedFailure
         {
-            await XCTKForAll(
+            await TKForAll(
                 using:      generator,
                 where:      { $0 < 30 },
                 options:    options
@@ -1806,8 +1805,8 @@ internal final class ClassificationOutputTests: XCTestKitCase
             {
                 (n: Int) async in
                 
-                XCTKLabel("tracked")
-                XCTKTabulate("size", n < 15 ? "small" : "medium")
+                TKLabel("tracked")
+                TKTabulate("size", n < 15 ? "small" : "medium")
             }
         }
         
@@ -1845,14 +1844,14 @@ internal final class ClassificationOutputTests: XCTestKitCase
         
         let actual: String? = await withOneExpectedFailure
         {
-            await XCTKForAll(
+            await TKForAll(
                 using:      Generator<Int>.constant(5),
                 options:    options
             )
             {
                 (_: Int) async throws in
                 
-                try XCTKAssume(false)
+                try TKAssume(false)
             }
         }
         
@@ -1894,16 +1893,16 @@ internal final class ClassificationOutputTests: XCTestKitCase
         
         let actual: String? = await withOneExpectedFailure
         {
-            await XCTKForAll(
+            await TKForAll(
                 using:      generator,
                 options:    options
             )
             {
                 (n: Int) async throws in
                 
-                try XCTKAssume(n < 30)
+                try TKAssume(n < 30)
                 
-                XCTKLabel("tracked")
+                TKLabel("tracked")
             }
         }
         
@@ -1948,16 +1947,16 @@ internal final class ClassificationOutputTests: XCTestKitCase
         
         let actual: String? = await withOneExpectedFailure
         {
-            await XCTKForAll(
+            await TKForAll(
                 using:      generator,
                 options:    options
             )
             {
                 (n: Int) async throws in
                 
-                try XCTKAssume(n < 30)
+                try TKAssume(n < 30)
                 
-                XCTKTabulate("size", n < 15 ? "small" : "medium")
+                TKTabulate("size", n < 15 ? "small" : "medium")
             }
         }
         
@@ -1993,7 +1992,7 @@ internal final class ClassificationOutputTests: XCTestKitCase
         
         let actual: String? = await withOneExpectedFailure
         {
-            await XCTKForAll(
+            await TKForAll(
                 using:      Generator<Int>.constant(5),
                 message:    "hello world",
                 options:    options
@@ -2001,7 +2000,7 @@ internal final class ClassificationOutputTests: XCTestKitCase
             {
                 (_: Int) async throws in
                 
-                try XCTKAssume(false)
+                try TKAssume(false)
             }
         }
         
@@ -2045,14 +2044,14 @@ internal final class ClassificationOutputTests: XCTestKitCase
         
         let actual: String? = await withOneExpectedFailure
         {
-            await XCTKForAll(
+            await TKForAll(
                 using:      generator,
                 options:    options
             )
             {
                 (n: Int) async throws in
                 
-                try XCTKAssume(n < 5)
+                try TKAssume(n < 5)
             }
         }
         
@@ -2094,16 +2093,16 @@ internal final class ClassificationOutputTests: XCTestKitCase
         
         let output: String? = await withOneExpectedFailure
         {
-            await XCTKForAll(
+            await TKForAll(
                 using:      generator,
                 options:    options
             )
             {
                 (n: Int) async in
                 
-                XCTKLabel("tracked")
-                XCTKClassify("large", when: n >= 50)
-                XCTKAssertLessThan(n, 50)
+                TKLabel("tracked")
+                TKClassify("large", when: n >= 50)
+                TKAssertLessThan(n, 50)
             }
         }
         
@@ -2114,7 +2113,7 @@ internal final class ClassificationOutputTests: XCTestKitCase
         
         let actual: String = try getPropertyOutput(
             from:       output,
-            before:     "XCTKAssertLessThan"
+            before:     .lessThan
         )
         
         let expected: String =
@@ -2151,15 +2150,15 @@ internal final class ClassificationOutputTests: XCTestKitCase
         
         let output: String? = await withOneExpectedFailure
         {
-            await XCTKForAll(
+            await TKForAll(
                 using:      generator,
                 options:    options
             )
             {
                 (n: Int) async in
                 
-                XCTKTabulate("size", n < 30 ? "small" : "large")
-                XCTKAssertLessThan(n, 50)
+                TKTabulate("size", n < 30 ? "small" : "large")
+                TKAssertLessThan(n, 50)
             }
         }
         
@@ -2169,7 +2168,7 @@ internal final class ClassificationOutputTests: XCTestKitCase
         
         let actual: String = try getPropertyOutput(
             from:       output,
-            before:     "XCTKAssertLessThan"
+            before:     .lessThan
         )
         
         let expected: String =
@@ -2204,15 +2203,15 @@ internal final class ClassificationOutputTests: XCTestKitCase
         
         let actual: String? = await withOneExpectedFailure
         {
-            await XCTKForAll(
+            await TKForAll(
                 using:      Generator<Int>.constant(5),
                 options:    options
             )
             {
                 (n: Int) async in
                 
-                XCTKCollect(n)
-                XCTKCover(100, "negative", when: n < 0)
+                TKCollect(n)
+                TKCover(100, "negative", when: n < 0)
             }
         }
         
@@ -2244,16 +2243,16 @@ internal final class ClassificationOutputTests: XCTestKitCase
         
         let actual: String? = await withOneExpectedFailure
         {
-            await XCTKForAll(
+            await TKForAll(
                 using:      Generator<Int>.constant(5),
                 options:    options
             )
             {
                 (n: Int) async in
                 
-                XCTKCollect(n)
-                XCTKTabulate("sign", n > 0 ? "positive" : "negative")
-                XCTKCoverTable("sign", (100, "negative"))
+                TKCollect(n)
+                TKTabulate("sign", n > 0 ? "positive" : "negative")
+                TKCoverTable("sign", (100, "negative"))
             }
         }
         

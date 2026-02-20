@@ -8,12 +8,11 @@
 //===----------------------------------------------------------------------===//
 
 import TestKitCore
-import XCTestKit
 import XCTest
 
 
 
-internal final class ForAllMessageTests: XCTestKitCase
+internal final class ForAllMessageTests: TestKitCase
 {
     override func setUp()
     {
@@ -113,16 +112,16 @@ extension ForAllMessageTests
     /// The kind of property evaluator.
     private enum ForAllKind
     {
-        /// ``XCTKForAll(_:file:line:options:_:)``
+        /// ``TKForAll(_:file:line:options:_:)``
         case arbitrary
         
-        /// ``XCTKForAll(using:message:file:line:options:_:)``
+        /// ``TKForAll(using:message:file:line:options:_:)``
         case generator
         
-        /// ``XCTKForAll(where:message:file:line:options:_:)``
+        /// ``TKForAll(where:message:file:line:options:_:)``
         case precondition
         
-        /// ``XCTKForAll(using:where:message:file:line:options:_:)``
+        /// ``TKForAll(using:where:message:file:line:options:_:)``
         case preconditionGenerator
     }
     
@@ -148,7 +147,7 @@ extension ForAllMessageTests
         {
             case .arbitrary:
                 
-                await XCTKForAll(
+                await TKForAll(
                     message(),
                     options: options
                 )
@@ -158,7 +157,7 @@ extension ForAllMessageTests
                 
             case .generator:
                 
-                await XCTKForAll(
+                await TKForAll(
                     using:      Generator<Int>.arbitrary(),
                     message:    message(),
                     options:    options
@@ -169,7 +168,7 @@ extension ForAllMessageTests
                 
             case .precondition:
                 
-                await XCTKForAll(
+                await TKForAll(
                     where:      { (_: Int) in true },
                     message:    message(),
                     options:    options
@@ -180,7 +179,7 @@ extension ForAllMessageTests
                 
             case .preconditionGenerator:
                 
-                await XCTKForAll(
+                await TKForAll(
                     using:      Generator<Int>.arbitrary(),
                     where:      { (_: Int) in true },
                     message:    message(),
@@ -218,19 +217,19 @@ extension ForAllMessageTests
             {
                 case .arbitrary:
                     
-                    await XCTKForAll(
+                    await TKForAll(
                         message(),
                         options: options
                     )
                     {
                         (_: Int) async in
                         
-                        XCTKAssertTrue(false)
+                        TKAssertTrue(false)
                     }
                     
                 case .generator:
                     
-                    await XCTKForAll(
+                    await TKForAll(
                         using:      Generator<Int>.arbitrary(),
                         message:    message(),
                         options:    options
@@ -238,12 +237,12 @@ extension ForAllMessageTests
                     {
                         (_: Int) async in
                         
-                        XCTKAssertTrue(false)
+                        TKAssertTrue(false)
                     }
                     
                 case .precondition:
                     
-                    await XCTKForAll(
+                    await TKForAll(
                         where:      { (_: Int) in true },
                         message:    message(),
                         options:    options
@@ -251,12 +250,12 @@ extension ForAllMessageTests
                     {
                         (_: Int) async in
                         
-                        XCTKAssertTrue(false)
+                        TKAssertTrue(false)
                     }
                     
                 case .preconditionGenerator:
                     
-                    await XCTKForAll(
+                    await TKForAll(
                         using:      Generator<Int>.arbitrary(),
                         where:      { (_: Int) in true },
                         message:    message(),
@@ -265,7 +264,7 @@ extension ForAllMessageTests
                     {
                         (_: Int) async in
                         
-                        XCTKAssertTrue(false)
+                        TKAssertTrue(false)
                     }
             }
         }
@@ -296,7 +295,7 @@ extension ForAllMessageTests
         {
             if useGenerator
             {
-                await XCTKForAll(
+                await TKForAll(
                     using:      Generator<Int>.arbitrary(),
                     where:      { (_: Int) in false },
                     message:    message(),
@@ -308,7 +307,7 @@ extension ForAllMessageTests
             }
             else
             {
-                await XCTKForAll(
+                await TKForAll(
                     where:      { (_: Int) in false },
                     message:    message(),
                     options:    options

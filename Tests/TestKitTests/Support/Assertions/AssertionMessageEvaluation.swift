@@ -13,7 +13,7 @@ import XCTest
 
 
 
-extension XCTestKitCase
+extension TestKitCase
 {
     // MARK: - Functions
 
@@ -41,7 +41,7 @@ extension XCTestKitCase
         {
             case .assert:
                 
-                XCTKAssert(
+                TKAssert(
                     true,
                     message(),
                     options: options
@@ -49,7 +49,7 @@ extension XCTestKitCase
                 
             case .equal:
                 
-                XCTKAssertEqual(
+                TKAssertEqual(
                     1,
                     1,
                     message(),
@@ -58,7 +58,7 @@ extension XCTestKitCase
                 
             case .notEqual:
                 
-                XCTKAssertNotEqual(
+                TKAssertNotEqual(
                     0,
                     1,
                     message(),
@@ -69,7 +69,7 @@ extension XCTestKitCase
                 
                 if useFloats
                 {
-                    XCTKAssertEqual(
+                    TKAssertEqual(
                         1.0,
                         1.0,
                         accuracy: 0.5,
@@ -82,7 +82,7 @@ extension XCTestKitCase
                     let expr1   : Int   = 1
                     let expr2   : Int   = 1
                     
-                    XCTKAssertEqual(
+                    TKAssertEqual(
                         expr1,
                         expr2,
                         accuracy: 1,
@@ -95,7 +95,7 @@ extension XCTestKitCase
                 
                 if useFloats
                 {
-                    XCTKAssertNotEqual(
+                    TKAssertNotEqual(
                         0.0,
                         1.0,
                         accuracy: 0.0,
@@ -108,7 +108,7 @@ extension XCTestKitCase
                     let expr1   : Int   = 0
                     let expr2   : Int   = 1
                     
-                    XCTKAssertNotEqual(
+                    TKAssertNotEqual(
                         expr1,
                         expr2,
                         accuracy: 0,
@@ -121,7 +121,7 @@ extension XCTestKitCase
                 
                 let object = TestError() as AnyObject
                 
-                XCTKAssertIdentical(
+                TKAssertIdentical(
                     object,
                     object,
                     message(),
@@ -133,7 +133,7 @@ extension XCTestKitCase
                 let object1     = TestError() as AnyObject
                 let object2     = TestError() as AnyObject
                 
-                XCTKAssertNotIdentical(
+                TKAssertNotIdentical(
                     object1,
                     object2,
                     message(),
@@ -142,7 +142,7 @@ extension XCTestKitCase
                 
             case .greaterThan:
                 
-                XCTKAssertGreaterThan(
+                TKAssertGreaterThan(
                     1,
                     0,
                     message(),
@@ -151,7 +151,7 @@ extension XCTestKitCase
                 
             case .greaterThanOrEqual:
                 
-                XCTKAssertGreaterThanOrEqual(
+                TKAssertGreaterThanOrEqual(
                     1,
                     0,
                     message(),
@@ -160,7 +160,7 @@ extension XCTestKitCase
                 
             case .lessThan:
                 
-                XCTKAssertLessThan(
+                TKAssertLessThan(
                     0,
                     1,
                     message(),
@@ -169,7 +169,7 @@ extension XCTestKitCase
                 
             case .lessThanOrEqual:
                 
-                XCTKAssertLessThanOrEqual(
+                TKAssertLessThanOrEqual(
                     0,
                     1,
                     message(),
@@ -178,7 +178,7 @@ extension XCTestKitCase
                 
             case .nil:
                 
-                XCTKAssertNil(
+                TKAssertNil(
                     nil,
                     message(),
                     options: options
@@ -186,7 +186,7 @@ extension XCTestKitCase
                 
             case .notNil:
                 
-                XCTKAssertNotNil(
+                TKAssertNotNil(
                     Optional<Int>(1),
                     message(),
                     options: options
@@ -194,7 +194,7 @@ extension XCTestKitCase
                 
             case .unwrap:
                 
-                _ = try? XCTKUnwrap(
+                _ = try? TKUnwrap(
                     Optional<Int>(1),
                     message(),
                     options: options
@@ -202,7 +202,7 @@ extension XCTestKitCase
                 
             case .true:
                 
-                XCTKAssertTrue(
+                TKAssertTrue(
                     true,
                     message(),
                     options: options
@@ -210,7 +210,7 @@ extension XCTestKitCase
                 
             case .false:
                 
-                XCTKAssertFalse(
+                TKAssertFalse(
                     false,
                     message(),
                     options: options
@@ -220,7 +220,7 @@ extension XCTestKitCase
                 
                 let expr: () throws -> Int = { throw TestError() }
                 
-                XCTKAssertThrowsError(
+                TKAssertThrowsError(
                     try expr(),
                     message(),
                     options: options
@@ -230,7 +230,7 @@ extension XCTestKitCase
                 
                 let expr: () throws -> Int = { return 0 }
                 
-                XCTKAssertNoThrow(
+                TKAssertNoThrow(
                     try expr(),
                     message(),
                     options: options
@@ -238,7 +238,7 @@ extension XCTestKitCase
                 
             case .satisfyAll:
                 
-                XCTKAssertAllSatisfy(
+                TKAssertAllSatisfy(
                     ["a", "b", "c"],
                     { !$0.isEmpty },
                     message(),
@@ -247,7 +247,7 @@ extension XCTestKitCase
                 
             case .satisfyAny:
                 
-                XCTKAssertAnySatisfy(
+                TKAssertAnySatisfy(
                     ["a", "b", "c"],
                     { !$0.isEmpty },
                     message(),
@@ -256,7 +256,7 @@ extension XCTestKitCase
                 
             case .satisfyNone:
                 
-                XCTKAssertNoneSatisfy(
+                TKAssertNoneSatisfy(
                     ["a", "b", "c"],
                     { $0.isEmpty },
                     message(),
@@ -265,7 +265,7 @@ extension XCTestKitCase
                 
             case .satisfyAtLeast:
                 
-                XCTKAssertSatisfy(
+                TKAssertSatisfy(
                     ["a", "b", "c"],
                     atLeast: 1,
                     { !$0.isEmpty },
@@ -275,7 +275,7 @@ extension XCTestKitCase
                 
             case .satisfyAtMost:
                 
-                XCTKAssertSatisfy(
+                TKAssertSatisfy(
                     ["a", "b", ""],
                     atMost: 1,
                     { $0.isEmpty },
@@ -285,7 +285,7 @@ extension XCTestKitCase
                 
             case .satisfyRange:
                 
-                XCTKAssertSatisfy(
+                TKAssertSatisfy(
                     ["a", "b", "c"],
                     range: 1...3,
                     { !$0.isEmpty },
@@ -295,7 +295,7 @@ extension XCTestKitCase
                 
             case .exactly:
                 
-                XCTKAssertExactly(
+                TKAssertExactly(
                     ["a", "b", ""],
                     count: 1,
                     { $0.isEmpty },
@@ -305,7 +305,7 @@ extension XCTestKitCase
                 
             case .exactlyOne:
                 
-                XCTKAssertExactlyOne(
+                TKAssertExactlyOne(
                     ["a", "b", ""],
                     { $0.isEmpty },
                     message(),
@@ -314,7 +314,7 @@ extension XCTestKitCase
                 
             case .sorted:
                 
-                XCTKAssertSorted(
+                TKAssertSorted(
                     ["a", "b", "c"],
                     by: { $0 < $1 },
                     message(),
@@ -323,7 +323,7 @@ extension XCTestKitCase
                 
             case .unique:
                 
-                XCTKAssertUnique(
+                TKAssertUnique(
                     ["a", "b", "c"],
                     message(),
                     options: options
@@ -331,7 +331,7 @@ extension XCTestKitCase
                 
             case .uniqueByKey:
                 
-                XCTKAssertUnique(
+                TKAssertUnique(
                     ["a", "b", "c"],
                     by: { $0.first },
                     message(),
@@ -369,14 +369,14 @@ extension XCTestKitCase
             {
                 case .assert:
                     
-                    XCTKAssert(
+                    TKAssert(
                         false,
                         message()
                     )
                     
                 case .equal:
                     
-                    XCTKAssertEqual(
+                    TKAssertEqual(
                         0,
                         1,
                         message()
@@ -384,7 +384,7 @@ extension XCTestKitCase
                     
                 case .notEqual:
                     
-                    XCTKAssertNotEqual(
+                    TKAssertNotEqual(
                         1,
                         1,
                         message()
@@ -394,7 +394,7 @@ extension XCTestKitCase
                     
                     if useFloats
                     {
-                        XCTKAssertEqual(
+                        TKAssertEqual(
                             0.0,
                             1.0,
                             accuracy: 0.5,
@@ -406,7 +406,7 @@ extension XCTestKitCase
                         let expr1   : Int   = 0
                         let expr2   : Int   = 1
                         
-                        XCTKAssertEqual(
+                        TKAssertEqual(
                             expr1,
                             expr2,
                             accuracy: 0,
@@ -418,7 +418,7 @@ extension XCTestKitCase
                     
                     if useFloats
                     {
-                        XCTKAssertNotEqual(
+                        TKAssertNotEqual(
                             0.0,
                             1.0,
                             accuracy: 1.0,
@@ -430,7 +430,7 @@ extension XCTestKitCase
                         let expr1   : Int   = 0
                         let expr2   : Int   = 1
                         
-                        XCTKAssertNotEqual(
+                        TKAssertNotEqual(
                             expr1,
                             expr2,
                             accuracy: 1,
@@ -443,7 +443,7 @@ extension XCTestKitCase
                     let object1     = TestError() as AnyObject
                     let object2     = TestError() as AnyObject
                     
-                    XCTKAssertIdentical(
+                    TKAssertIdentical(
                         object1,
                         object2,
                         message()
@@ -453,7 +453,7 @@ extension XCTestKitCase
                     
                     let object = TestError() as AnyObject
                     
-                    XCTKAssertNotIdentical(
+                    TKAssertNotIdentical(
                         object,
                         object,
                         message()
@@ -461,7 +461,7 @@ extension XCTestKitCase
                     
                 case .greaterThan:
                     
-                    XCTKAssertGreaterThan(
+                    TKAssertGreaterThan(
                         0,
                         1,
                         message()
@@ -469,7 +469,7 @@ extension XCTestKitCase
                     
                 case .greaterThanOrEqual:
                     
-                    XCTKAssertGreaterThanOrEqual(
+                    TKAssertGreaterThanOrEqual(
                         0,
                         1,
                         message()
@@ -477,7 +477,7 @@ extension XCTestKitCase
                     
                 case .lessThan:
                     
-                    XCTKAssertLessThan(
+                    TKAssertLessThan(
                         1,
                         0,
                         message()
@@ -485,7 +485,7 @@ extension XCTestKitCase
                     
                 case .lessThanOrEqual:
                     
-                    XCTKAssertLessThanOrEqual(
+                    TKAssertLessThanOrEqual(
                         1,
                         0,
                         message()
@@ -493,48 +493,48 @@ extension XCTestKitCase
                     
                 case .nil:
                     
-                    XCTKAssertNil(
+                    TKAssertNil(
                         1,
                         message()
                     )
                     
                 case .notNil:
                     
-                    XCTKAssertNotNil(
+                    TKAssertNotNil(
                         nil,
                         message()
                     )
                     
                 case .unwrap:
                     
-                    _ = try XCTKUnwrap(
+                    _ = try TKUnwrap(
                         Optional<Int>(nil),
                         message()
                     )
                     
                 case .true:
                     
-                    XCTKAssertTrue(
+                    TKAssertTrue(
                         false,
                         message()
                     )
                     
                 case .false:
                     
-                    XCTKAssertFalse(
+                    TKAssertFalse(
                         true,
                         message()
                     )
                     
                 case .fail:
                     
-                    XCTKFail(message())
+                    TKFail(message())
                     
                 case .throwsError:
                     
                     let expr: () throws -> Int = { return 0 }
                     
-                    XCTKAssertThrowsError(
+                    TKAssertThrowsError(
                         try expr(),
                         message()
                     )
@@ -543,14 +543,14 @@ extension XCTestKitCase
                     
                     let expr: () throws -> Int = { throw TestError() }
                     
-                    XCTKAssertNoThrow(
+                    TKAssertNoThrow(
                         try expr(),
                         message()
                     )
                     
                 case .satisfyAll:
                     
-                    XCTKAssertAllSatisfy(
+                    TKAssertAllSatisfy(
                         ["a", "b", "c"],
                         { $0.isEmpty },
                         message()
@@ -558,7 +558,7 @@ extension XCTestKitCase
                     
                 case .satisfyAny:
                     
-                    XCTKAssertAnySatisfy(
+                    TKAssertAnySatisfy(
                         ["a", "b", "c"],
                         { $0.isEmpty },
                         message()
@@ -566,7 +566,7 @@ extension XCTestKitCase
                     
                 case .satisfyNone:
                     
-                    XCTKAssertNoneSatisfy(
+                    TKAssertNoneSatisfy(
                         ["a", "b", "c"],
                         { !$0.isEmpty },
                         message()
@@ -574,7 +574,7 @@ extension XCTestKitCase
                     
                 case .satisfyAtLeast:
                     
-                    XCTKAssertSatisfy(
+                    TKAssertSatisfy(
                         ["a", "b", "c"],
                         atLeast: 1,
                         { $0.isEmpty },
@@ -583,7 +583,7 @@ extension XCTestKitCase
                     
                 case .satisfyAtMost:
                     
-                    XCTKAssertSatisfy(
+                    TKAssertSatisfy(
                         ["a", "b", "c"],
                         atMost: 1,
                         { !$0.isEmpty },
@@ -592,7 +592,7 @@ extension XCTestKitCase
                     
                 case .satisfyRange:
                     
-                    XCTKAssertSatisfy(
+                    TKAssertSatisfy(
                         ["a", "b", "c"],
                         range: 1...3,
                         { $0.isEmpty },
@@ -601,7 +601,7 @@ extension XCTestKitCase
                     
                 case .exactly:
                     
-                    XCTKAssertExactly(
+                    TKAssertExactly(
                         ["a", "b", "c"],
                         count: 1,
                         { $0.isEmpty },
@@ -610,7 +610,7 @@ extension XCTestKitCase
                     
                 case .exactlyOne:
                     
-                    XCTKAssertExactlyOne(
+                    TKAssertExactlyOne(
                         ["a", "b", "c"],
                         { $0.isEmpty },
                         message()
@@ -618,7 +618,7 @@ extension XCTestKitCase
                     
                 case .sorted:
                     
-                    XCTKAssertSorted(
+                    TKAssertSorted(
                         ["a", "b", "c"],
                         by: { $0 > $1 },
                         message()
@@ -626,14 +626,14 @@ extension XCTestKitCase
                     
                 case .unique:
                     
-                    XCTKAssertUnique(
+                    TKAssertUnique(
                         ["a", "a", "a"],
                         message()
                     )
                     
                 case .uniqueByKey:
                     
-                    XCTKAssertUnique(
+                    TKAssertUnique(
                         ["a", "a", "a"],
                         by: { $0.first },
                         message()

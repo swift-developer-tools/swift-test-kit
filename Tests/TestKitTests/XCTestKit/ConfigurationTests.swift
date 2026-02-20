@@ -9,11 +9,31 @@
 
 import TestKitCore
 import XCTestKit
+import XCTest
 
 
 
-internal final class ConfigurationTests: XCTestKitCase
+internal final class ConfigurationTests: TestKitCase
 {
+    override func setUp()
+    {
+        super.setUp()
+        
+        XCTKConfig.global = TestOptions()
+        
+        /// Must be true when expecting errors in an async context. XCTest bug.
+        continueAfterFailure = true
+    }
+    
+    override func tearDown()
+    {
+        XCTKConfig.global = TestOptions()
+        
+        super.tearDown()
+    }
+    
+    
+    
     func testGlobalConfigAssignment()
     {
         var options = XCTKConfig.global
@@ -120,5 +140,69 @@ internal final class ConfigurationTests: XCTestKitCase
         XCTKAssertNotNil(output1)
         XCTKAssertNotNil(output2)
         XCTKAssertNotEqual(output1, output2)
+    }
+    
+    
+    
+    @Reasync
+    func testNilOptionsFallsBackToGlobal() async
+    {
+        /// With `iterations` set to zero, the property vacuously passes.
+        XCTKConfig.global.propertyOptions.iterations    = 0
+        XCTKConfig.global.propertyOptions.seed          = 50
+        
+        await XCTKForAll(options: nil)
+        {
+            (_: Int) async in
+            
+            XCTKAssertTrue(false)
+        }
+        
+        XCTKConfig.global.propertyOptions.iterations = 1
+        
+        let output: String? = await withOneExpectedFailure
+        {
+            await XCTKForAll(options: nil)
+            {
+                (_: Int) async in
+                
+                XCTKAssertTrue(false)
+            }
+        }
+        
+        XCTAssertNotNil(output)
+    }
+    
+    
+    
+    @Reasync
+    func testExplicitOptionsOverrideGlobal() async
+    {
+        /// With `iterations` set to zero, the property vacuously passes.
+        XCTKConfig.global.propertyOptions.iterations = 0
+        
+        let options: TestOptions = .propertyOptions(
+            iterations:     1,
+            seed:           50
+        )
+        
+        let property: (Int) async throws -> Void =
+        {
+            _ async in
+
+            TKAssertTrue(false)
+        }
+        
+        let output: String? = await withOneExpectedFailure
+        {
+            await TKForAll(options: options)
+            {
+                (n: Int) async throws in
+                
+                try await property(n)
+            }
+        }
+        
+        XCTAssertNotNil(output)
     }
 }

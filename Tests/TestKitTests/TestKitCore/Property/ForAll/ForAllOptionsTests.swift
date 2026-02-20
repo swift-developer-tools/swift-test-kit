@@ -8,12 +8,11 @@
 //===----------------------------------------------------------------------===//
 
 import TestKitCore
-import XCTestKit
 import XCTest
 
 
 
-internal final class ForAllOptionsTests: XCTestKitCase
+internal final class ForAllOptionsTests: TestKitCase
 {
     override func setUp()
     {
@@ -21,62 +20,6 @@ internal final class ForAllOptionsTests: XCTestKitCase
         
         /// Must be true when expecting errors in an async context. XCTest bug.
         continueAfterFailure = true
-    }
-    
-    
-    
-    // MARK: - Global fallback
-    
-    @Reasync
-    func testNilOptionsFallsBackToGlobal() async
-    {
-        /// With `iterations` set to zero, the property vacuously passes.
-        XCTKConfig.global.propertyOptions.iterations    = 0
-        XCTKConfig.global.propertyOptions.seed          = 50
-        
-        await XCTKForAll(options: nil)
-        {
-            (_: Int) async in
-            
-            XCTKAssertTrue(false)
-        }
-        
-        XCTKConfig.global.propertyOptions.iterations = 1
-        
-        let output: String? = await withOneExpectedFailure
-        {
-            await XCTKForAll(options: nil)
-            {
-                (_: Int) async in
-                
-                XCTKAssertTrue(false)
-            }
-        }
-        
-        XCTAssertNotNil(output)
-    }
-    
-    
-    
-    @Reasync
-    func testExplicitOptionsOverrideGlobal() async
-    {
-        /// With `iterations` set to zero, the property vacuously passes.
-        XCTKConfig.global.propertyOptions.iterations = 0
-        
-        let options: TestOptions = .propertyOptions(
-            iterations:     1,
-            seed:           50
-        )
-        
-        let output: String? = await withCapturedOutput(options: options)
-        {
-            _ async in
-
-            XCTKAssertTrue(false)
-        }
-        
-        XCTAssertNotNil(output)
     }
     
     
@@ -95,7 +38,7 @@ internal final class ForAllOptionsTests: XCTestKitCase
         {
             (_: Int) async in
             
-            XCTKAssertTrue(false)
+            TKAssertTrue(false)
         }
         
         let output1: String? = await withCapturedOutput(
@@ -129,7 +72,7 @@ internal final class ForAllOptionsTests: XCTestKitCase
         {
             _ async in
 
-            XCTKAssertTrue(false)
+            TKAssertTrue(false)
         }
         
         XCTAssertNotNil(output)
@@ -152,11 +95,11 @@ internal final class ForAllOptionsTests: XCTestKitCase
             seed:           50
         )
         
-        await XCTKForAll(options: options)
+        await TKForAll(options: options)
         {
             (n: Int) async in
             
-            XCTKAssertEqual(n, 0)
+            TKAssertEqual(n, 0)
         }
         
         
@@ -169,7 +112,7 @@ internal final class ForAllOptionsTests: XCTestKitCase
         {
             (n: Int) async in
             
-            XCTKAssertEqual(n, 0)
+            TKAssertEqual(n, 0)
         }
         
         XCTAssertNotNil(output)
@@ -192,7 +135,7 @@ internal final class ForAllOptionsTests: XCTestKitCase
         {
             (n: Int) async in
 
-            XCTKAssertTrue(n <= 5)
+            TKAssertTrue(n <= 5)
         }
         
         XCTAssertNotNil(output)
@@ -214,7 +157,7 @@ internal final class ForAllOptionsTests: XCTestKitCase
         {
             (n: Int) async in
 
-            XCTKAssertTrue(n <= 5)
+            TKAssertTrue(n <= 5)
         }
         
         XCTAssertNotNil(output)
@@ -259,13 +202,13 @@ extension ForAllOptionsTests
     /// occurred.
     @Reasync
     private func withCapturedOutput(
-        options     : TestOptions?,
+        options     : TestOptions,
         property    : @escaping (Int) async throws -> Void
     ) async -> String?
     {
         return await withOneExpectedFailure
         {
-            await XCTKForAll(options: options)
+            await TKForAll(options: options)
             {
                 (n: Int) async throws in
                 
@@ -287,13 +230,13 @@ extension ForAllOptionsTests
     @Reasync
     private func withCapturedOutput(
         precondition    : @escaping (Int) -> Bool,
-        options         : TestOptions?,
+        options         : TestOptions,
         property        : @escaping (Int) async throws -> Void = { _ async in }
     ) async -> String?
     {
         return await withOneExpectedFailure
         {
-            await XCTKForAll(
+            await TKForAll(
                 where:      precondition,
                 options:    options
             )

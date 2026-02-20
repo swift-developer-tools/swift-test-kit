@@ -13,7 +13,7 @@ import XCTest
 
 
 
-internal final class MacroAssertionBooleanExprTests: XCTestKitCase
+internal final class MacroAssertionBooleanExprTests: TestKitCase
 {
     private typealias AK = AssertionKind
     

@@ -13,7 +13,7 @@ import XCTest
 
 
 
-extension XCTestKitCase
+extension TestKitCase
 {
     // MARK: - Functions
 
@@ -41,7 +41,7 @@ extension XCTestKitCase
                 
                 body1 =
                 {
-                    XCTKAssertEqual(
+                    TKAssertEqual(
                         1,
                         2,
                         options: options1
@@ -50,7 +50,7 @@ extension XCTestKitCase
                 
                 body2 =
                 {
-                    XCTKAssertEqual(
+                    TKAssertEqual(
                         1,
                         2,
                         options: options2
@@ -70,7 +70,7 @@ extension XCTestKitCase
                 
                 body1 =
                 {
-                    XCTKAssertAllSatisfy(
+                    TKAssertAllSatisfy(
                         collection,
                         predicate,
                         options: options1
@@ -79,7 +79,7 @@ extension XCTestKitCase
                 
                 body2 =
                 {
-                    XCTKAssertAllSatisfy(
+                    TKAssertAllSatisfy(
                         collection,
                         predicate,
                         options: options2
@@ -101,7 +101,7 @@ extension XCTestKitCase
                 
                 body1 =
                 {
-                    XCTKAssertAnySatisfy(
+                    TKAssertAnySatisfy(
                         collection,
                         predicate,
                         options: options1
@@ -110,7 +110,7 @@ extension XCTestKitCase
                 
                 body2 =
                 {
-                    XCTKAssertAnySatisfy(
+                    TKAssertAnySatisfy(
                         collection,
                         predicate,
                         options: options2
@@ -130,7 +130,7 @@ extension XCTestKitCase
                 
                 body1 =
                 {
-                    XCTKAssertNoneSatisfy(
+                    TKAssertNoneSatisfy(
                         collection,
                         predicate,
                         options: options1
@@ -139,7 +139,7 @@ extension XCTestKitCase
                 
                 body2 =
                 {
-                    XCTKAssertNoneSatisfy(
+                    TKAssertNoneSatisfy(
                         collection,
                         predicate,
                         options: options2
@@ -161,7 +161,7 @@ extension XCTestKitCase
                 
                 body1 =
                 {
-                    XCTKAssertSatisfy(
+                    TKAssertSatisfy(
                         collection,
                         atLeast: 2,
                         predicate,
@@ -171,7 +171,7 @@ extension XCTestKitCase
                 
                 body2 =
                 {
-                    XCTKAssertSatisfy(
+                    TKAssertSatisfy(
                         collection,
                         atLeast: 2,
                         predicate,
@@ -194,7 +194,7 @@ extension XCTestKitCase
                 
                 body1 =
                 {
-                    XCTKAssertSatisfy(
+                    TKAssertSatisfy(
                         collection,
                         atMost: 2,
                         predicate,
@@ -204,7 +204,7 @@ extension XCTestKitCase
                 
                 body2 =
                 {
-                    XCTKAssertSatisfy(
+                    TKAssertSatisfy(
                         collection,
                         atMost: 2,
                         predicate,
@@ -227,7 +227,7 @@ extension XCTestKitCase
                 
                 body1 =
                 {
-                    XCTKAssertSatisfy(
+                    TKAssertSatisfy(
                         collection,
                         range: 1...3,
                         predicate,
@@ -237,7 +237,7 @@ extension XCTestKitCase
                 
                 body2 =
                 {
-                    XCTKAssertSatisfy(
+                    TKAssertSatisfy(
                         collection,
                         range: 1...3,
                         predicate,
@@ -260,7 +260,7 @@ extension XCTestKitCase
                 
                 body1 =
                 {
-                    XCTKAssertExactly(
+                    TKAssertExactly(
                         collection,
                         count: 2,
                         predicate,
@@ -270,7 +270,7 @@ extension XCTestKitCase
                 
                 body2 =
                 {
-                    XCTKAssertExactly(
+                    TKAssertExactly(
                         collection,
                         count: 5,
                         predicate,
@@ -293,7 +293,7 @@ extension XCTestKitCase
                 
                 body1 =
                 {
-                    XCTKAssertExactlyOne(
+                    TKAssertExactlyOne(
                         collection,
                         predicate,
                         options: options1
@@ -302,7 +302,7 @@ extension XCTestKitCase
                 
                 body2 =
                 {
-                    XCTKAssertExactlyOne(
+                    TKAssertExactlyOne(
                         collection,
                         predicate,
                         options: options2
@@ -321,7 +321,7 @@ extension XCTestKitCase
                 
                 body1 =
                 {
-                    XCTKAssertUnique(
+                    TKAssertUnique(
                         collection,
                         options: options1
                     )
@@ -329,7 +329,7 @@ extension XCTestKitCase
                 
                 body2 =
                 {
-                    XCTKAssertUnique(
+                    TKAssertUnique(
                         collection,
                         options: options2
                     )
@@ -349,7 +349,7 @@ extension XCTestKitCase
                 
                 body1 =
                 {
-                    XCTKAssertUnique(
+                    TKAssertUnique(
                         collection,
                         by:         predicate,
                         options:    options1
@@ -358,7 +358,7 @@ extension XCTestKitCase
                 
                 body2 =
                 {
-                    XCTKAssertUnique(
+                    TKAssertUnique(
                         collection,
                         by:         predicate,
                         options:    options2

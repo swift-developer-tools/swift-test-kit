@@ -8,12 +8,11 @@
 //===----------------------------------------------------------------------===//
 
 import TestKitCore
-import XCTestKit
 import XCTest
 
 
 
-internal final class ClassificationIntegrationTests: XCTestKitCase
+internal final class ClassificationIntegrationTests: TestKitCase
 {
     override func setUp()
     {
@@ -27,16 +26,16 @@ internal final class ClassificationIntegrationTests: XCTestKitCase
     
     func testClassificationOutsidePropertyBodyIsNoOp()
     {
-        XCTKClassify("label", when: true)
-        XCTKCover(50, "label", when: true)
-        XCTKLabel("label")
-        XCTKCollect(50)
-        XCTKTabulate("table", "label")
-        XCTKCoverTable("table", (50, "label"))
+        TKClassify("label", when: true)
+        TKCover(50, "label", when: true)
+        TKLabel("label")
+        TKCollect(50)
+        TKTabulate("table", "label")
+        TKCoverTable("table", (50, "label"))
         
         do
         {
-            try XCTKAssume(false)
+            try TKAssume(false)
         }
         catch
         {
@@ -50,14 +49,14 @@ internal final class ClassificationIntegrationTests: XCTestKitCase
     func testCoverageMetPasses() async
     {
         /// All values are `5`, so cover executes every iteration.
-        await XCTKForAll(
+        await TKForAll(
             using:      Generator<Int>.constant(5),
             options:    .propertyOptions(iterations: 10, seed: 1)
         )
         {
             (n: Int) async in
             
-            XCTKCover(100, "positive", when: n > 0)
+            TKCover(100, "positive", when: n > 0)
         }
     }
     
@@ -69,14 +68,14 @@ internal final class ClassificationIntegrationTests: XCTestKitCase
         await withOneExpectedFailure
         {
             /// All values are `5`, so cover never executes.
-            await XCTKForAll(
+            await TKForAll(
                 using:      Generator<Int>.constant(5),
                 options:    .propertyOptions(iterations: 10, seed: 1)
             )
             {
                 (n: Int) async in
                 
-                XCTKCover(100, "negative", when: n < 0)
+                TKCover(100, "negative", when: n < 0)
             }
         }
     }
@@ -88,14 +87,14 @@ internal final class ClassificationIntegrationTests: XCTestKitCase
     {
         /// All values are `5`, so cover never executes, but there is no
         /// coverage requirement.
-        await XCTKForAll(
+        await TKForAll(
             using:      Generator<Int>.constant(5),
             options:    .propertyOptions(iterations: 10, seed: 1)
         )
         {
             (n: Int) async in
             
-            XCTKClassify("negative", when: n < 0)
+            TKClassify("negative", when: n < 0)
         }
     }
     
@@ -106,15 +105,15 @@ internal final class ClassificationIntegrationTests: XCTestKitCase
     {
         /// The label is recorded unconditionally, so cover executes every
         /// iteration.
-        await XCTKForAll(
+        await TKForAll(
             using:      Generator<Int>.constant(5),
             options:    .propertyOptions(iterations: 10, seed: 1)
         )
         {
             (_: Int) async in
             
-            XCTKLabel("tracked")
-            XCTKCover(100, "tracked", when: true)
+            TKLabel("tracked")
+            TKCover(100, "tracked", when: true)
         }
     }
     
@@ -125,15 +124,15 @@ internal final class ClassificationIntegrationTests: XCTestKitCase
     {
         /// Collect records the string representation of the value, which
         /// is always `5`, and cover executes every iteration.
-        await XCTKForAll(
+        await TKForAll(
             using:      Generator<Int>.constant(5),
             options:    .propertyOptions(iterations: 10, seed: 1)
         )
         {
             (n: Int) async in
             
-            XCTKCollect(n)
-            XCTKCover(100, "5", when: true)
+            TKCollect(n)
+            TKCover(100, "5", when: true)
         }
     }
     
@@ -146,15 +145,15 @@ internal final class ClassificationIntegrationTests: XCTestKitCase
         {
             /// All values are `5`, so cover never executes.
             /// The higher cover percentage overrides the lower one.
-            await XCTKForAll(
+            await TKForAll(
                 using:      Generator<Int>.constant(5),
                 options:    .propertyOptions(iterations: 10, seed: 1)
             )
             {
                 (n: Int) async in
                 
-                XCTKCover(10, "negative", when: n < 0)
-                XCTKCover(100, "negative", when: n < 0)
+                TKCover(10, "negative", when: n < 0)
+                TKCover(100, "negative", when: n < 0)
             }
         }
     }
@@ -166,7 +165,7 @@ internal final class ClassificationIntegrationTests: XCTestKitCase
     {
         /// The precondition leaves only even numbers, so cover
         /// executes every iteration.
-        await XCTKForAll(
+        await TKForAll(
             using:      Generator<Int>.integer(in: 0...100),
             where:      { $0 % 2 == 0 },
             options:    .propertyOptions(iterations: 10, seed: 1)
@@ -174,7 +173,7 @@ internal final class ClassificationIntegrationTests: XCTestKitCase
         {
             (n: Int) async in
             
-            XCTKCover(100, "even", when: n % 2 == 0)
+            TKCover(100, "even", when: n % 2 == 0)
         }
     }
     
@@ -194,15 +193,15 @@ internal final class ClassificationIntegrationTests: XCTestKitCase
             seed:           1
         )
         
-        await XCTKForAll(
+        await TKForAll(
             using:      generator,
             options:    options
         )
         {
             (n: Int) async in
             
-            XCTKClassify("small", when: n < 50)
-            XCTKClassify("large", when: n >= 50)
+            TKClassify("small", when: n < 50)
+            TKClassify("large", when: n >= 50)
         }
     }
     
@@ -211,7 +210,7 @@ internal final class ClassificationIntegrationTests: XCTestKitCase
     @Reasync
     func testCoverageMetMultipleGenerators() async
     {
-        await XCTKForAll(
+        await TKForAll(
             using:      Generator<Int>.constant(1),
                         Generator<Int>.constant(2),
             options:    .propertyOptions(iterations: 10, seed: 1)
@@ -219,7 +218,7 @@ internal final class ClassificationIntegrationTests: XCTestKitCase
         {
             (a: Int, b: Int) async in
             
-            XCTKCover(100, "a < b", when: a < b)
+            TKCover(100, "a < b", when: a < b)
         }
     }
     
@@ -235,27 +234,27 @@ internal final class ClassificationIntegrationTests: XCTestKitCase
         
         await withOneExpectedFailure
         {
-            await XCTKForAll(
+            await TKForAll(
                 using:      Generator<Int>.constant(5),
                 options:    .propertyOptions(iterations: 10, seed: 1)
             )
             {
                 (n: Int) async in
                 
-                XCTKLabel("first")
-                XCTKCover(100, "negative", when: n < 0)
+                TKLabel("first")
+                TKCover(100, "negative", when: n < 0)
             }
         }
         
-        await XCTKForAll(
+        await TKForAll(
             using:      Generator<Int>.constant(5),
             options:    .propertyOptions(iterations: 10, seed: 1)
         )
         {
             (n: Int) async in
             
-            XCTKLabel("second")
-            XCTKCover(100, "second", when: true)
+            TKLabel("second")
+            TKCover(100, "second", when: true)
         }
     }
     
@@ -269,16 +268,16 @@ internal final class ClassificationIntegrationTests: XCTestKitCase
         /// failures to leak as separate failures.
         await withOneExpectedFailure
         {
-            await XCTKForAll(
+            await TKForAll(
                 using:      Generator<Int>.constant(5),
                 options:    .propertyOptions(iterations: 10, seed: 1)
             )
             {
                 (n: Int) async in
                 
-                XCTKClassify("small", when: n < 0)
-                XCTKClassify("large", when: n >= 0)
-                XCTKAssertEqual(1, 2)
+                TKClassify("small", when: n < 0)
+                TKClassify("large", when: n >= 0)
+                TKAssertEqual(1, 2)
             }
         }
     }
@@ -293,15 +292,15 @@ internal final class ClassificationIntegrationTests: XCTestKitCase
         /// continue to execute normally.
         await withOneExpectedFailure
         {
-            await XCTKForAll(
+            await TKForAll(
                 options: .propertyOptions(iterations: 10, seed: 1)
             )
             {
                 (_: Int) async in
                 
-                XCTKLabel("before")
-                XCTKAssertTrue(false)
-                XCTKLabel("after")
+                TKLabel("before")
+                TKAssertTrue(false)
+                TKLabel("after")
             }
         }
     }
@@ -312,14 +311,14 @@ internal final class ClassificationIntegrationTests: XCTestKitCase
     func testTabulateWithoutCoverTableIsInformational() async
     {
         /// No coverage means no failure.
-        await XCTKForAll(
+        await TKForAll(
             using:      Generator<Int>.constant(5),
             options:    .propertyOptions(iterations: 10, seed: 1)
         )
         {
             (n: Int) async in
             
-            XCTKTabulate("sign", n > 0 ? "positive" : "negative")
+            TKTabulate("sign", n > 0 ? "positive" : "negative")
         }
     }
     
@@ -332,14 +331,14 @@ internal final class ClassificationIntegrationTests: XCTestKitCase
         {
             /// Requirements are registered, but no labels are recorded, so
             /// there is no coverage.
-            await XCTKForAll(
+            await TKForAll(
                 using:      Generator<Int>.constant(5),
                 options:    .propertyOptions(iterations: 10, seed: 1)
             )
             {
                 (_: Int) async in
                 
-                XCTKCoverTable("sign", (50, "positive"), (50, "negative"))
+                TKCoverTable("sign", (50, "positive"), (50, "negative"))
             }
         }
     }
@@ -353,16 +352,16 @@ internal final class ClassificationIntegrationTests: XCTestKitCase
         {
             /// All values are `5`, so `negative` is never recorded. The
             /// higher cover percentage overrides the lower one.
-            await XCTKForAll(
+            await TKForAll(
                 using:      Generator<Int>.constant(5),
                 options:    .propertyOptions(iterations: 10, seed: 1)
             )
             {
                 (n: Int) async in
                 
-                XCTKTabulate("sign", n > 0 ? "positive" : "negative")
-                XCTKCoverTable("sign", (10, "negative"))
-                XCTKCoverTable("sign", (100, "negative"))
+                TKTabulate("sign", n > 0 ? "positive" : "negative")
+                TKCoverTable("sign", (10, "negative"))
+                TKCoverTable("sign", (100, "negative"))
             }
         }
     }
@@ -373,15 +372,15 @@ internal final class ClassificationIntegrationTests: XCTestKitCase
     func testTableCoverageMetPasses() async
     {
         /// All values are `5`, so `positive` is recorded every iteration.
-        await XCTKForAll(
+        await TKForAll(
             using:      Generator<Int>.constant(5),
             options:    .propertyOptions(iterations: 10, seed: 1)
         )
         {
             (n: Int) async in
             
-            XCTKTabulate("sign", n > 0 ? "positive" : "negative")
-            XCTKCoverTable("sign", (100, "positive"))
+            TKTabulate("sign", n > 0 ? "positive" : "negative")
+            TKCoverTable("sign", (100, "positive"))
         }
     }
     
@@ -393,15 +392,15 @@ internal final class ClassificationIntegrationTests: XCTestKitCase
         await withOneExpectedFailure
         {
             /// All values are `5`, so `negative` is never recorded.
-            await XCTKForAll(
+            await TKForAll(
                 using:      Generator<Int>.constant(5),
                 options:    .propertyOptions(iterations: 10, seed: 1)
             )
             {
                 (n: Int) async in
                 
-                XCTKTabulate("sign", n > 0 ? "positive" : "negative")
-                XCTKCoverTable("sign", (100, "negative"))
+                TKTabulate("sign", n > 0 ? "positive" : "negative")
+                TKCoverTable("sign", (100, "negative"))
             }
         }
     }
@@ -413,7 +412,7 @@ internal final class ClassificationIntegrationTests: XCTestKitCase
     {
         /// The precondition leaves only even numbers, so `even` is recorded
         /// every iteration.
-        await XCTKForAll(
+        await TKForAll(
             using:      Generator<Int>.integer(in: 0...100),
             where:      { $0 % 2 == 0 },
             options:    .propertyOptions(iterations: 10, seed: 1)
@@ -421,8 +420,8 @@ internal final class ClassificationIntegrationTests: XCTestKitCase
         {
             (n: Int) async in
             
-            XCTKTabulate("parity", n % 2 == 0 ? "even" : "odd")
-            XCTKCoverTable("parity", (100, "even"))
+            TKTabulate("parity", n % 2 == 0 ? "even" : "odd")
+            TKCoverTable("parity", (100, "even"))
         }
     }
     
@@ -442,14 +441,14 @@ internal final class ClassificationIntegrationTests: XCTestKitCase
             seed:           1
         )
         
-        await XCTKForAll(
+        await TKForAll(
             using:      generator,
             options:    options
         )
         {
             (n: Int) async in
             
-            XCTKTabulate("size", n < 50 ? "small" : "large")
+            TKTabulate("size", n < 50 ? "small" : "large")
         }
     }
     
@@ -458,7 +457,7 @@ internal final class ClassificationIntegrationTests: XCTestKitCase
     @Reasync
     func testTableCoverageMetWithMultipleGenerators() async
     {
-        await XCTKForAll(
+        await TKForAll(
             using:      Generator<Int>.constant(1),
                         Generator<Int>.constant(2),
             options:    .propertyOptions(iterations: 10, seed: 1)
@@ -466,8 +465,8 @@ internal final class ClassificationIntegrationTests: XCTestKitCase
         {
             (a: Int, b: Int) async in
             
-            XCTKTabulate("comparison", a < b ? "a < b" : "a >= b")
-            XCTKCoverTable("comparison", (100, "a < b"))
+            TKTabulate("comparison", a < b ? "a < b" : "a >= b")
+            TKCoverTable("comparison", (100, "a < b"))
         }
     }
     
@@ -483,27 +482,27 @@ internal final class ClassificationIntegrationTests: XCTestKitCase
         
         await withOneExpectedFailure
         {
-            await XCTKForAll(
+            await TKForAll(
                 using:      Generator<Int>.constant(5),
                 options:    .propertyOptions(iterations: 10, seed: 1)
             )
             {
                 (n: Int) async in
                 
-                XCTKTabulate("sign", "positive")
-                XCTKCoverTable("sign", (100, "negative"))
+                TKTabulate("sign", "positive")
+                TKCoverTable("sign", (100, "negative"))
             }
         }
         
-        await XCTKForAll(
+        await TKForAll(
             using:      Generator<Int>.constant(5),
             options:    .propertyOptions(iterations: 10, seed: 1)
         )
         {
             (n: Int) async in
             
-            XCTKTabulate("kind", "second")
-            XCTKCoverTable("kind", (100, "second"))
+            TKTabulate("kind", "second")
+            TKCoverTable("kind", (100, "second"))
         }
     }
     
@@ -517,15 +516,15 @@ internal final class ClassificationIntegrationTests: XCTestKitCase
         /// failures to leak as separate failures.
         await withOneExpectedFailure
         {
-            await XCTKForAll(
+            await TKForAll(
                 using:      Generator<Int>.constant(5),
                 options:    .propertyOptions(iterations: 10, seed: 1)
             )
             {
                 (n: Int) async in
                 
-                XCTKTabulate("sign", n > 0 ? "postive" : "negative")
-                XCTKAssertEqual(1, 2)
+                TKTabulate("sign", n > 0 ? "postive" : "negative")
+                TKAssertEqual(1, 2)
             }
         }
     }
@@ -540,15 +539,15 @@ internal final class ClassificationIntegrationTests: XCTestKitCase
         /// continue to execute normally.
         await withOneExpectedFailure
         {
-            await XCTKForAll(
+            await TKForAll(
                 options: .propertyOptions(iterations: 10, seed: 1)
             )
             {
                 (_: Int) async in
                 
-                XCTKTabulate("position", "before")
-                XCTKAssertTrue(false)
-                XCTKTabulate("position", "after")
+                TKTabulate("position", "before")
+                TKAssertTrue(false)
+                TKTabulate("position", "after")
             }
         }
     }
@@ -560,16 +559,16 @@ internal final class ClassificationIntegrationTests: XCTestKitCase
     {
         /// Flat labels and table labels exist in the same property body.
         /// Both coverage requirements must be met independently.
-        await XCTKForAll(
+        await TKForAll(
             using:      Generator<Int>.constant(5),
             options:    .propertyOptions(iterations: 10, seed: 1)
         )
         {
             (n: Int) async in
             
-            XCTKCover(100, "positive", when: n > 0)
-            XCTKTabulate("sign", n > 0 ? "positive" : "negative")
-            XCTKCoverTable("sign", (100, "positive"))
+            TKCover(100, "positive", when: n > 0)
+            TKTabulate("sign", n > 0 ? "positive" : "negative")
+            TKCoverTable("sign", (100, "positive"))
         }
     }
     
@@ -578,14 +577,14 @@ internal final class ClassificationIntegrationTests: XCTestKitCase
     @Reasync
     func testAssumeTruePassesThrough() async
     {
-        await XCTKForAll(
+        await TKForAll(
             using:      Generator<Int>.constant(5),
             options:    .propertyOptions(iterations: 10, seed: 1)
         )
         {
             (_: Int) async throws in
             
-            try XCTKAssume(true)
+            try TKAssume(true)
         }
     }
     
@@ -602,14 +601,14 @@ internal final class ClassificationIntegrationTests: XCTestKitCase
         
         await withOneExpectedFailure
         {
-            await XCTKForAll(
+            await TKForAll(
                 using:      Generator<Int>.constant(5),
                 options:    options
             )
             {
                 (_: Int) async throws in
                 
-                try XCTKAssume(false)
+                try TKAssume(false)
             }
         }
     }
@@ -619,14 +618,14 @@ internal final class ClassificationIntegrationTests: XCTestKitCase
     @Reasync
     func testAssumeWithDerivedConditionPasses() async
     {
-        await XCTKForAll(
+        await TKForAll(
             using:      Generator<Int>.integer(in: 0...100),
             options:    .propertyOptions(iterations: 10, seed: 1)
         )
         {
             (n: Int) async throws in
             
-            try XCTKAssume(n % 2 == 0)
+            try TKAssume(n % 2 == 0)
         }
     }
     
@@ -643,7 +642,7 @@ internal final class ClassificationIntegrationTests: XCTestKitCase
         
         await withOneExpectedFailure
         {
-            await XCTKForAll(
+            await TKForAll(
                 using:      Generator<Int>.integer(in: 0...100),
                 where:      { $0 % 2 == 0 },
                 options:    options
@@ -651,7 +650,7 @@ internal final class ClassificationIntegrationTests: XCTestKitCase
             {
                 (_: Int) async throws in
                 
-                try XCTKAssume(false)
+                try TKAssume(false)
             }
         }
     }
@@ -663,15 +662,15 @@ internal final class ClassificationIntegrationTests: XCTestKitCase
     {
         await withOneExpectedFailure
         {
-            await XCTKForAll(
+            await TKForAll(
                 using:      Generator<Int>.constant(5),
                 options:    .propertyOptions(iterations: 10, seed: 1)
             )
             {
                 (_: Int) async throws in
                 
-                try XCTKAssume(true)
-                XCTKAssertEqual(1, 2)
+                try TKAssume(true)
+                TKAssertEqual(1, 2)
             }
         }
     }
@@ -681,15 +680,15 @@ internal final class ClassificationIntegrationTests: XCTestKitCase
     @Reasync
     func testClassificationContinuesAfterPassingAssume() async
     {
-        await XCTKForAll(
+        await TKForAll(
             using:      Generator<Int>.constant(5),
             options:    .propertyOptions(iterations: 10, seed: 1)
         )
         {
             (_: Int) async throws in
             
-            try XCTKAssume(true)
-            XCTKCover(100, "after-assume", when: true)
+            try TKAssume(true)
+            TKCover(100, "after-assume", when: true)
         }
     }
     
@@ -698,15 +697,15 @@ internal final class ClassificationIntegrationTests: XCTestKitCase
     @Reasync
     func testAssumeWithCoverageCountsOnlyAccepted() async
     {
-        await XCTKForAll(
+        await TKForAll(
             using:      Generator<Int>.integer(in: 0...100),
             options:    .propertyOptions(iterations: 10, seed: 1)
         )
         {
             (n: Int) async throws in
             
-            try XCTKAssume(n % 2 == 0)
-            XCTKCover(100, "even", when: n % 2 == 0)
+            try TKAssume(n % 2 == 0)
+            TKCover(100, "even", when: n % 2 == 0)
         }
     }
     
@@ -715,16 +714,16 @@ internal final class ClassificationIntegrationTests: XCTestKitCase
     @Reasync
     func testAssumeWithTableCoverageCountsOnlyAccepted() async
     {
-        await XCTKForAll(
+        await TKForAll(
             using:      Generator<Int>.integer(in: 0...100),
             options:    .propertyOptions(iterations: 10, seed: 1)
         )
         {
             (n: Int) async throws in
             
-            try XCTKAssume(n % 2 == 0)
-            XCTKTabulate("parity", "even")
-            XCTKCoverTable("parity", (100, "even"))
+            try TKAssume(n % 2 == 0)
+            TKTabulate("parity", "even")
+            TKCoverTable("parity", (100, "even"))
         }
     }
     
@@ -744,26 +743,26 @@ internal final class ClassificationIntegrationTests: XCTestKitCase
         /// be affected by the first property's discards.
         await withOneExpectedFailure
         {
-            await XCTKForAll(
+            await TKForAll(
                 using:      Generator<Int>.constant(5),
                 options:    options
             )
             {
                 (_: Int) async throws in
                 
-                try XCTKAssume(false)
+                try TKAssume(false)
             }
         }
         
-        await XCTKForAll(
+        await TKForAll(
             using:      Generator<Int>.constant(5),
             options:    .propertyOptions(iterations: 10, seed: 1)
         )
         {
             (_: Int) async throws in
             
-            try XCTKAssume(true)
-            XCTKCover(100, "always", when: true)
+            try TKAssume(true)
+            TKCover(100, "always", when: true)
         }
     }
 }

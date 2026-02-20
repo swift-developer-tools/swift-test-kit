@@ -17,23 +17,13 @@ import XCTest
 ///
 /// This resets the global XCTestKit configuration between test cases and
 /// disables continuation after failure.
-internal class XCTestKitCase: XCTestCase
+internal class TestKitCase: XCTestCase
 {
     override func setUp()
     {
         super.setUp()
         
-        XCTKConfig.global       = TestOptions()
-        continueAfterFailure    = false
-    }
-    
-    
-    
-    override func tearDown()
-    {
-        XCTKConfig.global = TestOptions()
-        
-        super.tearDown()
+        continueAfterFailure = false
     }
     
     

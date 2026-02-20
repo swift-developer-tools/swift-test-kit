@@ -7,7 +7,7 @@
 //
 //===----------------------------------------------------------------------===//
 
-internal final class MacroAssertionOptionsTests: XCTestKitCase
+internal final class MacroAssertionOptionsTests: TestKitCase
 {
     // MARK: - Boolean
     

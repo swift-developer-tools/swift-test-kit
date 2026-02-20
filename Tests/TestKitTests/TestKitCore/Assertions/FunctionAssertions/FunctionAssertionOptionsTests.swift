@@ -7,7 +7,7 @@
 //
 //===----------------------------------------------------------------------===//
 
-internal final class FunctionAssertionOptionsTests: XCTestKitCase
+internal final class FunctionAssertionOptionsTests: TestKitCase
 {
     // MARK: - Equality and inequality
     

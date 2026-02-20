@@ -8,12 +8,11 @@
 //===----------------------------------------------------------------------===//
 
 import TestKitCore
-import XCTestKit
 import XCTest
 
 
 
-internal final class ForAllOutputTests: XCTestKitCase
+internal final class ForAllOutputTests: TestKitCase
 {
     override func setUp()
     {
@@ -37,11 +36,11 @@ internal final class ForAllOutputTests: XCTestKitCase
         
         let output: String? = await withOneExpectedFailure
         {
-            await XCTKForAll(options: options)
+            await TKForAll(options: options)
             {
                 (_: Int) async in
                 
-                XCTKAssertTrue(false)
+                TKAssertTrue(false)
             }
         }
         
@@ -51,7 +50,7 @@ internal final class ForAllOutputTests: XCTestKitCase
         
         let actual: String = try getPropertyOutput(
             from:       output,
-            before:     "XCTKAssertTrue"
+            before:     .true
         )
         
         let expected: String =
@@ -85,14 +84,14 @@ internal final class ForAllOutputTests: XCTestKitCase
         
         let output: String? = await withOneExpectedFailure
         {
-            await XCTKForAll(
+            await TKForAll(
                 using:      generator,
                 options:    options
             )
             {
                 (n: Int) async in
                 
-                XCTKAssertLessThan(n, 10)
+                TKAssertLessThan(n, 10)
             }
         }
         
@@ -102,7 +101,7 @@ internal final class ForAllOutputTests: XCTestKitCase
         
         let actual: String = try getPropertyOutput(
             from:       output,
-            before:     "XCTKAssertLessThan"
+            before:     .lessThan
         )
         
         let expected: String =
@@ -140,14 +139,14 @@ internal final class ForAllOutputTests: XCTestKitCase
         
         let output: String? = await withOneExpectedFailure
         {
-            await XCTKForAll(
+            await TKForAll(
                 using:      generator,
                 options:    options
             )
             {
                 (n: Int) async in
                 
-                XCTKAssertLessThan(n, 10)
+                TKAssertLessThan(n, 10)
             }
         }
         
@@ -157,7 +156,7 @@ internal final class ForAllOutputTests: XCTestKitCase
         
         let actual: String = try getPropertyOutput(
             from:       output,
-            before:     "XCTKAssertLessThan"
+            before:     .lessThan
         )
         
         let expected: String =
@@ -186,7 +185,7 @@ internal final class ForAllOutputTests: XCTestKitCase
         
         let actual: String? = await withOneExpectedFailure
         {
-            await XCTKForAll(options: options)
+            await TKForAll(options: options)
             {
                 (_: Int) async throws in
                 
@@ -223,7 +222,7 @@ internal final class ForAllOutputTests: XCTestKitCase
         
         let actual: String? = await withOneExpectedFailure
         {
-            await XCTKForAll(
+            await TKForAll(
                 "hello world",
                 options: options
             )
@@ -265,14 +264,14 @@ internal final class ForAllOutputTests: XCTestKitCase
         
         let output: String? = await withOneExpectedFailure
         {
-            await XCTKForAll(
+            await TKForAll(
                 "hello world",
                 options: options
             )
             {
                 (_: Int) async in
                 
-                XCTKAssertTrue(false)
+                TKAssertTrue(false)
             }
         }
         
@@ -283,7 +282,7 @@ internal final class ForAllOutputTests: XCTestKitCase
         
         let actual: String = try getPropertyOutput(
             from:       output,
-            before:     "XCTKAssertTrue"
+            before:     .true
         )
         
         let expected: String =
@@ -317,7 +316,7 @@ internal final class ForAllOutputTests: XCTestKitCase
         
         let output: String? = await withOneExpectedFailure
         {
-            await XCTKForAll(
+            await TKForAll(
                 using:      generator,
                 where:      { $0 >= 50 },
                 options:    options
@@ -325,7 +324,7 @@ internal final class ForAllOutputTests: XCTestKitCase
             {
                 (_: Int) async in
                 
-                XCTKAssertTrue(false)
+                TKAssertTrue(false)
             }
         }
         
@@ -335,7 +334,7 @@ internal final class ForAllOutputTests: XCTestKitCase
         
         let actual: String = try getPropertyOutput(
             from:       output,
-            before:     "XCTKAssertTrue"
+            before:     .true
         )
         
         let expected: String =
@@ -364,14 +363,14 @@ internal final class ForAllOutputTests: XCTestKitCase
         
         let output: String? = await withOneExpectedFailure
         {
-            await XCTKForAll(
+            await TKForAll(
                 where:      { _ in true },
                 options:    options
             )
             {
                 (_: Int) async in
                 
-                XCTKAssertTrue(false)
+                TKAssertTrue(false)
             }
         }
         
@@ -381,7 +380,7 @@ internal final class ForAllOutputTests: XCTestKitCase
         
         let actual: String = try getPropertyOutput(
             from:       output,
-            before:     "XCTKAssertTrue"
+            before:     .true
         )
         
         let expected: String =
@@ -410,11 +409,11 @@ internal final class ForAllOutputTests: XCTestKitCase
         
         let output: String? = await withOneExpectedFailure
         {
-            await XCTKForAll(options: options)
+            await TKForAll(options: options)
             {
                 (_: Int, _: Int) async in
                 
-                XCTKAssertTrue(false)
+                TKAssertTrue(false)
             }
         }
         
@@ -424,7 +423,7 @@ internal final class ForAllOutputTests: XCTestKitCase
         
         let actual: String = try getPropertyOutput(
             from:       output,
-            before:     "XCTKAssertTrue"
+            before:     .true
         )
         
         let expected: String =
@@ -457,14 +456,14 @@ internal final class ForAllOutputTests: XCTestKitCase
         
         let output: String? = await withOneExpectedFailure
         {
-            await XCTKForAll(
+            await TKForAll(
                 using:      gen1, gen2,
                 options:    options
             )
             {
                 (_: Int, _: String) async in
                 
-                XCTKAssertTrue(false)
+                TKAssertTrue(false)
             }
         }
         
@@ -474,7 +473,7 @@ internal final class ForAllOutputTests: XCTestKitCase
         
         let actual: String = try getPropertyOutput(
             from:       output,
-            before:     "XCTKAssertTrue"
+            before:     .true
         )
         
         let expected: String =
@@ -511,14 +510,14 @@ internal final class ForAllOutputTests: XCTestKitCase
         
         let output: String? = await withOneExpectedFailure
         {
-            await XCTKForAll(
+            await TKForAll(
                 using:      gen1, gen2,
                 options:    options
             )
             {
                 (a: Int, _: String) async in
                 
-                XCTKAssertLessThan(a, 10)
+                TKAssertLessThan(a, 10)
             }
         }
         
@@ -528,7 +527,7 @@ internal final class ForAllOutputTests: XCTestKitCase
         
         let actual: String = try getPropertyOutput(
             from:       output,
-            before:     "XCTKAssertLessThan"
+            before:     .lessThan
         )
         
         let expected: String =
@@ -562,14 +561,14 @@ internal final class ForAllOutputTests: XCTestKitCase
         
         let output: String? = await withOneExpectedFailure
         {
-            await XCTKForAll(
+            await TKForAll(
                 using:      gen1, gen2, gen3,
                 options:    options
             )
             {
                 (_: Int, _: String, _: Bool) async in
                 
-                XCTKAssertTrue(false)
+                TKAssertTrue(false)
             }
         }
         
@@ -579,7 +578,7 @@ internal final class ForAllOutputTests: XCTestKitCase
         
         let actual: String = try getPropertyOutput(
             from:       output,
-            before:     "XCTKAssertTrue"
+            before:     .true
         )
         
         let expected: String =
@@ -618,14 +617,14 @@ internal final class ForAllOutputTests: XCTestKitCase
         
         let output: String? = await withOneExpectedFailure
         {
-            await XCTKForAll(
+            await TKForAll(
                 using:      gen1, gen2, gen3,
                 options:    options
             )
             {
                 (a: Int, _: String, _: Bool) async in
                 
-                XCTKAssertLessThan(a, 10)
+                TKAssertLessThan(a, 10)
             }
         }
         
@@ -635,7 +634,7 @@ internal final class ForAllOutputTests: XCTestKitCase
         
         let actual: String = try getPropertyOutput(
             from:       output,
-            before:     "XCTKAssertLessThan"
+            before:     .lessThan
         )
         
         let expected: String =
@@ -667,11 +666,11 @@ internal final class ForAllOutputTests: XCTestKitCase
         
         let output: String? = await withOneExpectedFailure
         {
-            await XCTKForAll(options: options)
+            await TKForAll(options: options)
             {
                 (_: Int) async throws in
                 
-                XCTKAssertTrue(false)
+                TKAssertTrue(false)
                 
                 throw TestError()
             }
@@ -684,7 +683,7 @@ internal final class ForAllOutputTests: XCTestKitCase
         
         let actual: String = try getPropertyOutput(
             from:       output,
-            before:     "XCTKAssertTrue"
+            before:     .true
         )
         
         let expected: String =
@@ -714,23 +713,23 @@ internal final class ForAllOutputTests: XCTestKitCase
         
         let output: String? = await withOneExpectedFailure
         {
-            await XCTKForAll(options: options)
+            await TKForAll(options: options)
             {
                 (_: Int) async in
                 
-                XCTKAssertTrue(false)
-                XCTKAssertEqual(1, 2)
+                TKAssertTrue(false)
+                TKAssertEqual(1, 2)
             }
         }
         
         XCTAssertNotNil(output)
-        XCTAssertFalse(output?.contains("XCTKAssertEqual") ?? true)
+        XCTAssertFalse(output?.contains("TKAssertEqual") ?? true)
         
         
         
         let actual: String = try getPropertyOutput(
             from:       output,
-            before:     "XCTKAssertTrue"
+            before:     .true
         )
         
         let expected: String =
@@ -759,14 +758,14 @@ internal final class ForAllOutputTests: XCTestKitCase
         
         let output: String? = await withOneExpectedFailure
         {
-            await XCTKForAll(
+            await TKForAll(
                 using:      Generator<[Int]>.constant([1, 2, 3]),
                 options:    options
             )
             {
                 (_: [Int]) async in
                 
-                XCTKAssertTrue(false)
+                TKAssertTrue(false)
             }
         }
         
@@ -776,7 +775,7 @@ internal final class ForAllOutputTests: XCTestKitCase
         
         let actual: String = try getPropertyOutput(
             from:       output,
-            before:     "XCTKAssertTrue"
+            before:     .true
         )
         
         let expected: String =
@@ -815,14 +814,14 @@ internal final class ForAllOutputTests: XCTestKitCase
         
         let output: String? = await withOneExpectedFailure
         {
-            await XCTKForAll(
+            await TKForAll(
                 using:      generator,
                 options:    options
             )
             {
                 (n: Int) async in
                 
-                XCTKAssertLessThan(n, 10)
+                TKAssertLessThan(n, 10)
             }
         }
         
@@ -832,7 +831,7 @@ internal final class ForAllOutputTests: XCTestKitCase
         
         let actual: String = try getPropertyOutput(
             from:       output,
-            before:     "XCTKAssertLessThan"
+            before:     .lessThan
         )
         
         let expected: String =
@@ -861,14 +860,14 @@ internal final class ForAllOutputTests: XCTestKitCase
         
         let output: String? = await withOneExpectedFailure
         {
-            await XCTKForAll(
+            await TKForAll(
                 using:      Generator<Point>.constant(Point(x: 5, y: 10)),
                 options:    options
             )
             {
                 (_: Point) async in
                 
-                XCTKAssertTrue(false)
+                TKAssertTrue(false)
             }
         }
         
@@ -878,7 +877,7 @@ internal final class ForAllOutputTests: XCTestKitCase
         
         let actual: String = try getPropertyOutput(
             from:       output,
-            before:     "XCTKAssertTrue"
+            before:     .true
         )
         
         let expected: String =
@@ -917,14 +916,14 @@ internal final class ForAllOutputTests: XCTestKitCase
         
         let output: String? = await withOneExpectedFailure
         {
-            await XCTKForAll(
+            await TKForAll(
                 using:      generator,
                 options:    options
             )
             {
                 (_: [Int]) async in
                 
-                XCTKAssertTrue(false)
+                TKAssertTrue(false)
             }
         }
         
@@ -934,7 +933,7 @@ internal final class ForAllOutputTests: XCTestKitCase
         
         let actual: String = try getPropertyOutput(
             from:       output,
-            before:     "XCTKAssertTrue"
+            before:     .true
         )
         
         let expected: String =
@@ -968,7 +967,7 @@ internal final class ForAllOutputTests: XCTestKitCase
         
         let actual: String? = await withOneExpectedFailure
         {
-            await XCTKForAll(
+            await TKForAll(
                 using:      generator,
                 options:    options
             )
@@ -1054,14 +1053,14 @@ internal final class ForAllOutputTests: XCTestKitCase
         
         let output: String? = await withOneExpectedFailure
         {
-            await XCTKForAll(
+            await TKForAll(
                 using:      gen1, gen2,
                 options:    options
             )
             {
                 (a: Int, b: Int) async in
                 
-                XCTKAssertTrue(a < 5 || b < 3)
+                TKAssertTrue(a < 5 || b < 3)
             }
         }
         
@@ -1071,7 +1070,7 @@ internal final class ForAllOutputTests: XCTestKitCase
         
         let actual: String = try getPropertyOutput(
             from:       output,
-            before:     "XCTKAssertTrue"
+            before:     .true
         )
         
         let expected: String =
@@ -1124,7 +1123,7 @@ internal final class ForAllOutputTests: XCTestKitCase
         
         let output: String? = await withOneExpectedFailure
         {
-            await XCTKForAll(
+            await TKForAll(
                 using:      generator,
                 where:      { $0 >= 10 },
                 options:    options
@@ -1132,7 +1131,7 @@ internal final class ForAllOutputTests: XCTestKitCase
             {
                 (_: Int) async in
                 
-                XCTKAssertTrue(false)
+                TKAssertTrue(false)
             }
         }
         
@@ -1142,7 +1141,7 @@ internal final class ForAllOutputTests: XCTestKitCase
         
         let actual: String = try getPropertyOutput(
             from:       output,
-            before:     "XCTKAssertTrue"
+            before:     .true
         )
         
         let expected: String =
@@ -1174,7 +1173,7 @@ internal final class ForAllOutputTests: XCTestKitCase
         
         let actual: String? = await withOneExpectedFailure
         {
-            await XCTKForAll(
+            await TKForAll(
                 where:      { _ in false },
                 options:    options
             )
@@ -1210,7 +1209,7 @@ internal final class ForAllOutputTests: XCTestKitCase
         
         let actual: String? = await withOneExpectedFailure
         {
-            await XCTKForAll(
+            await TKForAll(
                 where:      { _ in false },
                 message:    "hello world",
                 options:    options
@@ -1257,7 +1256,7 @@ internal final class ForAllOutputTests: XCTestKitCase
         
         let actual: String? = await withOneExpectedFailure
         {
-            await XCTKForAll(
+            await TKForAll(
                 using:      generator,
                 where:      { $0 < 30 },
                 options:    options
@@ -1298,7 +1297,7 @@ internal final class ForAllOutputTests: XCTestKitCase
         
         let actual: String? = await withOneExpectedFailure
         {
-            await XCTKForAll(
+            await TKForAll(
                 where:      { _ in false },
                 options:    options
             )

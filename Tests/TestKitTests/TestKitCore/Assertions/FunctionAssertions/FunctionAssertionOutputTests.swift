@@ -8,12 +8,11 @@
 //===----------------------------------------------------------------------===//
 
 import TestKitCore
-import XCTestKit
 import XCTest
 
 
 
-internal final class FunctionAssertionOutputTests: XCTestKitCase
+internal final class FunctionAssertionOutputTests: TestKitCase
 {
     private typealias AK = AssertionKind
     
@@ -27,7 +26,7 @@ internal final class FunctionAssertionOutputTests: XCTestKitCase
     {
         let actual: String? = withOneExpectedFailure
         {
-            XCTKAssert(
+            TKAssert(
                 false,
                 Self.message
             )
@@ -47,7 +46,7 @@ internal final class FunctionAssertionOutputTests: XCTestKitCase
     {
         let actual: String? = withOneExpectedFailure
         {
-            XCTKAssertTrue(
+            TKAssertTrue(
                 false,
                 Self.message
             )
@@ -67,7 +66,7 @@ internal final class FunctionAssertionOutputTests: XCTestKitCase
     {
         let actual: String? = withOneExpectedFailure
         {
-            XCTKAssertFalse(
+            TKAssertFalse(
                 true,
                 Self.message
             )
@@ -89,7 +88,7 @@ internal final class FunctionAssertionOutputTests: XCTestKitCase
     {
         let actual: String? = withOneExpectedFailure
         {
-            XCTKAssertNil(
+            TKAssertNil(
                 10,
                 Self.message
             )
@@ -109,7 +108,7 @@ internal final class FunctionAssertionOutputTests: XCTestKitCase
     {
         let actual: String? = withOneExpectedFailure
         {
-            XCTKAssertNotNil(
+            TKAssertNotNil(
                 Optional<Int>(nil),
                 Self.message
             )
@@ -129,7 +128,7 @@ internal final class FunctionAssertionOutputTests: XCTestKitCase
     {
         let actual: String? = withOneExpectedFailure
         {
-            _ = try XCTKUnwrap(
+            _ = try TKUnwrap(
                 Optional<Int>(nil),
                 Self.message
             )
@@ -159,7 +158,7 @@ internal final class FunctionAssertionOutputTests: XCTestKitCase
         
         let actual: String? = withOneExpectedFailure
         {
-            XCTKAssertEqual(
+            TKAssertEqual(
                 exp,
                 act,
                 Self.message
@@ -188,7 +187,7 @@ internal final class FunctionAssertionOutputTests: XCTestKitCase
         
         let actual: String? = withOneExpectedFailure
         {
-            XCTKAssertNotEqual(
+            TKAssertNotEqual(
                 expr,
                 expr,
                 Self.message
@@ -214,7 +213,7 @@ internal final class FunctionAssertionOutputTests: XCTestKitCase
         
         let actual: String? = withOneExpectedFailure
         {
-            XCTKAssertIdentical(
+            TKAssertIdentical(
                 expr1,
                 expr2,
                 Self.message
@@ -237,7 +236,7 @@ internal final class FunctionAssertionOutputTests: XCTestKitCase
         
         let actual: String? = withOneExpectedFailure
         {
-            XCTKAssertNotIdentical(
+            TKAssertNotIdentical(
                 expr,
                 expr,
                 Self.message
@@ -262,7 +261,7 @@ internal final class FunctionAssertionOutputTests: XCTestKitCase
         
         let actual: String? = withOneExpectedFailure
         {
-            XCTKAssertEqual(
+            TKAssertEqual(
                 expr1,
                 expr2,
                 accuracy: accuracy,
@@ -291,7 +290,7 @@ internal final class FunctionAssertionOutputTests: XCTestKitCase
         
         let actual: String? = withOneExpectedFailure
         {
-            XCTKAssertEqual(
+            TKAssertEqual(
                 expr1,
                 expr2,
                 accuracy: accuracy,
@@ -320,7 +319,7 @@ internal final class FunctionAssertionOutputTests: XCTestKitCase
         
         let actual: String? = withOneExpectedFailure
         {
-            XCTKAssertNotEqual(
+            TKAssertNotEqual(
                 expr1,
                 expr2,
                 accuracy: accuracy,
@@ -349,7 +348,7 @@ internal final class FunctionAssertionOutputTests: XCTestKitCase
         
         let actual: String? = withOneExpectedFailure
         {
-            XCTKAssertNotEqual(
+            TKAssertNotEqual(
                 expr1,
                 expr2,
                 accuracy: accuracy,
@@ -379,7 +378,7 @@ internal final class FunctionAssertionOutputTests: XCTestKitCase
         
         let actual: String? = withOneExpectedFailure
         {
-            XCTKAssertGreaterThan(
+            TKAssertGreaterThan(
                 expr1,
                 expr2,
                 Self.message
@@ -406,7 +405,7 @@ internal final class FunctionAssertionOutputTests: XCTestKitCase
         
         let actual: String? = withOneExpectedFailure
         {
-            XCTKAssertGreaterThanOrEqual(
+            TKAssertGreaterThanOrEqual(
                 expr1,
                 expr2,
                 Self.message
@@ -433,7 +432,7 @@ internal final class FunctionAssertionOutputTests: XCTestKitCase
         
         let actual: String? = withOneExpectedFailure
         {
-            XCTKAssertLessThanOrEqual(
+            TKAssertLessThanOrEqual(
                 expr1,
                 expr2,
                 Self.message
@@ -460,7 +459,7 @@ internal final class FunctionAssertionOutputTests: XCTestKitCase
         
         let actual: String? = withOneExpectedFailure
         {
-            XCTKAssertLessThan(
+            TKAssertLessThan(
                 expr1,
                 expr2,
                 Self.message
@@ -488,7 +487,7 @@ internal final class FunctionAssertionOutputTests: XCTestKitCase
         
         let actual: String? = withOneExpectedFailure
         {
-            XCTKAssertThrowsError(
+            TKAssertThrowsError(
                 expr,
                 Self.message
             )
@@ -511,7 +510,7 @@ internal final class FunctionAssertionOutputTests: XCTestKitCase
         
         let actual: String? = withOneExpectedFailure
         {
-            XCTKAssertNoThrow(
+            TKAssertNoThrow(
                 try expr(),
                 Self.message
             )
@@ -535,7 +534,7 @@ internal final class FunctionAssertionOutputTests: XCTestKitCase
     {
         let actual: String? = withOneExpectedFailure
         {
-            XCTKFail(
+            TKFail(
                 Self.message,
                 file: #filePath,
                 line: #line
@@ -553,7 +552,7 @@ internal final class FunctionAssertionOutputTests: XCTestKitCase
     {
         let actual: String? = withOneExpectedFailure
         {
-            XCTKAssertAllSatisfy(
+            TKAssertAllSatisfy(
                 [2, 3, 6],
                 { $0 % 2 == 0 },
                 Self.message
@@ -580,7 +579,7 @@ internal final class FunctionAssertionOutputTests: XCTestKitCase
     {
         let actual: String? = withOneExpectedFailure
         {
-            XCTKAssertAnySatisfy(
+            TKAssertAnySatisfy(
                 [1, 3, 5],
                 { $0 % 2 == 0 },
                 Self.message
@@ -606,7 +605,7 @@ internal final class FunctionAssertionOutputTests: XCTestKitCase
     {
         let actual: String? = withOneExpectedFailure
         {
-            XCTKAssertNoneSatisfy(
+            TKAssertNoneSatisfy(
                 [1, 2, 3],
                 { $0 % 2 == 0 },
                 Self.message
@@ -633,7 +632,7 @@ internal final class FunctionAssertionOutputTests: XCTestKitCase
     {
         let actual: String? = withOneExpectedFailure
         {
-            XCTKAssertSatisfy(
+            TKAssertSatisfy(
                 [1, 2, 3, 4],
                 atLeast: 3,
                 { $0 > 2 },
@@ -662,7 +661,7 @@ internal final class FunctionAssertionOutputTests: XCTestKitCase
     {
         let actual: String? = withOneExpectedFailure
         {
-            XCTKAssertSatisfy(
+            TKAssertSatisfy(
                 [1, 2, 3, 4],
                 atMost: 1,
                 { $0 > 2 },
@@ -691,7 +690,7 @@ internal final class FunctionAssertionOutputTests: XCTestKitCase
     {
         let actual: String? = withOneExpectedFailure
         {
-            XCTKAssertSatisfy(
+            TKAssertSatisfy(
                 [3, 2, 1, 4, 5],
                 range: 0...1,
                 { $0 > 2 },
@@ -720,7 +719,7 @@ internal final class FunctionAssertionOutputTests: XCTestKitCase
     {
         let actual: String? = withOneExpectedFailure
         {
-            XCTKAssertExactly(
+            TKAssertExactly(
                 [1, 2, 3, 4],
                 count: 3,
                 { $0 > 2 },
@@ -749,7 +748,7 @@ internal final class FunctionAssertionOutputTests: XCTestKitCase
     {
         let actual: String? = withOneExpectedFailure
         {
-            XCTKAssertExactlyOne(
+            TKAssertExactlyOne(
                 [1, 2, 3],
                 { $0 > 1 },
                 Self.message
@@ -777,7 +776,7 @@ internal final class FunctionAssertionOutputTests: XCTestKitCase
     {
         let actual: String? = withOneExpectedFailure
         {
-            XCTKAssertSorted(
+            TKAssertSorted(
                 [1, 3, 2, 4],
                 by: <,
                 Self.message
@@ -805,7 +804,7 @@ internal final class FunctionAssertionOutputTests: XCTestKitCase
     {
         let actual: String? = withOneExpectedFailure
         {
-            XCTKAssertUnique(
+            TKAssertUnique(
                 [1, 2, 3, 2],
                 Self.message
             )
@@ -831,7 +830,7 @@ internal final class FunctionAssertionOutputTests: XCTestKitCase
     {
         let actual: String? = withOneExpectedFailure
         {
-            XCTKAssertUnique(
+            TKAssertUnique(
                 ["a", "b", "cc"],
                 by: { $0.count },
                 Self.message
