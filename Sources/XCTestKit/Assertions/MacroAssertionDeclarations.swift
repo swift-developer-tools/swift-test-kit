@@ -588,9 +588,9 @@ public macro XCTKFail(
 ///   match. Otherwise, it returns `false` or throws an error.
 ///   - message: An optional description of a failure.
 ///   - file: The file where the failure occurs. The default value is the
-///   filename of the test case in which this function was called.
+///   filename of the test case in which this macro was called.
 ///   - line: The line where the failure occurs. The default value is the line
-///   number where this function was called.
+///   number where this macro was called.
 ///   - options: The options for testing. The default value is `nil`, which
 ///   falls back to using global options.
 @freestanding(expression)
@@ -616,9 +616,9 @@ public macro XCTKAssertAllSatisfy<C>(
 ///   match. Otherwise, it returns `false` or throws an error.
 ///   - message: An optional description of a failure.
 ///   - file: The file where the failure occurs. The default value is the
-///   filename of the test case in which this function was called.
+///   filename of the test case in which this macro was called.
 ///   - line: The line where the failure occurs. The default value is the line
-///   number where this function was called.
+///   number where this macro was called.
 ///   - options: The options for testing. The default value is `nil`, which
 ///   falls back to using global options.
 @freestanding(expression)
@@ -644,9 +644,9 @@ public macro XCTKAssertAnySatisfy<C>(
 ///   match. Otherwise, it returns `false` or throws an error.
 ///   - message: An optional description of a failure.
 ///   - file: The file where the failure occurs. The default value is the
-///   filename of the test case in which this function was called.
+///   filename of the test case in which this macro was called.
 ///   - line: The line where the failure occurs. The default value is the line
-///   number where this function was called.
+///   number where this macro was called.
 ///   - options: The options for testing. The default value is `nil`, which
 ///   falls back to using global options.
 @freestanding(expression)
@@ -677,9 +677,9 @@ public macro XCTKAssertNoneSatisfy<C>(
 ///   match. Otherwise, it returns `false` or throws an error.
 ///   - message: An optional description of a failure.
 ///   - file: The file where the failure occurs. The default value is the
-///   filename of the test case in which this function was called.
+///   filename of the test case in which this macro was called.
 ///   - line: The line where the failure occurs. The default value is the line
-///   number where this function was called.
+///   number where this macro was called.
 ///   - options: The options for testing. The default value is `nil`, which
 ///   falls back to using global options.
 @freestanding(expression)
@@ -711,9 +711,9 @@ public macro XCTKAssertSatisfy<C>(
 ///   match. Otherwise, it returns `false` or throws an error.
 ///   - message: An optional description of a failure.
 ///   - file: The file where the failure occurs. The default value is the
-///   filename of the test case in which this function was called.
+///   filename of the test case in which this macro was called.
 ///   - line: The line where the failure occurs. The default value is the line
-///   number where this function was called.
+///   number where this macro was called.
 ///   - options: The options for testing. The default value is `nil`, which
 ///   falls back to using global options.
 @freestanding(expression)
@@ -745,9 +745,9 @@ public macro XCTKAssertSatisfy<C>(
 ///   match. Otherwise, it returns `false` or throws an error.
 ///   - message: An optional description of a failure.
 ///   - file: The file where the failure occurs. The default value is the
-///   filename of the test case in which this function was called.
+///   filename of the test case in which this macro was called.
 ///   - line: The line where the failure occurs. The default value is the line
-///   number where this function was called.
+///   number where this macro was called.
 ///   - options: The options for testing. The default value is `nil`, which
 ///   falls back to using global options.
 @freestanding(expression)
@@ -779,9 +779,9 @@ public macro XCTKAssertSatisfy<C>(
 ///   match. Otherwise, it returns `false` or throws an error.
 ///   - message: An optional description of a failure.
 ///   - file: The file where the failure occurs. The default value is the
-///   filename of the test case in which this function was called.
+///   filename of the test case in which this macro was called.
 ///   - line: The line where the failure occurs. The default value is the line
-///   number where this function was called.
+///   number where this macro was called.
 ///   - options: The options for testing. The default value is `nil`, which
 ///   falls back to using global options.
 @freestanding(expression)
@@ -808,9 +808,9 @@ public macro XCTKAssertExactly<C>(
 ///   match. Otherwise, it returns `false` or throws an error.
 ///   - message: An optional description of a failure.
 ///   - file: The file where the failure occurs. The default value is the
-///   filename of the test case in which this function was called.
+///   filename of the test case in which this macro was called.
 ///   - line: The line where the failure occurs. The default value is the line
-///   number where this function was called.
+///   number where this macro was called.
 ///   - options: The options for testing. The default value is `nil`, which
 ///   falls back to using global options.
 @freestanding(expression)
@@ -836,9 +836,9 @@ public macro XCTKAssertExactlyOne<C>(
 ///   throws an error.
 ///   - message: An optional description of a failure.
 ///   - file: The file where the failure occurs. The default value is the
-///   filename of the test case in which this function was called.
+///   filename of the test case in which this macro was called.
 ///   - line: The line where the failure occurs. The default value is the line
-///   number where this function was called.
+///   number where this macro was called.
 ///   - options: The options for testing. The default value is `nil`, which
 ///   falls back to using global options.
 @freestanding(expression)
@@ -861,9 +861,9 @@ public macro XCTKAssertSorted<C>(
 ///   - collection: The collection to evaluate.
 ///   - message: An optional description of a failure.
 ///   - file: The file where the failure occurs. The default value is the
-///   filename of the test case in which this function was called.
+///   filename of the test case in which this macro was called.
 ///   - line: The line where the failure occurs. The default value is the line
-///   number where this function was called.
+///   number where this macro was called.
 ///   - options: The options for testing. The default value is `nil`, which
 ///   falls back to using global options.
 @freestanding(expression)
@@ -888,9 +888,9 @@ public macro XCTKAssertUnique<C>(
 ///   collection. Elements are duplicates if they produce equal keys.
 ///   - message: An optional description of a failure.
 ///   - file: The file where the failure occurs. The default value is the
-///   filename of the test case in which this function was called.
+///   filename of the test case in which this macro was called.
 ///   - line: The line where the failure occurs. The default value is the line
-///   number where this function was called.
+///   number where this macro was called.
 ///   - options: The options for testing. The default value is `nil`, which
 ///   falls back to using global options.
 @freestanding(expression)
