@@ -18,6 +18,7 @@ internal final class OptionsTests: TestKitCase
     {
         let options = TestOptions()
         
+        XCTAssertEqual(options.diffEnabled, true)
         XCTAssertEqual(options.diffOptions, DiffOptions())
         XCTAssertEqual(options.formatOptions, FormatOptions())
         XCTAssertEqual(options.propertyOptions, PropertyOptions())
