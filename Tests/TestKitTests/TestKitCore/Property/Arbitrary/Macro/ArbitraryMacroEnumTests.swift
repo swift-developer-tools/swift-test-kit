@@ -18,7 +18,7 @@ import XCTest
 /// as part of infinite recursion prevention. This skews the distribution for
 /// enums with few base cases relative to total cases, making a 95% threshold
 /// unreliable even over 10,000 iterations.
-internal final class ArbitraryMacroEnumTests: XCTestCaseStopOnFail
+internal final class ArbitraryMacroEnumTests: TestKitCase
 {
     // MARK: - SingleNoValues
     

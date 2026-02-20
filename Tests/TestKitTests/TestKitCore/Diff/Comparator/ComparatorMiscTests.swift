@@ -12,7 +12,7 @@ import XCTest
 
 
 
-internal final class ComparatorMiscTests: XCTestCaseStopOnFail
+internal final class ComparatorMiscTests: TestKitCase
 {
     // MARK: - Primitive types
     

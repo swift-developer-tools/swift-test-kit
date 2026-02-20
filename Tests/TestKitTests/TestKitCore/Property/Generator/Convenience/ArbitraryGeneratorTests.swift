@@ -12,7 +12,7 @@ import XCTest
 
 
 
-internal final class ArbitraryGeneratorTests: XCTestCaseStopOnFail
+internal final class ArbitraryGeneratorTests: TestKitCase
 {
     func testDeterminism()
     {

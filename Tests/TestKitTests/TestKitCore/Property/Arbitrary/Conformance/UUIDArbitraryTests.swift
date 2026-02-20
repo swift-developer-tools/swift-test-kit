@@ -12,7 +12,7 @@ import XCTest
 
 
 
-internal final class UUIDArbitraryTests: XCTestCaseStopOnFail
+internal final class UUIDArbitraryTests: TestKitCase
 {
     // MARK: - Generation
     

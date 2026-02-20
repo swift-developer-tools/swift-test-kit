@@ -12,7 +12,7 @@ import XCTest
 
 
 
-internal final class RangeIntegerArbitraryTests: XCTestCaseStopOnFail
+internal final class RangeIntegerArbitraryTests: TestKitCase
 {
     // MARK: - Generation
     

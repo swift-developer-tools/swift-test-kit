@@ -12,7 +12,7 @@ import XCTest
 
 
 
-internal final class CharacterGeneratorTests: XCTestCaseStopOnFail
+internal final class CharacterGeneratorTests: TestKitCase
 {
     // MARK: - ASCII
     

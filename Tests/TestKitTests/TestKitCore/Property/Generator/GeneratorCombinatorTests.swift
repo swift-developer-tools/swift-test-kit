@@ -12,7 +12,7 @@ import XCTest
 
 
 
-internal final class GeneratorCombinatorTests: XCTestCaseStopOnFail
+internal final class GeneratorCombinatorTests: TestKitCase
 {
     // MARK: - map
     

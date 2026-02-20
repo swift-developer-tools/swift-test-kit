@@ -13,7 +13,7 @@ import XCTest
 
 
 
-internal final class PropertyRunnerTests: XCTestCaseStopOnFail
+internal final class PropertyRunnerTests: TestKitCase
 {
     // MARK: - Passing
     

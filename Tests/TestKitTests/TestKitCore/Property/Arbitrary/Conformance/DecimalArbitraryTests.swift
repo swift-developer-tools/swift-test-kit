@@ -12,7 +12,7 @@ import XCTest
 
 
 
-internal final class DecimalArbitraryTests: XCTestCaseStopOnFail
+internal final class DecimalArbitraryTests: TestKitCase
 {
     // MARK: - Generation
     

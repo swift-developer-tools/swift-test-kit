@@ -12,7 +12,7 @@ import XCTest
 
 
 
-internal final class FloatingGeneratorTests: XCTestCaseStopOnFail
+internal final class FloatingGeneratorTests: TestKitCase
 {
     // MARK: - Closed range
     

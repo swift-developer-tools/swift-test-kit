@@ -12,7 +12,7 @@ import XCTest
 
 
 
-internal final class GenerationContextTests: XCTestCaseStopOnFail
+internal final class GenerationContextTests: TestKitCase
 {
     // MARK: - General
     

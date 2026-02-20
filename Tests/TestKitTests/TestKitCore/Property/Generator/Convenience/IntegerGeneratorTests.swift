@@ -12,7 +12,7 @@ import XCTest
 
 
 
-internal final class IntegerGeneratorTests: XCTestCaseStopOnFail
+internal final class IntegerGeneratorTests: TestKitCase
 {
     // MARK: - Closed range
     

@@ -12,7 +12,7 @@ import XCTest
 
 
 
-internal final class ComparatorDictionaryTests: XCTestCaseStopOnFail
+internal final class ComparatorDictionaryTests: TestKitCase
 {
     func testDictionaryEqualValues()
     {

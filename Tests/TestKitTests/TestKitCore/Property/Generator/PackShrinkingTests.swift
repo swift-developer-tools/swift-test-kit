@@ -12,7 +12,7 @@ import XCTest
 
 
 
-internal final class PackShrinkingTests: XCTestCaseStopOnFail
+internal final class PackShrinkingTests: TestKitCase
 {
     // MARK: - AnyShrinker
     

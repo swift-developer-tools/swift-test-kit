@@ -13,7 +13,7 @@ import XCTest
 
 
 
-internal final class ArbitraryMacroStructTests: XCTestCaseStopOnFail
+internal final class ArbitraryMacroStructTests: TestKitCase
 {
     // MARK: - Empty
     

@@ -13,7 +13,7 @@ import XCTest
 
 
 
-internal final class PropertyRunnerClassificationTests: XCTestCaseStopOnFail
+internal final class PropertyRunnerClassificationTests: TestKitCase
 {
     // MARK: - Assume
     

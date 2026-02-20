@@ -12,7 +12,7 @@ import XCTest
 
 
 
-internal final class ComparatorStructTests: XCTestCaseStopOnFail
+internal final class ComparatorStructTests: TestKitCase
 {
     func testNestedStructs()
     {

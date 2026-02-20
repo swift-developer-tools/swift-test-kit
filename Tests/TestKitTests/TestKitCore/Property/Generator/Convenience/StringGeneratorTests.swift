@@ -12,7 +12,7 @@ import XCTest
 
 
 
-internal final class StringGeneratorTests: XCTestCaseStopOnFail
+internal final class StringGeneratorTests: TestKitCase
 {
     // MARK: - Exact count generation
     

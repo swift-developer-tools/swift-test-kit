@@ -12,7 +12,7 @@ import XCTest
 
 
 
-internal final class PropertyInterceptorTests: XCTestCaseStopOnFail
+internal final class PropertyInterceptorTests: TestKitCase
 {
     // MARK: - Initialize
     

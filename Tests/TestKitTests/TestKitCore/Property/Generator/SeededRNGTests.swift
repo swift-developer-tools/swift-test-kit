@@ -12,7 +12,7 @@ import XCTest
 
 
 
-internal final class SeededRNGTests: XCTestCaseStopOnFail
+internal final class SeededRNGTests: TestKitCase
 {
     // MARK: - Determinism
     
