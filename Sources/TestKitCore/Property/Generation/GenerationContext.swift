@@ -64,6 +64,8 @@ public final class GenerationContext
     
     
     /// Initializes a ``GenerationContext`` instance from the given seed.
+    /// - Parameter seed: The seed used to initialize the random number
+    /// generator.
     public convenience init(
         seed: UInt64
     )
@@ -76,7 +78,7 @@ public final class GenerationContext
     
     
     
-    /// The seed used to initialize the RNG.
+    /// The seed used to initialize the random number generator.
     public var seed: UInt64
     {
         return rng.seed
