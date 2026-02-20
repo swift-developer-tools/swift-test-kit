@@ -14,8 +14,7 @@ public struct TestOptions: Equatable, Sendable
 {
     /// Whether to compute and display diffs on assertion failure.
     ///
-    /// The default value is `true`. Pass `false` to delegate to the underlying
-    /// XCTest equivalent.
+    /// The default value is `true`.
     public var diffEnabled      : Bool
     
     /// The options for computing diffs.
