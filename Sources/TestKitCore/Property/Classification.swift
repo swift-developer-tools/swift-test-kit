@@ -11,7 +11,6 @@ import OSLog
 
 
 
-/// Discards the current iteration when the given condition is false.
 package func TKAssume(
     _ condition: () -> Bool
 ) throws
@@ -31,8 +30,6 @@ package func TKAssume(
 
 
 
-/// Tags the current iteration with the given label when the given condition
-/// is true.
 package func TKClassify(
     _       label       : String,
     when    condition   : () -> Bool
@@ -53,8 +50,6 @@ package func TKClassify(
 
 
 
-/// Tags the current iteration with the given label when the given condition
-/// is true, and registers a minimum coverage percentage for that label.
 package func TKCover(
     _       percentage  : Double,
     _       label       : String,
@@ -81,7 +76,6 @@ package func TKCover(
 
 
 
-/// Tags the current iteration with the given label.
 package func TKLabel(
     _ label: String
 )
@@ -98,8 +92,6 @@ package func TKLabel(
 
 
 
-/// Tags the current iteration with the string representation of the given
-/// value.
 package func TKCollect<T>(
     _ value: T
 )
@@ -109,7 +101,6 @@ package func TKCollect<T>(
 
 
 
-/// Tags the current iteration with the given label in the specified table.
 package func TKTabulate(
     _   table   : String,
     _   label   : String
@@ -130,8 +121,6 @@ package func TKTabulate(
 
 
 
-/// Registers minimum coverage percentages for the given labels in the
-/// specified table.
 package func TKCoverTable(
     _   table           : String,
     _   requirements    : [(Double, String)]

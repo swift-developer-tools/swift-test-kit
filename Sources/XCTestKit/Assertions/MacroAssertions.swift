@@ -8,13 +8,13 @@
 //===----------------------------------------------------------------------===//
 
 import TestKitCore
-import XCTest
 
 
 
 // MARK: - Boolean
 
-internal func _XCTKAssertMacro(
+@_documentation(visibility: package)
+public func _XCTKAssertMacro(
     result          : Bool,
     exprText        : String,
     evaluated       : [BooleanExpr],
@@ -25,7 +25,7 @@ internal func _XCTKAssertMacro(
     options         : TestOptions?
 )
 {
-    evaluateXCTKAssert(
+    TKAssertMacro(
         result:         result,
         exprText:       exprText,
         evaluated:      evaluated,
@@ -33,13 +33,15 @@ internal func _XCTKAssertMacro(
         message:        message,
         file:           file,
         line:           line,
-        options:        options ?? XCTKConfig.global
+        options:        options ?? XCTKConfig.global,
+        context:        failureContext
     )
 }
 
 
 
-internal func _XCTKAssertTrueMacro(
+@_documentation(visibility: package)
+public func _XCTKAssertTrueMacro(
     result          : Bool,
     exprText        : String,
     evaluated       : [BooleanExpr],
@@ -50,7 +52,7 @@ internal func _XCTKAssertTrueMacro(
     options         : TestOptions?
 )
 {
-    evaluateXCTKAssertTrue(
+    TKAssertTrueMacro(
         result:         result,
         exprText:       exprText,
         evaluated:      evaluated,
@@ -58,13 +60,15 @@ internal func _XCTKAssertTrueMacro(
         message:        message,
         file:           file,
         line:           line,
-        options:        options ?? XCTKConfig.global
+        options:        options ?? XCTKConfig.global,
+        context:        failureContext
     )
 }
 
 
 
-internal func _XCTKAssertFalseMacro(
+@_documentation(visibility: package)
+public func _XCTKAssertFalseMacro(
     result          : Bool,
     exprText        : String,
     evaluated       : [BooleanExpr],
@@ -75,7 +79,7 @@ internal func _XCTKAssertFalseMacro(
     options         : TestOptions?
 )
 {
-    evaluateXCTKAssertFalse(
+    TKAssertFalseMacro(
         result:         result,
         exprText:       exprText,
         evaluated:      evaluated,
@@ -83,7 +87,8 @@ internal func _XCTKAssertFalseMacro(
         message:        message,
         file:           file,
         line:           line,
-        options:        options ?? XCTKConfig.global
+        options:        options ?? XCTKConfig.global,
+        context:        failureContext
     )
 }
 
@@ -91,7 +96,8 @@ internal func _XCTKAssertFalseMacro(
 
 // MARK: - Nil and non-nil
 
-internal func _XCTKAssertNilMacro(
+@_documentation(visibility: package)
+public func _XCTKAssertNilMacro(
     expr        : @autoclosure () throws -> Any?,
     exprText    : String,
     message     : @autoclosure () -> String,
@@ -100,19 +106,21 @@ internal func _XCTKAssertNilMacro(
     options     : TestOptions?
 )
 {
-    evaluateXCTKAssertNil(
-        captureKind:    .single(exprText),
-        expr:           expr,
-        message:        message,
-        file:           file,
-        line:           line,
-        options:        options ?? XCTKConfig.global
+    TKAssertNilMacro(
+        expr:       expr,
+        exprText:   exprText,
+        message:    message,
+        file:       file,
+        line:       line,
+        options:    options ?? XCTKConfig.global,
+        context:    failureContext
     )
 }
 
 
 
-internal func _XCTKAssertNotNilMacro(
+@_documentation(visibility: package)
+public func _XCTKAssertNotNilMacro(
     expr        : @autoclosure () throws -> Any?,
     exprText    : String,
     message     : @autoclosure () -> String,
@@ -121,19 +129,21 @@ internal func _XCTKAssertNotNilMacro(
     options     : TestOptions?
 )
 {
-    evaluateXCTKAssertNotNil(
-        captureKind:    .single(exprText),
-        expr:           expr,
-        message:        message,
-        file:           file,
-        line:           line,
-        options:        options ?? XCTKConfig.global
+    TKAssertNotNilMacro(
+        expr:       expr,
+        exprText:   exprText,
+        message:    message,
+        file:       file,
+        line:       line,
+        options:    options ?? XCTKConfig.global,
+        context:    failureContext
     )
 }
 
 
 
-internal func _XCTKUnwrapMacro<T>(
+@_documentation(visibility: package)
+public func _XCTKUnwrapMacro<T>(
     expr        : @autoclosure () throws -> T?,
     exprText    : String,
     message     : @autoclosure () -> String,
@@ -142,13 +152,14 @@ internal func _XCTKUnwrapMacro<T>(
     options     : TestOptions?
 ) throws -> T
 {
-    return try evaluateXCTKUnwrap(
-        captureKind:    .single(exprText),
-        expr:           expr,
-        message:        message,
-        file:           file,
-        line:           line,
-        options:        options ?? XCTKConfig.global
+    return try TKUnwrapMacro(
+        expr:       expr,
+        exprText:   exprText,
+        message:    message,
+        file:       file,
+        line:       line,
+        options:    options ?? XCTKConfig.global,
+        context:    failureContext
     )
 }
 
@@ -156,7 +167,8 @@ internal func _XCTKUnwrapMacro<T>(
 
 // MARK: - Equality and inequality
 
-internal func _XCTKAssertEqualMacro<T>(
+@_documentation(visibility: package)
+public func _XCTKAssertEqualMacro<T>(
     expected        : @autoclosure () throws -> T,
     actual          : @autoclosure () throws -> T,
     expectedText    : String,
@@ -167,20 +179,23 @@ internal func _XCTKAssertEqualMacro<T>(
     options         : TestOptions?
 ) where T : Equatable
 {
-    evaluateXCTKAssertEqual(
-        captureKind:    .double(expectedText, actualText),
+    TKAssertEqualMacro(
         expected:       expected,
         actual:         actual,
+        expectedText:   expectedText,
+        actualText:     actualText,
         message:        message,
         file:           file,
         line:           line,
-        options:        options ?? XCTKConfig.global
+        options:        options ?? XCTKConfig.global,
+        context:        failureContext
     )
 }
 
 
 
-internal func _XCTKAssertNotEqualMacro<T>(
+@_documentation(visibility: package)
+public func _XCTKAssertNotEqualMacro<T>(
     expr1       : @autoclosure () throws -> T,
     expr2       : @autoclosure () throws -> T,
     expr1Text   : String,
@@ -191,20 +206,23 @@ internal func _XCTKAssertNotEqualMacro<T>(
     options     : TestOptions?
 ) where T : Equatable
 {
-    evaluateXCTKAssertNotEqual(
-        captureKind:    .double(expr1Text, expr2Text),
-        expr1:          expr1,
-        expr2:          expr2,
-        message:        message,
-        file:           file,
-        line:           line,
-        options:        options ?? XCTKConfig.global
+    TKAssertNotEqualMacro(
+        expr1:      expr1,
+        expr2:      expr2,
+        expr1Text:  expr1Text,
+        expr2Text:  expr2Text,
+        message:    message,
+        file:       file,
+        line:       line,
+        options:    options ?? XCTKConfig.global,
+        context:    failureContext
     )
 }
 
 
 
-internal func _XCTKAssertIdenticalMacro(
+@_documentation(visibility: package)
+public func _XCTKAssertIdenticalMacro(
     expr1       : @autoclosure () throws -> AnyObject?,
     expr2       : @autoclosure () throws -> AnyObject?,
     expr1Text   : String,
@@ -215,20 +233,23 @@ internal func _XCTKAssertIdenticalMacro(
     options     : TestOptions?
 )
 {
-    evaluateXCTKAssertIdentical(
-        captureKind:    .double(expr1Text, expr2Text),
-        expr1:          expr1,
-        expr2:          expr2,
-        message:        message,
-        file:           file,
-        line:           line,
-        options:        options ?? XCTKConfig.global
+    TKAssertIdenticalMacro(
+        expr1:      expr1,
+        expr2:      expr2,
+        expr1Text:  expr1Text,
+        expr2Text:  expr2Text,
+        message:    message,
+        file:       file,
+        line:       line,
+        options:    options ?? XCTKConfig.global,
+        context:    failureContext
     )
 }
 
 
 
-internal func _XCTKAssertNotIdenticalMacro(
+@_documentation(visibility: package)
+public func _XCTKAssertNotIdenticalMacro(
     expr1       : @autoclosure () throws -> AnyObject?,
     expr2       : @autoclosure () throws -> AnyObject?,
     expr1Text   : String,
@@ -239,20 +260,23 @@ internal func _XCTKAssertNotIdenticalMacro(
     options     : TestOptions?
 )
 {
-    evaluateXCTKAssertNotIdentical(
-        captureKind:    .double(expr1Text, expr2Text),
-        expr1:          expr1,
-        expr2:          expr2,
-        message:        message,
-        file:           file,
-        line:           line,
-        options:        options ?? XCTKConfig.global
+    TKAssertNotIdenticalMacro(
+        expr1:      expr1,
+        expr2:      expr2,
+        expr1Text:  expr1Text,
+        expr2Text:  expr2Text,
+        message:    message,
+        file:       file,
+        line:       line,
+        options:    options ?? XCTKConfig.global,
+        context:    failureContext
     )
 }
 
 
 
-internal func _XCTKAssertEqualMacro<T>(
+@_documentation(visibility: package)
+public func _XCTKAssertEqualMacro<T>(
     expr1       : @autoclosure () throws -> T,
     expr2       : @autoclosure () throws -> T,
     expr1Text   : String,
@@ -264,21 +288,24 @@ internal func _XCTKAssertEqualMacro<T>(
     options     : TestOptions?
 ) where T : FloatingPoint
 {
-    evaluateXCTKAssertEqual(
-        captureKind:    .double(expr1Text, expr2Text),
-        expr1:          expr1,
-        expr2:          expr2,
-        accuracy:       accuracy,
-        message:        message,
-        file:           file,
-        line:           line,
-        options:        options ?? XCTKConfig.global
+    TKAssertEqualMacro(
+        expr1:      expr1,
+        expr2:      expr2,
+        expr1Text:  expr1Text,
+        expr2Text:  expr2Text,
+        accuracy:   accuracy,
+        message:    message,
+        file:       file,
+        line:       line,
+        options:    options ?? XCTKConfig.global,
+        context:    failureContext
     )
 }
 
 
 
-internal func _XCTKAssertEqualMacro<T>(
+@_documentation(visibility: package)
+public func _XCTKAssertEqualMacro<T>(
     expr1       : @autoclosure () throws -> T,
     expr2       : @autoclosure () throws -> T,
     expr1Text   : String,
@@ -290,21 +317,24 @@ internal func _XCTKAssertEqualMacro<T>(
     options     : TestOptions?
 ) where T : Numeric
 {
-    evaluateXCTKAssertEqual(
-        captureKind:    .double(expr1Text, expr2Text),
-        expr1:          expr1,
-        expr2:          expr2,
-        accuracy:       accuracy,
-        message:        message,
-        file:           file,
-        line:           line,
-        options:        options ?? XCTKConfig.global
+    TKAssertEqualMacro(
+        expr1:      expr1,
+        expr2:      expr2,
+        expr1Text:  expr1Text,
+        expr2Text:  expr2Text,
+        accuracy:   accuracy,
+        message:    message,
+        file:       file,
+        line:       line,
+        options:    options ?? XCTKConfig.global,
+        context:    failureContext
     )
 }
 
 
 
-internal func _XCTKAssertNotEqualMacro<T>(
+@_documentation(visibility: package)
+public func _XCTKAssertNotEqualMacro<T>(
     expr1       : @autoclosure () throws -> T,
     expr2       : @autoclosure () throws -> T,
     expr1Text   : String,
@@ -316,21 +346,24 @@ internal func _XCTKAssertNotEqualMacro<T>(
     options     : TestOptions?
 ) where T : FloatingPoint
 {
-    evaluateXCTKAssertNotEqual(
-        captureKind:    .double(expr1Text, expr2Text),
-        expr1:          expr1,
-        expr2:          expr2,
-        accuracy:       accuracy,
-        message:        message,
-        file:           file,
-        line:           line,
-        options:        options ?? XCTKConfig.global
+    TKAssertNotEqualMacro(
+        expr1:      expr1,
+        expr2:      expr2,
+        expr1Text:  expr1Text,
+        expr2Text:  expr2Text,
+        accuracy:   accuracy,
+        message:    message,
+        file:       file,
+        line:       line,
+        options:    options ?? XCTKConfig.global,
+        context:    failureContext
     )
 }
 
 
 
-internal func _XCTKAssertNotEqualMacro<T>(
+@_documentation(visibility: package)
+public func _XCTKAssertNotEqualMacro<T>(
     expr1       : @autoclosure () throws -> T,
     expr2       : @autoclosure () throws -> T,
     expr1Text   : String,
@@ -342,15 +375,17 @@ internal func _XCTKAssertNotEqualMacro<T>(
     options     : TestOptions?
 ) where T : Numeric
 {
-    evaluateXCTKAssertNotEqual(
-        captureKind:    .double(expr1Text, expr2Text),
-        expr1:          expr1,
-        expr2:          expr2,
-        accuracy:       accuracy,
-        message:        message,
-        file:           file,
-        line:           line,
-        options:        options ?? XCTKConfig.global
+    TKAssertNotEqualMacro(
+        expr1:      expr1,
+        expr2:      expr2,
+        expr1Text:  expr1Text,
+        expr2Text:  expr2Text,
+        accuracy:   accuracy,
+        message:    message,
+        file:       file,
+        line:       line,
+        options:    options ?? XCTKConfig.global,
+        context:    failureContext
     )
 }
 
@@ -358,7 +393,8 @@ internal func _XCTKAssertNotEqualMacro<T>(
 
 // MARK: - Comparable
 
-internal func _XCTKAssertGreaterThanMacro<T>(
+@_documentation(visibility: package)
+public func _XCTKAssertGreaterThanMacro<T>(
     expr1       : @autoclosure () throws -> T,
     expr2       : @autoclosure () throws -> T,
     expr1Text   : String,
@@ -369,20 +405,23 @@ internal func _XCTKAssertGreaterThanMacro<T>(
     options     : TestOptions?
 ) where T : Comparable
 {
-    evaluateXCTKAssertGreaterThan(
-        captureKind:    .double(expr1Text, expr2Text),
-        expr1:          expr1,
-        expr2:          expr2,
-        message:        message,
-        file:           file,
-        line:           line,
-        options:        options ?? XCTKConfig.global
+    TKAssertGreaterThanMacro(
+        expr1:      expr1,
+        expr2:      expr2,
+        expr1Text:  expr1Text,
+        expr2Text:  expr2Text,
+        message:    message,
+        file:       file,
+        line:       line,
+        options:    options ?? XCTKConfig.global,
+        context:    failureContext
     )
 }
 
 
 
-internal func _XCTKAssertGreaterThanOrEqualMacro<T>(
+@_documentation(visibility: package)
+public func _XCTKAssertGreaterThanOrEqualMacro<T>(
     expr1       : @autoclosure () throws -> T,
     expr2       : @autoclosure () throws -> T,
     expr1Text   : String,
@@ -393,20 +432,23 @@ internal func _XCTKAssertGreaterThanOrEqualMacro<T>(
     options     : TestOptions?
 ) where T : Comparable
 {
-    evaluateXCTKAssertGreaterThanOrEqual(
-        captureKind:    .double(expr1Text, expr2Text),
-        expr1:          expr1,
-        expr2:          expr2,
-        message:        message,
-        file:           file,
-        line:           line,
-        options:        options ?? XCTKConfig.global
+    TKAssertGreaterThanOrEqualMacro(
+        expr1:      expr1,
+        expr2:      expr2,
+        expr1Text:  expr1Text,
+        expr2Text:  expr2Text,
+        message:    message,
+        file:       file,
+        line:       line,
+        options:    options ?? XCTKConfig.global,
+        context:    failureContext
     )
 }
 
 
 
-internal func _XCTKAssertLessThanOrEqualMacro<T>(
+@_documentation(visibility: package)
+public func _XCTKAssertLessThanOrEqualMacro<T>(
     expr1       : @autoclosure () throws -> T,
     expr2       : @autoclosure () throws -> T,
     expr1Text   : String,
@@ -417,20 +459,23 @@ internal func _XCTKAssertLessThanOrEqualMacro<T>(
     options     : TestOptions?
 ) where T : Comparable
 {
-    evaluateXCTKAssertLessThanOrEqual(
-        captureKind:    .double(expr1Text, expr2Text),
-        expr1:          expr1,
-        expr2:          expr2,
-        message:        message,
-        file:           file,
-        line:           line,
-        options:        options ?? XCTKConfig.global
+    TKAssertLessThanOrEqualMacro(
+        expr1:      expr1,
+        expr2:      expr2,
+        expr1Text:  expr1Text,
+        expr2Text:  expr2Text,
+        message:    message,
+        file:       file,
+        line:       line,
+        options:    options ?? XCTKConfig.global,
+        context:    failureContext
     )
 }
 
 
 
-internal func _XCTKAssertLessThanMacro<T>(
+@_documentation(visibility: package)
+public func _XCTKAssertLessThanMacro<T>(
     expr1       : @autoclosure () throws -> T,
     expr2       : @autoclosure () throws -> T,
     expr1Text   : String,
@@ -441,14 +486,16 @@ internal func _XCTKAssertLessThanMacro<T>(
     options     : TestOptions?
 ) where T : Comparable
 {
-    evaluateXCTKAssertLessThan(
-        captureKind:    .double(expr1Text, expr2Text),
-        expr1:          expr1,
-        expr2:          expr2,
-        message:        message,
-        file:           file,
-        line:           line,
-        options:        options ?? XCTKConfig.global
+    TKAssertLessThanMacro(
+        expr1:      expr1,
+        expr2:      expr2,
+        expr1Text:  expr1Text,
+        expr2Text:  expr2Text,
+        message:    message,
+        file:       file,
+        line:       line,
+        options:    options ?? XCTKConfig.global,
+        context:    failureContext
     )
 }
 
@@ -456,7 +503,8 @@ internal func _XCTKAssertLessThanMacro<T>(
 
 // MARK: - Error
 
-internal func _XCTKAssertThrowsErrorMacro<T>(
+@_documentation(visibility: package)
+public func _XCTKAssertThrowsErrorMacro<T>(
     expr            : () throws -> T,
     exprText        : String,
     message         : @autoclosure () -> String,
@@ -466,20 +514,22 @@ internal func _XCTKAssertThrowsErrorMacro<T>(
     errorHandler    : (any Error) -> Void
 )
 {
-    evaluateXCTKAssertThrowsError(
-        captureKind:    .single(exprText),
+    TKAssertThrowsErrorMacro(
         expr:           expr,
+        exprText:       exprText,
         message:        message,
         file:           file,
         line:           line,
         options:        options ?? XCTKConfig.global,
-        errorHandler:   errorHandler
+        errorHandler:   errorHandler,
+        context:        failureContext
     )
 }
 
 
 
-internal func _XCTKAssertNoThrowMacro<T>(
+@_documentation(visibility: package)
+public func _XCTKAssertNoThrowMacro<T>(
     expr        : () throws -> T,
     exprText    : String,
     message     : @autoclosure () -> String,
@@ -488,13 +538,14 @@ internal func _XCTKAssertNoThrowMacro<T>(
     options     : TestOptions?
 )
 {
-    evaluateXCTKAssertNoThrow(
-        captureKind:    .single(exprText),
-        expr:           expr,
-        message:        message,
-        file:           file,
-        line:           line,
-        options:        options ?? XCTKConfig.global
+    TKAssertNoThrowMacro(
+        expr:       expr,
+        exprText:   exprText,
+        message:    message,
+        file:       file,
+        line:       line,
+        options:    options ?? XCTKConfig.global,
+        context:    failureContext
     )
 }
 
@@ -502,16 +553,18 @@ internal func _XCTKAssertNoThrowMacro<T>(
 
 // MARK: - Fail
 
-internal func _XCTKFailMacro(
+@_documentation(visibility: package)
+public func _XCTKFailMacro(
     message : String,
     file    : StaticString,
     line    : UInt
 )
 {
-    XCTFail(
-        message,
-        file:   file,
-        line:   line
+    TKFailMacro(
+        message:    message,
+        file:       file,
+        line:       line,
+        context:    failureContext
     )
 }
 
@@ -519,7 +572,8 @@ internal func _XCTKFailMacro(
 
 // MARK: - Predicate
 
-internal func _XCTKAssertAllSatisfyMacro<C>(
+@_documentation(visibility: package)
+public func _XCTKAssertAllSatisfyMacro<C>(
     collection      : @autoclosure () throws -> C,
     predicate       : (C.Element) throws -> Bool,
     collectionText  : String,
@@ -530,20 +584,23 @@ internal func _XCTKAssertAllSatisfyMacro<C>(
     options         : TestOptions?
 ) where C : Collection
 {
-    evaluateXCTKAssertAllSatisfy(
-        captureKind:    .double(collectionText, predicateText),
-        collection:     collection,
-        predicate:      predicate,
-        message:        message,
-        file:           file,
-        line:           line,
-        options:        options ?? XCTKConfig.global
+    TKAssertAllSatisfyMacro(
+        collection:         collection,
+        predicate:          predicate,
+        collectionText:     collectionText,
+        predicateText:      predicateText,
+        message:            message,
+        file:               file,
+        line:               line,
+        options:            options ?? XCTKConfig.global,
+        context:            failureContext
     )
 }
 
 
 
-internal func _XCTKAssertAnySatisfyMacro<C>(
+@_documentation(visibility: package)
+public func _XCTKAssertAnySatisfyMacro<C>(
     collection      : @autoclosure () throws -> C,
     predicate       : (C.Element) throws -> Bool,
     collectionText  : String,
@@ -554,20 +611,23 @@ internal func _XCTKAssertAnySatisfyMacro<C>(
     options         : TestOptions?
 ) where C : Collection
 {
-    evaluateXCTKAssertAnySatisfy(
-        captureKind:    .double(collectionText, predicateText),
-        collection:     collection,
-        predicate:      predicate,
-        message:        message,
-        file:           file,
-        line:           line,
-        options:        options ?? XCTKConfig.global
+    TKAssertAnySatisfyMacro(
+        collection:         collection,
+        predicate:          predicate,
+        collectionText:     collectionText,
+        predicateText:      predicateText,
+        message:            message,
+        file:               file,
+        line:               line,
+        options:            options ?? XCTKConfig.global,
+        context:            failureContext
     )
 }
 
 
 
-internal func _XCTKAssertNoneSatisfyMacro<C>(
+@_documentation(visibility: package)
+public func _XCTKAssertNoneSatisfyMacro<C>(
     collection      : @autoclosure () throws -> C,
     predicate       : (C.Element) throws -> Bool,
     collectionText  : String,
@@ -578,20 +638,23 @@ internal func _XCTKAssertNoneSatisfyMacro<C>(
     options         : TestOptions?
 ) where C : Collection
 {
-    evaluateXCTKAssertNoneSatisfy(
-        captureKind:    .double(collectionText, predicateText),
-        collection:     collection,
-        predicate:      predicate,
-        message:        message,
-        file:           file,
-        line:           line,
-        options:        options ?? XCTKConfig.global
+    TKAssertNoneSatisfyMacro(
+        collection:         collection,
+        predicate:          predicate,
+        collectionText:     collectionText,
+        predicateText:      predicateText,
+        message:            message,
+        file:               file,
+        line:               line,
+        options:            options ?? XCTKConfig.global,
+        context:            failureContext
     )
 }
 
 
 
-internal func _XCTKAssertSatisfyMacro<C>(
+@_documentation(visibility: package)
+public func _XCTKAssertSatisfyMacro<C>(
     collection      : @autoclosure () throws -> C,
     atLeast         : Int,
     predicate       : (C.Element) throws -> Bool,
@@ -603,21 +666,24 @@ internal func _XCTKAssertSatisfyMacro<C>(
     options         : TestOptions?
 ) where C : Collection
 {
-    evaluateXCTKAssertSatisfy(
-        captureKind:    .double(collectionText, predicateText),
-        collection:     collection,
-        atLeast:        atLeast,
-        predicate:      predicate,
-        message:        message,
-        file:           file,
-        line:           line,
-        options:        options ?? XCTKConfig.global
+    TKAssertSatisfyMacro(
+        collection:         collection,
+        atLeast:            atLeast,
+        predicate:          predicate,
+        collectionText:     collectionText,
+        predicateText:      predicateText,
+        message:            message,
+        file:               file,
+        line:               line,
+        options:            options ?? XCTKConfig.global,
+        context:            failureContext
     )
 }
 
 
 
-internal func _XCTKAssertSatisfyMacro<C>(
+@_documentation(visibility: package)
+public func _XCTKAssertSatisfyMacro<C>(
     collection      : @autoclosure () throws -> C,
     atMost          : Int,
     predicate       : (C.Element) throws -> Bool,
@@ -629,21 +695,24 @@ internal func _XCTKAssertSatisfyMacro<C>(
     options         : TestOptions?
 ) where C : Collection
 {
-    evaluateXCTKAssertSatisfy(
-        captureKind:    .double(collectionText, predicateText),
-        collection:     collection,
-        atMost:         atMost,
-        predicate:      predicate,
-        message:        message,
-        file:           file,
-        line:           line,
-        options:        options ?? XCTKConfig.global
+    TKAssertSatisfyMacro(
+        collection:         collection,
+        atMost:             atMost,
+        predicate:          predicate,
+        collectionText:     collectionText,
+        predicateText:      predicateText,
+        message:            message,
+        file:               file,
+        line:               line,
+        options:            options ?? XCTKConfig.global,
+        context:            failureContext
     )
 }
 
 
 
-internal func _XCTKAssertSatisfyMacro<C>(
+@_documentation(visibility: package)
+public func _XCTKAssertSatisfyMacro<C>(
     collection      : @autoclosure () throws -> C,
     range           : ClosedRange<Int>,
     predicate       : (C.Element) throws -> Bool,
@@ -655,21 +724,24 @@ internal func _XCTKAssertSatisfyMacro<C>(
     options         : TestOptions?
 ) where C : Collection
 {
-    evaluateXCTKAssertSatisfy(
-        captureKind:    .double(collectionText, predicateText),
-        collection:     collection,
-        range:          range,
-        predicate:      predicate,
-        message:        message,
-        file:           file,
-        line:           line,
-        options:        options ?? XCTKConfig.global
+    TKAssertSatisfyMacro(
+        collection:         collection,
+        range:              range,
+        predicate:          predicate,
+        collectionText:     collectionText,
+        predicateText:      predicateText,
+        message:            message,
+        file:               file,
+        line:               line,
+        options:            options ?? XCTKConfig.global,
+        context:            failureContext
     )
 }
 
 
 
-internal func _XCTKAssertExactlyMacro<C>(
+@_documentation(visibility: package)
+public func _XCTKAssertExactlyMacro<C>(
     collection      : @autoclosure () throws -> C,
     count           : Int,
     predicate       : (C.Element) throws -> Bool,
@@ -681,21 +753,24 @@ internal func _XCTKAssertExactlyMacro<C>(
     options         : TestOptions?
 ) where C : Collection
 {
-    evaluateXCTKAssertExactly(
-        captureKind:    .double(collectionText, predicateText),
-        collection:     collection,
-        count:          count,
-        predicate:      predicate,
-        message:        message,
-        file:           file,
-        line:           line,
-        options:        options ?? XCTKConfig.global
+    TKAssertExactlyMacro(
+        collection:         collection,
+        count:              count,
+        predicate:          predicate,
+        collectionText:     collectionText,
+        predicateText:      predicateText,
+        message:            message,
+        file:               file,
+        line:               line,
+        options:            options ?? XCTKConfig.global,
+        context:            failureContext
     )
 }
 
 
 
-internal func _XCTKAssertExactlyOneMacro<C>(
+@_documentation(visibility: package)
+public func _XCTKAssertExactlyOneMacro<C>(
     collection      : @autoclosure () throws -> C,
     predicate       : (C.Element) throws -> Bool,
     collectionText  : String,
@@ -706,20 +781,23 @@ internal func _XCTKAssertExactlyOneMacro<C>(
     options         : TestOptions?
 ) where C : Collection
 {
-    evaluateXCTKAssertExactlyOne(
-        captureKind:    .double(collectionText, predicateText),
-        collection:     collection,
-        predicate:      predicate,
-        message:        message,
-        file:           file,
-        line:           line,
-        options:        options ?? XCTKConfig.global
+    TKAssertExactlyOneMacro(
+        collection:         collection,
+        predicate:          predicate,
+        collectionText:     collectionText,
+        predicateText:      predicateText,
+        message:            message,
+        file:               file,
+        line:               line,
+        options:            options ?? XCTKConfig.global,
+        context:            failureContext
     )
 }
 
 
 
-internal func _XCTKAssertSortedMacro<C>(
+@_documentation(visibility: package)
+public func _XCTKAssertSortedMacro<C>(
     collection      : @autoclosure () throws -> C,
     predicate       : (C.Element, C.Element) throws -> Bool,
     collectionText  : String,
@@ -730,20 +808,23 @@ internal func _XCTKAssertSortedMacro<C>(
     options         : TestOptions?        
 ) where C : Collection
 {
-    evaluateXCTKAssertSorted(
-        captureKind:    .double(collectionText, predicateText),
-        collection:     collection,
-        predicate:      predicate,
-        message:        message,
-        file:           file,
-        line:           line,
-        options:        options ?? XCTKConfig.global
+    TKAssertSortedMacro(
+        collection:         collection,
+        predicate:          predicate,
+        collectionText:     collectionText,
+        predicateText:      predicateText,
+        message:            message,
+        file:               file,
+        line:               line,
+        options:            options ?? XCTKConfig.global,
+        context:            failureContext
     )
 }
 
 
 
-internal func _XCTKAssertUniqueMacro<C>(
+@_documentation(visibility: package)
+public func _XCTKAssertUniqueMacro<C>(
     collection      : @autoclosure () throws -> C,
     collectionText  : String,
     message         : @autoclosure () -> String,
@@ -752,19 +833,21 @@ internal func _XCTKAssertUniqueMacro<C>(
     options         : TestOptions?
 ) where C : Collection, C.Element : Hashable
 {
-    evaluateXCTKAssertUnique(
-        captureKind:    .single(collectionText),
-        collection:     collection,
-        message:        message,
-        file:           file,
-        line:           line,
-        options:        options ?? XCTKConfig.global
+    TKAssertUniqueMacro(
+        collection:         collection,
+        collectionText:     collectionText,
+        message:            message,
+        file:               file,
+        line:               line,
+        options:            options ?? XCTKConfig.global,
+        context:            failureContext
     )
 }
 
 
 
-internal func _XCTKAssertUniqueMacro<C, K>(
+@_documentation(visibility: package)
+public func _XCTKAssertUniqueMacro<C, K>(
     collection      : @autoclosure () throws -> C,
     predicate       : (C.Element) throws -> K,
     collectionText  : String,
@@ -775,13 +858,15 @@ internal func _XCTKAssertUniqueMacro<C, K>(
     options         : TestOptions?
 ) where C : Collection, K : Hashable
 {
-    evaluateXCTKAssertUnique(
-        captureKind:    .double(collectionText, predicateText),
-        collection:     collection,
-        predicate:      predicate,
-        message:        message,
-        file:           file,
-        line:           line,
-        options:        options ?? XCTKConfig.global
+    TKAssertUniqueMacro(
+        collection:         collection,
+        predicate:          predicate,
+        collectionText:     collectionText,
+        predicateText:      predicateText,
+        message:            message,
+        file:               file,
+        line:               line,
+        options:            options ?? XCTKConfig.global,
+        context:            failureContext
     )
 }

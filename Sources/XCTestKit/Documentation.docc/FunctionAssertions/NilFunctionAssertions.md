@@ -12,4 +12,4 @@ Assert whether a value is nil.
 
 - ``XCTKAssertNotNil(_:_:file:line:options:)-func``
 - ``XCTKUnwrap(_:_:file:line:options:)-func``
-- ``XCTKUnwrapError``
+- ``UnwrapError``

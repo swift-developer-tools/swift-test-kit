@@ -12,7 +12,7 @@ import XCTest
 
 
 
-internal final class ReasyncMacroTests: XCTestCaseStopOnFail
+internal final class ReasyncMacroTests: TestKitCase
 {
     func testDoubleAsync() async
     {
