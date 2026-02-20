@@ -202,10 +202,12 @@ internal struct BooleanExprWalker
                             message:    \(message)
                         )
             
-                    XCTFail(
+                    \(raw: framework.rawValue)Fail(
                         text,
-                        file:   #filePath,
-                        line:   #line
+                        fileID:     #fileID,
+                        file:       #filePath,
+                        line:       #line,
+                        column:     #column
                     )
                 }
             }()
