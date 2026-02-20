@@ -9,12 +9,12 @@ to individual assertions take precedence over global options.
 
 ### Global Configuration
 
-Use ``XCTKConfig/global`` to set options that apply to all assertions by 
+Use ``TestConfiguration`` to set options that apply to all assertions by 
 default.
 
 ```swift
-XCTKConfig.global.diffEnabled               = true
-XCTKConfig.global.formatOptions.maxDiffs    = 5
+TestConfiguration.global.diffEnabled                = true
+TestConfiguration.global.formatOptions.maxDiffs     = 5
 ```
 
 ### Assertion Configuration
@@ -57,13 +57,8 @@ final class TestClass: XCTKCase
 
 ## Topics
 
-### Configuring
-
-- ``XCTKConfig``
 - ``XCTKCase``
-
-### Options
-
+- ``TestConfiguration``
 - ``TestOptions``
 - ``DiffOptions``
 - ``FormatOptions``

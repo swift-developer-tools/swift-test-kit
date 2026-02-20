@@ -13,6 +13,13 @@ import TestKitCore
 
 // MARK: - Options
 
+/// The global configuration.
+///
+/// - Note: See
+/// [`TestConfiguration`](https://swift-developer-tools.github.io/swift-test-kit/documentation/testkitcore/testconfiguration)
+/// for the complete API reference.
+public typealias TestConfiguration  = TestKitCore.TestConfiguration
+
 /// The options for testing.
 ///
 /// - Note: See

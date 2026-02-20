@@ -19,7 +19,7 @@ internal final class ConfigurationTests: TestKitCase
     {
         super.setUp()
         
-        XCTKConfig.global = TestOptions()
+        TestConfiguration.global = TestOptions()
         
         /// Must be true when expecting errors in an async context. XCTest bug.
         continueAfterFailure = true
@@ -27,16 +27,18 @@ internal final class ConfigurationTests: TestKitCase
     
     override func tearDown()
     {
-        XCTKConfig.global = TestOptions()
+        TestConfiguration.global = TestOptions()
         
         super.tearDown()
     }
+    
+    private typealias TC = TestConfiguration
     
     
     
     func testGlobalConfigAssignment()
     {
-        var options = XCTKConfig.global
+        var options = TC.global
         
         XCTKAssertEqual(options.diffEnabled, true)
         XCTKAssertEqual(options.diffOptions.maxRecursionDepth, 20)
@@ -46,18 +48,18 @@ internal final class ConfigurationTests: TestKitCase
         options.diffOptions.maxRecursionDepth   = 1
         options.formatOptions.maxLineLength     = 40
 
-        XCTKConfig.global = options
+        TC.global = options
         
         XCTKAssertEqual(options.diffEnabled, false)
-        XCTKAssertEqual(XCTKConfig.global.diffOptions.maxRecursionDepth, 1)
-        XCTKAssertEqual(XCTKConfig.global.formatOptions.maxLineLength, 40)
+        XCTKAssertEqual(TC.global.diffOptions.maxRecursionDepth, 1)
+        XCTKAssertEqual(TC.global.formatOptions.maxLineLength, 40)
     }
     
     
     
     func testGlobalConfigReturnsDefaultOptions()
     {
-        let options = XCTKConfig.global
+        let options = TC.global
         
         XCTKAssertEqual(options.diffEnabled, true)
         XCTKAssertEqual(options.diffOptions, DiffOptions())
@@ -68,11 +70,11 @@ internal final class ConfigurationTests: TestKitCase
     
     func testGlobalConfigDirectModification()
     {
-        XCTKAssertTrue(XCTKConfig.global.diffEnabled)
+        XCTKAssertTrue(TC.global.diffEnabled)
         
-        XCTKConfig.global.diffEnabled = false
+        TC.global.diffEnabled = false
         
-        XCTKAssertFalse(XCTKConfig.global.diffEnabled)
+        XCTKAssertFalse(TC.global.diffEnabled)
     }
     
     
@@ -83,7 +85,7 @@ internal final class ConfigurationTests: TestKitCase
         
         XCTKAssertEqual(testCase.options.diffOptions.maxRecursionDepth, 20)
         
-        XCTKConfig.global.diffOptions.maxRecursionDepth = 1
+        TC.global.diffOptions.maxRecursionDepth = 1
         
         XCTKAssertEqual(testCase.options.diffOptions.maxRecursionDepth, 1)
     }
@@ -94,7 +96,7 @@ internal final class ConfigurationTests: TestKitCase
     {
         let testCase = XCTKCase()
         
-        XCTKAssertEqual(testCase.options, XCTKConfig.global)
+        XCTKAssertEqual(testCase.options, TC.global)
     }
     
     
@@ -113,19 +115,19 @@ internal final class ConfigurationTests: TestKitCase
             }
         }
         
-        XCTKConfig.global.diffOptions.maxRecursionDepth = 5
+        TC.global.diffOptions.maxRecursionDepth = 5
         
         let customCase = CustomCase()
         
         XCTKAssertEqual(customCase.options.diffOptions.maxRecursionDepth, 1)
-        XCTKAssertEqual(XCTKConfig.global.diffOptions.maxRecursionDepth, 5)
+        XCTKAssertEqual(TC.global.diffOptions.maxRecursionDepth, 5)
     }
     
     
     
     func testAssertionOptionsOverridePrecedence()
     {
-        XCTKConfig.global.diffEnabled = true
+        TC.global.diffEnabled = true
         
         let output1: String? = withOneExpectedFailure
         {
@@ -148,8 +150,8 @@ internal final class ConfigurationTests: TestKitCase
     func testNilOptionsFallsBackToGlobal() async
     {
         /// With `iterations` set to zero, the property vacuously passes.
-        XCTKConfig.global.propertyOptions.iterations    = 0
-        XCTKConfig.global.propertyOptions.seed          = 50
+        TC.global.propertyOptions.iterations    = 0
+        TC.global.propertyOptions.seed          = 50
         
         await XCTKForAll(options: nil)
         {
@@ -158,7 +160,7 @@ internal final class ConfigurationTests: TestKitCase
             XCTKAssertTrue(false)
         }
         
-        XCTKConfig.global.propertyOptions.iterations = 1
+        TC.global.propertyOptions.iterations = 1
         
         let output: String? = await withOneExpectedFailure
         {
@@ -179,7 +181,7 @@ internal final class ConfigurationTests: TestKitCase
     func testExplicitOptionsOverrideGlobal() async
     {
         /// With `iterations` set to zero, the property vacuously passes.
-        XCTKConfig.global.propertyOptions.iterations = 0
+        TC.global.propertyOptions.iterations = 0
         
         let options: TestOptions = .propertyOptions(
             iterations:     1,

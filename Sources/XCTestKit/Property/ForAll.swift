@@ -51,7 +51,7 @@ public func XCTKForAll<each T>(
         file:       file,
         line:       line,
         column:     column,
-        options:    options ?? XCTKConfig.global,
+        options:    options ?? TestConfiguration.global,
         property,
         context:    failureContext
     )
@@ -108,7 +108,7 @@ public func XCTKForAll<each T>(
         file:       file,
         line:       line,
         column:     column,
-        options:    options ?? XCTKConfig.global,
+        options:    options ?? TestConfiguration.global,
         property,
         context:    failureContext
     )
@@ -168,7 +168,7 @@ public func XCTKForAll<each T>(
         file:       file,
         line:       line,
         column:     column,
-        options:    options ?? XCTKConfig.global,
+        options:    options ?? TestConfiguration.global,
         property,
         context:    failureContext
     )
@@ -232,7 +232,7 @@ public func XCTKForAll<each T>(
         file:       file,
         line:       line,
         column:     column,
-        options:    options ?? XCTKConfig.global,
+        options:    options ?? TestConfiguration.global,
         property,
         context:    failureContext
     )

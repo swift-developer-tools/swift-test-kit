@@ -27,8 +27,9 @@ for the complete API references.
 
 ## Topics
 
-### Testing Options
+### Configuration
 
+- ``TestConfiguration``
 - ``TestOptions``
 - ``DiffOptions``
 - ``FormatOptions``

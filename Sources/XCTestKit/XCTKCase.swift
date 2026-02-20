@@ -24,6 +24,6 @@ open class XCTKCase: XCTestCase
     /// and pass it to any assertion that should not use global options.
     open var options: TestOptions
     {
-        return XCTKConfig.global
+        return TestConfiguration.global
     }
 }
