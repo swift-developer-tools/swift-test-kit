@@ -63,9 +63,9 @@ let actual      = Outer(tag: "a", inner: Inner(id: 1, value: 200, label: "b"))
 STKAssertEqual(expected, actual)
 
 // STKAssertEqual failed
-///
+//
 // Outer differs at:
-///
+//
 //     .inner.value
 //         Expected:   100
 //         Actual:     200
@@ -82,17 +82,17 @@ let options = TestOptions(formatOptions: .init(maxDiffs: 2))
 STKAssertEqual(expected, actual, options: options)
 
 // STKAssertEqual failed
-///
+//
 // Array<Int> differs at:
-///
+//
 //     [0]
 //         Expected:   1
 //         Actual:     0
-///
+//
 //     [1]
 //         Expected:   2
 //         Actual:     0
-///
+//
 //     ... and 1 more difference
 ```
 
@@ -105,9 +105,9 @@ let actual      = "Line 1\nLine X\nLine 3"
 STKAssertEqual(expected, actual)
 
 // STKAssertEqual failed
-///
+//
 // String differs at:
-///
+//
 //     line 2
 //         Expected:   "Line 2"
 //         Actual:     "Line X"
@@ -123,9 +123,9 @@ let actual      : Set<String>   = ["a", "e", "f"]
 STKAssertEqual(expected, actual)
 
 // STKAssertEqual failed
-///
+//
 // Set<String> differs:
-///
+//
 //     Missing:    "b"
 //     Missing:    "c"
 //     Unexpected: "e"
