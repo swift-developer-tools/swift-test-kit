@@ -81,6 +81,7 @@ internal final class OptionsTests: TestKitCase
         XCTAssertEqual(options.maxShrinkSteps, 100)
         XCTAssertEqual(options.maxSize, 100)
         XCTAssertEqual(options.maxDiscardRatio, 10)
+        XCTAssertEqual(options.maxCommandCount, 100)
         XCTAssertNil(options.seed)
     }
     
