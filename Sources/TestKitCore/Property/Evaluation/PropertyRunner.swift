@@ -173,13 +173,13 @@ internal struct PropertyRunner
                 continue
             }
             
-            let result: IterationResult = await evaluateProperty(
+            let evaluationResult: EvaluationResult = await evaluateProperty(
                 property,
                 with:   value,
                 using:  interceptor
             )
             
-            switch result
+            switch evaluationResult
             {
                 case .passed:
                     
@@ -300,13 +300,13 @@ internal struct PropertyRunner
     ///   - value: The value with which to call the property.
     ///   - interceptor: The property interceptor to use, or `nil` to create
     ///   a new interceptor.
-    /// - Returns: The iteration result.
+    /// - Returns: The evaluation result.
     @Reasync
     private static func evaluateProperty<T>(
         _       property    : (T) async throws -> Void,
         with    value       : T,
         using   interceptor : PropertyInterceptor?      = nil
-    ) async -> IterationResult
+    ) async -> EvaluationResult
     {
         let interceptor: PropertyInterceptor = interceptor ?? .init()
         
@@ -387,12 +387,13 @@ internal struct PropertyRunner
                     continue
                 }
                 
-                let result: IterationResult = await evaluateProperty(
-                    property,
-                    with: candidate
-                )
+                let evaluationResult: EvaluationResult
+                    = await evaluateProperty(
+                        property,
+                        with: candidate
+                    )
                 
-                if result == .failed
+                if evaluationResult == .failed
                 {
                     current     = candidate
                     improved    = true
@@ -449,8 +450,8 @@ internal struct PropertyRunner
     
     
     
-    /// The result of a single property iteration.
-    private enum IterationResult: Equatable, Sendable
+    /// The result of evaluating a property.
+    private enum EvaluationResult: Equatable, Sendable
     {
         /// The property passed.
         case passed
