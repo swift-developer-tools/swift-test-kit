@@ -1,7 +1,7 @@
 # ``XCTestKit``
 
 Structural diff output, expression capture, predicate assertions, and 
-property-based testing for XCTest.
+property-based testing for the XCTest framework.
 
 
 

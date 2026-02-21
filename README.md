@@ -1,7 +1,7 @@
 # swift-test-kit
 
 Structural diff output, expression capture, predicate assertions, and 
-property-based testing for both Swift Testing and XCTest.
+property-based testing for both the Swift Testing and XCTest frameworks.
 
 
 

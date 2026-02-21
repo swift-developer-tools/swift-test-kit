@@ -1,7 +1,7 @@
 # ``SwiftTestKit``
 
 Structural diff output, expression capture, predicate assertions, and 
-property-based testing for Swift Testing.
+property-based testing for the Swift Testing framework.
 
 
 
