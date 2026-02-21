@@ -322,7 +322,7 @@ internal final class PropertyRunnerClassificationTests: TestKitCase
         
         /// Generate only even values so the main loop never discards them.
         /// The odd candidates are discarded by the assumption. Discarded
-        /// inputs during shrinking must not inflate the distribution.
+        /// values during shrinking must not inflate the distribution.
         let generator = Generator<Int>(
             generate:
             {

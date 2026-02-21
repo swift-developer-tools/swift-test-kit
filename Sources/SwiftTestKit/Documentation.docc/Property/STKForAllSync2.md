@@ -1,6 +1,6 @@
 # ``STKForAll(using:message:fileID:file:line:column:options:_:)-6h5i2``
 
-Asserts that the given property holds for all inputs produced by the
+Asserts that the given property holds for all values produced by the
 given generators.
 
 Use a generator when ``Arbitrary`` conformance of a specific type does

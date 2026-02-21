@@ -1,6 +1,6 @@
 # ``STKForAll(_:fileID:file:line:column:options:_:)-9km1j``
 
-Asserts that the given property holds for all generated inputs.
+Asserts that the given property holds for all generated values.
 
 SwiftTestKit assertions used inside a property body are automatically
 intercepted rather than reported directly to Swift Testing.

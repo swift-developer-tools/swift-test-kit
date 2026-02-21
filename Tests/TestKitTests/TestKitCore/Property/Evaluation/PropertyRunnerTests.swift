@@ -364,7 +364,7 @@ internal final class PropertyRunnerTests: TestKitCase
     // MARK: - Exhaustion/Precondition
     
     @Reasync
-    func testPreconditionAcceptingAllInputsReturnsPassed() async throws
+    func testPreconditionAcceptingAllValuesReturnsPassed() async throws
     {
         let result: PCR<BoundInt> = await PropertyRunner.run(
             where:      { _ in true },
@@ -378,10 +378,10 @@ internal final class PropertyRunnerTests: TestKitCase
     
     
     @Reasync
-    func testPreconditionFilteringSomeInputReturnsPassed() async throws
+    func testPreconditionFilteringSomeValueReturnsPassed() async throws
     {
-        /// A precondition that filters some inputs still passes when
-        /// enough inputs exist within the discard ratio. With ``BoundInt``
+        /// A precondition that filters some values still passes when
+        /// enough values exist within the discard ratio. With ``BoundInt``
         /// generating values in the range `0...context.size`, about half
         /// the values are even.
         let result: PCR<BoundInt> = await PropertyRunner.run(
@@ -396,7 +396,7 @@ internal final class PropertyRunnerTests: TestKitCase
     
     
     @Reasync
-    func testPreconditionRejectingAllInputsReturnsExhausted() async throws
+    func testPreconditionRejectingAllValuesReturnsExhausted() async throws
     {
         let maxDiscardRatio: Int = 2
         
@@ -484,7 +484,7 @@ internal final class PropertyRunnerTests: TestKitCase
     
     
     @Reasync
-    func testConditionalPropertyWithFailingInputsReturnsFailed() async throws
+    func testConditionalPropertyWithFailingValuesReturnsFailed() async throws
     {
         let options: TestOptions = .propertyOptions(
             maxSize:    200,
@@ -1729,7 +1729,7 @@ internal final class PropertyRunnerTests: TestKitCase
         )
         
         /// Discard odd-sized iterations. Since the size formula uses
-        /// `succeeded`, not `iteration`, discarded inputs do not advance the
+        /// `succeeded`, not `iteration`, discarded values do not advance the
         /// size. The expected progression is:
         ///
         /// - Iteration 1: `size = 0 * 100 / 10` → `0` → accepted

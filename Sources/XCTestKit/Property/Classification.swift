@@ -14,13 +14,13 @@ import TestKitCore
 
 /// Discards the current iteration when the given condition is false.
 ///
-/// Use this inside a property body to discard inputs based on conditions
-/// that depend on derived values. Inputs that do not satisfy the condition
+/// Use this inside a property body to discard values based on conditions
+/// that depend on derived values. Values that do not satisfy the condition
 /// are counted against the maximum discard ratio.
 ///
-/// - Important: Preconditions that reject most inputs waste iterations and
-/// can lead to exhaustion. Prefer constructing valid inputs using a custom
-/// ``Generator`` rather than discarding invalid inputs with a precondition.
+/// - Important: Preconditions that reject most values waste iterations and
+/// can lead to exhaustion. Prefer constructing valid values using a custom
+/// ``Generator`` rather than discarding invalid values with a precondition.
 ///
 /// - Note: This function does nothing when called outside a property body.
 ///

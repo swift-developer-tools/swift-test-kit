@@ -222,7 +222,7 @@ extension ForAllOptionsTests
     /// Runs the conditional property evaluator with a single `Int` parameter,
     /// using the values, and captures the failure output.
     /// - Parameters:
-    ///   - precondition: The precondition for generated inputs.
+    ///   - precondition: The precondition for generated values.
     ///   - options: The options to use.
     ///   - property: The property body.
     /// - Returns: The captured failure message, or `nil` if no failure

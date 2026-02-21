@@ -1,6 +1,6 @@
 # ``XCTKForAll(_:fileID:file:line:column:options:_:)-8p99k``
 
-Asserts that the given property holds for all generated inputs.
+Asserts that the given property holds for all generated values.
 
 XCTestKit assertions used inside a property body are automatically
 intercepted rather than reported directly to XCTest.

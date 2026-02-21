@@ -1712,7 +1712,7 @@ internal final class ClassificationOutputTests: TestKitCase
         """
         XCTKForAll exhausted after 2 successful iterations
         
-            6 inputs discarded (max ratio: 1)
+            6 values discarded (max ratio: 1)
         
         \(Self.seedMessage)
         
@@ -1765,7 +1765,7 @@ internal final class ClassificationOutputTests: TestKitCase
         """
         XCTKForAll exhausted after 2 successful iterations
         
-            6 inputs discarded (max ratio: 1)
+            6 values discarded (max ratio: 1)
         
         \(Self.seedMessage)
         
@@ -1816,7 +1816,7 @@ internal final class ClassificationOutputTests: TestKitCase
         """
         XCTKForAll exhausted after 2 successful iterations
         
-            6 inputs discarded (max ratio: 1)
+            6 values discarded (max ratio: 1)
         
         \(Self.seedMessage)
         
@@ -1861,7 +1861,7 @@ internal final class ClassificationOutputTests: TestKitCase
         """
         XCTKForAll exhausted after 0 successful iterations
         
-            6 inputs discarded (max ratio: 1)
+            6 values discarded (max ratio: 1)
         
         \(Self.seedMessage)
         """
@@ -1912,7 +1912,7 @@ internal final class ClassificationOutputTests: TestKitCase
         """
         XCTKForAll exhausted after 2 successful iterations
         
-            6 inputs discarded (max ratio: 1)
+            6 values discarded (max ratio: 1)
         
         \(Self.seedMessage)
         
@@ -1966,7 +1966,7 @@ internal final class ClassificationOutputTests: TestKitCase
         """
         XCTKForAll exhausted after 2 successful iterations
         
-            6 inputs discarded (max ratio: 1)
+            6 values discarded (max ratio: 1)
         
         \(Self.seedMessage)
         
@@ -2010,7 +2010,7 @@ internal final class ClassificationOutputTests: TestKitCase
         """
         XCTKForAll exhausted after 0 successful iterations
         
-            6 inputs discarded (max ratio: 1)
+            6 values discarded (max ratio: 1)
         
         \(Self.seedMessage)
         
@@ -2061,7 +2061,7 @@ internal final class ClassificationOutputTests: TestKitCase
         """
         XCTKForAll exhausted after 1 successful iteration
         
-            6 inputs discarded (max ratio: 1)
+            6 values discarded (max ratio: 1)
         
         \(Self.seedMessage)
         """

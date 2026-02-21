@@ -249,11 +249,11 @@ public struct PropertyOptions: Equatable, Sendable
     /// - Note: See ``GenerationContext/size`` for more information.
     public var maxSize          : Int
     
-    /// The maximum ratio of discarded inputs to successful inputs.
+    /// The maximum ratio of discarded values to successful values.
     ///
     /// The default value is `10`.
     ///
-    /// When using conditional properties, inputs that do not satisfy the
+    /// When using conditional properties, values that do not satisfy the
     /// precondition are discarded. If the discard count exceeds
     /// `maxDiscardRatio * iterations`, the test fails with an exhaustion error.
     public var maxDiscardRatio  : Int

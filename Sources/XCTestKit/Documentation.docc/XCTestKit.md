@@ -22,8 +22,8 @@ Predicate assertions verify conditions across collection elements and produce
 element-level failure output, identifying which elements failed, which matched 
 unexpectedly, and which threw errors.
 
-Property-based testing generates random inputs automatically, shrinks failures 
-to minimal counterexamples, and reports failing inputs with the same rich 
+Property-based testing generates random values automatically, shrinks failures 
+to minimal counterexamples, and reports failing values with the same rich 
 assertion output used by standalone assertions.
 
 - Note: To test with the 
@@ -309,7 +309,7 @@ XCTKAssertSatisfy(values, atLeast: 4)
 
 ## Property-Based Testing
 
-Describe properties that must hold for any given input, and XCTestKit will 
+Describe properties that must hold for any given value, and XCTestKit will 
 generate random test cases automatically. 
 
 ```swift
@@ -317,7 +317,7 @@ XCTKForAll
 {
     (a: Int, b: Int) in
     
-    // Addition is commutative. The assertion passes for all inputs.
+    // Addition is commutative. The assertion passes for all values.
     XCTKAssertEqual(a + b, b + a)
 }
 ```
@@ -338,7 +338,7 @@ await XCTKForAll
 
 ### Counterexamples
 
-When an input causes a property to fail, XCTestKit will shrink the input to the 
+When a value causes a property to fail, XCTestKit will shrink the value to the 
 smallest value that still fails the property (the minimal counterexample).
 
 XCTestKit assertions are automatically intercepted inside property bodies, 

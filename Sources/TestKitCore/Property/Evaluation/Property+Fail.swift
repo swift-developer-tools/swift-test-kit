@@ -227,9 +227,9 @@ extension PropertyCheckResult
     /// - Parameters:
     ///   - functionName: The name of the property-based function.
     ///   - message: The description of a failure.
-    ///   - discarded: The number of discarded inputs.
-    ///   - succeeded: The number of successful inputs.
-    ///   - ratio: The maximum ratio of discarded inputs to successful inputs.
+    ///   - discarded: The number of discarded values.
+    ///   - succeeded: The number of successful values.
+    ///   - ratio: The maximum ratio of discarded values to successful values.
     ///   - seed: The seed used to initialize the random number generator.
     ///   - distribution: The accumulated count of iterations that matched
     ///   each label.
@@ -258,7 +258,7 @@ extension PropertyCheckResult
         lines.append("")
         
         lines.append(
-            "    \(discarded) input\(discarded == 1 ? "" : "s") discarded"
+            "    \(discarded) value\(discarded == 1 ? "" : "s") discarded"
             + " (max ratio: \(ratio))"
         )
         

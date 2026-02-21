@@ -1,24 +1,24 @@
 # Property-Based Testing
 
 Automatically generate random test cases, shrink failures to minimal 
-counterexamples, and report failing inputs with full assertion output.
+counterexamples, and report failing values with full assertion output.
 
 ## Overview
 
 Property-based testing is fundamentally different from example-based testing. 
 Standard assertions check properties on data provided by the test author. 
 Property-based testing inverts this concept: the test author describes what 
-must be true, and XCTestKit generates random inputs automatically, searching 
+must be true, and XCTestKit generates random values automatically, searching 
 for a case that invalidates the property.
 
-When a failing input is found, XCTestKit shrinks it to the smallest value that 
+When a failing value is found, XCTestKit shrinks it to the smallest value that 
 still fails (the minimal counterexample), then reports it along with the full 
 assertion failure output, including structural diffs, expression capture, 
 and formatting preferences.
 
 Value generation is controlled by a seed for deterministic replay, and by a 
 size parameter that starts small (for example, zero, empty arrays, and short 
-strings) and grows across iterations to explore progressively larger inputs.
+strings) and grows across iterations to explore progressively larger values.
 
 ### Assertion Interception
 
