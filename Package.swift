@@ -19,6 +19,11 @@ let package = Package(
     products:
     [
         .library(
+            name: "SwiftTestKit",
+            targets: ["SwiftTestKit"]
+        ),
+        
+        .library(
             name: "XCTestKit",
             targets: ["XCTestKit"]
         )
@@ -103,6 +108,15 @@ let package = Package(
         ),
         
         .target(
+            name: "SwiftTestKit",
+            dependencies:
+            [
+                "TestKitCore",
+                "TestKitMacros"
+            ]
+        ),
+        
+        .target(
             name: "XCTestKit",
             dependencies:
             [
@@ -118,6 +132,7 @@ let package = Package(
                 "ReasyncMacroCore",
                 "TestKitCore",
                 "TestKitMacroCore",
+                "SwiftTestKit",
                 "XCTestKit"
             ]
         )
