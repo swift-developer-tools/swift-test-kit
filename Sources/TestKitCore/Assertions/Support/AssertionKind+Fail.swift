@@ -190,7 +190,7 @@ extension AssertionKind
     /// - Parameters:
     ///   - context: The assertion failure context.
     ///   - capture: The kind of captured assertion expression.
-    ///   - failure: Information about the failed predicate.
+    ///   - failure: The predicate failure.
     ///   - message: The description of a failure.
     ///   - fileID: The ID of the file where the failure occurs.
     ///   - file: The file where the failure occurs.

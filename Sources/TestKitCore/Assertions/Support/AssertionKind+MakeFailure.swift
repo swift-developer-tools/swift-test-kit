@@ -244,7 +244,7 @@ extension AssertionKind
     /// - Parameters:
     ///   - context: The assertion failure context.
     ///   - capture: The kind of captured assertion expression.
-    ///   - failure: Information about the failed predicate.
+    ///   - failure: The predicate failure.
     ///   - message: The description of a failure.
     ///   - options: The options for testing.
     /// - Returns: The predicate-based failure message.

@@ -7,7 +7,7 @@
 //
 //===----------------------------------------------------------------------===//
 
-/// Information about a failing counterexample.
+/// A failing counterexample.
 package struct Counterexample<T>
 {
     /// The minimal counterexample (after shrinking).

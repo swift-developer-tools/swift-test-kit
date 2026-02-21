@@ -11,8 +11,7 @@
 /// - Parameters:
 ///   - predicate: The predicate to call with each element of the collection.
 ///   - collection: The collection over which to iterate.
-/// - Returns: Information about the iteration of the given predicate over the
-/// given collection.
+/// - Returns: The result of predicate iteration over the given collection.
 package func iteratePredicate<C>(
     _       predicate   : (C.Element) throws -> Bool,
     over    collection  : C
