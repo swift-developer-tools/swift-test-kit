@@ -9,7 +9,7 @@
 
 // MARK: - Arbitrary
 
-/// A type that can generate arbitrary random values.
+/// A type that can generate random values.
 ///
 /// Types used with property-based evaluators must conform to this protocol.
 /// Built-in conformance is provided for many standard library types.
@@ -65,7 +65,7 @@
 /// at a time, while holding the other properties constant.
 public protocol Arbitrary
 {
-    /// Generates an arbitrary value using the given generation context.
+    /// Generates a random value using the given generation context.
     ///
     /// Use ``GenerationContext/size`` to scale the generated value. Small
     /// sizes should produce small values (for example, zero, empty arrays,
@@ -82,8 +82,7 @@ public protocol Arbitrary
     /// Generates candidate values that are smaller than the receiver value.
     ///
     /// The default implementation returns an empty array (no shrinking).
-    /// Override this method to provide shrink candidates for a conforming
-    /// type.
+    /// Override this method to provide shrink candidates.
     ///
     /// The shrinking process tries each candidate value and keeps the
     /// smallest value that still fails the property (the minimal
@@ -104,6 +103,11 @@ public protocol Arbitrary
 extension Arbitrary
 {
     /// Returns an empty array to indicate that no shrinking should occur.
+    ///
+    /// This is the default implementation. Override this method to provide
+    /// shrink candidates.
+    ///
+    /// - Returns: Always an empty array.
     public func shrink() -> [Self]
     {
         return []
