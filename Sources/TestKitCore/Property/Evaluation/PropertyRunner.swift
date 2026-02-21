@@ -292,29 +292,7 @@ internal struct PropertyRunner
     
     
     
-    // MARK: - Support
-    
-    private static let logger = Logger(
-        subsystem:  "swift-test-kit",
-        category:   "PropertyRunner"
-    )
-    
-    
-    
-    /// The result of a single property iteration.
-    private enum IterationResult: Equatable, Sendable
-    {
-        /// The property passed.
-        case passed
-        
-        /// The property failed.
-        case failed
-        
-        /// The iteration was discarded.
-        case discarded
-    }
-    
-    
+    // MARK: - Evaluate
     
     /// Evaluates the given property with the given value.
     /// - Parameters:
@@ -368,6 +346,8 @@ internal struct PropertyRunner
     }
     
     
+    
+    // MARK: - Counterexample
     
     /// Creates the minimal counterexample for the given value.
     /// - Parameters:
@@ -456,5 +436,29 @@ internal struct PropertyRunner
             failures:       interceptor.failures,
             thrownError:    thrownError
         )
+    }
+    
+    
+    
+    // MARK: - Support
+    
+    private static let logger = Logger(
+        subsystem:  "swift-test-kit",
+        category:   "PropertyRunner"
+    )
+    
+    
+    
+    /// The result of a single property iteration.
+    private enum IterationResult: Equatable, Sendable
+    {
+        /// The property passed.
+        case passed
+        
+        /// The property failed.
+        case failed
+        
+        /// The iteration was discarded.
+        case discarded
     }
 }
