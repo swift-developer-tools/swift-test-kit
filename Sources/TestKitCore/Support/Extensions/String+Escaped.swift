@@ -7,10 +7,6 @@
 //
 //===----------------------------------------------------------------------===//
 
-import Foundation
-
-
-
 extension String
 {
     /// The string with special characters escaped.

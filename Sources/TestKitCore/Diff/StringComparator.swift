@@ -8,7 +8,7 @@
 //===----------------------------------------------------------------------===//
 
 /// Computes diffs between strings.
-package struct StringComparator
+internal struct StringComparator
 {
     /// The options for computing diffs.
     private let options: DiffOptions
@@ -27,7 +27,7 @@ package struct StringComparator
     ///   - options: The diff options to use. The default value is a
     ///   default-initialized ``DiffOptions`` instance.
     /// - Returns: The diff node kind.
-    package static func compare(
+    internal static func compare(
         expected    : String,
         actual      : String,
         options     : DiffOptions   = .init()

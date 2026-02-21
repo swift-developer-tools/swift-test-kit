@@ -258,6 +258,15 @@ public struct PropertyOptions: Equatable, Sendable
     /// `maxDiscardRatio * iterations`, the test fails with an exhaustion error.
     public var maxDiscardRatio  : Int
     
+    /// The maximum number of commands per stateful test sequence.
+    ///
+    /// The default value is `100`.
+    ///
+    /// Command sequence length scales linearly with the generation size,
+    /// starting with short sequences in early iterations and growing toward
+    /// this maximum value in later iterations.
+    public var maxCommandCount  : Int
+    
     /// The seed used to initialize the random number generator.
     ///
     /// The default value is `nil`. When `nil`, a random seed is generated
@@ -270,8 +279,8 @@ public struct PropertyOptions: Equatable, Sendable
     /// Initializes a ``PropertyOptions`` instance, optionally specifying
     /// values for its properties.
     ///
-    /// - Precondition: `iterations`, `maxShrinkSteps`, `maxSize`, and
-    /// `maxDiscardRatio` must all be non-negative.
+    /// - Precondition: `iterations`, `maxShrinkSteps`, `maxSize`,
+    /// `maxDiscardRatio`, and `maxCommandCount` must all be non-negative.
     ///
     /// - Warning: Very large `maxSize` values can cause significant memory
     /// pressure, especially for collection types, which generate up to
@@ -281,6 +290,7 @@ public struct PropertyOptions: Equatable, Sendable
         maxShrinkSteps  : Int       = 100,
         maxSize         : Int       = 100,
         maxDiscardRatio : Int       = 10,
+        maxCommandCount : Int       = 100,
         seed            : UInt64?   = nil
     )
     {
@@ -304,10 +314,16 @@ public struct PropertyOptions: Equatable, Sendable
             "maxDiscardRatio must be non-negative"
         )
         
+        precondition(
+            maxCommandCount >= 0,
+            "maxCommandCount must be non-negative"
+        )
+        
         self.iterations         = iterations
         self.maxShrinkSteps     = maxShrinkSteps
         self.maxSize            = maxSize
         self.maxDiscardRatio    = maxDiscardRatio
+        self.maxCommandCount    = maxCommandCount
         self.seed               = seed
     }
 }

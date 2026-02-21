@@ -7,14 +7,10 @@
 //
 //===----------------------------------------------------------------------===//
 
-import Foundation
-
-
-
 extension String
 {
     /// The string with newlines collapsed to a single space.
-    package func collapseLines() -> String
+    internal func collapseLines() -> String
     {
         return self
             .replacingOccurrences(of: "\r\n",   with: " ")

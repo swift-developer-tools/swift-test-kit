@@ -10,18 +10,18 @@
 // MARK: - FormattedLine
 
 /// A formatted diff line.
-package struct FormattedLine
+internal struct FormattedLine
 {
     /// The indentation level.
-    let indent  : Int
+    internal let indent : Int
     
     /// The text content.
-    let text    : String
+    internal let text   : String
     
     
     
     /// Whether the line is blank.
-    var isBlank: Bool
+    internal var isBlank: Bool
     {
         return text.isEmpty
     }
@@ -60,7 +60,7 @@ package struct FormattedLine
 /// ``renderText(_:)``, since that implementation is trivial. Other
 /// behavior is acceptable and may be avoided by increasing the limit
 /// specified by ``FormatOptions/maxLineLength``.
-package struct Formatter
+internal struct Formatter
 {
     /// The context for tracking state across recursive formatting calls.
     private let context: FormatterContext
@@ -72,7 +72,7 @@ package struct Formatter
     ///   - node: The root diff node.
     ///   - options: The formatting options.
     /// - Returns: The formatted failure.
-    package static func formatDiff(
+    internal static func formatDiff(
         _ node  : DiffNode,
         options : FormatOptions
     ) -> String
@@ -100,7 +100,7 @@ package struct Formatter
     ///   - expectedValue: The value expected by the assertion.
     ///   - options: The formatting options.
     /// - Returns: The formatted failure.
-    package static func formatBooleanExpr(
+    internal static func formatBooleanExpr(
         exprText        : String,
         evaluated       : [BooleanExpr],
         notEvaluated    : Int,
@@ -144,7 +144,7 @@ package struct Formatter
     ///   function assertions.
     ///   - options: The options for testing.
     /// - Returns: The formatted predicate failure.
-    package static func formatPredicate(
+    internal static func formatPredicate(
         _ failure       : PredicateFailure,
         collectionText  : String?           = nil,
         predicateText   : String?           = nil,
@@ -1245,7 +1245,7 @@ package struct Formatter
     // MARK: - Support
     
     /// The label kind.
-    package enum LabelKind: String, CaseIterable
+    internal enum LabelKind: String, CaseIterable
     {
         case expected       = "Expected:   "
         case actual         = "Actual:     "
@@ -1262,7 +1262,7 @@ package struct Formatter
         ///
         /// - Precondition: All `LabelKind` cases must have equal length for
         /// alignment.
-        package static let length: Int =
+        internal static let length: Int =
         {
             let lengths: [Int] = LabelKind.allCases.map { $0.rawValue.count }
             

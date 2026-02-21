@@ -19,7 +19,7 @@ extension PropertyCheckResult
     ///   - file: The file where the failure occurs.
     ///   - line: The line where the failure occurs.
     ///   - column: The column where the failure occurs.
-    package func emit(
+    internal func emit(
         context : FailureContext,
         message : () -> String,
         fileID  : StaticString,

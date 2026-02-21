@@ -12,7 +12,7 @@ import OSLog
 
 
 /// Runs property-based tests.
-package struct PropertyRunner
+internal struct PropertyRunner
 {
     // MARK: - Run
     
@@ -22,7 +22,7 @@ package struct PropertyRunner
     ///   - options: The options for testing.
     /// - Returns: The result of the property check.
     @Reasync
-    package static func run<T>(
+    internal static func run<T>(
         property    : (T) async throws -> Void,
         options     : TestOptions
     ) async -> PropertyCheckResult<T> where T : Arbitrary
@@ -45,7 +45,7 @@ package struct PropertyRunner
     ///   - options: The options for testing.
     /// - Returns: The result of the property check.
     @Reasync
-    package static func run<T>(
+    internal static func run<T>(
         using generator : Generator<T>,
         property        : (T) async throws -> Void,
         options         : TestOptions
@@ -69,7 +69,7 @@ package struct PropertyRunner
     ///   - options: The options for testing.
     /// - Returns: The result of the property check.
     @Reasync
-    package static func run<T>(
+    internal static func run<T>(
         where precondition  : @escaping (T) -> Bool,
         property            : (T) async throws -> Void,
         options             : TestOptions
@@ -94,7 +94,7 @@ package struct PropertyRunner
     ///   - options: The options for testing.
     /// - Returns: The result of the property check.
     @Reasync
-    package static func run<T>(
+    internal static func run<T>(
         using generator     : Generator<T>,
         where precondition  : @escaping (T) -> Bool,
         property            : (T) async throws -> Void,

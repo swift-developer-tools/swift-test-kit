@@ -8,26 +8,26 @@
 //===----------------------------------------------------------------------===//
 
 /// A failing counterexample.
-package struct Counterexample<T>
+internal struct Counterexample<T>
 {
     /// The minimal counterexample (after shrinking).
-    package let value           : T
+    internal let value          : T
     
     /// The original counterexample (before shrinking).
-    package let originalValue   : T
+    internal let originalValue  : T
     
     /// The seed used to initialize the random number generator.
-    package let seed            : UInt64
+    internal let seed           : UInt64
     
     /// The 1-indexed iteration at which the original counterexample was found.
-    package let iteration       : Int
+    internal let iteration      : Int
     
     /// The number of shrink steps performed.
-    package let shrinkSteps     : Int
+    internal let shrinkSteps    : Int
     
     /// The assertion failures from the final run with the shrunken value.
-    package let failures        : [InterceptedFailure]
+    internal let failures       : [InterceptedFailure]
     
     /// The error thrown by the property body, if any.
-    package let thrownError     : Error?
+    internal let thrownError    : Error?
 }

@@ -36,7 +36,7 @@ package final class PropertyInterceptor: Sendable
     
     
     /// Initializes a ``PropertyInterceptor`` instance.
-    package init()
+    internal init()
     {
         self.state = Mutex(InterceptorState())
     }
@@ -44,7 +44,7 @@ package final class PropertyInterceptor: Sendable
     
     
     /// Whether a failure has been recorded.
-    package var didFail: Bool
+    internal var didFail: Bool
     {
         return !failures.isEmpty
     }
@@ -52,7 +52,7 @@ package final class PropertyInterceptor: Sendable
     
     
     /// The recorded failures.
-    package var failures: [InterceptedFailure]
+    internal var failures: [InterceptedFailure]
     {
         return state.withLock { $0.failures }
     }
@@ -60,7 +60,7 @@ package final class PropertyInterceptor: Sendable
     
     
     /// Labels applied to the current iteration.
-    package var labels: Set<String>
+    internal var labels: Set<String>
     {
         return state.withLock { $0.labels }
     }
@@ -68,7 +68,7 @@ package final class PropertyInterceptor: Sendable
     
     
     /// The accumulated count of iterations that matched each label.
-    package var distribution: [String : Int]
+    internal var distribution: [String : Int]
     {
         return state.withLock { $0.distribution }
     }
@@ -76,7 +76,7 @@ package final class PropertyInterceptor: Sendable
     
     
     /// The minimum percentage required for each label.
-    package var coverageRequirements: [String : Double]
+    internal var coverageRequirements: [String : Double]
     {
         return state.withLock { $0.coverageRequirements }
     }
@@ -85,7 +85,7 @@ package final class PropertyInterceptor: Sendable
     
     /// Table labels applied to the current iteration, mapping the table
     /// name to values.
-    package var tableLabels: [String : Set<String>]
+    internal var tableLabels: [String : Set<String>]
     {
         return state.withLock { $0.tableLabels }
     }
@@ -94,7 +94,7 @@ package final class PropertyInterceptor: Sendable
     
     /// The accumulated count of iterations that matched each table value,
     /// mapping the table name to a map of values and their counts.
-    package var tableDistribution: [String : [String : Int]]
+    internal var tableDistribution: [String : [String : Int]]
     {
         return state.withLock { $0.tableDistribution }
     }
@@ -103,7 +103,7 @@ package final class PropertyInterceptor: Sendable
     
     /// The minimum percentage required for each table value, mapping the
     /// table name to a map of values and their minimum percentages.
-    package var tableCoverageRequirements: [String : [String : Double]]
+    internal var tableCoverageRequirements: [String : [String : Double]]
     {
         return state.withLock { $0.tableCoverageRequirements }
     }
@@ -144,7 +144,7 @@ package final class PropertyInterceptor: Sendable
     /// idempotent.
     ///
     /// - Parameter label: The label to record.
-    package func recordLabel(
+    internal func recordLabel(
         _ label: String
     )
     {
@@ -162,7 +162,7 @@ package final class PropertyInterceptor: Sendable
     ///   - percentage: The minimum percentage required. This is clamped to
     ///   the range `0.0...100.0`.
     ///   - label: The label to which the requirement applies.
-    package func recordCoverageRequirement(
+    internal func recordCoverageRequirement(
         _       percentage  : Double,
         for     label       : String
     )
@@ -195,7 +195,7 @@ package final class PropertyInterceptor: Sendable
     /// - Parameters:
     ///   - label: The label to record.
     ///   - table: The table to update.
-    package func recordTableLabel(
+    internal func recordTableLabel(
         _ label : String,
         table   : String
     )
@@ -216,7 +216,7 @@ package final class PropertyInterceptor: Sendable
     ///   the range `0.0...100.0`.
     ///   - label: The label to which the requirement applies.
     ///   - table: The table to update.
-    package func recordTableCoverageRequirement(
+    internal func recordTableCoverageRequirement(
         _       percentage  : Double,
         for     label       : String,
         in      table       : String
@@ -247,7 +247,7 @@ package final class PropertyInterceptor: Sendable
     /// - Parameter iterations: The total number of successful iterations.
     /// - Returns: The unmet coverage requirements, or an empty array if
     /// all requirments are met.
-    package func checkCoverage(
+    internal func checkCoverage(
         iterations: Int
     ) -> [UnmetCoverage]
     {
@@ -312,7 +312,7 @@ package final class PropertyInterceptor: Sendable
     ///
     /// This is called by ``PropertyRunner`` at the end of each successful
     /// iteration.
-    package func finalizeIteration()
+    internal func finalizeIteration()
     {
         state.withLock
         {
@@ -346,7 +346,7 @@ package final class PropertyInterceptor: Sendable
     ///
     /// - Note: The distribution and coverage requirements are not cleared,
     /// since they accumulate across iterations.
-    package func reset()
+    internal func reset()
     {
         state.withLock
         {
@@ -394,26 +394,26 @@ private struct InterceptorState: Equatable, Sendable
 // MARK: - InterceptedFailure
 
 /// A failure intercepted during property evaluation.
-package struct InterceptedFailure: Equatable, Sendable
+internal struct InterceptedFailure: Equatable, Sendable
 {
     /// The failure message.
-    package let message : String
+    internal let message    : String
     
     /// The ID of the file where the failure occured.
-    package let fileID  : StaticString
+    internal let fileID     : StaticString
     
     /// The file where the failure occurred.
-    package let file    : StaticString
+    internal let file       : StaticString
     
     /// The line where the failure occurred.
-    package let line    : UInt
+    internal let line       : UInt
     
     /// The column where the failure occured.
-    package let column  : UInt
+    internal let column     : UInt
     
     
     
-    package static func == (
+    internal static func == (
         lhs: InterceptedFailure,
         rhs: InterceptedFailure
     ) -> Bool

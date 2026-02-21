@@ -11,4 +11,4 @@
 ///
 /// ``PropertyRunner`` catches this error and treats it as a discard rather
 /// than a failure.
-package struct DiscardError: Error { }
+internal struct DiscardError: Error { }

@@ -7,12 +7,12 @@
 //
 //===----------------------------------------------------------------------===//
 
-package extension Comparable
+extension Comparable
 {
     /// Clamps the value to the given range.
     /// - Parameter range: The range to use.
     /// - Returns: The clamped value.
-    func clamped(
+    internal func clamped(
         to range: ClosedRange<Self>
     ) -> Self
     {

@@ -8,7 +8,7 @@
 //===----------------------------------------------------------------------===//
 
 /// The entry point for computing diffs between various data types.
-package struct Comparator
+internal struct Comparator
 {
     /// The context for tracking state across recursive comparison calls.
     private let context: ComparatorContext
@@ -21,7 +21,7 @@ package struct Comparator
     ///   - actual: The actual value.
     ///   - options: The options for testing.
     /// - Returns: The diff node.
-    package static func computeDiff<T>(
+    internal static func computeDiff<T>(
         expected    : T,
         actual      : T,
         options     : DiffOptions

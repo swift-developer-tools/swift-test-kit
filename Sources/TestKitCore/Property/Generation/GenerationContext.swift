@@ -16,7 +16,7 @@ public final class GenerationContext
     /// `0` and grows linearly across iterations, meaning earlier iterations
     /// test small values (for example, zero, empty arrays, and short strings),
     /// while later iterations test larg values.
-    public package(set) var size: Int
+    public internal(set) var size: Int
     {
         didSet
         {

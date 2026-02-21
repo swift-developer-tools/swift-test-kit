@@ -7,7 +7,7 @@
 //
 //===----------------------------------------------------------------------===//
 
-package extension Numeric
+extension Numeric
 {
     /// Checks whether the receiver is equal to the given value, within the
     /// given accuracy.
@@ -20,7 +20,7 @@ package extension Numeric
     ///   - accuracy: The accuracy.
     /// - Returns: Whether the receiver is equal to the given value, within
     /// the given accuracy.
-    func equals(
+    internal func equals(
         _ other     : Self,
         accuracy    : Self
     ) -> Bool
