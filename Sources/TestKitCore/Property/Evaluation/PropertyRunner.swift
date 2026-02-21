@@ -375,7 +375,7 @@ internal struct PropertyRunner
     ///   - shrink: The function to shrink the given value.
     ///   - precondition: The condition which generated values must satisfy.
     ///   - seed: The seed used to initialize the random number generator.
-    ///   - iteration: The iteraton at which the failing value was found.
+    ///   - iteration: The iteraton at which the failure occurred.
     ///   - property: The property body.
     ///   - options: The options for testing.
     /// - Returns: The minimal counterexample for the given value.
