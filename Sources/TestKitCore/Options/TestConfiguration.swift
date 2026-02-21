@@ -7,19 +7,16 @@
 //
 //===----------------------------------------------------------------------===//
 
-import TestKitCore
 import Synchronization
 
 
 
-/// The global configuration for XCTestKit.
-///
-/// Use this to customize the default behavior of all XCTestKit assertions.
-public enum XCTKConfig
+/// The global configuration.
+public enum TestConfiguration
 {
     private static let _global = Mutex<TestOptions>(.init())
     
-    /// The global default options used by all XCTestKit assertions.
+    /// The global options.
     public static var global: TestOptions
     {
         get { _global.withLock { $0 } }

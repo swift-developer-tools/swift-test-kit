@@ -112,19 +112,25 @@ package final class PropertyInterceptor: Sendable
     
     /// Records the specified assertion failure.
     /// - Parameters:
-    ///   - message: The failure message.
-    ///   - file: The file where the failure occurred.
-    ///   - line: The line where the failure occurred.
+    ///   - message: An optional description of a failure.
+    ///   - fileID: The ID of the file where the failure occurs.
+    ///   - file: The file where the failure occurs.
+    ///   - line: The line where the failure occurs.
+    ///   - column: The column where the failure occurs.
     package func recordFailure(
         message : String,
+        fileID  : StaticString,
         file    : StaticString,
-        line    : UInt
+        line    : UInt,
+        column  : UInt
     )
     {
         let failure = InterceptedFailure(
             message:    message,
+            fileID:     fileID,
             file:       file,
-            line:       line
+            line:       line,
+            column:     column
         )
         
         state.withLock { $0.failures.append(failure) }
@@ -393,11 +399,17 @@ package struct InterceptedFailure: Equatable, Sendable
     /// The failure message.
     package let message : String
     
+    /// The ID of the file where the failure occured.
+    package let fileID  : StaticString
+    
     /// The file where the failure occurred.
     package let file    : StaticString
     
     /// The line where the failure occurred.
     package let line    : UInt
+    
+    /// The column where the failure occured.
+    package let column  : UInt
     
     
     
@@ -407,7 +419,9 @@ package struct InterceptedFailure: Equatable, Sendable
     ) -> Bool
     {
         return lhs.message == rhs.message
+            && lhs.fileID.description == rhs.fileID.description
             && lhs.file.description == rhs.file.description
             && lhs.line == rhs.line
+            && lhs.column == rhs.column
     }
 }

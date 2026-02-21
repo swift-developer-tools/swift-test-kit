@@ -40,12 +40,12 @@ package enum PropertyCheckResult<T>
         tableDistribution   : [String : [String : Int]]
     )
     
-    /// Too many inputs did not meet the preconditions of conditional
+    /// Too many values did not meet the preconditions of conditional
     /// properties.
     /// - Parameters:
-    ///   - discarded: The number of discarded inputs.
-    ///   - succeeded: The number of successful inputs.
-    ///   - ratio: The maximum ratio of discarded inputs to successful inputs.
+    ///   - discarded: The number of discarded values.
+    ///   - succeeded: The number of successful values.
+    ///   - ratio: The maximum ratio of discarded values to successful values.
     ///   - seed: The seed used to initialize the random number generator.
     ///   - distribution: The accumulated count of iterations that matched
     ///   each label.

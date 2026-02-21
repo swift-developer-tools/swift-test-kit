@@ -20,9 +20,9 @@ internal final class PackShrinkingTests: TestKitCase
     {
         let shrinker = AnyShrinker({ (v: Int) in v.shrinkTowardZero() })
         
-        let input       : Int       = 50
-        let candidates  : [Any]     = shrinker.shrink(input)
-        let expected    : [Int]     = input.shrinkTowardZero()
+        let value       : Int       = 50
+        let candidates  : [Any]     = shrinker.shrink(value)
+        let expected    : [Int]     = value.shrinkTowardZero()
         
         XCTAssertGreaterThan(candidates.count, 0)
         XCTAssertEqual(candidates.count, expected.count)
@@ -41,9 +41,9 @@ internal final class PackShrinkingTests: TestKitCase
     {
         let shrinker = AnyShrinker({ (v: String) in v.shrinkTowardEmpty() })
         
-        let input       : String    = "abc"
-        let candidates  : [Any]     = shrinker.shrink(input)
-        let expected    : [String]  = input.shrinkTowardEmpty()
+        let value       : String    = "abc"
+        let candidates  : [Any]     = shrinker.shrink(value)
+        let expected    : [String]  = value.shrinkTowardEmpty()
         
         XCTAssertGreaterThan(candidates.count, 0)
         XCTAssertEqual(candidates.count, expected.count)
@@ -90,9 +90,9 @@ internal final class PackShrinkingTests: TestKitCase
     {
         let shrinker = AnyShrinker({ (v: Int) in v.shrinkTowardZero() })
         
-        let input       : Int       = 100
-        let candidates  : [Any]     = shrinker.shrink(input)
-        let expected    : [Int]     = input.shrinkTowardZero()
+        let value       : Int       = 100
+        let candidates  : [Any]     = shrinker.shrink(value)
+        let expected    : [Int]     = value.shrinkTowardZero()
         
         XCTAssertGreaterThan(candidates.count, 0)
         XCTAssertEqual(candidates.count, expected.count)
@@ -146,9 +146,9 @@ internal final class PackShrinkingTests: TestKitCase
     {
         let shrinker = AnyShrinker({ (v: [Int]) in v.shrink() })
         
-        let input       : [Int]     = [1, 2, 3]
-        let candidates  : [Any]     = shrinker.shrink(input)
-        let expected    : [[Int]]   = input.shrink()
+        let value       : [Int]     = [1, 2, 3]
+        let candidates  : [Any]     = shrinker.shrink(value)
+        let expected    : [[Int]]   = value.shrink()
         
         XCTAssertEqual(candidates.count, expected.count)
         
@@ -166,9 +166,9 @@ internal final class PackShrinkingTests: TestKitCase
     {
         let shrinker = AnyShrinker({ (v: Optional<Int>) in v.shrink() })
         
-        let input       : Optional<Int>     = 10
-        let candidates  : [Any]             = shrinker.shrink(input as Any)
-        let expected    : [Optional<Int>]   = input.shrink()
+        let value       : Optional<Int>     = 10
+        let candidates  : [Any]             = shrinker.shrink(value as Any)
+        let expected    : [Optional<Int>]   = value.shrink()
         
         XCTAssertEqual(candidates.count, expected.count)
         XCTAssertTrue(candidates[0] is Optional<Int>)
@@ -189,9 +189,9 @@ internal final class PackShrinkingTests: TestKitCase
     {
         let shrinker = AnyShrinker.makeShrinker(for: Int.self)
         
-        let input       : Int       = 50
-        let candidates  : [Any]     = shrinker.shrink(input)
-        let expected    : [Int]     = input.shrink()
+        let value       : Int       = 50
+        let candidates  : [Any]     = shrinker.shrink(value)
+        let expected    : [Int]     = value.shrink()
         
         XCTAssertEqual(candidates.count, expected.count)
         
@@ -221,9 +221,9 @@ internal final class PackShrinkingTests: TestKitCase
         let generator   : Generator<Int>    = .integer(in: 0...100)
         let shrinker    : AnyShrinker       = .makeShrinker(from: generator)
         
-        let input       : Int       = 99
-        let candidates  : [Any]     = shrinker.shrink(input)
-        let expected    : [Int]     = input.shrink()
+        let value       : Int       = 99
+        let candidates  : [Any]     = shrinker.shrink(value)
+        let expected    : [Int]     = value.shrink()
         
         XCTAssertEqual(candidates.count, expected.count)
         
@@ -308,7 +308,7 @@ internal final class PackShrinkingTests: TestKitCase
     func testPerPositionIndependence()
     {
         /// Zip-style shrinking (shrinking one value while holding others
-        /// constant) must produce candidates with only one input changed.
+        /// constant) must produce candidates with only one value changed.
         
         for count in 2...8
         {
@@ -531,8 +531,8 @@ internal final class PackShrinkingTests: TestKitCase
     
     func testSingleElementTuple() throws
     {
-        let input   : Int       = 37
-        let values  : [Any]     = [input]
+        let value   : Int       = 37
+        let values  : [Any]     = [value]
         
         let shrinkers: [AnyShrinker] =
         [
@@ -546,7 +546,7 @@ internal final class PackShrinkingTests: TestKitCase
             using:  shrinkers
         )
         
-        let expected: [Int] = input.shrinkTowardZero()
+        let expected: [Int] = value.shrinkTowardZero()
         
         XCTAssertEqual(candidates.count, expected.count)
         
@@ -566,8 +566,8 @@ internal final class PackShrinkingTests: TestKitCase
     
     func testPositionWithNoCandidates() throws
     {
-        let input   : Int       = 24
-        let values  : [Any]     = [false, input]
+        let value   : Int       = 24
+        let values  : [Any]     = [false, value]
         
         let shrinkers: [AnyShrinker] =
         [
@@ -582,7 +582,7 @@ internal final class PackShrinkingTests: TestKitCase
             using:  shrinkers
         )
         
-        let expectedIntCandidates: [Int] = input.shrinkTowardZero()
+        let expectedIntCandidates: [Int] = value.shrinkTowardZero()
         
         XCTAssertEqual(candidates.count, expectedIntCandidates.count)
         
@@ -910,14 +910,14 @@ internal final class PackShrinkingTests: TestKitCase
     func testShrinkCandidatesSingleElementPack() throws
     {
         let shrinkers   : [AnyShrinker]     = [.makeShrinker(for: Int.self)]
-        let input       : Int               = 50
+        let value       : Int               = 50
         
         let candidates: [[Any]] = AnyShrinker.shrinkCandidates(
-            of:     input,
+            of:     value,
             using:  shrinkers
         )
         
-        let expected: [Int] = input.shrinkTowardZero()
+        let expected: [Int] = value.shrinkTowardZero()
         
         XCTAssertEqual(candidates.count, expected.count)
         

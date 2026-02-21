@@ -64,7 +64,7 @@ package struct PropertyRunner
     
     /// Runs a conditional property check.
     /// - Parameters:
-    ///   - precondition: The condition which generated inputs must satisfy.
+    ///   - precondition: The condition which generated values must satisfy.
     ///   - property: The property body.
     ///   - options: The options for testing.
     /// - Returns: The result of the property check.
@@ -89,7 +89,7 @@ package struct PropertyRunner
     /// Runs a conditional property check using the given generator.
     /// - Parameters:
     ///   - generator: The generator.
-    ///   - precondition: The condition which generated inputs must satisfy.
+    ///   - precondition: The condition which generated values must satisfy.
     ///   - property: The property body.
     ///   - options: The options for testing.
     /// - Returns: The result of the property check.
@@ -116,7 +116,7 @@ package struct PropertyRunner
     /// - Parameters:
     ///   - generate: The function to generate a value from the given context.
     ///   - shrink: The function to shrink the given value.
-    ///   - precondition: The condition which generated inputs must satisfy.
+    ///   - precondition: The condition which generated values must satisfy.
     ///   - property: The property body.
     ///   - options: The options for testing.
     /// - Returns: The result of the property check.
@@ -373,7 +373,7 @@ package struct PropertyRunner
     /// - Parameters:
     ///   - value: The failing value.
     ///   - shrink: The function to shrink the given value.
-    ///   - precondition: The condition which generated inputs must satisfy.
+    ///   - precondition: The condition which generated values must satisfy.
     ///   - seed: The seed used to initialize the random number generator.
     ///   - iteration: The iteraton at which the failing value was found.
     ///   - property: The property body.

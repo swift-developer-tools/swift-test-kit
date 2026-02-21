@@ -11,17 +11,31 @@
 package struct FailureContext: Sendable
 {
     /// The framework kind.
-    package let framework   : FrameworkKind
+    package let framework: FrameworkKind
     
     /// Emits a failure message.
-    package let emit        : @Sendable (String, StaticString, UInt) -> Void
+    /// - Parameters:
+    ///   - message: An optional description of a failure.
+    ///   - fileID: The ID of the file where the failure occurs.
+    ///   - file: The file where the failure occurs.
+    ///   - line: The line where the failure occurs.
+    ///   - column: The column where the failure occurs.
+    package let emit: @Sendable (
+        String,
+        StaticString,
+        StaticString,
+        UInt,
+        UInt
+    ) -> Void
     
     
     
     /// Initializes a ``FailureContext`` from the given values.
     package init(
         framework   : FrameworkKind,
-        emit        : @Sendable @escaping (String, StaticString, UInt) -> Void
+        emit        : @Sendable @escaping (
+            String, StaticString, StaticString, UInt, UInt
+        ) -> Void
     )
     {
         self.framework  = framework

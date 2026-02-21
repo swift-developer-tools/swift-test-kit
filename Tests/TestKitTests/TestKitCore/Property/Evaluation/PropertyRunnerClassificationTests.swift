@@ -252,11 +252,7 @@ internal final class PropertyRunnerClassificationTests: TestKitCase
                 
                 try XCTKAssume(true)
                 
-                PropertyInterceptor.current?.recordFailure(
-                    message:    "always fails",
-                    file:       "File.swift",
-                    line:       1
-                )
+                PropertyInterceptor.current?.recordFailure()
             },
             options: options
         )
@@ -299,11 +295,7 @@ internal final class PropertyRunnerClassificationTests: TestKitCase
                 
                 if int > target
                 {
-                    PropertyInterceptor.current?.recordFailure(
-                        message:    "too large",
-                        file:       "File.swift",
-                        line:       1
-                    )
+                    PropertyInterceptor.current?.recordFailure()
                 }
             },
             options: options
@@ -330,7 +322,7 @@ internal final class PropertyRunnerClassificationTests: TestKitCase
         
         /// Generate only even values so the main loop never discards them.
         /// The odd candidates are discarded by the assumption. Discarded
-        /// inputs during shrinking must not inflate the distribution.
+        /// values during shrinking must not inflate the distribution.
         let generator = Generator<Int>(
             generate:
             {
@@ -359,11 +351,7 @@ internal final class PropertyRunnerClassificationTests: TestKitCase
                 
                 if int > target
                 {
-                    PropertyInterceptor.current?.recordFailure(
-                        message:    "too large",
-                        file:       "File.swift",
-                        line:       1
-                    )
+                    PropertyInterceptor.current?.recordFailure()
                 }
             },
             options: options
@@ -573,12 +561,7 @@ internal final class PropertyRunnerClassificationTests: TestKitCase
                 _ async in
                 
                 PropertyInterceptor.current?.recordLabel("labeled")
-                
-                PropertyInterceptor.current?.recordFailure(
-                    message:    "always fails",
-                    file:       "File.swift",
-                    line:       1
-                )
+                PropertyInterceptor.current?.recordFailure()
             },
             options: .propertyOptions(seed: Self.seed)
         )
@@ -620,11 +603,7 @@ internal final class PropertyRunnerClassificationTests: TestKitCase
                 
                 if capture.size >= target
                 {
-                    PropertyInterceptor.current?.recordFailure(
-                        message:    "too large",
-                        file:       "File.swift",
-                        line:       1
-                    )
+                    PropertyInterceptor.current?.recordFailure()
                 }
             },
             options: options
@@ -868,11 +847,7 @@ internal final class PropertyRunnerClassificationTests: TestKitCase
                 
                 if capture.size >= target
                 {
-                    PropertyInterceptor.current?.recordFailure(
-                        message:    "too large",
-                        file:       "File.swift",
-                        line:       1
-                    )
+                    PropertyInterceptor.current?.recordFailure()
                 }
             },
             options: options
@@ -977,11 +952,7 @@ internal final class PropertyRunnerClassificationTests: TestKitCase
                 
                 if capture.size >= target
                 {
-                    PropertyInterceptor.current?.recordFailure(
-                        message:    "too large",
-                        file:       "File.swift",
-                        line:       1
-                    )
+                    PropertyInterceptor.current?.recordFailure()
                 }
                 
                 PropertyInterceptor.current?.recordLabel("after-failure")
@@ -1026,11 +997,7 @@ internal final class PropertyRunnerClassificationTests: TestKitCase
                 
                 if bountInt.value > target
                 {
-                    PropertyInterceptor.current?.recordFailure(
-                        message:    "too large",
-                        file:       "File.swift",
-                        line:       1
-                    )
+                    PropertyInterceptor.current?.recordFailure()
                 }
             },
             options: options
@@ -1450,11 +1417,7 @@ internal final class PropertyRunnerClassificationTests: TestKitCase
                 
                 if int > target
                 {
-                    PropertyInterceptor.current?.recordFailure(
-                        message:    "too large",
-                        file:       "File.swift",
-                        line:       1
-                    )
+                    PropertyInterceptor.current?.recordFailure()
                 }
             },
             options: options
@@ -1736,11 +1699,7 @@ internal final class PropertyRunnerClassificationTests: TestKitCase
                 
                 if capture.size >= target
                 {
-                    PropertyInterceptor.current?.recordFailure(
-                        message:    "too large",
-                        file:       "File.swift",
-                        line:       1
-                    )
+                    PropertyInterceptor.current?.recordFailure()
                 }
             },
             options: options
@@ -1814,11 +1773,7 @@ internal final class PropertyRunnerClassificationTests: TestKitCase
                 
                 if boundInt.value > target
                 {
-                    PropertyInterceptor.current?.recordFailure(
-                        message:    "too large",
-                        file:       "File.swift",
-                        line:       1
-                    )
+                    PropertyInterceptor.current?.recordFailure()
                 }
             },
             options: options
@@ -2032,11 +1987,7 @@ internal final class PropertyRunnerClassificationTests: TestKitCase
                 
                 if capture.size >= target
                 {
-                    PropertyInterceptor.current?.recordFailure(
-                        message:    "too large",
-                        file:       "File.swift",
-                        line:       1
-                    )
+                    PropertyInterceptor.current?.recordFailure()
                 }
             },
             options: options

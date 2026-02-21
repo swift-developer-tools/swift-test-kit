@@ -1,0 +1,27 @@
+//===----------------------------------------------------------------------===//
+//
+// This source file is part of the swift-test-kit open source project.
+//
+// Copyright (c) Margins Technologies LLC.
+// Licensed under the Apache License, Version 2.0.
+//
+//===----------------------------------------------------------------------===//
+
+import TestKitCore
+
+
+
+extension PropertyInterceptor
+{
+    /// Records an assertion failure.
+    internal func recordFailure()
+    {
+        self.recordFailure(
+            message:    "message",
+            fileID:     "ID",
+            file:       "File.swift",
+            line:       1,
+            column:     1
+        )
+    }
+}

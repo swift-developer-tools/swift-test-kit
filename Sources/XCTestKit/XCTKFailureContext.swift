@@ -17,14 +17,16 @@ internal let failureContext = FailureContext(
     framework: .xctk,
     emit:
     {
-        message, file, line in
+        message, fileID, file, line, column in
         
         if let interceptor = PropertyInterceptor.current
         {
             interceptor.recordFailure(
                 message:    message,
+                fileID:     fileID,
                 file:       file,
-                line:       line
+                line:       line,
+                column:     column
             )
         }
         else

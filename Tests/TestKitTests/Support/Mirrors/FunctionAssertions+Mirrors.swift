@@ -21,16 +21,20 @@ import TestKitCore
 internal func TKAssert(
     _ expression    : @autoclosure () throws -> Bool,
     _ message       : @autoclosure () -> String         = "",
+    fileID          : StaticString                      = #fileID,
     file            : StaticString                      = #filePath,
     line            : UInt                              = #line,
+    column          : UInt                              = #column,
     options         : TestOptions                       = .init()
 )
 {
     TestKitCore.TKAssert(
         expression,
         message,
+        fileID:     fileID,
         file:       file,
         line:       line,
+        column:     column,
         options:    options,
         context:    failureContext
     )
@@ -41,16 +45,20 @@ internal func TKAssert(
 internal func TKAssertTrue(
     _ expression    : @autoclosure () throws -> Bool,
     _ message       : @autoclosure () -> String         = "",
+    fileID          : StaticString                      = #fileID,
     file            : StaticString                      = #filePath,
     line            : UInt                              = #line,
+    column          : UInt                              = #column,
     options         : TestOptions                       = .init()
 )
 {
     TestKitCore.TKAssertTrue(
         expression,
         message,
+        fileID:     fileID,
         file:       file,
         line:       line,
+        column:     column,
         options:    options,
         context:    failureContext
     )
@@ -61,16 +69,20 @@ internal func TKAssertTrue(
 internal func TKAssertFalse(
     _ expression    : @autoclosure () throws -> Bool,
     _ message       : @autoclosure () -> String         = "",
+    fileID          : StaticString                      = #fileID,
     file            : StaticString                      = #filePath,
     line            : UInt                              = #line,
+    column          : UInt                              = #column,
     options         : TestOptions                       = .init()
 )
 {
     TestKitCore.TKAssertFalse(
         expression,
         message,
+        fileID:     fileID,
         file:       file,
         line:       line,
+        column:     column,
         options:    options,
         context:    failureContext
     )
@@ -83,16 +95,20 @@ internal func TKAssertFalse(
 internal func TKAssertNil(
     _ expression    : @autoclosure () throws -> Any?,
     _ message       : @autoclosure () -> String         = "",
+    fileID          : StaticString                      = #fileID,
     file            : StaticString                      = #filePath,
     line            : UInt                              = #line,
+    column          : UInt                              = #column,
     options         : TestOptions                       = .init()
 )
 {
     TestKitCore.TKAssertNil(
         expression,
         message,
+        fileID:     fileID,
         file:       file,
         line:       line,
+        column:     column,
         options:    options,
         context:    failureContext
     )
@@ -103,16 +119,20 @@ internal func TKAssertNil(
 internal func TKAssertNotNil(
     _ expression    : @autoclosure () throws -> Any?,
     _ message       : @autoclosure () -> String         = "",
+    fileID          : StaticString                      = #fileID,
     file            : StaticString                      = #filePath,
     line            : UInt                              = #line,
+    column          : UInt                              = #column,
     options         : TestOptions                       = .init()
 )
 {
     TestKitCore.TKAssertNotNil(
         expression,
         message,
+        fileID:     fileID,
         file:       file,
         line:       line,
+        column:     column,
         options:    options,
         context:    failureContext
     )
@@ -123,16 +143,20 @@ internal func TKAssertNotNil(
 internal func TKUnwrap<T>(
     _ expression    : @autoclosure () throws -> T?,
     _ message       : @autoclosure () -> String     = "",
-    file            : StaticString                  = #filePath,
-    line            : UInt                          = #line,
+    fileID          : StaticString                      = #fileID,
+    file            : StaticString                      = #filePath,
+    line            : UInt                              = #line,
+    column          : UInt                              = #column,
     options         : TestOptions                   = .init()
 ) throws -> T
 {
     return try TestKitCore.TKUnwrap(
         expression,
         message,
+        fileID:     fileID,
         file:       file,
         line:       line,
+        column:     column,
         options:    options,
         context:    failureContext
     )
@@ -146,8 +170,10 @@ internal func TKAssertEqual<T>(
     _ expected  : @autoclosure () throws -> T,
     _ actual    : @autoclosure () throws -> T,
     _ message   : @autoclosure () -> String     = "",
+    fileID      : StaticString                  = #fileID,
     file        : StaticString                  = #filePath,
     line        : UInt                          = #line,
+    column      : UInt                          = #column,
     options     : TestOptions                   = .init()
 ) where T : Equatable
 {
@@ -155,8 +181,10 @@ internal func TKAssertEqual<T>(
         expected,
         actual,
         message,
+        fileID:     fileID,
         file:       file,
         line:       line,
+        column:     column,
         options:    options,
         context:    failureContext
     )
@@ -168,8 +196,10 @@ internal func TKAssertNotEqual<T>(
     _ expression1   : @autoclosure () throws -> T,
     _ expression2   : @autoclosure () throws -> T,
     _ message       : @autoclosure () -> String     = "",
+    fileID          : StaticString                  = #fileID,
     file            : StaticString                  = #filePath,
     line            : UInt                          = #line,
+    column          : UInt                          = #column,
     options         : TestOptions                   = .init()
 ) where T : Equatable
 {
@@ -177,8 +207,10 @@ internal func TKAssertNotEqual<T>(
         expression1,
         expression2,
         message,
+        fileID:     fileID,
         file:       file,
         line:       line,
+        column:     column,
         options:    options,
         context:    failureContext
     )
@@ -190,17 +222,21 @@ internal func TKAssertIdentical(
     _ expression1   : @autoclosure () throws -> AnyObject?,
     _ expression2   : @autoclosure () throws -> AnyObject?,
     _ message       : @autoclosure () -> String             = "",
+    fileID          : StaticString                          = #fileID,
     file            : StaticString                          = #filePath,
     line            : UInt                                  = #line,
-    options         : TestOptions                   = .init()
+    column          : UInt                                  = #column,
+    options         : TestOptions                           = .init()
 )
 {
     TestKitCore.TKAssertIdentical(
         expression1,
         expression2,
         message,
+        fileID:     fileID,
         file:       file,
         line:       line,
+        column:     column,
         options:    options,
         context:    failureContext
     )
@@ -212,17 +248,21 @@ internal func TKAssertNotIdentical(
     _ expression1   : @autoclosure () throws -> AnyObject?,
     _ expression2   : @autoclosure () throws -> AnyObject?,
     _ message       : @autoclosure () -> String             = "",
+    fileID          : StaticString                          = #fileID,
     file            : StaticString                          = #filePath,
     line            : UInt                                  = #line,
-    options         : TestOptions                   = .init()
+    column          : UInt                                  = #column,
+    options         : TestOptions                           = .init()
 )
 {
     TestKitCore.TKAssertNotIdentical(
         expression1,
         expression2,
         message,
+        fileID:     fileID,
         file:       file,
         line:       line,
+        column:     column,
         options:    options,
         context:    failureContext
     )
@@ -235,8 +275,10 @@ internal func TKAssertEqual<T>(
     _ expression2   : @autoclosure () throws -> T,
     accuracy        : T,
     _ message       : @autoclosure () -> String     = "",
+    fileID          : StaticString                  = #fileID,
     file            : StaticString                  = #filePath,
     line            : UInt                          = #line,
+    column          : UInt                          = #column,
     options         : TestOptions                   = .init()
 ) where T : FloatingPoint
 {
@@ -245,8 +287,10 @@ internal func TKAssertEqual<T>(
         expression2,
         accuracy:   accuracy,
         message,
+        fileID:     fileID,
         file:       file,
         line:       line,
+        column:     column,
         options:    options,
         context:    failureContext
     )
@@ -259,8 +303,10 @@ internal func TKAssertEqual<T>(
     _ expression2   : @autoclosure () throws -> T,
     accuracy        : T,
     _ message       : @autoclosure () -> String     = "",
+    fileID          : StaticString                  = #fileID,
     file            : StaticString                  = #filePath,
     line            : UInt                          = #line,
+    column          : UInt                          = #column,
     options         : TestOptions                   = .init()
 ) where T : Numeric
 {
@@ -269,8 +315,10 @@ internal func TKAssertEqual<T>(
         expression2,
         accuracy:   accuracy,
         message,
+        fileID:     fileID,
         file:       file,
         line:       line,
+        column:     column,
         options:    options,
         context:    failureContext
     )
@@ -283,8 +331,10 @@ internal func TKAssertNotEqual<T>(
     _ expression2   : @autoclosure () throws -> T,
     accuracy        : T,
     _ message       : @autoclosure () -> String     = "",
+    fileID          : StaticString                  = #fileID,
     file            : StaticString                  = #filePath,
     line            : UInt                          = #line,
+    column          : UInt                          = #column,
     options         : TestOptions                   = .init()
 ) where T : FloatingPoint
 {
@@ -293,8 +343,10 @@ internal func TKAssertNotEqual<T>(
         expression2,
         accuracy:   accuracy,
         message,
+        fileID:     fileID,
         file:       file,
         line:       line,
+        column:     column,
         options:    options,
         context:    failureContext
     )
@@ -307,8 +359,10 @@ internal func TKAssertNotEqual<T>(
     _ expression2   : @autoclosure () throws -> T,
     accuracy        : T,
     _ message       : @autoclosure () -> String     = "",
+    fileID          : StaticString                  = #fileID,
     file            : StaticString                  = #filePath,
     line            : UInt                          = #line,
+    column          : UInt                          = #column,
     options         : TestOptions                   = .init()
 ) where T : Numeric
 {
@@ -317,8 +371,10 @@ internal func TKAssertNotEqual<T>(
         expression2,
         accuracy:   accuracy,
         message,
+        fileID:     fileID,
         file:       file,
         line:       line,
+        column:     column,
         options:    options,
         context:    failureContext
     )
@@ -332,8 +388,10 @@ internal func TKAssertGreaterThan<T>(
     _ expression1   : @autoclosure () throws -> T,
     _ expression2   : @autoclosure () throws -> T,
     _ message       : @autoclosure () -> String     = "",
+    fileID          : StaticString                  = #fileID,
     file            : StaticString                  = #filePath,
     line            : UInt                          = #line,
+    column          : UInt                          = #column,
     options         : TestOptions                   = .init()
 ) where T : Comparable
 {
@@ -341,8 +399,10 @@ internal func TKAssertGreaterThan<T>(
         expression1,
         expression2,
         message,
+        fileID:     fileID,
         file:       file,
         line:       line,
+        column:     column,
         options:    options,
         context:    failureContext
     )
@@ -354,8 +414,10 @@ internal func TKAssertGreaterThanOrEqual<T>(
     _ expression1   : @autoclosure () throws -> T,
     _ expression2   : @autoclosure () throws -> T,
     _ message       : @autoclosure () -> String     = "",
+    fileID          : StaticString                  = #fileID,
     file            : StaticString                  = #filePath,
     line            : UInt                          = #line,
+    column          : UInt                          = #column,
     options         : TestOptions                   = .init()
 ) where T : Comparable
 {
@@ -363,8 +425,10 @@ internal func TKAssertGreaterThanOrEqual<T>(
         expression1,
         expression2,
         message,
+        fileID:     fileID,
         file:       file,
         line:       line,
+        column:     column,
         options:    options,
         context:    failureContext
     )
@@ -376,8 +440,10 @@ internal func TKAssertLessThanOrEqual<T>(
     _ expression1   : @autoclosure () throws -> T,
     _ expression2   : @autoclosure () throws -> T,
     _ message       : @autoclosure () -> String     = "",
+    fileID          : StaticString                  = #fileID,
     file            : StaticString                  = #filePath,
     line            : UInt                          = #line,
+    column          : UInt                          = #column,
     options         : TestOptions                   = .init()
 ) where T : Comparable
 {
@@ -385,8 +451,10 @@ internal func TKAssertLessThanOrEqual<T>(
         expression1,
         expression2,
         message,
+        fileID:     fileID,
         file:       file,
         line:       line,
+        column:     column,
         options:    options,
         context:    failureContext
     )
@@ -398,8 +466,10 @@ internal func TKAssertLessThan<T>(
     _ expression1   : @autoclosure () throws -> T,
     _ expression2   : @autoclosure () throws -> T,
     _ message       : @autoclosure () -> String     = "",
+    fileID          : StaticString                  = #fileID,
     file            : StaticString                  = #filePath,
     line            : UInt                          = #line,
+    column          : UInt                          = #column,
     options         : TestOptions                   = .init()
 ) where T : Comparable
 {
@@ -407,8 +477,10 @@ internal func TKAssertLessThan<T>(
         expression1,
         expression2,
         message,
+        fileID:     fileID,
         file:       file,
         line:       line,
+        column:     column,
         options:    options,
         context:    failureContext
     )
@@ -421,8 +493,10 @@ internal func TKAssertLessThan<T>(
 internal func TKAssertThrowsError<T>(
     _ expression    : @autoclosure () throws -> T,
     _ message       : @autoclosure () -> String     = "",
+    fileID          : StaticString                  = #fileID,
     file            : StaticString                  = #filePath,
     line            : UInt                          = #line,
+    column          : UInt                          = #column,
     options         : TestOptions                   = .init(),
     _ errorHandler  : (any Error) -> Void           = { _ in }
 )
@@ -430,8 +504,10 @@ internal func TKAssertThrowsError<T>(
     TestKitCore.TKAssertThrowsError(
         expression,
         message,
+        fileID:     fileID,
         file:       file,
         line:       line,
+        column:     column,
         options:    options,
         errorHandler,
         context:    failureContext
@@ -443,16 +519,20 @@ internal func TKAssertThrowsError<T>(
 internal func TKAssertNoThrow<T>(
     _ expression    : @autoclosure () throws -> T,
     _ message       : @autoclosure () -> String     = "",
+    fileID          : StaticString                  = #fileID,
     file            : StaticString                  = #filePath,
     line            : UInt                          = #line,
+    column          : UInt                          = #column,
     options         : TestOptions                   = .init()
 )
 {
     TestKitCore.TKAssertNoThrow(
         expression,
         message,
+        fileID:     fileID,
         file:       file,
         line:       line,
+        column:     column,
         options:    options,
         context:    failureContext
     )
@@ -464,14 +544,18 @@ internal func TKAssertNoThrow<T>(
 
 internal func TKFail(
     _ message   : String        = "",
+    fileID      : StaticString  = #fileID,
     file        : StaticString  = #filePath,
-    line        : UInt          = #line
+    line        : UInt          = #line,
+    column      : UInt          = #column
 )
 {
     TestKitCore.TKFail(
         message,
+        fileID:     fileID,
         file:       file,
         line:       line,
+        column:     column,
         context:    failureContext
     )
 }
@@ -484,8 +568,10 @@ internal func TKAssertAllSatisfy<C>(
     _ collection    : @autoclosure () throws -> C,
     _ predicate     : (C.Element) throws -> Bool,
     _ message       : @autoclosure () -> String     = "",
+    fileID          : StaticString                  = #fileID,
     file            : StaticString                  = #filePath,
     line            : UInt                          = #line,
+    column          : UInt                          = #column,
     options         : TestOptions                   = .init()
 ) where C : Collection
 {
@@ -493,8 +579,10 @@ internal func TKAssertAllSatisfy<C>(
         collection,
         predicate,
         message,
+        fileID:     fileID,
         file:       file,
         line:       line,
+        column:     column,
         options:    options,
         context:    failureContext
     )
@@ -506,8 +594,10 @@ internal func TKAssertAnySatisfy<C>(
     _ collection    : @autoclosure () throws -> C,
     _ predicate     : (C.Element) throws -> Bool,
     _ message       : @autoclosure () -> String     = "",
+    fileID          : StaticString                  = #fileID,
     file            : StaticString                  = #filePath,
     line            : UInt                          = #line,
+    column          : UInt                          = #column,
     options         : TestOptions                   = .init()
 ) where C : Collection
 {
@@ -515,8 +605,10 @@ internal func TKAssertAnySatisfy<C>(
         collection,
         predicate,
         message,
+        fileID:     fileID,
         file:       file,
         line:       line,
+        column:     column,
         options:    options,
         context:    failureContext
     )
@@ -528,8 +620,10 @@ internal func TKAssertNoneSatisfy<C>(
     _ collection    : @autoclosure () throws -> C,
     _ predicate     : (C.Element) throws -> Bool,
     _ message       : @autoclosure () -> String     = "",
+    fileID          : StaticString                  = #fileID,
     file            : StaticString                  = #filePath,
     line            : UInt                          = #line,
+    column          : UInt                          = #column,
     options         : TestOptions                   = .init()
 ) where C : Collection
 {
@@ -537,8 +631,10 @@ internal func TKAssertNoneSatisfy<C>(
         collection,
         predicate,
         message,
+        fileID:     fileID,
         file:       file,
         line:       line,
+        column:     column,
         options:    options,
         context:    failureContext
     )
@@ -551,8 +647,10 @@ internal func TKAssertSatisfy<C>(
     atLeast         : Int,
     _ predicate     : (C.Element) throws -> Bool,
     _ message       : @autoclosure () -> String     = "",
+    fileID          : StaticString                  = #fileID,
     file            : StaticString                  = #filePath,
     line            : UInt                          = #line,
+    column          : UInt                          = #column,
     options         : TestOptions                   = .init()
 ) where C : Collection
 {
@@ -561,8 +659,10 @@ internal func TKAssertSatisfy<C>(
         atLeast:    atLeast,
         predicate,
         message,
+        fileID:     fileID,
         file:       file,
         line:       line,
+        column:     column,
         options:    options,
         context:    failureContext
     )
@@ -575,8 +675,10 @@ internal func TKAssertSatisfy<C>(
     atMost          : Int,
     _ predicate     : (C.Element) throws -> Bool,
     _ message       : @autoclosure () -> String     = "",
+    fileID          : StaticString                  = #fileID,
     file            : StaticString                  = #filePath,
     line            : UInt                          = #line,
+    column          : UInt                          = #column,
     options         : TestOptions                   = .init()
 ) where C : Collection
 {
@@ -585,8 +687,10 @@ internal func TKAssertSatisfy<C>(
         atMost:     atMost,
         predicate,
         message,
+        fileID:     fileID,
         file:       file,
         line:       line,
+        column:     column,
         options:    options,
         context:    failureContext
     )
@@ -599,8 +703,10 @@ internal func TKAssertSatisfy<C>(
     range           : ClosedRange<Int>,
     _ predicate     : (C.Element) throws -> Bool,
     _ message       : @autoclosure () -> String     = "",
+    fileID          : StaticString                  = #fileID,
     file            : StaticString                  = #filePath,
     line            : UInt                          = #line,
+    column          : UInt                          = #column,
     options         : TestOptions                   = .init()
 ) where C : Collection
 {
@@ -609,8 +715,10 @@ internal func TKAssertSatisfy<C>(
         range:      range,
         predicate,
         message,
+        fileID:     fileID,
         file:       file,
         line:       line,
+        column:     column,
         options:    options,
         context:    failureContext
     )
@@ -623,8 +731,10 @@ internal func TKAssertExactly<C>(
     count           : Int,
     _ predicate     : (C.Element) throws -> Bool,
     _ message       : @autoclosure () -> String     = "",
+    fileID          : StaticString                  = #fileID,
     file            : StaticString                  = #filePath,
     line            : UInt                          = #line,
+    column          : UInt                          = #column,
     options         : TestOptions                   = .init()
 ) where C : Collection
 {
@@ -633,8 +743,10 @@ internal func TKAssertExactly<C>(
         count:      count,
         predicate,
         message,
+        fileID:     fileID,
         file:       file,
         line:       line,
+        column:     column,
         options:    options,
         context:    failureContext
     )
@@ -646,8 +758,10 @@ internal func TKAssertExactlyOne<C>(
     _ collection    : @autoclosure () throws -> C,
     _ predicate     : (C.Element) throws -> Bool,
     _ message       : @autoclosure () -> String     = "",
+    fileID          : StaticString                  = #fileID,
     file            : StaticString                  = #filePath,
     line            : UInt                          = #line,
+    column          : UInt                          = #column,
     options         : TestOptions                   = .init()
 ) where C : Collection
 {
@@ -655,8 +769,10 @@ internal func TKAssertExactlyOne<C>(
         collection,
         predicate,
         message,
+        fileID:     fileID,
         file:       file,
         line:       line,
+        column:     column,
         options:    options,
         context:    failureContext
     )
@@ -668,8 +784,10 @@ internal func TKAssertSorted<C>(
     _ collection    : @autoclosure () throws -> C,
     by predicate    : (C.Element, C.Element) throws -> Bool,
     _ message       : @autoclosure () -> String             = "",
+    fileID          : StaticString                          = #fileID,
     file            : StaticString                          = #filePath,
     line            : UInt                                  = #line,
+    column          : UInt                                  = #column,
     options         : TestOptions                           = .init()
 ) where C : Collection
 {
@@ -677,8 +795,10 @@ internal func TKAssertSorted<C>(
         collection,
         by:         predicate,
         message,
+        fileID:     fileID,
         file:       file,
         line:       line,
+        column:     column,
         options:    options,
         context:    failureContext
     )
@@ -689,16 +809,20 @@ internal func TKAssertSorted<C>(
 internal func TKAssertUnique<C>(
     _ collection    : @autoclosure () throws -> C,
     _ message       : @autoclosure () -> String     = "",
+    fileID          : StaticString                  = #fileID,
     file            : StaticString                  = #filePath,
     line            : UInt                          = #line,
+    column          : UInt                          = #column,
     options         : TestOptions                   = .init()
 ) where C : Collection, C.Element : Hashable
 {
     TestKitCore.TKAssertUnique(
         collection,
         message,
+        fileID:     fileID,
         file:       file,
         line:       line,
+        column:     column,
         options:    options,
         context:    failureContext
     )
@@ -710,8 +834,10 @@ internal func TKAssertUnique<C, K>(
     _ collection    : @autoclosure () throws -> C,
     by predicate    : (C.Element) throws -> K,
     _ message       : @autoclosure () -> String     = "",
+    fileID          : StaticString                  = #fileID,
     file            : StaticString                  = #filePath,
     line            : UInt                          = #line,
+    column          : UInt                          = #column,
     options         : TestOptions                   = .init()
 ) where C : Collection, K : Hashable
 {
@@ -719,8 +845,10 @@ internal func TKAssertUnique<C, K>(
         collection,
         by:         predicate,
         message,
+        fileID:     fileID,
         file:       file,
         line:       line,
+        column:     column,
         options:    options,
         context:    failureContext
     )

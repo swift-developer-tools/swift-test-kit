@@ -1188,7 +1188,7 @@ internal final class ForAllOutputTests: TestKitCase
         """
         XCTKForAll exhausted after 0 successful iterations
         
-            2 inputs discarded (max ratio: 1)
+            2 values discarded (max ratio: 1)
         
         \(Self.seedMessage)
         """
@@ -1225,7 +1225,7 @@ internal final class ForAllOutputTests: TestKitCase
         """
         XCTKForAll exhausted after 0 successful iterations
         
-            2 inputs discarded (max ratio: 1)
+            2 values discarded (max ratio: 1)
         
         \(Self.seedMessage)
         
@@ -1272,7 +1272,7 @@ internal final class ForAllOutputTests: TestKitCase
         """
         XCTKForAll exhausted after 2 successful iterations
         
-            6 inputs discarded (max ratio: 1)
+            6 values discarded (max ratio: 1)
         
         \(Self.seedMessage)
         """
@@ -1283,10 +1283,10 @@ internal final class ForAllOutputTests: TestKitCase
     
     
     @Reasync
-    func testSingularInputDiscarded() async
+    func testSingularValueDiscarded() async
     {
         /// With a `maxDiscardRatio` of `0` and `iterations` of `1`, the
-        /// discard limit is `0 * 1 = 0`. The first discarded input exceeds
+        /// discard limit is `0 * 1 = 0`. The first discarded value exceeds
         /// this limit.
         
         let options: TestOptions = .propertyOptions(
@@ -1312,7 +1312,7 @@ internal final class ForAllOutputTests: TestKitCase
         """
         XCTKForAll exhausted after 0 successful iterations
         
-            1 input discarded (max ratio: 0)
+            1 value discarded (max ratio: 0)
         
         \(Self.seedMessage)
         """

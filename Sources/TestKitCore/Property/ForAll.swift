@@ -10,8 +10,10 @@
 @Reasync
 package func TKForAll<each T>(
     _ message   : () -> String,
+    fileID      : StaticString,
     file        : StaticString,
     line        : UInt,
+    column      : UInt,
     options     : TestOptions,
     _ property  : (repeat each T) async throws -> Void,
     context     : FailureContext
@@ -37,8 +39,10 @@ package func TKForAll<each T>(
     result.emit(
         context:    context,
         message:    message,
+        fileID:     fileID,
         file:       file,
-        line:       line
+        line:       line,
+        column:     column
     )
 }
 
@@ -48,8 +52,10 @@ package func TKForAll<each T>(
 package func TKForAll<each T>(
     using generators    : repeat Generator<each T>,
     message             : () -> String,
+    fileID              : StaticString,
     file                : StaticString,
     line                : UInt,
+    column              : UInt,
     options             : TestOptions,
     _ property          : (repeat each T) async throws -> Void,
     context             : FailureContext
@@ -75,8 +81,10 @@ package func TKForAll<each T>(
     result.emit(
         context:    context,
         message:    message,
+        fileID:     fileID,
         file:       file,
-        line:       line
+        line:       line,
+        column:     column
     )
 }
 
@@ -86,8 +94,10 @@ package func TKForAll<each T>(
 package func TKForAll<each T>(
     where precondition  : @escaping (repeat each T) -> Bool,
     message             : () -> String,
+    fileID              : StaticString,
     file                : StaticString,
     line                : UInt,
+    column              : UInt,
     options             : TestOptions,
     _ property          : (repeat each T) async throws -> Void,
     context             : FailureContext
@@ -121,8 +131,10 @@ package func TKForAll<each T>(
     result.emit(
         context:    context,
         message:    message,
+        fileID:     fileID,
         file:       file,
-        line:       line
+        line:       line,
+        column:     column
     )
 }
 
@@ -133,8 +145,10 @@ package func TKForAll<each T>(
     using generators    : repeat Generator<each T>,
     where precondition  : @escaping (repeat each T) -> Bool,
     message             : () -> String,
+    fileID              : StaticString,
     file                : StaticString,
     line                : UInt,
+    column              : UInt,
     options             : TestOptions,
     _ property          : (repeat each T) async throws -> Void,
     context             : FailureContext
@@ -168,7 +182,9 @@ package func TKForAll<each T>(
     result.emit(
         context:    context,
         message:    message,
+        fileID:     fileID,
         file:       file,
-        line:       line
+        line:       line,
+        column:     column
     )
 }

@@ -12,8 +12,10 @@
 package func TKAssert(
     _ expression    : () throws -> Bool,
     _ message       : () -> String,
+    fileID          : StaticString,
     file            : StaticString,
     line            : UInt,
+    column          : UInt,
     options         : TestOptions,
     context         : FailureContext
 )
@@ -21,8 +23,10 @@ package func TKAssert(
     evaluateTKAssert(
         expr:       expression,
         message:    message,
+        fileID:     fileID,
         file:       file,
         line:       line,
+        column:     column,
         options:    options,
         context:    context
     )
@@ -33,8 +37,10 @@ package func TKAssert(
 package func TKAssertTrue(
     _ expression    : () throws -> Bool,
     _ message       : () -> String,
+    fileID          : StaticString,
     file            : StaticString,
     line            : UInt,
+    column          : UInt,
     options         : TestOptions,
     context         : FailureContext
 )
@@ -42,8 +48,10 @@ package func TKAssertTrue(
     evaluateTKAssertTrue(
         expr:       expression,
         message:    message,
+        fileID:     fileID,
         file:       file,
         line:       line,
+        column:     column,
         options:    options,
         context:    context
     )
@@ -54,8 +62,10 @@ package func TKAssertTrue(
 package func TKAssertFalse(
     _ expression    : () throws -> Bool,
     _ message       : () -> String,
+    fileID          : StaticString,
     file            : StaticString,
     line            : UInt,
+    column          : UInt,
     options         : TestOptions,
     context         : FailureContext
 )
@@ -63,8 +73,10 @@ package func TKAssertFalse(
     evaluateTKAssertFalse(
         expr:       expression,
         message:    message,
+        fileID:     fileID,
         file:       file,
         line:       line,
+        column:     column,
         options:    options,
         context:    context
     )
@@ -77,8 +89,10 @@ package func TKAssertFalse(
 package func TKAssertNil(
     _ expression    : () throws -> Any?,
     _ message       : () -> String,
+    fileID          : StaticString,
     file            : StaticString,
     line            : UInt,
+    column          : UInt,
     options         : TestOptions,
     context         : FailureContext
 )
@@ -87,8 +101,10 @@ package func TKAssertNil(
         capture:    .none,
         expr:       expression,
         message:    message,
+        fileID:     fileID,
         file:       file,
         line:       line,
+        column:     column,
         options:    options,
         context:    context
     )
@@ -99,8 +115,10 @@ package func TKAssertNil(
 package func TKAssertNotNil(
     _ expression    : () throws -> Any?,
     _ message       : () -> String,
+    fileID          : StaticString,
     file            : StaticString,
     line            : UInt,
+    column          : UInt,
     options         : TestOptions,
     context         : FailureContext
 )
@@ -109,8 +127,10 @@ package func TKAssertNotNil(
         capture:    .none,
         expr:       expression,
         message:    message,
+        fileID:     fileID,
         file:       file,
         line:       line,
+        column:     column,
         options:    options,
         context:    context
     )
@@ -121,8 +141,10 @@ package func TKAssertNotNil(
 package func TKUnwrap<T>(
     _ expression    : () throws -> T?,
     _ message       : () -> String,
+    fileID          : StaticString,
     file            : StaticString,
     line            : UInt,
+    column          : UInt,
     options         : TestOptions,
     context         : FailureContext
 ) throws -> T
@@ -131,8 +153,10 @@ package func TKUnwrap<T>(
         capture:    .none,
         expr:       expression,
         message:    message,
+        fileID:     fileID,
         file:       file,
         line:       line,
+        column:     column,
         options:    options,
         context:    context
     )
@@ -146,8 +170,10 @@ package func TKAssertEqual<T>(
     _ expected  : () throws -> T,
     _ actual    : () throws -> T,
     _ message   : () -> String,
-    file        : StaticString,
-    line        : UInt,
+    fileID          : StaticString,
+    file            : StaticString,
+    line            : UInt,
+    column          : UInt,
     options     : TestOptions,
     context     : FailureContext
 ) where T : Equatable
@@ -157,8 +183,10 @@ package func TKAssertEqual<T>(
         expected:   expected,
         actual:     actual,
         message:    message,
+        fileID:     fileID,
         file:       file,
         line:       line,
+        column:     column,
         options:    options,
         context:    context
     )
@@ -170,8 +198,10 @@ package func TKAssertNotEqual<T>(
     _ expression1   : () throws -> T,
     _ expression2   : () throws -> T,
     _ message       : () -> String,
+    fileID          : StaticString,
     file            : StaticString,
     line            : UInt,
+    column          : UInt,
     options         : TestOptions,
     context         : FailureContext
 ) where T : Equatable
@@ -181,8 +211,10 @@ package func TKAssertNotEqual<T>(
         expr1:      expression1,
         expr2:      expression2,
         message:    message,
+        fileID:     fileID,
         file:       file,
         line:       line,
+        column:     column,
         options:    options,
         context:    context
     )
@@ -194,8 +226,10 @@ package func TKAssertIdentical(
     _ expression1   : () throws -> AnyObject?,
     _ expression2   : () throws -> AnyObject?,
     _ message       : () -> String,
+    fileID          : StaticString,
     file            : StaticString,
     line            : UInt,
+    column          : UInt,
     options         : TestOptions,
     context         : FailureContext
 )
@@ -205,8 +239,10 @@ package func TKAssertIdentical(
         expr1:      expression1,
         expr2:      expression2,
         message:    message,
+        fileID:     fileID,
         file:       file,
         line:       line,
+        column:     column,
         options:    options,
         context:    context
     )
@@ -218,8 +254,10 @@ package func TKAssertNotIdentical(
     _ expression1   : () throws -> AnyObject?,
     _ expression2   : () throws -> AnyObject?,
     _ message       : () -> String,
+    fileID          : StaticString,
     file            : StaticString,
     line            : UInt,
+    column          : UInt,
     options         : TestOptions,
     context         : FailureContext
 )
@@ -229,8 +267,10 @@ package func TKAssertNotIdentical(
         expr1:      expression1,
         expr2:      expression2,
         message:    message,
+        fileID:     fileID,
         file:       file,
         line:       line,
+        column:     column,
         options:    options,
         context:    context
     )
@@ -243,8 +283,10 @@ package func TKAssertEqual<T>(
     _ expression2   : () throws -> T,
     accuracy        : T,
     _ message       : () -> String,
+    fileID          : StaticString,
     file            : StaticString,
     line            : UInt,
+    column          : UInt,
     options         : TestOptions,
     context         : FailureContext
 ) where T : FloatingPoint
@@ -255,8 +297,10 @@ package func TKAssertEqual<T>(
         expr2:      expression2,
         accuracy:   accuracy,
         message:    message,
+        fileID:     fileID,
         file:       file,
         line:       line,
+        column:     column,
         options:    options,
         context:    context
     )
@@ -269,8 +313,10 @@ package func TKAssertEqual<T>(
     _ expression2   : () throws -> T,
     accuracy        : T,
     _ message       : () -> String,
+    fileID          : StaticString,
     file            : StaticString,
     line            : UInt,
+    column          : UInt,
     options         : TestOptions,
     context         : FailureContext
 ) where T : Numeric
@@ -281,8 +327,10 @@ package func TKAssertEqual<T>(
         expr2:      expression2,
         accuracy:   accuracy,
         message:    message,
+        fileID:     fileID,
         file:       file,
         line:       line,
+        column:     column,
         options:    options,
         context:    context
     )
@@ -295,8 +343,10 @@ package func TKAssertNotEqual<T>(
     _ expression2   : () throws -> T,
     accuracy        : T,
     _ message       : () -> String,
+    fileID          : StaticString,
     file            : StaticString,
     line            : UInt,
+    column          : UInt,
     options         : TestOptions,
     context         : FailureContext
 ) where T : FloatingPoint
@@ -307,8 +357,10 @@ package func TKAssertNotEqual<T>(
         expr2:      expression2,
         accuracy:   accuracy,
         message:    message,
+        fileID:     fileID,
         file:       file,
         line:       line,
+        column:     column,
         options:    options,
         context:    context
     )
@@ -321,8 +373,10 @@ package func TKAssertNotEqual<T>(
     _ expression2   : () throws -> T,
     accuracy        : T,
     _ message       : () -> String,
+    fileID          : StaticString,
     file            : StaticString,
     line            : UInt,
+    column          : UInt,
     options         : TestOptions,
     context         : FailureContext
 ) where T : Numeric
@@ -333,8 +387,10 @@ package func TKAssertNotEqual<T>(
         expr2:      expression2,
         accuracy:   accuracy,
         message:    message,
+        fileID:     fileID,
         file:       file,
         line:       line,
+        column:     column,
         options:    options,
         context:    context
     )
@@ -348,8 +404,10 @@ package func TKAssertGreaterThan<T>(
     _ expression1   : () throws -> T,
     _ expression2   : () throws -> T,
     _ message       : () -> String,
+    fileID          : StaticString,
     file            : StaticString,
     line            : UInt,
+    column          : UInt,
     options         : TestOptions,
     context         : FailureContext
 ) where T : Comparable
@@ -359,8 +417,10 @@ package func TKAssertGreaterThan<T>(
         expr1:      expression1,
         expr2:      expression2,
         message:    message,
+        fileID:     fileID,
         file:       file,
         line:       line,
+        column:     column,
         options:    options,
         context:    context
     )
@@ -372,8 +432,10 @@ package func TKAssertGreaterThanOrEqual<T>(
     _ expression1   : () throws -> T,
     _ expression2   : () throws -> T,
     _ message       : () -> String,
+    fileID          : StaticString,
     file            : StaticString,
     line            : UInt,
+    column          : UInt,
     options         : TestOptions,
     context         : FailureContext
 ) where T : Comparable
@@ -383,8 +445,10 @@ package func TKAssertGreaterThanOrEqual<T>(
         expr1:      expression1,
         expr2:      expression2,
         message:    message,
+        fileID:     fileID,
         file:       file,
         line:       line,
+        column:     column,
         options:    options,
         context:    context
     )
@@ -396,8 +460,10 @@ package func TKAssertLessThanOrEqual<T>(
     _ expression1   : () throws -> T,
     _ expression2   : () throws -> T,
     _ message       : () -> String,
+    fileID          : StaticString,
     file            : StaticString,
     line            : UInt,
+    column          : UInt,
     options         : TestOptions,
     context         : FailureContext
 ) where T : Comparable
@@ -407,8 +473,10 @@ package func TKAssertLessThanOrEqual<T>(
         expr1:      expression1,
         expr2:      expression2,
         message:    message,
+        fileID:     fileID,
         file:       file,
         line:       line,
+        column:     column,
         options:    options,
         context:    context
     )
@@ -420,8 +488,10 @@ package func TKAssertLessThan<T>(
     _ expression1   : () throws -> T,
     _ expression2   : () throws -> T,
     _ message       : () -> String,
+    fileID          : StaticString,
     file            : StaticString,
     line            : UInt,
+    column          : UInt,
     options         : TestOptions,
     context         : FailureContext
 ) where T : Comparable
@@ -431,8 +501,10 @@ package func TKAssertLessThan<T>(
         expr1:      expression1,
         expr2:      expression2,
         message:    message,
+        fileID:     fileID,
         file:       file,
         line:       line,
+        column:     column,
         options:    options,
         context:    context
     )
@@ -445,8 +517,10 @@ package func TKAssertLessThan<T>(
 package func TKAssertThrowsError<T>(
     _ expression    : () throws -> T,
     _ message       : () -> String,
+    fileID          : StaticString,
     file            : StaticString,
     line            : UInt,
+    column          : UInt,
     options         : TestOptions,
     _ errorHandler  : (any Error) -> Void,
     context         : FailureContext
@@ -456,8 +530,10 @@ package func TKAssertThrowsError<T>(
         capture:        .none,
         expr:           expression,
         message:        message,
-        file:           file,
-        line:           line,
+        fileID:     fileID,
+        file:       file,
+        line:       line,
+        column:     column,
         options:        options,
         errorHandler:   errorHandler,
         context:        context
@@ -469,8 +545,10 @@ package func TKAssertThrowsError<T>(
 package func TKAssertNoThrow<T>(
     _ expression    : () throws -> T,
     _ message       : () -> String,
+    fileID          : StaticString,
     file            : StaticString,
     line            : UInt,
+    column          : UInt,
     options         : TestOptions,
     context         : FailureContext
 )
@@ -479,8 +557,10 @@ package func TKAssertNoThrow<T>(
         capture:    .none,
         expr:       expression,
         message:    message,
+        fileID:     fileID,
         file:       file,
         line:       line,
+        column:     column,
         options:    options,
         context:    context
     )
@@ -492,15 +572,19 @@ package func TKAssertNoThrow<T>(
 
 package func TKFail(
     _ message   : String,
+    fileID      : StaticString,
     file        : StaticString,
     line        : UInt,
+    column      : UInt,
     context     : FailureContext
 )
 {
     context.emit(
         message,
+        fileID,
         file,
-        line
+        line,
+        column
     )
 }
 
@@ -512,8 +596,10 @@ package func TKAssertAllSatisfy<C>(
     _ collection    : () throws -> C,
     _ predicate     : (C.Element) throws -> Bool,
     _ message       : () -> String,
+    fileID          : StaticString,
     file            : StaticString,
     line            : UInt,
+    column          : UInt,
     options         : TestOptions,
     context         : FailureContext
 ) where C : Collection
@@ -523,8 +609,10 @@ package func TKAssertAllSatisfy<C>(
         collection:     collection,
         predicate:      predicate,
         message:        message,
+        fileID:         fileID,
         file:           file,
         line:           line,
+        column:         column,
         options:        options,
         context:        context
     )
@@ -536,8 +624,10 @@ package func TKAssertAnySatisfy<C>(
     _ collection    : () throws -> C,
     _ predicate     : (C.Element) throws -> Bool,
     _ message       : () -> String,
+    fileID          : StaticString,
     file            : StaticString,
     line            : UInt,
+    column          : UInt,
     options         : TestOptions,
     context         : FailureContext
 ) where C : Collection
@@ -547,8 +637,10 @@ package func TKAssertAnySatisfy<C>(
         collection:     collection,
         predicate:      predicate,
         message:        message,
+        fileID:         fileID,
         file:           file,
         line:           line,
+        column:         column,
         options:        options,
         context:        context
     )
@@ -560,8 +652,10 @@ package func TKAssertNoneSatisfy<C>(
     _ collection    : () throws -> C,
     _ predicate     : (C.Element) throws -> Bool,
     _ message       : () -> String,
+    fileID          : StaticString,
     file            : StaticString,
     line            : UInt,
+    column          : UInt,
     options         : TestOptions,
     context         : FailureContext
 ) where C : Collection
@@ -571,8 +665,10 @@ package func TKAssertNoneSatisfy<C>(
         collection:     collection,
         predicate:      predicate,
         message:        message,
+        fileID:         fileID,
         file:           file,
         line:           line,
+        column:         column,
         options:        options,
         context:        context
     )
@@ -585,8 +681,10 @@ package func TKAssertSatisfy<C>(
     atLeast         : Int,
     _ predicate     : (C.Element) throws -> Bool,
     _ message       : () -> String,
+    fileID          : StaticString,
     file            : StaticString,
     line            : UInt,
+    column          : UInt,
     options         : TestOptions,
     context         : FailureContext
 ) where C : Collection
@@ -597,8 +695,10 @@ package func TKAssertSatisfy<C>(
         atLeast:        atLeast,
         predicate:      predicate,
         message:        message,
+        fileID:         fileID,
         file:           file,
         line:           line,
+        column:         column,
         options:        options,
         context:        context
     )
@@ -611,8 +711,10 @@ package func TKAssertSatisfy<C>(
     atMost          : Int,
     _ predicate     : (C.Element) throws -> Bool,
     _ message       : () -> String,
+    fileID          : StaticString,
     file            : StaticString,
     line            : UInt,
+    column          : UInt,
     options         : TestOptions,
     context         : FailureContext
 ) where C : Collection
@@ -623,8 +725,10 @@ package func TKAssertSatisfy<C>(
         atMost:         atMost,
         predicate:      predicate,
         message:        message,
+        fileID:         fileID,
         file:           file,
         line:           line,
+        column:         column,
         options:        options,
         context:        context
     )
@@ -637,8 +741,10 @@ package func TKAssertSatisfy<C>(
     range           : ClosedRange<Int>,
     _ predicate     : (C.Element) throws -> Bool,
     _ message       : () -> String,
+    fileID          : StaticString,
     file            : StaticString,
     line            : UInt,
+    column          : UInt,
     options         : TestOptions,
     context         : FailureContext
 ) where C : Collection
@@ -649,8 +755,10 @@ package func TKAssertSatisfy<C>(
         range:          range,
         predicate:      predicate,
         message:        message,
+        fileID:         fileID,
         file:           file,
         line:           line,
+        column:         column,
         options:        options,
         context:        context
     )
@@ -663,8 +771,10 @@ package func TKAssertExactly<C>(
     count           : Int,
     _ predicate     : (C.Element) throws -> Bool,
     _ message       : () -> String,
+    fileID          : StaticString,
     file            : StaticString,
     line            : UInt,
+    column          : UInt,
     options         : TestOptions,
     context         : FailureContext
 ) where C : Collection
@@ -675,8 +785,10 @@ package func TKAssertExactly<C>(
         count:          count,
         predicate:      predicate,
         message:        message,
+        fileID:         fileID,
         file:           file,
         line:           line,
+        column:         column,
         options:        options,
         context:        context
     )
@@ -688,8 +800,10 @@ package func TKAssertExactlyOne<C>(
     _ collection    : () throws -> C,
     _ predicate     : (C.Element) throws -> Bool,
     _ message       : () -> String,
+    fileID          : StaticString,
     file            : StaticString,
     line            : UInt,
+    column          : UInt,
     options         : TestOptions,
     context         : FailureContext
 ) where C : Collection
@@ -699,8 +813,10 @@ package func TKAssertExactlyOne<C>(
         collection:     collection,
         predicate:      predicate,
         message:        message,
+        fileID:         fileID,
         file:           file,
         line:           line,
+        column:         column,
         options:        options,
         context:        context
     )
@@ -712,8 +828,10 @@ package func TKAssertSorted<C>(
     _ collection    : () throws -> C,
     by predicate    : (C.Element, C.Element) throws -> Bool,
     _ message       : () -> String,
+    fileID          : StaticString,
     file            : StaticString,
     line            : UInt,
+    column          : UInt,
     options         : TestOptions,
     context         : FailureContext
 ) where C : Collection
@@ -723,8 +841,10 @@ package func TKAssertSorted<C>(
         collection:     collection,
         predicate:      predicate,
         message:        message,
+        fileID:         fileID,
         file:           file,
         line:           line,
+        column:         column,
         options:        options,
         context:        context
     )
@@ -735,8 +855,10 @@ package func TKAssertSorted<C>(
 package func TKAssertUnique<C>(
     _ collection    : () throws -> C,
     _ message       : () -> String,
+    fileID          : StaticString,
     file            : StaticString,
     line            : UInt,
+    column          : UInt,
     options         : TestOptions,
     context         : FailureContext
 ) where C : Collection, C.Element : Hashable
@@ -745,8 +867,10 @@ package func TKAssertUnique<C>(
         capture:        .none,
         collection:     collection,
         message:        message,
+        fileID:         fileID,
         file:           file,
         line:           line,
+        column:         column,
         options:        options,
         context:        context
     )
@@ -758,8 +882,10 @@ package func TKAssertUnique<C, K>(
     _ collection    : () throws -> C,
     by predicate    : (C.Element) throws -> K,
     _ message       : () -> String,
+    fileID          : StaticString,
     file            : StaticString,
     line            : UInt,
+    column          : UInt,
     options         : TestOptions,
     context         : FailureContext
 ) where C : Collection, K : Hashable
@@ -769,8 +895,10 @@ package func TKAssertUnique<C, K>(
         collection:     collection,
         predicate:      predicate,
         message:        message,
+        fileID:         fileID,
         file:           file,
         line:           line,
+        column:         column,
         options:        options,
         context:        context
     )

@@ -1283,7 +1283,7 @@ package struct Comparator
     /// This is used to sort the keys of dictionaries and the elements of
     /// sets when computing diffs. Although these data structures are
     /// inherently unordered, their keys and elements must be sorted when
-    /// computing a diff. Otherwise, running the same test with the same input
+    /// computing a diff. Otherwise, running the same test with the same value
     /// may produce a diff that has the same content, but in a different order.
     ///
     /// For example, consider the following:

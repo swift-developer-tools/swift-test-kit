@@ -10,9 +10,9 @@
 /// Framework kinds.
 package enum FrameworkKind: String, Equatable, Sendable
 {
-    /// XCTestKit.
-    case xctk   = "XCTK"
-    
     /// SwiftTestKit.
     case stk    = "STK"
+    
+    /// XCTestKit.
+    case xctk   = "XCTK"
 }

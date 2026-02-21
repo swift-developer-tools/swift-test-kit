@@ -6,17 +6,17 @@ Assert whether two values are equal or unequal.
 
 ### Tests for Equality and Inequality
 
-- ``XCTKAssertEqual(_:_:_:file:line:options:)-macro``
-- ``XCTKAssertNotEqual(_:_:_:file:line:options:)-macro``
+- ``XCTKAssertEqual(_:_:_:fileID:file:line:column:options:)-macro``
+- ``XCTKAssertNotEqual(_:_:_:fileID:file:line:column:options:)-macro``
 
 ### Tests for Identical Objects
 
-- ``XCTKAssertIdentical(_:_:_:file:line:options:)-macro``
-- ``XCTKAssertNotIdentical(_:_:_:file:line:options:)-macro``
+- ``XCTKAssertIdentical(_:_:_:fileID:file:line:column:options:)-macro``
+- ``XCTKAssertNotIdentical(_:_:_:fileID:file:line:column:options:)-macro``
 
 ### Tests for Equality Within a Specified Accuracy
 
-- ``XCTKAssertEqual(_:_:accuracy:_:file:line:options:)-1znbc``
-- ``XCTKAssertEqual(_:_:accuracy:_:file:line:options:)-5djsa``
-- ``XCTKAssertNotEqual(_:_:accuracy:_:file:line:options:)-22byv``
-- ``XCTKAssertNotEqual(_:_:accuracy:_:file:line:options:)-6sms3``
+- ``XCTKAssertEqual(_:_:accuracy:_:fileID:file:line:column:options:)-8m576``
+- ``XCTKAssertEqual(_:_:accuracy:_:fileID:file:line:column:options:)-72dwf``
+- ``XCTKAssertNotEqual(_:_:accuracy:_:fileID:file:line:column:options:)-3tmf2``
+- ``XCTKAssertNotEqual(_:_:accuracy:_:fileID:file:line:column:options:)-6xcwf``
