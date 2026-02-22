@@ -158,62 +158,22 @@ extension PropertyCheckResult
         lines.append("")
         lines.append(Self.makeSeedLine(seed: counterexample.seed))
         
+        lines = Self.addDistributionLines(
+            to:                 lines,
+            iterations:         counterexample.iteration,
+            distribution:       distribution,
+            tableDistribution:  tableDistribution
+        )
         
+        lines = Self.addErrorLines(
+            to:                 lines,
+            counterexample:     counterexample
+        )
         
-        if
-            !distribution.isEmpty
-            || !tableDistribution.isEmpty
-        {
-            lines.append("")
-            
-            lines.append(Self.makeDistributionHeader(
-                iterations: counterexample.iteration
-            ))
-            
-            let flatLines: [String] = Self.formatDistribution(
-                distribution,
-                iterations: counterexample.iteration
-            )
-            
-            lines.append(contentsOf: flatLines)
-            
-            let tableLines: [String] = Self.formatTableDistribution(
-                tableDistribution,
-                iterations: counterexample.iteration
-            )
-            
-            if
-                !flatLines.isEmpty,
-                !tableLines.isEmpty
-            {
-                lines.append("")
-            }
-            
-            lines.append(contentsOf: tableLines)
-        }
-        
-        
-        
-        if let failure: InterceptedFailure = counterexample.failures.first
-        {
-            lines.append("")
-            lines.append(failure.message)
-        }
-        else if let error: Error = counterexample.thrownError
-        {
-            lines.append("")
-            lines.append("Threw error: \(error)")
-        }
-        
-        
-        
-        let msg: String = message()
-        
-        if !msg.isEmpty
-        {
-            lines.append("")
-            lines.append(msg)
-        }
+        lines = Self.addMessageLines(
+            to:         lines,
+            message:    message
+        )
         
         return lines.joined(separator: "\n")
     }
@@ -264,46 +224,17 @@ extension PropertyCheckResult
         lines.append("")
         lines.append(Self.makeSeedLine(seed: seed))
         
+        lines = Self.addDistributionLines(
+            to:                 lines,
+            iterations:         succeeded,
+            distribution:       distribution,
+            tableDistribution:  tableDistribution
+        )
         
-        
-        if
-            !distribution.isEmpty
-            || !tableDistribution.isEmpty
-        {
-            lines.append("")
-            lines.append(Self.makeDistributionHeader(iterations: succeeded))
-            
-            let flatLines: [String] = Self.formatDistribution(
-                distribution,
-                iterations: succeeded
-            )
-            
-            lines.append(contentsOf: flatLines)
-            
-            let tableLines: [String] = Self.formatTableDistribution(
-                tableDistribution,
-                iterations: succeeded
-            )
-            
-            if
-                !flatLines.isEmpty,
-                !tableLines.isEmpty
-            {
-                lines.append("")
-            }
-            
-            lines.append(contentsOf: tableLines)
-        }
-        
-        
-        
-        let msg: String = message()
-        
-        if !msg.isEmpty
-        {
-            lines.append("")
-            lines.append(msg)
-        }
+        lines = Self.addMessageLines(
+            to:         lines,
+            message:    message
+        )
         
         return lines.joined(separator: "\n")
     }
@@ -374,15 +305,10 @@ extension PropertyCheckResult
         lines.append("")
         lines.append(Self.makeSeedLine(seed: seed))
         
-        
-        
-        let msg: String = message()
-        
-        if !msg.isEmpty
-        {
-            lines.append("")
-            lines.append(msg)
-        }
+        lines = Self.addMessageLines(
+            to:         lines,
+            message:    message
+        )
         
         return lines.joined(separator: "\n")
     }
@@ -553,6 +479,121 @@ extension PropertyCheckResult
     ) -> String
     {
         return "Seed: \(seed) (re-run with PropertyOptions.seed)"
+    }
+    
+    
+    
+    /// Appends formatted lines for counterexample failures or thrown errors
+    /// to the given lines.
+    /// - Parameters:
+    ///   - originalLines: The lines to update.
+    ///   - counterexample: The counterexample to use.
+    /// - Returns: The updated lines.
+    private static func addErrorLines(
+        to originalLines    : [String],
+        counterexample      : Counterexample<T>
+    ) -> [String]
+    {
+        var lines: [String] = originalLines
+        
+        if let failure: InterceptedFailure = counterexample.failures.first
+        {
+            lines.append("")
+            lines.append(failure.message)
+        }
+        else if let error: Error = counterexample.thrownError
+        {
+            lines.append("")
+            lines.append("Threw error: \(error)")
+        }
+        
+        return lines
+    }
+    
+    
+    
+    /// Appends formatted lines for the given distributions to the given lines.
+    /// - Parameters:
+    ///   - originalLines: The lines to update.
+    ///   - iterations: The number of iterations.
+    ///   - distribution: The accumulated count of iterations that matched
+    ///   each label.
+    ///   - tableDistribution: The accumulated count of iterations that
+    ///   matched each table value, mapping the table name to a map of values
+    ///   and their counts.
+    /// - Returns: The updated lines.
+    private static func addDistributionLines(
+        to originalLines    : [String],
+        iterations          : Int,
+        distribution        : [String : Int],
+        tableDistribution   : [String : [String : Int]]
+    ) -> [String]
+    {
+        guard
+            !distribution.isEmpty
+            || !tableDistribution.isEmpty
+        else
+        {
+            return originalLines
+        }
+        
+        var lines: [String] = originalLines
+        
+        lines.append("")
+        
+        lines.append(Self.makeDistributionHeader(
+            iterations: iterations
+        ))
+        
+        let flatLines: [String] = Self.formatDistribution(
+            distribution,
+            iterations: iterations
+        )
+        
+        lines.append(contentsOf: flatLines)
+        
+        let tableLines: [String] = Self.formatTableDistribution(
+            tableDistribution,
+            iterations: iterations
+        )
+        
+        if
+            !flatLines.isEmpty,
+            !tableLines.isEmpty
+        {
+            lines.append("")
+        }
+        
+        lines.append(contentsOf: tableLines)
+        
+        return lines
+    }
+    
+    
+    
+    /// Appends a formatted line for the given message to the given lines.
+    /// - Parameters:
+    ///   - originalLines: The lines to update.
+    ///   - message: The description of a failure.
+    /// - Returns: The updated lines.
+    private static func addMessageLines(
+        to originalLines    : [String],
+        message             : () -> String,
+    ) -> [String]
+    {
+        let msg: String = message()
+        
+        if msg.isEmpty
+        {
+            return originalLines
+        }
+        
+        var lines: [String] = originalLines
+        
+        lines.append("")
+        lines.append(msg)
+        
+        return lines
     }
     
     
