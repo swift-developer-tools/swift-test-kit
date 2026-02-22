@@ -13,6 +13,7 @@ extension PropertyCheckResult
     
     /// Emits the property check result.
     /// - Parameters:
+    ///   - functionName: The property evaluator function name.
     ///   - context: The assertion failure context.
     ///   - message: The description of a failure.
     ///   - fileID: The ID of the file where the failure occurs.
@@ -20,17 +21,15 @@ extension PropertyCheckResult
     ///   - line: The line where the failure occurs.
     ///   - column: The column where the failure occurs.
     internal func emit(
-        context : FailureContext,
-        message : () -> String,
-        fileID  : StaticString,
-        file    : StaticString,
-        line    : UInt,
-        column  : UInt
+        functionName    : String,
+        context         : FailureContext,
+        message         : () -> String,
+        fileID          : StaticString,
+        file            : StaticString,
+        line            : UInt,
+        column          : UInt
     )
     {
-        /// If there are more property-based assertions, this should change.
-        let functionName: String = "\(context.framework.rawValue)ForAll"
-
         let text: String
         
         switch self
