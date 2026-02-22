@@ -20,6 +20,7 @@ internal extension TestOptions
         maxShrinkSteps  : Int       = 100,
         maxSize         : Int       = 100,
         maxDiscardRatio : Int       = 10,
+        maxCommandCount : Int       = 100,
         seed            : UInt64?   = nil
     ) -> TestOptions
     {
@@ -28,6 +29,7 @@ internal extension TestOptions
             maxShrinkSteps:     maxShrinkSteps,
             maxSize:            maxSize,
             maxDiscardRatio:    maxDiscardRatio,
+            maxCommandCount:    maxCommandCount,
             seed:               seed
         )
         
