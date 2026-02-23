@@ -41,6 +41,14 @@ internal final class ForAllMessageTests: TestKitCase
     
     
     @Reasync
+    func testArbitraryMessageEvalOnceOnConverageNotMet() async
+    {
+        await assertMessageEvalOnceOnCoverageNotMet(.arbitrary)
+    }
+    
+    
+    
+    @Reasync
     func testGeneratorMessageNotEvalOnSuccess() async
     {
         await assertMessageNotEvalOnSuccess(.generator)
@@ -52,6 +60,14 @@ internal final class ForAllMessageTests: TestKitCase
     func testGeneratorMessageEvalOnceOnFailure() async
     {
         await assertMessageEvalOnceOnFailure(.generator)
+    }
+    
+    
+    
+    @Reasync
+    func testGeneratorMessageEvalOnceOnConverageNotMet() async
+    {
+        await assertMessageEvalOnceOnCoverageNotMet(.generator)
     }
     
     
@@ -81,6 +97,14 @@ internal final class ForAllMessageTests: TestKitCase
     
     
     @Reasync
+    func testPreconditionMessageEvalOnceOnConverageNotMet() async
+    {
+        await assertMessageEvalOnceOnCoverageNotMet(.precondition)
+    }
+    
+    
+    
+    @Reasync
     func testPreconditionGeneratorMessageNotEvalOnSuccess() async
     {
         await assertMessageNotEvalOnSuccess(.preconditionGenerator)
@@ -100,6 +124,14 @@ internal final class ForAllMessageTests: TestKitCase
     func testPreconditionGeneratorMessageEvalOnceOnExhaustion() async
     {
         await assertMessageEvalOnceOnExhaustion(useGenerator: true)
+    }
+    
+    
+    
+    @Reasync
+    func testPreconditionGeneratorMessageEvalOnceOnConverageNotMet() async
+    {
+        await assertMessageEvalOnceOnCoverageNotMet(.preconditionGenerator)
     }
 }
 
@@ -315,6 +347,85 @@ extension ForAllMessageTests
                 {
                     (_: Int) async in
                 }
+            }
+        }
+        
+        XCTAssertEqual(count, 1)
+    }
+    
+    
+    
+    /// Asserts that the message of the specified property evaluator is
+    /// evaluated only once when the evaluator fails.
+    /// - Parameter kind: The property evaluator to test.
+    @Reasync
+    private func assertMessageEvalOnceOnCoverageNotMet(
+        _ kind: ForAllKind
+    ) async
+    {
+        var count   : Int           = 0
+        let message : () -> String  = { count += 1; return "msg" }
+        
+        let options: TestOptions = .propertyOptions(
+            iterations:     1,
+            seed:           50
+        )
+        
+        await withOneExpectedFailure
+        {
+            switch kind
+            {
+                case .arbitrary:
+                    
+                    await TKForAll(
+                        message(),
+                        options: options
+                    )
+                    {
+                        (_: Int) async in
+                        
+                        TKCover(100, "never", when: false)
+                    }
+                    
+                case .generator:
+                    
+                    await TKForAll(
+                        using:      Generator<Int>.arbitrary(),
+                        message:    message(),
+                        options:    options
+                    )
+                    {
+                        (_: Int) async in
+                        
+                        TKCover(100, "never", when: false)
+                    }
+                    
+                case .precondition:
+                    
+                    await TKForAll(
+                        where:      { (_: Int) in true },
+                        message:    message(),
+                        options:    options
+                    )
+                    {
+                        (_: Int) async in
+                        
+                        TKCover(100, "never", when: false)
+                    }
+                    
+                case .preconditionGenerator:
+                    
+                    await TKForAll(
+                        using:      Generator<Int>.arbitrary(),
+                        where:      { (_: Int) in true },
+                        message:    message(),
+                        options:    options
+                    )
+                    {
+                        (_: Int) async in
+                        
+                        TKCover(100, "never", when: false)
+                    }
             }
         }
         
