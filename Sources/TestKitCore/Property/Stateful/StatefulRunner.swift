@@ -420,6 +420,36 @@ internal struct StatefulRunner<C> where C : Stateful
     
     
     
+    /// Replays the given moden through the given commands.
+    /// - Parameters:
+    ///   - model: The model to replay.
+    ///   - commands: The commands to use.
+    /// - Returns: The replayed model.
+    private static func replayModel(
+        _ model             : () -> C.Model,
+        through commands    : ArraySlice<C>
+    ) -> C.Model?
+    {
+        var currentModel: C.Model = model()
+        
+        for command in commands
+        {
+            if !command.precondition(model: currentModel)
+            {
+                /// The sequence is in an inconsistent state. This should not
+                /// happen since removal shrinking already validated the
+                /// preconditions.
+                return nil
+            }
+            
+            command.advance(model: &currentModel)
+        }
+        
+        return currentModel
+    }
+    
+    
+    
     // MARK: - Counterexample
     
     /// Creates the counterexample for the given failing command sequence.
@@ -580,7 +610,19 @@ internal struct StatefulRunner<C> where C : Stateful
             index < current.count,
             steps < maxSteps
         {
-            let candidates  : [C]   = current[index].shrink()
+            let modelAtIndex: C.Model? = replayModel(
+                model,
+                through: current[..<index]
+            )
+            
+            guard let modelAtIndex
+            else
+            {
+                index += 1
+                continue
+            }
+            
+            let candidates  : [C]   = current[index].shrink(model: modelAtIndex)
             var improved    : Bool  = false
             
             for candidate in candidates
