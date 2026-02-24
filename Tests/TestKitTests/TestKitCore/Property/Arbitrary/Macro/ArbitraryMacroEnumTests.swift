@@ -149,7 +149,7 @@ internal final class ArbitraryMacroEnumTests: TestKitCase
             guard case .value = candidate
             else
             {
-                XCTFail("Shrink changed the case")
+                XCTFail("Expected .value, got \(candidate)")
                 return
             }
         }
@@ -215,7 +215,7 @@ internal final class ArbitraryMacroEnumTests: TestKitCase
             guard case .value = candidate
             else
             {
-                XCTFail("Shrink changed the case")
+                XCTFail("Expected .value, got \(candidate)")
                 return
             }
         }
@@ -301,7 +301,7 @@ internal final class ArbitraryMacroEnumTests: TestKitCase
             guard case .circle = candidate
             else
             {
-                XCTFail("Shrink changed the case from .circle")
+                XCTFail("Expected .circle, got \(candidate)")
                 return
             }
         }
@@ -316,7 +316,7 @@ internal final class ArbitraryMacroEnumTests: TestKitCase
             guard case .rect = candidate
             else
             {
-                XCTFail("Shrink changed the case from .rect")
+                XCTFail("Expected .rect, got \(candidate)")
                 return
             }
         }
@@ -410,7 +410,7 @@ internal final class ArbitraryMacroEnumTests: TestKitCase
             guard case .value = candidate
             else
             {
-                XCTFail("Shrink changed the case from .value")
+                XCTFail("Expected .value, got \(candidate)")
                 return
             }
         }
@@ -425,7 +425,7 @@ internal final class ArbitraryMacroEnumTests: TestKitCase
             guard case .pair = candidate
             else
             {
-                XCTFail("Shrink changed the case from .pair")
+                XCTFail("Expected .pair, got \(candidate)")
                 return
             }
         }
@@ -605,7 +605,7 @@ internal final class ArbitraryMacroEnumTests: TestKitCase
             guard case .a = candidate
             else
             {
-                XCTFail("Shrink changed the case from .a")
+                XCTFail("Expected .a, got \(candidate)")
                 return
             }
         }
@@ -619,7 +619,7 @@ internal final class ArbitraryMacroEnumTests: TestKitCase
             guard case .b = candidate
             else
             {
-                XCTFail("Shrink changed the case from .b")
+                XCTFail("Expected .b, got \(candidate)")
                 return
             }
         }
@@ -825,7 +825,7 @@ internal final class ArbitraryMacroEnumTests: TestKitCase
             guard case .c = candidate
             else
             {
-                XCTFail("Shrink changed the case from .c")
+                XCTFail("Expected .c, got \(candidate)")
                 return
             }
         }
@@ -980,7 +980,7 @@ internal final class ArbitraryMacroEnumTests: TestKitCase
             guard case .labeled = candidate
             else
             {
-                XCTFail("Shrink changed the case from .labeled")
+                XCTFail("Expected .labeled, got \(candidate)")
                 return
             }
         }
@@ -1263,7 +1263,7 @@ internal final class ArbitraryMacroEnumTests: TestKitCase
             guard case .small = candidate
             else
             {
-                XCTFail("Shrink changed the case from .small")
+                XCTFail("Expected .small, got \(candidate)")
                 return
             }
         }
@@ -1278,7 +1278,7 @@ internal final class ArbitraryMacroEnumTests: TestKitCase
             guard case .large = candidate
             else
             {
-                XCTFail("Shrink changed the case from .large")
+                XCTFail("Expected .large, got \(candidate)")
                 return
             }
         }
