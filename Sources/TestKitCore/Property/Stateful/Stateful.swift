@@ -47,17 +47,20 @@
 ///     case decrement
 ///     case reset
 ///
+///     typealias System    = Counter
+///     typealias Model     = Int
+///
 ///     static func arbitrary(
 ///         using context   : GenerationContext,
-///         model           : Int
+///         model           : Model
 ///     ) -> CounterCommand
 ///     {
 ///         return context.randomElement(of: allCases)!
 ///     }
 ///
 ///     func run(
-///         model   : inout Int,
-///         system  : inout Counter
+///         model   : inout Model,
+///         system  : inout System
 ///     ) async throws
 ///     {
 ///         switch self
@@ -82,7 +85,7 @@
 ///     }
 ///
 ///     func advance(
-///         model: inout Int
+///         model: inout Model
 ///     )
 ///     {
 ///         switch self
