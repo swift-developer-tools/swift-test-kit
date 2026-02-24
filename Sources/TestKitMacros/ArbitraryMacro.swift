@@ -10,4 +10,4 @@
 import TestKitMacroCore
 
 
-internal struct ArbitraryMacro: ArbitraryExtensionMacro { }
+internal struct ArbitraryMacro: TestKitMacroCore.ArbitraryMacro { }

@@ -10,4 +10,4 @@
 import TestKitMacroCore
 
 
-internal struct StatefulMacro: StatefulExtensionMacro { }
+internal struct StatefulMacro: TestKitMacroCore.StatefulMacro { }

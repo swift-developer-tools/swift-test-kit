@@ -13,11 +13,11 @@ import SwiftSyntaxMacros
 
 
 
-// MARK: - StatefulExtensionMacro
+// MARK: - StatefulMacro
 
-package protocol StatefulExtensionMacro: ExtensionMacro { }
+package protocol StatefulMacro: ExtensionMacro { }
 
-extension StatefulExtensionMacro
+extension StatefulMacro
 {
     /// Expands an attached extension macro to produce a set of extensions.
     /// - Parameters:

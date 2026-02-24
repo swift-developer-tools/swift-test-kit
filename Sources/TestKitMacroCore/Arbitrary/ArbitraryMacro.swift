@@ -13,11 +13,11 @@ import SwiftSyntaxMacros
 
 
 
-// MARK: - ArbitraryExtensionMacro
+// MARK: - ArbitraryMacro
 
-package protocol ArbitraryExtensionMacro: ExtensionMacro { }
+package protocol ArbitraryMacro: ExtensionMacro { }
 
-extension ArbitraryExtensionMacro
+extension ArbitraryMacro
 {
     /// Expands an attached extension macro to produce a set of extensions.
     /// - Parameters:
