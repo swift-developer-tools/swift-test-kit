@@ -1812,6 +1812,94 @@ internal final class StatefulOutputTests: TestKitCase
     
     
     
+    // MARK: - Postcondition
+    
+    func testPostconditionFailureNoShrinking() async
+    {
+        let options: TestOptions = .propertyOptions(
+            iterations:         10,
+            maxShrinkSteps:     0,
+            maxCommandCount:    100,
+            seed:               Self.seed
+        )
+        
+        let actual: String? = await withOneExpectedFailure
+        {
+            await TKStateful(
+                model:      { 0 },
+                system:     { 0 },
+                command:    PostCFailCommand.self,
+                options:    options
+            )
+        }
+        
+        XCTAssertNotNil(actual)
+        
+        let expected: String =
+        """
+        XCTKStateful failed after 2 iterations
+        
+        Command sequence:
+             1. step
+             2. step
+             3. step ←
+             4. step
+             5. step
+             6. step
+             7. step
+             8. step
+             9. step
+            10. step
+        
+        \(Self.seedMessage)
+        
+        Postcondition failed after command: step (step 3)
+        """
+        
+        XCTAssertEqual(expected, actual)
+    }
+    
+    
+    
+    func testPostconditionFailureWithShrinking() async
+    {
+        let options: TestOptions = .propertyOptions(
+            iterations:         5,
+            maxCommandCount:    100,
+            seed:               Self.seed
+        )
+        
+        let actual: String? = await withOneExpectedFailure
+        {
+            await TKStateful(
+                model:      { 0 },
+                system:     { 0 },
+                command:    PostCFailCommand.self,
+                options:    options
+            )
+        }
+        
+        XCTAssertNotNil(actual)
+        
+        let expected: String =
+        """
+        XCTKStateful failed after 2 iterations (shrunk to 3 commands)
+        
+        Command sequence:
+            1. step
+            2. step
+            3. step ←
+        
+        \(Self.seedMessage)
+        
+        Postcondition failed after command: step (step 3)
+        """
+        
+        XCTAssertEqual(expected, actual)
+    }
+    
+    
+    
     // MARK: - ForAll
     
     func testForAllFailure() async throws

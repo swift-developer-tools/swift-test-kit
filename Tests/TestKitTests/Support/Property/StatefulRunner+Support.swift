@@ -812,6 +812,190 @@ internal enum RunFailThrowCommand: Stateful, Equatable, Sendable
 
 
 
+// MARK: - PostCFail
+
+internal enum PostCFailCommand: Stateful, Equatable, Sendable
+{
+    case step
+    
+    static let threshold: Int = 3
+    
+    static func arbitrary(
+        using context   : GenerationContext,
+        model           : Int
+    ) -> Self
+    {
+        return .step
+    }
+    
+    func run(
+        model   : inout Int,
+        system  : inout Int
+    ) async
+    {
+        model   += 1
+        system  += 1
+    }
+    
+    func advance(
+        model: inout Int
+    )
+    {
+        model += 1
+    }
+    
+    func postcondition(
+        model   : Int,
+        system  : Int
+    ) -> Bool
+    {
+        return model < Self.threshold
+    }
+}
+
+
+
+// MARK: - PostCState
+
+internal enum PostCStateCommand: Stateful, Equatable, Sendable
+{
+    case step
+    
+    static func arbitrary(
+        using context   : GenerationContext,
+        model           : Int
+    ) -> Self
+    {
+        return .step
+    }
+    
+    func run(
+        model   : inout Int,
+        system  : inout Int
+    ) async
+    {
+        model   += 10
+        system  += 10
+    }
+    
+    func advance(
+        model: inout Int
+    )
+    {
+        model += 10
+    }
+    
+    func postcondition(
+        model   : Int,
+        system  : Int
+    ) -> Bool
+    {
+        return model % 10 == 0
+            && system % 10 == 0
+    }
+}
+
+
+
+// MARK: - PostCAfterRunFail
+
+internal enum PostCAfterRunFailCommand: Stateful, Equatable, Sendable
+{
+    case step
+    
+    /// Tracks whether the postcondition was called.
+    ///
+    /// Stateful tests run sequentially within a single task, so this is safe.
+    nonisolated(unsafe) static var postconditionCallCount: Int = 0
+    
+    static let message: String = "run failure"
+    
+    static func arbitrary(
+        using context   : GenerationContext,
+        model           : Int
+    ) -> Self
+    {
+        return .step
+    }
+    
+    func run(
+        model   : inout Int,
+        system  : inout Int
+    ) async
+    {
+        model   += 1
+        system  += 1
+        
+        PropertyInterceptor.current?.recordFailure(
+            message:    Self.message,
+            fileID:     "",
+            file:       "",
+            line:       0,
+            column:     0
+        )
+    }
+    
+    func advance(
+        model: inout Int
+    )
+    {
+        model += 1
+    }
+    
+    func postcondition(
+        model   : Int,
+        system  : Int
+    ) -> Bool
+    {
+        Self.postconditionCallCount += 1
+        
+        return false
+    }
+}
+
+
+
+// MARK: - PostCSkipsInvariant
+
+internal enum PostCSkipsInvariant: Stateful, Equatable, Sendable
+{
+    case step
+    
+    static func arbitrary(
+        using context   : GenerationContext,
+        model           : Int
+    ) -> Self
+    {
+        return .step
+    }
+    
+    func run(
+        model   : inout Int,
+        system  : inout Int
+    ) async
+    {
+        model   += 1
+        system  += 1
+    }
+    
+    func advance(
+        model: inout Int
+    )
+    {
+        model += 1
+    }
+    
+    func postcondition(
+        model   : Int,
+        system  : Int
+    ) -> Bool
+    {
+        return false
+    }
+}
+
+
+
 // MARK: - ForAllPass
 
 internal enum ForAllPassCommand: Stateful, Equatable, Sendable

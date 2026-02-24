@@ -2031,6 +2031,209 @@ internal final class StatefulRunnerTests: TestKitCase
     
     
     
+    // MARK: - Postcondition
+    
+    func testDefaultPostconditionPasses() async throws
+    {
+        let options: TestOptions = .propertyOptions(
+            iterations:     50,
+            seed:           Self.seed
+        )
+        
+        let result: PCR<[IncrementCommand]> = await StatefulRunner.run(
+            command:    IncrementCommand.self,
+            model:      { 0 },
+            system:     { 0 },
+            invariant:  nil,
+            options:    options
+        )
+        
+        _ = try XCTUnwrap(result.assertPassed())
+    }
+    
+    
+    
+    func testPostconditionFailureCausesFailedResult() async throws
+    {
+        let options: TestOptions = .propertyOptions(
+            iterations:         10,
+            maxShrinkSteps:     0,
+            maxCommandCount:    100,
+            seed:               Self.seed
+        )
+        
+        let result: PCR<[PostCFailCommand]> = await StatefulRunner.run(
+            command:    PostCFailCommand.self,
+            model:      { 0 },
+            system:     { 0 },
+            invariant:  nil,
+            options:    options
+        )
+        
+        let counterexample: Counterexample<[PostCFailCommand]>
+            = try XCTUnwrap(result.assertFailed())
+        
+        XCTAssertEqual(counterexample.failingStep, PostCFailCommand.threshold)
+        
+        XCTAssertGreaterThanOrEqual(
+            counterexample.value.count,
+            PostCFailCommand.threshold
+        )
+    }
+    
+    
+    
+    func testPostconditionMessageContainsStep() async throws
+    {
+        let options: TestOptions = .propertyOptions(
+            iterations:         10,
+            maxShrinkSteps:     0,
+            maxCommandCount:    100,
+            seed:               Self.seed
+        )
+        
+        let result: PCR<[PostCFailCommand]> = await StatefulRunner.run(
+            command:    PostCFailCommand.self,
+            model:      { 0 },
+            system:     { 0 },
+            invariant:  nil,
+            options:    options
+        )
+        
+        let counterexample: Counterexample<[PostCFailCommand]>
+            = try XCTUnwrap(result.assertFailed())
+        
+        let failure: InterceptedFailure
+            = try XCTUnwrap(counterexample.failures.first)
+        
+        XCTAssertTrue(failure.message.contains("Postcondition failed"))
+        
+        XCTAssertTrue(
+            failure.message.contains("step \(PostCFailCommand.threshold)")
+        )
+    }
+    
+    
+    
+    func testPostconditionReceivesPostRunState() async throws
+    {
+        let options: TestOptions = .propertyOptions(
+            iterations:         20,
+            maxCommandCount:    5,
+            seed:               Self.seed
+        )
+        
+        let result: PCR<[PostCStateCommand]> = await StatefulRunner.run(
+            command:    PostCStateCommand.self,
+            model:      { 0 },
+            system:     { 0 },
+            invariant:  nil,
+            options:    options
+        )
+        
+        _ = try XCTUnwrap(result.assertPassed())
+    }
+    
+    
+    
+    func testRunFailureSkipsPostcondition() async throws
+    {
+        let options: TestOptions = .propertyOptions(
+            iterations:         10,
+            maxShrinkSteps:     0,
+            maxCommandCount:    1,
+            seed:               Self.seed
+        )
+        
+        let result: PCR<[PostCAfterRunFailCommand]> = await StatefulRunner.run(
+            command:    PostCAfterRunFailCommand.self,
+            model:      { 0 },
+            system:     { 0 },
+            invariant:  nil,
+            options:    options
+        )
+        
+        let counterexample: Counterexample<[PostCAfterRunFailCommand]>
+            = try XCTUnwrap(result.assertFailed())
+        
+        /// The postcondition must not have been called during either the
+        /// initial failing run or the final replay after shrinking.
+        XCTAssertEqual(PostCAfterRunFailCommand.postconditionCallCount, 0)
+        
+        let failure: InterceptedFailure
+            = try XCTUnwrap(counterexample.failures.first)
+        
+        /// The failure must be from the failing run, not the postcondition.
+        XCTAssertEqual(failure.message, PostCAfterRunFailCommand.message)
+        XCTAssertFalse(failure.message.contains("Postcondition failed"))
+    }
+    
+    
+    
+    func testPostconditionFailureSkipsInvariant() async throws
+    {
+        var invariantCallCount: Int = 0
+        
+        let options: TestOptions = .propertyOptions(
+            iterations:         10,
+            maxShrinkSteps:     0,
+            maxCommandCount:    1,
+            seed:               Self.seed
+        )
+        
+        let result: PCR<[PostCSkipsInvariant]> = await StatefulRunner.run(
+            command:    PostCSkipsInvariant.self,
+            model:      { 0 },
+            system:     { 0 },
+            invariant:
+            {
+                _, _ async in
+                
+                invariantCallCount += 1
+            },
+            options: options
+        )
+        
+        _ = try XCTUnwrap(result.assertFailed())
+        
+        XCTAssertEqual(invariantCallCount, 0)
+    }
+    
+    
+    
+    func testPostconditionFailureShrinkable() async throws
+    {
+        let target: Int = PostCFailCommand.threshold
+        
+        let options: TestOptions = .propertyOptions(
+            iterations:         10,
+            maxCommandCount:    100,
+            seed:               Self.seed
+        )
+        
+        let result: PCR<[PostCFailCommand]> = await StatefulRunner.run(
+            command:    PostCFailCommand.self,
+            model:      { 0 },
+            system:     { 0 },
+            invariant:  nil,
+            options:    options
+        )
+        
+        let counterexample: Counterexample<[PostCFailCommand]>
+            = try XCTUnwrap(result.assertFailed())
+        
+        XCTAssertEqual(counterexample.value.count, target)
+        XCTAssertGreaterThan(counterexample.shrinkSteps, 0)
+        XCTAssertEqual(counterexample.failingStep, target)
+        
+        XCTAssertGreaterThan(
+            counterexample.originalValue.count,
+            counterexample.value.count
+        )
+    }
+    
+    
+    
     // MARK: - Size
     
     func testSizeProgressionScalesWithIterations() async throws
