@@ -47,17 +47,35 @@ import SwiftSyntaxMacros
 ///   - cases: The enum cases.
 ///   - typeName: The enum name.
 ///   - accessLevel: The access level.
+///   - additionalParams: The additional method parameters to use. The default
+///   value is an empty array for non-stateful conformance.
 /// - Returns: The method expansion.
 internal func makeEnumArbitrary(
-    cases       : [EnumCase],
-    typeName    : String,
-    accessLevel : String
+    cases               : [EnumCase],
+    typeName            : String,
+    accessLevel         : String,
+    additionalParams    : [(label: String, type: String)]   = []
 ) -> String
 {
     var lines: [String] = []
     
     lines.append(indent(1, "\(accessLevel)static func arbitrary("))
-    lines.append(indent(2, "using context: GenerationContext"))
+    
+    let trailing: String = additionalParams.isEmpty 
+        ? ""
+        : ","
+    
+    lines.append(indent(2, "using context: GenerationContext\(trailing)"))
+    
+    for (index, param) in additionalParams.enumerated()
+    {
+        let trailing: String = index < additionalParams.count - 1
+            ? ","
+            : ""
+        
+        lines.append(indent(2, "\(param.label): \(param.type)\(trailing)"))
+    }
+    
     lines.append(indent(1, ") -> \(typeName)"))
     lines.append(indent(1, "{"))
     
