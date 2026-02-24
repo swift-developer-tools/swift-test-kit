@@ -101,6 +101,78 @@ internal enum ShrinkableIncrementCommand: Stateful, Equatable, Sendable
 
 
 
+// MARK: - ModelAwareShrink
+
+internal enum ModelAwareShrinkCommand: Stateful, Equatable, Sendable
+{
+    case add(Int)
+    
+    static let threshold: Int = 5
+    
+    static func arbitrary(
+        using context   : GenerationContext,
+        model           : Int
+    ) -> Self
+    {
+        return .add(threshold + max(1, context.size))
+    }
+    
+    func run(
+        model   : inout Int,
+        system  : inout Int
+    ) async
+    {
+        switch self
+        {
+            case let .add(n):
+                
+                model   += n
+                system  += n
+        }
+        
+        if model >= Self.threshold
+        {
+            PropertyInterceptor.current?.recordFailure()
+        }
+    }
+    
+    func advance(
+        model: inout Int
+    )
+    {
+        switch self
+        {
+            case let .add(n): model += n
+        }
+    }
+    
+    func shrink() -> [Self]
+    {
+        return []
+    }
+    
+    func shrink(
+        model: Int
+    ) -> [Self]
+    {
+        switch self
+        {
+            case let .add(n):
+                
+                let needed: Int = max(1, Self.threshold - model)
+                
+                if n > needed
+                {
+                    return [.add(needed)]
+                }
+                
+                return []
+        }
+    }
+}
+
+
+
 // MARK: - Amount
 
 internal enum AmountCommand: Stateful, Equatable, Sendable

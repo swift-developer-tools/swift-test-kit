@@ -1348,6 +1348,128 @@ internal final class StatefulRunnerTests: TestKitCase
     
     
     
+    // MARK: Model-aware shrinking
+    
+    func testModelAwareShrinkUsesModelState() async
+    {
+        let options: TestOptions = .propertyOptions(
+            iterations:         100,
+            maxShrinkSteps:     100,
+            maxSize:            100,
+            maxCommandCount:    5,
+            seed:               Self.seed
+        )
+        
+        let result: PCR<[ModelAwareShrinkCommand]> = await StatefulRunner.run(
+            command:    ModelAwareShrinkCommand.self,
+            model:      { 0 },
+            system:     { 0 },
+            invariant:  nil,
+            options:    options
+        )
+        
+        guard case let .failed(counterexample, _, _) = result
+        else
+        {
+            XCTFail("Expected .failed, got \(result)")
+            return
+        }
+        
+        XCTAssertGreaterThan(counterexample.shrinkSteps, 0)
+        
+        var model: Int = 0
+        
+        for command in counterexample.value
+        {
+            guard case let .add(n) = command
+            else
+            {
+                XCTFail("Expected .add, got \(command)")
+                return
+            }
+            
+            let expected: Int
+                = max(1, ModelAwareShrinkCommand.threshold - model)
+            
+            /// Each command's value must be exactly what the model-aware
+            /// shrink method produces: `max(1, threshold - modelAtIndex)`.
+            XCTAssertEqual(n, expected)
+            
+            model += n
+        }
+    }
+    
+    
+    
+    func testModelAwareShrinkDefaultDelegation() async
+    {
+        let maxCommandCount: Int = 10
+        
+        let options: TestOptions = .propertyOptions(
+            iterations:         100,
+            maxShrinkSteps:     100,
+            maxSize:            100,
+            maxCommandCount:    maxCommandCount,
+            seed:               Self.seed
+        )
+        
+        let result: PCR<[AmountCommand]> = await StatefulRunner.run(
+            command:    AmountCommand.self,
+            model:      { 0 },
+            system:     { 0 },
+            invariant:
+            {
+                model, system in
+                
+                if model >= maxCommandCount
+                {
+                    PropertyInterceptor.current?.recordFailure()
+                }
+            },
+            options: options
+        )
+        
+        guard case let .failed(counterexample, _, _) = result
+        else
+        {
+            XCTFail("Expected .failed, got \(result)")
+            return
+        }
+        
+        let shrunkenTotal: Int = counterexample.value.reduce(0)
+        {
+            guard case let .add(n) = $1
+            else
+            {
+                return $0
+            }
+            
+            return $0 + n
+        }
+        
+        XCTAssertGreaterThanOrEqual(shrunkenTotal, maxCommandCount)
+        
+        let originalTotal: Int = counterexample.originalValue.reduce(0)
+        {
+            guard case let .add(n) = $1
+            else
+            {
+                return $0
+            }
+            
+            return $0 + n
+        }
+        
+        XCTAssertLessThanOrEqual(shrunkenTotal, originalTotal)
+        
+        XCTAssertLessThanOrEqual(
+            counterexample.value.count,
+            counterexample.originalValue.count
+        )
+    }
+    
+    
+    
     // MARK: - Run failure
     
     func testCommandRunFailureReportsCorrectStep() async throws
