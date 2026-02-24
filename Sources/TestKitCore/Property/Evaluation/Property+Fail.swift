@@ -108,6 +108,19 @@ extension PropertyCheckResult
         tableDistribution   : [String : [String : Int]]
     ) -> String
     {
+        if counterexample.failingStep != nil
+        {
+            return formatStatefulCounterexample(
+                counterexample,
+                functionName:       functionName,
+                message:            message,
+                distribution:       distribution,
+                tableDistribution:  tableDistribution
+            )
+        }
+        
+        
+        
         var lines: [String] = []
         
         var header: String
@@ -155,29 +168,98 @@ extension PropertyCheckResult
         
         
         
-        lines.append("")
-        lines.append(Self.makeSeedLine(seed: counterexample.seed))
-        
-        lines = Self.addDistributionLines(
-            to:                 lines,
-            iterations:         counterexample.iteration,
+        return Self.finishCounterexampleMessage(
+            counterexample,
+            lines:              lines,
+            message:            message,
             distribution:       distribution,
             tableDistribution:  tableDistribution
         )
-        
-        lines = Self.addErrorLines(
-            to:                 lines,
-            counterexample:     counterexample
-        )
-        
-        lines = Self.addMessageLines(
-            to:         lines,
-            message:    message
-        )
-        
-        return lines.joined(separator: "\n")
     }
     
+    
+    
+    /// Creates a stateful counterexample failure message.
+    /// - Parameters:
+    ///   - counterexample: The counterexample to format.
+    ///   - functionName: The name of the property-based function.
+    ///   - message: The description of a failure.
+    ///   - distribution: The accumulated count of iterations that matched
+    ///   each label.
+    ///   - tableDistribution: The accumulated count of iterations that
+    ///   matched each table value, mapping the table name to a map of values
+    ///   and their counts.
+    /// - Returns: The stateful counterexample failure message.
+    private func formatStatefulCounterexample(
+        _ counterexample    : Counterexample<T>,
+        functionName        : String,
+        message             : () -> String,
+        distribution        : [String : Int],
+        tableDistribution   : [String : [String : Int]]
+    ) -> String
+    {
+        let commandMirror   : Mirror  = .init(reflecting: counterexample.value)
+        let commandCount    : Int     = commandMirror.children.count
+        
+        
+        
+        var lines: [String] = []
+        
+        var header: String
+            = "\(functionName) failed after \(counterexample.iteration)"
+            + " iteration\(counterexample.iteration == 1 ? "" : "s")"
+        
+        if counterexample.shrinkSteps > 0
+        {
+            header += " (shrunk to \(commandCount)"
+            header += " command\(commandCount == 1 ? "" : "s")"
+            header += ")"
+        }
+        
+        lines.append(header)
+        
+        
+        
+        let failingStep : Int       = counterexample.failingStep ?? commandCount
+        let commands    : [Any]     = commandMirror.children.map { $0.value }
+        
+        lines.append("")
+        lines.append("Command sequence:")
+        
+        let digitWidth: Int = String(commandCount).count
+        
+        for (index, command) in commands.enumerated()
+        {
+            let step        : Int       = index + 1
+            let stepString  : String    = .init(step)
+            
+            let padding = String(
+                repeating:  " ",
+                count:      digitWidth - stepString.count
+            )
+            
+            var line: String 
+                = "    \(padding + stepString). \(String(describing: command))"
+            
+            if step == failingStep
+            {
+                line += " ←"
+            }
+            
+            lines.append(line)
+        }
+        
+        
+        
+        return Self.finishCounterexampleMessage(
+            counterexample,
+            lines:              lines,
+            message:            message,
+            distribution:       distribution,
+            tableDistribution:  tableDistribution
+        )
+    }
+
     
     
     // MARK: - Exhausted
@@ -696,5 +778,55 @@ extension PropertyCheckResult
         }
         
         return lines
+    }
+    
+    
+    
+    /// Finishes formatting the given counterexample failure message.
+    ///
+    /// This appends lines for the seed, distributions, any failures or errors,
+    /// and the message, then joins the lines.
+    ///
+    /// - Parameters:
+    ///   - counterexample: The counterexample to format.
+    ///   - originalLines: The lines to update.
+    ///   - message: The description of a failure.
+    ///   - distribution: The accumulated count of iterations that matched
+    ///   each label.
+    ///   - tableDistribution: The accumulated count of iterations that
+    ///   matched each table value, mapping the table name to a map of values
+    ///   and their counts.
+    /// - Returns: The counterexample failure message.
+    private static func finishCounterexampleMessage(
+        _ counterexample    : Counterexample<T>,
+        lines originalLines : [String],
+        message             : () -> String,
+        distribution        : [String : Int],
+        tableDistribution   : [String : [String : Int]]
+    ) -> String
+    {
+        var lines: [String] = originalLines
+        
+        lines.append("")
+        lines.append(Self.makeSeedLine(seed: counterexample.seed))
+        
+        lines = Self.addDistributionLines(
+            to:                 lines,
+            iterations:         counterexample.iteration,
+            distribution:       distribution,
+            tableDistribution:  tableDistribution
+        )
+        
+        lines = Self.addErrorLines(
+            to:                 lines,
+            counterexample:     counterexample
+        )
+        
+        lines = Self.addMessageLines(
+            to:         lines,
+            message:    message
+        )
+        
+        return lines.joined(separator: "\n")
     }
 }

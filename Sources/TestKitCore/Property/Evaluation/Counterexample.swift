@@ -28,6 +28,36 @@ internal struct Counterexample<T>
     /// The assertion failures from the final run with the shrunken value.
     internal let failures       : [InterceptedFailure]
     
+    /// The 1-indexed step within the command sequence at which the original
+    /// counterexample was found.
+    ///
+    /// This is used only for stateful tests and is otherwise `nil`.
+    internal let failingStep    : Int?
+    
     /// The error thrown by the property body, if any.
     internal let thrownError    : Error?
+    
+    
+    
+    /// Initializes a ``Counterexample`` instance from the given values.
+    internal init(
+        value           : T,
+        originalValue   : T,
+        seed            : UInt64,
+        iteration       : Int,
+        shrinkSteps     : Int,
+        failures        : [InterceptedFailure],
+        failingStep     : Int?,
+        thrownError     : Error?
+    )
+    {
+        self.value          = value
+        self.originalValue  = originalValue
+        self.seed           = seed
+        self.iteration      = iteration
+        self.shrinkSteps    = shrinkSteps
+        self.failures       = failures
+        self.failingStep    = failingStep
+        self.thrownError    = thrownError
+    }
 }
