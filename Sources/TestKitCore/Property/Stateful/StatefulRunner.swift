@@ -131,7 +131,7 @@ internal struct StatefulRunner<C> where C : Stateful
                     
                     /// This should not occur since preconditions are verified
                     /// during sequence generation. If it does occur, it means
-                    /// ``Stateful/next(model:)`` and
+                    /// ``Stateful/advance(model:)`` and
                     /// ``Stateful/run(model:system:)`` may advance the model
                     /// differently. Treat it as a discard.
                     logger.warning("Precondition failed during replay")
