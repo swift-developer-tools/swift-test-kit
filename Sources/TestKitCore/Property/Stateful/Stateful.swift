@@ -34,9 +34,11 @@
 /// 1. A ``precondition(model:)`` method to determine whether a command is
 /// valid for a given model state. The default implementation always returns
 /// `true`.
-/// 2. A ``shrink()`` method to enable argument-level shrinking. The default
-/// implementation returns an empty array to indicate that no shrinking should
-/// occur.
+/// 2. A ``shrink()`` method to enable model-independent argument shrinking.
+/// The default implementation returns an empty array to indicate that no
+/// shrinking should occur.
+/// 3. A ``shrink(model:)`` method to enable model-dependent argument shrinking.
+/// The default implementation delegates to the model-independent method.
 ///
 /// Below is an example of adding ``Stateful`` conformance to a custom type.
 ///
@@ -106,8 +108,8 @@
 /// 1. Removal shrinking: Chunks of commands are removed from the sequence.
 /// This step is always performed.
 /// 2. Argument shrinking: Individual commands are replaced by smaller
-/// alternatives. This step is peformed only if the type overrides the
-/// ``shrink()`` method and returns a non-empty array of candidates.
+/// alternatives. This step is performed only if the type overrides ``shrink()``
+/// or ``shrink(model:)``, and returns a non-empty array of candidates.
 public protocol Stateful: Sendable
 {
     /// The system under test.
@@ -180,7 +182,8 @@ public protocol Stateful: Sendable
     
     
     
-    /// Generates candidates commands that are smaller than the receiver.
+    /// Generates model-independent candidate commands that are smaller than
+    /// the receiver.
     ///
     /// The default implementation returns an empty array (no shrinking).
     /// Override this method to provide shrink candidates for a conforming
@@ -189,6 +192,24 @@ public protocol Stateful: Sendable
     /// - Returns: An array of smaller candidate commands, or an empty array
     /// to indicate that no shrinking should occur.
     func shrink() -> [Self]
+    
+    
+    
+    /// Generates model-dependent candidate commands that are smaller than
+    /// the receiver.
+    ///
+    /// Use this to generate shrink candidates that are valid for the given
+    /// model state, reducing wasted shrink attempts in which candidates are
+    /// filtered out by preconditions.
+    ///
+    /// The default implementation delegates to ``shrink()``.
+    ///
+    /// - Parameter model: The model state.
+    /// - Returns: An array of smaller candidate commands, or an empty array
+    /// to indicate that no shrinking should occur.
+    func shrink(
+        model: Model
+    ) -> [Self]
 }
 
 
@@ -222,5 +243,21 @@ extension Stateful
     public func shrink() -> [Self]
     {
         return []
+    }
+    
+    
+    
+    /// Delegates to ``shrink()``.
+    ///
+    /// This is the default implementation. Override this method to provide
+    /// model-dependent shrink candidates.
+    ///
+    /// - Parameter model: The model state.
+    /// - Returns: The shrink candidates.
+    public func shrink(
+        model: Model
+    ) -> [Self]
+    {
+        return shrink()
     }
 }
