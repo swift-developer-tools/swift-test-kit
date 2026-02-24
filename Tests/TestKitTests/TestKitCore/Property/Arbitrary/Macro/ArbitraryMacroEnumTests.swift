@@ -7,9 +7,10 @@
 //
 //===----------------------------------------------------------------------===//
 
+import TestKitCore
 import XCTestKit
 import XCTest
-@testable import TestKitCore
+@testable import enum TestKitCore.PropertyCheckResult
 
 
 

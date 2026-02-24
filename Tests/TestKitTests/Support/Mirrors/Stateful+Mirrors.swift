@@ -8,7 +8,7 @@
 //===----------------------------------------------------------------------===//
 
 import TestKitCore
-@testable import XCTestKit
+@testable import let XCTestKit.failureContext
 
 
 
