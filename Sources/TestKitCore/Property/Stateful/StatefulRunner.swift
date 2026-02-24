@@ -371,6 +371,33 @@ internal struct StatefulRunner<C> where C : Stateful
             
             
             
+            let postconditionSuccess: Bool = command.postcondition(
+                model:      currentModel,
+                system:     currentSystem
+            )
+            
+            if !postconditionSuccess
+            {
+                interceptor.recordFailure(
+                    message:    "Postcondition failed after command:"
+                                + " \(command) (step \(index + 1))",
+                    fileID:     "",
+                    file:       "",
+                    line:       0,
+                    column:     0
+                )
+                
+                let failure = ReplayFailure(
+                    step:           index + 1,
+                    failures:       interceptor.failures,
+                    thrownError:    nil
+                )
+                
+                return .failed(failure)
+            }
+            
+            
+            
             if let invariant
             {
                 var discarded   : Bool      = false

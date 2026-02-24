@@ -32,12 +32,14 @@
 /// A stateful type may optionally define:
 ///
 /// 1. A ``precondition(model:)`` method to determine whether a command is
-/// valid for a given model state. The default implementation always returns
-/// `true`.
-/// 2. A ``shrink()`` method to enable model-independent argument shrinking.
+/// valid for the model state. The default implementation always returns `true`.
+/// 2. A ``postcondition(model:system:)`` method to determine whether the
+/// system state is consistent with the model state after executing a command.
+/// The default implementation always returns `true`.
+/// 3. A ``shrink()`` method to enable model-independent argument shrinking.
 /// The default implementation returns an empty array to indicate that no
 /// shrinking should occur.
-/// 3. A ``shrink(model:)`` method to enable model-dependent argument shrinking.
+/// 4. A ``shrink(model:)`` method to enable model-dependent argument shrinking.
 /// The default implementation delegates to the model-independent method.
 ///
 /// Below is an example of adding ``Stateful`` conformance to a custom type.
@@ -138,13 +140,34 @@ public protocol Stateful: Sendable
     /// provide specific preconditions.
     ///
     /// This is used during sequence generation to filter invalid commands
-    /// and during sequence shrinking to ensure that candidate sequences
-    /// remain valid after commands are removed.
+    /// and during shrinking to ensure that candidate sequences remain valid
+    /// after commands are removed.
     ///
     /// - Parameter model: The model state.
     /// - Returns: Whether this command is valid under the given model state.
     func precondition(
         model: Model
+    ) -> Bool
+    
+    
+    
+    /// Whether the given system state is consistent with the given model
+    /// after executing this command.
+    ///
+    /// The default implementation returns `true`. Override this method to
+    /// provide specific postconditions.
+    ///
+    /// This is used after each command is executed and during shrinking.
+    /// Returning `false` records a failure identical to an assertion failure.
+    ///
+    /// - Parameters:
+    ///   - model: The model state.
+    ///   - system: The system state.
+    /// - Returns: Whether the given system state is consistent with the given
+    /// model after executing this command.
+    func postcondition(
+        model   : Model,
+        system  : System
     ) -> Bool
     
     
@@ -158,7 +181,7 @@ public protocol Stateful: Sendable
     ///
     /// - Parameters:
     ///   - model: The model state.
-    ///   - system: The system under test.
+    ///   - system: The system state.
     func run(
         model   : inout Model,
         system  : inout System
@@ -227,6 +250,26 @@ extension Stateful
     /// - Returns: Always `true`.
     public func precondition(
         model: Model
+    ) -> Bool
+    {
+        return true
+    }
+    
+    
+    
+    /// Whether the given system state is consistent with the given model state
+    /// after executing this command.
+    ///
+    /// This is the default implementation. Override this method to provide
+    /// specific postconditions.
+    ///
+    /// - Parameters:
+    ///   - model: The model state.
+    ///   - system: The system state.
+    /// - Returns: Always `true`.
+    public func postcondition(
+        model   : Model,
+        system  : System
     ) -> Bool
     {
         return true
