@@ -36,6 +36,23 @@ native XCTest assertion fails inside a property body, it bypasses shrinking and
 produces an immediate test failure. Use only XCTestKit assertions inside 
 property bodies.
 
+### Stateful Testing
+
+Stateful testing extends property-based testing to systems with mutable state. 
+Rather than testing individual values against a property, stateful testing 
+generates random sequences of commands and executes them against both a 
+simplified model and the real system, validating consistency at each step.
+
+Commands conform to the ``Stateful`` protocol, which defines how to generate 
+random commands, execute them against the model and system, and advance the 
+model independently. Optional preconditions filter commands based on the model 
+state, and optional postconditions validate system behavior after each command 
+is executed.
+
+When a failing command sequence is found, it is shrunk to the minimal 
+counterexample in two phases: removal shrinking removes unnecessary commands, 
+and argument shrinking reduces individual command parameters.
+
 ## Topics
 
 ### Evaluating Properties Synchronously
@@ -51,6 +68,13 @@ property bodies.
 - ``XCTKForAll(using:message:fileID:file:line:column:options:_:)-75slc``
 - ``XCTKForAll(where:message:fileID:file:line:column:options:_:)-7u936``
 - ``XCTKForAll(using:where:message:fileID:file:line:column:options:_:)-39qo7``
+
+### Evaluating Properties Statefully
+
+- ``XCTKStateful(_:model:system:command:fileID:file:line:column:options:invariant:)``
+- ``Stateful``
+- ``Stateful()``
+- ``Weight(_:)``
 
 ### Classifying Properties
 
