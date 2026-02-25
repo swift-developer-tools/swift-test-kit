@@ -193,8 +193,7 @@ public protocol Stateful: Sendable
     
     
     
-    /// Advances the model to the next state without executing against the
-    /// system.
+    /// Advances to the next model state without executing against the system.
     ///
     /// - Important: This must advance the model identically to
     /// ``run(model:system:)``.
