@@ -112,6 +112,12 @@
 /// 2. Argument shrinking: Individual commands are replaced by smaller
 /// alternatives. This step is performed only if the type overrides ``shrink()``
 /// or ``shrink(model:)``, and returns a non-empty array of candidates.
+///
+/// ## Assertions
+///
+/// ``run(model:system:)`` is the only ``Stateful`` method in which
+/// SwiftTestKit or XCTestKit assertions are intercepted. Assertions used in
+/// other methods bypass shrinking and produce immediate test failures.
 public protocol Stateful: Sendable
 {
     /// The system under test.
@@ -174,8 +180,6 @@ public protocol Stateful: Sendable
     
     /// Executes the command on both the given model and system.
     ///
-    /// - Note: This may include SwiftTestKit or XCTestKit assertions.
-    ///
     /// - Important: This must advance the model identically to
     /// ``advance(model:)``.
     ///
@@ -191,9 +195,6 @@ public protocol Stateful: Sendable
     
     /// Advances the model to the next state without executing against the
     /// system.
-    ///
-    /// - Important: This must not include any assertions, and must not
-    /// execute against the system.
     ///
     /// - Important: This must advance the model identically to
     /// ``run(model:system:)``.
