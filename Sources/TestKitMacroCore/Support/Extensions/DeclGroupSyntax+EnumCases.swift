@@ -60,7 +60,8 @@ extension DeclGroupSyntax
                 
                 let enumCase = EnumCase(
                     name:               element.name.text,
-                    associatedValues:   associatedValues
+                    associatedValues:   associatedValues,
+                    weight:             extractWeight(from: caseDecl)
                 )
                 
                 cases.append(enumCase)
@@ -68,5 +69,44 @@ extension DeclGroupSyntax
         }
         
         return cases
+    }
+    
+    
+    
+    /// Extracts the ``Weight()`` macro integer literal from the given enum
+    /// case declaration, if present.
+    /// - Parameter caseDecl: The enum case declaration.
+    /// - Returns: The weight, or `nil` if not present.
+    private func extractWeight(
+        from caseDecl: EnumCaseDeclSyntax
+    ) -> Int?
+    {
+        for attribute in caseDecl.attributes
+        {
+            guard
+                case let .attribute(attr) = attribute,
+                let identifier
+                    = attr.attributeName.as(IdentifierTypeSyntax.self),
+                identifier.name.text == "Weight"
+            else
+            {
+                continue
+            }
+            
+            guard
+                let args = attr.arguments?.as(LabeledExprListSyntax.self),
+                let firstArg: LabeledExprSyntax = args.first,
+                let integerLiteral
+                    = firstArg.expression.as(IntegerLiteralExprSyntax.self),
+                let value = Int(integerLiteral.literal.text)
+            else
+            {
+                return nil
+            }
+            
+            return value
+        }
+        
+        return nil
     }
 }

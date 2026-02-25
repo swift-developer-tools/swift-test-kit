@@ -14,6 +14,53 @@ import SwiftSyntaxMacros
 
 // MARK: Generation
 
+/// Arbitrary generation method kinds.
+internal enum EnumGenerationKind
+{
+    /// Generate for ``Arbitrary/arbitrary(using:)``.
+    case arbitrary
+    
+    /// Generate for ``Stateful/arbitrary(using:model:)``, without weights.
+    case statefulWeightless
+    
+    /// Generate for ``Stateful/arbitrary(using:model:)``, with weights.
+    /// - Parameter weights: The command weights to use.
+    case statefulWeighted(
+        weights: [Int]
+    )
+    
+    
+    
+    /// Initializes an ``EnumGenerationKind`` instance from the given cases.
+    /// - Parameter cases: The enum cases. Pass `nil` for ``arbitrary``.
+    /// Otherwise, if any case has an explicit weight that is not `1`, this
+    /// returns ``statefulWeighted(weights:)``.
+    init(
+        cases: [EnumCase]?
+    )
+    {
+        guard let cases
+        else
+        {
+            self = .arbitrary
+            return
+        }
+        
+        let weights: [Int] = cases.map { $0.weight ?? 1 }
+        
+        if weights.contains(where: { $0 != 1 })
+        {
+            self = .statefulWeighted(weights: weights)
+        }
+        else
+        {
+            self = .statefulWeightless
+        }
+    }
+}
+
+
+
 /// Generates the ``Arbitrary/arbitrary(using:)`` or
 /// ``Stateful/arbitrary(using:model:)`` method for an enum.
 ///
@@ -44,36 +91,53 @@ import SwiftSyntaxMacros
 /// declaration at a time.
 ///
 /// - Parameters:
+///   - kind: The generation kind.
 ///   - cases: The enum cases.
 ///   - typeName: The enum name.
 ///   - accessLevel: The access level.
-///   - additionalParams: The additional method parameters to use. The default
-///   value is an empty array for non-stateful conformance.
 /// - Returns: The method expansion.
 internal func makeEnumArbitrary(
-    cases               : [EnumCase],
-    typeName            : String,
-    accessLevel         : String,
-    additionalParams    : [(label: String, type: String)]   = []
+    kind        : EnumGenerationKind,
+    cases       : [EnumCase],
+    typeName    : String,
+    accessLevel : String
 ) -> String
 {
+    let isStateful  : Bool
+    let weights     : [Int]?
+    
+    switch kind
+    {
+        case .arbitrary:
+            
+            isStateful  = false
+            weights     = nil
+            
+        case .statefulWeightless:
+            
+            isStateful  = true
+            weights     = nil
+            
+        case let .statefulWeighted(w):
+            
+            isStateful  = true
+            weights     = w
+    }
+    
+    
+    
     var lines: [String] = []
     
     lines.append(indent(1, "\(accessLevel)static func arbitrary("))
     
-    let trailing: String = additionalParams.isEmpty 
-        ? ""
-        : ","
-    
-    lines.append(indent(2, "using context: GenerationContext\(trailing)"))
-    
-    for (index, param) in additionalParams.enumerated()
+    if isStateful
     {
-        let trailing: String = index < additionalParams.count - 1
-            ? ","
-            : ""
-        
-        lines.append(indent(2, "\(param.label): \(param.type)\(trailing)"))
+        lines.append(indent(2, "using context: GenerationContext,"))
+        lines.append(indent(2, "model: Model"))
+    }
+    else
+    {
+        lines.append(indent(2, "using context: GenerationContext"))
     }
     
     lines.append(indent(1, ") -> \(typeName)"))
@@ -102,6 +166,7 @@ internal func makeEnumArbitrary(
         /// `return` statement.
         appendCaseSelection(
             cases:          cases,
+            weights:        weights,
             wrapPayload:    false,
             baseIndent:     2,
             lines:          &lines
@@ -120,6 +185,7 @@ internal func makeEnumArbitrary(
             
             appendCaseSelection(
                 cases:          baseCases,
+                weights:        weights,
                 wrapPayload:    false,
                 baseIndent:     3,
                 lines:          &lines
@@ -133,6 +199,7 @@ internal func makeEnumArbitrary(
         /// ``GenerationContext/withReducedSize(by:_:)``.
         appendCaseSelection(
             cases:          cases,
+            weights:        weights,
             wrapPayload:    true,
             baseIndent:     2,
             lines:          &lines
@@ -563,15 +630,22 @@ internal func makeWhereClause(
 ///
 /// For a single case, this appends a direct `return` statement. For
 /// multiple cases, this appends a `switch` statement over a random index.
+/// For multiple cases with weights, this appends a weighted selection using
+/// ``GenerationContext/randomElement(of:weightedBy:)``.
 ///
 /// - Parameters:
 ///   - cases: The cases from which to select.
+///   - weights: The per-case weights, or `nil` for uniform selection. When
+///   non-`nil`, the count must equal the count of all cases in the enclosing
+///   enum. Cases not present in `cases` (for example, payload cases excluded
+///   from a base-case-only block) are skipped by index.
 ///   - wrapPayload: Whether to wrap payload cases (cases with associated
 ///   values) in ``GenerationContext/withReducedSize(by:_:)``.
 ///   - baseIndent: The base indentation level.
 ///   - lines: The lines to which to append.
 internal func appendCaseSelection(
     cases       : [EnumCase],
+    weights     : [Int]?,
     wrapPayload : Bool,
     baseIndent  : Int,
     lines       : inout [String]
@@ -579,39 +653,52 @@ internal func appendCaseSelection(
 {
     if cases.count == 1
     {
-        let enumCase: EnumCase = cases[0]
-        
-        if
-            wrapPayload,
-            !enumCase.associatedValues.isEmpty
-        {
-            lines.append(
-                indent(baseIndent, "return context.withReducedSize")
-            )
-            
-            lines.append(indent(baseIndent, "{"))
-            
-            let caseText: String
-                = "return \(makeCaseConstruction(enumCase))"
-            
-            lines.append(indent(baseIndent + 1, caseText))
-            lines.append(indent(baseIndent, "}"))
-        }
-        else
-        {
-            let caseText: String
-                = "return \(makeCaseConstruction(enumCase))"
-            
-            lines.append(indent(baseIndent, caseText))
-        }
+        appendCaseReturn(
+            enumCase:       cases[0],
+            wrapPayload:    wrapPayload,
+            baseIndent:     baseIndent,
+            lines:          &lines
+        )
         
         return
     }
     
     
+    let switchText          : String
+    let effectiveWeights    : [Int]     = cases.map { $0.weight ?? 1 }
     
-    let switchText: String
-        = "switch context.random(in: 0..<\(cases.count))"
+    let isWeighted: Bool = weights != nil
+        && effectiveWeights.contains(where: { $0 != 1 })
+    
+    if isWeighted
+    {
+        let variableName: String = "_$selection"
+        
+        switchText = "switch \(variableName)"
+        
+        var tuples: [String] = []
+        
+        for (index, weight) in effectiveWeights.enumerated()
+        {
+            tuples.append("(\(weight), \(index))")
+        }
+        
+        lines.append(
+            indent(baseIndent, "let \(variableName) = context.randomElement(")
+        )
+        
+        lines.append(
+            indent(baseIndent + 1, "of: [\(tuples.joined(separator: ", "))],")
+        )
+        
+        lines.append(indent(baseIndent + 1, "weightedBy: { $0.0 }"))
+        lines.append(indent(baseIndent, ")!.1"))
+        lines.append("")
+    }
+    else
+    {
+        switchText = "switch context.random(in: 0..<\(cases.count))"
+    }
     
     lines.append(indent(baseIndent, switchText))
     lines.append(indent(baseIndent, "{"))
@@ -624,29 +711,12 @@ internal func appendCaseSelection(
         
         lines.append(indent(baseIndent + 1, patternText))
         
-        if
-            wrapPayload,
-            !enumCase.associatedValues.isEmpty
-        {
-            lines.append(
-                indent(baseIndent + 2, "return context.withReducedSize")
-            )
-            
-            lines.append(indent(baseIndent + 2, "{"))
-            
-            let caseText: String
-                = "return \(makeCaseConstruction(enumCase))"
-            
-            lines.append(indent(baseIndent + 3, caseText))
-            lines.append(indent(baseIndent + 2, "}"))
-        }
-        else
-        {
-            let caseText: String
-                = "return \(makeCaseConstruction(enumCase))"
-            
-            lines.append(indent(baseIndent + 2, caseText))
-        }
+        appendCaseReturn(
+            enumCase:       enumCase,
+            wrapPayload:    wrapPayload,
+            baseIndent:     baseIndent + 2,
+            lines:          &lines
+        )
         
         if index < cases.count - 1
         {
@@ -655,6 +725,47 @@ internal func appendCaseSelection(
     }
     
     lines.append(indent(baseIndent, "}"))
+}
+
+
+
+/// Appends a `return` statement for the given enum case.
+/// - Parameters:
+///   - enumCase: The enum case.
+///   - wrapPayload: Whether to wrap payload cases (cases with associated
+///   values) in ``GenerationContext/withReducedSize(by:_:)``.
+///   - baseIndent: The base indentation level.
+///   - lines: The lines to which to append.
+private func appendCaseReturn(
+    enumCase    : EnumCase,
+    wrapPayload : Bool,
+    baseIndent  : Int,
+    lines       : inout [String]
+)
+{
+    if
+        wrapPayload,
+        !enumCase.associatedValues.isEmpty
+    {
+        lines.append(
+            indent(baseIndent, "return context.withReducedSize")
+        )
+        
+        lines.append(indent(baseIndent, "{"))
+        
+        let caseText: String
+            = "return \(makeCaseConstruction(enumCase))"
+        
+        lines.append(indent(baseIndent + 1, caseText))
+        lines.append(indent(baseIndent, "}"))
+    }
+    else
+    {
+        let caseText: String
+            = "return \(makeCaseConstruction(enumCase))"
+        
+        lines.append(indent(baseIndent, caseText))
+    }
 }
 
 

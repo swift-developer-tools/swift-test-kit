@@ -103,6 +103,7 @@ extension ArbitraryMacro
             }
             
             methods = makeEnumArbitrary(
+                kind:           .arbitrary,
                 cases:          cases,
                 typeName:       typeName,
                 accessLevel:    accessLevel

@@ -22,6 +22,7 @@ struct TestKitMacroPlugin: CompilerPlugin
         
         ArbitraryMacro.self,
         StatefulMacro.self,
+        WeightMacro.self,
         
         
         

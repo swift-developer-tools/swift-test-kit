@@ -109,10 +109,10 @@ extension StatefulMacro
         }
         
         let methods: String = makeEnumArbitrary(
-            cases:              cases,
-            typeName:           typeName,
-            accessLevel:        accessLevel,
-            additionalParams:   [("model", "Model")]
+            kind:           EnumGenerationKind(cases: cases),
+            cases:          cases,
+            typeName:       typeName,
+            accessLevel:    accessLevel
         )
         + "\n\n"
         + makeEnumShrink(
