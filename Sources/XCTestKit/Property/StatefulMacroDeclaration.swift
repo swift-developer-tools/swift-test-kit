@@ -51,7 +51,7 @@
 /// commands after generation.
 ///
 /// The default ``Stateful`` behavior is to select cases uniformly at random.
-/// To control the frequency of individual cases, use the ``Weight()`` macro.
+/// To control the frequency of individual cases, use the ``Weight(_:)`` macro.
 /// Any case without an explicit weight defaults to a weight of `1`.
 ///
 /// ```swift

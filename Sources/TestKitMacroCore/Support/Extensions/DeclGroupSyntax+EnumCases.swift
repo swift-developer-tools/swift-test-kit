@@ -73,7 +73,7 @@ extension DeclGroupSyntax
     
     
     
-    /// Extracts the ``Weight()`` macro integer literal from the given enum
+    /// Extracts the ``Weight(_:)`` macro integer literal from the given enum
     /// case declaration, if present.
     /// - Parameter caseDecl: The enum case declaration.
     /// - Returns: The weight, or `nil` if not present.

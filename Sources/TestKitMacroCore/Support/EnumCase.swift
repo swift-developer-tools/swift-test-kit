@@ -20,7 +20,7 @@ internal struct EnumCase
     /// The associated values.
     let associatedValues    : [EnumAssociatedValue]
     
-    /// The weight specified by the ``Weight()`` macro, if any.
+    /// The weight specified by the ``Weight(_:)`` macro, if any.
     let weight              : Int?
 }
 
