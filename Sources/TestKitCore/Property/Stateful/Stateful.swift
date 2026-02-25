@@ -140,7 +140,7 @@ public protocol Stateful: Sendable
     
     
     
-    /// Whether this command is valid under the given model state.
+    /// Checks whether this command is valid under the given model state.
     ///
     /// The default implementation returns `true`. Override this method to
     /// provide specific preconditions.
@@ -157,8 +157,8 @@ public protocol Stateful: Sendable
     
     
     
-    /// Whether the given system state is consistent with the given model
-    /// after executing this command.
+    /// Checks whether the given system state is consistent with the given
+    /// model after executing this command.
     ///
     /// The default implementation returns `true`. Override this method to
     /// provide specific postconditions.
@@ -242,7 +242,7 @@ public protocol Stateful: Sendable
 
 extension Stateful
 {
-    /// Whether this command is valid under the given model state.
+    /// Checks whether this command is valid under the given model state.
     ///
     /// This is the default implementation. Override this method to provide
     /// specific preconditions.
@@ -258,8 +258,8 @@ extension Stateful
     
     
     
-    /// Whether the given system state is consistent with the given model state
-    /// after executing this command.
+    /// Checks whether the given system state is consistent with the given
+    /// model state after executing this command.
     ///
     /// This is the default implementation. Override this method to provide
     /// specific postconditions.
