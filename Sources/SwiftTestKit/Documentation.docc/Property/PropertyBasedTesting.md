@@ -20,6 +20,9 @@ Value generation is controlled by a seed for deterministic replay, and by a
 size parameter that starts small (for example, zero, empty arrays, and short 
 strings) and grows across iterations to explore progressively larger values.
 
+Types used with property-based evaluators conform to the ``Arbitrary`` protocol, 
+which defines how to generate random values and optionally how to shrink them.
+
 ### Assertion Interception
 
 SwiftTestKit assertions used inside a property body are automatically 
