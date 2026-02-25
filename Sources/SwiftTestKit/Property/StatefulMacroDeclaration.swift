@@ -39,7 +39,7 @@
 /// }
 /// ```
 ///
-/// Type aliases for the system and model are not mandatory. If they are
+/// Type aliases for the system and model are not required. If they are
 /// omitted, the types of the system and model will be derived from the
 /// signatures of the methods that must be manually added.
 ///
