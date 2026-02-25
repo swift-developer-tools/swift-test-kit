@@ -462,6 +462,286 @@ internal final class StatefulMacroTests: TestKitCase
     
     
     
+    // MARK: - WeightedCommand
+    
+    func testWeightedCommandDeterminism()
+    {
+        assertStatefulDeterminism(
+            of:     WeightedCommand.self,
+            model:  0
+        )
+    }
+    
+    
+    
+    func testWeightedCommandDistribution()
+    {
+        let iterations      : Int   = 10_000
+        var resetCount      : Int   = 0
+        var subtractCount   : Int   = 0
+        var addCount        : Int   = 0
+        
+        for _ in 0..<iterations
+        {
+            let value = WeightedCommand.arbitrary(
+                using:  .randomSeed(size: 500),
+                model:  0
+            )
+            
+            switch value
+            {
+                case .reset     : resetCount        += 1
+                case .subtract  : subtractCount     += 1
+                case .add       : addCount          += 1
+            }
+        }
+        
+        /// Weights: reset (1) + subtract (3) + add (5)
+        let total: Double = 9.0
+        
+        XCTAssertGreaterThan(
+            resetCount,
+            Int(Double(iterations) * 1.0 / total * 0.85)
+        )
+        
+        XCTAssertGreaterThan(
+            subtractCount,
+            Int(Double(iterations) * 3.0 / total * 0.85)
+        )
+        
+        XCTAssertGreaterThan(
+            addCount,
+            Int(Double(iterations) * 5.0 / total * 0.85)
+        )
+    }
+    
+    
+    
+    func testWeightedCommandSizeZeroProduction()
+    {
+        for _ in 0..<1000
+        {
+            let value = WeightedCommand.arbitrary(
+                using:  .randomZeroSize,
+                model:  0
+            )
+            
+            guard case .reset = value
+            else
+            {
+                /// At size zero, only base cases are generated, regardless
+                /// of weights.
+                XCTFail("Expected .reset, got \(value)")
+                return
+            }
+        }
+    }
+    
+    
+    
+    func testWeightedCommandShrinkEmpty()
+    {
+        XCTAssertEqual(WeightedCommand.reset.shrink(), [])
+    }
+    
+    
+    
+    func testWeightedCommandShrinkMinimal()
+    {
+        XCTAssertEqual(WeightedCommand.add(0).shrink(), [])
+        XCTAssertEqual(WeightedCommand.subtract(0).shrink(), [])
+    }
+    
+    
+    
+    func testWeightedCommandShrinkMatchesPropertyShrink()
+    {
+        let value       : WeightedCommand       = .add(50)
+        let candidates  : [WeightedCommand]     = value.shrink()
+        
+        let expected: [WeightedCommand] = (50 as Int).shrink().map { .add($0) }
+        
+        XCTAssertEqual(candidates, expected)
+    }
+    
+    
+    
+    func testWeightedCommandShrinkPreservesCase()
+    {
+        let addCandidates: [WeightedCommand]
+            = WeightedCommand.add(10).shrink()
+        
+        XCTAssertFalse(addCandidates.isEmpty)
+        
+        for candidate in addCandidates
+        {
+            guard case .add = candidate
+            else
+            {
+                XCTFail("Expected .add, got \(candidate)")
+                return
+            }
+        }
+        
+        let subtractCandidates: [WeightedCommand]
+            = WeightedCommand.subtract(10).shrink()
+        
+        XCTAssertFalse(subtractCandidates.isEmpty)
+        
+        for candidate in subtractCandidates
+        {
+            guard case .subtract = candidate
+            else
+            {
+                XCTFail("Expected .subtract, got \(candidate)")
+                return
+            }
+        }
+    }
+    
+    
+    
+    // MARK: - MixedWeightCommand
+    
+    func testMixedWeightCommandDeterminism()
+    {
+        assertStatefulDeterminism(
+            of:     MixedWeightCommand.self,
+            model:  0
+        )
+    }
+    
+    
+    
+    func testMixedWeightCommandDistribution()
+    {
+        let iterations      : Int   = 10_000
+        var resetCount      : Int   = 0
+        var subtractCount   : Int   = 0
+        var addCount        : Int   = 0
+        
+        for _ in 0..<iterations
+        {
+            let value = MixedWeightCommand.arbitrary(
+                using:  .randomSeed(size: 500),
+                model:  0
+            )
+            
+            switch value
+            {
+                case .reset     : resetCount        += 1
+                case .subtract  : subtractCount     += 1
+                case .add       : addCount          += 1
+            }
+        }
+        
+        /// Weights: reset (1) + subtract (1) + add (5)
+        let total: Double = 7.0
+        
+        XCTAssertGreaterThan(
+            resetCount,
+            Int(Double(iterations) * 1.0 / total * 0.85)
+        )
+        
+        XCTAssertGreaterThan(
+            subtractCount,
+            Int(Double(iterations) * 1.0 / total * 0.85)
+        )
+        
+        XCTAssertGreaterThan(
+            addCount,
+            Int(Double(iterations) * 5.0 / total * 0.85)
+        )
+    }
+    
+    
+    
+    func testMixedWeightCommandSizeZeroProduction()
+    {
+        for _ in 0..<1000
+        {
+            let value = MixedWeightCommand.arbitrary(
+                using:  .randomZeroSize,
+                model:  0
+            )
+            
+            guard case .reset = value
+            else
+            {
+                /// At size zero, only base cases are generated, regardless
+                /// of weights.
+                XCTFail("Expected .reset, got \(value)")
+                return
+            }
+        }
+    }
+    
+    
+    
+    // MARK: - WeightedBaseCaseCommand
+    
+    func testWeightedBaseCaseCommandDeterminism()
+    {
+        assertStatefulDeterminism(
+            of:     WeightedBaseCaseCommand.self,
+            model:  0
+        )
+    }
+    
+    
+    
+    func testWeightedBaseCaseCommandDistribution()
+    {
+        let iterations      : Int   = 10_000
+        var resetCount      : Int   = 0
+        var decrementCount  : Int   = 0
+        var incrementCount  : Int   = 0
+        
+        for _ in 0..<iterations
+        {
+            let value = WeightedBaseCaseCommand.arbitrary(
+                using:  .randomSeed(size: 500),
+                model:  0
+            )
+            
+            switch value
+            {
+                case .reset     : resetCount        += 1
+                case .decrement : decrementCount    += 1
+                case .increment : incrementCount    += 1
+            }
+        }
+        
+        /// Weights: reset (1) + decrement (2) + increment (5)
+        let total: Double = 8.0
+        
+        XCTAssertGreaterThan(
+            resetCount,
+            Int(Double(iterations) * 1.0 / total * 0.85)
+        )
+        
+        XCTAssertGreaterThan(
+            decrementCount,
+            Int(Double(iterations) * 2.0 / total * 0.85)
+        )
+        
+        XCTAssertGreaterThan(
+            incrementCount,
+            Int(Double(iterations) * 5.0 / total * 0.85)
+        )
+    }
+    
+    
+    
+    func testWeightedBaseCaseCommandShrinkEmpty()
+    {
+        XCTAssertEqual(WeightedBaseCaseCommand.reset.shrink(), [])
+        XCTAssertEqual(WeightedBaseCaseCommand.decrement.shrink(), [])
+        XCTAssertEqual(WeightedBaseCaseCommand.increment.shrink(), [])
+    }
+    
+    
+    
     // MARK: - Integration
     
     func testSimpleCommandStatefulIntegration() async
@@ -537,6 +817,24 @@ internal final class StatefulMacroTests: TestKitCase
         """
         
         XCTAssertEqual(expected, actual)
+    }
+    
+    
+    
+    func testWeightedCommandStatefulIntegration() async
+    {
+        let options: TestOptions = .propertyOptions(
+            iterations:         50,
+            maxShrinkSteps:     100,
+            seed:               12345
+        )
+        
+        await XCTKStateful(
+            model:      { 0 },
+            system:     { SimpleSystem() },
+            command:    WeightedCommand.self,
+            options:    options
+        )
     }
     
     
@@ -897,7 +1195,6 @@ private enum PreconditionCommand: Equatable
         }
     }
     
-    
     func run(
         model   : inout Int,
         system  : inout SimpleSystem
@@ -925,6 +1222,147 @@ private enum PreconditionCommand: Equatable
         {
             case .reset         : model = 0
             case let .add(n)    : model += n
+        }
+    }
+}
+
+
+
+@Stateful
+private enum WeightedCommand: Equatable
+{
+    @Weight(1) case reset
+    @Weight(3) case subtract(Int)
+    @Weight(5) case add(Int)
+    
+    func run(
+        model   : inout Int,
+        system  : inout SimpleSystem
+    )
+    {
+        switch self
+        {
+            case .reset:
+                
+                model           = 0
+                system.value    = 0
+                
+            case let .subtract(n):
+                
+                model           -= n
+                system.value    -= n
+                
+            case let .add(n):
+                
+                model           += n
+                system.value    += n
+        }
+    }
+    
+    func advance(
+        model: inout Int
+    )
+    {
+        switch self
+        {
+            case .reset             : model = 0
+            case let .subtract(n)   : model -= n
+            case let .add(n)        : model += n
+        }
+    }
+}
+
+
+
+@Stateful
+private enum MixedWeightCommand: Equatable
+{
+    case reset
+    case subtract(Int)
+    @Weight(5) case add(Int)
+    
+    func run(
+        model   : inout Int,
+        system  : inout SimpleSystem
+    )
+    {
+        switch self
+        {
+            case .reset:
+                
+                model           = 0
+                system.value    = 0
+                
+            case let .subtract(n):
+                
+                model           -= n
+                system.value    -= n
+                
+            case let .add(n):
+                
+                model           += n
+                system.value    += n
+        }
+    }
+    
+    func advance(
+        model: inout Int
+    )
+    {
+        switch self
+        {
+            case .reset             : model = 0
+            case let .subtract(n)   : model -= n
+            case let .add(n)        : model += n
+        }
+    }
+}
+
+
+
+@Stateful
+private enum WeightedBaseCaseCommand: Equatable
+{
+    typealias Model     = Int
+    typealias System    = SimpleSystem
+    
+    @Weight(1) case reset
+    @Weight(2) case decrement
+    @Weight(5) case increment
+    
+    func run(
+        model   : inout Model,
+        system  : inout System
+    )
+    {
+        switch self
+        {
+            case .reset:
+                
+                model           = 0
+                system.value    = 0
+                
+            case .decrement:
+                
+                model           -= 1
+                system.value    -= 1
+                
+            case .increment:
+                
+                model           += 1
+                system.value    += 1
+        }
+    }
+    
+    func advance(
+        model: inout Model
+    )
+    {
+        switch self
+        {
+            case .reset     : model = 0
+            case .decrement : model -= 0
+            case .increment : model += 0
         }
     }
 }
