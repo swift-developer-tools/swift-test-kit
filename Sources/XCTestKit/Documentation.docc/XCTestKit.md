@@ -1,14 +1,15 @@
 # ``XCTestKit``
 
-Structural diff output, expression capture, predicate assertions, and 
-property-based testing for the XCTest framework.
+Property-based and stateful testing, structural diffs, expression capture, 
+and predicate assertions for the XCTest framework.
 
 
 
 ## Overview
 
 XCTestKit extends the [XCTest](https://developer.apple.com/documentation/xctest) 
-framework with advanced assertions and property-based testing.
+framework with property-based testing, stateful testing, and advanced assertions 
+with structural diffs and expression capture.
 
 When assertions fail, structural diffs pinpoint exactly where values diverge 
 within complex data structures, using path-based output that scales from flat 
@@ -24,7 +25,9 @@ unexpectedly, and which threw errors.
 
 Property-based testing generates random values automatically, shrinks failures 
 to minimal counterexamples, and reports failing values with the same rich 
-assertion output used by standalone assertions.
+assertion output used by standalone assertions. Stateful testing extends this 
+to systems with mutable state, generating random command sequences and 
+validating the system against a simplified model.
 
 - Note: To test with the 
 [Swift Testing](https://developer.apple.com/xcode/swift-testing) framework, use 
@@ -32,7 +35,7 @@ assertion output used by standalone assertions.
 SwiftTestKit and XCTestKit provide identical APIs.
 
 
-## Diff Output
+## Structural Diffs
 
 Assertion failures produce path-based diff output providing clear insight into 
 where values differ within complex data structures.

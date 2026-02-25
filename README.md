@@ -1,15 +1,15 @@
 # swift-test-kit
 
-Structural diff output, expression capture, predicate assertions, and 
-property-based testing for both the Swift Testing and XCTest frameworks.
+Property-based and stateful testing, structural diffs, expression capture, 
+and predicate assertions for both the Swift Testing and XCTest frameworks.
 
 
 
 ## Overview
 
-SwiftTestKit and XCTestKit extend Swift's testing frameworks with advanced 
-assertions and property-based testing. Both libraries are included in the 
-swift-test-kit package.
+SwiftTestKit and XCTestKit extend Swift's testing frameworks with property-based 
+testing, stateful testing, and advanced assertions with structural diffs and 
+expression capture. Both libraries are included in the swift-test-kit package.
 
 SwiftTestKit integrates directly with 
 [Swift Testing](https://developer.apple.com/xcode/swift-testing), and 
@@ -31,7 +31,9 @@ unexpectedly, and which threw errors.
 
 Property-based testing generates random values automatically, shrinks failures 
 to minimal counterexamples, and reports failing values with the same rich 
-assertion output used by standalone assertions.
+assertion output used by standalone assertions. Stateful testing extends this 
+to systems with mutable state, generating random command sequences and 
+validating the system against a simplified model.
 
 > [!NOTE]
 > All examples below use XCTestKit. SwiftTestKit provides an identical API 
@@ -39,7 +41,7 @@ assertion output used by standalone assertions.
 
 
 
-## Diff Output
+## Structural Diffs
 
 Assertion failures produce path-based diff output providing clear insight into 
 where values differ within complex data structures.
