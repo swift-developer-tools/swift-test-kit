@@ -45,15 +45,18 @@ internal struct StatefulRunner<C> where C : Stateful
         let seed: UInt64 = opts.seed
             ?? .random(in: UInt64.min...UInt64.max)
         
-        let interceptor     : PropertyInterceptor   = .init()
-        let context         : GenerationContext     = .init(seed: seed)
-        let maxSize         : Int                   = opts.maxSize
-        let maxDiscardRatio : Int                   = opts.maxDiscardRatio
-        let maxCommandCount : Int                   = opts.maxCommandCount
-        let iterations      : Int                   = opts.iterations
-        var iteration       : Int                   = 0
-        var discarded       : Int                   = 0
-        var succeeded       : Int                   = 0
+        let interceptor         : PropertyInterceptor   = .init()
+        let context             : GenerationContext     = .init(seed: seed)
+        let maxSize             : Int                   = opts.maxSize
+        let maxDiscardRatio     : Int                   = opts.maxDiscardRatio
+        let maxCommandCount     : Int                   = opts.maxCommandCount
+        let iterations          : Int                   = opts.iterations
+        var iteration           : Int                   = 0
+        var discarded           : Int                   = 0
+        var succeeded           : Int                   = 0
+        var commandPresence     : [String : Int]        = [:]
+        var commandFrequency    : [String : Int]        = [:]
+        var sequenceCounts      : [Int]                 = []
         
         
         
@@ -91,6 +94,14 @@ internal struct StatefulRunner<C> where C : Stateful
                     interceptor.finalizeIteration()
                     
                     succeeded += 1
+                    
+                    report(
+                        commands:   commands,
+                        presence:   &commandPresence,
+                        frequency:  &commandFrequency,
+                        counts:     &sequenceCounts,
+                        options:    opts.statistics
+                    )
                     
                 case .failed:
                     
@@ -699,6 +710,82 @@ internal struct StatefulRunner<C> where C : Stateful
             commands:       current,
             shrinkSteps:    steps
         )
+    }
+    
+    
+    
+    // MARK: - Reporting
+    
+    /// Reports statistics for the given commands, based on the given options.
+    /// - Parameters:
+    ///   - commands: The commands.
+    ///   - presence: The accumulated command presence statistics.
+    ///   - frequency: The accumulated command frequency statistics.
+    ///   - counts: The accumulated command sequence count statistics.
+    ///   - options: The options for reporting command statistics.
+    private static func report(
+        commands    : [C],
+        presence    : inout [String : Int],
+        frequency   : inout [String : Int],
+        counts      : inout [Int],
+        options     : CommandStatistics
+    )
+    {
+        guard !options.isEmpty
+        else
+        {
+            return
+        }
+        
+        if options.contains(.sequenceCount)
+        {
+            counts.append(commands.count)
+        }
+        
+        guard
+            options.contains(.presence)
+            || options.contains(.frequency)
+        else
+        {
+            return
+        }
+        
+        var names: Set<String> = []
+        
+        for command in commands
+        {
+            let name: String = name(of: command)
+            
+            if
+                options.contains(.presence),
+                names.insert(name).inserted
+            {
+                presence[name, default: 0] += 1
+            }
+            
+            if options.contains(.frequency)
+            {
+                frequency[name, default: 0] += 1
+            }
+        }
+    }
+    
+    
+    
+    /// Gets the name of the given command.
+    /// - Parameter command: The command.
+    /// - Returns: The name of the given command.
+    private static func name(
+        of command: C
+    ) -> String
+    {
+        if let label: String
+            = Mirror(reflecting: command).children.first?.label
+        {
+            return label
+        }
+        
+        return String(describing: command)
     }
     
     
