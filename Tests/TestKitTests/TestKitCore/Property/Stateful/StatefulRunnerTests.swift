@@ -2182,7 +2182,7 @@ internal final class StatefulRunnerTests: TestKitCase
         )
         
         let result: StatefulResult = await StatefulRunner.run(
-            command:    PostCSkipsInvariant.self,
+            command:    PostCSkipsInvariantCommand.self,
             model:      { 0 },
             system:     { 0 },
             invariant:

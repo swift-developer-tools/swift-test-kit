@@ -957,7 +957,7 @@ internal enum PostCAfterRunFailCommand: Stateful, Equatable, Sendable
 
 // MARK: - PostCSkipsInvariant
 
-internal enum PostCSkipsInvariant: Stateful, Equatable, Sendable
+internal enum PostCSkipsInvariantCommand: Stateful, Equatable, Sendable
 {
     case step
     
