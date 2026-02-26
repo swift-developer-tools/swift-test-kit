@@ -31,9 +31,9 @@ unexpectedly, and which threw errors.
 
 Property-based testing generates random values automatically, shrinks failures 
 to minimal counterexamples, and reports failing values with the same rich 
-assertion output used by standalone assertions. Stateful testing extends this 
-to systems with mutable state, generating random command sequences and 
-verifying the system against a simplified model.
+output used by standalone assertions. Stateful testing extends this to systems 
+with mutable state, generating random command sequences and verifying the 
+system against a simplified model.
 
 > [!NOTE]
 > All examples below use XCTestKit. SwiftTestKit provides an identical API 

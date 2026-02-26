@@ -25,9 +25,9 @@ unexpectedly, and which threw errors.
 
 Property-based testing generates random values automatically, shrinks failures 
 to minimal counterexamples, and reports failing values with the same rich 
-assertion output used by standalone assertions. Stateful testing extends this 
-to systems with mutable state, generating random command sequences and 
-verifying the system against a simplified model.
+output used by standalone assertions. Stateful testing extends this to systems 
+with mutable state, generating random command sequences and verifying the 
+system against a simplified model.
 
 - Note: To test with the 
 [XCTest](https://developer.apple.com/documentation/xctest) framework, use 
