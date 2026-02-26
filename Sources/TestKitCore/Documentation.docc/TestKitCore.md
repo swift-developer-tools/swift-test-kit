@@ -41,6 +41,11 @@ for the complete API references.
 - ``Generator``
 - ``GenerationContext``
 
+### Stateful Testing
+
+- ``Stateful``
+- ``CommandStatistics``
+
 ### Errors
 
 - ``UnwrapError``
