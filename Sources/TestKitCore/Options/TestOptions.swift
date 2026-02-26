@@ -31,6 +31,12 @@ public struct TestOptions: Equatable, Sendable
     /// instance.
     public var propertyOptions  : PropertyOptions
     
+    /// The options for temporal assertions.
+    ///
+    /// The default value is a default-initialized ``TemporalOptions``
+    /// instance.
+    public var temporalOptions  : TemporalOptions
+    
     
     
     /// Initializes a ``TestOptions`` instance, optionally specifying values
@@ -39,12 +45,14 @@ public struct TestOptions: Equatable, Sendable
         diffEnabled     : Bool              = true,
         diffOptions     : DiffOptions       = .init(),
         formatOptions   : FormatOptions     = .init(),
-        propertyOptions : PropertyOptions   = .init()
+        propertyOptions : PropertyOptions   = .init(),
+        temporalOptions : TemporalOptions   = .init()
     )
     {
         self.diffEnabled        = diffEnabled
         self.diffOptions        = diffOptions
         self.formatOptions      = formatOptions
         self.propertyOptions    = propertyOptions
+        self.temporalOptions    = temporalOptions
     }
 }
