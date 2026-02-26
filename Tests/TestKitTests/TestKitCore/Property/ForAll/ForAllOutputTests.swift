@@ -27,14 +27,14 @@ internal final class ForAllOutputTests: TestKitCase
     // MARK: - Counterexample
     
     @Reasync
-    func testCounterexampleNoShrinking() async throws
+    func testCounterexampleNoShrinking() async
     {
         let options: TestOptions = .propertyOptions(
             iterations:     1,
             seed:           Self.seed
         )
         
-        let output: String? = await withOneExpectedFailure
+        let actual: String? = await withOneExpectedFailure
         {
             await TKForAll(options: options)
             {
@@ -44,15 +44,6 @@ internal final class ForAllOutputTests: TestKitCase
             }
         }
         
-        XCTAssertNotNil(output)
-        
-        
-        
-        let actual: String = try getPropertyOutput(
-            from:       output,
-            before:     .true
-        )
-        
         let expected: String =
         """
         XCTKForAll failed after 1 iteration
@@ -60,8 +51,9 @@ internal final class ForAllOutputTests: TestKitCase
         Counterexample:
             Int = 0
         
-        \(Self.seedMessage)
+        XCTKAssertTrue failed
         
+        \(Self.seedMessage)
         """
         
         XCTAssertEqual(expected, actual)
@@ -70,7 +62,7 @@ internal final class ForAllOutputTests: TestKitCase
     
     
     @Reasync
-    func testCounterexampleWithShrinking() async throws
+    func testCounterexampleWithShrinking() async
     {
         let options: TestOptions = .propertyOptions(
             iterations:     1,
@@ -82,7 +74,7 @@ internal final class ForAllOutputTests: TestKitCase
             shrink:     { value in value.shrink() }
         )
         
-        let output: String? = await withOneExpectedFailure
+        let actual: String? = await withOneExpectedFailure
         {
             await TKForAll(
                 using:      generator,
@@ -95,15 +87,6 @@ internal final class ForAllOutputTests: TestKitCase
             }
         }
         
-        XCTAssertNotNil(output)
-        
-        
-        
-        let actual: String = try getPropertyOutput(
-            from:       output,
-            before:     .lessThan
-        )
-        
         let expected: String =
         """
         XCTKForAll failed after 1 iteration (shrunk in 4 steps)
@@ -111,8 +94,9 @@ internal final class ForAllOutputTests: TestKitCase
         Counterexample:
             Int = 10
         
-        \(Self.seedMessage)
+        XCTKAssertLessThan failed: ("10") is not less than ("10")
         
+        \(Self.seedMessage)
         """
         
         XCTAssertEqual(expected, actual)
@@ -121,7 +105,7 @@ internal final class ForAllOutputTests: TestKitCase
     
     
     @Reasync
-    func testCounterexampleAtLaterIteration() async throws
+    func testCounterexampleAtLaterIteration() async
     {
         let options: TestOptions = .propertyOptions(
             iterations:     10,
@@ -137,7 +121,7 @@ internal final class ForAllOutputTests: TestKitCase
             shrink:     { value in value.shrink() }
         )
         
-        let output: String? = await withOneExpectedFailure
+        let actual: String? = await withOneExpectedFailure
         {
             await TKForAll(
                 using:      generator,
@@ -150,15 +134,6 @@ internal final class ForAllOutputTests: TestKitCase
             }
         }
         
-        XCTAssertNotNil(output)
-        
-        
-        
-        let actual: String = try getPropertyOutput(
-            from:       output,
-            before:     .lessThan
-        )
-        
         let expected: String =
         """
         XCTKForAll failed after 6 iterations (shrunk in 4 steps)
@@ -166,8 +141,9 @@ internal final class ForAllOutputTests: TestKitCase
         Counterexample:
             Int = 10
         
-        \(Self.seedMessage)
+        XCTKAssertLessThan failed: ("10") is not less than ("10")
         
+        \(Self.seedMessage)
         """
         
         XCTAssertEqual(expected, actual)
@@ -193,8 +169,6 @@ internal final class ForAllOutputTests: TestKitCase
             }
         }
         
-        XCTAssertNotNil(actual)
-        
         let expected: String =
         """
         XCTKForAll failed after 1 iteration
@@ -202,9 +176,9 @@ internal final class ForAllOutputTests: TestKitCase
         Counterexample:
             Int = 0
         
-        \(Self.seedMessage)
-        
         Threw error: TestError()
+        
+        \(Self.seedMessage)
         """
         
         XCTAssertEqual(expected, actual)
@@ -233,8 +207,6 @@ internal final class ForAllOutputTests: TestKitCase
             }
         }
         
-        XCTAssertNotNil(actual)
-        
         let expected: String =
         """
         XCTKForAll failed after 1 iteration
@@ -242,9 +214,9 @@ internal final class ForAllOutputTests: TestKitCase
         Counterexample:
             Int = 0
         
-        \(Self.seedMessage)
-        
         Threw error: TestError()
+        
+        \(Self.seedMessage)
         
         hello world
         """
@@ -255,14 +227,14 @@ internal final class ForAllOutputTests: TestKitCase
     
     
     @Reasync
-    func testCounterexampleWithMessageAndAssertionFailure() async throws
+    func testCounterexampleWithMessageAndAssertionFailure() async
     {
         let options: TestOptions = .propertyOptions(
             iterations:     1,
             seed:           Self.seed
         )
         
-        let output: String? = await withOneExpectedFailure
+        let actual: String? = await withOneExpectedFailure
         {
             await TKForAll(
                 "hello world",
@@ -275,16 +247,6 @@ internal final class ForAllOutputTests: TestKitCase
             }
         }
         
-        XCTAssertNotNil(output)
-        XCTAssertTrue(output?.hasSuffix("\nhello world") ?? false)
-        
-        
-        
-        let actual: String = try getPropertyOutput(
-            from:       output,
-            before:     .true
-        )
-        
         let expected: String =
         """
         XCTKForAll failed after 1 iteration
@@ -292,8 +254,11 @@ internal final class ForAllOutputTests: TestKitCase
         Counterexample:
             Int = 0
         
+        XCTKAssertTrue failed
+        
         \(Self.seedMessage)
         
+        hello world
         """
         
         XCTAssertEqual(expected, actual)
@@ -302,7 +267,7 @@ internal final class ForAllOutputTests: TestKitCase
     
     
     @Reasync
-    func testPreconditionGeneratorCounterexample() async throws
+    func testPreconditionGeneratorCounterexample() async
     {
         let options: TestOptions = .propertyOptions(
             iterations:     1,
@@ -314,7 +279,7 @@ internal final class ForAllOutputTests: TestKitCase
             shrink:     { value in value.shrink() }
         )
         
-        let output: String? = await withOneExpectedFailure
+        let actual: String? = await withOneExpectedFailure
         {
             await TKForAll(
                 using:      generator,
@@ -328,15 +293,6 @@ internal final class ForAllOutputTests: TestKitCase
             }
         }
         
-        XCTAssertNotNil(output)
-        
-        
-        
-        let actual: String = try getPropertyOutput(
-            from:       output,
-            before:     .true
-        )
-        
         let expected: String =
         """
         XCTKForAll failed after 1 iteration (shrunk in 1 step)
@@ -344,8 +300,9 @@ internal final class ForAllOutputTests: TestKitCase
         Counterexample:
             Int = 50
         
-        \(Self.seedMessage)
+        XCTKAssertTrue failed
         
+        \(Self.seedMessage)
         """
         
         XCTAssertEqual(expected, actual)
@@ -354,14 +311,14 @@ internal final class ForAllOutputTests: TestKitCase
     
     
     @Reasync
-    func testPreconditionCounterexample() async throws
+    func testPreconditionCounterexample() async
     {
         let options: TestOptions = .propertyOptions(
             iterations:     1,
             seed:           Self.seed
         )
         
-        let output: String? = await withOneExpectedFailure
+        let actual: String? = await withOneExpectedFailure
         {
             await TKForAll(
                 where:      { _ in true },
@@ -374,15 +331,6 @@ internal final class ForAllOutputTests: TestKitCase
             }
         }
         
-        XCTAssertNotNil(output)
-        
-        
-        
-        let actual: String = try getPropertyOutput(
-            from:       output,
-            before:     .true
-        )
-        
         let expected: String =
         """
         XCTKForAll failed after 1 iteration
@@ -390,8 +338,9 @@ internal final class ForAllOutputTests: TestKitCase
         Counterexample:
             Int = 0
         
-        \(Self.seedMessage)
+        XCTKAssertTrue failed
         
+        \(Self.seedMessage)
         """
         
         XCTAssertEqual(expected, actual)
@@ -400,14 +349,14 @@ internal final class ForAllOutputTests: TestKitCase
     
     
     @Reasync
-    func testTwoParameterArbitraryCounterexample() async throws
+    func testTwoParameterArbitraryCounterexample() async
     {
         let options: TestOptions = .propertyOptions(
             iterations:     1,
             seed:           Self.seed
         )
         
-        let output: String? = await withOneExpectedFailure
+        let actual: String? = await withOneExpectedFailure
         {
             await TKForAll(options: options)
             {
@@ -417,15 +366,6 @@ internal final class ForAllOutputTests: TestKitCase
             }
         }
         
-        XCTAssertNotNil(output)
-        
-        
-        
-        let actual: String = try getPropertyOutput(
-            from:       output,
-            before:     .true
-        )
-        
         let expected: String =
         """
         XCTKForAll failed after 1 iteration
@@ -434,8 +374,9 @@ internal final class ForAllOutputTests: TestKitCase
             Int = 0
             Int = 0
         
-        \(Self.seedMessage)
+        XCTKAssertTrue failed
         
+        \(Self.seedMessage)
         """
         
         XCTAssertEqual(expected, actual)
@@ -444,7 +385,7 @@ internal final class ForAllOutputTests: TestKitCase
     
     
     @Reasync
-    func testTwoParameterCounterexampleNoShrinking() async throws
+    func testTwoParameterCounterexampleNoShrinking() async
     {
         let options: TestOptions = .propertyOptions(
             iterations:     1,
@@ -454,7 +395,7 @@ internal final class ForAllOutputTests: TestKitCase
         let gen1    = Generator<Int>.constant(50)
         let gen2    = Generator<String>.constant("abc")
         
-        let output: String? = await withOneExpectedFailure
+        let actual: String? = await withOneExpectedFailure
         {
             await TKForAll(
                 using:      gen1, gen2,
@@ -467,15 +408,6 @@ internal final class ForAllOutputTests: TestKitCase
             }
         }
         
-        XCTAssertNotNil(output)
-        
-        
-        
-        let actual: String = try getPropertyOutput(
-            from:       output,
-            before:     .true
-        )
-        
         let expected: String =
         """
         XCTKForAll failed after 1 iteration
@@ -484,8 +416,9 @@ internal final class ForAllOutputTests: TestKitCase
             Int = 50
             String = abc
         
-        \(Self.seedMessage)
+        XCTKAssertTrue failed
         
+        \(Self.seedMessage)
         """
         
         XCTAssertEqual(expected, actual)
@@ -494,7 +427,7 @@ internal final class ForAllOutputTests: TestKitCase
     
     
     @Reasync
-    func testTwoParameterCounterexampleWithShrinking() async throws
+    func testTwoParameterCounterexampleWithShrinking() async
     {
         let options: TestOptions = .propertyOptions(
             iterations:     1,
@@ -508,7 +441,7 @@ internal final class ForAllOutputTests: TestKitCase
         
         let gen2 = Generator<String>.constant("abc")
         
-        let output: String? = await withOneExpectedFailure
+        let actual: String? = await withOneExpectedFailure
         {
             await TKForAll(
                 using:      gen1, gen2,
@@ -521,15 +454,6 @@ internal final class ForAllOutputTests: TestKitCase
             }
         }
         
-        XCTAssertNotNil(output)
-        
-        
-        
-        let actual: String = try getPropertyOutput(
-            from:       output,
-            before:     .lessThan
-        )
-        
         let expected: String =
         """
         XCTKForAll failed after 1 iteration (shrunk in 1 step)
@@ -538,8 +462,9 @@ internal final class ForAllOutputTests: TestKitCase
             Int = 10
             String = abc
         
-        \(Self.seedMessage)
+        XCTKAssertLessThan failed: ("10") is not less than ("10")
         
+        \(Self.seedMessage)
         """
         
         XCTAssertEqual(expected, actual)
@@ -548,7 +473,7 @@ internal final class ForAllOutputTests: TestKitCase
     
     
     @Reasync
-    func testThreeParameterCounterexampleNoShrinking() async throws
+    func testThreeParameterCounterexampleNoShrinking() async
     {
         let options: TestOptions = .propertyOptions(
             iterations:     1,
@@ -559,7 +484,7 @@ internal final class ForAllOutputTests: TestKitCase
         let gen2    = Generator<String>.constant("abc")
         let gen3    = Generator<Bool>.constant(true)
         
-        let output: String? = await withOneExpectedFailure
+        let actual: String? = await withOneExpectedFailure
         {
             await TKForAll(
                 using:      gen1, gen2, gen3,
@@ -572,15 +497,6 @@ internal final class ForAllOutputTests: TestKitCase
             }
         }
         
-        XCTAssertNotNil(output)
-        
-        
-        
-        let actual: String = try getPropertyOutput(
-            from:       output,
-            before:     .true
-        )
-        
         let expected: String =
         """
         XCTKForAll failed after 1 iteration
@@ -590,8 +506,9 @@ internal final class ForAllOutputTests: TestKitCase
             String = abc
             Bool = true
         
-        \(Self.seedMessage)
+        XCTKAssertTrue failed
         
+        \(Self.seedMessage)
         """
         
         XCTAssertEqual(expected, actual)
@@ -600,7 +517,7 @@ internal final class ForAllOutputTests: TestKitCase
     
     
     @Reasync
-    func testThreeParameterCounterexampleWithShrinking() async throws
+    func testThreeParameterCounterexampleWithShrinking() async
     {
         let options: TestOptions = .propertyOptions(
             iterations:     1,
@@ -615,7 +532,7 @@ internal final class ForAllOutputTests: TestKitCase
         let gen2    = Generator<String>.constant("abc")
         let gen3    = Generator<Bool>.constant(true)
         
-        let output: String? = await withOneExpectedFailure
+        let actual: String? = await withOneExpectedFailure
         {
             await TKForAll(
                 using:      gen1, gen2, gen3,
@@ -628,15 +545,6 @@ internal final class ForAllOutputTests: TestKitCase
             }
         }
         
-        XCTAssertNotNil(output)
-        
-        
-        
-        let actual: String = try getPropertyOutput(
-            from:       output,
-            before:     .lessThan
-        )
-        
         let expected: String =
         """
         XCTKForAll failed after 1 iteration (shrunk in 1 step)
@@ -646,8 +554,9 @@ internal final class ForAllOutputTests: TestKitCase
             String = abc
             Bool = true
         
-        \(Self.seedMessage)
+        XCTKAssertLessThan failed: ("10") is not less than ("10")
         
+        \(Self.seedMessage)
         """
         
         XCTAssertEqual(expected, actual)
@@ -656,7 +565,7 @@ internal final class ForAllOutputTests: TestKitCase
     
     
     @Reasync
-    func testAssertionFailurePriorityOverThrownError() async throws
+    func testAssertionFailurePriorityOverThrownError() async
     {
         let options: TestOptions = .propertyOptions(
             iterations:         1,
@@ -664,7 +573,7 @@ internal final class ForAllOutputTests: TestKitCase
             seed:               Self.seed
         )
         
-        let output: String? = await withOneExpectedFailure
+        let actual: String? = await withOneExpectedFailure
         {
             await TKForAll(options: options)
             {
@@ -676,16 +585,6 @@ internal final class ForAllOutputTests: TestKitCase
             }
         }
         
-        XCTAssertNotNil(output)
-        XCTAssertFalse(output?.contains("Threw error:") ?? true)
-        
-        
-        
-        let actual: String = try getPropertyOutput(
-            from:       output,
-            before:     .true
-        )
-        
         let expected: String =
         """
         XCTKForAll failed after 1 iteration
@@ -693,8 +592,9 @@ internal final class ForAllOutputTests: TestKitCase
         Counterexample:
             Int = 0
         
-        \(Self.seedMessage)
+        XCTKAssertTrue failed
         
+        \(Self.seedMessage)
         """
         
         XCTAssertEqual(expected, actual)
@@ -703,7 +603,7 @@ internal final class ForAllOutputTests: TestKitCase
     
     
     @Reasync
-    func testFirstAssertionFailureShown() async throws
+    func testFirstAssertionFailureShown() async
     {
         let options: TestOptions = .propertyOptions(
             iterations:         1,
@@ -711,7 +611,7 @@ internal final class ForAllOutputTests: TestKitCase
             seed:               Self.seed
         )
         
-        let output: String? = await withOneExpectedFailure
+        let actual: String? = await withOneExpectedFailure
         {
             await TKForAll(options: options)
             {
@@ -722,16 +622,6 @@ internal final class ForAllOutputTests: TestKitCase
             }
         }
         
-        XCTAssertNotNil(output)
-        XCTAssertFalse(output?.contains("TKAssertEqual") ?? true)
-        
-        
-        
-        let actual: String = try getPropertyOutput(
-            from:       output,
-            before:     .true
-        )
-        
         let expected: String =
         """
         XCTKForAll failed after 1 iteration
@@ -739,8 +629,9 @@ internal final class ForAllOutputTests: TestKitCase
         Counterexample:
             Int = 0
         
-        \(Self.seedMessage)
+        XCTKAssertTrue failed
         
+        \(Self.seedMessage)
         """
         
         XCTAssertEqual(expected, actual)
@@ -749,14 +640,14 @@ internal final class ForAllOutputTests: TestKitCase
     
     
     @Reasync
-    func testCollectionCounterexample() async throws
+    func testCollectionCounterexample() async
     {
         let options: TestOptions = .propertyOptions(
             iterations:     1,
             seed:           Self.seed
         )
         
-        let output: String? = await withOneExpectedFailure
+        let actual: String? = await withOneExpectedFailure
         {
             await TKForAll(
                 using:      Generator<[Int]>.constant([1, 2, 3]),
@@ -769,15 +660,6 @@ internal final class ForAllOutputTests: TestKitCase
             }
         }
         
-        XCTAssertNotNil(output)
-        
-        
-        
-        let actual: String = try getPropertyOutput(
-            from:       output,
-            before:     .true
-        )
-        
         let expected: String =
         """
         XCTKForAll failed after 1 iteration
@@ -785,8 +667,9 @@ internal final class ForAllOutputTests: TestKitCase
         Counterexample:
             Array<Int> = [1, 2, 3]
         
-        \(Self.seedMessage)
+        XCTKAssertTrue failed
         
+        \(Self.seedMessage)
         """
         
         XCTAssertEqual(expected, actual)
@@ -795,7 +678,7 @@ internal final class ForAllOutputTests: TestKitCase
     
     
     @Reasync
-    func testMaxShrinkStepsLimitsSearch() async throws
+    func testMaxShrinkStepsLimitsSearch() async
     {
         /// Each shrink step decrements by one. Without the limit, this would
         /// shrink from `100` down to `10`. With `maxShrinkSteps` of `2`,
@@ -812,7 +695,7 @@ internal final class ForAllOutputTests: TestKitCase
             shrink:     { value in value > 0 ? [value - 1] : [] }
         )
         
-        let output: String? = await withOneExpectedFailure
+        let actual: String? = await withOneExpectedFailure
         {
             await TKForAll(
                 using:      generator,
@@ -825,15 +708,6 @@ internal final class ForAllOutputTests: TestKitCase
             }
         }
         
-        XCTAssertNotNil(output)
-        
-        
-        
-        let actual: String = try getPropertyOutput(
-            from:       output,
-            before:     .lessThan
-        )
-        
         let expected: String =
         """
         XCTKForAll failed after 1 iteration (shrunk in 2 steps)
@@ -841,8 +715,9 @@ internal final class ForAllOutputTests: TestKitCase
         Counterexample:
             Int = 98
         
-        \(Self.seedMessage)
+        XCTKAssertLessThan failed: ("98") is not less than ("10")
         
+        \(Self.seedMessage)
         """
         
         XCTAssertEqual(expected, actual)
@@ -851,14 +726,14 @@ internal final class ForAllOutputTests: TestKitCase
     
     
     @Reasync
-    func testUserDefinedTypeCounterexample() async throws
+    func testUserDefinedTypeCounterexample() async
     {
         let options: TestOptions = .propertyOptions(
             iterations:     1,
             seed:           Self.seed
         )
         
-        let output: String? = await withOneExpectedFailure
+        let actual: String? = await withOneExpectedFailure
         {
             await TKForAll(
                 using:      Generator<Point>.constant(Point(x: 5, y: 10)),
@@ -871,15 +746,6 @@ internal final class ForAllOutputTests: TestKitCase
             }
         }
         
-        XCTAssertNotNil(output)
-        
-        
-        
-        let actual: String = try getPropertyOutput(
-            from:       output,
-            before:     .true
-        )
-        
         let expected: String =
         """
         XCTKForAll failed after 1 iteration
@@ -887,8 +753,9 @@ internal final class ForAllOutputTests: TestKitCase
         Counterexample:
             Point = Point(x: 5, y: 10)
         
-        \(Self.seedMessage)
+        XCTKAssertTrue failed
         
+        \(Self.seedMessage)
         """
         
         XCTAssertEqual(expected, actual)
@@ -897,7 +764,7 @@ internal final class ForAllOutputTests: TestKitCase
     
     
     @Reasync
-    func testCollectionCounterexampleWithShrinking() async throws
+    func testCollectionCounterexampleWithShrinking() async
     {
         let options: TestOptions = .propertyOptions(
             iterations:     1,
@@ -914,7 +781,7 @@ internal final class ForAllOutputTests: TestKitCase
             }
         )
         
-        let output: String? = await withOneExpectedFailure
+        let actual: String? = await withOneExpectedFailure
         {
             await TKForAll(
                 using:      generator,
@@ -927,15 +794,6 @@ internal final class ForAllOutputTests: TestKitCase
             }
         }
         
-        XCTAssertNotNil(output)
-        
-        
-        
-        let actual: String = try getPropertyOutput(
-            from:       output,
-            before:     .true
-        )
-        
         let expected: String =
         """
         XCTKForAll failed after 1 iteration (shrunk in 2 steps)
@@ -943,8 +801,9 @@ internal final class ForAllOutputTests: TestKitCase
         Counterexample:
             Array<Int> = [1]
         
-        \(Self.seedMessage)
+        XCTKAssertTrue failed
         
+        \(Self.seedMessage)
         """
         
         XCTAssertEqual(expected, actual)
@@ -981,10 +840,6 @@ internal final class ForAllOutputTests: TestKitCase
             }
         }
         
-        XCTAssertNotNil(actual)
-        
-        
-        
         let expected: String =
         """
         XCTKForAll failed after 1 iteration (shrunk in 3 steps)
@@ -992,9 +847,9 @@ internal final class ForAllOutputTests: TestKitCase
         Counterexample:
             Int = 12
         
-        \(Self.seedMessage)
-        
         Threw error: TestError()
+        
+        \(Self.seedMessage)
         """
         
         XCTAssertEqual(expected, actual)
@@ -1003,7 +858,7 @@ internal final class ForAllOutputTests: TestKitCase
     
     
     @Reasync
-    func testMultiParameterBothShrink() async throws
+    func testMultiParameterBothShrink() async
     {
         let options: TestOptions = .propertyOptions(
             iterations:     1,
@@ -1051,7 +906,7 @@ internal final class ForAllOutputTests: TestKitCase
             }
         )
         
-        let output: String? = await withOneExpectedFailure
+        let actual: String? = await withOneExpectedFailure
         {
             await TKForAll(
                 using:      gen1, gen2,
@@ -1064,15 +919,6 @@ internal final class ForAllOutputTests: TestKitCase
             }
         }
         
-        XCTAssertNotNil(output)
-        
-        
-        
-        let actual: String = try getPropertyOutput(
-            from:       output,
-            before:     .true
-        )
-        
         let expected: String =
         """
         XCTKForAll failed after 1 iteration (shrunk in 2 steps)
@@ -1081,8 +927,9 @@ internal final class ForAllOutputTests: TestKitCase
             Int = 5
             Int = 3
         
-        \(Self.seedMessage)
+        XCTKAssertTrue failed
         
+        \(Self.seedMessage)
         """
         
         XCTAssertEqual(expected, actual)
@@ -1091,7 +938,7 @@ internal final class ForAllOutputTests: TestKitCase
     
     
     @Reasync
-    func testPreconditionGeneratorCounterexampleIncludesDiscards() async throws
+    func testPreconditionGeneratorCounterexampleIncludesDiscards() async
     {
         let options: TestOptions = .propertyOptions(
             iterations:         1,
@@ -1121,7 +968,7 @@ internal final class ForAllOutputTests: TestKitCase
             shrink: { value in value.shrink() }
         )
         
-        let output: String? = await withOneExpectedFailure
+        let actual: String? = await withOneExpectedFailure
         {
             await TKForAll(
                 using:      generator,
@@ -1135,15 +982,6 @@ internal final class ForAllOutputTests: TestKitCase
             }
         }
         
-        XCTAssertNotNil(output)
-        
-        
-        
-        let actual: String = try getPropertyOutput(
-            from:       output,
-            before:     .true
-        )
-        
         let expected: String =
         """
         XCTKForAll failed after 3 iterations (shrunk in 3 steps)
@@ -1151,8 +989,9 @@ internal final class ForAllOutputTests: TestKitCase
         Counterexample:
             Int = 10
         
-        \(Self.seedMessage)
+        XCTKAssertTrue failed
         
+        \(Self.seedMessage)
         """
         
         XCTAssertEqual(expected, actual)
@@ -1181,8 +1020,6 @@ internal final class ForAllOutputTests: TestKitCase
                 (_: Int) async in
             }
         }
-        
-        XCTAssertNotNil(actual)
         
         let expected: String =
         """
@@ -1218,8 +1055,6 @@ internal final class ForAllOutputTests: TestKitCase
                 (_: Int) async in
             }
         }
-        
-        XCTAssertNotNil(actual)
         
         let expected: String =
         """
@@ -1266,8 +1101,6 @@ internal final class ForAllOutputTests: TestKitCase
             }
         }
         
-        XCTAssertNotNil(actual)
-        
         let expected: String =
         """
         XCTKForAll exhausted after 2 successful iterations
@@ -1306,8 +1139,6 @@ internal final class ForAllOutputTests: TestKitCase
             }
         }
         
-        XCTAssertNotNil(actual)
-        
         let expected: String =
         """
         XCTKForAll exhausted after 0 successful iterations
@@ -1330,11 +1161,10 @@ extension ForAllOutputTests
     /// The seed used to initialize the random number generator.
     ///
     /// Use a fixed seed rather than a random seed for deterministic tests.
-    private static let seed: UInt64 = 50
+    private static let seed: UInt64 = 12345
     
-    /// The re-run message.
-    private static let seedMessage: String =
-        "Seed: \(seed) (re-run with PropertyOptions.seed)"
+    /// The seed re-run message.
+    private static let seedMessage: String = "Seed: \(seed) (XCTKForAll)"
     
     
     

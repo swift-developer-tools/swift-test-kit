@@ -179,6 +179,7 @@ extension PropertyCheckResult
         return Self.finishCounterexampleMessage(
             counterexample,
             lines:              lines,
+            functionName:       functionName,
             statistics:         statistics,
             message:            message,
             distribution:       distribution,
@@ -265,6 +266,7 @@ extension PropertyCheckResult
         return Self.finishCounterexampleMessage(
             counterexample,
             lines:              lines,
+            functionName:       functionName,
             statistics:         statistics,
             message:            message,
             distribution:       distribution,
@@ -318,7 +320,10 @@ extension PropertyCheckResult
         )
         
         lines.append("")
-        lines.append(Self.makeSeedLine(seed: seed))
+        lines.append(Self.makeSeedLine(
+            seed:           seed,
+            functionName:   functionName
+        ))
         
         lines = Self.addDistributionLines(
             to:                 lines,
@@ -407,7 +412,10 @@ extension PropertyCheckResult
         
         
         lines.append("")
-        lines.append(Self.makeSeedLine(seed: seed))
+        lines.append(Self.makeSeedLine(
+            seed:           seed,
+            functionName:   functionName
+        ))
         
         if let statistics
         {
@@ -581,14 +589,17 @@ extension PropertyCheckResult
     
     
     
-    /// Creates a seed re-run line with the given seed.
-    /// - Parameter seed: The seed to use.
+    /// Creates a seed re-run line with the given seed and function name.
+    /// - Parameters:
+    ///   - seed: The seed.
+    ///   - counterexample: The function name.
     /// - Returns: The seed re-run line.
     private static func makeSeedLine(
-        seed: UInt64
+        seed            : UInt64,
+        functionName    : String
     ) -> String
     {
-        return "Seed: \(seed) (re-run with PropertyOptions.seed)"
+        return "Seed: \(seed) (\(functionName))"
     }
     
     
@@ -829,6 +840,7 @@ extension PropertyCheckResult
     private static func finishCounterexampleMessage(
         _ counterexample    : Counterexample<T>,
         lines originalLines : [String],
+        functionName        : String,
         statistics          : String?,
         message             : () -> String,
         distribution        : [String : Int],
@@ -837,19 +849,22 @@ extension PropertyCheckResult
     {
         var lines: [String] = originalLines
         
+        lines = Self.addErrorLines(
+            to:                 lines,
+            counterexample:     counterexample
+        )
+        
         lines.append("")
-        lines.append(Self.makeSeedLine(seed: counterexample.seed))
+        lines.append(Self.makeSeedLine(
+            seed:           counterexample.seed,
+            functionName:   functionName
+        ))
         
         lines = Self.addDistributionLines(
             to:                 lines,
             iterations:         counterexample.iteration,
             distribution:       distribution,
             tableDistribution:  tableDistribution
-        )
-        
-        lines = Self.addErrorLines(
-            to:                 lines,
-            counterexample:     counterexample
         )
         
         if let statistics

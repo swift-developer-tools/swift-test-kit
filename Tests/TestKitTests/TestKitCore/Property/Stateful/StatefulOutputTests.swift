@@ -27,7 +27,7 @@ internal final class StatefulOutputTests: TestKitCase
     
     // MARK: - Counterexample
     
-    func testSingleCommandNoShrinking() async throws
+    func testSingleCommandNoShrinking() async
     {
         let options: TestOptions = .propertyOptions(
             iterations:         1,
@@ -36,7 +36,7 @@ internal final class StatefulOutputTests: TestKitCase
             seed:               Self.seed
         )
         
-        let output: String? = await withOneExpectedFailure
+        let actual: String? = await withOneExpectedFailure
         {
             await TKStateful(
                 model:      { 0 },
@@ -52,15 +52,6 @@ internal final class StatefulOutputTests: TestKitCase
             )
         }
         
-        XCTAssertNotNil(output)
-        
-        
-        
-        let actual: String = try getPropertyOutput(
-            from:       output,
-            before:     .true
-        )
-        
         let expected: String =
         """
         XCTKStateful failed after 1 iteration
@@ -68,8 +59,9 @@ internal final class StatefulOutputTests: TestKitCase
         Command sequence:
             1. increment ←
         
-        \(Self.seedMessage)
+        XCTKAssertTrue failed
         
+        \(Self.seedMessage)
         """
         
         XCTAssertEqual(expected, actual)
@@ -77,7 +69,7 @@ internal final class StatefulOutputTests: TestKitCase
     
     
     
-    func testMultiCommandNoShrinking() async throws
+    func testMultiCommandNoShrinking() async
     {
         let options: TestOptions = .propertyOptions(
             iterations:         100,
@@ -86,7 +78,7 @@ internal final class StatefulOutputTests: TestKitCase
             seed:               Self.seed
         )
         
-        let output: String? = await withOneExpectedFailure
+        let actual: String? = await withOneExpectedFailure
         {
             await TKStateful(
                 model:      { 0 },
@@ -104,15 +96,6 @@ internal final class StatefulOutputTests: TestKitCase
                 }
             )
         }
-        
-        XCTAssertNotNil(output)
-        
-        
-        
-        let actual: String = try getPropertyOutput(
-            from:       output,
-            before:     .true
-        )
         
         let expected: String =
         """
@@ -123,8 +106,9 @@ internal final class StatefulOutputTests: TestKitCase
             2. increment
             3. increment ←
         
-        \(Self.seedMessage)
+        XCTKAssertTrue failed
         
+        \(Self.seedMessage)
         """
         
         XCTAssertEqual(expected, actual)
@@ -132,7 +116,7 @@ internal final class StatefulOutputTests: TestKitCase
     
     
     
-    func testRemovalShrinking() async throws
+    func testRemovalShrinking() async
     {
         let options: TestOptions = .propertyOptions(
             iterations:         10,
@@ -140,7 +124,7 @@ internal final class StatefulOutputTests: TestKitCase
             seed:               Self.seed
         )
         
-        let output: String? = await withOneExpectedFailure
+        let actual: String? = await withOneExpectedFailure
         {
             await TKStateful(
                 model:      { 0 },
@@ -159,15 +143,6 @@ internal final class StatefulOutputTests: TestKitCase
             )
         }
         
-        XCTAssertNotNil(output)
-        
-        
-        
-        let actual: String = try getPropertyOutput(
-            from:       output,
-            before:     .true
-        )
-        
         let expected: String =
         """
         XCTKStateful failed after 2 iterations (shrunk to 3 commands)
@@ -177,8 +152,9 @@ internal final class StatefulOutputTests: TestKitCase
             2. increment
             3. increment ←
         
-        \(Self.seedMessage)
+        XCTKAssertTrue failed
         
+        \(Self.seedMessage)
         """
         
         XCTAssertEqual(expected, actual)
@@ -205,8 +181,6 @@ internal final class StatefulOutputTests: TestKitCase
             )
         }
         
-        XCTAssertNotNil(actual)
-        
         let expected: String =
         """
         XCTKStateful failed after 1 iteration
@@ -214,9 +188,9 @@ internal final class StatefulOutputTests: TestKitCase
         Command sequence:
             1. step ←
         
-        \(Self.seedMessage)
-        
         Threw error: TestError()
+        
+        \(Self.seedMessage)
         """
         
         XCTAssertEqual(expected, actual)
@@ -224,7 +198,7 @@ internal final class StatefulOutputTests: TestKitCase
     
     
     
-    func testCounterexampleWithMessage() async throws
+    func testCounterexampleWithMessage() async
     {
         let options: TestOptions = .propertyOptions(
             iterations:         1,
@@ -233,7 +207,7 @@ internal final class StatefulOutputTests: TestKitCase
             seed:               Self.seed
         )
         
-        let output: String? = await withOneExpectedFailure
+        let actual: String? = await withOneExpectedFailure
         {
             await TKStateful(
                 "hello world",
@@ -250,16 +224,6 @@ internal final class StatefulOutputTests: TestKitCase
             )
         }
         
-        XCTAssertNotNil(output)
-        XCTAssertTrue(output?.hasSuffix("\nhello world") ?? false)
-        
-        
-        
-        let actual: String = try getPropertyOutput(
-            from:       output,
-            before:     .true
-        )
-        
         let expected: String =
         """
         XCTKStateful failed after 1 iteration
@@ -267,8 +231,11 @@ internal final class StatefulOutputTests: TestKitCase
         Command sequence:
             1. increment ←
         
+        XCTKAssertTrue failed
+        
         \(Self.seedMessage)
         
+        hello world
         """
         
         XCTAssertEqual(expected, actual)
@@ -296,8 +263,6 @@ internal final class StatefulOutputTests: TestKitCase
             )
         }
         
-        XCTAssertNotNil(actual)
-        
         let expected: String =
         """
         XCTKStateful failed after 1 iteration
@@ -305,9 +270,9 @@ internal final class StatefulOutputTests: TestKitCase
         Command sequence:
             1. step ←
         
-        \(Self.seedMessage)
-        
         Threw error: TestError()
+        
+        \(Self.seedMessage)
         
         hello world
         """
@@ -317,7 +282,7 @@ internal final class StatefulOutputTests: TestKitCase
     
     
     
-    func testFailurePriorityOverThrownError() async throws
+    func testFailurePriorityOverThrownError() async
     {
         let options: TestOptions = .propertyOptions(
             iterations:         1,
@@ -326,7 +291,7 @@ internal final class StatefulOutputTests: TestKitCase
             seed:               Self.seed
         )
         
-        let output: String? = await withOneExpectedFailure
+        let actual: String? = await withOneExpectedFailure
         {
             await TKStateful(
                 model:      { 0 },
@@ -344,15 +309,6 @@ internal final class StatefulOutputTests: TestKitCase
             )
         }
         
-        XCTAssertNotNil(output)
-        
-        
-        
-        let actual: String = try getPropertyOutput(
-            from:       output,
-            before:     .true
-        )
-        
         let expected: String =
         """
         XCTKStateful failed after 1 iteration
@@ -360,8 +316,9 @@ internal final class StatefulOutputTests: TestKitCase
         Command sequence:
             1. increment ←
         
-        \(Self.seedMessage)
+        XCTKAssertTrue failed
         
+        \(Self.seedMessage)
         """
         
         XCTAssertEqual(expected, actual)
@@ -369,7 +326,7 @@ internal final class StatefulOutputTests: TestKitCase
     
     
     
-    func testDistributionCounterexample() async throws
+    func testDistributionCounterexample() async
     {
         let options: TestOptions = .propertyOptions(
             iterations:         100,
@@ -378,7 +335,7 @@ internal final class StatefulOutputTests: TestKitCase
             seed:               Self.seed
         )
         
-        let output: String? = await withOneExpectedFailure
+        let actual: String? = await withOneExpectedFailure
         {
             await TKStateful(
                 model:      { 0 },
@@ -399,15 +356,6 @@ internal final class StatefulOutputTests: TestKitCase
             )
         }
         
-        XCTAssertNotNil(output)
-        
-        
-        
-        let actual: String = try getPropertyOutput(
-            from:       output,
-            before:     .true
-        )
-        
         let expected: String =
         """
         XCTKStateful failed after 4 iterations
@@ -417,11 +365,12 @@ internal final class StatefulOutputTests: TestKitCase
             2. increment
             3. increment ←
         
+        XCTKAssertTrue failed
+        
         \(Self.seedMessage)
         
         Distribution (4 iterations):
             always: 3 (75%)
-        
         """
         
         XCTAssertEqual(expected, actual)
@@ -429,7 +378,7 @@ internal final class StatefulOutputTests: TestKitCase
     
     
     
-    func testTableDistributionCounterexample() async throws
+    func testTableDistributionCounterexample() async
     {
         let options: TestOptions = .propertyOptions(
             iterations:         100,
@@ -438,7 +387,7 @@ internal final class StatefulOutputTests: TestKitCase
             seed:               Self.seed
         )
         
-        let output: String? = await withOneExpectedFailure
+        let actual: String? = await withOneExpectedFailure
         {
             await TKStateful(
                 model:      { 0 },
@@ -459,15 +408,6 @@ internal final class StatefulOutputTests: TestKitCase
             )
         }
         
-        XCTAssertNotNil(output)
-        
-        
-        
-        let actual: String = try getPropertyOutput(
-            from:       output,
-            before:     .true
-        )
-        
         let expected: String =
         """
         XCTKStateful failed after 4 iterations
@@ -477,12 +417,13 @@ internal final class StatefulOutputTests: TestKitCase
             2. increment
             3. increment ←
         
+        XCTKAssertTrue failed
+        
         \(Self.seedMessage)
         
         Distribution (4 iterations):
             Table "type":
                 always: 3 (75%)
-        
         """
         
         XCTAssertEqual(expected, actual)
@@ -490,7 +431,7 @@ internal final class StatefulOutputTests: TestKitCase
     
     
     
-    func testMixedFlatAndTableDistributionCounterexample() async throws
+    func testMixedFlatAndTableDistributionCounterexample() async
     {
         let options: TestOptions = .propertyOptions(
             iterations:         100,
@@ -499,7 +440,7 @@ internal final class StatefulOutputTests: TestKitCase
             seed:               Self.seed
         )
         
-        let output: String? = await withOneExpectedFailure
+        let actual: String? = await withOneExpectedFailure
         {
             await TKStateful(
                 model:      { 0 },
@@ -521,15 +462,6 @@ internal final class StatefulOutputTests: TestKitCase
             )
         }
         
-        XCTAssertNotNil(output)
-        
-        
-        
-        let actual: String = try getPropertyOutput(
-            from:       output,
-            before:     .true
-        )
-        
         let expected: String =
         """
         XCTKStateful failed after 4 iterations
@@ -539,6 +471,8 @@ internal final class StatefulOutputTests: TestKitCase
             2. increment
             3. increment ←
         
+        XCTKAssertTrue failed
+        
         \(Self.seedMessage)
         
         Distribution (4 iterations):
@@ -546,7 +480,6 @@ internal final class StatefulOutputTests: TestKitCase
         
             Table "type":
                 always: 3 (75%)
-        
         """
         
         XCTAssertEqual(expected, actual)
@@ -584,8 +517,6 @@ internal final class StatefulOutputTests: TestKitCase
             )
         }
         
-        XCTAssertNotNil(actual)
-        
         let expected: String =
         """
         XCTKStateful failed after 4 iterations
@@ -595,12 +526,12 @@ internal final class StatefulOutputTests: TestKitCase
             2. increment
             3. increment ←
         
+        Threw error: TestError()
+        
         \(Self.seedMessage)
         
         Distribution (4 iterations):
             ran: 3 (75%)
-        
-        Threw error: TestError()
         """
         
         XCTAssertEqual(expected, actual)
@@ -608,7 +539,7 @@ internal final class StatefulOutputTests: TestKitCase
     
     
     
-    func testCounterexampleWithDistributionAndMessage() async throws
+    func testCounterexampleWithDistributionAndMessage() async
     {
         let options: TestOptions = .propertyOptions(
             iterations:         100,
@@ -617,7 +548,7 @@ internal final class StatefulOutputTests: TestKitCase
             seed:               Self.seed
         )
         
-        let output: String? = await withOneExpectedFailure
+        let actual: String? = await withOneExpectedFailure
         {
             await TKStateful(
                 "hello world",
@@ -639,16 +570,6 @@ internal final class StatefulOutputTests: TestKitCase
             )
         }
         
-        XCTAssertNotNil(output)
-        XCTAssertTrue(output?.hasSuffix("\nhello world") ?? false)
-        
-        
-        
-        let actual: String = try getPropertyOutput(
-            from:       output,
-            before:     .true
-        )
-        
         let expected: String =
         """
         XCTKStateful failed after 4 iterations
@@ -658,11 +579,14 @@ internal final class StatefulOutputTests: TestKitCase
             2. increment
             3. increment ←
         
+        XCTKAssertTrue failed
+        
         \(Self.seedMessage)
         
         Distribution (4 iterations):
             ran: 3 (75%)
         
+        hello world
         """
         
         XCTAssertEqual(expected, actual)
@@ -670,7 +594,7 @@ internal final class StatefulOutputTests: TestKitCase
     
     
     
-    func testCounterexampleMultipleTables() async throws
+    func testCounterexampleMultipleTables() async
     {
         let options: TestOptions = .propertyOptions(
             iterations:         100,
@@ -679,7 +603,7 @@ internal final class StatefulOutputTests: TestKitCase
             seed:               Self.seed
         )
         
-        let output: String? = await withOneExpectedFailure
+        let actual: String? = await withOneExpectedFailure
         {
             await TKStateful(
                 model:      { 0 },
@@ -701,15 +625,6 @@ internal final class StatefulOutputTests: TestKitCase
             )
         }
         
-        XCTAssertNotNil(output)
-        
-        
-        
-        let actual: String = try getPropertyOutput(
-            from:       output,
-            before:     .true
-        )
-        
         let expected: String =
         """
         XCTKStateful failed after 4 iterations
@@ -719,6 +634,8 @@ internal final class StatefulOutputTests: TestKitCase
             2. increment
             3. increment ←
         
+        XCTKAssertTrue failed
+        
         \(Self.seedMessage)
         
         Distribution (4 iterations):
@@ -727,7 +644,6 @@ internal final class StatefulOutputTests: TestKitCase
         
             Table "b":
                 y: 3 (75%)
-        
         """
         
         XCTAssertEqual(expected, actual)
@@ -735,7 +651,7 @@ internal final class StatefulOutputTests: TestKitCase
     
     
     
-    func testCounterexampleMultipleTableEntries() async throws
+    func testCounterexampleMultipleTableEntries() async
     {
         let options: TestOptions = .propertyOptions(
             iterations:         100,
@@ -744,7 +660,7 @@ internal final class StatefulOutputTests: TestKitCase
             seed:               Self.seed
         )
         
-        let output: String? = await withOneExpectedFailure
+        let actual: String? = await withOneExpectedFailure
         {
             await TKStateful(
                 model:      { 0 },
@@ -766,15 +682,6 @@ internal final class StatefulOutputTests: TestKitCase
             )
         }
         
-        XCTAssertNotNil(output)
-        
-        
-        
-        let actual: String = try getPropertyOutput(
-            from:       output,
-            before:     .true
-        )
-        
         let expected: String =
         """
         XCTKStateful failed after 4 iterations
@@ -784,13 +691,14 @@ internal final class StatefulOutputTests: TestKitCase
             2. increment
             3. increment ←
         
+        XCTKAssertTrue failed
+        
         \(Self.seedMessage)
         
         Distribution (4 iterations):
             Table "table":
                 a: 3 (75%)
                 b: 3 (75%)
-        
         """
         
         XCTAssertEqual(expected, actual)
@@ -829,8 +737,6 @@ internal final class StatefulOutputTests: TestKitCase
             )
         }
         
-        XCTAssertNotNil(actual)
-        
         let expected: String =
         """
         XCTKStateful failed after 4 iterations
@@ -840,12 +746,12 @@ internal final class StatefulOutputTests: TestKitCase
             2. increment
             3. increment ←
         
+        Threw error: TestError()
+        
         \(Self.seedMessage)
         
         Distribution (4 iterations):
             ran: 3 (75%)
-        
-        Threw error: TestError()
         
         hello world
         """
@@ -874,8 +780,6 @@ internal final class StatefulOutputTests: TestKitCase
                 options:    options
             )
         }
-        
-        XCTAssertNotNil(actual)
         
         let expected: String =
         """
@@ -910,8 +814,6 @@ internal final class StatefulOutputTests: TestKitCase
             )
         }
         
-        XCTAssertNotNil(actual)
-        
         let expected: String =
         """
         XCTKStateful exhausted after 0 successful iterations
@@ -945,8 +847,6 @@ internal final class StatefulOutputTests: TestKitCase
                 options:    options
             )
         }
-        
-        XCTAssertNotNil(actual)
         
         let expected: String =
         """
@@ -990,8 +890,6 @@ internal final class StatefulOutputTests: TestKitCase
             )
         }
         
-        XCTAssertNotNil(actual)
-        
         let expected: String =
         """
         XCTKStateful exhausted after 1 successful iteration
@@ -1006,7 +904,7 @@ internal final class StatefulOutputTests: TestKitCase
     
     
     
-    func testDistributionExhaustion() async throws
+    func testDistributionExhaustion() async
     {
         let options: TestOptions = .propertyOptions(
             iterations:         10,
@@ -1035,8 +933,6 @@ internal final class StatefulOutputTests: TestKitCase
                 }
             )
         }
-        
-        XCTAssertNotNil(actual)
         
         let expected: String =
         """
@@ -1084,8 +980,6 @@ internal final class StatefulOutputTests: TestKitCase
                 }
             )
         }
-        
-        XCTAssertNotNil(actual)
         
         let expected: String =
         """
@@ -1135,8 +1029,6 @@ internal final class StatefulOutputTests: TestKitCase
                 }
             )
         }
-        
-        XCTAssertNotNil(actual)
         
         let expected: String =
         """
@@ -1189,8 +1081,6 @@ internal final class StatefulOutputTests: TestKitCase
             )
         }
         
-        XCTAssertNotNil(actual)
-        
         let expected: String =
         """
         XCTKStateful exhausted after 1 successful iteration
@@ -1212,7 +1102,7 @@ internal final class StatefulOutputTests: TestKitCase
     
     // MARK: - Step
     
-    func testStepPaddingWithMidSequenceArrow() async throws
+    func testStepPaddingWithMidSequenceArrow() async
     {
         let options: TestOptions = .propertyOptions(
             iterations:         10,
@@ -1221,7 +1111,7 @@ internal final class StatefulOutputTests: TestKitCase
             seed:               Self.seed
         )
         
-        let output: String? = await withOneExpectedFailure
+        let actual: String? = await withOneExpectedFailure
         {
             await TKStateful(
                 model:      { 0 },
@@ -1240,15 +1130,6 @@ internal final class StatefulOutputTests: TestKitCase
             )
         }
         
-        XCTAssertNotNil(output)
-        
-        
-        
-        let actual: String = try getPropertyOutput(
-            from:       output,
-            before:     .true
-        )
-        
         let expected: String =
         """
         XCTKStateful failed after 2 iterations (shrunk to 3 commands)
@@ -1258,8 +1139,9 @@ internal final class StatefulOutputTests: TestKitCase
             2. increment
             3. increment ←
         
-        \(Self.seedMessage)
+        XCTKAssertTrue failed
         
+        \(Self.seedMessage)
         """
         
         XCTAssertEqual(expected, actual)
@@ -1267,7 +1149,7 @@ internal final class StatefulOutputTests: TestKitCase
     
     
     
-    func testDoubleDigitsStepPadding() async throws
+    func testDoubleDigitsStepPadding() async
     {
         let options: TestOptions = .propertyOptions(
             iterations:         100,
@@ -1276,7 +1158,7 @@ internal final class StatefulOutputTests: TestKitCase
             seed:               Self.seed
         )
         
-        let output: String? = await withOneExpectedFailure
+        let actual: String? = await withOneExpectedFailure
         {
             await TKStateful(
                 model:      { 0 },
@@ -1295,15 +1177,6 @@ internal final class StatefulOutputTests: TestKitCase
             )
         }
         
-        XCTAssertNotNil(output)
-        
-        
-        
-        let actual: String = try getPropertyOutput(
-            from:       output,
-            before:     .true
-        )
-        
         let expected: String =
         """
         XCTKStateful failed after 11 iterations
@@ -1320,8 +1193,9 @@ internal final class StatefulOutputTests: TestKitCase
              9. increment
             10. increment ←
         
-        \(Self.seedMessage)
+        XCTKAssertTrue failed
         
+        \(Self.seedMessage)
         """
         
         XCTAssertEqual(expected, actual)
@@ -1329,7 +1203,7 @@ internal final class StatefulOutputTests: TestKitCase
     
     
     
-    func testShrunkToSingularCommand() async throws
+    func testShrunkToSingularCommand() async
     {
         let options: TestOptions = .propertyOptions(
             iterations:         10,
@@ -1338,7 +1212,7 @@ internal final class StatefulOutputTests: TestKitCase
             seed:               Self.seed
         )
         
-        let output: String? = await withOneExpectedFailure
+        let actual: String? = await withOneExpectedFailure
         {
             await TKStateful(
                 model:      { 0 },
@@ -1357,15 +1231,6 @@ internal final class StatefulOutputTests: TestKitCase
             )
         }
         
-        XCTAssertNotNil(output)
-        
-        
-        
-        let actual: String = try getPropertyOutput(
-            from:       output,
-            before:     .true
-        )
-        
         let expected: String =
         """
         XCTKStateful failed after 3 iterations (shrunk to 1 command)
@@ -1373,8 +1238,9 @@ internal final class StatefulOutputTests: TestKitCase
         Command sequence:
             1. add(20) ←
         
-        \(Self.seedMessage)
+        XCTKAssertTrue failed
         
+        \(Self.seedMessage)
         """
         
         XCTAssertEqual(expected, actual)
@@ -1403,8 +1269,6 @@ internal final class StatefulOutputTests: TestKitCase
             )
         }
         
-        XCTAssertNotNil(actual)
-        
         /// The `message` comes from the ``PropertyInterceptor/recordFailure()``
         /// test utility method.
         let expected: String =
@@ -1416,9 +1280,9 @@ internal final class StatefulOutputTests: TestKitCase
             2. step
             3. step ←
         
-        \(Self.seedMessage)
-        
         message
+        
+        \(Self.seedMessage)
         """
         
         XCTAssertEqual(expected, actual)
@@ -1426,7 +1290,7 @@ internal final class StatefulOutputTests: TestKitCase
     
     
     
-    func testRunFailureAfterShrinking() async throws
+    func testRunFailureAfterShrinking() async
     {
         let options: TestOptions = .propertyOptions(
             iterations:         10,
@@ -1444,8 +1308,6 @@ internal final class StatefulOutputTests: TestKitCase
             )
         }
         
-        XCTAssertNotNil(actual)
-        
         /// The `message` comes from the ``PropertyInterceptor/recordFailure()``
         /// test utility method.
         let expected: String =
@@ -1457,9 +1319,9 @@ internal final class StatefulOutputTests: TestKitCase
             2. step
             3. step ←
         
-        \(Self.seedMessage)
-        
         message
+        
+        \(Self.seedMessage)
         """
         
         XCTAssertEqual(expected, actual)
@@ -1492,8 +1354,6 @@ internal final class StatefulOutputTests: TestKitCase
                 }
             )
         }
-        
-        XCTAssertNotNil(actual)
         
         let expected: String =
         """
@@ -1533,8 +1393,6 @@ internal final class StatefulOutputTests: TestKitCase
                 }
             )
         }
-        
-        XCTAssertNotNil(actual)
         
         let expected: String =
         """
@@ -1576,8 +1434,6 @@ internal final class StatefulOutputTests: TestKitCase
                 }
             )
         }
-        
-        XCTAssertNotNil(actual)
         
         let expected: String =
         """
@@ -1622,8 +1478,6 @@ internal final class StatefulOutputTests: TestKitCase
             )
         }
         
-        XCTAssertNotNil(actual)
-        
         let expected: String =
         """
         XCTKStateful coverage not met after 10 iterations
@@ -1666,8 +1520,6 @@ internal final class StatefulOutputTests: TestKitCase
             )
         }
         
-        XCTAssertNotNil(actual)
-        
         let expected: String =
         """
         XCTKStateful coverage not met after 10 iterations
@@ -1708,8 +1560,6 @@ internal final class StatefulOutputTests: TestKitCase
             )
         }
         
-        XCTAssertNotNil(actual)
-        
         let expected: String =
         """
         XCTKStateful coverage not met after 10 iterations
@@ -1748,8 +1598,6 @@ internal final class StatefulOutputTests: TestKitCase
                 }
             )
         }
-        
-        XCTAssertNotNil(actual)
         
         let expected: String =
         """
@@ -1791,8 +1639,6 @@ internal final class StatefulOutputTests: TestKitCase
             )
         }
         
-        XCTAssertNotNil(actual)
-        
         let expected: String =
         """
         XCTKStateful coverage not met after 10 iterations
@@ -1833,8 +1679,6 @@ internal final class StatefulOutputTests: TestKitCase
             )
         }
         
-        XCTAssertNotNil(actual)
-        
         let expected: String =
         """
         XCTKStateful failed after 2 iterations
@@ -1851,9 +1695,9 @@ internal final class StatefulOutputTests: TestKitCase
              9. step
             10. step
         
-        \(Self.seedMessage)
-        
         Postcondition failed after command: step (step 3)
+        
+        \(Self.seedMessage)
         """
         
         XCTAssertEqual(expected, actual)
@@ -1879,8 +1723,6 @@ internal final class StatefulOutputTests: TestKitCase
             )
         }
         
-        XCTAssertNotNil(actual)
-        
         let expected: String =
         """
         XCTKStateful failed after 2 iterations (shrunk to 3 commands)
@@ -1890,9 +1732,9 @@ internal final class StatefulOutputTests: TestKitCase
             2. step
             3. step ←
         
-        \(Self.seedMessage)
-        
         Postcondition failed after command: step (step 3)
+        
+        \(Self.seedMessage)
         """
         
         XCTAssertEqual(expected, actual)
@@ -1931,8 +1773,6 @@ internal final class StatefulOutputTests: TestKitCase
             )
         }
         
-        XCTAssertNotNil(actual)
-        
         let expected: String =
         """
         XCTKStateful failed after 4 iterations
@@ -1942,9 +1782,9 @@ internal final class StatefulOutputTests: TestKitCase
             2. increment
             3. increment ←
         
-        \(Self.seedMessage)
-        
         Threw error: TestError()
+        
+        \(Self.seedMessage)
         """
         
         XCTAssertEqual(expected, actual)
@@ -1970,8 +1810,6 @@ internal final class StatefulOutputTests: TestKitCase
                 options:    options
             )
         }
-        
-        XCTAssertNotNil(actual)
         
         let expected: String =
         """
@@ -2016,8 +1854,6 @@ internal final class StatefulOutputTests: TestKitCase
             )
         }
         
-        XCTAssertNotNil(actual)
-        
         let expected: String =
         """
         XCTKStateful failed after 4 iterations
@@ -2027,9 +1863,9 @@ internal final class StatefulOutputTests: TestKitCase
             2. increment
             3. increment ←
         
-        \(Self.seedMessage)
-        
         Threw error: TestError()
+        
+        \(Self.seedMessage)
         
         Command presence (3 iterations):
             increment: 3 (100%)
@@ -2064,8 +1900,6 @@ internal final class StatefulOutputTests: TestKitCase
                 }
             )
         }
-        
-        XCTAssertNotNil(actual)
         
         /// Command sequences:
         /// - `alpha`
@@ -2120,8 +1954,6 @@ internal final class StatefulOutputTests: TestKitCase
             )
         }
         
-        XCTAssertNotNil(actual)
-        
         /// Command sequence counts: 1, 1, 2.
         let expected: String =
         """
@@ -2132,10 +1964,10 @@ internal final class StatefulOutputTests: TestKitCase
             2. increment
             3. increment ←
         
-        \(Self.seedMessage)
-        
         Threw error: TestError()
         
+        \(Self.seedMessage)
+
         Command frequency (4 commands):
             increment: 4 (100%)
         """
@@ -2169,8 +2001,6 @@ internal final class StatefulOutputTests: TestKitCase
                 }
             )
         }
-        
-        XCTAssertNotNil(actual)
         
         /// Command sequences:
         /// - `alpha`
@@ -2225,8 +2055,6 @@ internal final class StatefulOutputTests: TestKitCase
             )
         }
         
-        XCTAssertNotNil(actual)
-        
         /// Command sequence counts: 1, 1, 2.
         let expected: String =
         """
@@ -2237,9 +2065,9 @@ internal final class StatefulOutputTests: TestKitCase
             2. increment
             3. increment ←
         
-        \(Self.seedMessage)
-        
         Threw error: TestError()
+        
+        \(Self.seedMessage)
         
         Command sequence count (3 iterations):
             Minimum:   1
@@ -2276,8 +2104,6 @@ internal final class StatefulOutputTests: TestKitCase
                 }
             )
         }
-        
-        XCTAssertNotNil(actual)
         
         let expected: String =
         """
@@ -2328,8 +2154,6 @@ internal final class StatefulOutputTests: TestKitCase
             )
         }
         
-        XCTAssertNotNil(actual)
-        
         /// Command sequence counts: 1, 1, 2.
         let expected: String =
         """
@@ -2340,9 +2164,9 @@ internal final class StatefulOutputTests: TestKitCase
             2. increment
             3. increment ←
         
-        \(Self.seedMessage)
-        
         Threw error: TestError()
+        
+        \(Self.seedMessage)
         
         Command presence (3 iterations):
             increment: 3 (100%)
@@ -2392,8 +2216,6 @@ internal final class StatefulOutputTests: TestKitCase
             )
         }
         
-        XCTAssertNotNil(actual)
-        
         let expected: String =
         """
         XCTKStateful failed after 4 iterations
@@ -2403,12 +2225,12 @@ internal final class StatefulOutputTests: TestKitCase
             2. increment
             3. increment ←
         
+        Threw error: TestError()
+        
         \(Self.seedMessage)
         
         Distribution (4 iterations):
             always: 3 (75%)
-        
-        Threw error: TestError()
         
         Command presence (3 iterations):
             increment: 3 (100%)
@@ -2447,8 +2269,6 @@ internal final class StatefulOutputTests: TestKitCase
                 }
             )
         }
-        
-        XCTAssertNotNil(actual)
         
         let expected: String =
         """
@@ -2491,8 +2311,6 @@ internal final class StatefulOutputTests: TestKitCase
                 }
             )
         }
-        
-        XCTAssertNotNil(actual)
         
         let expected: String =
         """
@@ -2542,8 +2360,6 @@ internal final class StatefulOutputTests: TestKitCase
             )
         }
         
-        XCTAssertNotNil(actual)
-        
         let expected: String =
         """
         XCTKStateful failed after 4 iterations
@@ -2553,9 +2369,9 @@ internal final class StatefulOutputTests: TestKitCase
             2. increment
             3. increment ←
         
-        \(Self.seedMessage)
-        
         Threw error: TestError()
+        
+        \(Self.seedMessage)
         
         Command presence (3 iterations):
             increment: 3 (100%)
@@ -2570,7 +2386,7 @@ internal final class StatefulOutputTests: TestKitCase
     
     // MARK: - ForAll
     
-    func testForAllFailure() async throws
+    func testForAllFailure() async
     {
         let statefulOptions: TestOptions = .propertyOptions(
             iterations:         1,
@@ -2585,7 +2401,7 @@ internal final class StatefulOutputTests: TestKitCase
             seed:               99
         )
         
-        let output: String? = await withOneExpectedFailure
+        let actual: String? = await withOneExpectedFailure
         {
             await TKStateful(
                 model:      { 0 },
@@ -2606,15 +2422,6 @@ internal final class StatefulOutputTests: TestKitCase
             )
         }
         
-        XCTAssertNotNil(output)
-        
-        
-        
-        let actual: String = try getPropertyOutput(
-            from:       output,
-            before:     .true
-        )
-        
         let expected: String =
         """
         XCTKStateful failed after 1 iteration
@@ -2622,15 +2429,16 @@ internal final class StatefulOutputTests: TestKitCase
         Command sequence:
             1. increment ←
         
-        \(Self.seedMessage)
-        
         XCTKForAll failed after 1 iteration
         
         Counterexample:
             Int = 0
         
-        Seed: 99 (re-run with PropertyOptions.seed)
+        XCTKAssertTrue failed
         
+        Seed: 99 (XCTKForAll)
+        
+        \(Self.seedMessage)
         """
         
         XCTAssertEqual(expected, actual)
@@ -2638,7 +2446,7 @@ internal final class StatefulOutputTests: TestKitCase
     
     
     
-    func testForAllFailureWithShrinking() async throws
+    func testForAllFailureWithShrinking() async
     {
         let statefulOptions: TestOptions = .propertyOptions(
             iterations:         10,
@@ -2652,7 +2460,7 @@ internal final class StatefulOutputTests: TestKitCase
             seed:               99
         )
         
-        let output: String? = await withOneExpectedFailure
+        let actual: String? = await withOneExpectedFailure
         {
             await TKStateful(
                 model:      { 0 },
@@ -2676,15 +2484,6 @@ internal final class StatefulOutputTests: TestKitCase
             )
         }
         
-        XCTAssertNotNil(output)
-        
-        
-        
-        let actual: String = try getPropertyOutput(
-            from:       output,
-            before:     .true
-        )
-        
         let expected: String =
         """
         XCTKStateful failed after 2 iterations (shrunk to 3 commands)
@@ -2694,15 +2493,16 @@ internal final class StatefulOutputTests: TestKitCase
             2. increment
             3. increment ←
         
-        \(Self.seedMessage)
-        
         XCTKForAll failed after 1 iteration
         
         Counterexample:
             Int = 0
         
-        Seed: 99 (re-run with PropertyOptions.seed)
+        XCTKAssertTrue failed
         
+        Seed: 99 (XCTKForAll)
+        
+        \(Self.seedMessage)
         """
         
         XCTAssertEqual(expected, actual)
@@ -2710,7 +2510,7 @@ internal final class StatefulOutputTests: TestKitCase
     
     
     
-    func testMultipleForAllsFirstPassingSecondFailing() async throws
+    func testMultipleForAllsFirstPassingSecondFailing() async
     {
         let statefulOptions: TestOptions = .propertyOptions(
             iterations:         1,
@@ -2730,7 +2530,7 @@ internal final class StatefulOutputTests: TestKitCase
             seed:               99
         )
         
-        let output: String? = await withOneExpectedFailure
+        let actual: String? = await withOneExpectedFailure
         {
             await TKStateful(
                 model:      { 0 },
@@ -2758,15 +2558,6 @@ internal final class StatefulOutputTests: TestKitCase
             )
         }
         
-        XCTAssertNotNil(output)
-        
-        
-        
-        let actual: String = try getPropertyOutput(
-            from:       output,
-            before:     .true
-        )
-        
         let expected: String =
         """
         XCTKStateful failed after 1 iteration
@@ -2774,15 +2565,16 @@ internal final class StatefulOutputTests: TestKitCase
         Command sequence:
             1. increment ←
         
-        \(Self.seedMessage)
-        
         XCTKForAll failed after 1 iteration
         
         Counterexample:
             Int = 0
         
-        Seed: 99 (re-run with PropertyOptions.seed)
+        XCTKAssertTrue failed
         
+        Seed: 99 (XCTKForAll)
+        
+        \(Self.seedMessage)
         """
         
         XCTAssertEqual(expected, actual)
@@ -2790,7 +2582,7 @@ internal final class StatefulOutputTests: TestKitCase
     
     
     
-    func testMultipleForAllsBothFailing() async throws
+    func testMultipleForAllsBothFailing() async
     {
         let statefulOptions: TestOptions = .propertyOptions(
             iterations:         1,
@@ -2804,7 +2596,7 @@ internal final class StatefulOutputTests: TestKitCase
             seed:           99
         )
         
-        let output: String? = await withOneExpectedFailure
+        let actual: String? = await withOneExpectedFailure
         {
             await TKStateful(
                 model:      { 0 },
@@ -2832,15 +2624,6 @@ internal final class StatefulOutputTests: TestKitCase
             )
         }
         
-        XCTAssertNotNil(output)
-        
-        
-        
-        let actual: String = try getPropertyOutput(
-            from:       output,
-            before:     .true
-        )
-        
         let expected: String =
         """
         XCTKStateful failed after 1 iteration
@@ -2848,15 +2631,16 @@ internal final class StatefulOutputTests: TestKitCase
         Command sequence:
             1. increment ←
         
-        \(Self.seedMessage)
-        
         XCTKForAll failed after 1 iteration
         
         Counterexample:
             Int = 0
         
-        Seed: 99 (re-run with PropertyOptions.seed)
+        XCTKAssertTrue failed
         
+        Seed: 99 (XCTKForAll)
+        
+        \(Self.seedMessage)
         """
         
         XCTAssertEqual(expected, actual)
@@ -2872,9 +2656,8 @@ extension StatefulOutputTests
     /// The seed used to initialize the random number generator.
     ///
     /// Use a fixed seed rather than a random seed for deterministic tests.
-    private static let seed: UInt64 = 50
+    private static let seed: UInt64 = 12345
     
-    /// The re-run message.
-    private static let seedMessage: String =
-        "Seed: \(seed) (re-run with PropertyOptions.seed)"
+    /// The seed re-run message.
+    private static let seedMessage: String = "Seed: \(seed) (XCTKStateful)"
 }

@@ -808,13 +808,13 @@ internal final class StatefulMacroTests: TestKitCase
             2. add(5)
             3. add(22)
             4. add(13) ←
-
-        Seed: 12345 (re-run with PropertyOptions.seed)
-
+        
         XCTKAssertEqual failed
 
         Expected:   51
         Actual:     50
+        
+        Seed: 12345 (XCTKStateful)
         """
         
         XCTAssertEqual(expected, actual)

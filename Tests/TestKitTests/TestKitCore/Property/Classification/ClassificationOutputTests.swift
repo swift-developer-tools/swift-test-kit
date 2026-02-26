@@ -47,8 +47,6 @@ internal final class ClassificationOutputTests: TestKitCase
             }
         }
         
-        XCTAssertNotNil(actual)
-        
         let expected: String =
         """
         XCTKForAll coverage not met after 10 iterations
@@ -85,8 +83,6 @@ internal final class ClassificationOutputTests: TestKitCase
                 TKCover(100, "positive", when: n > 0)
             }
         }
-        
-        XCTAssertNotNil(actual)
         
         let expected: String =
         """
@@ -126,8 +122,6 @@ internal final class ClassificationOutputTests: TestKitCase
             }
         }
         
-        XCTAssertNotNil(actual)
-        
         let expected: String =
         """
         XCTKForAll coverage not met after 10 iterations
@@ -166,8 +160,6 @@ internal final class ClassificationOutputTests: TestKitCase
             }
         }
         
-        XCTAssertNotNil(actual)
-        
         let expected: String =
         """
         XCTKForAll coverage not met after 1 iteration
@@ -204,8 +196,6 @@ internal final class ClassificationOutputTests: TestKitCase
                 TKCover(50, "positive", when: n > 0)
             }
         }
-        
-        XCTAssertNotNil(actual)
         
         let expected: String =
         """
@@ -244,8 +234,6 @@ internal final class ClassificationOutputTests: TestKitCase
             }
         }
         
-        XCTAssertNotNil(actual)
-        
         let expected: String =
         """
         XCTKForAll coverage not met after 10 iterations
@@ -282,8 +270,6 @@ internal final class ClassificationOutputTests: TestKitCase
                 TKCover(100, "negative", when: n < 0)
             }
         }
-        
-        XCTAssertNotNil(actual)
         
         let expected: String =
         """
@@ -330,8 +316,6 @@ internal final class ClassificationOutputTests: TestKitCase
             }
         }
         
-        XCTAssertNotNil(actual)
-        
         let expected: String =
         """
         XCTKForAll coverage not met after 10 iterations
@@ -368,8 +352,6 @@ internal final class ClassificationOutputTests: TestKitCase
                 TKCoverTable("sign", (50, "positive"), (50, "negative"))
             }
         }
-        
-        XCTAssertNotNil(actual)
         
         let expected: String =
         """
@@ -414,8 +396,6 @@ internal final class ClassificationOutputTests: TestKitCase
             }
         }
         
-        XCTAssertNotNil(actual)
-        
         let expected: String =
         """
         XCTKForAll coverage not met after 10 iterations
@@ -456,8 +436,6 @@ internal final class ClassificationOutputTests: TestKitCase
                 TKCoverTable("size", (50, "small"), (50, "large"))
             }
         }
-        
-        XCTAssertNotNil(actual)
         
         let expected: String =
         """
@@ -503,8 +481,6 @@ internal final class ClassificationOutputTests: TestKitCase
             }
         }
         
-        XCTAssertNotNil(actual)
-        
         let expected: String =
         """
         XCTKForAll coverage not met after 10 iterations
@@ -548,8 +524,6 @@ internal final class ClassificationOutputTests: TestKitCase
                 TKCoverTable("size", (100, "negative"))
             }
         }
-        
-        XCTAssertNotNil(actual)
         
         let expected: String =
         """
@@ -600,8 +574,6 @@ internal final class ClassificationOutputTests: TestKitCase
             }
         }
         
-        XCTAssertNotNil(actual)
-        
         let expected: String =
         """
         XCTKForAll coverage not met after 10 iterations
@@ -640,8 +612,6 @@ internal final class ClassificationOutputTests: TestKitCase
                 TKCoverTable("sign", (2.5, "negative"))
             }
         }
-        
-        XCTAssertNotNil(actual)
         
         let expected: String =
         """
@@ -683,8 +653,6 @@ internal final class ClassificationOutputTests: TestKitCase
             }
         }
         
-        XCTAssertNotNil(actual)
-        
         let expected: String =
         """
         XCTKForAll coverage not met after 10 iterations
@@ -724,8 +692,6 @@ internal final class ClassificationOutputTests: TestKitCase
             }
         }
         
-        XCTAssertNotNil(actual)
-        
         let expected: String =
         """
         XCTKForAll coverage not met after 1 iteration
@@ -746,7 +712,7 @@ internal final class ClassificationOutputTests: TestKitCase
     // MARK: - Counterexample
     
     @Reasync
-    func testCounterexampleDistribution() async throws
+    func testCounterexampleDistribution() async
     {
         let options: TestOptions = .propertyOptions(
             iterations:     2,
@@ -761,7 +727,7 @@ internal final class ClassificationOutputTests: TestKitCase
             shrink:     { _ in [] }
         )
         
-        let output: String? = await withOneExpectedFailure
+        let actual: String? = await withOneExpectedFailure
         {
             await TKForAll(
                 using:      generator,
@@ -775,15 +741,6 @@ internal final class ClassificationOutputTests: TestKitCase
             }
         }
         
-        XCTAssertNotNil(output)
-        
-        
-        
-        let actual: String = try getPropertyOutput(
-            from:       output,
-            before:     .lessThan
-        )
-        
         let expected: String =
         """
         XCTKForAll failed after 2 iterations
@@ -791,11 +748,12 @@ internal final class ClassificationOutputTests: TestKitCase
         Counterexample:
             Int = 50
         
+        XCTKAssertLessThan failed: ("50") is not less than ("50")
+        
         \(Self.seedMessage)
         
         Distribution (2 iterations):
             tracked: 1 (50%)
-        
         """
         
         XCTAssertEqual(expected, actual)
@@ -804,7 +762,7 @@ internal final class ClassificationOutputTests: TestKitCase
     
     
     @Reasync
-    func testCounterexampleMultipleDistributionLabels() async throws
+    func testCounterexampleMultipleDistributionLabels() async
     {
         let options: TestOptions = .propertyOptions(
             iterations:     5,
@@ -822,7 +780,7 @@ internal final class ClassificationOutputTests: TestKitCase
             shrink:     { _ in [] }
         )
         
-        let output: String? = await withOneExpectedFailure
+        let actual: String? = await withOneExpectedFailure
         {
             await TKForAll(
                 using:      generator,
@@ -837,15 +795,6 @@ internal final class ClassificationOutputTests: TestKitCase
             }
         }
         
-        XCTAssertNotNil(output)
-        
-        
-        
-        let actual: String = try getPropertyOutput(
-            from:       output,
-            before:     .lessThan
-        )
-        
         let expected: String =
         """
         XCTKForAll failed after 4 iterations
@@ -853,12 +802,13 @@ internal final class ClassificationOutputTests: TestKitCase
         Counterexample:
             Int = 60
         
+        XCTKAssertLessThan failed: ("60") is not less than ("60")
+        
         \(Self.seedMessage)
         
         Distribution (4 iterations):
             large: 1 (25%)
             small: 2 (50%)
-        
         """
         
         XCTAssertEqual(expected, actual)
@@ -867,7 +817,7 @@ internal final class ClassificationOutputTests: TestKitCase
     
     
     @Reasync
-    func testCounterexampleShrinkingAndDistribution() async throws
+    func testCounterexampleShrinkingAndDistribution() async
     {
         let options: TestOptions = .propertyOptions(
             iterations:     2,
@@ -883,7 +833,7 @@ internal final class ClassificationOutputTests: TestKitCase
             shrink:     { value in value.shrink() }
         )
         
-        let output: String? = await withOneExpectedFailure
+        let actual: String? = await withOneExpectedFailure
         {
             await TKForAll(
                 using:      generator,
@@ -897,15 +847,6 @@ internal final class ClassificationOutputTests: TestKitCase
             }
         }
         
-        XCTAssertNotNil(output)
-        
-        
-        
-        let actual: String = try getPropertyOutput(
-            from:       output,
-            before:     .lessThan
-        )
-        
         let expected: String =
         """
         XCTKForAll failed after 2 iterations (shrunk in 4 steps)
@@ -913,11 +854,12 @@ internal final class ClassificationOutputTests: TestKitCase
         Counterexample:
             Int = 10
         
+        XCTKAssertLessThan failed: ("10") is not less than ("10")
+        
         \(Self.seedMessage)
         
         Distribution (2 iterations):
             tracked: 1 (50%)
-        
         """
         
         XCTAssertEqual(expected, actual)
@@ -926,7 +868,7 @@ internal final class ClassificationOutputTests: TestKitCase
     
     
     @Reasync
-    func testCounterexampleDistributionNonIntegerPercentage() async throws
+    func testCounterexampleDistributionNonIntegerPercentage() async
     {
         let options: TestOptions = .propertyOptions(
             iterations:     3,
@@ -941,7 +883,7 @@ internal final class ClassificationOutputTests: TestKitCase
             shrink:     { _ in [] }
         )
         
-        let output: String? = await withOneExpectedFailure
+        let actual: String? = await withOneExpectedFailure
         {
             await TKForAll(
                 using:      generator,
@@ -955,15 +897,6 @@ internal final class ClassificationOutputTests: TestKitCase
             }
         }
         
-        XCTAssertNotNil(output)
-        
-        
-        
-        let actual: String = try getPropertyOutput(
-            from:       output,
-            before:     .lessThan
-        )
-        
         let expected: String =
         """
         XCTKForAll failed after 3 iterations
@@ -971,11 +904,12 @@ internal final class ClassificationOutputTests: TestKitCase
         Counterexample:
             Int = 66
         
+        XCTKAssertLessThan failed: ("66") is not less than ("50")
+        
         \(Self.seedMessage)
         
         Distribution (3 iterations):
             tracked: 2 (66.7%)
-        
         """
         
         XCTAssertEqual(expected, actual)
@@ -1017,8 +951,6 @@ internal final class ClassificationOutputTests: TestKitCase
             }
         }
         
-        XCTAssertNotNil(actual)
-        
         let expected: String =
         """
         XCTKForAll failed after 2 iterations
@@ -1026,12 +958,12 @@ internal final class ClassificationOutputTests: TestKitCase
         Counterexample:
             Int = 50
         
+        Threw error: TestError()
+        
         \(Self.seedMessage)
         
         Distribution (2 iterations):
             tracked: 1 (50%)
-        
-        Threw error: TestError()
         """
         
         XCTAssertEqual(expected, actual)
@@ -1040,14 +972,14 @@ internal final class ClassificationOutputTests: TestKitCase
     
     
     @Reasync
-    func testCounterexampleFirstFailureOmitsDistribution() async throws
+    func testCounterexampleFirstFailureOmitsDistribution() async
     {
         let options: TestOptions = .propertyOptions(
             iterations:     2,
             seed:           Self.seed
         )
         
-        let output: String? = await withOneExpectedFailure
+        let actual: String? = await withOneExpectedFailure
         {
             await TKForAll(options: options)
             {
@@ -1058,15 +990,6 @@ internal final class ClassificationOutputTests: TestKitCase
             }
         }
         
-        XCTAssertNotNil(output)
-        
-        
-        
-        let actual: String = try getPropertyOutput(
-            from:       output,
-            before:     .true
-        )
-        
         let expected: String =
         """
         XCTKForAll failed after 1 iteration
@@ -1074,8 +997,9 @@ internal final class ClassificationOutputTests: TestKitCase
         Counterexample:
             Int = 0
         
-        \(Self.seedMessage)
+        XCTKAssertTrue failed
         
+        \(Self.seedMessage)
         """
         
         XCTAssertEqual(expected, actual)
@@ -1084,7 +1008,7 @@ internal final class ClassificationOutputTests: TestKitCase
     
     
     @Reasync
-    func testCounterexampleDistributionLabelsAfterAssertion() async throws
+    func testCounterexampleDistributionLabelsAfterAssertion() async
     {
         let options: TestOptions = .propertyOptions(
             iterations:     3,
@@ -1101,7 +1025,7 @@ internal final class ClassificationOutputTests: TestKitCase
             shrink:     { _ in [] }
         )
         
-        let output: String? = await withOneExpectedFailure
+        let actual: String? = await withOneExpectedFailure
         {
             await TKForAll(
                 using:      generator,
@@ -1116,15 +1040,6 @@ internal final class ClassificationOutputTests: TestKitCase
             }
         }
         
-        XCTAssertNotNil(output)
-        
-        
-        
-        let actual: String = try getPropertyOutput(
-            from:       output,
-            before:     .lessThan
-        )
-        
         let expected: String =
         """
         XCTKForAll failed after 3 iterations
@@ -1132,12 +1047,13 @@ internal final class ClassificationOutputTests: TestKitCase
         Counterexample:
             Int = 66
         
+        XCTKAssertLessThan failed: ("66") is not less than ("60")
+        
         \(Self.seedMessage)
         
         Distribution (3 iterations):
             after:  2 (66.7%)
             before: 2 (66.7%)
-        
         """
         
         XCTAssertEqual(expected, actual)
@@ -1184,8 +1100,6 @@ internal final class ClassificationOutputTests: TestKitCase
             }
         }
         
-        XCTAssertNotNil(actual)
-        
         let expected: String =
         """
         XCTKForAll failed after 3 iterations
@@ -1193,13 +1107,13 @@ internal final class ClassificationOutputTests: TestKitCase
         Counterexample:
             Int = 66
         
+        Threw error: TestError()
+        
         \(Self.seedMessage)
         
         Distribution (3 iterations):
             after:  2 (66.7%)
             before: 2 (66.7%)
-        
-        Threw error: TestError()
         """
         
         XCTAssertEqual(expected, actual)
@@ -1208,7 +1122,7 @@ internal final class ClassificationOutputTests: TestKitCase
     
     
     @Reasync
-    func testCounterexampleTableDistribution() async throws
+    func testCounterexampleTableDistribution() async
     {
         let options: TestOptions = .propertyOptions(
             iterations:     2,
@@ -1221,7 +1135,7 @@ internal final class ClassificationOutputTests: TestKitCase
             shrink:     { _ in [] }
         )
         
-        let output: String? = await withOneExpectedFailure
+        let actual: String? = await withOneExpectedFailure
         {
             await TKForAll(
                 using:      generator,
@@ -1235,15 +1149,6 @@ internal final class ClassificationOutputTests: TestKitCase
             }
         }
         
-        XCTAssertNotNil(output)
-        
-        
-        
-        let actual: String = try getPropertyOutput(
-            from:       output,
-            before:     .lessThan
-        )
-        
         let expected: String =
         """
         XCTKForAll failed after 2 iterations
@@ -1251,12 +1156,13 @@ internal final class ClassificationOutputTests: TestKitCase
         Counterexample:
             Int = 50
         
+        XCTKAssertLessThan failed: ("50") is not less than ("50")
+        
         \(Self.seedMessage)
         
         Distribution (2 iterations):
             Table "size":
                 small: 1 (50%)
-        
         """
         
         XCTAssertEqual(expected, actual)
@@ -1265,7 +1171,7 @@ internal final class ClassificationOutputTests: TestKitCase
     
     
     @Reasync
-    func testCounterexampleFlatAndTableDistribution() async throws
+    func testCounterexampleFlatAndTableDistribution() async
     {
         let options: TestOptions = .propertyOptions(
             iterations:     2,
@@ -1278,7 +1184,7 @@ internal final class ClassificationOutputTests: TestKitCase
             shrink:     { _ in [] }
         )
         
-        let output: String? = await withOneExpectedFailure
+        let actual: String? = await withOneExpectedFailure
         {
             await TKForAll(
                 using:      generator,
@@ -1293,21 +1199,14 @@ internal final class ClassificationOutputTests: TestKitCase
             }
         }
         
-        XCTAssertNotNil(output)
-        
-        
-        
-        let actual: String = try getPropertyOutput(
-            from:       output,
-            before:     .lessThan
-        )
-        
         let expected: String =
         """
         XCTKForAll failed after 2 iterations
         
         Counterexample:
             Int = 50
+        
+        XCTKAssertLessThan failed: ("50") is not less than ("50")
         
         \(Self.seedMessage)
         
@@ -1316,7 +1215,6 @@ internal final class ClassificationOutputTests: TestKitCase
         
             Table "size":
                 small: 1 (50%)
-        
         """
         
         XCTAssertEqual(expected, actual)
@@ -1325,7 +1223,7 @@ internal final class ClassificationOutputTests: TestKitCase
     
     
     @Reasync
-    func testCounterexampleMultipleTableDistributions() async throws
+    func testCounterexampleMultipleTableDistributions() async
     {
         let options: TestOptions = .propertyOptions(
             iterations:     2,
@@ -1338,7 +1236,7 @@ internal final class ClassificationOutputTests: TestKitCase
             shrink:     { _ in [] }
         )
         
-        let output: String? = await withOneExpectedFailure
+        let actual: String? = await withOneExpectedFailure
         {
             await TKForAll(
                 using:      generator,
@@ -1353,21 +1251,14 @@ internal final class ClassificationOutputTests: TestKitCase
             }
         }
         
-        XCTAssertNotNil(output)
-        
-        
-        
-        let actual: String = try getPropertyOutput(
-            from:       output,
-            before:     .lessThan
-        )
-        
         let expected: String =
         """
         XCTKForAll failed after 2 iterations
         
         Counterexample:
             Int = 50
+        
+        XCTKAssertLessThan failed: ("50") is not less than ("50")
         
         \(Self.seedMessage)
         
@@ -1377,7 +1268,6 @@ internal final class ClassificationOutputTests: TestKitCase
         
             Table "size":
                 small: 1 (50%)
-        
         """
         
         XCTAssertEqual(expected, actual)
@@ -1386,14 +1276,14 @@ internal final class ClassificationOutputTests: TestKitCase
     
     
     @Reasync
-    func testCounterexampleFirstFailureOmitsTableDistribution() async throws
+    func testCounterexampleFirstFailureOmitsTableDistribution() async
     {
         let options: TestOptions = .propertyOptions(
             iterations:     2,
             seed:           Self.seed
         )
         
-        let output: String? = await withOneExpectedFailure
+        let actual: String? = await withOneExpectedFailure
         {
             await TKForAll(options: options)
             {
@@ -1404,15 +1294,6 @@ internal final class ClassificationOutputTests: TestKitCase
             }
         }
         
-        XCTAssertNotNil(output)
-        
-        
-        
-        let actual: String = try getPropertyOutput(
-            from:       output,
-            before:     .true
-        )
-        
         let expected: String =
         """
         XCTKForAll failed after 1 iteration
@@ -1420,8 +1301,9 @@ internal final class ClassificationOutputTests: TestKitCase
         Counterexample:
             Int = 0
         
-        \(Self.seedMessage)
+        XCTKAssertTrue failed
         
+        \(Self.seedMessage)
         """
         
         XCTAssertEqual(expected, actual)
@@ -1430,7 +1312,7 @@ internal final class ClassificationOutputTests: TestKitCase
     
     
     @Reasync
-    func testCounterexampleShrinkingAndTableDistribution() async throws
+    func testCounterexampleShrinkingAndTableDistribution() async
     {
         let options: TestOptions = .propertyOptions(
             iterations:     2,
@@ -1446,7 +1328,7 @@ internal final class ClassificationOutputTests: TestKitCase
             shrink:     { value in value.shrink() }
         )
         
-        let output: String? = await withOneExpectedFailure
+        let actual: String? = await withOneExpectedFailure
         {
             await TKForAll(
                 using:      generator,
@@ -1460,15 +1342,6 @@ internal final class ClassificationOutputTests: TestKitCase
             }
         }
         
-        XCTAssertNotNil(output)
-        
-        
-        
-        let actual: String = try getPropertyOutput(
-            from:       output,
-            before:     .lessThan
-        )
-        
         let expected: String =
         """
         XCTKForAll failed after 2 iterations (shrunk in 4 steps)
@@ -1476,12 +1349,13 @@ internal final class ClassificationOutputTests: TestKitCase
         Counterexample:
             Int = 10
         
+        XCTKAssertLessThan failed: ("10") is not less than ("10")
+        
         \(Self.seedMessage)
         
         Distribution (2 iterations):
             Table "size":
                 small: 1 (50%)
-        
         """
         
         XCTAssertEqual(expected, actual)
@@ -1521,8 +1395,6 @@ internal final class ClassificationOutputTests: TestKitCase
             }
         }
         
-        XCTAssertNotNil(actual)
-        
         let expected: String =
         """
         XCTKForAll failed after 2 iterations
@@ -1530,13 +1402,13 @@ internal final class ClassificationOutputTests: TestKitCase
         Counterexample:
             Int = 50
         
+        Threw error: TestError()
+        
         \(Self.seedMessage)
         
         Distribution (2 iterations):
             Table "size":
                 small: 1 (50%)
-        
-        Threw error: TestError()
         """
         
         XCTAssertEqual(expected, actual)
@@ -1545,7 +1417,7 @@ internal final class ClassificationOutputTests: TestKitCase
     
     
     @Reasync
-    func testCounterexampleTableDistributionLabelsAfterAssertion() async throws
+    func testCounterexampleTableDistributionLabelsAfterAssertion() async
     {
         let options: TestOptions = .propertyOptions(
             iterations:     3,
@@ -1562,7 +1434,7 @@ internal final class ClassificationOutputTests: TestKitCase
             shrink:     { _ in [] }
         )
         
-        let output: String? = await withOneExpectedFailure
+        let actual: String? = await withOneExpectedFailure
         {
             await TKForAll(
                 using:      generator,
@@ -1577,15 +1449,6 @@ internal final class ClassificationOutputTests: TestKitCase
             }
         }
         
-        XCTAssertNotNil(output)
-        
-        
-        
-        let actual: String = try getPropertyOutput(
-            from:       output,
-            before:     .lessThan
-        )
-        
         let expected: String =
         """
         XCTKForAll failed after 3 iterations
@@ -1593,13 +1456,14 @@ internal final class ClassificationOutputTests: TestKitCase
         Counterexample:
             Int = 66
         
+        XCTKAssertLessThan failed: ("66") is not less than ("60")
+        
         \(Self.seedMessage)
         
         Distribution (3 iterations):
             Table "position":
                 after:  2 (66.7%)
                 before: 2 (66.7%)
-        
         """
         
         XCTAssertEqual(expected, actual)
@@ -1608,7 +1472,7 @@ internal final class ClassificationOutputTests: TestKitCase
     
     
     @Reasync
-    func testCounterexampleTableDistributionLabelsAfterThrow() async throws
+    func testCounterexampleTableDistributionLabelsAfterThrow() async
     {
         let options: TestOptions = .propertyOptions(
             iterations:     3,
@@ -1646,8 +1510,6 @@ internal final class ClassificationOutputTests: TestKitCase
             }
         }
         
-        XCTAssertNotNil(actual)
-        
         let expected: String =
         """
         XCTKForAll failed after 3 iterations
@@ -1655,14 +1517,14 @@ internal final class ClassificationOutputTests: TestKitCase
         Counterexample:
             Int = 66
         
+        Threw error: TestError()
+        
         \(Self.seedMessage)
         
         Distribution (3 iterations):
             Table "position":
                 after:  2 (66.7%)
                 before: 2 (66.7%)
-        
-        Threw error: TestError()
         """
         
         XCTAssertEqual(expected, actual)
@@ -1705,8 +1567,6 @@ internal final class ClassificationOutputTests: TestKitCase
                 TKLabel("tracked")
             }
         }
-        
-        XCTAssertNotNil(actual)
         
         let expected: String =
         """
@@ -1759,8 +1619,6 @@ internal final class ClassificationOutputTests: TestKitCase
             }
         }
         
-        XCTAssertNotNil(actual)
-        
         let expected: String =
         """
         XCTKForAll exhausted after 2 successful iterations
@@ -1810,8 +1668,6 @@ internal final class ClassificationOutputTests: TestKitCase
             }
         }
         
-        XCTAssertNotNil(actual)
-        
         let expected: String =
         """
         XCTKForAll exhausted after 2 successful iterations
@@ -1854,8 +1710,6 @@ internal final class ClassificationOutputTests: TestKitCase
                 try TKAssume(false)
             }
         }
-        
-        XCTAssertNotNil(actual)
         
         let expected: String =
         """
@@ -1905,8 +1759,6 @@ internal final class ClassificationOutputTests: TestKitCase
                 TKLabel("tracked")
             }
         }
-        
-        XCTAssertNotNil(actual)
         
         let expected: String =
         """
@@ -1960,8 +1812,6 @@ internal final class ClassificationOutputTests: TestKitCase
             }
         }
         
-        XCTAssertNotNil(actual)
-        
         let expected: String =
         """
         XCTKForAll exhausted after 2 successful iterations
@@ -2003,8 +1853,6 @@ internal final class ClassificationOutputTests: TestKitCase
                 try TKAssume(false)
             }
         }
-        
-        XCTAssertNotNil(actual)
         
         let expected: String =
         """
@@ -2055,8 +1903,6 @@ internal final class ClassificationOutputTests: TestKitCase
             }
         }
         
-        XCTAssertNotNil(actual)
-        
         let expected: String =
         """
         XCTKForAll exhausted after 1 successful iteration
@@ -2074,7 +1920,7 @@ internal final class ClassificationOutputTests: TestKitCase
     // MARK: - Failed iteration
     
     @Reasync
-    func testFailedIterationLabelsNotInDistribution() async throws
+    func testFailedIterationLabelsNotInDistribution() async
     {
         let options: TestOptions = .propertyOptions(
             iterations:     2,
@@ -2091,7 +1937,7 @@ internal final class ClassificationOutputTests: TestKitCase
             shrink:     { _ in [] }
         )
         
-        let output: String? = await withOneExpectedFailure
+        let actual: String? = await withOneExpectedFailure
         {
             await TKForAll(
                 using:      generator,
@@ -2106,16 +1952,6 @@ internal final class ClassificationOutputTests: TestKitCase
             }
         }
         
-        XCTAssertNotNil(output)
-        XCTAssertFalse(output?.contains("large") ?? true)
-        
-        
-        
-        let actual: String = try getPropertyOutput(
-            from:       output,
-            before:     .lessThan
-        )
-        
         let expected: String =
         """
         XCTKForAll failed after 2 iterations
@@ -2123,11 +1959,12 @@ internal final class ClassificationOutputTests: TestKitCase
         Counterexample:
             Int = 50
         
+        XCTKAssertLessThan failed: ("50") is not less than ("50")
+        
         \(Self.seedMessage)
         
         Distribution (2 iterations):
             tracked: 1 (50%)
-        
         """
         
         XCTAssertEqual(expected, actual)
@@ -2136,7 +1973,7 @@ internal final class ClassificationOutputTests: TestKitCase
     
     
     @Reasync
-    func testFailedIterationTableLabelsNotInDistribution() async throws
+    func testFailedIterationTableLabelsNotInDistribution() async
     {
         let options: TestOptions = .propertyOptions(
             iterations:     2,
@@ -2148,7 +1985,7 @@ internal final class ClassificationOutputTests: TestKitCase
             shrink:     { _ in [] }
         )
         
-        let output: String? = await withOneExpectedFailure
+        let actual: String? = await withOneExpectedFailure
         {
             await TKForAll(
                 using:      generator,
@@ -2162,15 +1999,6 @@ internal final class ClassificationOutputTests: TestKitCase
             }
         }
         
-        XCTAssertNotNil(output)
-        
-        
-        
-        let actual: String = try getPropertyOutput(
-            from:       output,
-            before:     .lessThan
-        )
-        
         let expected: String =
         """
         XCTKForAll failed after 2 iterations
@@ -2178,12 +2006,13 @@ internal final class ClassificationOutputTests: TestKitCase
         Counterexample:
             Int = 50
         
+        XCTKAssertLessThan failed: ("50") is not less than ("50")
+        
         \(Self.seedMessage)
         
         Distribution (2 iterations):
             Table "size":
                 small: 1 (50%)
-        
         """
         
         XCTAssertEqual(expected, actual)
@@ -2214,8 +2043,6 @@ internal final class ClassificationOutputTests: TestKitCase
                 TKCover(100, "negative", when: n < 0)
             }
         }
-        
-        XCTAssertNotNil(actual)
         
         let expected: String =
         """
@@ -2256,8 +2083,6 @@ internal final class ClassificationOutputTests: TestKitCase
             }
         }
         
-        XCTAssertNotNil(actual)
-        
         let expected: String =
         """
         XCTKForAll coverage not met after 10 iterations
@@ -2285,9 +2110,8 @@ extension ClassificationOutputTests
     /// The seed used to initialize the random number generator.
     ///
     /// Use a fixed seed rather than a random seed for deterministic tests.
-    private static let seed: UInt64 = 50
+    private static let seed: UInt64 = 12345
     
-    /// The re-run message.
-    private static let seedMessage: String =
-        "Seed: \(seed) (re-run with PropertyOptions.seed)"
+    /// The seed re-run message.
+    private static let seedMessage: String = "Seed: \(seed) (XCTKForAll)"
 }
