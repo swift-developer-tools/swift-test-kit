@@ -996,6 +996,49 @@ internal enum PostCSkipsInvariant: Stateful, Equatable, Sendable
 
 
 
+// MARK: - Cycle
+
+internal enum CycleCommand: Stateful, Equatable, Sendable
+{
+    case alpha
+    case beta
+    case gamma
+    
+    static let threshold: Int = 3
+    
+    static func arbitrary(
+        using context   : GenerationContext,
+        model           : Int
+    ) -> Self
+    {
+        /// Cycle between commands (`alpha`, `beta`, `gamma`, repeat).
+        switch model % threshold
+        {
+            case 0  : return .alpha
+            case 1  : return .beta
+            default : return .gamma
+        }
+    }
+    
+    func run(
+        model   : inout Int,
+        system  : inout Int
+    ) async throws
+    {
+        model   += 1
+        system  += 1
+    }
+    
+    func advance(
+        model: inout Int
+    )
+    {
+        model += 1
+    }
+}
+
+
+
 // MARK: - ForAllPass
 
 internal enum ForAllPassCommand: Stateful, Equatable, Sendable

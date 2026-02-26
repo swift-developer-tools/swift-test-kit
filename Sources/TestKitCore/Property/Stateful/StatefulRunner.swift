@@ -18,6 +18,18 @@ private let logger = Logger(
 
 
 
+/// The result of running the stateful property check.
+internal struct StatefulResult<C> where C : Stateful
+{
+    /// The stateful property check result.
+    let propertyCheck   : PropertyCheckResult<[C]>
+    
+    /// The command statistics report.
+    let statistics      : String?
+}
+
+
+
 /// Runs stateful property-based tests.
 internal struct StatefulRunner<C> where C : Stateful
 {
@@ -31,14 +43,14 @@ internal struct StatefulRunner<C> where C : Stateful
     ///   - invariant: An optional closure that checks invariants after each
     ///   command.
     ///   - options: The options for testing.
-    /// - Returns: The result of the stateful property check.
+    /// - Returns: The result of running the stateful property check.
     internal static func run(
         command     : C.Type,
         model       : () -> C.Model,
         system      : () -> C.System,
         invariant   : ((C.Model, C.System) async throws -> Void)?,
         options     : TestOptions
-    ) async -> PropertyCheckResult<[C]>
+    ) async -> StatefulResult<C>
     {
         let opts: PropertyOptions = options.propertyOptions
         
@@ -95,7 +107,7 @@ internal struct StatefulRunner<C> where C : Stateful
                     
                     succeeded += 1
                     
-                    report(
+                    accumulateStatistics(
                         commands:   commands,
                         presence:   &commandPresence,
                         frequency:  &commandFrequency,
@@ -116,10 +128,24 @@ internal struct StatefulRunner<C> where C : Stateful
                             options:    options
                         )
                     
-                    return .failed(
-                        counterexample:     counterexample,
-                        distribution:       interceptor.distribution,
-                        tableDistribution:  interceptor.tableDistribution
+                    let result: PropertyCheckResult<[C]>
+                        = .failed(
+                            counterexample:     counterexample,
+                            distribution:       interceptor.distribution,
+                            tableDistribution:  interceptor.tableDistribution
+                        )
+                    
+                    let statistics: String? = formatStatistics(
+                        presence:   commandPresence,
+                        frequency:  commandFrequency,
+                        counts:     sequenceCounts,
+                        succeeded:  succeeded,
+                        options:    opts.statistics
+                    )
+                    
+                    return StatefulResult(
+                        propertyCheck:  result,
+                        statistics:     statistics
                     )
                     
                 case .discarded:
@@ -128,13 +154,26 @@ internal struct StatefulRunner<C> where C : Stateful
                     
                     if discarded > maxDiscardRatio * iterations
                     {
-                        return .exhausted(
+                        let result: PropertyCheckResult<[C]> = .exhausted(
                             discarded:          discarded,
                             succeeded:          succeeded,
                             ratio:              maxDiscardRatio,
                             seed:               seed,
                             distribution:       interceptor.distribution,
                             tableDistribution:  interceptor.tableDistribution
+                        )
+                        
+                        let statistics: String? = formatStatistics(
+                            presence:   commandPresence,
+                            frequency:  commandFrequency,
+                            counts:     sequenceCounts,
+                            succeeded:  succeeded,
+                            options:    opts.statistics
+                        )
+                        
+                        return StatefulResult(
+                            propertyCheck:  result,
+                            statistics:     statistics
                         )
                     }
                     
@@ -151,13 +190,26 @@ internal struct StatefulRunner<C> where C : Stateful
                     
                     if discarded > maxDiscardRatio * iterations
                     {
-                        return .exhausted(
+                        let result: PropertyCheckResult<[C]> = .exhausted(
                             discarded:          discarded,
                             succeeded:          succeeded,
                             ratio:              maxDiscardRatio,
                             seed:               seed,
                             distribution:       interceptor.distribution,
                             tableDistribution:  interceptor.tableDistribution
+                        )
+                        
+                        let statistics: String? = formatStatistics(
+                            presence:   commandPresence,
+                            frequency:  commandFrequency,
+                            counts:     sequenceCounts,
+                            succeeded:  succeeded,
+                            options:    opts.statistics
+                        )
+                        
+                        return StatefulResult(
+                            propertyCheck:  result,
+                            statistics:     statistics
                         )
                     }
             }
@@ -179,16 +231,35 @@ internal struct StatefulRunner<C> where C : Stateful
         
         if !unmet.isEmpty
         {
-            return .coverageNotMet(
+            let result: PropertyCheckResult<[C]> = .coverageNotMet(
                 unmet:              unmet,
                 iterations:         iterations,
                 seed:               seed,
                 distribution:       interceptor.distribution,
                 tableDistribution:  interceptor.tableDistribution
             )
+            
+            let statistics: String? = formatStatistics(
+                presence:   commandPresence,
+                frequency:  commandFrequency,
+                counts:     sequenceCounts,
+                succeeded:  succeeded,
+                options:    opts.statistics
+            )
+            
+            return StatefulResult(
+                propertyCheck:  result,
+                statistics:     statistics
+            )
         }
         
         
+        
+        var loggedDistribution: Bool = false
+        
+        let header: String =
+            "Stateful test passed \(iterations)"
+            + " iteration\(iterations == 1 ? "" : "s")"
         
         if
             !interceptor.distribution.isEmpty
@@ -217,18 +288,43 @@ internal struct StatefulRunner<C> where C : Stateful
             
             let summary: String = flatLines.joined(separator: "\n")
             
-            logger.info(
-                "Stateful test passed \(iterations) iterations\n\(summary)"
-            )
+            logger.info("\(header)\n\(summary)")
+            
+            loggedDistribution = true
         }
         
         
         
-        return .passed(
+        let result: PropertyCheckResult<[C]> = .passed(
             iterations:         iterations,
             seed:               seed,
             distribution:       interceptor.distribution,
             tableDistribution:  interceptor.tableDistribution
+        )
+        
+        let statistics: String? = formatStatistics(
+            presence:   commandPresence,
+            frequency:  commandFrequency,
+            counts:     sequenceCounts,
+            succeeded:  succeeded,
+            options:    opts.statistics
+        )
+        
+        if let statistics
+        {
+            if loggedDistribution
+            {
+                logger.info("\n\(statistics)")
+            }
+            else
+            {
+                logger.info("\(header)\n\(statistics)")
+            }
+        }
+        
+        return StatefulResult(
+            propertyCheck:  result,
+            statistics:     statistics
         )
     }
     
@@ -714,16 +810,17 @@ internal struct StatefulRunner<C> where C : Stateful
     
     
     
-    // MARK: - Reporting
+    // MARK: - Statistics
     
-    /// Reports statistics for the given commands, based on the given options.
+    /// Accumulates statistics for the given commands, based on the given
+    /// options.
     /// - Parameters:
     ///   - commands: The commands.
     ///   - presence: The accumulated command presence statistics.
     ///   - frequency: The accumulated command frequency statistics.
     ///   - counts: The accumulated command sequence count statistics.
     ///   - options: The options for reporting command statistics.
-    private static func report(
+    private static func accumulateStatistics(
         commands    : [C],
         presence    : inout [String : Int],
         frequency   : inout [String : Int],
@@ -786,6 +883,133 @@ internal struct StatefulRunner<C> where C : Stateful
         }
         
         return String(describing: command)
+    }
+    
+    
+    
+    /// Formats command statistics based on the given accumulators.
+    /// - Parameters:
+    ///   - presence: The accumulated command presence statistics.
+    ///   - frequency: The accumulated command frequency statistics.
+    ///   - counts: The accumulated command sequence count statistics.
+    ///   - succeeded: The number of successful iterations.
+    ///   - options: The options for reporting command statistics.
+    /// - Returns: The formatted command statistics, or `nil` if no statistics
+    /// are enabled.
+    private static func formatStatistics(
+        presence    : [String : Int],
+        frequency   : [String : Int],
+        counts      : [Int],
+        succeeded   : Int,
+        options     : CommandStatistics
+    ) -> String?
+    {
+        guard !options.isEmpty
+        else
+        {
+            return nil
+        }
+        
+        
+        
+        var sections: [String] = []
+        
+        if
+            options.contains(.presence),
+            !presence.isEmpty
+        {
+            let header: String 
+                = "Command presence (\(succeeded)"
+                + " iteration\(succeeded == 1 ? "" : "s")):"
+            
+            let lines: [String] = PropertyCheckResult<[C]>.formatDistribution(
+                presence,
+                iterations: succeeded
+            )
+            
+            sections.append(([header] + lines).joined(separator: "\n"))
+        }
+        
+        
+        
+        if
+            options.contains(.frequency),
+            !frequency.isEmpty
+        {
+            let total: Int = frequency.values.reduce(0, +)
+            
+            let header: String
+                = "Command frequency (\(total)"
+                + " command\(total == 1 ? "" : "s")):"
+            
+            let lines: [String] = PropertyCheckResult<[C]>.formatDistribution(
+                frequency,
+                iterations: total
+            )
+            
+            sections.append(([header] + lines).joined(separator: "\n"))
+        }
+        
+        
+        
+        if
+            options.contains(.sequenceCount),
+            !counts.isEmpty
+        {
+            let minimum : Int   = counts.min()!
+            let maximum : Int   = counts.max()!
+            
+            let average = Double(counts.reduce(0, +)) / Double(counts.count)
+            
+            let minString   = String(minimum)
+            let maxString   = String(maximum)
+            
+            let averageString: String = average == average.rounded()
+                ? String(Int(average))
+                : String(format: "%.1f", average)
+            
+            let digitWidth: Int = max(
+                max(minString.count, maxString.count),
+                averageString.count
+            )
+            
+            let minPadding = String(
+                repeating:  " ",
+                count:      digitWidth - minString.count + 1
+            )
+            
+            let maxPadding = String(
+                repeating:  " ",
+                count:      digitWidth - maxString.count + 1
+            )
+            
+            let averagePadding = String(
+                repeating:  " ",
+                count:      digitWidth - averageString.count + 1
+            )
+            
+            var lines: [String] = []
+            
+            lines.append(
+                "Command sequence count (\(succeeded)"
+                + " iteration\(succeeded == 1 ? "" : "s")):"
+            )
+            
+            lines.append("    Minimum:\(minPadding)\(minString)")
+            lines.append("    Maximum:\(maxPadding)\(maxString)")
+            lines.append("    Average:\(averagePadding)\(averageString)")
+            
+            sections.append(lines.joined(separator: "\n"))
+        }
+        
+        
+        
+        if sections.isEmpty
+        {
+            return nil
+        }
+        
+        return sections.joined(separator: "\n\n")
     }
     
     

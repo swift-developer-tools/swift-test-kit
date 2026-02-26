@@ -10,6 +10,7 @@
 import TestKitCore
 import XCTest
 @testable import struct TestKitCore.StatefulRunner
+@testable import struct TestKitCore.StatefulResult
 
 
 
@@ -25,7 +26,7 @@ internal final class StatefulRunnerClassificationTests: TestKitCase
             seed:               Self.seed
         )
         
-        let result: PCR<[IncrementCommand]> = await StatefulRunner.run(
+        let result: StatefulResult = await StatefulRunner.run(
             command:    IncrementCommand.self,
             model:      { 0 },
             system:     { 0 },
@@ -55,7 +56,7 @@ internal final class StatefulRunnerClassificationTests: TestKitCase
             seed:               Self.seed
         )
         
-        let result: PCR<[IncrementCommand]> = await StatefulRunner.run(
+        let result: StatefulResult = await StatefulRunner.run(
             command:    IncrementCommand.self,
             model:      { 0 },
             system:     { 0 },
@@ -91,7 +92,7 @@ internal final class StatefulRunnerClassificationTests: TestKitCase
             seed:               Self.seed
         )
         
-        let result: PCR<[IncrementCommand]> = await StatefulRunner.run(
+        let result: StatefulResult = await StatefulRunner.run(
             command:    IncrementCommand.self,
             model:      { 0 },
             system:     { 0 },
@@ -128,7 +129,7 @@ internal final class StatefulRunnerClassificationTests: TestKitCase
             seed:               Self.seed
         )
         
-        let result: PCR<[IncrementCommand]> = await StatefulRunner.run(
+        let result: StatefulResult = await StatefulRunner.run(
             command:    IncrementCommand.self,
             model:      { 0 },
             system:     { 0 },
@@ -159,7 +160,7 @@ internal final class StatefulRunnerClassificationTests: TestKitCase
             seed:               Self.seed
         )
         
-        let result: PCR<[IncrementCommand]> = await StatefulRunner.run(
+        let result: StatefulResult = await StatefulRunner.run(
             command:    IncrementCommand.self,
             model:      { 0 },
             system:     { 0 },
@@ -191,7 +192,7 @@ internal final class StatefulRunnerClassificationTests: TestKitCase
             seed:               Self.seed
         )
         
-        let result: PCR<[IncrementCommand]> = await StatefulRunner.run(
+        let result: StatefulResult = await StatefulRunner.run(
             command:    IncrementCommand.self,
             model:      { 0 },
             system:     { 0 },
@@ -223,7 +224,7 @@ internal final class StatefulRunnerClassificationTests: TestKitCase
             seed:               Self.seed
         )
         
-        let result: PCR<[IncrementCommand]> = await StatefulRunner.run(
+        let result: StatefulResult = await StatefulRunner.run(
             command:    IncrementCommand.self,
             model:      { 0 },
             system:     { 0 },
@@ -257,7 +258,7 @@ internal final class StatefulRunnerClassificationTests: TestKitCase
             seed:               Self.seed
         )
         
-        let result: PCR<[ClassifyCommand]> = await StatefulRunner.run(
+        let result: StatefulResult = await StatefulRunner.run(
             command:    ClassifyCommand.self,
             model:      { 0 },
             system:     { 0 },
@@ -295,7 +296,7 @@ internal final class StatefulRunnerClassificationTests: TestKitCase
             seed:               Self.seed
         )
         
-        let result: PCR<[IncrementCommand]> = await StatefulRunner.run(
+        let result: StatefulResult = await StatefulRunner.run(
             command:    IncrementCommand.self,
             model:      { 0 },
             system:     { 0 },
@@ -336,7 +337,7 @@ internal final class StatefulRunnerClassificationTests: TestKitCase
             seed:               Self.seed
         )
         
-        let result: PCR<[IncrementCommand]> = await StatefulRunner.run(
+        let result: StatefulResult = await StatefulRunner.run(
             command:    IncrementCommand.self,
             model:      { 0 },
             system:     { 0 },
@@ -375,7 +376,7 @@ internal final class StatefulRunnerClassificationTests: TestKitCase
             seed:               Self.seed
         )
         
-        let result: PCR<[LabelCommand]> = await StatefulRunner.run(
+        let result: StatefulResult = await StatefulRunner.run(
             command:    LabelCommand.self,
             model:      { 0 },
             system:     { 0 },
@@ -403,7 +404,7 @@ internal final class StatefulRunnerClassificationTests: TestKitCase
             seed:               Self.seed
         )
         
-        let result: PCR<[IncrementCommand]> = await StatefulRunner.run(
+        let result: StatefulResult = await StatefulRunner.run(
             command:    IncrementCommand.self,
             model:      { 0 },
             system:     { 0 },
@@ -436,7 +437,7 @@ internal final class StatefulRunnerClassificationTests: TestKitCase
             seed:               Self.seed
         )
         
-        let result: PCR<[IncrementCommand]> = await StatefulRunner.run(
+        let result: StatefulResult = await StatefulRunner.run(
             command:    IncrementCommand.self,
             model:      { 0 },
             system:     { 0 },
@@ -454,7 +455,8 @@ internal final class StatefulRunnerClassificationTests: TestKitCase
             options: options
         )
         
-        guard case let .failed(counterexample, _, tableDist) = result
+        guard case let .failed(counterexample, _, tableDist)
+                = result.propertyCheck
         else
         {
             XCTFail("Expected failed, got \(result)")
@@ -480,7 +482,7 @@ internal final class StatefulRunnerClassificationTests: TestKitCase
             seed:               Self.seed
         )
         
-        let result: PCR<[IncrementCommand]> = await StatefulRunner.run(
+        let result: StatefulResult = await StatefulRunner.run(
             command:    IncrementCommand.self,
             model:      { 0 },
             system:     { 0 },
@@ -498,7 +500,7 @@ internal final class StatefulRunnerClassificationTests: TestKitCase
             options: options
         )
         
-        guard case let .failed(counterexample, dist, _) = result
+        guard case let .failed(counterexample, dist, _) = result.propertyCheck
         else
         {
             XCTFail("Expected failed, got \(result)")
@@ -523,7 +525,7 @@ internal final class StatefulRunnerClassificationTests: TestKitCase
             seed:               Self.seed
         )
         
-        let result: PCR<[LabelCommand]> = await StatefulRunner.run(
+        let result: StatefulResult = await StatefulRunner.run(
             command:    LabelCommand.self,
             model:      { 0 },
             system:     { 0 },
@@ -550,7 +552,7 @@ internal final class StatefulRunnerClassificationTests: TestKitCase
             seed:               Self.seed
         )
         
-        let result: PCR<[AssumeCommand]> = await StatefulRunner.run(
+        let result: StatefulResult = await StatefulRunner.run(
             command:    AssumeCommand.self,
             model:      { 0 },
             system:     { 0 },
@@ -579,7 +581,7 @@ internal final class StatefulRunnerClassificationTests: TestKitCase
             seed:               Self.seed
         )
         
-        let result: PCR<[IncrementCommand]> = await StatefulRunner.run(
+        let result: StatefulResult = await StatefulRunner.run(
             command:    IncrementCommand.self,
             model:      { 0 },
             system:     { 0 },
@@ -608,7 +610,7 @@ internal final class StatefulRunnerClassificationTests: TestKitCase
             seed:               Self.seed
         )
         
-        let result: PCR<[CollectCommand]> = await StatefulRunner.run(
+        let result: StatefulResult = await StatefulRunner.run(
             command:    CollectCommand.self,
             model:      { 0 },
             system:     { 0 },
@@ -630,8 +632,6 @@ internal final class StatefulRunnerClassificationTests: TestKitCase
 
 extension StatefulRunnerClassificationTests
 {
-    private typealias PCR = PropertyCheckResult
-    
     /// The seed used to initialize the random number generator.
     ///
     /// Use a fixed seed rather than a random seed for deterministic tests.

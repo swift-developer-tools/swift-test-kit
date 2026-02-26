@@ -21,7 +21,7 @@ package func TKStateful<C>(
     context     : FailureContext
 ) async where C : Stateful
 {
-    let result: PropertyCheckResult<[C]> = await StatefulRunner.run(
+    let result: StatefulResult = await StatefulRunner.run(
         command:    command,
         model:      model,
         system:     system,
@@ -29,8 +29,9 @@ package func TKStateful<C>(
         options:    options
     )
     
-    result.emit(
+    result.propertyCheck.emit(
         functionName:   "\(context.framework.rawValue)Stateful",
+        statistics:     result.statistics,
         context:        context,
         message:        message,
         fileID:         fileID,

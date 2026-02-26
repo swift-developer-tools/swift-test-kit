@@ -10,6 +10,7 @@
 import TestKitCore
 import XCTest
 @testable import struct TestKitCore.StatefulRunner
+@testable import struct TestKitCore.StatefulResult
 
 
 
@@ -27,7 +28,7 @@ internal final class StatefulRunnerTests: TestKitCase
             seed:           seed
         )
         
-        let result: PCR<[IncrementCommand]> = await StatefulRunner.run(
+        let result: StatefulResult = await StatefulRunner.run(
             command:    IncrementCommand.self,
             model:      { 0 },
             system:     { 0 },
@@ -52,7 +53,7 @@ internal final class StatefulRunnerTests: TestKitCase
             seed:           Self.seed
         )
         
-        let result: PCR<[IncrementCommand]> = await StatefulRunner.run(
+        let result: StatefulResult = await StatefulRunner.run(
             command:    IncrementCommand.self,
             model:      { 0 },
             system:     { 0 },
@@ -76,7 +77,7 @@ internal final class StatefulRunnerTests: TestKitCase
             seed:           Self.seed
         )
         
-        let result: PCR<[IncrementCommand]> = await StatefulRunner.run(
+        let result: StatefulResult = await StatefulRunner.run(
             command:    IncrementCommand.self,
             model:      { 0 },
             system:     { 0 },
@@ -103,7 +104,7 @@ internal final class StatefulRunnerTests: TestKitCase
             seed:               Self.seed
         )
         
-        let result: PCR<[IncrementCommand]> = await StatefulRunner.run(
+        let result: StatefulResult = await StatefulRunner.run(
             command:    IncrementCommand.self,
             model:      { 0 },
             system:     { 0 },
@@ -139,7 +140,7 @@ internal final class StatefulRunnerTests: TestKitCase
             seed:               Self.seed
         )
         
-        let result: PCR<[IncrementCommand]> = await StatefulRunner.run(
+        let result: StatefulResult = await StatefulRunner.run(
             command:    IncrementCommand.self,
             model:      { 0 },
             system:     { 0 },
@@ -172,7 +173,7 @@ internal final class StatefulRunnerTests: TestKitCase
             seed:               Self.seed
         )
         
-        let result: PCR<[IncrementCommand]> = await StatefulRunner.run(
+        let result: StatefulResult = await StatefulRunner.run(
             command:    IncrementCommand.self,
             model:      { 0 },
             system:     { 0 },
@@ -196,7 +197,7 @@ internal final class StatefulRunnerTests: TestKitCase
             seed:               Self.seed
         )
         
-        let result: PCR<[IncrementCommand]> = await StatefulRunner.run(
+        let result: StatefulResult = await StatefulRunner.run(
             command:    IncrementCommand.self,
             model:      { 0 },
             system:     { 0 },
@@ -228,7 +229,7 @@ internal final class StatefulRunnerTests: TestKitCase
             seed:               Self.seed
         )
         
-        let result: PCR<[IncrementCommand]> = await StatefulRunner.run(
+        let result: StatefulResult = await StatefulRunner.run(
             command:    IncrementCommand.self,
             model:      { 0 },
             system:     { 0 },
@@ -268,7 +269,7 @@ internal final class StatefulRunnerTests: TestKitCase
             seed:               Self.seed
         )
         
-        let result: PCR<[IncrementCommand]> = await StatefulRunner.run(
+        let result: StatefulResult = await StatefulRunner.run(
             command:    IncrementCommand.self,
             model:      { 0 },
             system:     { 0 },
@@ -301,7 +302,7 @@ internal final class StatefulRunnerTests: TestKitCase
             seed:               Self.seed
         )
         
-        let result: PCR<[IncrementCommand]> = await StatefulRunner.run(
+        let result: StatefulResult = await StatefulRunner.run(
             command:    IncrementCommand.self,
             model:      { 0 },
             system:     { 0 },
@@ -326,7 +327,7 @@ internal final class StatefulRunnerTests: TestKitCase
             seed:               Self.seed
         )
         
-        let result: PCR<[IncrementCommand]> = await StatefulRunner.run(
+        let result: StatefulResult = await StatefulRunner.run(
             command:    IncrementCommand.self,
             model:      { 0 },
             system:     { 0 },
@@ -360,7 +361,7 @@ internal final class StatefulRunnerTests: TestKitCase
             seed:               Self.seed
         )
         
-        let result: PCR<[IncrementCommand]> = await StatefulRunner.run(
+        let result: StatefulResult = await StatefulRunner.run(
             command:    IncrementCommand.self,
             model:      { 0 },
             system:     { 0 },
@@ -402,7 +403,7 @@ internal final class StatefulRunnerTests: TestKitCase
             }
         }
         
-        let resultA: PCR<[IncrementCommand]> = await StatefulRunner.run(
+        let resultA: StatefulResult = await StatefulRunner.run(
             command:    IncrementCommand.self,
             model:      { 0 },
             system:     { 0 },
@@ -410,7 +411,7 @@ internal final class StatefulRunnerTests: TestKitCase
             options:    options
         )
         
-        let resultB: PCR<[IncrementCommand]> = await StatefulRunner.run(
+        let resultB: StatefulResult = await StatefulRunner.run(
             command:    IncrementCommand.self,
             model:      { 0 },
             system:     { 0 },
@@ -418,7 +419,7 @@ internal final class StatefulRunnerTests: TestKitCase
             options:    options
         )
         
-        switch (resultA, resultB)
+        switch (resultA.propertyCheck, resultB.propertyCheck)
         {
             case let (
                 .failed(counterA, _, _),
@@ -445,7 +446,7 @@ internal final class StatefulRunnerTests: TestKitCase
             seed:               Self.seed
         )
         
-        let result: PCR<[IncrementCommand]> = await StatefulRunner.run(
+        let result: StatefulResult = await StatefulRunner.run(
             command:    IncrementCommand.self,
             model:      { 0 },
             system:     { 0 },
@@ -476,7 +477,7 @@ internal final class StatefulRunnerTests: TestKitCase
             seed:               nil
         )
         
-        let result: PCR<[IncrementCommand]> = await StatefulRunner.run(
+        let result: StatefulResult = await StatefulRunner.run(
             command:    IncrementCommand.self,
             model:      { 0 },
             system:     { 0 },
@@ -507,7 +508,7 @@ internal final class StatefulRunnerTests: TestKitCase
             seed:               Self.seed
         )
         
-        let result: PCR<[IncrementCommand]> = await StatefulRunner.run(
+        let result: StatefulResult = await StatefulRunner.run(
             command:    IncrementCommand.self,
             model:      { 0 },
             system:     { 0 },
@@ -538,7 +539,7 @@ internal final class StatefulRunnerTests: TestKitCase
             seed:               Self.seed
         )
         
-        let result: PCR<[RunDiscardCommand]> = await StatefulRunner.run(
+        let result: StatefulResult = await StatefulRunner.run(
             command:    RunDiscardCommand.self,
             model:      { 0 },
             system:     { 0 },
@@ -567,7 +568,7 @@ internal final class StatefulRunnerTests: TestKitCase
             seed:               Self.seed
         )
         
-        let result: PCR<[RunDiscardCommand]> = await StatefulRunner.run(
+        let result: StatefulResult = await StatefulRunner.run(
             command:    RunDiscardCommand.self,
             model:      { 0 },
             system:     { 0 },
@@ -599,7 +600,7 @@ internal final class StatefulRunnerTests: TestKitCase
             seed:               Self.seed
         )
         
-        let result: PCR<[DivergentCommand]> = await StatefulRunner.run(
+        let result: StatefulResult = await StatefulRunner.run(
             command:    DivergentCommand.self,
             model:      { 0 },
             system:     { 0 },
@@ -636,7 +637,7 @@ internal final class StatefulRunnerTests: TestKitCase
             seed:               Self.seed
         )
         
-        let result: PCR<[IncrementCommand]> = await StatefulRunner.run(
+        let result: StatefulResult = await StatefulRunner.run(
             command:    IncrementCommand.self,
             model:      { 0 },
             system:     { 0 },
@@ -672,7 +673,7 @@ internal final class StatefulRunnerTests: TestKitCase
             seed:               Self.seed
         )
         
-        let result: PCR<[IncrementCommand]> = await StatefulRunner.run(
+        let result: StatefulResult = await StatefulRunner.run(
             command:    IncrementCommand.self,
             model:      { 0 },
             system:     { 0 },
@@ -709,7 +710,7 @@ internal final class StatefulRunnerTests: TestKitCase
             seed:               Self.seed
         )
         
-        let result: PCR<[IncrementCommand]> = await StatefulRunner.run(
+        let result: StatefulResult = await StatefulRunner.run(
             command:    IncrementCommand.self,
             model:      { 0 },
             system:     { 0 },
@@ -749,7 +750,7 @@ internal final class StatefulRunnerTests: TestKitCase
             seed:               Self.seed
         )
         
-        let result: PCR<[AmountCommand]> = await StatefulRunner.run(
+        let result: StatefulResult = await StatefulRunner.run(
             command:    AmountCommand.self,
             model:      { 0 },
             system:     { 0 },
@@ -789,7 +790,7 @@ internal final class StatefulRunnerTests: TestKitCase
             seed:               Self.seed
         )
         
-        let result: PCR<[StackCommand]> = await StatefulRunner.run(
+        let result: StatefulResult = await StatefulRunner.run(
             command:    StackCommand.self,
             model:      { 0 },
             system:     { 0 },
@@ -832,7 +833,7 @@ internal final class StatefulRunnerTests: TestKitCase
             seed:               Self.seed
         )
         
-        let result: PCR<[AmountCommand]> = await StatefulRunner.run(
+        let result: StatefulResult = await StatefulRunner.run(
             command:    AmountCommand.self,
             model:      { 0 },
             system:     { 0 },
@@ -872,7 +873,7 @@ internal final class StatefulRunnerTests: TestKitCase
             seed:               Self.seed
         )
         
-        let result: PCR<[RunFailCommand]> = await StatefulRunner.run(
+        let result: StatefulResult = await StatefulRunner.run(
             command:    RunFailCommand.self,
             model:      { 0 },
             system:     { 0 },
@@ -905,7 +906,7 @@ internal final class StatefulRunnerTests: TestKitCase
             seed:               Self.seed
         )
         
-        let result: PCR<[StackCommand]> = await StatefulRunner.run(
+        let result: StatefulResult = await StatefulRunner.run(
             command:    StackCommand.self,
             model:      { 0 },
             system:     { 0 },
@@ -958,7 +959,7 @@ internal final class StatefulRunnerTests: TestKitCase
             seed:               Self.seed
         )
         
-        let result: PCR<[AmountCommand]> = await StatefulRunner.run(
+        let result: StatefulResult = await StatefulRunner.run(
             command:    AmountCommand.self,
             model:      { 0 },
             system:     { 0 },
@@ -993,7 +994,7 @@ internal final class StatefulRunnerTests: TestKitCase
             seed:               Self.seed
         )
         
-        let result: PCR<[IncrementCommand]> = await StatefulRunner.run(
+        let result: StatefulResult = await StatefulRunner.run(
             command:    IncrementCommand.self,
             model:      { 0 },
             system:     { 0 },
@@ -1033,7 +1034,7 @@ internal final class StatefulRunnerTests: TestKitCase
             seed:               Self.seed
         )
         
-        let result: PCR<[IncrementCommand]> = await StatefulRunner.run(
+        let result: StatefulResult = await StatefulRunner.run(
             command:    IncrementCommand.self,
             model:      { 0 },
             system:     { 0 },
@@ -1077,7 +1078,7 @@ internal final class StatefulRunnerTests: TestKitCase
             seed:               Self.seed
         )
         
-        let result: PCR<[BoundCommand]> = await StatefulRunner.run(
+        let result: StatefulResult = await StatefulRunner.run(
             command:    BoundCommand.self,
             model:      { 0 },
             system:     { 0 },
@@ -1123,7 +1124,7 @@ internal final class StatefulRunnerTests: TestKitCase
             seed:               Self.seed
         )
         
-        let result: PCR<[RunThrowCommand]> = await StatefulRunner.run(
+        let result: StatefulResult = await StatefulRunner.run(
             command:    RunThrowCommand.self,
             model:      { 0 },
             system:     { 0 },
@@ -1158,7 +1159,7 @@ internal final class StatefulRunnerTests: TestKitCase
             seed:               Self.seed
         )
         
-        let result: PCR<[AmountCommand]> = await StatefulRunner.run(
+        let result: StatefulResult = await StatefulRunner.run(
             command:    AmountCommand.self,
             model:      { 0 },
             system:     { 0 },
@@ -1193,7 +1194,7 @@ internal final class StatefulRunnerTests: TestKitCase
             seed:               Self.seed
         )
         
-        let result: PCR<[StackCommand]> = await StatefulRunner.run(
+        let result: StatefulResult = await StatefulRunner.run(
             command:    StackCommand.self,
             model:      { 0 },
             system:     { 0 },
@@ -1228,7 +1229,7 @@ internal final class StatefulRunnerTests: TestKitCase
             seed:               Self.seed
         )
         
-        let result: PCR<[IncrementCommand]> = await StatefulRunner.run(
+        let result: StatefulResult = await StatefulRunner.run(
             command:    IncrementCommand.self,
             model:      { 0 },
             system:     { 0 },
@@ -1263,7 +1264,7 @@ internal final class StatefulRunnerTests: TestKitCase
             seed:               Self.seed
         )
         
-        let result: PCR<[IncrementCommand]> = await StatefulRunner.run(
+        let result: StatefulResult = await StatefulRunner.run(
             command:    IncrementCommand.self,
             model:      { 0 },
             system:     { 0 },
@@ -1312,22 +1313,21 @@ internal final class StatefulRunnerTests: TestKitCase
             seed:               Self.seed
         )
         
-        let result: PCR<[ShrinkableIncrementCommand]>
-            = await StatefulRunner.run(
-                command:    ShrinkableIncrementCommand.self,
-                model:      { 0 },
-                system:     { 0 },
-                invariant:
+        let result: StatefulResult = await StatefulRunner.run(
+            command:    ShrinkableIncrementCommand.self,
+            model:      { 0 },
+            system:     { 0 },
+            invariant:
+            {
+                model, _ async in
+                
+                if model >= target
                 {
-                    model, _ async in
-                    
-                    if model >= target
-                    {
-                        PropertyInterceptor.current?.recordFailure()
-                    }
-                },
-                options: options
-            )
+                    PropertyInterceptor.current?.recordFailure()
+                }
+            },
+            options: options
+        )
         
         let counterexample: Counterexample<[ShrinkableIncrementCommand]>
             = try XCTUnwrap(result.assertFailed())
@@ -1360,7 +1360,7 @@ internal final class StatefulRunnerTests: TestKitCase
             seed:               Self.seed
         )
         
-        let result: PCR<[ModelAwareShrinkCommand]> = await StatefulRunner.run(
+        let result: StatefulResult = await StatefulRunner.run(
             command:    ModelAwareShrinkCommand.self,
             model:      { 0 },
             system:     { 0 },
@@ -1368,7 +1368,7 @@ internal final class StatefulRunnerTests: TestKitCase
             options:    options
         )
         
-        guard case let .failed(counterexample, _, _) = result
+        guard case let .failed(counterexample, _, _) = result.propertyCheck
         else
         {
             XCTFail("Expected .failed, got \(result)")
@@ -1413,7 +1413,7 @@ internal final class StatefulRunnerTests: TestKitCase
             seed:               Self.seed
         )
         
-        let result: PCR<[AmountCommand]> = await StatefulRunner.run(
+        let result: StatefulResult = await StatefulRunner.run(
             command:    AmountCommand.self,
             model:      { 0 },
             system:     { 0 },
@@ -1429,7 +1429,7 @@ internal final class StatefulRunnerTests: TestKitCase
             options: options
         )
         
-        guard case let .failed(counterexample, _, _) = result
+        guard case let .failed(counterexample, _, _) = result.propertyCheck
         else
         {
             XCTFail("Expected .failed, got \(result)")
@@ -1484,7 +1484,7 @@ internal final class StatefulRunnerTests: TestKitCase
             seed:               Self.seed
         )
         
-        let result: PCR<[RunFailCommand]> = await StatefulRunner.run(
+        let result: StatefulResult = await StatefulRunner.run(
             command:    RunFailCommand.self,
             model:      { 0 },
             system:     { 0 },
@@ -1517,7 +1517,7 @@ internal final class StatefulRunnerTests: TestKitCase
             seed:               Self.seed
         )
         
-        let result: PCR<[RunDiscardCommand]> = await StatefulRunner.run(
+        let result: StatefulResult = await StatefulRunner.run(
             command:    RunDiscardCommand.self,
             model:      { 0 },
             system:     { 0 },
@@ -1543,7 +1543,7 @@ internal final class StatefulRunnerTests: TestKitCase
             seed:               Self.seed
         )
         
-        let result: PCR<[RunThrowCommand]> = await StatefulRunner.run(
+        let result: StatefulResult = await StatefulRunner.run(
             command:    RunThrowCommand.self,
             model:      { 0 },
             system:     { 0 },
@@ -1570,7 +1570,7 @@ internal final class StatefulRunnerTests: TestKitCase
             seed:               Self.seed
         )
         
-        let result: PCR<[RunFailThrowCommand]> = await StatefulRunner.run(
+        let result: StatefulResult = await StatefulRunner.run(
             command:    RunFailThrowCommand.self,
             model:      { 0 },
             system:     { 0 },
@@ -1604,7 +1604,7 @@ internal final class StatefulRunnerTests: TestKitCase
             seed:               Self.seed
         )
         
-        let result: PCR<[IncrementCommand]> = await StatefulRunner.run(
+        let result: StatefulResult = await StatefulRunner.run(
             command:    IncrementCommand.self,
             model:      { 0 },
             system:     { 0 },
@@ -1642,7 +1642,7 @@ internal final class StatefulRunnerTests: TestKitCase
             seed:               Self.seed
         )
         
-        let result: PCR<[RunFailCommand]> = await StatefulRunner.run(
+        let result: StatefulResult = await StatefulRunner.run(
             command:    RunFailCommand.self,
             model:      { 0 },
             system:     { 0 },
@@ -1681,7 +1681,7 @@ internal final class StatefulRunnerTests: TestKitCase
             seed:               Self.seed
         )
         
-        let result: PCR<[IncrementCommand]> = await StatefulRunner.run(
+        let result: StatefulResult = await StatefulRunner.run(
             command:    IncrementCommand.self,
             model:      { 0 },
             system:     { 0 },
@@ -1722,7 +1722,7 @@ internal final class StatefulRunnerTests: TestKitCase
             seed:               Self.seed
         )
         
-        let result: PCR<[IncrementCommand]> = await StatefulRunner.run(
+        let result: StatefulResult = await StatefulRunner.run(
             command:    IncrementCommand.self,
             model:      { 0 },
             system:     { 0 },
@@ -1758,7 +1758,7 @@ internal final class StatefulRunnerTests: TestKitCase
             seed:               Self.seed
         )
         
-        let result: PCR<[IncrementCommand]> = await StatefulRunner.run(
+        let result: StatefulResult = await StatefulRunner.run(
             command:    IncrementCommand.self,
             model:      { 0 },
             system:     { 0 },
@@ -1794,7 +1794,7 @@ internal final class StatefulRunnerTests: TestKitCase
             seed:               Self.seed
         )
         
-        let result: PCR<[RunFailCommand]> = await StatefulRunner.run(
+        let result: StatefulResult = await StatefulRunner.run(
             command:    RunFailCommand.self,
             model:      { 0 },
             system:     { 0 },
@@ -1844,7 +1844,7 @@ internal final class StatefulRunnerTests: TestKitCase
             seed:               Self.seed
         )
         
-        let result: PCR<[IncrementCommand]> = await StatefulRunner.run(
+        let result: StatefulResult = await StatefulRunner.run(
             command:    IncrementCommand.self,
             model:      { 0 },
             system:     { 0 },
@@ -1883,7 +1883,7 @@ internal final class StatefulRunnerTests: TestKitCase
             seed:               Self.seed
         )
         
-        let result: PCR<[IncrementCommand]> = await StatefulRunner.run(
+        let result: StatefulResult = await StatefulRunner.run(
             command:    IncrementCommand.self,
             model:      { 0 },
             system:     { 0 },
@@ -1920,7 +1920,7 @@ internal final class StatefulRunnerTests: TestKitCase
             seed:               Self.seed
         )
         
-        let result: PCR<[IncrementCommand]> = await StatefulRunner.run(
+        let result: StatefulResult = await StatefulRunner.run(
             command:    IncrementCommand.self,
             model:      { 0 },
             system:     { 0 },
@@ -1956,7 +1956,7 @@ internal final class StatefulRunnerTests: TestKitCase
             seed:               Self.seed
         )
         
-        let result: PCR<[IncrementCommand]> = await StatefulRunner.run(
+        let result: StatefulResult = await StatefulRunner.run(
             command:    IncrementCommand.self,
             model:      { 0 },
             system:     { 0 },
@@ -2007,7 +2007,7 @@ internal final class StatefulRunnerTests: TestKitCase
             seed:               Self.seed
         )
         
-        let result: PCR<[BoundCommand]> = await StatefulRunner.run(
+        let result: StatefulResult = await StatefulRunner.run(
             command:    BoundCommand.self,
             model:      { 0 },
             system:     { 0 },
@@ -2040,7 +2040,7 @@ internal final class StatefulRunnerTests: TestKitCase
             seed:           Self.seed
         )
         
-        let result: PCR<[IncrementCommand]> = await StatefulRunner.run(
+        let result: StatefulResult = await StatefulRunner.run(
             command:    IncrementCommand.self,
             model:      { 0 },
             system:     { 0 },
@@ -2062,7 +2062,7 @@ internal final class StatefulRunnerTests: TestKitCase
             seed:               Self.seed
         )
         
-        let result: PCR<[PostCFailCommand]> = await StatefulRunner.run(
+        let result: StatefulResult = await StatefulRunner.run(
             command:    PostCFailCommand.self,
             model:      { 0 },
             system:     { 0 },
@@ -2092,7 +2092,7 @@ internal final class StatefulRunnerTests: TestKitCase
             seed:               Self.seed
         )
         
-        let result: PCR<[PostCFailCommand]> = await StatefulRunner.run(
+        let result: StatefulResult = await StatefulRunner.run(
             command:    PostCFailCommand.self,
             model:      { 0 },
             system:     { 0 },
@@ -2123,7 +2123,7 @@ internal final class StatefulRunnerTests: TestKitCase
             seed:               Self.seed
         )
         
-        let result: PCR<[PostCStateCommand]> = await StatefulRunner.run(
+        let result: StatefulResult = await StatefulRunner.run(
             command:    PostCStateCommand.self,
             model:      { 0 },
             system:     { 0 },
@@ -2145,7 +2145,7 @@ internal final class StatefulRunnerTests: TestKitCase
             seed:               Self.seed
         )
         
-        let result: PCR<[PostCAfterRunFailCommand]> = await StatefulRunner.run(
+        let result: StatefulResult = await StatefulRunner.run(
             command:    PostCAfterRunFailCommand.self,
             model:      { 0 },
             system:     { 0 },
@@ -2181,7 +2181,7 @@ internal final class StatefulRunnerTests: TestKitCase
             seed:               Self.seed
         )
         
-        let result: PCR<[PostCSkipsInvariant]> = await StatefulRunner.run(
+        let result: StatefulResult = await StatefulRunner.run(
             command:    PostCSkipsInvariant.self,
             model:      { 0 },
             system:     { 0 },
@@ -2211,7 +2211,7 @@ internal final class StatefulRunnerTests: TestKitCase
             seed:               Self.seed
         )
         
-        let result: PCR<[PostCFailCommand]> = await StatefulRunner.run(
+        let result: StatefulResult = await StatefulRunner.run(
             command:    PostCFailCommand.self,
             model:      { 0 },
             system:     { 0 },
@@ -2255,7 +2255,7 @@ internal final class StatefulRunnerTests: TestKitCase
             seed:               Self.seed
         )
         
-        let result: PCR<[SizeCaptureCommand]> = await StatefulRunner.run(
+        let result: StatefulResult = await StatefulRunner.run(
             command:    SizeCaptureCommand.self,
             model:      { 0 },
             system:     { 0 },
@@ -2290,7 +2290,7 @@ internal final class StatefulRunnerTests: TestKitCase
             seed:               Self.seed
         )
         
-        async let resultA: PCR<[IncrementCommand]> = StatefulRunner.run(
+        async let resultA: StatefulResult = StatefulRunner.run(
             command:    IncrementCommand.self,
             model:      { 0 },
             system:     { 0 },
@@ -2306,7 +2306,7 @@ internal final class StatefulRunnerTests: TestKitCase
             options: options
         )
         
-        async let resultB: PCR<[StackCommand]> = StatefulRunner.run(
+        async let resultB: StatefulResult = StatefulRunner.run(
             command:    StackCommand.self,
             model:      { 0 },
             system:     { 0 },
@@ -2350,7 +2350,7 @@ internal final class StatefulRunnerTests: TestKitCase
             seed:               Self.seed
         )
         
-        async let resultA: PCR<[IncrementCommand]> = StatefulRunner.run(
+        async let resultA: StatefulResult = StatefulRunner.run(
             command:    IncrementCommand.self,
             model:      { 0 },
             system:     { 0 },
@@ -2366,7 +2366,7 @@ internal final class StatefulRunnerTests: TestKitCase
             options: optionsA
         )
         
-        async let resultB: PCR<[StackCommand]> = StatefulRunner.run(
+        async let resultB: StatefulResult = StatefulRunner.run(
             command:    StackCommand.self,
             model:      { 0 },
             system:     { 0 },
@@ -2395,8 +2395,6 @@ internal final class StatefulRunnerTests: TestKitCase
 
 extension StatefulRunnerTests
 {
-    private typealias PCR = PropertyCheckResult
-    
     /// The seed used to initialize the random number generator.
     ///
     /// Use a fixed seed rather than a random seed for deterministic tests.

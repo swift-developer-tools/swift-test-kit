@@ -13,6 +13,7 @@ import XCTest
 @testable import class TestKitCore.GenerationContext
 @testable import enum TestKitCore.PropertyCheckResult
 @testable import struct TestKitCore.StatefulRunner
+@testable import struct TestKitCore.StatefulResult
 
 
 
@@ -847,16 +848,15 @@ internal final class StatefulMacroTests: TestKitCase
             seed:               12345
         )
         
-        let result: PropertyCheckResult<[BuggyCommand]>
-            = await StatefulRunner.run(
-                command:    BuggyCommand.self,
-                model:      { 0 },
-                system:     { BuggySystem() },
-                invariant:  nil,
-                options:    options
-            )
+        let result: StatefulResult = await StatefulRunner.run(
+            command:    BuggyCommand.self,
+            model:      { 0 },
+            system:     { BuggySystem() },
+            invariant:  nil,
+            options:    options
+        )
         
-        guard case let .failed(counterexample, _, _) = result
+        guard case let .failed(counterexample, _, _) = result.propertyCheck
         else
         {
             XCTFail("Expected .failed, got \(result)")
