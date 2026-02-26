@@ -367,8 +367,6 @@ XCTKForAll
 // Counterexample:
 //     Array<Int> = [1, 0]
 // 
-// Seed: 2188239925673862914 (re-run with PropertyOptions.seed)
-// 
 // XCTKAssertSorted failed
 // 
 // Collection count: 2
@@ -377,6 +375,8 @@ XCTKForAll
 // 
 //     [0]: 0
 //     [1]: 1
+// 
+// Seed: 2188239925673862914 (XCTKForAll)
 ```
 
 ### Generators
@@ -624,12 +624,12 @@ await XCTKStateful(
 //     2. push(1)
 //     3. pop ←
 // 
-// Seed: 6549428853488321548 (re-run with PropertyOptions.seed)
-// 
 // XCTKAssertEqual failed
 // 
 // Expected:   1
 // Actual:     0
+// 
+// Seed: 6549428853488321548 (XCTKStateful)
 ```
 
 

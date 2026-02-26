@@ -367,8 +367,6 @@ STKForAll
 // Counterexample:
 //     Array<Int> = [1, 0]
 // 
-// Seed: 2188239925673862914 (re-run with PropertyOptions.seed)
-// 
 // STKAssertSorted failed
 // 
 // Collection count: 2
@@ -377,6 +375,8 @@ STKForAll
 // 
 //     [0]: 0
 //     [1]: 1
+// 
+// Seed: 2188239925673862914 (STKForAll)
 ```
 
 ### Generators
@@ -624,12 +624,12 @@ await STKStateful(
 //     2. push(1)
 //     3. pop ←
 // 
-// Seed: 6549428853488321548 (re-run with PropertyOptions.seed)
-// 
 // STKAssertEqual failed
 // 
 // Expected:   1
 // Actual:     0
+// 
+// Seed: 6549428853488321548 (STKStateful)
 ```
 
 
