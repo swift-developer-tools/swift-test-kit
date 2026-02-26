@@ -1900,6 +1900,674 @@ internal final class StatefulOutputTests: TestKitCase
     
     
     
+    // MARK: - Statistics
+    
+    func testStatisticsNotShownWhenDisabled() async
+    {
+        let options: TestOptions = .propertyOptions(
+            iterations:         100,
+            maxShrinkSteps:     0,
+            maxCommandCount:    100,
+            statistics:         [],
+            seed:               Self.seed
+        )
+        
+        let actual: String? = await withOneExpectedFailure
+        {
+            await TKStateful(
+                model:      { 0 },
+                system:     { 0 },
+                command:    IncrementCommand.self,
+                options:    options,
+                invariant:
+                {
+                    model, _ async throws in
+                    
+                    if model >= 3
+                    {
+                        throw TestError()
+                    }
+                }
+            )
+        }
+        
+        XCTAssertNotNil(actual)
+        
+        let expected: String =
+        """
+        XCTKStateful failed after 4 iterations
+        
+        Command sequence:
+            1. increment
+            2. increment
+            3. increment ←
+        
+        \(Self.seedMessage)
+        
+        Threw error: TestError()
+        """
+        
+        XCTAssertEqual(expected, actual)
+    }
+    
+    
+    
+    func testStatisticsNotShownWithNoSuccessfulIterations() async
+    {
+        let options: TestOptions = .propertyOptions(
+            iterations:         1,
+            maxDiscardRatio:    0,
+            statistics:         [.presence, .frequency, .sequenceCount],
+            seed:               Self.seed
+        )
+        
+        let actual: String? = await withOneExpectedFailure
+        {
+            await TKStateful(
+                model:      { 0 },
+                system:     { 0 },
+                command:    RunDiscardCommand.self,
+                options:    options
+            )
+        }
+        
+        XCTAssertNotNil(actual)
+        
+        let expected: String =
+        """
+        XCTKStateful exhausted after 0 successful iterations
+        
+            1 value discarded (max ratio: 0)
+        
+        \(Self.seedMessage)
+        """
+        
+        XCTAssertEqual(expected, actual)
+    }
+    
+    
+    
+    func testStatisticsPresence() async
+    {
+        let options: TestOptions = .propertyOptions(
+            iterations:         100,
+            maxShrinkSteps:     0,
+            maxCommandCount:    100,
+            statistics:         [.presence],
+            seed:               Self.seed
+        )
+        
+        let actual: String? = await withOneExpectedFailure
+        {
+            await TKStateful(
+                model:      { 0 },
+                system:     { 0 },
+                command:    IncrementCommand.self,
+                options:    options,
+                invariant:
+                {
+                    model, _ async throws in
+                    
+                    if model >= 3
+                    {
+                        throw TestError()
+                    }
+                }
+            )
+        }
+        
+        XCTAssertNotNil(actual)
+        
+        let expected: String =
+        """
+        XCTKStateful failed after 4 iterations
+        
+        Command sequence:
+            1. increment
+            2. increment
+            3. increment ←
+        
+        \(Self.seedMessage)
+        
+        Threw error: TestError()
+        
+        Command presence (3 iterations):
+            increment: 3 (100%)
+        """
+        
+        XCTAssertEqual(expected, actual)
+    }
+    
+    
+    
+    func testStatisticsPresenceMultipleCommands() async
+    {
+        let options: TestOptions = .propertyOptions(
+            iterations:         3,
+            maxCommandCount:    9,
+            statistics:         [.presence],
+            seed:               Self.seed
+        )
+        
+        let actual: String? = await withOneExpectedFailure
+        {
+            await TKStateful(
+                model:      { 0 },
+                system:     { 0 },
+                command:    CycleCommand.self,
+                options:    options,
+                invariant:
+                {
+                    _, _ async in
+                    
+                    TKCover(100, "never", when: false)
+                }
+            )
+        }
+        
+        XCTAssertNotNil(actual)
+        
+        /// Command sequences:
+        /// - `alpha`
+        /// - `alpha, beta, gamma`
+        /// - `alpha, beta, gamma, alpha, beta, gamma`
+        let expected: String =
+        """
+        XCTKStateful coverage not met after 3 iterations
+        
+        Coverage:
+            never: 0% (required: 100%) ←
+        
+        \(Self.seedMessage)
+        
+        Command presence (3 iterations):
+            alpha: 3 (100%)
+            beta:  2 (66.7%)
+            gamma: 2 (66.7%)
+        """
+        
+        XCTAssertEqual(expected, actual)
+    }
+    
+    
+    
+    func testStatisticsFrequency() async
+    {
+        let options: TestOptions = .propertyOptions(
+            iterations:         100,
+            maxShrinkSteps:     0,
+            maxCommandCount:    100,
+            statistics:         [.frequency],
+            seed:               Self.seed
+        )
+        
+        let actual: String? = await withOneExpectedFailure
+        {
+            await TKStateful(
+                model:      { 0 },
+                system:     { 0 },
+                command:    IncrementCommand.self,
+                options:    options,
+                invariant:
+                {
+                    model, _ async throws in
+                    
+                    if model >= 3
+                    {
+                        throw TestError()
+                    }
+                }
+            )
+        }
+        
+        XCTAssertNotNil(actual)
+        
+        /// Command sequence counts: 1, 1, 2.
+        let expected: String =
+        """
+        XCTKStateful failed after 4 iterations
+        
+        Command sequence:
+            1. increment
+            2. increment
+            3. increment ←
+        
+        \(Self.seedMessage)
+        
+        Threw error: TestError()
+        
+        Command frequency (4 commands):
+            increment: 4 (100%)
+        """
+        
+        XCTAssertEqual(expected, actual)
+    }
+    
+    
+    
+    func testStatisticsFrequencyMultipleCommands() async
+    {
+        let options: TestOptions = .propertyOptions(
+            iterations:         3,
+            maxCommandCount:    9,
+            statistics:         [.frequency],
+            seed:               Self.seed
+        )
+        
+        let actual: String? = await withOneExpectedFailure
+        {
+            await TKStateful(
+                model:      { 0 },
+                system:     { 0 },
+                command:    CycleCommand.self,
+                options:    options,
+                invariant:
+                {
+                    _, _ async in
+                    
+                    TKCover(100, "never", when: false)
+                }
+            )
+        }
+        
+        XCTAssertNotNil(actual)
+        
+        /// Command sequences:
+        /// - `alpha`
+        /// - `alpha, beta, gamma`
+        /// - `alpha, beta, gamma, alpha, beta, gamma`
+        let expected: String =
+        """
+        XCTKStateful coverage not met after 3 iterations
+        
+        Coverage:
+            never: 0% (required: 100%) ←
+        
+        \(Self.seedMessage)
+        
+        Command frequency (10 commands):
+            alpha: 4 (40%)
+            beta:  3 (30%)
+            gamma: 3 (30%)
+        """
+        
+        XCTAssertEqual(expected, actual)
+    }
+    
+    
+    
+    func testStatisticsSequenceCount() async
+    {
+        let options: TestOptions = .propertyOptions(
+            iterations:         100,
+            maxShrinkSteps:     0,
+            maxCommandCount:    100,
+            statistics:         [.sequenceCount],
+            seed:               Self.seed
+        )
+        
+        let actual: String? = await withOneExpectedFailure
+        {
+            await TKStateful(
+                model:      { 0 },
+                system:     { 0 },
+                command:    IncrementCommand.self,
+                options:    options,
+                invariant:
+                {
+                    model, _ async throws in
+                    
+                    if model >= 3
+                    {
+                        throw TestError()
+                    }
+                }
+            )
+        }
+        
+        XCTAssertNotNil(actual)
+        
+        /// Command sequence counts: 1, 1, 2.
+        let expected: String =
+        """
+        XCTKStateful failed after 4 iterations
+        
+        Command sequence:
+            1. increment
+            2. increment
+            3. increment ←
+        
+        \(Self.seedMessage)
+        
+        Threw error: TestError()
+        
+        Command sequence count (3 iterations):
+            Minimum:   1
+            Maximum:   2
+            Average: 1.3
+        """
+        
+        XCTAssertEqual(expected, actual)
+    }
+    
+    
+    
+    func testStatisticsSequenceCountSingleIteration() async
+    {
+        let options: TestOptions = .propertyOptions(
+            iterations:         1,
+            maxCommandCount:    1,
+            statistics:         [.sequenceCount],
+            seed:               Self.seed
+        )
+        
+        let actual: String? = await withOneExpectedFailure
+        {
+            await TKStateful(
+                model:      { 0 },
+                system:     { 0 },
+                command:    IncrementCommand.self,
+                options:    options,
+                invariant:
+                {
+                    _, _ async in
+                    
+                    TKCover(100, "never", when: false)
+                }
+            )
+        }
+        
+        XCTAssertNotNil(actual)
+        
+        let expected: String =
+        """
+        XCTKStateful coverage not met after 1 iteration
+        
+        Coverage:
+            never: 0% (required: 100%) ←
+        
+        \(Self.seedMessage)
+        
+        Command sequence count (1 iteration):
+            Minimum: 1
+            Maximum: 1
+            Average: 1
+        """
+        
+        XCTAssertEqual(expected, actual)
+    }
+    
+    
+    
+    func testStatisticsAllEnabled() async
+    {
+        let options: TestOptions = .propertyOptions(
+            iterations:         100,
+            maxShrinkSteps:     0,
+            maxCommandCount:    100,
+            statistics:         [.presence, .frequency, .sequenceCount],
+            seed:               Self.seed
+        )
+        
+        let actual: String? = await withOneExpectedFailure
+        {
+            await TKStateful(
+                model:      { 0 },
+                system:     { 0 },
+                command:    IncrementCommand.self,
+                options:    options,
+                invariant:
+                {
+                    model, _ async throws in
+                    
+                    if model >= 3
+                    {
+                        throw TestError()
+                    }
+                }
+            )
+        }
+        
+        XCTAssertNotNil(actual)
+        
+        /// Command sequence counts: 1, 1, 2.
+        let expected: String =
+        """
+        XCTKStateful failed after 4 iterations
+        
+        Command sequence:
+            1. increment
+            2. increment
+            3. increment ←
+        
+        \(Self.seedMessage)
+        
+        Threw error: TestError()
+        
+        Command presence (3 iterations):
+            increment: 3 (100%)
+        
+        Command frequency (4 commands):
+            increment: 4 (100%)
+        
+        Command sequence count (3 iterations):
+            Minimum:   1
+            Maximum:   2
+            Average: 1.3
+        """
+        
+        XCTAssertEqual(expected, actual)
+    }
+    
+    
+    
+    func testStatisticsWithClassification() async
+    {
+        let options: TestOptions = .propertyOptions(
+            iterations:         100,
+            maxShrinkSteps:     0,
+            maxCommandCount:    100,
+            statistics:         [.presence],
+            seed:               Self.seed
+        )
+        
+        let actual: String? = await withOneExpectedFailure
+        {
+            await TKStateful(
+                model:      { 0 },
+                system:     { 0 },
+                command:    IncrementCommand.self,
+                options:    options,
+                invariant:
+                {
+                    model, _ async throws in
+                    
+                    TKLabel("always")
+                    
+                    if model >= 3
+                    {
+                        throw TestError()
+                    }
+                }
+            )
+        }
+        
+        XCTAssertNotNil(actual)
+        
+        let expected: String =
+        """
+        XCTKStateful failed after 4 iterations
+        
+        Command sequence:
+            1. increment
+            2. increment
+            3. increment ←
+        
+        \(Self.seedMessage)
+        
+        Distribution (4 iterations):
+            always: 3 (75%)
+        
+        Threw error: TestError()
+        
+        Command presence (3 iterations):
+            increment: 3 (100%)
+        """
+        
+        XCTAssertEqual(expected, actual)
+    }
+    
+    
+    
+    func testStatisticsExhaustion() async
+    {
+        let options: TestOptions = .propertyOptions(
+            iterations:         2,
+            maxDiscardRatio:    1,
+            maxCommandCount:    100,
+            statistics:         [.presence],
+            seed:               Self.seed
+        )
+        
+        let actual: String? = await withOneExpectedFailure
+        {
+            await TKStateful(
+                model:      { 0 },
+                system:     { 0 },
+                command:    IncrementCommand.self,
+                options:    options,
+                invariant:
+                {
+                    model, _ async throws in
+                    
+                    if model >= 2
+                    {
+                        throw DiscardError()
+                    }
+                }
+            )
+        }
+        
+        XCTAssertNotNil(actual)
+        
+        let expected: String =
+        """
+        XCTKStateful exhausted after 1 successful iteration
+        
+            3 values discarded (max ratio: 1)
+        
+        \(Self.seedMessage)
+        
+        Command presence (1 iteration):
+            increment: 1 (100%)
+        """
+        
+        XCTAssertEqual(expected, actual)
+    }
+    
+    
+    
+    func testStatisticsCoverageNotMet() async
+    {
+        let options: TestOptions = .propertyOptions(
+            iterations:         10,
+            maxCommandCount:    1,
+            statistics:         [.presence],
+            seed:               Self.seed
+        )
+        
+        let actual: String? = await withOneExpectedFailure
+        {
+            await TKStateful(
+                model:      { 0 },
+                system:     { 0 },
+                command:    IncrementCommand.self,
+                options:    options,
+                invariant:
+                {
+                    _, _ async throws in
+                    
+                    TKCover(100, "never", when: false)
+                }
+            )
+        }
+        
+        XCTAssertNotNil(actual)
+        
+        let expected: String =
+        """
+        XCTKStateful coverage not met after 10 iterations
+        
+        Coverage:
+            never: 0% (required: 100%) ←
+        
+        \(Self.seedMessage)
+        
+        Command presence (10 iterations):
+            increment: 10 (100%)
+        """
+        
+        XCTAssertEqual(expected, actual)
+    }
+    
+    
+    
+    func testStatisticsWithMessage() async
+    {
+        let options: TestOptions = .propertyOptions(
+            iterations:         100,
+            maxShrinkSteps:     0,
+            maxCommandCount:    100,
+            statistics:         [.presence],
+            seed:               Self.seed
+        )
+        
+        let actual: String? = await withOneExpectedFailure
+        {
+            await TKStateful(
+                "hello world",
+                model:      { 0 },
+                system:     { 0 },
+                command:    IncrementCommand.self,
+                options:    options,
+                invariant:
+                {
+                    model, _ async throws in
+                    
+                    if model >= 3
+                    {
+                        throw TestError()
+                    }
+                }
+            )
+        }
+        
+        XCTAssertNotNil(actual)
+        
+        let expected: String =
+        """
+        XCTKStateful failed after 4 iterations
+        
+        Command sequence:
+            1. increment
+            2. increment
+            3. increment ←
+        
+        \(Self.seedMessage)
+        
+        Threw error: TestError()
+        
+        Command presence (3 iterations):
+            increment: 3 (100%)
+        
+        hello world
+        """
+        
+        XCTAssertEqual(expected, actual)
+    }
+    
+    
+    
     // MARK: - ForAll
     
     func testForAllFailure() async throws
