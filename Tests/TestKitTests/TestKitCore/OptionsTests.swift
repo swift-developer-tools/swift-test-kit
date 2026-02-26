@@ -45,6 +45,7 @@ internal final class OptionsTests: TestKitCase
         XCTAssertEqual(options.diffOptions, DiffOptions())
         XCTAssertEqual(options.formatOptions, FormatOptions())
         XCTAssertEqual(options.propertyOptions, PropertyOptions())
+        XCTAssertEqual(options.temporalOptions, TemporalOptions())
     }
     
     
@@ -84,6 +85,16 @@ internal final class OptionsTests: TestKitCase
         XCTAssertEqual(options.maxCommandCount, 100)
         XCTAssertEqual(options.statistics, [])
         XCTAssertNil(options.seed)
+    }
+    
+    
+    
+    func testTemporalOptions()
+    {
+        let options = TemporalOptions()
+        
+        XCTAssertEqual(options.timeout, .seconds(2))
+        XCTAssertEqual(options.interval, .milliseconds(50))
     }
     
     
