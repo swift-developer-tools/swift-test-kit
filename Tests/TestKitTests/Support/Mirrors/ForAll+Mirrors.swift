@@ -8,7 +8,7 @@
 //===----------------------------------------------------------------------===//
 
 import TestKitCore
-@testable import XCTestKit
+@testable import let XCTestKit.failureContext
 
 /// These functions are mirrors wrapping the actual internal functions,
 /// allowing tests to benefit from autoclosures and default parameters.

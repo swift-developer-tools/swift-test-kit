@@ -7,9 +7,9 @@
 //
 //===----------------------------------------------------------------------===//
 
-import XCTestKit
+import TestKitCore
 import XCTest
-@testable import TestKitCore
+@testable import struct TestKitCore.PropertyRunner
 
 
 
@@ -32,7 +32,7 @@ internal final class PropertyRunnerClassificationTests: TestKitCase
             {
                 _ async throws in
                 
-                try XCTKAssume(true)
+                try TKAssume(true)
             },
             options: options
         )
@@ -58,7 +58,7 @@ internal final class PropertyRunnerClassificationTests: TestKitCase
             {
                 _ async throws in
                 
-                try XCTKAssume(false)
+                try TKAssume(false)
             },
             options: options
         )
@@ -88,9 +88,9 @@ internal final class PropertyRunnerClassificationTests: TestKitCase
             {
                 capture async throws in
                 
-                try XCTKAssume(capture.size % 2 == 0)
+                try TKAssume(capture.size % 2 == 0)
                 
-                XCTKLabel("accepted")
+                TKLabel("accepted")
             },
             options: options
         )
@@ -119,7 +119,7 @@ internal final class PropertyRunnerClassificationTests: TestKitCase
             {
                 _ async throws in
                 
-                try XCTKAssume(false)
+                try TKAssume(false)
             },
             options: options
         )
@@ -150,9 +150,9 @@ internal final class PropertyRunnerClassificationTests: TestKitCase
             {
                 _ async throws in
                 
-                XCTKLabel("ghost")
+                TKLabel("ghost")
                 
-                try XCTKAssume(false)
+                try TKAssume(false)
             },
             options: options
         )
@@ -183,9 +183,9 @@ internal final class PropertyRunnerClassificationTests: TestKitCase
             {
                 _ async throws in
                 
-                XCTKTabulate("table", "ghost")
+                TKTabulate("table", "ghost")
                 
-                try XCTKAssume(false)
+                try TKAssume(false)
             },
             options: options
         )
@@ -223,9 +223,9 @@ internal final class PropertyRunnerClassificationTests: TestKitCase
             {
                 int async throws in
                 
-                try XCTKAssume(int % 2 == 0)
+                try TKAssume(int % 2 == 0)
                 
-                XCTKCover(100, "accepted", when: true)
+                TKCover(100, "accepted", when: true)
             },
             options: options
         )
@@ -250,7 +250,7 @@ internal final class PropertyRunnerClassificationTests: TestKitCase
             {
                 _ async throws in
                 
-                try XCTKAssume(true)
+                try TKAssume(true)
                 
                 PropertyInterceptor.current?.recordFailure()
             },
@@ -291,7 +291,7 @@ internal final class PropertyRunnerClassificationTests: TestKitCase
             {
                 int async throws in
                 
-                try XCTKAssume(int % 2 == 0)
+                try TKAssume(int % 2 == 0)
                 
                 if int > target
                 {
@@ -345,7 +345,7 @@ internal final class PropertyRunnerClassificationTests: TestKitCase
             {
                 int async throws in
                 
-                try XCTKAssume(int % 2 == 0)
+                try TKAssume(int % 2 == 0)
                 
                 PropertyInterceptor.current?.recordLabel("tested")
                 
@@ -389,7 +389,7 @@ internal final class PropertyRunnerClassificationTests: TestKitCase
             {
                 _ async throws in
                 
-                try XCTKAssume(false)
+                try TKAssume(false)
             },
             options: options
         )
@@ -420,7 +420,7 @@ internal final class PropertyRunnerClassificationTests: TestKitCase
             {
                 _ async throws in
                 
-                try XCTKAssume(false)
+                try TKAssume(false)
             },
             options: options
         )
@@ -459,9 +459,9 @@ internal final class PropertyRunnerClassificationTests: TestKitCase
             {
                 int async throws in
                 
-                try XCTKAssume(int % 4 == 0)
+                try TKAssume(int % 4 == 0)
                 
-                XCTKLabel("accepted")
+                TKLabel("accepted")
             },
             options: options
         )
@@ -1166,8 +1166,8 @@ internal final class PropertyRunnerClassificationTests: TestKitCase
             {
                 capture async in
                 
-                XCTKClassify("small", when: capture.size < target)
-                XCTKClassify("large", when: capture.size >= target)
+                TKClassify("small", when: capture.size < target)
+                TKClassify("large", when: capture.size >= target)
             },
             options: options
         )
@@ -1195,8 +1195,8 @@ internal final class PropertyRunnerClassificationTests: TestKitCase
             {
                 _ async in
                 
-                XCTKClassify("never", when: false)
-                XCTKClassify("always", when: true)
+                TKClassify("never", when: false)
+                TKClassify("always", when: true)
             },
             options: options
         )
@@ -1226,8 +1226,8 @@ internal final class PropertyRunnerClassificationTests: TestKitCase
             {
                 capture async in
                 
-                XCTKCover(target, "small", when: capture.size < Int(target))
-                XCTKCover(target, "large", when: capture.size >= Int(target))
+                TKCover(target, "small", when: capture.size < Int(target))
+                TKCover(target, "large", when: capture.size >= Int(target))
             },
             options: options
         )
@@ -1257,7 +1257,7 @@ internal final class PropertyRunnerClassificationTests: TestKitCase
             {
                 capture async in
                 
-                XCTKCover(80, "small", when: capture.size < target)
+                TKCover(80, "small", when: capture.size < target)
             },
             options: options
         )
@@ -1291,8 +1291,8 @@ internal final class PropertyRunnerClassificationTests: TestKitCase
             {
                 capture async in
                 
-                XCTKCover(40, "small", when: capture.size < 50)
-                XCTKCover(90, "small", when: capture.size < 50)
+                TKCover(40, "small", when: capture.size < 50)
+                TKCover(90, "small", when: capture.size < 50)
             },
             options: options
         )
@@ -1324,8 +1324,8 @@ internal final class PropertyRunnerClassificationTests: TestKitCase
             {
                 capture async in
                 
-                XCTKLabel("all")
-                XCTKCollect(capture.size)
+                TKLabel("all")
+                TKCollect(capture.size)
             },
             options: options
         )
@@ -1375,8 +1375,8 @@ internal final class PropertyRunnerClassificationTests: TestKitCase
             {
                 int async in
                 
-                XCTKClassify("low", when: int <= 50)
-                XCTKClassify("high", when: int > 50)
+                TKClassify("low", when: int <= 50)
+                TKClassify("high", when: int > 50)
             },
             options: options
         )
@@ -1412,8 +1412,8 @@ internal final class PropertyRunnerClassificationTests: TestKitCase
             {
                 int async in
                 
-                XCTKClassify("low", when: int <= target)
-                XCTKClassify("high", when: int > target)
+                TKClassify("low", when: int <= target)
+                TKClassify("high", when: int > target)
                 
                 if int > target
                 {
@@ -1459,7 +1459,7 @@ internal final class PropertyRunnerClassificationTests: TestKitCase
             {
                 _ async in
                 
-                XCTKCover(100, "present", when: true)
+                TKCover(100, "present", when: true)
             },
             options: options
         )
@@ -1484,7 +1484,7 @@ internal final class PropertyRunnerClassificationTests: TestKitCase
             {
                 _ async in
                 
-                XCTKCover(50, "absent", when: false)
+                TKCover(50, "absent", when: false)
             },
             options: options
         )
@@ -1516,9 +1516,9 @@ internal final class PropertyRunnerClassificationTests: TestKitCase
             {
                 capture async in
                 
-                XCTKLabel("all")
-                XCTKClassify("small", when: capture.size < target)
-                XCTKCover(10, "large", when: capture.size >= target)
+                TKLabel("all")
+                TKClassify("small", when: capture.size < target)
+                TKCover(10, "large", when: capture.size >= target)
             },
             options: options
         )
@@ -1550,7 +1550,7 @@ internal final class PropertyRunnerClassificationTests: TestKitCase
             {
                 _ async in
                 
-                XCTKCover(100, "even", when: true)
+                TKCover(100, "even", when: true)
             },
             options: options
         )
@@ -1580,7 +1580,7 @@ internal final class PropertyRunnerClassificationTests: TestKitCase
             {
                 capture async in
                 
-                XCTKTabulate("parity", capture.size % 2 == 0 ? "even" : "odd")
+                TKTabulate("parity", capture.size % 2 == 0 ? "even" : "odd")
             },
             options: options
         )
@@ -1619,8 +1619,8 @@ internal final class PropertyRunnerClassificationTests: TestKitCase
             {
                 capture async in
                 
-                XCTKTabulate("parity", capture.size % 2 == 0 ? "even" : "odd")
-                XCTKTabulate("size", capture.size < 50 ? "small" : "large")
+                TKTabulate("parity", capture.size % 2 == 0 ? "even" : "odd")
+                TKTabulate("size", capture.size < 50 ? "small" : "large")
             },
             options: options
         )
@@ -1665,9 +1665,9 @@ internal final class PropertyRunnerClassificationTests: TestKitCase
             {
                 _ async in
                 
-                XCTKTabulate("t", "a")
-                XCTKTabulate("t", "a")
-                XCTKTabulate("t", "a")
+                TKTabulate("t", "a")
+                TKTabulate("t", "a")
+                TKTabulate("t", "a")
             },
             options: options
         )
@@ -1695,7 +1695,7 @@ internal final class PropertyRunnerClassificationTests: TestKitCase
             {
                 capture async in
                 
-                XCTKTabulate("parity", capture.size % 2 == 0 ? "even" : "odd")
+                TKTabulate("parity", capture.size % 2 == 0 ? "even" : "odd")
                 
                 if capture.size >= target
                 {
@@ -1741,7 +1741,7 @@ internal final class PropertyRunnerClassificationTests: TestKitCase
             {
                 _ async in
                 
-                XCTKTabulate("group", "accepted")
+                TKTabulate("group", "accepted")
             },
             options: options
         )
@@ -1769,7 +1769,7 @@ internal final class PropertyRunnerClassificationTests: TestKitCase
             {
                 boundInt async in
                 
-                XCTKTabulate("sign", boundInt.value > 0 ? "positive" : "zero")
+                TKTabulate("sign", boundInt.value > 0 ? "positive" : "zero")
                 
                 if boundInt.value > target
                 {
@@ -1816,8 +1816,8 @@ internal final class PropertyRunnerClassificationTests: TestKitCase
             {
                 capture async in
                 
-                XCTKCoverTable("parity", (40, "even"), (40, "odd"))
-                XCTKTabulate("parity", capture.size % 2 == 0 ? "even" : "odd")
+                TKCoverTable("parity", (40, "even"), (40, "odd"))
+                TKTabulate("parity", capture.size % 2 == 0 ? "even" : "odd")
             },
             options: options
         )
@@ -1847,8 +1847,8 @@ internal final class PropertyRunnerClassificationTests: TestKitCase
             {
                 capture async in
                 
-                XCTKCoverTable("parity", (90, "even"))
-                XCTKTabulate("parity", capture.size % 2 == 0 ? "even" : "odd")
+                TKCoverTable("parity", (90, "even"))
+                TKTabulate("parity", capture.size % 2 == 0 ? "even" : "odd")
             },
             options: options
         )
@@ -1883,8 +1883,8 @@ internal final class PropertyRunnerClassificationTests: TestKitCase
             {
                 capture async in
                 
-                XCTKCoverTable("parity", (40, "even"), (90, "odd"))
-                XCTKTabulate("parity", capture.size % 2 == 0 ? "even" : "odd")
+                TKCoverTable("parity", (40, "even"), (90, "odd"))
+                TKTabulate("parity", capture.size % 2 == 0 ? "even" : "odd")
             },
             options: options
         )
@@ -1920,9 +1920,9 @@ internal final class PropertyRunnerClassificationTests: TestKitCase
             {
                 capture async in
                 
-                XCTKCoverTable("parity", (40, "even"))
-                XCTKCoverTable("parity", (90, "even"))
-                XCTKTabulate("parity", capture.size % 2 == 0 ? "even" : "odd")
+                TKCoverTable("parity", (40, "even"))
+                TKCoverTable("parity", (90, "even"))
+                TKTabulate("parity", capture.size % 2 == 0 ? "even" : "odd")
             },
             options: options
         )
@@ -1955,7 +1955,7 @@ internal final class PropertyRunnerClassificationTests: TestKitCase
             {
                 _ async in
                 
-                XCTKCoverTable("t", (0, "never"))
+                TKCoverTable("t", (0, "never"))
             },
             options: options
         )
@@ -1983,7 +1983,7 @@ internal final class PropertyRunnerClassificationTests: TestKitCase
             {
                 capture async in
                 
-                XCTKCoverTable("t", (99, "never"))
+                TKCoverTable("t", (99, "never"))
                 
                 if capture.size >= target
                 {
@@ -2025,7 +2025,7 @@ internal final class PropertyRunnerClassificationTests: TestKitCase
             {
                 capture async in
                 
-                XCTKTabulate("group", "accepted")
+                TKTabulate("group", "accepted")
             },
             options: options
         )
@@ -2055,9 +2055,9 @@ internal final class PropertyRunnerClassificationTests: TestKitCase
             {
                 capture async in
                 
-                XCTKCover(40, "small", when: capture.size < 50)
-                XCTKCoverTable("parity", (40, "even"), (40, "odd"))
-                XCTKTabulate("parity", capture.size % 2 == 0 ? "even" : "odd")
+                TKCover(40, "small", when: capture.size < 50)
+                TKCoverTable("parity", (40, "even"), (40, "odd"))
+                TKTabulate("parity", capture.size % 2 == 0 ? "even" : "odd")
             },
             options: options
         )
@@ -2091,9 +2091,9 @@ internal final class PropertyRunnerClassificationTests: TestKitCase
             {
                 capture async in
                 
-                XCTKCover(40, "small", when: capture.size < 50)
-                XCTKCoverTable("parity", (90, "even"))
-                XCTKTabulate("parity", capture.size % 2 == 0 ? "even" : "odd")
+                TKCover(40, "small", when: capture.size < 50)
+                TKCoverTable("parity", (90, "even"))
+                TKTabulate("parity", capture.size % 2 == 0 ? "even" : "odd")
             },
             options: options
         )
@@ -2126,9 +2126,9 @@ internal final class PropertyRunnerClassificationTests: TestKitCase
             {
                 capture async in
                 
-                XCTKCover(90, "small", when: capture.size < 50)
-                XCTKCoverTable("parity", (40, "even"))
-                XCTKTabulate("parity", capture.size % 2 == 0 ? "even" : "odd")
+                TKCover(90, "small", when: capture.size < 50)
+                TKCoverTable("parity", (40, "even"))
+                TKTabulate("parity", capture.size % 2 == 0 ? "even" : "odd")
             },
             options: options
         )
@@ -2160,11 +2160,11 @@ internal final class PropertyRunnerClassificationTests: TestKitCase
             {
                 capture async in
                 
-                XCTKLabel("all")
-                XCTKClassify("small", when: capture.size < target)
-                XCTKCover(10, "large", when: capture.size >= target)
-                XCTKCoverTable("parity", (40, "even"), (40, "odd"))
-                XCTKTabulate("parity", capture.size % 2 == 0 ? "even" : "odd")
+                TKLabel("all")
+                TKClassify("small", when: capture.size < target)
+                TKCover(10, "large", when: capture.size >= target)
+                TKCoverTable("parity", (40, "even"), (40, "odd"))
+                TKTabulate("parity", capture.size % 2 == 0 ? "even" : "odd")
             },
             options: options
         )

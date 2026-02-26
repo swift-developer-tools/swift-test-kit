@@ -18,9 +18,11 @@ struct TestKitMacroPlugin: CompilerPlugin
 {
     let providingMacros: [any Macro.Type] =
     [
-        // MARK: - Arbitrary
+        // MARK: - Property-based testing
         
         ArbitraryMacro.self,
+        StatefulMacro.self,
+        WeightMacro.self,
         
         
         

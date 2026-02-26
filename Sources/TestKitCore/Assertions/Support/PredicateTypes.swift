@@ -9,7 +9,7 @@
 
 // MARK: - PredicateFailure
 
-/// Information about a failed predicate.
+/// A predicate failure.
 package struct PredicateFailure: Equatable
 {
     /// The number of elements in the collection.
@@ -68,7 +68,7 @@ package enum PredicateFailureKind: Equatable
     /// This is used for `satisfyAny`, `satisfyAtLeast`, `satisfyAtMost`,
     /// `satisfyRange`, `exactly`, and `exactlyOne` assertions.
     ///
-    /// - Parameter mismatch: Information about the count mismatch failure.
+    /// - Parameter mismatch: The count mismatch failure.
     case countMismatch(
         _ mismatch: CountMismatch
     )
@@ -77,7 +77,7 @@ package enum PredicateFailureKind: Equatable
     ///
     /// This is used for `sorted` assertions.
     ///
-    /// - Parameter violation: Information about the ordering violation.
+    /// - Parameter violation: The ordering violation.
     case orderingViolation(
         _ violation: OrderingViolation
     )
@@ -86,7 +86,7 @@ package enum PredicateFailureKind: Equatable
     ///
     /// This is used for `unique` assertions.
     ///
-    /// - Parameter groups: Information about the groups of duplicate elements.
+    /// - Parameter groups: The groups of duplicate elements.
     case duplicates(
         _ groups: [DuplicateGroup]
     )
@@ -95,8 +95,7 @@ package enum PredicateFailureKind: Equatable
     ///
     /// This is used for `uniqueByKey` assertions.
     ///
-    /// - Parameter groups: Information about the groups of elements with
-    /// duplicate keys.
+    /// - Parameter groups: The groups of elements with duplicate keys.
     case duplicateKeys(
         _ groups: [DuplicateKeyGroup]
     )
@@ -106,7 +105,7 @@ package enum PredicateFailureKind: Equatable
 
 // MARK: - ElementResult
 
-/// Information about an element evaluated by a predicate.
+/// An element evaluated by a predicate.
 package struct ElementResult: Equatable
 {
     /// The index of the element in the collection.
@@ -137,7 +136,7 @@ package struct ElementResult: Equatable
 
 // MARK: - PredicateIterationResult
 
-/// Information about the iteration of a predicate over a collectiion.
+/// The result of predicate iteration over a collection.
 package struct PredicateIterationResult
 {
     /// The elements that matched the predicate.
@@ -253,7 +252,7 @@ package enum CountExpectationKind: Equatable, Sendable
 
 // MARK: - CountMismatch
 
-/// Information about a count mismatch failure.
+/// A count mismatch failure.
 package struct CountMismatch: Equatable
 {
     /// The expected count.
@@ -284,7 +283,7 @@ package struct CountMismatch: Equatable
 
 // MARK: - OrderingViolation
 
-/// Information about an ordering violation in a sorted assertion.
+/// An ordering violation in a sorted assertion.
 package struct OrderingViolation: Equatable
 {
     /// The index of the first element in the violating pair.
@@ -320,7 +319,7 @@ package struct OrderingViolation: Equatable
 
 // MARK: - DuplicateGroup
 
-/// Information about a group of duplicate elements.
+/// A group of duplicate elements.
 package struct DuplicateGroup: Equatable
 {
     /// The duplicate value.
@@ -346,7 +345,7 @@ package struct DuplicateGroup: Equatable
 
 // MARK: - DuplicateKeyGroup
 
-/// Information about a group of elements with duplicate keys.
+/// A group of elements with duplicate keys.
 package struct DuplicateKeyGroup: Equatable
 {
     /// The duplicate key.

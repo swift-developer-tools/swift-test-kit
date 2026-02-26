@@ -10,6 +10,7 @@
 import TestKitCore
 import XCTestKit
 import XCTest
+@testable import enum TestKitCore.PropertyCheckResult
 
 
 

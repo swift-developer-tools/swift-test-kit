@@ -7,27 +7,57 @@
 //
 //===----------------------------------------------------------------------===//
 
-/// Information about a failing counterexample.
-package struct Counterexample<T>
+/// A failing counterexample.
+internal struct Counterexample<T>
 {
     /// The minimal counterexample (after shrinking).
-    package let value           : T
+    internal let value          : T
     
     /// The original counterexample (before shrinking).
-    package let originalValue   : T
+    internal let originalValue  : T
     
     /// The seed used to initialize the random number generator.
-    package let seed            : UInt64
+    internal let seed           : UInt64
     
     /// The 1-indexed iteration at which the original counterexample was found.
-    package let iteration       : Int
+    internal let iteration      : Int
     
     /// The number of shrink steps performed.
-    package let shrinkSteps     : Int
+    internal let shrinkSteps    : Int
     
     /// The assertion failures from the final run with the shrunken value.
-    package let failures        : [InterceptedFailure]
+    internal let failures       : [InterceptedFailure]
+    
+    /// The 1-indexed step within the command sequence at which the original
+    /// counterexample was found.
+    ///
+    /// This is used only for stateful tests and is otherwise `nil`.
+    internal let failingStep    : Int?
     
     /// The error thrown by the property body, if any.
-    package let thrownError     : Error?
+    internal let thrownError    : Error?
+    
+    
+    
+    /// Initializes a ``Counterexample`` instance from the given values.
+    internal init(
+        value           : T,
+        originalValue   : T,
+        seed            : UInt64,
+        iteration       : Int,
+        shrinkSteps     : Int,
+        failures        : [InterceptedFailure],
+        failingStep     : Int?,
+        thrownError     : Error?
+    )
+    {
+        self.value          = value
+        self.originalValue  = originalValue
+        self.seed           = seed
+        self.iteration      = iteration
+        self.shrinkSteps    = shrinkSteps
+        self.failures       = failures
+        self.failingStep    = failingStep
+        self.thrownError    = thrownError
+    }
 }

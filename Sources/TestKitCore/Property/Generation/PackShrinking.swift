@@ -10,7 +10,7 @@
 // MARK: - AnyShrinker
 
 /// A type-erased shrinker for indexed shrinking of parameter pack elements.
-package struct AnyShrinker
+internal struct AnyShrinker
 {
     /// Shrinks the given value.
     private let _shrink: (Any) -> [Any]
@@ -19,7 +19,7 @@ package struct AnyShrinker
     
     /// Initializes an ``AnyShrinker`` instance from the given shrink function.
     /// - Parameter shrink: The function to shrink a given value.
-    package init<T>(
+    internal init<T>(
         _ shrink: @escaping (T) -> [T]
     )
     {
@@ -36,7 +36,7 @@ package struct AnyShrinker
     /// Shrinks the given value.
     /// - Parameter value: The value to shrink.
     /// - Returns: The shrink candidates.
-    package func shrink(
+    internal func shrink(
         _ value: Any
     ) -> [Any]
     {
@@ -48,7 +48,7 @@ package struct AnyShrinker
     /// Creates a shrinker for the given type.
     /// - Parameter type: The type to use.
     /// - Returns: A shrinker for the given type.
-    package static func makeShrinker<T>(
+    internal static func makeShrinker<T>(
         for type: T.Type
     ) -> AnyShrinker where T : Arbitrary
     {
@@ -60,7 +60,7 @@ package struct AnyShrinker
     /// Creates a shrinker from the given generator.
     /// - Parameter generator: The generator to use.
     /// - Returns: A shrinker from the given generator.
-    package static func makeShrinker<T>(
+    internal static func makeShrinker<T>(
         from generator: Generator<T>
     ) -> AnyShrinker
     {
@@ -79,7 +79,7 @@ package struct AnyShrinker
     ///   tuple. For single-element packs, this is the element itself.
     ///   - shrinkers: The shrinkers for each element.
     /// - Returns: The type-erased shrink candidates.
-    package static func shrinkCandidates(
+    internal static func shrinkCandidates(
         of      value       : Any,
         using   shrinkers   : [AnyShrinker]
     ) -> [[Any]]
@@ -146,7 +146,7 @@ package struct AnyShrinker
 
 /// A sequential counter for reconstructing typed tuples from arrays via
 /// pack expansion.
-package final class PackIndex
+internal final class PackIndex
 {
     /// The current pack index.
     private var current: Int = 0
@@ -154,7 +154,7 @@ package final class PackIndex
     
     
     /// Initializes a ``PackIndex`` instance.
-    package init() { }
+    internal init() { }
     
     
     
@@ -165,7 +165,7 @@ package final class PackIndex
     /// position to the correct array parameter.
     ///
     /// - Returns: The next pack index.
-    package func next() -> Int
+    internal func next() -> Int
     {
         defer
         {

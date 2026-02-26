@@ -16,7 +16,7 @@ public struct UnwrapError: Error, CustomStringConvertible
     
     
     /// Initializes an ``UnwrapError`` from the given framework kind.
-    package init(
+    internal init(
         _ framework: FrameworkKind
     )
     {

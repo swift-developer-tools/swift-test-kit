@@ -7,9 +7,9 @@
 //
 //===----------------------------------------------------------------------===//
 
-import XCTestKit
+import TestKitCore
 import XCTest
-@testable import TestKitCore
+@testable import struct TestKitCore.PropertyRunner
 
 
 

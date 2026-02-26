@@ -10,7 +10,7 @@
 extension Collection
 {
     /// Whether the collection is ordered.
-    package var isOrdered: Bool
+    internal var isOrdered: Bool
     {
         let mirror = Mirror(reflecting: self)
         

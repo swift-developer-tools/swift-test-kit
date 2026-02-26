@@ -27,7 +27,7 @@ package enum RenderedValueKind: Equatable, Sendable
 
 // MARK: - RenderedValue
 
-/// Pre-rendered information about a value.
+/// A pre-rendered value.
 package struct RenderedValue: Equatable, Sendable, CustomStringConvertible
 {
     /// The string representation of the value.
@@ -115,7 +115,7 @@ package struct DiffValue: Equatable
     /// The underlying value.
     package let value       : Any
     
-    /// The pre-rendered information about the value.
+    /// The pre-rendered value.
     package let rendered    : RenderedValue
     
     

@@ -258,6 +258,21 @@ public struct PropertyOptions: Equatable, Sendable
     /// `maxDiscardRatio * iterations`, the test fails with an exhaustion error.
     public var maxDiscardRatio  : Int
     
+    /// The maximum number of commands per stateful test sequence.
+    ///
+    /// The default value is `100`.
+    ///
+    /// Command sequence length scales linearly with the generation size,
+    /// starting with short sequences in early iterations and growing toward
+    /// this maximum value in later iterations.
+    public var maxCommandCount  : Int
+    
+    /// The options for reporting command statistics in stateful
+    /// property-based tests.
+    ///
+    /// The default value is an empty option set.
+    public var statistics       : CommandStatistics
+    
     /// The seed used to initialize the random number generator.
     ///
     /// The default value is `nil`. When `nil`, a random seed is generated
@@ -270,18 +285,20 @@ public struct PropertyOptions: Equatable, Sendable
     /// Initializes a ``PropertyOptions`` instance, optionally specifying
     /// values for its properties.
     ///
-    /// - Precondition: `iterations`, `maxShrinkSteps`, `maxSize`, and
-    /// `maxDiscardRatio` must all be non-negative.
+    /// - Precondition: `iterations`, `maxShrinkSteps`, `maxSize`,
+    /// `maxDiscardRatio`, and `maxCommandCount` must all be non-negative.
     ///
     /// - Warning: Very large `maxSize` values can cause significant memory
     /// pressure, especially for collection types, which generate up to
     /// `maxSize` elements per iteration.
     public init(
-        iterations      : Int       = 100,
-        maxShrinkSteps  : Int       = 100,
-        maxSize         : Int       = 100,
-        maxDiscardRatio : Int       = 10,
-        seed            : UInt64?   = nil
+        iterations      : Int                   = 100,
+        maxShrinkSteps  : Int                   = 100,
+        maxSize         : Int                   = 100,
+        maxDiscardRatio : Int                   = 10,
+        maxCommandCount : Int                   = 100,
+        statistics      : CommandStatistics     = [],
+        seed            : UInt64?               = nil
     )
     {
         precondition(
@@ -304,10 +321,69 @@ public struct PropertyOptions: Equatable, Sendable
             "maxDiscardRatio must be non-negative"
         )
         
+        precondition(
+            maxCommandCount >= 0,
+            "maxCommandCount must be non-negative"
+        )
+        
         self.iterations         = iterations
         self.maxShrinkSteps     = maxShrinkSteps
         self.maxSize            = maxSize
         self.maxDiscardRatio    = maxDiscardRatio
+        self.maxCommandCount    = maxCommandCount
+        self.statistics         = statistics
         self.seed               = seed
+    }
+}
+
+
+
+// MARK: - CommandStatistics
+
+/// The options for reporting command statistics in stateful
+/// property-based tests.
+public struct CommandStatistics: OptionSet, Equatable, Sendable
+{
+    /// The raw value.
+    public let rawValue: Int
+    
+    /// Report per-iteration command distribution.
+    ///
+    /// Enable this to report the percentage of successful iterations that
+    /// contained each command.
+    public static let presence          = CommandStatistics(rawValue: 1 << 0)
+    
+    /// Report aggregate command distribution.
+    ///
+    /// Enable this to report the distribution of commands across all
+    /// iterations.
+    public static let frequency         = CommandStatistics(rawValue: 1 << 1)
+    
+    /// Report command sequence counts.
+    ///
+    /// Enable this to report the minimum, maximum, and average command
+    /// sequence count across all iterations.
+    public static let sequenceCount     = CommandStatistics(rawValue: 1 << 2)
+    
+    /// Report all statistics.
+    ///
+    /// Enable this to report ``presence``, ``frequency``, and ``sequenceCount``
+    /// statistics.
+    public static let all: CommandStatistics =
+    [
+        .presence,
+        .frequency,
+        .sequenceCount
+    ]
+    
+    
+    
+    /// Initializes a ``CommandStatistics`` instance from the given raw value.
+    /// - Parameter rawValue: The raw value to use.
+    public init(
+        rawValue: Int
+    )
+    {
+        self.rawValue = rawValue
     }
 }

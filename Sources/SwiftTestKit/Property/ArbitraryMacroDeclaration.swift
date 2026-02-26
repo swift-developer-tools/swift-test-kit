@@ -9,8 +9,8 @@
 
 /// Synthesizes ``Arbitrary`` conformance for structs and enums.
 ///
-/// Apply the `@Arbitrary` macro to a struct or enum to automatically generate
-/// ``Arbitrary`` conformance.
+/// Apply the `@Arbitrary` macro to a struct or enum to automatically
+/// synthesize ``Arbitrary`` conformance.
 ///
 /// ```swift
 /// @Arbitrary

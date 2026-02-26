@@ -13,24 +13,25 @@ extension PropertyCheckResult
     
     /// Emits the property check result.
     /// - Parameters:
+    ///   - functionName: The property evaluator function name.
+    ///   - statistics: The command statistics for stateful tests.
     ///   - context: The assertion failure context.
     ///   - message: The description of a failure.
     ///   - fileID: The ID of the file where the failure occurs.
     ///   - file: The file where the failure occurs.
     ///   - line: The line where the failure occurs.
     ///   - column: The column where the failure occurs.
-    package func emit(
-        context : FailureContext,
-        message : () -> String,
-        fileID  : StaticString,
-        file    : StaticString,
-        line    : UInt,
-        column  : UInt
+    internal func emit(
+        functionName    : String,
+        statistics      : String?           = nil,
+        context         : FailureContext ,
+        message         : () -> String,
+        fileID          : StaticString,
+        file            : StaticString,
+        line            : UInt,
+        column          : UInt
     )
     {
-        /// If there are more property-based assertions, this should change.
-        let functionName: String = "\(context.framework.rawValue)ForAll"
-
         let text: String
         
         switch self
@@ -44,6 +45,7 @@ extension PropertyCheckResult
                 text = formatCounterexample(
                     counterexample,
                     functionName:       functionName,
+                    statistics:         statistics,
                     message:            message,
                     distribution:       dist,
                     tableDistribution:  tableDist
@@ -55,6 +57,7 @@ extension PropertyCheckResult
                 
                 text = formatExhausted(
                     functionName:       functionName,
+                    statistics:         statistics,
                     message:            message,
                     discarded:          discarded,
                     succeeded:          succeeded,
@@ -68,6 +71,7 @@ extension PropertyCheckResult
                 
                 text = formatCoverageNotMet(
                     functionName:       functionName,
+                    statistics:         statistics,
                     message:            message,
                     unmet:              unmet,
                     iterations:         iterations,
@@ -93,7 +97,8 @@ extension PropertyCheckResult
     /// Creates a counterexample failure message.
     /// - Parameters:
     ///   - counterexample: The counterexample to format.
-    ///   - functionName: The name of the property-based function.
+    ///   - functionName: The property evaluator function name.
+    ///   - statistics: The command statistics for stateful tests.
     ///   - message: The description of a failure.
     ///   - distribution: The accumulated count of iterations that matched
     ///   each label.
@@ -104,11 +109,26 @@ extension PropertyCheckResult
     private func formatCounterexample(
         _ counterexample    : Counterexample<T>,
         functionName        : String,
+        statistics          : String?,
         message             : () -> String,
         distribution        : [String : Int],
         tableDistribution   : [String : [String : Int]]
     ) -> String
     {
+        if counterexample.failingStep != nil
+        {
+            return formatStatefulCounterexample(
+                counterexample,
+                functionName:       functionName,
+                statistics:         statistics,
+                message:            message,
+                distribution:       distribution,
+                tableDistribution:  tableDistribution
+            )
+        }
+        
+        
+        
         var lines: [String] = []
         
         var header: String
@@ -156,76 +176,112 @@ extension PropertyCheckResult
         
         
         
-        lines.append("")
-        lines.append(Self.makeSeedLine(seed: counterexample.seed))
-        
-        
-        
-        if
-            !distribution.isEmpty
-            || !tableDistribution.isEmpty
-        {
-            lines.append("")
-            
-            lines.append(Self.makeDistributionHeader(
-                iterations: counterexample.iteration
-            ))
-            
-            let flatLines: [String] = Self.formatDistribution(
-                distribution,
-                iterations: counterexample.iteration
-            )
-            
-            lines.append(contentsOf: flatLines)
-            
-            let tableLines: [String] = Self.formatTableDistribution(
-                tableDistribution,
-                iterations: counterexample.iteration
-            )
-            
-            if
-                !flatLines.isEmpty,
-                !tableLines.isEmpty
-            {
-                lines.append("")
-            }
-            
-            lines.append(contentsOf: tableLines)
-        }
-        
-        
-        
-        if let failure: InterceptedFailure = counterexample.failures.first
-        {
-            lines.append("")
-            lines.append(failure.message)
-        }
-        else if let error: Error = counterexample.thrownError
-        {
-            lines.append("")
-            lines.append("Threw error: \(error)")
-        }
-        
-        
-        
-        let msg: String = message()
-        
-        if !msg.isEmpty
-        {
-            lines.append("")
-            lines.append(msg)
-        }
-        
-        return lines.joined(separator: "\n")
+        return Self.finishCounterexampleMessage(
+            counterexample,
+            lines:              lines,
+            functionName:       functionName,
+            statistics:         statistics,
+            message:            message,
+            distribution:       distribution,
+            tableDistribution:  tableDistribution
+        )
     }
     
+    
+    
+    /// Creates a stateful counterexample failure message.
+    /// - Parameters:
+    ///   - counterexample: The counterexample to format.
+    ///   - functionName: The property evaluator function name.
+    ///   - statistics: The command statistics for stateful tests.
+    ///   - message: The description of a failure.
+    ///   - distribution: The accumulated count of iterations that matched
+    ///   each label.
+    ///   - tableDistribution: The accumulated count of iterations that
+    ///   matched each table value, mapping the table name to a map of values
+    ///   and their counts.
+    /// - Returns: The stateful counterexample failure message.
+    private func formatStatefulCounterexample(
+        _ counterexample    : Counterexample<T>,
+        functionName        : String,
+        statistics          : String?,
+        message             : () -> String,
+        distribution        : [String : Int],
+        tableDistribution   : [String : [String : Int]]
+    ) -> String
+    {
+        let commandMirror   : Mirror  = .init(reflecting: counterexample.value)
+        let commandCount    : Int     = commandMirror.children.count
+        
+        
+        
+        var lines: [String] = []
+        
+        var header: String
+            = "\(functionName) failed after \(counterexample.iteration)"
+            + " iteration\(counterexample.iteration == 1 ? "" : "s")"
+        
+        if counterexample.shrinkSteps > 0
+        {
+            header += " (shrunk to \(commandCount)"
+            header += " command\(commandCount == 1 ? "" : "s")"
+            header += ")"
+        }
+        
+        lines.append(header)
+        
+        
+        
+        let failingStep : Int       = counterexample.failingStep ?? commandCount
+        let commands    : [Any]     = commandMirror.children.map { $0.value }
+        
+        lines.append("")
+        lines.append("Command sequence:")
+        
+        let digitWidth: Int = String(commandCount).count
+        
+        for (index, command) in commands.enumerated()
+        {
+            let step        : Int       = index + 1
+            let stepString  : String    = .init(step)
+            
+            let padding = String(
+                repeating:  " ",
+                count:      digitWidth - stepString.count
+            )
+            
+            var line: String 
+                = "    \(padding + stepString). \(String(describing: command))"
+            
+            if step == failingStep
+            {
+                line += " ←"
+            }
+            
+            lines.append(line)
+        }
+        
+        
+        
+        return Self.finishCounterexampleMessage(
+            counterexample,
+            lines:              lines,
+            functionName:       functionName,
+            statistics:         statistics,
+            message:            message,
+            distribution:       distribution,
+            tableDistribution:  tableDistribution
+        )
+    }
+
     
     
     // MARK: - Exhausted
     
     /// Creates an exhaustion failure message.
     /// - Parameters:
-    ///   - functionName: The name of the property-based function.
+    ///   - functionName: The property evaluator function name.
+    ///   - statistics: The command statistics for stateful tests.
     ///   - message: The description of a failure.
     ///   - discarded: The number of discarded values.
     ///   - succeeded: The number of successful values.
@@ -239,6 +295,7 @@ extension PropertyCheckResult
     /// - Returns: The exhaustion failure message.
     private func formatExhausted(
         functionName        : String,
+        statistics          : String?,
         message             : () -> String,
         discarded           : Int,
         succeeded           : Int,
@@ -263,48 +320,28 @@ extension PropertyCheckResult
         )
         
         lines.append("")
-        lines.append(Self.makeSeedLine(seed: seed))
+        lines.append(Self.makeSeedLine(
+            seed:           seed,
+            functionName:   functionName
+        ))
         
+        lines = Self.addDistributionLines(
+            to:                 lines,
+            iterations:         succeeded,
+            distribution:       distribution,
+            tableDistribution:  tableDistribution
+        )
         
-        
-        if
-            !distribution.isEmpty
-            || !tableDistribution.isEmpty
+        if let statistics
         {
             lines.append("")
-            lines.append(Self.makeDistributionHeader(iterations: succeeded))
-            
-            let flatLines: [String] = Self.formatDistribution(
-                distribution,
-                iterations: succeeded
-            )
-            
-            lines.append(contentsOf: flatLines)
-            
-            let tableLines: [String] = Self.formatTableDistribution(
-                tableDistribution,
-                iterations: succeeded
-            )
-            
-            if
-                !flatLines.isEmpty,
-                !tableLines.isEmpty
-            {
-                lines.append("")
-            }
-            
-            lines.append(contentsOf: tableLines)
+            lines.append(statistics)
         }
         
-        
-        
-        let msg: String = message()
-        
-        if !msg.isEmpty
-        {
-            lines.append("")
-            lines.append(msg)
-        }
+        lines = Self.addMessageLines(
+            to:         lines,
+            message:    message
+        )
         
         return lines.joined(separator: "\n")
     }
@@ -315,7 +352,8 @@ extension PropertyCheckResult
     
     /// Creates an unmet coverage failure message.
     /// - Parameters:
-    ///   - functionName: The name of the property-based function.
+    ///   - functionName: The property evaluator function name.
+    ///   - statistics: The command statistics for stateful tests.
     ///   - message: The description of a failure.
     ///   - unmet: The unmet coverage requirements.
     ///   - iterations: The number of iterations.
@@ -328,6 +366,7 @@ extension PropertyCheckResult
     /// - Returns: The unmet coverage failure message.
     private func formatCoverageNotMet(
         functionName        : String,
+        statistics          : String?,
         message             : () -> String,
         unmet               : [UnmetCoverage],
         iterations          : Int,
@@ -373,17 +412,21 @@ extension PropertyCheckResult
         
         
         lines.append("")
-        lines.append(Self.makeSeedLine(seed: seed))
+        lines.append(Self.makeSeedLine(
+            seed:           seed,
+            functionName:   functionName
+        ))
         
-        
-        
-        let msg: String = message()
-        
-        if !msg.isEmpty
+        if let statistics
         {
             lines.append("")
-            lines.append(msg)
+            lines.append(statistics)
         }
+        
+        lines = Self.addMessageLines(
+            to:         lines,
+            message:    message
+        )
         
         return lines.joined(separator: "\n")
     }
@@ -546,14 +589,132 @@ extension PropertyCheckResult
     
     
     
-    /// Creates a seed re-run line with the given seed.
-    /// - Parameter seed: The seed to use.
+    /// Creates a seed re-run line with the given seed and function name.
+    /// - Parameters:
+    ///   - seed: The seed.
+    ///   - counterexample: The function name.
     /// - Returns: The seed re-run line.
     private static func makeSeedLine(
-        seed: UInt64
+        seed            : UInt64,
+        functionName    : String
     ) -> String
     {
-        return "Seed: \(seed) (re-run with PropertyOptions.seed)"
+        return "Seed: \(seed) (\(functionName))"
+    }
+    
+    
+    
+    /// Appends formatted lines for counterexample failures or thrown errors
+    /// to the given lines.
+    /// - Parameters:
+    ///   - originalLines: The lines to update.
+    ///   - counterexample: The counterexample to use.
+    /// - Returns: The updated lines.
+    private static func addErrorLines(
+        to originalLines    : [String],
+        counterexample      : Counterexample<T>
+    ) -> [String]
+    {
+        var lines: [String] = originalLines
+        
+        if let failure: InterceptedFailure = counterexample.failures.first
+        {
+            lines.append("")
+            lines.append(failure.message)
+        }
+        else if let error: Error = counterexample.thrownError
+        {
+            lines.append("")
+            lines.append("Threw error: \(error)")
+        }
+        
+        return lines
+    }
+    
+    
+    
+    /// Appends formatted lines for the given distributions to the given lines.
+    /// - Parameters:
+    ///   - originalLines: The lines to update.
+    ///   - iterations: The number of iterations.
+    ///   - distribution: The accumulated count of iterations that matched
+    ///   each label.
+    ///   - tableDistribution: The accumulated count of iterations that
+    ///   matched each table value, mapping the table name to a map of values
+    ///   and their counts.
+    /// - Returns: The updated lines.
+    private static func addDistributionLines(
+        to originalLines    : [String],
+        iterations          : Int,
+        distribution        : [String : Int],
+        tableDistribution   : [String : [String : Int]]
+    ) -> [String]
+    {
+        guard
+            !distribution.isEmpty
+            || !tableDistribution.isEmpty
+        else
+        {
+            return originalLines
+        }
+        
+        var lines: [String] = originalLines
+        
+        lines.append("")
+        
+        lines.append(Self.makeDistributionHeader(
+            iterations: iterations
+        ))
+        
+        let flatLines: [String] = Self.formatDistribution(
+            distribution,
+            iterations: iterations
+        )
+        
+        lines.append(contentsOf: flatLines)
+        
+        let tableLines: [String] = Self.formatTableDistribution(
+            tableDistribution,
+            iterations: iterations
+        )
+        
+        if
+            !flatLines.isEmpty,
+            !tableLines.isEmpty
+        {
+            lines.append("")
+        }
+        
+        lines.append(contentsOf: tableLines)
+        
+        return lines
+    }
+    
+    
+    
+    /// Appends a formatted line for the given message to the given lines.
+    /// - Parameters:
+    ///   - originalLines: The lines to update.
+    ///   - message: The description of a failure.
+    /// - Returns: The updated lines.
+    private static func addMessageLines(
+        to originalLines    : [String],
+        message             : () -> String,
+    ) -> [String]
+    {
+        let msg: String = message()
+        
+        if msg.isEmpty
+        {
+            return originalLines
+        }
+        
+        var lines: [String] = originalLines
+        
+        lines.append("")
+        lines.append(msg)
+        
+        return lines
     }
     
     
@@ -656,5 +817,67 @@ extension PropertyCheckResult
         }
         
         return lines
+    }
+    
+    
+    
+    /// Finishes formatting the given counterexample failure message.
+    ///
+    /// This appends lines for the seed, distributions, any failures or errors,
+    /// and the message, then joins the lines.
+    ///
+    /// - Parameters:
+    ///   - counterexample: The counterexample to format.
+    ///   - originalLines: The lines to update.
+    ///   - statistics: The command statistics for stateful tests.
+    ///   - message: The description of a failure.
+    ///   - distribution: The accumulated count of iterations that matched
+    ///   each label.
+    ///   - tableDistribution: The accumulated count of iterations that
+    ///   matched each table value, mapping the table name to a map of values
+    ///   and their counts.
+    /// - Returns: The counterexample failure message.
+    private static func finishCounterexampleMessage(
+        _ counterexample    : Counterexample<T>,
+        lines originalLines : [String],
+        functionName        : String,
+        statistics          : String?,
+        message             : () -> String,
+        distribution        : [String : Int],
+        tableDistribution   : [String : [String : Int]]
+    ) -> String
+    {
+        var lines: [String] = originalLines
+        
+        lines = Self.addErrorLines(
+            to:                 lines,
+            counterexample:     counterexample
+        )
+        
+        lines.append("")
+        lines.append(Self.makeSeedLine(
+            seed:           counterexample.seed,
+            functionName:   functionName
+        ))
+        
+        lines = Self.addDistributionLines(
+            to:                 lines,
+            iterations:         counterexample.iteration,
+            distribution:       distribution,
+            tableDistribution:  tableDistribution
+        )
+        
+        if let statistics
+        {
+            lines.append("")
+            lines.append(statistics)
+        }
+        
+        lines = Self.addMessageLines(
+            to:         lines,
+            message:    message
+        )
+        
+        return lines.joined(separator: "\n")
     }
 }

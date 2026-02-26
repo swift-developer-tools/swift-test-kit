@@ -83,3 +83,10 @@ public typealias Generator          = TestKitCore.Generator
 /// [`GenerationContext`](https://swift-developer-tools.github.io/swift-test-kit/documentation/testkitcore/generationcontext)
 /// for the complete API reference.
 public typealias GenerationContext  = TestKitCore.GenerationContext
+
+/// A type that defines commands for stateful property-based testing.
+///
+/// - Note: See
+/// [`Stateful`](https://swift-developer-tools.github.io/swift-test-kit/documentation/testkitcore/stateful)
+/// for the complete API reference.
+public typealias Stateful           = TestKitCore.Stateful

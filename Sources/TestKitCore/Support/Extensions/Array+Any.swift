@@ -11,7 +11,7 @@ extension Array<Any>
 {
     /// An array of hashable type-erased values, or `nil` if the array
     /// elements are not hashable.
-    package var hashable: [AnyHashable]?
+    internal var hashable: [AnyHashable]?
     {
         var result: [AnyHashable] = []
         

@@ -20,6 +20,9 @@ Value generation is controlled by a seed for deterministic replay, and by a
 size parameter that starts small (for example, zero, empty arrays, and short 
 strings) and grows across iterations to explore progressively larger values.
 
+Types used with property-based evaluators conform to the ``Arbitrary`` protocol, 
+which defines how to generate random values and optionally how to shrink them.
+
 ### Assertion Interception
 
 SwiftTestKit assertions used inside a property body are automatically 
@@ -33,6 +36,23 @@ output.
 SwiftTestKit. If a native Swift Testing assertion fails inside a property body, 
 it bypasses shrinking and produces an immediate test failure. Use only 
 SwiftTestKit assertions inside property bodies.
+
+### Stateful Testing
+
+Stateful testing extends property-based testing to systems with mutable state. 
+Rather than testing individual values against a property, stateful testing 
+generates random sequences of commands and executes them against both a 
+simplified model and the real system, verifying consistency at each step.
+
+Commands conform to the ``Stateful`` protocol, which defines how to generate 
+random commands, execute them against the model and system, and advance the 
+model independently. Optional preconditions filter commands based on the model 
+state, and optional postconditions verify system behavior after each command 
+is executed.
+
+When a failing command sequence is found, it is shrunk to the minimal 
+counterexample in two phases: removal shrinking removes unnecessary commands, 
+and argument shrinking reduces individual command parameters.
 
 ## Topics
 
@@ -49,6 +69,13 @@ SwiftTestKit assertions inside property bodies.
 - ``STKForAll(using:message:fileID:file:line:column:options:_:)-4hzb4``
 - ``STKForAll(where:message:fileID:file:line:column:options:_:)-7oehd``
 - ``STKForAll(using:where:message:fileID:file:line:column:options:_:)-5uhb2``
+
+### Evaluating Properties Statefully
+
+- ``STKStateful(_:model:system:command:fileID:file:line:column:options:invariant:)``
+- ``Stateful``
+- ``Stateful()``
+- ``Weight(_:)``
 
 ### Classifying Properties
 

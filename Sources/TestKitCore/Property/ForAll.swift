@@ -37,12 +37,13 @@ package func TKForAll<each T>(
         )
     
     result.emit(
-        context:    context,
-        message:    message,
-        fileID:     fileID,
-        file:       file,
-        line:       line,
-        column:     column
+        functionName:   "\(context.framework.rawValue)ForAll",
+        context:        context,
+        message:        message,
+        fileID:         fileID,
+        file:           file,
+        line:           line,
+        column:         column
     )
 }
 
@@ -79,12 +80,13 @@ package func TKForAll<each T>(
         )
     
     result.emit(
-        context:    context,
-        message:    message,
-        fileID:     fileID,
-        file:       file,
-        line:       line,
-        column:     column
+        functionName:   "\(context.framework.rawValue)ForAll",
+        context:        context,
+        message:        message,
+        fileID:         fileID,
+        file:           file,
+        line:           line,
+        column:         column
     )
 }
 
@@ -129,12 +131,13 @@ package func TKForAll<each T>(
         )
     
     result.emit(
-        context:    context,
-        message:    message,
-        fileID:     fileID,
-        file:       file,
-        line:       line,
-        column:     column
+        functionName:   "\(context.framework.rawValue)ForAll",
+        context:        context,
+        message:        message,
+        fileID:         fileID,
+        file:           file,
+        line:           line,
+        column:         column
     )
 }
 
@@ -180,11 +183,12 @@ package func TKForAll<each T>(
         )
     
     result.emit(
-        context:    context,
-        message:    message,
-        fileID:     fileID,
-        file:       file,
-        line:       line,
-        column:     column
+        functionName:   "\(context.framework.rawValue)ForAll",
+        context:        context,
+        message:        message,
+        fileID:         fileID,
+        file:           file,
+        line:           line,
+        column:         column
     )
 }

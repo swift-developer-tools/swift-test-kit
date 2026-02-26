@@ -12,7 +12,7 @@ import OSLog
 
 
 /// Runs property-based tests.
-package struct PropertyRunner
+internal struct PropertyRunner
 {
     // MARK: - Run
     
@@ -22,7 +22,7 @@ package struct PropertyRunner
     ///   - options: The options for testing.
     /// - Returns: The result of the property check.
     @Reasync
-    package static func run<T>(
+    internal static func run<T>(
         property    : (T) async throws -> Void,
         options     : TestOptions
     ) async -> PropertyCheckResult<T> where T : Arbitrary
@@ -45,7 +45,7 @@ package struct PropertyRunner
     ///   - options: The options for testing.
     /// - Returns: The result of the property check.
     @Reasync
-    package static func run<T>(
+    internal static func run<T>(
         using generator : Generator<T>,
         property        : (T) async throws -> Void,
         options         : TestOptions
@@ -69,7 +69,7 @@ package struct PropertyRunner
     ///   - options: The options for testing.
     /// - Returns: The result of the property check.
     @Reasync
-    package static func run<T>(
+    internal static func run<T>(
         where precondition  : @escaping (T) -> Bool,
         property            : (T) async throws -> Void,
         options             : TestOptions
@@ -94,7 +94,7 @@ package struct PropertyRunner
     ///   - options: The options for testing.
     /// - Returns: The result of the property check.
     @Reasync
-    package static func run<T>(
+    internal static func run<T>(
         using generator     : Generator<T>,
         where precondition  : @escaping (T) -> Bool,
         property            : (T) async throws -> Void,
@@ -173,13 +173,13 @@ package struct PropertyRunner
                 continue
             }
             
-            let result: IterationResult = await evaluateProperty(
+            let evaluationResult: EvaluationResult = await evaluateProperty(
                 property,
                 with:   value,
                 using:  interceptor
             )
             
-            switch result
+            switch evaluationResult
             {
                 case .passed:
                     
@@ -292,29 +292,7 @@ package struct PropertyRunner
     
     
     
-    // MARK: - Support
-    
-    private static let logger = Logger(
-        subsystem:  "swift-test-kit",
-        category:   "PropertyRunner"
-    )
-    
-    
-    
-    /// The result of a single property iteration.
-    private enum IterationResult: Equatable, Sendable
-    {
-        /// The property passed.
-        case passed
-        
-        /// The property failed.
-        case failed
-        
-        /// The iteration was discarded.
-        case discarded
-    }
-    
-    
+    // MARK: - Evaluate
     
     /// Evaluates the given property with the given value.
     /// - Parameters:
@@ -322,13 +300,13 @@ package struct PropertyRunner
     ///   - value: The value with which to call the property.
     ///   - interceptor: The property interceptor to use, or `nil` to create
     ///   a new interceptor.
-    /// - Returns: The iteration result.
+    /// - Returns: The evaluation result.
     @Reasync
     private static func evaluateProperty<T>(
         _       property    : (T) async throws -> Void,
         with    value       : T,
         using   interceptor : PropertyInterceptor?      = nil
-    ) async -> IterationResult
+    ) async -> EvaluationResult
     {
         let interceptor: PropertyInterceptor = interceptor ?? .init()
         
@@ -369,13 +347,15 @@ package struct PropertyRunner
     
     
     
+    // MARK: - Counterexample
+    
     /// Creates the minimal counterexample for the given value.
     /// - Parameters:
     ///   - value: The failing value.
     ///   - shrink: The function to shrink the given value.
     ///   - precondition: The condition which generated values must satisfy.
     ///   - seed: The seed used to initialize the random number generator.
-    ///   - iteration: The iteraton at which the failing value was found.
+    ///   - iteration: The iteraton at which the failure occurred.
     ///   - property: The property body.
     ///   - options: The options for testing.
     /// - Returns: The minimal counterexample for the given value.
@@ -407,12 +387,13 @@ package struct PropertyRunner
                     continue
                 }
                 
-                let result: IterationResult = await evaluateProperty(
-                    property,
-                    with: candidate
-                )
+                let evaluationResult: EvaluationResult
+                    = await evaluateProperty(
+                        property,
+                        with: candidate
+                    )
                 
-                if result == .failed
+                if evaluationResult == .failed
                 {
                     current     = candidate
                     improved    = true
@@ -454,7 +435,32 @@ package struct PropertyRunner
             iteration:      iteration,
             shrinkSteps:    steps,
             failures:       interceptor.failures,
+            failingStep:    nil,
             thrownError:    thrownError
         )
+    }
+    
+    
+    
+    // MARK: - Support
+    
+    private static let logger = Logger(
+        subsystem:  "swift-test-kit",
+        category:   "PropertyRunner"
+    )
+    
+    
+    
+    /// The result of evaluating a property.
+    private enum EvaluationResult: Equatable, Sendable
+    {
+        /// The property passed.
+        case passed
+        
+        /// The property failed.
+        case failed
+        
+        /// The iteration was discarded.
+        case discarded
     }
 }
