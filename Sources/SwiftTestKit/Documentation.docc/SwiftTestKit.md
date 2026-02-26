@@ -27,7 +27,7 @@ Property-based testing generates random values automatically, shrinks failures
 to minimal counterexamples, and reports failing values with the same rich 
 assertion output used by standalone assertions. Stateful testing extends this 
 to systems with mutable state, generating random command sequences and 
-validating the system against a simplified model.
+verifying the system against a simplified model.
 
 - Note: To test with the 
 [XCTest](https://developer.apple.com/documentation/xctest) framework, use 
@@ -504,12 +504,12 @@ STKForAll
 Stateful testing extends property-based testing to systems with mutable state. 
 Rather than testing individual values against a property, stateful testing 
 generates random sequences of commands and executes them against both a 
-simplified model and the real system, validating consistency at each step.
+simplified model and the real system, verifying consistency at each step.
 
 Commands conform to the ``Stateful`` protocol, which defines how to generate 
 random commands, execute them against the model and system, and advance the 
 model independently. Optional preconditions filter commands based on the model 
-state, and optional postconditions validate system behavior after each command 
+state, and optional postconditions verify system behavior after each command 
 is executed.
 
 When a failing command sequence is found, it is shrunk to the minimal 
