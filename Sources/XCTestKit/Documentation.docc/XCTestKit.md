@@ -459,7 +459,7 @@ Built-in ``Arbitrary`` conformance is provided for many standard library types:
 
 ### Custom Type Conformance
 
-Apply the ``Arbitrary()`` macro to a struct or enum to automatically generate 
+Apply the ``Arbitrary()`` macro to a struct or enum to automatically synthesize 
 ``Arbitrary`` conformance for custom types.
 
 Generic parameters that appear in stored properties or associated values are 

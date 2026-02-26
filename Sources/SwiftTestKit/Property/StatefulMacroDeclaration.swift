@@ -9,7 +9,7 @@
 
 /// Synthesizes partial ``Stateful`` conformance for enums.
 ///
-/// Apply the `@Stateful` macro to an enum to automatically generate partial
+/// Apply the `@Stateful` macro to an enum to automatically synthesize partial
 /// ``Stateful`` conformance.
 ///
 /// ```swift
