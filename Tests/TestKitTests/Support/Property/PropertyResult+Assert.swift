@@ -109,3 +109,39 @@ extension PropertyResult
         )
     }
 }
+
+
+
+/// The associated values of a passed ``PropertyResult``.
+internal struct PassedValues
+{
+    let iterations  : Int
+    let seed        : UInt64
+    let dist        : [String : Int]
+    let tableDist   : [String : [String : Int]]
+}
+
+
+
+/// The associated values of an exhausted ``PropertyResult``.
+internal struct ExhaustedValues
+{
+    let discarded   : Int
+    let succeeded   : Int
+    let ratio       : Int
+    let seed        : UInt64
+    let dist        : [String : Int]
+    let tableDist   : [String : [String : Int]]
+}
+
+
+
+/// The associated values of a coverage-not-met ``PropertyResult``.
+internal struct CoverageNotMetValues
+{
+    let unmet       : [UnmetCoverage]
+    let iterations  : Int
+    let seed        : UInt64
+    let dist        : [String : Int]
+    let tableDist   : [String : [String : Int]]
+}
