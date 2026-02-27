@@ -7,7 +7,7 @@
 //
 //===----------------------------------------------------------------------===//
 
-/// The result of running the stateful property check.
+/// The result of running a stateful property check.
 internal struct StatefulResult<C> where C : Stateful
 {
     /// The stateful property check result.
