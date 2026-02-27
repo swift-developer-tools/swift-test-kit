@@ -26,6 +26,7 @@ public struct TemporalOptions: Equatable, Sendable
     /// values for its properties.
     ///
     /// - Precondition: `timeout` and `interval` must both be positive.
+    /// - Precondition: `timeout` must be greater than or equal to `interval`
     public init(
         timeout     : Duration  = .seconds(2),
         interval    : Duration  = .milliseconds(50)
@@ -38,7 +39,12 @@ public struct TemporalOptions: Equatable, Sendable
         
         precondition(
             interval > .zero,
-            "interval must positive"
+            "interval must be positive"
+        )
+        
+        precondition(
+            timeout >= interval,
+            "timeout must be greater than or equal to interval"
         )
         
         self.timeout    = timeout
