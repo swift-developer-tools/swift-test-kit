@@ -7,10 +7,10 @@
 //
 //===----------------------------------------------------------------------===//
 
-/// Runs temporal assertions.
+/// Runs temporal tests.
 internal struct TemporalRunner
 {
-    /// Temporal assertion kinds.
+    /// Temporal test kinds.
     internal enum Kind
     {
         /// All assertions must always pass.
@@ -28,13 +28,13 @@ internal struct TemporalRunner
     
     
     
-    /// Runs the specified temporal assertion.
+    /// Runs the specified temporal test.
     /// - Parameters:
     ///   - kind: The kind of temporal test.
     ///   - timeout: The timeout duration.
     ///   - interval: The polling interval.
     ///   - body: The assertion body.
-    /// - Returns: The result of running the temporal assertion.
+    /// - Returns: The result of running the temporal test.
     internal static func run(
         kind        : Kind,
         timeout     : Duration,

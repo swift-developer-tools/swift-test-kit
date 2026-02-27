@@ -7,12 +7,12 @@
 //
 //===----------------------------------------------------------------------===//
 
-/// Intercepts assertion failures during temporal assertion polling.
+/// Intercepts assertion failures during temporal testing.
 ///
-/// When an assertion fails inside a temporal assertion, the failure is
-/// recorded here instead of being reported to the associated framework.
-/// This allows the temporal runner to evaluate whether the polling loop
-/// should continue or resolve.
+/// When an assertion fails inside a temporal test, the failure is recorded
+/// here instead of being reported to the associated framework. This allows
+/// the temporal runner to evaluate whether the polling loop should continue
+/// or resolve.
 ///
 /// - Note: This class currently does not implement any features beyond those
 /// that it inherits from ``FailureInterceptor``. It is a separate class for

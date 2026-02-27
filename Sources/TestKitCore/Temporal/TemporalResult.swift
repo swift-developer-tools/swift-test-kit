@@ -7,16 +7,16 @@
 //
 //===----------------------------------------------------------------------===//
 
-/// The result of running a temporal assertion.
+/// The result of running a temporal test.
 internal enum TemporalResult
 {
     /// The enclosing task was canceled.
     case canceled
     
-    /// The temporal assertion passed.
+    /// The temporal test passed.
     case passed
     
-    /// The temporal assertion failed.
+    /// The temporal test failed.
     /// - Parameters:
     ///   - failures: The intercepted failures.
     ///   - elapsed: The elapsed duration at the point of resolution.

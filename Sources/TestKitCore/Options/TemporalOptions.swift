@@ -7,7 +7,7 @@
 //
 //===----------------------------------------------------------------------===//
 
-/// The options for temporal assertions.
+/// The options for temporal testing.
 public struct TemporalOptions: Equatable, Sendable
 {
     /// The timeout duration.

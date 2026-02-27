@@ -31,7 +31,7 @@ public struct TestOptions: Equatable, Sendable
     /// instance.
     public var propertyOptions  : PropertyOptions
     
-    /// The options for temporal assertions.
+    /// The options for temporal testing.
     ///
     /// The default value is a default-initialized ``TemporalOptions``
     /// instance.
