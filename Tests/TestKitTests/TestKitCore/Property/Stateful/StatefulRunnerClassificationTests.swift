@@ -461,8 +461,7 @@ internal final class StatefulRunnerClassificationTests: TestKitCase
             options: options
         )
         
-        guard case let .failed(counterexample, _, tableDist)
-                = result.propertyCheck
+        guard case let .failed(counterexample, _, tableDist) = result.property
         else
         {
             XCTFail("Expected failed, got \(result)")
@@ -507,7 +506,7 @@ internal final class StatefulRunnerClassificationTests: TestKitCase
             options: options
         )
         
-        guard case let .failed(counterexample, dist, _) = result.propertyCheck
+        guard case let .failed(counterexample, dist, _) = result.property
         else
         {
             XCTFail("Expected failed, got \(result)")

@@ -98,7 +98,7 @@ internal struct SizeCapture: Arbitrary, Equatable
 
 // MARK: - Assert
 
-/// The associated values of a passed ``PropertyCheckResult``.
+/// The associated values of a passed ``PropertyResult``.
 internal struct PassedValues
 {
     let iterations  : Int
@@ -109,7 +109,7 @@ internal struct PassedValues
 
 
 
-/// The associated values of an exhausted ``PropertyCheckResult``.
+/// The associated values of an exhausted ``PropertyResult``.
 internal struct ExhaustedValues
 {
     let discarded   : Int
@@ -122,7 +122,7 @@ internal struct ExhaustedValues
 
 
 
-/// The associated values of a coverage-not-met ``PropertyCheckResult``.
+/// The associated values of a coverage-not-met ``PropertyResult``.
 internal struct CoverageNotMetValues
 {
     let unmet       : [UnmetCoverage]

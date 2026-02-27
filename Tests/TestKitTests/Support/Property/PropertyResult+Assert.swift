@@ -9,12 +9,11 @@
 
 import XCTest
 import TestKitCore
-@testable import enum TestKitCore.PropertyCheckResult
 @testable import struct TestKitCore.StatefulResult
 
 
 
-extension PropertyCheckResult
+extension PropertyResult
 {
     /// Asserts that the property check result passed, and returns the
     /// associated values.
@@ -123,7 +122,7 @@ extension StatefulResult
     @discardableResult
     internal func assertPassed() -> PassedValues?
     {
-        return propertyCheck.assertPassed()
+        return property.assertPassed()
     }
     
     
@@ -135,7 +134,7 @@ extension StatefulResult
     @discardableResult
     internal func assertFailed() -> Counterexample<[C]>?
     {
-        return propertyCheck.assertFailed()
+        return property.assertFailed()
     }
     
     
@@ -146,7 +145,7 @@ extension StatefulResult
     @discardableResult
     internal func assertExhausted() -> ExhaustedValues?
     {
-        return propertyCheck.assertExhausted()
+        return property.assertExhausted()
     }
     
     
@@ -158,6 +157,6 @@ extension StatefulResult
     @discardableResult
     internal func assertCoverageNotMet() -> CoverageNotMetValues?
     {
-        return propertyCheck.assertCoverageNotMet()
+        return property.assertCoverageNotMet()
     }
 }

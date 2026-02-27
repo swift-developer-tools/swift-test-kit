@@ -7,7 +7,7 @@
 //
 //===----------------------------------------------------------------------===//
 
-extension PropertyCheckResult
+extension PropertyResult
 {
     // MARK: - Emit
     

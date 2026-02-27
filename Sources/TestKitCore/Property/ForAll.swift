@@ -29,12 +29,11 @@ package func TKForAll<each T>(
         try await property(repeat each tuple)
     }
     
-    let result: PropertyCheckResult<(repeat each T)>
-        = await PropertyRunner.run(
-            using:      generator,
-            property:   wrappedProperty,
-            options:    options
-        )
+    let result: PropertyResult<(repeat each T)> = await PropertyRunner.run(
+        using:      generator,
+        property:   wrappedProperty,
+        options:    options
+    )
     
     result.emit(
         functionName:   "\(context.framework.rawValue)ForAll",
@@ -72,12 +71,11 @@ package func TKForAll<each T>(
         try await property(repeat each tuple)
     }
     
-    let result: PropertyCheckResult<(repeat each T)>
-        = await PropertyRunner.run(
-            using:      generator,
-            property:   wrappedProperty,
-            options:    options
-        )
+    let result: PropertyResult<(repeat each T)> = await PropertyRunner.run(
+        using:      generator,
+        property:   wrappedProperty,
+        options:    options
+    )
     
     result.emit(
         functionName:   "\(context.framework.rawValue)ForAll",
@@ -122,13 +120,12 @@ package func TKForAll<each T>(
         return precondition(repeat each tuple)
     }
     
-    let result: PropertyCheckResult<(repeat each T)>
-        = await PropertyRunner.run(
-            using:      generator,
-            where:      wrappedPrecondition,
-            property:   wrappedProperty,
-            options:    options
-        )
+    let result: PropertyResult<(repeat each T)> = await PropertyRunner.run(
+        using:      generator,
+        where:      wrappedPrecondition,
+        property:   wrappedProperty,
+        options:    options
+    )
     
     result.emit(
         functionName:   "\(context.framework.rawValue)ForAll",
@@ -174,13 +171,12 @@ package func TKForAll<each T>(
         return precondition(repeat each tuple)
     }
     
-    let result: PropertyCheckResult<(repeat each T)>
-        = await PropertyRunner.run(
-            using:      generator,
-            where:      wrappedPrecondition,
-            property:   wrappedProperty,
-            options:    options
-        )
+    let result: PropertyResult<(repeat each T)> = await PropertyRunner.run(
+        using:      generator,
+        where:      wrappedPrecondition,
+        property:   wrappedProperty,
+        options:    options
+    )
     
     result.emit(
         functionName:   "\(context.framework.rawValue)ForAll",

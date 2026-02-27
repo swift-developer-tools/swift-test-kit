@@ -10,7 +10,7 @@
 import TestKitCore
 import XCTestKit
 import XCTest
-@testable import enum TestKitCore.PropertyCheckResult
+@testable import enum TestKitCore.PropertyResult
 
 
 
@@ -1414,7 +1414,7 @@ internal final class ArbitraryMacroStructTests: TestKitCase
             seed:               12345
         )
         
-        let result: PropertyCheckResult<Multiple> = PropertyRunner.run(
+        let result: PropertyResult<Multiple> = PropertyRunner.run(
             property:
             {
                 (value: Multiple) in

@@ -419,7 +419,7 @@ internal final class StatefulRunnerTests: TestKitCase
             options:    options
         )
         
-        switch (resultA.propertyCheck, resultB.propertyCheck)
+        switch (resultA.property, resultB.property)
         {
             case let (
                 .failed(counterA, _, _),
@@ -1368,7 +1368,7 @@ internal final class StatefulRunnerTests: TestKitCase
             options:    options
         )
         
-        guard case let .failed(counterexample, _, _) = result.propertyCheck
+        guard case let .failed(counterexample, _, _) = result.property
         else
         {
             XCTFail("Expected .failed, got \(result)")
@@ -1429,7 +1429,7 @@ internal final class StatefulRunnerTests: TestKitCase
             options: options
         )
         
-        guard case let .failed(counterexample, _, _) = result.propertyCheck
+        guard case let .failed(counterexample, _, _) = result.property
         else
         {
             XCTFail("Expected .failed, got \(result)")

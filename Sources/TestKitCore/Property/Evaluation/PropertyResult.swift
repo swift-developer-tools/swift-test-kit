@@ -8,7 +8,7 @@
 //===----------------------------------------------------------------------===//
 
 /// The result of a property check.
-internal enum PropertyCheckResult<T>
+internal enum PropertyResult<T>
 {
     /// All iterations passed.
     /// - Parameters:

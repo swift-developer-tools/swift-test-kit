@@ -10,7 +10,7 @@
 import TestKitCore
 import XCTestKit
 import XCTest
-@testable import enum TestKitCore.PropertyCheckResult
+@testable import struct TestKitCore.PropertyRunner
 
 
 
@@ -1878,7 +1878,7 @@ internal final class ArbitraryMacroEnumTests: TestKitCase
             seed:               12345
         )
         
-        let result: PropertyCheckResult<MixedCases> = PropertyRunner.run(
+        let result: PropertyResult<MixedCases> = PropertyRunner.run(
             property:
             {
                 (value: MixedCases) in
@@ -1921,7 +1921,7 @@ internal final class ArbitraryMacroEnumTests: TestKitCase
             seed:               12345
         )
         
-        let result: PropertyCheckResult<LinkedList> = PropertyRunner.run(
+        let result: PropertyResult<LinkedList> = PropertyRunner.run(
             property:
             {
                 (value: LinkedList) in

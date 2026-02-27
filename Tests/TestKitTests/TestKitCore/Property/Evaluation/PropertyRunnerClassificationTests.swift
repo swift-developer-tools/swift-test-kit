@@ -27,7 +27,7 @@ internal final class PropertyRunnerClassificationTests: TestKitCase
             seed:           Self.seed
         )
         
-        let result: PCR<BoundInt> = await PropertyRunner.run(
+        let result: PropertyResult<BoundInt> = await PropertyRunner.run(
             property:
             {
                 _ async throws in
@@ -53,7 +53,7 @@ internal final class PropertyRunnerClassificationTests: TestKitCase
             seed:               Self.seed
         )
         
-        let result: PCR<BoundInt> = await PropertyRunner.run(
+        let result: PropertyResult<BoundInt> = await PropertyRunner.run(
             property:
             {
                 _ async throws in
@@ -83,7 +83,7 @@ internal final class PropertyRunnerClassificationTests: TestKitCase
             seed:               Self.seed
         )
         
-        let result: PCR<SizeCapture> = await PropertyRunner.run(
+        let result: PropertyResult<SizeCapture> = await PropertyRunner.run(
             property:
             {
                 capture async throws in
@@ -114,7 +114,7 @@ internal final class PropertyRunnerClassificationTests: TestKitCase
             seed:               Self.seed
         )
         
-        let result: PCR<BoundInt> = await PropertyRunner.run(
+        let result: PropertyResult<BoundInt> = await PropertyRunner.run(
             property:
             {
                 _ async throws in
@@ -145,7 +145,7 @@ internal final class PropertyRunnerClassificationTests: TestKitCase
         /// A label recorded before a discarding assumption must not appear
         /// in the distribution, since the discarded iteration is never
         /// finalized.
-        let result: PCR<BoundInt> = await PropertyRunner.run(
+        let result: PropertyResult<BoundInt> = await PropertyRunner.run(
             property:
             {
                 _ async throws in
@@ -178,7 +178,7 @@ internal final class PropertyRunnerClassificationTests: TestKitCase
         /// A label recorded before a discarding assumption must not appear
         /// in the distribution, since the discarded iteration is never
         /// finalized.
-        let result: PCR<BoundInt> = await PropertyRunner.run(
+        let result: PropertyResult<BoundInt> = await PropertyRunner.run(
             property:
             {
                 _ async throws in
@@ -217,7 +217,7 @@ internal final class PropertyRunnerClassificationTests: TestKitCase
         
         /// Assumption discards odd sizes. The coverage requirement of 100%
         /// is met since every non-discarded iteration receives the label.
-        let result: PCR<Int> = await PropertyRunner.run(
+        let result: PropertyResult<Int> = await PropertyRunner.run(
             using: generator,
             property:
             {
@@ -245,7 +245,7 @@ internal final class PropertyRunnerClassificationTests: TestKitCase
             seed:           Self.seed
         )
         
-        let result: PCR<BoundInt> = await PropertyRunner.run(
+        let result: PropertyResult<BoundInt> = await PropertyRunner.run(
             property:
             {
                 _ async throws in
@@ -285,7 +285,7 @@ internal final class PropertyRunnerClassificationTests: TestKitCase
             seed:           Self.seed
         )
         
-        let result: PCR<Int> = await PropertyRunner.run(
+        let result: PropertyResult<Int> = await PropertyRunner.run(
             using: generator,
             property:
             {
@@ -339,7 +339,7 @@ internal final class PropertyRunnerClassificationTests: TestKitCase
             seed:           Self.seed
         )
         
-        let result: PCR<Int> = await PropertyRunner.run(
+        let result: PropertyResult<Int> = await PropertyRunner.run(
             using: generator,
             property:
             {
@@ -385,7 +385,7 @@ internal final class PropertyRunnerClassificationTests: TestKitCase
             seed:           Self.seed
         )
         
-        let result: PCR<BoundInt> = await PropertyRunner.run(
+        let result: PropertyResult<BoundInt> = await PropertyRunner.run(
             property:
             {
                 _ async throws in
@@ -415,7 +415,7 @@ internal final class PropertyRunnerClassificationTests: TestKitCase
         /// The precondition rejects odd sizes and the assumption rejects
         /// everything else. Discards from both paths contribute to the
         /// discard count and trigger exhaustion.
-        let result: PCR<SizeCapture> = await PropertyRunner.run(
+        let result: PropertyResult<SizeCapture> = await PropertyRunner.run(
             where: { capture in capture.size % 2 == 0 },
             property:
             {
@@ -453,7 +453,7 @@ internal final class PropertyRunnerClassificationTests: TestKitCase
         /// The precondition rejects odd sizes and the assumption rejects
         /// sizes not divisible by `4`. Discards from both paths contribute to
         /// the discard count, but enough iterations pass to complete.
-        let result: PCR<Int> = await PropertyRunner.run(
+        let result: PropertyResult<Int> = await PropertyRunner.run(
             using:  generator,
             where:  { int in int % 2 == 0 },
             property:
@@ -486,7 +486,7 @@ internal final class PropertyRunnerClassificationTests: TestKitCase
             seed:           Self.seed
         )
         
-        let result: PCR<BoundInt> = await PropertyRunner.run(
+        let result: PropertyResult<BoundInt> = await PropertyRunner.run(
             property:
             {
                 _ async in
@@ -516,7 +516,7 @@ internal final class PropertyRunnerClassificationTests: TestKitCase
             seed:           Self.seed
         )
         
-        let result: PCR<SizeCapture> = await PropertyRunner.run(
+        let result: PropertyResult<SizeCapture> = await PropertyRunner.run(
             property:
             {
                 capture async in
@@ -544,7 +544,7 @@ internal final class PropertyRunnerClassificationTests: TestKitCase
     @Reasync
     func testPassedResultWithNoLabelsHasEmptyDist() async throws
     {
-        let result: PCR<SizeCapture> = await PropertyRunner.run(
+        let result: PropertyResult<SizeCapture> = await PropertyRunner.run(
             property:   { _ async in },
             options:    .propertyOptions(seed: Self.seed)
         )
@@ -559,7 +559,7 @@ internal final class PropertyRunnerClassificationTests: TestKitCase
     @Reasync
     func testFailureOnFirstIterationHasEmptyDist() async
     {
-        let result: PCR<BoundInt> = await PropertyRunner.run(
+        let result: PropertyResult<BoundInt> = await PropertyRunner.run(
             property:
             {
                 _ async in
@@ -600,7 +600,7 @@ internal final class PropertyRunnerClassificationTests: TestKitCase
             seed:           Self.seed
         )
         
-        let result: PCR<SizeCapture> = await PropertyRunner.run(
+        let result: PropertyResult<SizeCapture> = await PropertyRunner.run(
             property:
             {
                 capture async in
@@ -642,7 +642,7 @@ internal final class PropertyRunnerClassificationTests: TestKitCase
             seed:               Self.seed
         )
         
-        let result: PCR<SizeCapture> = await PropertyRunner.run(
+        let result: PropertyResult<SizeCapture> = await PropertyRunner.run(
             where: { capture in capture.size <= target },
             property:
             {
@@ -676,7 +676,7 @@ internal final class PropertyRunnerClassificationTests: TestKitCase
         
         /// Every iteration is labeled `always`, and the requirement is 100%.
         /// Since all iterations receive the label, the coverage is exactly met.
-        let result: PCR<BoundInt> = await PropertyRunner.run(
+        let result: PropertyResult<BoundInt> = await PropertyRunner.run(
             property:
             {
                 _ async in
@@ -713,7 +713,7 @@ internal final class PropertyRunnerClassificationTests: TestKitCase
         /// Require 90% `large`, but only iterations with `size >= 50` are
         /// labeled. With `100` as the iterations and max size, the sizes
         /// are in the range `0...99`. Only 50% qualify as `large`.
-        let result: PCR<SizeCapture> = await PropertyRunner.run(
+        let result: PropertyResult<SizeCapture> = await PropertyRunner.run(
             property:
             {
                 capture async in
@@ -756,7 +756,7 @@ internal final class PropertyRunnerClassificationTests: TestKitCase
         )
         
         /// 80% required for both labels, but each gets only about 50%.
-        let result: PCR<SizeCapture> = await PropertyRunner.run(
+        let result: PropertyResult<SizeCapture> = await PropertyRunner.run(
             property:
             {
                 capture async in
@@ -806,7 +806,7 @@ internal final class PropertyRunnerClassificationTests: TestKitCase
         )
         
         /// `all` gets 100% (always met). `large` gets 50%, but requires 90%.
-        let result: PCR<SizeCapture> = await PropertyRunner.run(
+        let result: PropertyResult<SizeCapture> = await PropertyRunner.run(
             property:
             {
                 capture async in
@@ -851,7 +851,7 @@ internal final class PropertyRunnerClassificationTests: TestKitCase
             seed:           Self.seed
         )
         
-        let result: PCR<SizeCapture> = await PropertyRunner.run(
+        let result: PropertyResult<SizeCapture> = await PropertyRunner.run(
             property:
             {
                 capture async in
@@ -892,7 +892,7 @@ internal final class PropertyRunnerClassificationTests: TestKitCase
         
         /// A 0% requirement vacuously passes, even if the label is
         /// never recorded.
-        let result: PCR<BoundInt> = await PropertyRunner.run(
+        let result: PropertyResult<BoundInt> = await PropertyRunner.run(
             property:
             {
                 _ async in
@@ -926,7 +926,7 @@ internal final class PropertyRunnerClassificationTests: TestKitCase
         /// the accepted iterations. Since iterations are finalized only for
         /// successful iterations, the distribution should match the number of
         /// iterations.
-        let result: PCR<SizeCapture> = await PropertyRunner.run(
+        let result: PropertyResult<SizeCapture> = await PropertyRunner.run(
             where: { capture in capture.size % 2 == 0 },
             property:
             {
@@ -960,7 +960,7 @@ internal final class PropertyRunnerClassificationTests: TestKitCase
         /// continues executing, the label is added to the per-iteration set.
         /// Since the iteration is marked as failure, it is never finalized.
         /// Only the first `target` iterations succeed and are finalized.
-        let result: PCR<SizeCapture> = await PropertyRunner.run(
+        let result: PropertyResult<SizeCapture> = await PropertyRunner.run(
             property:
             {
                 capture async in
@@ -1004,7 +1004,7 @@ internal final class PropertyRunnerClassificationTests: TestKitCase
             seed:           Self.seed
         )
         
-        let result: PCR<BoundInt> = await PropertyRunner.run(
+        let result: PropertyResult<BoundInt> = await PropertyRunner.run(
             property:
             {
                 bountInt async in
@@ -1051,7 +1051,7 @@ internal final class PropertyRunnerClassificationTests: TestKitCase
             seed:           Self.seed
         )
         
-        let result: PCR<SizeCapture> = await PropertyRunner.run(
+        let result: PropertyResult<SizeCapture> = await PropertyRunner.run(
             property:
             {
                 _ async in
@@ -1081,7 +1081,7 @@ internal final class PropertyRunnerClassificationTests: TestKitCase
             seed:           Self.seed
         )
         
-        let result: PCR<BoundInt> = await PropertyRunner.run(
+        let result: PropertyResult<BoundInt> = await PropertyRunner.run(
             property:
             {
                 _ async in
@@ -1117,7 +1117,7 @@ internal final class PropertyRunnerClassificationTests: TestKitCase
         
         /// With zero iterations, no labels are ever recorded. A non-zero
         /// coverage requirement produces 0% actual, which is unmet.
-        let result: PCR<BoundInt> = await PropertyRunner.run(
+        let result: PropertyResult<BoundInt> = await PropertyRunner.run(
             property:
             {
                 _ async in
@@ -1150,7 +1150,7 @@ internal final class PropertyRunnerClassificationTests: TestKitCase
         /// A coverage requirement is registered, but the property body never
         /// runs, since the precondition is checked first. The result must be
         /// an exhaustion error, not unmet coverage.
-        let result: PCR<BoundInt> = await PropertyRunner.run(
+        let result: PropertyResult<BoundInt> = await PropertyRunner.run(
             where: { _ in false },
             property:
             {
@@ -1183,7 +1183,7 @@ internal final class PropertyRunnerClassificationTests: TestKitCase
             seed:           Self.seed
         )
         
-        let result: PCR<SizeCapture> = await PropertyRunner.run(
+        let result: PropertyResult<SizeCapture> = await PropertyRunner.run(
             property:
             {
                 capture async in
@@ -1212,7 +1212,7 @@ internal final class PropertyRunnerClassificationTests: TestKitCase
             seed:           Self.seed
         )
         
-        let result: PCR<BoundInt> = await PropertyRunner.run(
+        let result: PropertyResult<BoundInt> = await PropertyRunner.run(
             property:
             {
                 _ async in
@@ -1243,7 +1243,7 @@ internal final class PropertyRunnerClassificationTests: TestKitCase
             seed:           Self.seed
         )
         
-        let result: PCR<SizeCapture> = await PropertyRunner.run(
+        let result: PropertyResult<SizeCapture> = await PropertyRunner.run(
             property:
             {
                 capture async in
@@ -1274,7 +1274,7 @@ internal final class PropertyRunnerClassificationTests: TestKitCase
             seed:           Self.seed
         )
         
-        let result: PCR<SizeCapture> = await PropertyRunner.run(
+        let result: PropertyResult<SizeCapture> = await PropertyRunner.run(
             property:
             {
                 capture async in
@@ -1308,7 +1308,7 @@ internal final class PropertyRunnerClassificationTests: TestKitCase
         
         /// `small` gets 50%. The first call requires 40% (met), and the
         /// second call requires 90% (unmet). The result is coverage not met.
-        let result: PCR<SizeCapture> = await PropertyRunner.run(
+        let result: PropertyResult<SizeCapture> = await PropertyRunner.run(
             property:
             {
                 capture async in
@@ -1341,7 +1341,7 @@ internal final class PropertyRunnerClassificationTests: TestKitCase
             seed:           Self.seed
         )
         
-        let result: PCR<SizeCapture> = await PropertyRunner.run(
+        let result: PropertyResult<SizeCapture> = await PropertyRunner.run(
             property:
             {
                 capture async in
@@ -1391,7 +1391,7 @@ internal final class PropertyRunnerClassificationTests: TestKitCase
             seed:           Self.seed
         )
         
-        let result: PCR<Int> = await PropertyRunner.run(
+        let result: PropertyResult<Int> = await PropertyRunner.run(
             using: generator,
             property:
             {
@@ -1428,7 +1428,7 @@ internal final class PropertyRunnerClassificationTests: TestKitCase
             seed:           Self.seed
         )
         
-        let result: PCR<Int> = await PropertyRunner.run(
+        let result: PropertyResult<Int> = await PropertyRunner.run(
             using: generator,
             property:
             {
@@ -1476,7 +1476,7 @@ internal final class PropertyRunnerClassificationTests: TestKitCase
             seed:           Self.seed
         )
         
-        let result: PCR<BoundInt> = await PropertyRunner.run(
+        let result: PropertyResult<BoundInt> = await PropertyRunner.run(
             property:
             {
                 _ async in
@@ -1501,7 +1501,7 @@ internal final class PropertyRunnerClassificationTests: TestKitCase
             seed:           Self.seed
         )
         
-        let result: PCR<BoundInt> = await PropertyRunner.run(
+        let result: PropertyResult<BoundInt> = await PropertyRunner.run(
             property:
             {
                 _ async in
@@ -1533,7 +1533,7 @@ internal final class PropertyRunnerClassificationTests: TestKitCase
             seed:           Self.seed
         )
         
-        let result: PCR<SizeCapture> = await PropertyRunner.run(
+        let result: PropertyResult<SizeCapture> = await PropertyRunner.run(
             property:
             {
                 capture async in
@@ -1566,7 +1566,7 @@ internal final class PropertyRunnerClassificationTests: TestKitCase
             seed:               Self.seed
         )
         
-        let result: PCR<BoundInt> = await PropertyRunner.run(
+        let result: PropertyResult<BoundInt> = await PropertyRunner.run(
             where: { boundInt in boundInt.value % 2 == 0 },
             property:
             {
@@ -1597,7 +1597,7 @@ internal final class PropertyRunnerClassificationTests: TestKitCase
             seed:           Self.seed
         )
         
-        let result: PCR<SizeCapture> = await PropertyRunner.run(
+        let result: PropertyResult<SizeCapture> = await PropertyRunner.run(
             property:
             {
                 capture async in
@@ -1636,7 +1636,7 @@ internal final class PropertyRunnerClassificationTests: TestKitCase
             seed:           Self.seed
         )
         
-        let result: PCR<SizeCapture> = await PropertyRunner.run(
+        let result: PropertyResult<SizeCapture> = await PropertyRunner.run(
             property:
             {
                 capture async in
@@ -1682,7 +1682,7 @@ internal final class PropertyRunnerClassificationTests: TestKitCase
             seed:           Self.seed
         )
         
-        let result: PCR<BoundInt> = await PropertyRunner.run(
+        let result: PropertyResult<BoundInt> = await PropertyRunner.run(
             property:
             {
                 _ async in
@@ -1712,7 +1712,7 @@ internal final class PropertyRunnerClassificationTests: TestKitCase
             seed:           Self.seed
         )
         
-        let result: PCR<SizeCapture> = await PropertyRunner.run(
+        let result: PropertyResult<SizeCapture> = await PropertyRunner.run(
             property:
             {
                 capture async in
@@ -1757,7 +1757,7 @@ internal final class PropertyRunnerClassificationTests: TestKitCase
             seed:               Self.seed
         )
         
-        let result: PCR<SizeCapture> = await PropertyRunner.run(
+        let result: PropertyResult<SizeCapture> = await PropertyRunner.run(
             where: { capture in capture.size % 2 == 0 },
             property:
             {
@@ -1786,7 +1786,7 @@ internal final class PropertyRunnerClassificationTests: TestKitCase
             seed:           Self.seed
         )
         
-        let result: PCR<BoundInt> = await PropertyRunner.run(
+        let result: PropertyResult<BoundInt> = await PropertyRunner.run(
             property:
             {
                 boundInt async in
@@ -1833,7 +1833,7 @@ internal final class PropertyRunnerClassificationTests: TestKitCase
             seed:           Self.seed
         )
         
-        let result: PCR<SizeCapture> = await PropertyRunner.run(
+        let result: PropertyResult<SizeCapture> = await PropertyRunner.run(
             property:
             {
                 capture async in
@@ -1864,7 +1864,7 @@ internal final class PropertyRunnerClassificationTests: TestKitCase
         )
         
         /// Require 90% even, but only about 50% are even.
-        let result: PCR<SizeCapture> = await PropertyRunner.run(
+        let result: PropertyResult<SizeCapture> = await PropertyRunner.run(
             property:
             {
                 capture async in
@@ -1900,7 +1900,7 @@ internal final class PropertyRunnerClassificationTests: TestKitCase
         )
         
         /// Require 90% odd, but only about 50% are odd.
-        let result: PCR<SizeCapture> = await PropertyRunner.run(
+        let result: PropertyResult<SizeCapture> = await PropertyRunner.run(
             property:
             {
                 capture async in
@@ -1937,7 +1937,7 @@ internal final class PropertyRunnerClassificationTests: TestKitCase
         
         /// `even` gets 50%. The first call requires 40% (met), and the
         /// second call requires 90% (unmet). The result is coverage not met.
-        let result: PCR<SizeCapture> = await PropertyRunner.run(
+        let result: PropertyResult<SizeCapture> = await PropertyRunner.run(
             property:
             {
                 capture async in
@@ -1972,7 +1972,7 @@ internal final class PropertyRunnerClassificationTests: TestKitCase
             seed:           Self.seed
         )
         
-        let result: PCR<BoundInt> = await PropertyRunner.run(
+        let result: PropertyResult<BoundInt> = await PropertyRunner.run(
             property:
             {
                 _ async in
@@ -2000,7 +2000,7 @@ internal final class PropertyRunnerClassificationTests: TestKitCase
             seed:           Self.seed
         )
         
-        let result: PCR<SizeCapture> = await PropertyRunner.run(
+        let result: PropertyResult<SizeCapture> = await PropertyRunner.run(
             property:
             {
                 capture async in
@@ -2041,7 +2041,7 @@ internal final class PropertyRunnerClassificationTests: TestKitCase
             seed:               Self.seed
         )
         
-        let result: PCR<SizeCapture> = await PropertyRunner.run(
+        let result: PropertyResult<SizeCapture> = await PropertyRunner.run(
             where: { capture in capture.size <= target },
             property:
             {
@@ -2072,7 +2072,7 @@ internal final class PropertyRunnerClassificationTests: TestKitCase
             seed:           Self.seed
         )
         
-        let result: PCR<SizeCapture> = await PropertyRunner.run(
+        let result: PropertyResult<SizeCapture> = await PropertyRunner.run(
             property:
             {
                 capture async in
@@ -2108,7 +2108,7 @@ internal final class PropertyRunnerClassificationTests: TestKitCase
         
         /// The flat coverage is met (40% `small`, actual 50%). The table
         /// coverage is unmet (90% `even`, actual 50%).
-        let result: PCR<SizeCapture> = await PropertyRunner.run(
+        let result: PropertyResult<SizeCapture> = await PropertyRunner.run(
             property:
             {
                 capture async in
@@ -2143,7 +2143,7 @@ internal final class PropertyRunnerClassificationTests: TestKitCase
         
         /// The flat coverage is unmet (90% `small`, actual 50%). The table
         /// coverage is met (40% `even`, actual 50%).
-        let result: PCR<SizeCapture> = await PropertyRunner.run(
+        let result: PropertyResult<SizeCapture> = await PropertyRunner.run(
             property:
             {
                 capture async in
@@ -2177,7 +2177,7 @@ internal final class PropertyRunnerClassificationTests: TestKitCase
             seed:           Self.seed
         )
         
-        let result: PCR<SizeCapture> = await PropertyRunner.run(
+        let result: PropertyResult<SizeCapture> = await PropertyRunner.run(
             property:
             {
                 capture async in
@@ -2211,8 +2211,6 @@ internal final class PropertyRunnerClassificationTests: TestKitCase
 
 extension PropertyRunnerClassificationTests
 {
-    private typealias PCR = PropertyCheckResult
-    
     /// The seed used to initialize the random number generator.
     ///
     /// Use a fixed seed rather than a random seed for deterministic tests.
