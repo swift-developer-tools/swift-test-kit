@@ -311,8 +311,8 @@ internal final class StatefulRunnerTests: TestKitCase
         let counterexample: Counterexample<[IncrementCommand]>
             = try XCTUnwrap(result.assertFailed())
         
-        XCTAssertNotNil(counterexample.thrownError)
-        XCTAssertTrue(counterexample.thrownError is TestError)
+        XCTAssertNotNil(counterexample.error)
+        XCTAssertTrue(counterexample.error is TestError)
         XCTAssertTrue(counterexample.failures.isEmpty)
     }
     
@@ -343,8 +343,8 @@ internal final class StatefulRunnerTests: TestKitCase
         let counterexample: Counterexample<[IncrementCommand]>
             = try XCTUnwrap(result.assertFailed())
         
-        XCTAssertNotNil(counterexample.thrownError)
-        XCTAssertTrue(counterexample.thrownError is TestError)
+        XCTAssertNotNil(counterexample.error)
+        XCTAssertTrue(counterexample.error is TestError)
         XCTAssertEqual(counterexample.failures.count, 1)
     }
     
@@ -1135,8 +1135,8 @@ internal final class StatefulRunnerTests: TestKitCase
         
         XCTAssertEqual(counterexample.value.count, RunThrowCommand.threshold)
         XCTAssertEqual(counterexample.shrinkSteps, 0)
-        XCTAssertNotNil(counterexample.thrownError)
-        XCTAssertTrue(counterexample.thrownError is TestError)
+        XCTAssertNotNil(counterexample.error)
+        XCTAssertTrue(counterexample.error is TestError)
         XCTAssertTrue(counterexample.failures.isEmpty)
     }
     
@@ -1495,7 +1495,7 @@ internal final class StatefulRunnerTests: TestKitCase
         
         XCTAssertEqual(counterexample.failingStep, RunFailCommand.threshold)
         XCTAssertEqual(counterexample.failures.count, 1)
-        XCTAssertNil(counterexample.thrownError)
+        XCTAssertNil(counterexample.error)
         
         XCTAssertGreaterThanOrEqual(
             counterexample.value.count,
@@ -1554,8 +1554,8 @@ internal final class StatefulRunnerTests: TestKitCase
         
         XCTAssertEqual(counterexample.failingStep, RunThrowCommand.threshold)
         XCTAssertTrue(counterexample.failures.isEmpty)
-        XCTAssertNotNil(counterexample.thrownError)
-        XCTAssertTrue(counterexample.thrownError is TestError)
+        XCTAssertNotNil(counterexample.error)
+        XCTAssertTrue(counterexample.error is TestError)
     }
     
     
@@ -1580,8 +1580,8 @@ internal final class StatefulRunnerTests: TestKitCase
             = try XCTUnwrap(result.assertFailed())
         
         XCTAssertEqual(counterexample.failures.count, 1)
-        XCTAssertNotNil(counterexample.thrownError)
-        XCTAssertTrue(counterexample.thrownError is TestError)
+        XCTAssertNotNil(counterexample.error)
+        XCTAssertTrue(counterexample.error is TestError)
     }
     
     
@@ -1777,8 +1777,8 @@ internal final class StatefulRunnerTests: TestKitCase
         
         XCTAssertEqual(counterexample.value.count, target)
         XCTAssertGreaterThan(counterexample.shrinkSteps, 0)
-        XCTAssertNotNil(counterexample.thrownError)
-        XCTAssertTrue(counterexample.thrownError is TestError)
+        XCTAssertNotNil(counterexample.error)
+        XCTAssertTrue(counterexample.error is TestError)
     }
     
     

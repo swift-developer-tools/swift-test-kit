@@ -622,7 +622,7 @@ extension PropertyResult
             lines.append("")
             lines.append(failure.message)
         }
-        else if let error: Error = counterexample.thrownError
+        else if let error: Error = counterexample.error
         {
             lines.append("")
             lines.append("Threw error: \(error)")

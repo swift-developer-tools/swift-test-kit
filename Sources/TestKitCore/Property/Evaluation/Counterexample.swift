@@ -34,8 +34,8 @@ internal struct Counterexample<T>
     /// This is used only for stateful tests and is otherwise `nil`.
     internal let failingStep    : Int?
     
-    /// The error thrown by the property body, if any.
-    internal let thrownError    : Error?
+    /// The error thrown by the property body.
+    internal let error          : Error?
     
     
     
@@ -48,7 +48,7 @@ internal struct Counterexample<T>
         shrinkSteps     : Int,
         failures        : [InterceptedFailure],
         failingStep     : Int?,
-        thrownError     : Error?
+        error           : Error?
     )
     {
         self.value          = value
@@ -58,6 +58,6 @@ internal struct Counterexample<T>
         self.shrinkSteps    = shrinkSteps
         self.failures       = failures
         self.failingStep    = failingStep
-        self.thrownError    = thrownError
+        self.error          = error
     }
 }

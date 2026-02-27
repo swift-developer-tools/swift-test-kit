@@ -455,9 +455,9 @@ internal struct StatefulRunner<C> where C : Stateful
                 || thrownError != nil
             {
                 let failure = ReplayFailure(
-                    step:           index + 1,
-                    failures:       interceptor.failures,
-                    thrownError:    thrownError
+                    step:       index + 1,
+                    failures:   interceptor.failures,
+                    error:      thrownError
                 )
                 
                 return .failed(failure)
@@ -482,9 +482,9 @@ internal struct StatefulRunner<C> where C : Stateful
                 )
                 
                 let failure = ReplayFailure(
-                    step:           index + 1,
-                    failures:       interceptor.failures,
-                    thrownError:    nil
+                    step:       index + 1,
+                    failures:   interceptor.failures,
+                    error:      nil
                 )
                 
                 return .failed(failure)
@@ -526,9 +526,9 @@ internal struct StatefulRunner<C> where C : Stateful
                     || thrownError != nil
                 {
                     let failure = ReplayFailure(
-                        step:           index + 1,
-                        failures:       interceptor.failures,
-                        thrownError:    thrownError
+                        step:       index + 1,
+                        failures:   interceptor.failures,
+                        error:      thrownError
                     )
                     
                     return .failed(failure)
@@ -629,7 +629,7 @@ internal struct StatefulRunner<C> where C : Stateful
             shrinkSteps:    shrunken.shrinkSteps,
             failures:       replayFailure?.failures ?? [],
             failingStep:    replayFailure?.step ?? shrunken.commands.count,
-            thrownError:    replayFailure?.thrownError
+            error:          replayFailure?.error
         )
     }
     
@@ -1034,8 +1034,8 @@ internal struct StatefulRunner<C> where C : Stateful
         /// The assertion failures from the final run with the shrunken value.
         let failures    : [InterceptedFailure]
         
-        /// The error thrown by the property body, if any.
-        let thrownError : Error?
+        /// The error thrown by the property body.
+        let error       : Error?
     }
     
     

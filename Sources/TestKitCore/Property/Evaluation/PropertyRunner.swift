@@ -436,7 +436,7 @@ internal struct PropertyRunner
             shrinkSteps:    steps,
             failures:       interceptor.failures,
             failingStep:    nil,
-            thrownError:    thrownError
+            error:          thrownError
         )
     }
     

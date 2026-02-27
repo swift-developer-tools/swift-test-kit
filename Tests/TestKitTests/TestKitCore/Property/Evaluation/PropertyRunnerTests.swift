@@ -173,8 +173,8 @@ internal final class PropertyRunnerTests: TestKitCase
         let counterexample: Counterexample<BoundInt>
             = try XCTUnwrap(result.assertFailed())
         
-        XCTAssertNotNil(counterexample.thrownError)
-        XCTAssertTrue(counterexample.thrownError is TestError)
+        XCTAssertNotNil(counterexample.error)
+        XCTAssertTrue(counterexample.error is TestError)
         XCTAssertTrue(counterexample.failures.isEmpty)
     }
     
@@ -198,8 +198,8 @@ internal final class PropertyRunnerTests: TestKitCase
         let counterexample: Counterexample<BoundInt>
             = try XCTUnwrap(result.assertFailed())
         
-        XCTAssertNotNil(counterexample.thrownError)
-        XCTAssertTrue(counterexample.thrownError is TestError)
+        XCTAssertNotNil(counterexample.error)
+        XCTAssertTrue(counterexample.error is TestError)
         XCTAssertEqual(counterexample.failures.count, 1)
     }
     
@@ -283,7 +283,7 @@ internal final class PropertyRunnerTests: TestKitCase
             = try XCTUnwrap(result.assertFailed())
         
         XCTAssertEqual(counterexample.value, BoundInt(target + 1))
-        XCTAssertNil(counterexample.thrownError)
+        XCTAssertNil(counterexample.error)
         XCTAssertEqual(counterexample.failures.count, 1)
     }
     
@@ -953,8 +953,8 @@ internal final class PropertyRunnerTests: TestKitCase
         
         XCTAssertEqual(counterexample.value, BoundInt(target + 1))
         XCTAssertGreaterThan(counterexample.shrinkSteps, 0)
-        XCTAssertNotNil(counterexample.thrownError)
-        XCTAssertTrue(counterexample.thrownError is TestError)
+        XCTAssertNotNil(counterexample.error)
+        XCTAssertTrue(counterexample.error is TestError)
         XCTAssertTrue(counterexample.failures.isEmpty)
     }
     
@@ -1140,8 +1140,8 @@ internal final class PropertyRunnerTests: TestKitCase
         XCTAssertEqual(counterexample.value, BoundInt(target + 1))
         XCTAssertGreaterThan(counterexample.shrinkSteps, 0)
         
-        XCTAssertNotNil(counterexample.thrownError)
-        XCTAssertTrue(counterexample.thrownError is TestError)
+        XCTAssertNotNil(counterexample.error)
+        XCTAssertTrue(counterexample.error is TestError)
         XCTAssertEqual(counterexample.failures.count, 1)
         XCTAssertNotNil(counterexample.failures.first?.message)
         
