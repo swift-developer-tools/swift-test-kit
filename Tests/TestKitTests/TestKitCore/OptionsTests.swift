@@ -95,6 +95,7 @@ internal final class OptionsTests: TestKitCase
         
         XCTAssertEqual(options.timeout, .seconds(2))
         XCTAssertEqual(options.interval, .milliseconds(50))
+        XCTAssertFalse(options.showAllFailures)
     }
     
     
