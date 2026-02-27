@@ -16,9 +16,9 @@ import Synchronization
 
 /// Intercepts assertion failures during property evaluation.
 ///
-/// When an assertion fails inside a property evaluator, the failure message
-/// is recorded here instead of being reported to the associated framework.
-/// This allows the property body to be re-run for shrinking purposes.
+/// When an assertion fails inside a property evaluator, the failure is
+/// recorded here instead of being reported to the associated framework.
+/// This allows the property to be re-run for shrinking purposes.
 ///
 /// - Note: See ``FailureInterceptor`` regarding `Sendable` conformance.
 package final class PropertyInterceptor:
