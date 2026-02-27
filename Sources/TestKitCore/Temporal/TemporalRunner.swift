@@ -11,7 +11,7 @@
 internal struct TemporalRunner
 {
     /// Temporal test kinds.
-    internal enum Kind
+    internal enum Kind: CustomStringConvertible
     {
         /// All assertions must always pass.
         ///
@@ -24,6 +24,18 @@ internal struct TemporalRunner
         /// This polls continuously until all assertions pass, and fails on
         /// timeout.
         case eventually
+        
+        
+        
+        /// The kind description.
+        var description: String
+        {
+            switch self
+            {
+                case .always        : return "Always"
+                case .eventually    : return "Eventually"
+            }
+        }
     }
     
     
