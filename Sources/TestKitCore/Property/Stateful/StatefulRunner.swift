@@ -18,18 +18,6 @@ private let logger = Logger(
 
 
 
-/// The result of running the stateful property check.
-internal struct StatefulResult<C> where C : Stateful
-{
-    /// The stateful property check result.
-    let property    : PropertyResult<[C]>
-    
-    /// The command statistics report.
-    let statistics  : String?
-}
-
-
-
 /// Runs stateful property-based tests.
 internal struct StatefulRunner<C> where C : Stateful
 {
