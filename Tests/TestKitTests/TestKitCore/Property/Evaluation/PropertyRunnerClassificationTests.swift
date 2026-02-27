@@ -252,7 +252,7 @@ internal final class PropertyRunnerClassificationTests: TestKitCase
                 
                 try TKAssume(true)
                 
-                PropertyInterceptor.current?.recordFailure()
+                FailureInterceptor.current?.recordFailure()
             },
             options: options
         )
@@ -295,7 +295,7 @@ internal final class PropertyRunnerClassificationTests: TestKitCase
                 
                 if int > target
                 {
-                    PropertyInterceptor.current?.recordFailure()
+                    FailureInterceptor.current?.recordFailure()
                 }
             },
             options: options
@@ -347,11 +347,12 @@ internal final class PropertyRunnerClassificationTests: TestKitCase
                 
                 try TKAssume(int % 2 == 0)
                 
-                PropertyInterceptor.current?.recordLabel("tested")
+                (FailureInterceptor.current as? PropertyInterceptor)?
+                    .recordLabel("tested")
                 
                 if int > target
                 {
-                    PropertyInterceptor.current?.recordFailure()
+                    FailureInterceptor.current?.recordFailure()
                 }
             },
             options: options
@@ -490,7 +491,8 @@ internal final class PropertyRunnerClassificationTests: TestKitCase
             {
                 _ async in
                 
-                PropertyInterceptor.current?.recordLabel("always")
+                (FailureInterceptor.current as? PropertyInterceptor)?
+                    .recordLabel("always")
             },
             options: options
         )
@@ -519,11 +521,13 @@ internal final class PropertyRunnerClassificationTests: TestKitCase
             {
                 capture async in
                 
-                PropertyInterceptor.current?.recordLabel("all")
+                (FailureInterceptor.current as? PropertyInterceptor)?
+                    .recordLabel("all")
                 
                 if capture.size >= target
                 {
-                    PropertyInterceptor.current?.recordLabel("large")
+                    (FailureInterceptor.current as? PropertyInterceptor)?
+                        .recordLabel("large")
                 }
             },
             options: options
@@ -560,8 +564,10 @@ internal final class PropertyRunnerClassificationTests: TestKitCase
             {
                 _ async in
                 
-                PropertyInterceptor.current?.recordLabel("labeled")
-                PropertyInterceptor.current?.recordFailure()
+                (FailureInterceptor.current as? PropertyInterceptor)?
+                    .recordLabel("labeled")
+                
+                FailureInterceptor.current?.recordFailure()
             },
             options: .propertyOptions(seed: Self.seed)
         )
@@ -599,11 +605,12 @@ internal final class PropertyRunnerClassificationTests: TestKitCase
             {
                 capture async in
                 
-                PropertyInterceptor.current?.recordLabel("tested")
+                (FailureInterceptor.current as? PropertyInterceptor)?
+                    .recordLabel("tested")
                 
                 if capture.size >= target
                 {
-                    PropertyInterceptor.current?.recordFailure()
+                    FailureInterceptor.current?.recordFailure()
                 }
             },
             options: options
@@ -641,7 +648,8 @@ internal final class PropertyRunnerClassificationTests: TestKitCase
             {
                 _ async in
                 
-                PropertyInterceptor.current?.recordLabel("accepted")
+                (FailureInterceptor.current as? PropertyInterceptor)?
+                    .recordLabel("accepted")
             },
             options: options
         )
@@ -673,10 +681,11 @@ internal final class PropertyRunnerClassificationTests: TestKitCase
             {
                 _ async in
                 
-                PropertyInterceptor.current?
+                (FailureInterceptor.current as? PropertyInterceptor)?
                     .recordCoverageRequirement(100, for: "always")
                 
-                PropertyInterceptor.current?.recordLabel("always")
+                (FailureInterceptor.current as? PropertyInterceptor)?
+                    .recordLabel("always")
             },
             options: options
         )
@@ -709,12 +718,13 @@ internal final class PropertyRunnerClassificationTests: TestKitCase
             {
                 capture async in
                 
-                PropertyInterceptor.current?
+                (FailureInterceptor.current as? PropertyInterceptor)?
                     .recordCoverageRequirement(required, for: "large")
                 
                 if capture.size >= target
                 {
-                    PropertyInterceptor.current?.recordLabel("large")
+                    (FailureInterceptor.current as? PropertyInterceptor)?
+                        .recordLabel("large")
                 }
             },
             options: options
@@ -751,19 +761,21 @@ internal final class PropertyRunnerClassificationTests: TestKitCase
             {
                 capture async in
                 
-                PropertyInterceptor.current?
+                (FailureInterceptor.current as? PropertyInterceptor)?
                     .recordCoverageRequirement(80, for: "small")
                 
-                PropertyInterceptor.current?
+                (FailureInterceptor.current as? PropertyInterceptor)?
                     .recordCoverageRequirement(80, for: "large")
                 
                 if capture.size < 50
                 {
-                    PropertyInterceptor.current?.recordLabel("small")
+                    (FailureInterceptor.current as? PropertyInterceptor)?
+                        .recordLabel("small")
                 }
                 else
                 {
-                    PropertyInterceptor.current?.recordLabel("large")
+                    (FailureInterceptor.current as? PropertyInterceptor)?
+                        .recordLabel("large")
                 }
             },
             options: options
@@ -799,17 +811,19 @@ internal final class PropertyRunnerClassificationTests: TestKitCase
             {
                 capture async in
                 
-                PropertyInterceptor.current?
+                (FailureInterceptor.current as? PropertyInterceptor)?
                     .recordCoverageRequirement(50, for: "all")
                 
-                PropertyInterceptor.current?.recordLabel("all")
+                (FailureInterceptor.current as? PropertyInterceptor)?
+                    .recordLabel("all")
                 
-                PropertyInterceptor.current?
+                (FailureInterceptor.current as? PropertyInterceptor)?
                     .recordCoverageRequirement(90, for: "large")
                 
                 if capture.size >= target
                 {
-                    PropertyInterceptor.current?.recordLabel("large")
+                    (FailureInterceptor.current as? PropertyInterceptor)?
+                        .recordLabel("large")
                 }
             },
             options: options
@@ -842,12 +856,12 @@ internal final class PropertyRunnerClassificationTests: TestKitCase
             {
                 capture async in
                 
-                PropertyInterceptor.current?
+                (FailureInterceptor.current as? PropertyInterceptor)?
                     .recordCoverageRequirement(99, for: "never")
                 
                 if capture.size >= target
                 {
-                    PropertyInterceptor.current?.recordFailure()
+                    FailureInterceptor.current?.recordFailure()
                 }
             },
             options: options
@@ -883,7 +897,7 @@ internal final class PropertyRunnerClassificationTests: TestKitCase
             {
                 _ async in
                 
-                PropertyInterceptor.current?
+                (FailureInterceptor.current as? PropertyInterceptor)?
                     .recordCoverageRequirement(0, for: "never-labeled")
             },
             options: options
@@ -918,7 +932,8 @@ internal final class PropertyRunnerClassificationTests: TestKitCase
             {
                 _ async in
                 
-                PropertyInterceptor.current?.recordLabel("accepted")
+                (FailureInterceptor.current as? PropertyInterceptor)?
+                    .recordLabel("accepted")
             },
             options: options
         )
@@ -952,10 +967,11 @@ internal final class PropertyRunnerClassificationTests: TestKitCase
                 
                 if capture.size >= target
                 {
-                    PropertyInterceptor.current?.recordFailure()
+                    FailureInterceptor.current?.recordFailure()
                 }
                 
-                PropertyInterceptor.current?.recordLabel("after-failure")
+                (FailureInterceptor.current as? PropertyInterceptor)?
+                    .recordLabel("after-failure")
             },
             options: options
         )
@@ -993,11 +1009,12 @@ internal final class PropertyRunnerClassificationTests: TestKitCase
             {
                 bountInt async in
                 
-                PropertyInterceptor.current?.recordLabel("tested")
+                (FailureInterceptor.current as? PropertyInterceptor)?
+                    .recordLabel("tested")
                 
                 if bountInt.value > target
                 {
-                    PropertyInterceptor.current?.recordFailure()
+                    FailureInterceptor.current?.recordFailure()
                 }
             },
             options: options
@@ -1039,7 +1056,7 @@ internal final class PropertyRunnerClassificationTests: TestKitCase
             {
                 _ async in
                 
-                PropertyInterceptor.current?
+                (FailureInterceptor.current as? PropertyInterceptor)?
                     .recordCoverageRequirement(100, for: "never-labeled")
             },
             options: options
@@ -1069,9 +1086,14 @@ internal final class PropertyRunnerClassificationTests: TestKitCase
             {
                 _ async in
                 
-                PropertyInterceptor.current?.recordLabel("duplicate")
-                PropertyInterceptor.current?.recordLabel("duplicate")
-                PropertyInterceptor.current?.recordLabel("duplicate")
+                (FailureInterceptor.current as? PropertyInterceptor)?
+                    .recordLabel("duplicate")
+                
+                (FailureInterceptor.current as? PropertyInterceptor)?
+                    .recordLabel("duplicate")
+                
+                (FailureInterceptor.current as? PropertyInterceptor)?
+                    .recordLabel("duplicate")
             },
             options: options
         )
@@ -1100,7 +1122,7 @@ internal final class PropertyRunnerClassificationTests: TestKitCase
             {
                 _ async in
                 
-                PropertyInterceptor.current?
+                (FailureInterceptor.current as? PropertyInterceptor)?
                     .recordCoverageRequirement(10, for: "something")
             },
             options: options
@@ -1134,7 +1156,7 @@ internal final class PropertyRunnerClassificationTests: TestKitCase
             {
                 _ async in
                 
-                PropertyInterceptor.current?
+                (FailureInterceptor.current as? PropertyInterceptor)?
                     .recordCoverageRequirement(100, for: "unreachable")
             },
             options: options
@@ -1417,7 +1439,7 @@ internal final class PropertyRunnerClassificationTests: TestKitCase
                 
                 if int > target
                 {
-                    PropertyInterceptor.current?.recordFailure()
+                    FailureInterceptor.current?.recordFailure()
                 }
             },
             options: options
@@ -1699,7 +1721,7 @@ internal final class PropertyRunnerClassificationTests: TestKitCase
                 
                 if capture.size >= target
                 {
-                    PropertyInterceptor.current?.recordFailure()
+                    FailureInterceptor.current?.recordFailure()
                 }
             },
             options: options
@@ -1773,7 +1795,7 @@ internal final class PropertyRunnerClassificationTests: TestKitCase
                 
                 if boundInt.value > target
                 {
-                    PropertyInterceptor.current?.recordFailure()
+                    FailureInterceptor.current?.recordFailure()
                 }
             },
             options: options
@@ -1987,7 +2009,7 @@ internal final class PropertyRunnerClassificationTests: TestKitCase
                 
                 if capture.size >= target
                 {
-                    PropertyInterceptor.current?.recordFailure()
+                    FailureInterceptor.current?.recordFailure()
                 }
             },
             options: options

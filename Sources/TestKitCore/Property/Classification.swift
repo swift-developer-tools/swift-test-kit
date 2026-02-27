@@ -15,7 +15,7 @@ package func TKAssume(
     _ condition: () -> Bool
 ) throws
 {
-    guard PropertyInterceptor.current != nil
+    guard FailureInterceptor.current is PropertyInterceptor
     else
     {
         warnNoOp(for: "Assume")
@@ -35,7 +35,7 @@ package func TKClassify(
     when    condition   : () -> Bool
 )
 {
-    guard let interceptor = PropertyInterceptor.current
+    guard let interceptor = FailureInterceptor.current as? PropertyInterceptor
     else
     {
         warnNoOp(for: "Classify")
@@ -56,7 +56,7 @@ package func TKCover(
     when    condition   : () -> Bool
 )
 {
-    guard let interceptor = PropertyInterceptor.current
+    guard let interceptor = FailureInterceptor.current as? PropertyInterceptor
     else
     {
         warnNoOp(for: "Cover")
@@ -80,7 +80,7 @@ package func TKLabel(
     _ label: String
 )
 {
-    guard let interceptor = PropertyInterceptor.current
+    guard let interceptor = FailureInterceptor.current as? PropertyInterceptor
     else
     {
         warnNoOp(for: "Label")
@@ -106,7 +106,7 @@ package func TKTabulate(
     _   label   : String
 )
 {
-    guard let interceptor = PropertyInterceptor.current
+    guard let interceptor = FailureInterceptor.current as? PropertyInterceptor
     else
     {
         warnNoOp(for: "Tabulate")
@@ -126,7 +126,7 @@ package func TKCoverTable(
     _   requirements    : [(Double, String)]
 )
 {
-    guard let interceptor = PropertyInterceptor.current
+    guard let interceptor = FailureInterceptor.current as? PropertyInterceptor
     else
     {
         warnNoOp(for: "CoverTable")

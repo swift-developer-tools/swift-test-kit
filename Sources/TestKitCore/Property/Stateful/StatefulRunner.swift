@@ -439,7 +439,7 @@ internal struct StatefulRunner<C> where C : Stateful
             var discarded   : Bool      = false
             var thrownError : Error?    = nil
             
-            await PropertyInterceptor.$current.withValue(interceptor)
+            await FailureInterceptor.$current.withValue(interceptor)
             {
                 do
                 {
@@ -510,7 +510,7 @@ internal struct StatefulRunner<C> where C : Stateful
                 var discarded   : Bool      = false
                 var thrownError : Error?    = nil
                 
-                await PropertyInterceptor.$current.withValue(interceptor)
+                await FailureInterceptor.$current.withValue(interceptor)
                 {
                     do
                     {

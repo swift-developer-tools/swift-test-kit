@@ -118,7 +118,7 @@ internal final class PropertyRunnerTests: TestKitCase
             {
                 _ async in
                 
-                PropertyInterceptor.current?.recordFailure()
+                FailureInterceptor.current?.recordFailure()
             },
             options: .propertyOptions(seed: Self.seed)
         )
@@ -147,7 +147,7 @@ internal final class PropertyRunnerTests: TestKitCase
                 
                 if boundInt.value > 25
                 {
-                    PropertyInterceptor.current?.recordFailure()
+                    FailureInterceptor.current?.recordFailure()
                 }
             },
             options: options
@@ -189,7 +189,7 @@ internal final class PropertyRunnerTests: TestKitCase
             {
                 _ async throws in
                 
-                PropertyInterceptor.current?.recordFailure()
+                FailureInterceptor.current?.recordFailure()
                 
                 throw TestError()
             },
@@ -223,7 +223,7 @@ internal final class PropertyRunnerTests: TestKitCase
                 
                 for record in records
                 {
-                    PropertyInterceptor.current?.recordFailure(
+                    FailureInterceptor.current?.recordFailure(
                         message:    record.0,
                         fileID:     record.1,
                         file:       record.2,
@@ -269,7 +269,7 @@ internal final class PropertyRunnerTests: TestKitCase
                 
                 if boundInt.value > target
                 {
-                    PropertyInterceptor.current?.recordFailure()
+                    FailureInterceptor.current?.recordFailure()
                 }
                 
                 if boundInt.value > target * 2
@@ -308,7 +308,7 @@ internal final class PropertyRunnerTests: TestKitCase
                 
                 if capture.size >= target
                 {
-                    PropertyInterceptor.current?.recordFailure()
+                    FailureInterceptor.current?.recordFailure()
                 }
             },
             options: options
@@ -346,7 +346,7 @@ internal final class PropertyRunnerTests: TestKitCase
                 
                 if boundInt.value > target
                 {
-                    PropertyInterceptor.current?.recordFailure()
+                    FailureInterceptor.current?.recordFailure()
                 }
             },
             options: options
@@ -499,7 +499,7 @@ internal final class PropertyRunnerTests: TestKitCase
                 
                 if boundInt.value > 20
                 {
-                    PropertyInterceptor.current?.recordFailure()
+                    FailureInterceptor.current?.recordFailure()
                 }
             },
             options: options
@@ -596,7 +596,7 @@ internal final class PropertyRunnerTests: TestKitCase
                 
                 if boundInt.value == target
                 {
-                    PropertyInterceptor.current?.recordFailure()
+                    FailureInterceptor.current?.recordFailure()
                 }
             },
             options: options
@@ -609,7 +609,7 @@ internal final class PropertyRunnerTests: TestKitCase
                 
                 if boundInt.value == target
                 {
-                    PropertyInterceptor.current?.recordFailure()
+                    FailureInterceptor.current?.recordFailure()
                 }
             },
             options: options
@@ -695,7 +695,7 @@ internal final class PropertyRunnerTests: TestKitCase
             {
                 _ async in
                 
-                PropertyInterceptor.current?.recordFailure()
+                FailureInterceptor.current?.recordFailure()
             },
             options: .propertyOptions(seed: Self.seed)
         )
@@ -742,7 +742,7 @@ internal final class PropertyRunnerTests: TestKitCase
             {
                 _ async in
                 
-                PropertyInterceptor.current?.recordFailure()
+                FailureInterceptor.current?.recordFailure()
             },
             options: .propertyOptions(seed: nil)
         )
@@ -771,7 +771,7 @@ internal final class PropertyRunnerTests: TestKitCase
                 
                 if boundInt.value > target
                 {
-                    PropertyInterceptor.current?.recordFailure()
+                    FailureInterceptor.current?.recordFailure()
                 }
             },
             options: options
@@ -796,7 +796,7 @@ internal final class PropertyRunnerTests: TestKitCase
                 
                 if boundInt.value > 10
                 {
-                    PropertyInterceptor.current?.recordFailure()
+                    FailureInterceptor.current?.recordFailure()
                 }
             },
             options: .propertyOptions(seed: Self.seed)
@@ -832,7 +832,7 @@ internal final class PropertyRunnerTests: TestKitCase
                 
                 if int > 0
                 {
-                    PropertyInterceptor.current?.recordFailure()
+                    FailureInterceptor.current?.recordFailure()
                 }
             },
             options: options
@@ -866,7 +866,7 @@ internal final class PropertyRunnerTests: TestKitCase
                 
                 if boundInt.value > 5
                 {
-                    PropertyInterceptor.current?.recordFailure()
+                    FailureInterceptor.current?.recordFailure()
                 }
             },
             options: options
@@ -898,7 +898,7 @@ internal final class PropertyRunnerTests: TestKitCase
                 
                 if boundInt.value > target
                 {
-                    PropertyInterceptor.current?.recordFailure(
+                    FailureInterceptor.current?.recordFailure(
                         message:    "value \(boundInt.value) is positive",
                         fileID:     "ID",
                         file:       "File.swift",
@@ -978,7 +978,7 @@ internal final class PropertyRunnerTests: TestKitCase
                 
                 if int >= target
                 {
-                    PropertyInterceptor.current?.recordFailure()
+                    FailureInterceptor.current?.recordFailure()
                 }
             },
             options: .propertyOptions(seed: Self.seed)
@@ -1015,7 +1015,7 @@ internal final class PropertyRunnerTests: TestKitCase
                 
                 if int > 0
                 {
-                    PropertyInterceptor.current?.recordFailure()
+                    FailureInterceptor.current?.recordFailure()
                 }
             },
             options: options
@@ -1046,7 +1046,7 @@ internal final class PropertyRunnerTests: TestKitCase
             {
                 _ async in
                 
-                PropertyInterceptor.current?.recordFailure()
+                FailureInterceptor.current?.recordFailure()
             },
             options: options
         )
@@ -1088,7 +1088,7 @@ internal final class PropertyRunnerTests: TestKitCase
                 
                 if int > 5
                 {
-                    PropertyInterceptor.current?.recordFailure()
+                    FailureInterceptor.current?.recordFailure()
                 }
             },
             options: options
@@ -1120,7 +1120,7 @@ internal final class PropertyRunnerTests: TestKitCase
                 
                 if boundInt.value > target
                 {
-                    PropertyInterceptor.current?.recordFailure(
+                    FailureInterceptor.current?.recordFailure(
                         message:    "value \(boundInt.value) is too large",
                         fileID:     "ID",
                         file:       "File.swift",
@@ -1175,7 +1175,7 @@ internal final class PropertyRunnerTests: TestKitCase
             {
                 _ async in
                 
-                PropertyInterceptor.current?.recordFailure()
+                FailureInterceptor.current?.recordFailure()
             },
             options: options
         )
@@ -1209,7 +1209,7 @@ internal final class PropertyRunnerTests: TestKitCase
                 
                 if boundInt.value > target
                 {
-                    PropertyInterceptor.current?.recordFailure()
+                    FailureInterceptor.current?.recordFailure()
                 }
             },
             options: options
@@ -1257,7 +1257,7 @@ internal final class PropertyRunnerTests: TestKitCase
             {
                 _ async in
                 
-                PropertyInterceptor.current?.recordFailure()
+                FailureInterceptor.current?.recordFailure()
             },
             options: options
         )
@@ -1305,7 +1305,7 @@ internal final class PropertyRunnerTests: TestKitCase
                 
                 if int > 5
                 {
-                    PropertyInterceptor.current?.recordFailure()
+                    FailureInterceptor.current?.recordFailure()
                 }
             },
             options: .propertyOptions(seed: Self.seed)
@@ -1342,7 +1342,7 @@ internal final class PropertyRunnerTests: TestKitCase
                 
                 if int > target
                 {
-                    PropertyInterceptor.current?.recordFailure()
+                    FailureInterceptor.current?.recordFailure()
                 }
             },
             options: .propertyOptions(seed: Self.seed)
@@ -1370,7 +1370,7 @@ internal final class PropertyRunnerTests: TestKitCase
             {
                 _ async in
                 
-                PropertyInterceptor.current?.recordFailure()
+                FailureInterceptor.current?.recordFailure()
             },
             options: .propertyOptions(seed: Self.seed)
         )
@@ -1423,7 +1423,7 @@ internal final class PropertyRunnerTests: TestKitCase
                 
                 if int > target
                 {
-                    PropertyInterceptor.current?.recordFailure()
+                    FailureInterceptor.current?.recordFailure()
                 }
             },
             options: .propertyOptions(seed: Self.seed)
@@ -1625,7 +1625,7 @@ internal final class PropertyRunnerTests: TestKitCase
                 
                 if capture.size == 0
                 {
-                    PropertyInterceptor.current?.recordFailure()
+                    FailureInterceptor.current?.recordFailure()
                 }
             },
             options: .propertyOptions(seed: Self.seed)

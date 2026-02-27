@@ -34,7 +34,8 @@ internal final class StatefulRunnerClassificationTests: TestKitCase
             {
                 model, _ async in
                 
-                PropertyInterceptor.current?.recordLabel("always")
+                (FailureInterceptor.current as? PropertyInterceptor)?
+                    .recordLabel("always")
             },
             options: options
         )
@@ -200,8 +201,11 @@ internal final class StatefulRunnerClassificationTests: TestKitCase
             {
                 model, _ async in
                 
-                PropertyInterceptor.current?.recordLabel("a")
-                PropertyInterceptor.current?.recordLabel("b")
+                (FailureInterceptor.current as? PropertyInterceptor)?
+                    .recordLabel("a")
+                
+                (FailureInterceptor.current as? PropertyInterceptor)?
+                    .recordLabel("b")
             },
             options: options
         )
@@ -304,7 +308,8 @@ internal final class StatefulRunnerClassificationTests: TestKitCase
             {
                 model, _ async throws in
                 
-                PropertyInterceptor.current?.recordLabel("ran")
+                (FailureInterceptor.current as? PropertyInterceptor)?
+                    .recordLabel("ran")
                 
                 if model >= 2
                 {
@@ -345,7 +350,8 @@ internal final class StatefulRunnerClassificationTests: TestKitCase
             {
                 model, _ async throws in
                 
-                PropertyInterceptor.current?.recordLabel("ran")
+                (FailureInterceptor.current as? PropertyInterceptor)?
+                    .recordLabel("ran")
                 
                 if model >= 1
                 {
@@ -449,7 +455,7 @@ internal final class StatefulRunnerClassificationTests: TestKitCase
                 
                 if model >= 3
                 {
-                    PropertyInterceptor.current?.recordFailure()
+                    FailureInterceptor.current?.recordFailure()
                 }
             },
             options: options
@@ -490,11 +496,12 @@ internal final class StatefulRunnerClassificationTests: TestKitCase
             {
                 model, _ async in
                 
-                PropertyInterceptor.current?.recordLabel("ran")
+                (FailureInterceptor.current as? PropertyInterceptor)?
+                    .recordLabel("ran")
                 
                 if model >= 3
                 {
-                    PropertyInterceptor.current?.recordFailure()
+                    FailureInterceptor.current?.recordFailure()
                 }
             },
             options: options

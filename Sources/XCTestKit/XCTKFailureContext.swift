@@ -19,7 +19,7 @@ internal let failureContext = FailureContext(
     {
         message, fileID, file, line, column in
         
-        if let interceptor = PropertyInterceptor.current
+        if let interceptor = FailureInterceptor.current
         {
             interceptor.recordFailure(
                 message:    message,

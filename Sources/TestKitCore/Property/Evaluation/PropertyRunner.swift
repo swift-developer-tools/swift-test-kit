@@ -315,7 +315,7 @@ internal struct PropertyRunner
         var threwError  : Bool  = false
         var discarded   : Bool  = false
         
-        await PropertyInterceptor.$current.withValue(interceptor)
+        await FailureInterceptor.$current.withValue(interceptor)
         {
             do
             {
@@ -416,7 +416,7 @@ internal struct PropertyRunner
         let interceptor : PropertyInterceptor   = .init()
         var thrownError : Error?                = nil
         
-        await PropertyInterceptor.$current.withValue(interceptor)
+        await FailureInterceptor.$current.withValue(interceptor)
         {
             do
             {

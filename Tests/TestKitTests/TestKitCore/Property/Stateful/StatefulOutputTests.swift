@@ -1269,7 +1269,7 @@ internal final class StatefulOutputTests: TestKitCase
             )
         }
         
-        /// The `message` comes from the ``PropertyInterceptor/recordFailure()``
+        /// The `message` comes from the ``FailureInterceptor/recordFailure()``
         /// test utility method.
         let expected: String =
         """
@@ -1308,7 +1308,7 @@ internal final class StatefulOutputTests: TestKitCase
             )
         }
         
-        /// The `message` comes from the ``PropertyInterceptor/recordFailure()``
+        /// The `message` comes from the ``FailureInterceptor/recordFailure()``
         /// test utility method.
         let expected: String =
         """

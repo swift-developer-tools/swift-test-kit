@@ -11,7 +11,7 @@ import TestKitCore
 
 
 
-extension PropertyInterceptor
+extension FailureInterceptor
 {
     /// Records an assertion failure.
     internal func recordFailure()
