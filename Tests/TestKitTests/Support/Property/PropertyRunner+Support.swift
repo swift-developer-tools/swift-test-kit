@@ -7,9 +7,8 @@
 //
 //===----------------------------------------------------------------------===//
 
+@testable import TestKitCore
 import XCTest
-import TestKitCore
-@testable import protocol TestKitCore.Arbitrary
 
 
 

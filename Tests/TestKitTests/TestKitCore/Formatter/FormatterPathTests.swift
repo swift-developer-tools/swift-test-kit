@@ -7,9 +7,8 @@
 //
 //===----------------------------------------------------------------------===//
 
-import TestKitCore
+@testable import TestKitCore
 import XCTest
-@testable import struct TestKitCore.Formatter
 
 
 
