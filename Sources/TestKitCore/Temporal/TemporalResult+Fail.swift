@@ -58,13 +58,26 @@ extension TemporalResult
                     message:        message
                 )
                 
-                context.emit(
-                    text,
-                    fileID,
-                    file,
-                    line,
-                    column
-                )
+                if let interceptor = FailureInterceptor.current
+                {
+                    interceptor.recordFailure(
+                        message:    text,
+                        fileID:     fileID,
+                        file:       file,
+                        line:       line,
+                        column:     column
+                    )
+                }
+                else
+                {
+                    context.emit(
+                        text,
+                        fileID,
+                        file,
+                        line,
+                        column
+                    )
+                }
         }
     }
     
