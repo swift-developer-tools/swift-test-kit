@@ -25,7 +25,8 @@ internal func TKAssert(
     file            : StaticString                      = #filePath,
     line            : UInt                              = #line,
     column          : UInt                              = #column,
-    options         : TestOptions                       = .init()
+    options         : TestOptions                       = .init(),
+    context         : FailureContext                    = XCTestKit.failureContext
 )
 {
     TestKitCore.TKAssert(
@@ -36,7 +37,7 @@ internal func TKAssert(
         line:       line,
         column:     column,
         options:    options,
-        context:    XCTestKit.failureContext
+        context:    context
     )
 }
 
@@ -49,7 +50,8 @@ internal func TKAssertTrue(
     file            : StaticString                      = #filePath,
     line            : UInt                              = #line,
     column          : UInt                              = #column,
-    options         : TestOptions                       = .init()
+    options         : TestOptions                       = .init(),
+    context         : FailureContext                    = XCTestKit.failureContext
 )
 {
     TestKitCore.TKAssertTrue(
@@ -60,7 +62,7 @@ internal func TKAssertTrue(
         line:       line,
         column:     column,
         options:    options,
-        context:    XCTestKit.failureContext
+        context:    context
     )
 }
 
@@ -73,7 +75,8 @@ internal func TKAssertFalse(
     file            : StaticString                      = #filePath,
     line            : UInt                              = #line,
     column          : UInt                              = #column,
-    options         : TestOptions                       = .init()
+    options         : TestOptions                       = .init(),
+    context         : FailureContext                    = XCTestKit.failureContext
 )
 {
     TestKitCore.TKAssertFalse(
@@ -84,7 +87,7 @@ internal func TKAssertFalse(
         line:       line,
         column:     column,
         options:    options,
-        context:    XCTestKit.failureContext
+        context:    context
     )
 }
 
@@ -99,7 +102,8 @@ internal func TKAssertNil(
     file            : StaticString                      = #filePath,
     line            : UInt                              = #line,
     column          : UInt                              = #column,
-    options         : TestOptions                       = .init()
+    options         : TestOptions                       = .init(),
+    context         : FailureContext                    = XCTestKit.failureContext
 )
 {
     TestKitCore.TKAssertNil(
@@ -110,7 +114,7 @@ internal func TKAssertNil(
         line:       line,
         column:     column,
         options:    options,
-        context:    XCTestKit.failureContext
+        context:    context
     )
 }
 
@@ -123,7 +127,8 @@ internal func TKAssertNotNil(
     file            : StaticString                      = #filePath,
     line            : UInt                              = #line,
     column          : UInt                              = #column,
-    options         : TestOptions                       = .init()
+    options         : TestOptions                       = .init(),
+    context         : FailureContext                    = XCTestKit.failureContext
 )
 {
     TestKitCore.TKAssertNotNil(
@@ -134,7 +139,7 @@ internal func TKAssertNotNil(
         line:       line,
         column:     column,
         options:    options,
-        context:    XCTestKit.failureContext
+        context:    context
     )
 }
 
@@ -143,11 +148,12 @@ internal func TKAssertNotNil(
 internal func TKUnwrap<T>(
     _ expression    : @autoclosure () throws -> T?,
     _ message       : @autoclosure () -> String     = "",
-    fileID          : StaticString                      = #fileID,
-    file            : StaticString                      = #filePath,
-    line            : UInt                              = #line,
-    column          : UInt                              = #column,
-    options         : TestOptions                   = .init()
+    fileID          : StaticString                  = #fileID,
+    file            : StaticString                  = #filePath,
+    line            : UInt                          = #line,
+    column          : UInt                          = #column,
+    options         : TestOptions                   = .init(),
+    context         : FailureContext                = XCTestKit.failureContext
 ) throws -> T
 {
     return try TestKitCore.TKUnwrap(
@@ -158,7 +164,7 @@ internal func TKUnwrap<T>(
         line:       line,
         column:     column,
         options:    options,
-        context:    XCTestKit.failureContext
+        context:    context
     )
 }
 
@@ -174,7 +180,8 @@ internal func TKAssertEqual<T>(
     file        : StaticString                  = #filePath,
     line        : UInt                          = #line,
     column      : UInt                          = #column,
-    options     : TestOptions                   = .init()
+    options     : TestOptions                   = .init(),
+    context     : FailureContext                = XCTestKit.failureContext
 ) where T : Equatable
 {
     TestKitCore.TKAssertEqual(
@@ -186,7 +193,7 @@ internal func TKAssertEqual<T>(
         line:       line,
         column:     column,
         options:    options,
-        context:    XCTestKit.failureContext
+        context:    context
     )
 }
 
@@ -200,7 +207,8 @@ internal func TKAssertNotEqual<T>(
     file            : StaticString                  = #filePath,
     line            : UInt                          = #line,
     column          : UInt                          = #column,
-    options         : TestOptions                   = .init()
+    options         : TestOptions                   = .init(),
+    context         : FailureContext                = XCTestKit.failureContext
 ) where T : Equatable
 {
     TestKitCore.TKAssertNotEqual(
@@ -212,7 +220,7 @@ internal func TKAssertNotEqual<T>(
         line:       line,
         column:     column,
         options:    options,
-        context:    XCTestKit.failureContext
+        context:    context
     )
 }
 
@@ -226,7 +234,8 @@ internal func TKAssertIdentical(
     file            : StaticString                          = #filePath,
     line            : UInt                                  = #line,
     column          : UInt                                  = #column,
-    options         : TestOptions                           = .init()
+    options         : TestOptions                           = .init(),
+    context         : FailureContext                        = XCTestKit.failureContext
 )
 {
     TestKitCore.TKAssertIdentical(
@@ -238,7 +247,7 @@ internal func TKAssertIdentical(
         line:       line,
         column:     column,
         options:    options,
-        context:    XCTestKit.failureContext
+        context:    context
     )
 }
 
@@ -252,7 +261,8 @@ internal func TKAssertNotIdentical(
     file            : StaticString                          = #filePath,
     line            : UInt                                  = #line,
     column          : UInt                                  = #column,
-    options         : TestOptions                           = .init()
+    options         : TestOptions                           = .init(),
+    context         : FailureContext                        = XCTestKit.failureContext
 )
 {
     TestKitCore.TKAssertNotIdentical(
@@ -264,7 +274,7 @@ internal func TKAssertNotIdentical(
         line:       line,
         column:     column,
         options:    options,
-        context:    XCTestKit.failureContext
+        context:    context
     )
 }
 
@@ -279,7 +289,8 @@ internal func TKAssertEqual<T>(
     file            : StaticString                  = #filePath,
     line            : UInt                          = #line,
     column          : UInt                          = #column,
-    options         : TestOptions                   = .init()
+    options         : TestOptions                   = .init(),
+    context         : FailureContext                = XCTestKit.failureContext
 ) where T : FloatingPoint
 {
     TestKitCore.TKAssertEqual(
@@ -292,7 +303,7 @@ internal func TKAssertEqual<T>(
         line:       line,
         column:     column,
         options:    options,
-        context:    XCTestKit.failureContext
+        context:    context
     )
 }
 
@@ -307,7 +318,8 @@ internal func TKAssertEqual<T>(
     file            : StaticString                  = #filePath,
     line            : UInt                          = #line,
     column          : UInt                          = #column,
-    options         : TestOptions                   = .init()
+    options         : TestOptions                   = .init(),
+    context         : FailureContext                = XCTestKit.failureContext
 ) where T : Numeric
 {
     TestKitCore.TKAssertEqual(
@@ -320,7 +332,7 @@ internal func TKAssertEqual<T>(
         line:       line,
         column:     column,
         options:    options,
-        context:    XCTestKit.failureContext
+        context:    context
     )
 }
 
@@ -335,7 +347,8 @@ internal func TKAssertNotEqual<T>(
     file            : StaticString                  = #filePath,
     line            : UInt                          = #line,
     column          : UInt                          = #column,
-    options         : TestOptions                   = .init()
+    options         : TestOptions                   = .init(),
+    context         : FailureContext                = XCTestKit.failureContext
 ) where T : FloatingPoint
 {
     TestKitCore.TKAssertNotEqual(
@@ -348,7 +361,7 @@ internal func TKAssertNotEqual<T>(
         line:       line,
         column:     column,
         options:    options,
-        context:    XCTestKit.failureContext
+        context:    context
     )
 }
 
@@ -363,7 +376,8 @@ internal func TKAssertNotEqual<T>(
     file            : StaticString                  = #filePath,
     line            : UInt                          = #line,
     column          : UInt                          = #column,
-    options         : TestOptions                   = .init()
+    options         : TestOptions                   = .init(),
+    context         : FailureContext                = XCTestKit.failureContext
 ) where T : Numeric
 {
     TestKitCore.TKAssertNotEqual(
@@ -376,7 +390,7 @@ internal func TKAssertNotEqual<T>(
         line:       line,
         column:     column,
         options:    options,
-        context:    XCTestKit.failureContext
+        context:    context
     )
 }
 
@@ -392,7 +406,8 @@ internal func TKAssertGreaterThan<T>(
     file            : StaticString                  = #filePath,
     line            : UInt                          = #line,
     column          : UInt                          = #column,
-    options         : TestOptions                   = .init()
+    options         : TestOptions                   = .init(),
+    context         : FailureContext                = XCTestKit.failureContext
 ) where T : Comparable
 {
     TestKitCore.TKAssertGreaterThan(
@@ -404,7 +419,7 @@ internal func TKAssertGreaterThan<T>(
         line:       line,
         column:     column,
         options:    options,
-        context:    XCTestKit.failureContext
+        context:    context
     )
 }
 
@@ -418,7 +433,8 @@ internal func TKAssertGreaterThanOrEqual<T>(
     file            : StaticString                  = #filePath,
     line            : UInt                          = #line,
     column          : UInt                          = #column,
-    options         : TestOptions                   = .init()
+    options         : TestOptions                   = .init(),
+    context         : FailureContext                = XCTestKit.failureContext
 ) where T : Comparable
 {
     TestKitCore.TKAssertGreaterThanOrEqual(
@@ -430,7 +446,7 @@ internal func TKAssertGreaterThanOrEqual<T>(
         line:       line,
         column:     column,
         options:    options,
-        context:    XCTestKit.failureContext
+        context:    context
     )
 }
 
@@ -444,7 +460,8 @@ internal func TKAssertLessThanOrEqual<T>(
     file            : StaticString                  = #filePath,
     line            : UInt                          = #line,
     column          : UInt                          = #column,
-    options         : TestOptions                   = .init()
+    options         : TestOptions                   = .init(),
+    context         : FailureContext                = XCTestKit.failureContext
 ) where T : Comparable
 {
     TestKitCore.TKAssertLessThanOrEqual(
@@ -456,7 +473,7 @@ internal func TKAssertLessThanOrEqual<T>(
         line:       line,
         column:     column,
         options:    options,
-        context:    XCTestKit.failureContext
+        context:    context
     )
 }
 
@@ -470,7 +487,8 @@ internal func TKAssertLessThan<T>(
     file            : StaticString                  = #filePath,
     line            : UInt                          = #line,
     column          : UInt                          = #column,
-    options         : TestOptions                   = .init()
+    options         : TestOptions                   = .init(),
+    context         : FailureContext                = XCTestKit.failureContext
 ) where T : Comparable
 {
     TestKitCore.TKAssertLessThan(
@@ -482,7 +500,7 @@ internal func TKAssertLessThan<T>(
         line:       line,
         column:     column,
         options:    options,
-        context:    XCTestKit.failureContext
+        context:    context
     )
 }
 
@@ -498,6 +516,7 @@ internal func TKAssertThrowsError<T>(
     line            : UInt                          = #line,
     column          : UInt                          = #column,
     options         : TestOptions                   = .init(),
+    context         : FailureContext                = XCTestKit.failureContext,
     _ errorHandler  : (any Error) -> Void           = { _ in }
 )
 {
@@ -510,7 +529,7 @@ internal func TKAssertThrowsError<T>(
         column:     column,
         options:    options,
         errorHandler,
-        context:    XCTestKit.failureContext
+        context:    context
     )
 }
 
@@ -523,7 +542,8 @@ internal func TKAssertNoThrow<T>(
     file            : StaticString                  = #filePath,
     line            : UInt                          = #line,
     column          : UInt                          = #column,
-    options         : TestOptions                   = .init()
+    options         : TestOptions                   = .init(),
+    context         : FailureContext                = XCTestKit.failureContext
 )
 {
     TestKitCore.TKAssertNoThrow(
@@ -534,7 +554,7 @@ internal func TKAssertNoThrow<T>(
         line:       line,
         column:     column,
         options:    options,
-        context:    XCTestKit.failureContext
+        context:    context
     )
 }
 
@@ -543,11 +563,12 @@ internal func TKAssertNoThrow<T>(
 // MARK: - Fail
 
 internal func TKFail(
-    _ message   : String        = "",
-    fileID      : StaticString  = #fileID,
-    file        : StaticString  = #filePath,
-    line        : UInt          = #line,
-    column      : UInt          = #column
+    _ message   : String            = "",
+    fileID      : StaticString      = #fileID,
+    file        : StaticString      = #filePath,
+    line        : UInt              = #line,
+    column      : UInt              = #column,
+    context     : FailureContext    = XCTestKit.failureContext
 )
 {
     TestKitCore.TKFail(
@@ -556,7 +577,7 @@ internal func TKFail(
         file:       file,
         line:       line,
         column:     column,
-        context:    XCTestKit.failureContext
+        context:    context
     )
 }
 
@@ -572,7 +593,8 @@ internal func TKAssertAllSatisfy<C>(
     file            : StaticString                  = #filePath,
     line            : UInt                          = #line,
     column          : UInt                          = #column,
-    options         : TestOptions                   = .init()
+    options         : TestOptions                   = .init(),
+    context         : FailureContext                = XCTestKit.failureContext
 ) where C : Collection
 {
     TestKitCore.TKAssertAllSatisfy(
@@ -584,7 +606,7 @@ internal func TKAssertAllSatisfy<C>(
         line:       line,
         column:     column,
         options:    options,
-        context:    XCTestKit.failureContext
+        context:    context
     )
 }
 
@@ -598,7 +620,8 @@ internal func TKAssertAnySatisfy<C>(
     file            : StaticString                  = #filePath,
     line            : UInt                          = #line,
     column          : UInt                          = #column,
-    options         : TestOptions                   = .init()
+    options         : TestOptions                   = .init(),
+    context         : FailureContext                = XCTestKit.failureContext
 ) where C : Collection
 {
     TestKitCore.TKAssertAnySatisfy(
@@ -610,7 +633,7 @@ internal func TKAssertAnySatisfy<C>(
         line:       line,
         column:     column,
         options:    options,
-        context:    XCTestKit.failureContext
+        context:    context
     )
 }
 
@@ -624,7 +647,8 @@ internal func TKAssertNoneSatisfy<C>(
     file            : StaticString                  = #filePath,
     line            : UInt                          = #line,
     column          : UInt                          = #column,
-    options         : TestOptions                   = .init()
+    options         : TestOptions                   = .init(),
+    context         : FailureContext                = XCTestKit.failureContext
 ) where C : Collection
 {
     TestKitCore.TKAssertNoneSatisfy(
@@ -636,7 +660,7 @@ internal func TKAssertNoneSatisfy<C>(
         line:       line,
         column:     column,
         options:    options,
-        context:    XCTestKit.failureContext
+        context:    context
     )
 }
 
@@ -651,7 +675,8 @@ internal func TKAssertSatisfy<C>(
     file            : StaticString                  = #filePath,
     line            : UInt                          = #line,
     column          : UInt                          = #column,
-    options         : TestOptions                   = .init()
+    options         : TestOptions                   = .init(),
+    context         : FailureContext                = XCTestKit.failureContext
 ) where C : Collection
 {
     TestKitCore.TKAssertSatisfy(
@@ -664,7 +689,7 @@ internal func TKAssertSatisfy<C>(
         line:       line,
         column:     column,
         options:    options,
-        context:    XCTestKit.failureContext
+        context:    context
     )
 }
 
@@ -679,7 +704,8 @@ internal func TKAssertSatisfy<C>(
     file            : StaticString                  = #filePath,
     line            : UInt                          = #line,
     column          : UInt                          = #column,
-    options         : TestOptions                   = .init()
+    options         : TestOptions                   = .init(),
+    context         : FailureContext                = XCTestKit.failureContext
 ) where C : Collection
 {
     TestKitCore.TKAssertSatisfy(
@@ -692,7 +718,7 @@ internal func TKAssertSatisfy<C>(
         line:       line,
         column:     column,
         options:    options,
-        context:    XCTestKit.failureContext
+        context:    context
     )
 }
 
@@ -707,7 +733,8 @@ internal func TKAssertSatisfy<C>(
     file            : StaticString                  = #filePath,
     line            : UInt                          = #line,
     column          : UInt                          = #column,
-    options         : TestOptions                   = .init()
+    options         : TestOptions                   = .init(),
+    context         : FailureContext                = XCTestKit.failureContext
 ) where C : Collection
 {
     TestKitCore.TKAssertSatisfy(
@@ -720,7 +747,7 @@ internal func TKAssertSatisfy<C>(
         line:       line,
         column:     column,
         options:    options,
-        context:    XCTestKit.failureContext
+        context:    context
     )
 }
 
@@ -735,7 +762,8 @@ internal func TKAssertExactly<C>(
     file            : StaticString                  = #filePath,
     line            : UInt                          = #line,
     column          : UInt                          = #column,
-    options         : TestOptions                   = .init()
+    options         : TestOptions                   = .init(),
+    context         : FailureContext                = XCTestKit.failureContext
 ) where C : Collection
 {
     TestKitCore.TKAssertExactly(
@@ -748,7 +776,7 @@ internal func TKAssertExactly<C>(
         line:       line,
         column:     column,
         options:    options,
-        context:    XCTestKit.failureContext
+        context:    context
     )
 }
 
@@ -762,7 +790,8 @@ internal func TKAssertExactlyOne<C>(
     file            : StaticString                  = #filePath,
     line            : UInt                          = #line,
     column          : UInt                          = #column,
-    options         : TestOptions                   = .init()
+    options         : TestOptions                   = .init(),
+    context         : FailureContext                = XCTestKit.failureContext
 ) where C : Collection
 {
     TestKitCore.TKAssertExactlyOne(
@@ -774,7 +803,7 @@ internal func TKAssertExactlyOne<C>(
         line:       line,
         column:     column,
         options:    options,
-        context:    XCTestKit.failureContext
+        context:    context
     )
 }
 
@@ -788,7 +817,8 @@ internal func TKAssertSorted<C>(
     file            : StaticString                          = #filePath,
     line            : UInt                                  = #line,
     column          : UInt                                  = #column,
-    options         : TestOptions                           = .init()
+    options         : TestOptions                           = .init(),
+    context         : FailureContext                        = XCTestKit.failureContext
 ) where C : Collection
 {
     TestKitCore.TKAssertSorted(
@@ -800,7 +830,7 @@ internal func TKAssertSorted<C>(
         line:       line,
         column:     column,
         options:    options,
-        context:    XCTestKit.failureContext
+        context:    context
     )
 }
 
@@ -813,7 +843,8 @@ internal func TKAssertUnique<C>(
     file            : StaticString                  = #filePath,
     line            : UInt                          = #line,
     column          : UInt                          = #column,
-    options         : TestOptions                   = .init()
+    options         : TestOptions                   = .init(),
+    context         : FailureContext                = XCTestKit.failureContext
 ) where C : Collection, C.Element : Hashable
 {
     TestKitCore.TKAssertUnique(
@@ -824,7 +855,7 @@ internal func TKAssertUnique<C>(
         line:       line,
         column:     column,
         options:    options,
-        context:    XCTestKit.failureContext
+        context:    context
     )
 }
 
@@ -838,7 +869,8 @@ internal func TKAssertUnique<C, K>(
     file            : StaticString                  = #filePath,
     line            : UInt                          = #line,
     column          : UInt                          = #column,
-    options         : TestOptions                   = .init()
+    options         : TestOptions                   = .init(),
+    context         : FailureContext                = XCTestKit.failureContext
 ) where C : Collection, K : Hashable
 {
     TestKitCore.TKAssertUnique(
@@ -850,6 +882,6 @@ internal func TKAssertUnique<C, K>(
         line:       line,
         column:     column,
         options:    options,
-        context:    XCTestKit.failureContext
+        context:    context
     )
 }
