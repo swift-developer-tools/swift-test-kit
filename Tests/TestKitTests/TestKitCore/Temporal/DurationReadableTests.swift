@@ -16,55 +16,55 @@ internal final class DurationReadableTests: TestKitCase
 {
     func testZero()
     {
-        XCTAssertEqual("0ms", Duration.zero.readable)
+        XCTAssertEqual("0 ms", Duration.zero.readable)
     }
     
     
     
     func testSubMillisecondTruncatesToZero()
     {
-        XCTAssertEqual("0ms", Duration.microseconds(999).readable)
+        XCTAssertEqual("1 ms", Duration.microseconds(999).readable)
     }
     
     
     
     func testOneMillisecond()
     {
-        XCTAssertEqual("1ms", Duration.milliseconds(1).readable)
+        XCTAssertEqual("1 ms", Duration.milliseconds(1).readable)
     }
     
     
     
     func testMiddleMilliseconds()
     {
-        XCTAssertEqual("50ms", Duration.milliseconds(50).readable)
+        XCTAssertEqual("50 ms", Duration.milliseconds(50).readable)
     }
     
     
     
     func testMillisecondsBelowSecondsThreshold()
     {
-        XCTAssertEqual("999ms", Duration.milliseconds(999).readable)
+        XCTAssertEqual("999 ms", Duration.milliseconds(999).readable)
     }
     
     
     
     func testOneSecond()
     {
-        XCTAssertEqual("1.0s", Duration.seconds(1).readable)
+        XCTAssertEqual("1 sec", Duration.seconds(1).readable)
     }
     
     
     
     func testFractionalSeconds()
     {
-        XCTAssertEqual("1.5s", Duration.milliseconds(1500).readable)
+        XCTAssertEqual("1.5 sec", Duration.milliseconds(1500).readable)
     }
     
     
     
     func testLargerSeconds()
     {
-        XCTAssertEqual("10.0s", Duration.seconds(10).readable)
+        XCTAssertEqual("10 sec", Duration.seconds(10).readable)
     }
 }
