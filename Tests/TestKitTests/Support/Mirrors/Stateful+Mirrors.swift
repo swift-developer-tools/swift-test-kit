@@ -39,6 +39,6 @@ internal func TKStateful<C>(
         column:     column,
         options:    options ?? TestConfiguration.global,
         invariant:  invariant,
-        context:    failureContext
+        context:    XCTestKit.failureContext
     )
 }

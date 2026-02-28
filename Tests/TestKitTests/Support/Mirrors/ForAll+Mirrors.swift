@@ -35,7 +35,7 @@ internal func TKForAll<each T>(
         column:     column,
         options:    options,
         property,
-        context:    failureContext
+        context:    XCTestKit.failureContext
     )
 }
 
@@ -62,7 +62,7 @@ internal func TKForAll<each T>(
         column:     column,
         options:    options,
         property,
-        context:    failureContext
+        context:    XCTestKit.failureContext
     )
 }
 
@@ -89,7 +89,7 @@ internal func TKForAll<each T>(
         column:     column,
         options:    options,
         property,
-        context:    failureContext
+        context:    XCTestKit.failureContext
     )
 }
 
@@ -118,6 +118,6 @@ internal func TKForAll<each T>(
         column:     column,
         options:    options,
         property,
-        context:    failureContext
+        context:    XCTestKit.failureContext
     )
 }

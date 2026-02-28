@@ -36,7 +36,7 @@ internal func TKAssert(
         line:       line,
         column:     column,
         options:    options,
-        context:    failureContext
+        context:    XCTestKit.failureContext
     )
 }
 
@@ -60,7 +60,7 @@ internal func TKAssertTrue(
         line:       line,
         column:     column,
         options:    options,
-        context:    failureContext
+        context:    XCTestKit.failureContext
     )
 }
 
@@ -84,7 +84,7 @@ internal func TKAssertFalse(
         line:       line,
         column:     column,
         options:    options,
-        context:    failureContext
+        context:    XCTestKit.failureContext
     )
 }
 
@@ -110,7 +110,7 @@ internal func TKAssertNil(
         line:       line,
         column:     column,
         options:    options,
-        context:    failureContext
+        context:    XCTestKit.failureContext
     )
 }
 
@@ -134,7 +134,7 @@ internal func TKAssertNotNil(
         line:       line,
         column:     column,
         options:    options,
-        context:    failureContext
+        context:    XCTestKit.failureContext
     )
 }
 
@@ -158,7 +158,7 @@ internal func TKUnwrap<T>(
         line:       line,
         column:     column,
         options:    options,
-        context:    failureContext
+        context:    XCTestKit.failureContext
     )
 }
 
@@ -186,7 +186,7 @@ internal func TKAssertEqual<T>(
         line:       line,
         column:     column,
         options:    options,
-        context:    failureContext
+        context:    XCTestKit.failureContext
     )
 }
 
@@ -212,7 +212,7 @@ internal func TKAssertNotEqual<T>(
         line:       line,
         column:     column,
         options:    options,
-        context:    failureContext
+        context:    XCTestKit.failureContext
     )
 }
 
@@ -238,7 +238,7 @@ internal func TKAssertIdentical(
         line:       line,
         column:     column,
         options:    options,
-        context:    failureContext
+        context:    XCTestKit.failureContext
     )
 }
 
@@ -264,7 +264,7 @@ internal func TKAssertNotIdentical(
         line:       line,
         column:     column,
         options:    options,
-        context:    failureContext
+        context:    XCTestKit.failureContext
     )
 }
 
@@ -292,7 +292,7 @@ internal func TKAssertEqual<T>(
         line:       line,
         column:     column,
         options:    options,
-        context:    failureContext
+        context:    XCTestKit.failureContext
     )
 }
 
@@ -320,7 +320,7 @@ internal func TKAssertEqual<T>(
         line:       line,
         column:     column,
         options:    options,
-        context:    failureContext
+        context:    XCTestKit.failureContext
     )
 }
 
@@ -348,7 +348,7 @@ internal func TKAssertNotEqual<T>(
         line:       line,
         column:     column,
         options:    options,
-        context:    failureContext
+        context:    XCTestKit.failureContext
     )
 }
 
@@ -376,7 +376,7 @@ internal func TKAssertNotEqual<T>(
         line:       line,
         column:     column,
         options:    options,
-        context:    failureContext
+        context:    XCTestKit.failureContext
     )
 }
 
@@ -404,7 +404,7 @@ internal func TKAssertGreaterThan<T>(
         line:       line,
         column:     column,
         options:    options,
-        context:    failureContext
+        context:    XCTestKit.failureContext
     )
 }
 
@@ -430,7 +430,7 @@ internal func TKAssertGreaterThanOrEqual<T>(
         line:       line,
         column:     column,
         options:    options,
-        context:    failureContext
+        context:    XCTestKit.failureContext
     )
 }
 
@@ -456,7 +456,7 @@ internal func TKAssertLessThanOrEqual<T>(
         line:       line,
         column:     column,
         options:    options,
-        context:    failureContext
+        context:    XCTestKit.failureContext
     )
 }
 
@@ -482,7 +482,7 @@ internal func TKAssertLessThan<T>(
         line:       line,
         column:     column,
         options:    options,
-        context:    failureContext
+        context:    XCTestKit.failureContext
     )
 }
 
@@ -510,7 +510,7 @@ internal func TKAssertThrowsError<T>(
         column:     column,
         options:    options,
         errorHandler,
-        context:    failureContext
+        context:    XCTestKit.failureContext
     )
 }
 
@@ -534,7 +534,7 @@ internal func TKAssertNoThrow<T>(
         line:       line,
         column:     column,
         options:    options,
-        context:    failureContext
+        context:    XCTestKit.failureContext
     )
 }
 
@@ -556,7 +556,7 @@ internal func TKFail(
         file:       file,
         line:       line,
         column:     column,
-        context:    failureContext
+        context:    XCTestKit.failureContext
     )
 }
 
@@ -584,7 +584,7 @@ internal func TKAssertAllSatisfy<C>(
         line:       line,
         column:     column,
         options:    options,
-        context:    failureContext
+        context:    XCTestKit.failureContext
     )
 }
 
@@ -610,7 +610,7 @@ internal func TKAssertAnySatisfy<C>(
         line:       line,
         column:     column,
         options:    options,
-        context:    failureContext
+        context:    XCTestKit.failureContext
     )
 }
 
@@ -636,7 +636,7 @@ internal func TKAssertNoneSatisfy<C>(
         line:       line,
         column:     column,
         options:    options,
-        context:    failureContext
+        context:    XCTestKit.failureContext
     )
 }
 
@@ -664,7 +664,7 @@ internal func TKAssertSatisfy<C>(
         line:       line,
         column:     column,
         options:    options,
-        context:    failureContext
+        context:    XCTestKit.failureContext
     )
 }
 
@@ -692,7 +692,7 @@ internal func TKAssertSatisfy<C>(
         line:       line,
         column:     column,
         options:    options,
-        context:    failureContext
+        context:    XCTestKit.failureContext
     )
 }
 
@@ -720,7 +720,7 @@ internal func TKAssertSatisfy<C>(
         line:       line,
         column:     column,
         options:    options,
-        context:    failureContext
+        context:    XCTestKit.failureContext
     )
 }
 
@@ -748,7 +748,7 @@ internal func TKAssertExactly<C>(
         line:       line,
         column:     column,
         options:    options,
-        context:    failureContext
+        context:    XCTestKit.failureContext
     )
 }
 
@@ -774,7 +774,7 @@ internal func TKAssertExactlyOne<C>(
         line:       line,
         column:     column,
         options:    options,
-        context:    failureContext
+        context:    XCTestKit.failureContext
     )
 }
 
@@ -800,7 +800,7 @@ internal func TKAssertSorted<C>(
         line:       line,
         column:     column,
         options:    options,
-        context:    failureContext
+        context:    XCTestKit.failureContext
     )
 }
 
@@ -824,7 +824,7 @@ internal func TKAssertUnique<C>(
         line:       line,
         column:     column,
         options:    options,
-        context:    failureContext
+        context:    XCTestKit.failureContext
     )
 }
 
@@ -850,6 +850,6 @@ internal func TKAssertUnique<C, K>(
         line:       line,
         column:     column,
         options:    options,
-        context:    failureContext
+        context:    XCTestKit.failureContext
     )
 }
