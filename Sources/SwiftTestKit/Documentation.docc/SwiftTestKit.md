@@ -1,7 +1,7 @@
 # ``SwiftTestKit``
 
-Property-based and stateful testing, structural diffs, expression capture, 
-and predicate assertions for the Swift Testing framework.
+Property-based, stateful, and temporal testing, with structural diffs and 
+advanced assertions for the Swift Testing framework.
 
 
 
@@ -23,11 +23,16 @@ Predicate assertions verify conditions across collection elements and produce
 element-level failure output, identifying which elements failed, which matched 
 unexpectedly, and which threw errors.
 
-Property-based testing generates random values automatically, shrinks failures 
-to minimal counterexamples, and reports failing values with the same rich 
-output used by standalone assertions. Stateful testing extends this to systems 
+Temporal tests poll assertions continuously for a given duration, or until all 
+assertions pass within a single execution.
+
+Property-based testing generates random values automatically and shrinks 
+failures to minimal counterexamples. Stateful testing extends this to systems 
 with mutable state, generating random command sequences and verifying the 
 system against a simplified model.
+
+Temporal, property-based, and stateful testing all report failures with the 
+same rich output used by standalone assertions.
 
 - Note: To test with the 
 [XCTest](https://developer.apple.com/documentation/xctest) framework, use 
