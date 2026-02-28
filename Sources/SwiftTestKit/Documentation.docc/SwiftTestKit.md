@@ -315,6 +315,50 @@ STKAssertSatisfy(values, atLeast: 4)
 
 
 
+## Temporal Testing
+
+Temporal tests poll assertions over a configurable duration to verify 
+continuous invariants or eventual convergence.
+
+Verify an eventual outcome:
+
+```swift
+let service = DataService()
+service.startLoading()
+
+// Assert that the service eventually loads.
+await STKEventually(timeout: .seconds(2))
+{
+    STKAssertEqual(.loaded, service.state)
+}
+
+// STKEventually failed after 2 sec
+// 
+// STKAssertEqual failed
+// 
+// Expected:   loaded
+// Actual:     processing
+```
+
+Verify a continuous invariant:
+
+```swift
+let buffer = Buffer(capacity: 10)
+buffer.startProducing()
+
+// Assert that the buffer never exceeds capacity.
+await STKAlways(interval: .milliseconds(10))
+{
+    STKAssertLessThanOrEqual(buffer.count, buffer.capacity)
+}
+
+// STKAlways failed after 77.7 ms
+// 
+// STKAssertLessThanOrEqual failed: ("12") is not less than or equal to ("10")
+```
+
+
+
 ## Property-Based Testing
 
 Describe properties that must hold for any given value, and SwiftTestKit will 

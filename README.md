@@ -321,6 +321,50 @@ XCTKAssertSatisfy(values, atLeast: 4)
 
 
 
+## Temporal Testing
+
+Temporal tests poll assertions over a configurable duration to verify 
+continuous invariants or eventual convergence.
+
+Verify an eventual outcome:
+
+```swift
+let service = DataService()
+service.startLoading()
+
+// Assert that the service eventually loads.
+await XCTKEventually(timeout: .seconds(2))
+{
+    XCTKAssertEqual(.loaded, service.state)
+}
+
+// XCTKEventually failed after 2 sec
+// 
+// XCTKAssertEqual failed
+// 
+// Expected:   loaded
+// Actual:     processing
+```
+
+Verify a continuous invariant:
+
+```swift
+let buffer = Buffer(capacity: 10)
+buffer.startProducing()
+
+// Assert that the buffer never exceeds capacity.
+await XCTKAlways(interval: .milliseconds(10))
+{
+    XCTKAssertLessThanOrEqual(buffer.count, buffer.capacity)
+}
+
+// XCTKAlways failed after 77.7 ms
+// 
+// XCTKAssertLessThanOrEqual failed: ("12") is not less than or equal to ("10")
+```
+
+
+
 ## Property-Based Testing
 
 Describe properties that must hold for any given value, and SwiftTestKit and 
