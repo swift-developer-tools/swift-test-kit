@@ -9,6 +9,7 @@
 
 import TestKitCore
 import XCTestKit
+import Synchronization
 import XCTest
 
 
@@ -116,5 +117,37 @@ internal class TestKitCase: XCTestCase
             
             return capturedMessage
         }
+    }
+    
+    
+    
+    /// Calls the given closure with an XCTestKit failure context, and captures
+    /// the failure message.
+    ///
+    /// - Important: Only use this when testing the `eventually` temporal
+    /// evaluator with expected failures. All other expected failures should
+    /// use ``withOneExpectedFailure(_:)`` to fully test the framework failure
+    /// path. See the mirrored test utility function for more information.
+    ///
+    /// - Parameter body: The closure to call.
+    /// - Returns: The failure message of the given closure.
+    @Reasync
+    @discardableResult
+    func withCapturedFailure(
+        _ body: (FailureContext) async throws -> Void
+    ) async -> String?
+    {
+        let captured = Mutex<String?>(nil)
+        
+        let context = FailureContext(framework: .xctk)
+        {
+            message, _, _, _, _ in
+            
+            captured.withLock { $0 = message }
+        }
+        
+        try? await body(context)
+        
+        return captured.withLock { $0 }
     }
 }
