@@ -8,8 +8,8 @@
 //===----------------------------------------------------------------------===//
 
 package func TKAlways(
-    timeout     : Duration?,
-    interval    : Duration?,
+    timeout     : () -> Duration?,
+    interval    : () -> Duration?,
     _ message   : () -> String,
     fileID      : StaticString,
     file        : StaticString,
@@ -22,8 +22,8 @@ package func TKAlways(
 {
     let kind: TemporalRunner.Kind = .always
     
-    let timeout     : Duration  = timeout   ?? options.temporalOptions.timeout
-    let interval    : Duration  = interval  ?? options.temporalOptions.interval
+    let timeout     : Duration  = timeout()  ?? options.temporalOptions.timeout
+    let interval    : Duration  = interval() ?? options.temporalOptions.interval
     
     let result: TemporalResult = await TemporalRunner.run(
         kind:       kind,
@@ -49,8 +49,8 @@ package func TKAlways(
 
 
 package func TKEventually(
-    timeout     : Duration?,
-    interval    : Duration?,
+    timeout     : () -> Duration?,
+    interval    : () -> Duration?,
     _ message   : () -> String,
     fileID      : StaticString,
     file        : StaticString,
@@ -63,8 +63,8 @@ package func TKEventually(
 {
     let kind: TemporalRunner.Kind = .eventually
     
-    let timeout     : Duration  = timeout   ?? options.temporalOptions.timeout
-    let interval    : Duration  = interval  ?? options.temporalOptions.interval
+    let timeout     : Duration  = timeout()  ?? options.temporalOptions.timeout
+    let interval    : Duration  = interval() ?? options.temporalOptions.interval
     
     let result: TemporalResult = await TemporalRunner.run(
         kind:       kind,

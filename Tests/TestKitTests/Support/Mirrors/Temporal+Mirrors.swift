@@ -17,8 +17,8 @@ import TestKitCore
 
 
 internal func TKAlways(
-    timeout     : Duration?                     = nil,
-    interval    : Duration?                     = nil,
+    timeout     : @autoclosure () -> Duration?  = nil,
+    interval    : @autoclosure () -> Duration?  = nil,
     _ message   : @autoclosure () -> String     = "",
     fileID      : StaticString                  = #fileID,
     file        : StaticString                  = #filePath,
@@ -46,8 +46,8 @@ internal func TKAlways(
 
 
 internal func TKEventually(
-    timeout     : Duration?                     = nil,
-    interval    : Duration?                     = nil,
+    timeout     : @autoclosure () -> Duration?  = nil,
+    interval    : @autoclosure () -> Duration?  = nil,
     _ message   : @autoclosure () -> String     = "",
     fileID      : StaticString                  = #fileID,
     file        : StaticString                  = #filePath,

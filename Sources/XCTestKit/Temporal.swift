@@ -42,8 +42,8 @@ import TestKitCore
 ///   falls back to using global options.
 ///   - body: The temporal body.
 public func XCTKAlways(
-    timeout     : Duration?                     = nil,
-    interval    : Duration?                     = nil,
+    timeout     : @autoclosure () -> Duration?  = nil,
+    interval    : @autoclosure () -> Duration?  = nil,
     _ message   : @autoclosure () -> String     = "",
     fileID      : StaticString                  = #fileID,
     file        : StaticString                  = #filePath,
@@ -100,8 +100,8 @@ public func XCTKAlways(
 ///   falls back to using global options.
 ///   - body: The temporal body.
 public func XCTKEventually(
-    timeout     : Duration?                     = nil,
-    interval    : Duration?                     = nil,
+    timeout     : @autoclosure () -> Duration?  = nil,
+    interval    : @autoclosure () -> Duration?  = nil,
     _ message   : @autoclosure () -> String     = "",
     fileID      : StaticString                  = #fileID,
     file        : StaticString                  = #filePath,
