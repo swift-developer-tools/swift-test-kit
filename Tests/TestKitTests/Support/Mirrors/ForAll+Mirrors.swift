@@ -8,7 +8,7 @@
 //===----------------------------------------------------------------------===//
 
 import TestKitCore
-@testable import let XCTestKit.failureContext
+@testable import XCTestKit
 
 /// These functions are mirrors wrapping the actual internal functions,
 /// allowing tests to benefit from autoclosures and default parameters.
@@ -24,6 +24,7 @@ internal func TKForAll<each T>(
     line        : UInt                                  = #line,
     column      : UInt                                  = #column,
     options     : TestOptions                           = .init(),
+    context     : FailureContext                        = XCTestKit.failureContext,
     _ property  : (repeat each T) async throws -> Void
 ) async where repeat each T : Arbitrary
 {
@@ -35,7 +36,7 @@ internal func TKForAll<each T>(
         column:     column,
         options:    options,
         property,
-        context:    failureContext
+        context:    context
     )
 }
 
@@ -50,6 +51,7 @@ internal func TKForAll<each T>(
     line                : UInt                                  = #line,
     column              : UInt                                  = #column,
     options             : TestOptions                           = .init(),
+    context             : FailureContext                        = XCTestKit.failureContext,
     _ property          : (repeat each T) async throws -> Void
 ) async
 {
@@ -62,7 +64,7 @@ internal func TKForAll<each T>(
         column:     column,
         options:    options,
         property,
-        context:    failureContext
+        context:    context
     )
 }
 
@@ -77,6 +79,7 @@ internal func TKForAll<each T>(
     line                : UInt                                  = #line,
     column              : UInt                                  = #column,
     options             : TestOptions                           = .init(),
+    context             : FailureContext                        = XCTestKit.failureContext,
     _ property          : (repeat each T) async throws -> Void
 ) async where repeat each T : Arbitrary
 {
@@ -89,7 +92,7 @@ internal func TKForAll<each T>(
         column:     column,
         options:    options,
         property,
-        context:    failureContext
+        context:    context
     )
 }
 
@@ -105,6 +108,7 @@ internal func TKForAll<each T>(
     line                : UInt                                  = #line,
     column              : UInt                                  = #column,
     options             : TestOptions                           = .init(),
+    context             : FailureContext                        = XCTestKit.failureContext,
     _ property          : (repeat each T) async throws -> Void
 ) async
 {
@@ -118,6 +122,6 @@ internal func TKForAll<each T>(
         column:     column,
         options:    options,
         property,
-        context:    failureContext
+        context:    context
     )
 }

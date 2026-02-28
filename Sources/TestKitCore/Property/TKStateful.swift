@@ -29,7 +29,7 @@ package func TKStateful<C>(
         options:    options
     )
     
-    result.propertyCheck.emit(
+    result.property.emit(
         functionName:   "\(context.framework.rawValue)Stateful",
         statistics:     result.statistics,
         context:        context,

@@ -48,6 +48,13 @@ public typealias FormatOptions      = TestKitCore.FormatOptions
 /// for the complete API reference.
 public typealias PropertyOptions    = TestKitCore.PropertyOptions
 
+/// The options for temporal testing.
+///
+/// - Note: See
+/// [`TemporalOptions`](https://swift-developer-tools.github.io/swift-test-kit/documentation/testkitcore/temporaloptions)
+/// for the complete API reference.
+public typealias TemporalOptions    = TestKitCore.TemporalOptions
+
 
 
 // MARK: - Assertions

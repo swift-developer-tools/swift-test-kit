@@ -7,21 +7,11 @@
 //
 //===----------------------------------------------------------------------===//
 
-import TestKitCore
-
-
-
-extension PropertyInterceptor
+extension ContinuousClock.Instant
 {
-    /// Records an assertion failure.
-    internal func recordFailure()
+    /// The time elapsed between the receiver and now.
+    internal var elapsed: Duration
     {
-        self.recordFailure(
-            message:    "message",
-            fileID:     "ID",
-            file:       "File.swift",
-            line:       1,
-            column:     1
-        )
+        return ContinuousClock.now - self
     }
 }

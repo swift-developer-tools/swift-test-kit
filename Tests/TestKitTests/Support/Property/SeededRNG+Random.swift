@@ -7,8 +7,7 @@
 //
 //===----------------------------------------------------------------------===//
 
-import TestKitCore
-@testable import struct TestKitCore.SeededRNG
+@testable import TestKitCore
 
 
 

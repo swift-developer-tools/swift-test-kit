@@ -7,10 +7,8 @@
 //
 //===----------------------------------------------------------------------===//
 
-import TestKitCore
+@testable import TestKitCore
 import XCTest
-@testable import struct TestKitCore.StatefulRunner
-@testable import struct TestKitCore.StatefulResult
 
 
 
@@ -34,7 +32,8 @@ internal final class StatefulRunnerClassificationTests: TestKitCase
             {
                 model, _ async in
                 
-                PropertyInterceptor.current?.recordLabel("always")
+                (FailureInterceptor.current as? PropertyInterceptor)?
+                    .recordLabel("always")
             },
             options: options
         )
@@ -200,8 +199,11 @@ internal final class StatefulRunnerClassificationTests: TestKitCase
             {
                 model, _ async in
                 
-                PropertyInterceptor.current?.recordLabel("a")
-                PropertyInterceptor.current?.recordLabel("b")
+                (FailureInterceptor.current as? PropertyInterceptor)?
+                    .recordLabel("a")
+                
+                (FailureInterceptor.current as? PropertyInterceptor)?
+                    .recordLabel("b")
             },
             options: options
         )
@@ -304,7 +306,8 @@ internal final class StatefulRunnerClassificationTests: TestKitCase
             {
                 model, _ async throws in
                 
-                PropertyInterceptor.current?.recordLabel("ran")
+                (FailureInterceptor.current as? PropertyInterceptor)?
+                    .recordLabel("ran")
                 
                 if model >= 2
                 {
@@ -345,7 +348,8 @@ internal final class StatefulRunnerClassificationTests: TestKitCase
             {
                 model, _ async throws in
                 
-                PropertyInterceptor.current?.recordLabel("ran")
+                (FailureInterceptor.current as? PropertyInterceptor)?
+                    .recordLabel("ran")
                 
                 if model >= 1
                 {
@@ -449,14 +453,13 @@ internal final class StatefulRunnerClassificationTests: TestKitCase
                 
                 if model >= 3
                 {
-                    PropertyInterceptor.current?.recordFailure()
+                    FailureInterceptor.current?.recordFailure()
                 }
             },
             options: options
         )
         
-        guard case let .failed(counterexample, _, tableDist)
-                = result.propertyCheck
+        guard case let .failed(counterexample, _, tableDist) = result.property
         else
         {
             XCTFail("Expected failed, got \(result)")
@@ -490,17 +493,18 @@ internal final class StatefulRunnerClassificationTests: TestKitCase
             {
                 model, _ async in
                 
-                PropertyInterceptor.current?.recordLabel("ran")
+                (FailureInterceptor.current as? PropertyInterceptor)?
+                    .recordLabel("ran")
                 
                 if model >= 3
                 {
-                    PropertyInterceptor.current?.recordFailure()
+                    FailureInterceptor.current?.recordFailure()
                 }
             },
             options: options
         )
         
-        guard case let .failed(counterexample, dist, _) = result.propertyCheck
+        guard case let .failed(counterexample, dist, _) = result.property
         else
         {
             XCTFail("Expected failed, got \(result)")

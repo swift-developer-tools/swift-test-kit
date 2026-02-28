@@ -7,9 +7,8 @@
 //
 //===----------------------------------------------------------------------===//
 
-import TestKitCore
+@testable import TestKitCore
 import XCTest
-@testable import struct TestKitCore.PropertyRunner
 
 
 
@@ -28,7 +27,7 @@ internal final class PropertyRunnerTests: TestKitCase
             seed:           seed
         )
         
-        let result: PCR<BoundInt> = await PropertyRunner.run(
+        let result: PropertyResult<BoundInt> = await PropertyRunner.run(
                 property:   { _ async in },
                 options:    options
             )
@@ -51,7 +50,7 @@ internal final class PropertyRunnerTests: TestKitCase
             seed:           Self.seed
         )
         
-        let result: PCR<BoundInt> = await PropertyRunner.run(
+        let result: PropertyResult<BoundInt> = await PropertyRunner.run(
                 property:   { _ async in },
                 options:    options
             )
@@ -73,7 +72,7 @@ internal final class PropertyRunnerTests: TestKitCase
             seed:           Self.seed
         )
         
-        let result: PCR<BoundInt> = await PropertyRunner.run(
+        let result: PropertyResult<BoundInt> = await PropertyRunner.run(
                 property:   { _ async in },
                 options:    options
             )
@@ -96,7 +95,7 @@ internal final class PropertyRunnerTests: TestKitCase
             seed:           Self.seed
         )
         
-        let result: PCR<BoundInt> = await PropertyRunner.run(
+        let result: PropertyResult<BoundInt> = await PropertyRunner.run(
                 property:   { _ async in },
                 options:    options
             )
@@ -113,12 +112,12 @@ internal final class PropertyRunnerTests: TestKitCase
     @Reasync
     func testFailureOnFirstIteration() async throws
     {
-        let result: PCR<BoundInt> = await PropertyRunner.run(
+        let result: PropertyResult<BoundInt> = await PropertyRunner.run(
             property:
             {
                 _ async in
                 
-                PropertyInterceptor.current?.recordFailure()
+                FailureInterceptor.current?.recordFailure()
             },
             options: .propertyOptions(seed: Self.seed)
         )
@@ -140,14 +139,14 @@ internal final class PropertyRunnerTests: TestKitCase
             seed:           Self.seed
         )
         
-        let result: PCR<BoundInt> = await PropertyRunner.run(
+        let result: PropertyResult<BoundInt> = await PropertyRunner.run(
             property:
             {
                 boundInt async in
                 
                 if boundInt.value > 25
                 {
-                    PropertyInterceptor.current?.recordFailure()
+                    FailureInterceptor.current?.recordFailure()
                 }
             },
             options: options
@@ -166,7 +165,7 @@ internal final class PropertyRunnerTests: TestKitCase
     @Reasync
     func testThrowingPropertyReturnsFailed() async throws
     {
-        let result: PCR<BoundInt> = await PropertyRunner.run(
+        let result: PropertyResult<BoundInt> = await PropertyRunner.run(
             property:   { _ async throws in throw TestError() },
             options:    .propertyOptions(seed: Self.seed)
         )
@@ -174,8 +173,8 @@ internal final class PropertyRunnerTests: TestKitCase
         let counterexample: Counterexample<BoundInt>
             = try XCTUnwrap(result.assertFailed())
         
-        XCTAssertNotNil(counterexample.thrownError)
-        XCTAssertTrue(counterexample.thrownError is TestError)
+        XCTAssertNotNil(counterexample.error)
+        XCTAssertTrue(counterexample.error is TestError)
         XCTAssertTrue(counterexample.failures.isEmpty)
     }
     
@@ -184,12 +183,12 @@ internal final class PropertyRunnerTests: TestKitCase
     @Reasync
     func testFailureAndThrowCapturesBoth() async throws
     {
-        let result: PCR<BoundInt> = await PropertyRunner.run(
+        let result: PropertyResult<BoundInt> = await PropertyRunner.run(
             property:
             {
                 _ async throws in
                 
-                PropertyInterceptor.current?.recordFailure()
+                FailureInterceptor.current?.recordFailure()
                 
                 throw TestError()
             },
@@ -199,8 +198,8 @@ internal final class PropertyRunnerTests: TestKitCase
         let counterexample: Counterexample<BoundInt>
             = try XCTUnwrap(result.assertFailed())
         
-        XCTAssertNotNil(counterexample.thrownError)
-        XCTAssertTrue(counterexample.thrownError is TestError)
+        XCTAssertNotNil(counterexample.error)
+        XCTAssertTrue(counterexample.error is TestError)
         XCTAssertEqual(counterexample.failures.count, 1)
     }
     
@@ -216,14 +215,14 @@ internal final class PropertyRunnerTests: TestKitCase
             ("Message3", "ID3", "3.swift", 3, 30)
         ]
         
-        let result: PCR<BoundInt> = await PropertyRunner.run(
+        let result: PropertyResult<BoundInt> = await PropertyRunner.run(
             property:
             {
                 _ async in
                 
                 for record in records
                 {
-                    PropertyInterceptor.current?.recordFailure(
+                    FailureInterceptor.current?.recordFailure(
                         message:    record.0,
                         fileID:     record.1,
                         file:       record.2,
@@ -262,14 +261,14 @@ internal final class PropertyRunnerTests: TestKitCase
             seed:       Self.seed
         )
         
-        let result: PCR<BoundInt> = await PropertyRunner.run(
+        let result: PropertyResult<BoundInt> = await PropertyRunner.run(
             property:
             {
                 boundInt async throws in
                 
                 if boundInt.value > target
                 {
-                    PropertyInterceptor.current?.recordFailure()
+                    FailureInterceptor.current?.recordFailure()
                 }
                 
                 if boundInt.value > target * 2
@@ -284,7 +283,7 @@ internal final class PropertyRunnerTests: TestKitCase
             = try XCTUnwrap(result.assertFailed())
         
         XCTAssertEqual(counterexample.value, BoundInt(target + 1))
-        XCTAssertNil(counterexample.thrownError)
+        XCTAssertNil(counterexample.error)
         XCTAssertEqual(counterexample.failures.count, 1)
     }
     
@@ -301,14 +300,14 @@ internal final class PropertyRunnerTests: TestKitCase
             seed:           Self.seed
         )
         
-        let result: PCR<SizeCapture> = await PropertyRunner.run(
+        let result: PropertyResult<SizeCapture> = await PropertyRunner.run(
             property:
             {
                 capture async in
                 
                 if capture.size >= target
                 {
-                    PropertyInterceptor.current?.recordFailure()
+                    FailureInterceptor.current?.recordFailure()
                 }
             },
             options: options
@@ -339,14 +338,14 @@ internal final class PropertyRunnerTests: TestKitCase
             seed:       Self.seed
         )
         
-        let result: PCR<BoundInt> = await PropertyRunner.run(
+        let result: PropertyResult<BoundInt> = await PropertyRunner.run(
             property:
             {
                 boundInt async in
                 
                 if boundInt.value > target
                 {
-                    PropertyInterceptor.current?.recordFailure()
+                    FailureInterceptor.current?.recordFailure()
                 }
             },
             options: options
@@ -366,7 +365,7 @@ internal final class PropertyRunnerTests: TestKitCase
     @Reasync
     func testPreconditionAcceptingAllValuesReturnsPassed() async throws
     {
-        let result: PCR<BoundInt> = await PropertyRunner.run(
+        let result: PropertyResult<BoundInt> = await PropertyRunner.run(
             where:      { _ in true },
             property:   { _ async in },
             options:    .propertyOptions(seed: Self.seed)
@@ -384,7 +383,7 @@ internal final class PropertyRunnerTests: TestKitCase
         /// enough values exist within the discard ratio. With ``BoundInt``
         /// generating values in the range `0...context.size`, about half
         /// the values are even.
-        let result: PCR<BoundInt> = await PropertyRunner.run(
+        let result: PropertyResult<BoundInt> = await PropertyRunner.run(
             where:      { boundInt in boundInt.value % 2 == 0 },
             property:   { _ async in },
             options:    .propertyOptions(seed: Self.seed)
@@ -406,7 +405,7 @@ internal final class PropertyRunnerTests: TestKitCase
             seed:               Self.seed
         )
         
-        let result: PCR<BoundInt> = await PropertyRunner.run(
+        let result: PropertyResult<BoundInt> = await PropertyRunner.run(
             where:      { _ in false },
             property:   { _ async in },
             options:    options
@@ -437,7 +436,7 @@ internal final class PropertyRunnerTests: TestKitCase
             seed:               Self.seed
         )
         
-        let result: PCR<BoundInt> = await PropertyRunner.run(
+        let result: PropertyResult<BoundInt> = await PropertyRunner.run(
             where:      { _ in false },
             property:   { _ async in },
             options:    options
@@ -465,7 +464,7 @@ internal final class PropertyRunnerTests: TestKitCase
             seed:               Self.seed
         )
         
-        let result: PCR<BoundInt> = await PropertyRunner.run(
+        let result: PropertyResult<BoundInt> = await PropertyRunner.run(
             where:      { boundInt in boundInt.value > 1000 },
             property:   { _ async in },
             options:    options
@@ -491,7 +490,7 @@ internal final class PropertyRunnerTests: TestKitCase
             seed:       Self.seed
         )
         
-        let result: PCR<BoundInt> = await PropertyRunner.run(
+        let result: PropertyResult<BoundInt> = await PropertyRunner.run(
             where: { boundInt in boundInt.value % 2 == 0 },
             property:
             {
@@ -499,7 +498,7 @@ internal final class PropertyRunnerTests: TestKitCase
                 
                 if boundInt.value > 20
                 {
-                    PropertyInterceptor.current?.recordFailure()
+                    FailureInterceptor.current?.recordFailure()
                 }
             },
             options: options
@@ -534,7 +533,7 @@ internal final class PropertyRunnerTests: TestKitCase
             seed:               Self.seed
         )
         
-        let result: PCR<SizeCapture> = await PropertyRunner.run(
+        let result: PropertyResult<SizeCapture> = await PropertyRunner.run(
             where:      { capture in capture.size <= target },
             property:   { _ async in },
             options:    options
@@ -563,7 +562,7 @@ internal final class PropertyRunnerTests: TestKitCase
             seed:               Self.seed
         )
         
-        let result: PCR<SizeCapture> = await PropertyRunner.run(
+        let result: PropertyResult<SizeCapture> = await PropertyRunner.run(
             where:      { _ in false },
             property:   { _ async in },
             options:    options
@@ -589,27 +588,27 @@ internal final class PropertyRunnerTests: TestKitCase
         let target  : Int           = 7
         let options : TestOptions   = .propertyOptions(seed: Self.seed)
         
-        let resultA: PCR<BoundInt> = await PropertyRunner.run(
+        let resultA: PropertyResult<BoundInt> = await PropertyRunner.run(
             property:
             {
                 boundInt async in
                 
                 if boundInt.value == target
                 {
-                    PropertyInterceptor.current?.recordFailure()
+                    FailureInterceptor.current?.recordFailure()
                 }
             },
             options: options
         )
         
-        let resultB: PCR<BoundInt> = await PropertyRunner.run(
+        let resultB: PropertyResult<BoundInt> = await PropertyRunner.run(
             property:
             {
                 boundInt async in
                 
                 if boundInt.value == target
                 {
-                    PropertyInterceptor.current?.recordFailure()
+                    FailureInterceptor.current?.recordFailure()
                 }
             },
             options: options
@@ -647,7 +646,7 @@ internal final class PropertyRunnerTests: TestKitCase
     {
         for _ in 0..<1000
         {
-            let result: PCR<BoundInt> = await PropertyRunner.run(
+            let result: PropertyResult<BoundInt> = await PropertyRunner.run(
                 property:   { _ async in },
                 options:    .propertyOptions(seed: nil)
             )
@@ -668,12 +667,12 @@ internal final class PropertyRunnerTests: TestKitCase
         let optionsA    : TestOptions   = .propertyOptions(seed: 111)
         let optionsB    : TestOptions   = .propertyOptions(seed: 222)
         
-        let resultA: PCR<BoundInt> = await PropertyRunner.run(
+        let resultA: PropertyResult<BoundInt> = await PropertyRunner.run(
             property:   { boundInt async in valuesA.append(boundInt.value) },
             options:    optionsA
         )
         
-        let resultB: PCR<BoundInt> = await PropertyRunner.run(
+        let resultB: PropertyResult<BoundInt> = await PropertyRunner.run(
             property:   { boundInt async in valuesB.append(boundInt.value) },
             options:    optionsB
         )
@@ -690,12 +689,12 @@ internal final class PropertyRunnerTests: TestKitCase
     @Reasync
     func testCounterexampleSeedMatchesConfiguredSeed() async throws
     {
-        let result: PCR<BoundInt> = await PropertyRunner.run(
+        let result: PropertyResult<BoundInt> = await PropertyRunner.run(
             property:
             {
                 _ async in
                 
-                PropertyInterceptor.current?.recordFailure()
+                FailureInterceptor.current?.recordFailure()
             },
             options: .propertyOptions(seed: Self.seed)
         )
@@ -719,7 +718,7 @@ internal final class PropertyRunnerTests: TestKitCase
             seed:               Self.seed
         )
         
-        let result: PCR<BoundInt> = await PropertyRunner.run(
+        let result: PropertyResult<BoundInt> = await PropertyRunner.run(
             where:      { _ in false },
             property:   { _ async in },
             options:    options
@@ -737,12 +736,12 @@ internal final class PropertyRunnerTests: TestKitCase
     @Reasync
     func testFailureWithNilSeed() async throws
     {
-        let result: PCR<BoundInt> = await PropertyRunner.run(
+        let result: PropertyResult<BoundInt> = await PropertyRunner.run(
             property:
             {
                 _ async in
                 
-                PropertyInterceptor.current?.recordFailure()
+                FailureInterceptor.current?.recordFailure()
             },
             options: .propertyOptions(seed: nil)
         )
@@ -764,14 +763,14 @@ internal final class PropertyRunnerTests: TestKitCase
             seed:       Self.seed
         )
         
-        let result: PCR<BoundInt> = await PropertyRunner.run(
+        let result: PropertyResult<BoundInt> = await PropertyRunner.run(
             property:
             {
                 boundInt async in
                 
                 if boundInt.value > target
                 {
-                    PropertyInterceptor.current?.recordFailure()
+                    FailureInterceptor.current?.recordFailure()
                 }
             },
             options: options
@@ -789,18 +788,19 @@ internal final class PropertyRunnerTests: TestKitCase
     @Reasync
     func testNoShrinkReturnsOriginalValue() async throws
     {
-        let result: PCR<BoundIntNoShrink> = await PropertyRunner.run(
-            property:
-            {
-                boundInt async in
-                
-                if boundInt.value > 10
+        let result: PropertyResult<BoundIntNoShrink>
+            = await PropertyRunner.run(
+                property:
                 {
-                    PropertyInterceptor.current?.recordFailure()
-                }
-            },
-            options: .propertyOptions(seed: Self.seed)
-        )
+                    boundInt async in
+                    
+                    if boundInt.value > 10
+                    {
+                        FailureInterceptor.current?.recordFailure()
+                    }
+                },
+                options: .propertyOptions(seed: Self.seed)
+            )
         
         let counterexample: Counterexample<BoundIntNoShrink>
             = try XCTUnwrap(result.assertFailed())
@@ -824,7 +824,7 @@ internal final class PropertyRunnerTests: TestKitCase
             seed:               Self.seed
         )
         
-        let result: PCR<Int> = await PropertyRunner.run(
+        let result: PropertyResult<Int> = await PropertyRunner.run(
             using: generator,
             property:
             {
@@ -832,7 +832,7 @@ internal final class PropertyRunnerTests: TestKitCase
                 
                 if int > 0
                 {
-                    PropertyInterceptor.current?.recordFailure()
+                    FailureInterceptor.current?.recordFailure()
                 }
             },
             options: options
@@ -859,14 +859,14 @@ internal final class PropertyRunnerTests: TestKitCase
             seed:               Self.seed
         )
         
-        let result: PCR<BoundInt> = await PropertyRunner.run(
+        let result: PropertyResult<BoundInt> = await PropertyRunner.run(
             property:
             {
                 boundInt async in
                 
                 if boundInt.value > 5
                 {
-                    PropertyInterceptor.current?.recordFailure()
+                    FailureInterceptor.current?.recordFailure()
                 }
             },
             options: options
@@ -891,14 +891,14 @@ internal final class PropertyRunnerTests: TestKitCase
             seed:       Self.seed
         )
         
-        let result: PCR<BoundInt> = await PropertyRunner.run(
+        let result: PropertyResult<BoundInt> = await PropertyRunner.run(
             property:
             {
                 boundInt async in
                 
                 if boundInt.value > target
                 {
-                    PropertyInterceptor.current?.recordFailure(
+                    FailureInterceptor.current?.recordFailure(
                         message:    "value \(boundInt.value) is positive",
                         fileID:     "ID",
                         file:       "File.swift",
@@ -935,7 +935,7 @@ internal final class PropertyRunnerTests: TestKitCase
             seed:       Self.seed
         )
         
-        let result: PCR<BoundInt> = await PropertyRunner.run(
+        let result: PropertyResult<BoundInt> = await PropertyRunner.run(
             property:
             {
                 boundInt async throws in
@@ -953,8 +953,8 @@ internal final class PropertyRunnerTests: TestKitCase
         
         XCTAssertEqual(counterexample.value, BoundInt(target + 1))
         XCTAssertGreaterThan(counterexample.shrinkSteps, 0)
-        XCTAssertNotNil(counterexample.thrownError)
-        XCTAssertTrue(counterexample.thrownError is TestError)
+        XCTAssertNotNil(counterexample.error)
+        XCTAssertTrue(counterexample.error is TestError)
         XCTAssertTrue(counterexample.failures.isEmpty)
     }
     
@@ -970,7 +970,7 @@ internal final class PropertyRunnerTests: TestKitCase
             shrink:     { _ in [1, 2, 3] }
         )
         
-        let result: PCR<Int> = await PropertyRunner.run(
+        let result: PropertyResult<Int> = await PropertyRunner.run(
             using: generator,
             property:
             {
@@ -978,7 +978,7 @@ internal final class PropertyRunnerTests: TestKitCase
                 
                 if int >= target
                 {
-                    PropertyInterceptor.current?.recordFailure()
+                    FailureInterceptor.current?.recordFailure()
                 }
             },
             options: .propertyOptions(seed: Self.seed)
@@ -1007,7 +1007,7 @@ internal final class PropertyRunnerTests: TestKitCase
             seed:               Self.seed
         )
         
-        let result: PCR<Int> = await PropertyRunner.run(
+        let result: PropertyResult<Int> = await PropertyRunner.run(
             using: generator,
             property:
             {
@@ -1015,7 +1015,7 @@ internal final class PropertyRunnerTests: TestKitCase
                 
                 if int > 0
                 {
-                    PropertyInterceptor.current?.recordFailure()
+                    FailureInterceptor.current?.recordFailure()
                 }
             },
             options: options
@@ -1041,12 +1041,12 @@ internal final class PropertyRunnerTests: TestKitCase
             seed:           Self.seed
         )
         
-        let result: PCR<BoundInt> = await PropertyRunner.run(
+        let result: PropertyResult<BoundInt> = await PropertyRunner.run(
             property:
             {
                 _ async in
                 
-                PropertyInterceptor.current?.recordFailure()
+                FailureInterceptor.current?.recordFailure()
             },
             options: options
         )
@@ -1079,7 +1079,7 @@ internal final class PropertyRunnerTests: TestKitCase
             seed:           Self.seed
         )
         
-        let result: PCR<Int> = await PropertyRunner.run(
+        let result: PropertyResult<Int> = await PropertyRunner.run(
             using:  generator,
             where:  { $0 >= 20 },
             property:
@@ -1088,7 +1088,7 @@ internal final class PropertyRunnerTests: TestKitCase
                 
                 if int > 5
                 {
-                    PropertyInterceptor.current?.recordFailure()
+                    FailureInterceptor.current?.recordFailure()
                 }
             },
             options: options
@@ -1113,14 +1113,14 @@ internal final class PropertyRunnerTests: TestKitCase
             seed:       Self.seed
         )
         
-        let result: PCR<BoundInt> = await PropertyRunner.run(
+        let result: PropertyResult<BoundInt> = await PropertyRunner.run(
             property:
             {
                 boundInt async throws in
                 
                 if boundInt.value > target
                 {
-                    PropertyInterceptor.current?.recordFailure(
+                    FailureInterceptor.current?.recordFailure(
                         message:    "value \(boundInt.value) is too large",
                         fileID:     "ID",
                         file:       "File.swift",
@@ -1140,8 +1140,8 @@ internal final class PropertyRunnerTests: TestKitCase
         XCTAssertEqual(counterexample.value, BoundInt(target + 1))
         XCTAssertGreaterThan(counterexample.shrinkSteps, 0)
         
-        XCTAssertNotNil(counterexample.thrownError)
-        XCTAssertTrue(counterexample.thrownError is TestError)
+        XCTAssertNotNil(counterexample.error)
+        XCTAssertTrue(counterexample.error is TestError)
         XCTAssertEqual(counterexample.failures.count, 1)
         XCTAssertNotNil(counterexample.failures.first?.message)
         
@@ -1169,13 +1169,13 @@ internal final class PropertyRunnerTests: TestKitCase
             seed:               Self.seed
         )
         
-        let result: PCR<Int> = await PropertyRunner.run(
+        let result: PropertyResult<Int> = await PropertyRunner.run(
             using: generator,
             property:
             {
                 _ async in
                 
-                PropertyInterceptor.current?.recordFailure()
+                FailureInterceptor.current?.recordFailure()
             },
             options: options
         )
@@ -1202,14 +1202,14 @@ internal final class PropertyRunnerTests: TestKitCase
             seed:       Self.seed
         )
         
-        let result: PCR<BoundInt> = await PropertyRunner.run(
+        let result: PropertyResult<BoundInt> = await PropertyRunner.run(
             property:
             {
                 boundInt async in
                 
                 if boundInt.value > target
                 {
-                    PropertyInterceptor.current?.recordFailure()
+                    FailureInterceptor.current?.recordFailure()
                 }
             },
             options: options
@@ -1250,14 +1250,14 @@ internal final class PropertyRunnerTests: TestKitCase
             seed:           Self.seed
         )
         
-        let result: PCR<Int> = await PropertyRunner.run(
+        let result: PropertyResult<Int> = await PropertyRunner.run(
             using:  generator,
             where:  { int in int >= 100 },
             property:
             {
                 _ async in
                 
-                PropertyInterceptor.current?.recordFailure()
+                FailureInterceptor.current?.recordFailure()
             },
             options: options
         )
@@ -1297,7 +1297,7 @@ internal final class PropertyRunnerTests: TestKitCase
             }
         )
         
-        let result: PCR<Int> = await PropertyRunner.run(
+        let result: PropertyResult<Int> = await PropertyRunner.run(
             using: generator,
             property:
             {
@@ -1305,7 +1305,7 @@ internal final class PropertyRunnerTests: TestKitCase
                 
                 if int > 5
                 {
-                    PropertyInterceptor.current?.recordFailure()
+                    FailureInterceptor.current?.recordFailure()
                 }
             },
             options: .propertyOptions(seed: Self.seed)
@@ -1334,7 +1334,7 @@ internal final class PropertyRunnerTests: TestKitCase
             shrink:     { value in value.shrinkTowardZero() }
         )
         
-        let result: PCR<Int> = await PropertyRunner.run(
+        let result: PropertyResult<Int> = await PropertyRunner.run(
             using: generator,
             property:
             {
@@ -1342,7 +1342,7 @@ internal final class PropertyRunnerTests: TestKitCase
                 
                 if int > target
                 {
-                    PropertyInterceptor.current?.recordFailure()
+                    FailureInterceptor.current?.recordFailure()
                 }
             },
             options: .propertyOptions(seed: Self.seed)
@@ -1364,13 +1364,13 @@ internal final class PropertyRunnerTests: TestKitCase
             shrink:     { _ in [] }
         )
         
-        let result: PCR<Int> = await PropertyRunner.run(
+        let result: PropertyResult<Int> = await PropertyRunner.run(
             using: generator,
             property:
             {
                 _ async in
                 
-                PropertyInterceptor.current?.recordFailure()
+                FailureInterceptor.current?.recordFailure()
             },
             options: .propertyOptions(seed: Self.seed)
         )
@@ -1392,7 +1392,7 @@ internal final class PropertyRunnerTests: TestKitCase
             shrink:     { value in value.shrinkTowardZero() }
         )
         
-        let result: PCR<Int> = await PropertyRunner.run(
+        let result: PropertyResult<Int> = await PropertyRunner.run(
             using:      generator,
             where:      { int in int % 2 == 0 },
             property:   { _ async in },
@@ -1414,7 +1414,7 @@ internal final class PropertyRunnerTests: TestKitCase
             shrink:     { value in value.shrinkTowardZero() }
         )
         
-        let result: PCR<Int> = await PropertyRunner.run(
+        let result: PropertyResult<Int> = await PropertyRunner.run(
             using:      generator,
             where:      { int in int % 2 == 0 },
             property:
@@ -1423,7 +1423,7 @@ internal final class PropertyRunnerTests: TestKitCase
                 
                 if int > target
                 {
-                    PropertyInterceptor.current?.recordFailure()
+                    FailureInterceptor.current?.recordFailure()
                 }
             },
             options: .propertyOptions(seed: Self.seed)
@@ -1456,7 +1456,7 @@ internal final class PropertyRunnerTests: TestKitCase
             shrink:     { _ in [] }
         )
         
-        let result: PCR<Int> = await PropertyRunner.run(
+        let result: PropertyResult<Int> = await PropertyRunner.run(
             using:      generator,
             where:      { _ in false },
             property:   { _ async in },
@@ -1480,7 +1480,7 @@ internal final class PropertyRunnerTests: TestKitCase
     {
         var firstSize: Int? = nil
         
-        let result: PCR<SizeCapture> = await PropertyRunner.run(
+        let result: PropertyResult<SizeCapture> = await PropertyRunner.run(
             property:
             {
                 capture async in
@@ -1513,7 +1513,7 @@ internal final class PropertyRunnerTests: TestKitCase
             seed:           Self.seed
         )
         
-        let result: PCR<SizeCapture> = await PropertyRunner.run(
+        let result: PropertyResult<SizeCapture> = await PropertyRunner.run(
             property:   { capture async in sizes.append(capture.size) },
             options:    options
         )
@@ -1544,7 +1544,7 @@ internal final class PropertyRunnerTests: TestKitCase
             seed:       Self.seed
         )
         
-        let result: PCR<SizeCapture> = await PropertyRunner.run(
+        let result: PropertyResult<SizeCapture> = await PropertyRunner.run(
             property:   { capture async in sizes.append(capture.size) },
             options:    options
         )
@@ -1570,7 +1570,7 @@ internal final class PropertyRunnerTests: TestKitCase
             seed:       Self.seed
         )
         
-        let result: PCR<SizeCapture> = await PropertyRunner.run(
+        let result: PropertyResult<SizeCapture> = await PropertyRunner.run(
             property:   { capture async in sizes.append(capture.size) },
             options:    options
         )
@@ -1598,7 +1598,7 @@ internal final class PropertyRunnerTests: TestKitCase
             seed:           Self.seed
         )
         
-        let result: PCR<SizeCapture> = await PropertyRunner.run(
+        let result: PropertyResult<SizeCapture> = await PropertyRunner.run(
             property:   { capture async in sizes.append(capture.size) },
             options:    options
         )
@@ -1618,14 +1618,14 @@ internal final class PropertyRunnerTests: TestKitCase
     @Reasync
     func testFailureAtSizeZero() async throws
     {
-        let result: PCR<SizeCapture> = await PropertyRunner.run(
+        let result: PropertyResult<SizeCapture> = await PropertyRunner.run(
             property:
             {
                 capture async in
                 
                 if capture.size == 0
                 {
-                    PropertyInterceptor.current?.recordFailure()
+                    FailureInterceptor.current?.recordFailure()
                 }
             },
             options: .propertyOptions(seed: Self.seed)
@@ -1656,7 +1656,7 @@ internal final class PropertyRunnerTests: TestKitCase
             seed:           Self.seed
         )
         
-        let result: PCR<SizeCapture> = await PropertyRunner.run(
+        let result: PropertyResult<SizeCapture> = await PropertyRunner.run(
             property:   { capture async in sizes.append(capture.size) },
             options:    options
         )
@@ -1692,7 +1692,7 @@ internal final class PropertyRunnerTests: TestKitCase
             seed:           Self.seed
         )
         
-        let result: PCR<SizeCapture> = await PropertyRunner.run(
+        let result: PropertyResult<SizeCapture> = await PropertyRunner.run(
             property:   { capture async in sizes.append(capture.size) },
             options:    options
         )
@@ -1741,7 +1741,7 @@ internal final class PropertyRunnerTests: TestKitCase
         /// none are discarded. Use ``SizeCapture`` to observe any discards,
         /// and reject specific sizes that the formula were produced if
         /// `iteration` were used incorrectly.
-        let result: PCR<SizeCapture> = await PropertyRunner.run(
+        let result: PropertyResult<SizeCapture> = await PropertyRunner.run(
             where:
             {
                 capture in
@@ -1792,7 +1792,7 @@ internal final class PropertyRunnerTests: TestKitCase
         /// Discards do not advance `succeeded`, so the size formula
         /// `succeeded * maxSize / iterations` should produce the same
         /// progression regardless of how many discards occur.
-        let result: PCR<BoundInt> = await PropertyRunner.run(
+        let result: PropertyResult<BoundInt> = await PropertyRunner.run(
             where:      { boundInt in  boundInt.value % 2 == 0 },
             property:   { _ async in accepted.append(accepted.count) },
             options:    options
@@ -1810,8 +1810,6 @@ internal final class PropertyRunnerTests: TestKitCase
 
 extension PropertyRunnerTests
 {
-    private typealias PCR = PropertyCheckResult
-    
     /// The seed used to initialize the random number generator.
     ///
     /// Use a fixed seed rather than a random seed for deterministic tests.

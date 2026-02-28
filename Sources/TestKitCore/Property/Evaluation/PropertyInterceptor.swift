@@ -16,17 +16,16 @@ import Synchronization
 
 /// Intercepts assertion failures during property evaluation.
 ///
-/// When an assertion fails inside a property evaluator, the failure message
-/// is recorded here instead of being reported to the associated framework.
-/// This allows the property body to be re-run for shrinking purposes.
-package final class PropertyInterceptor: Sendable
+/// When an assertion fails inside a property evaluator, the failure is
+/// recorded here instead of being reported to the associated framework.
+/// This allows the property to be re-run for shrinking purposes.
+///
+/// - Note: See ``FailureInterceptor`` regarding `Sendable` conformance.
+package final class PropertyInterceptor:
+    FailureInterceptor, @unchecked Sendable
 {
-    /// The current interceptor, if running inside a property evaluator.
-    @TaskLocal
-    package static var current  : PropertyInterceptor?
-    
     /// The current interceptor state.
-    private let state           : Mutex<InterceptorState>
+    private let state: Mutex<InterceptorState>
     
     private static let logger = Logger(
         subsystem:  "swift-test-kit",
@@ -36,25 +35,11 @@ package final class PropertyInterceptor: Sendable
     
     
     /// Initializes a ``PropertyInterceptor`` instance.
-    internal init()
+    override internal init()
     {
         self.state = Mutex(InterceptorState())
-    }
-    
-    
-    
-    /// Whether a failure has been recorded.
-    internal var didFail: Bool
-    {
-        return !failures.isEmpty
-    }
-    
-    
-    
-    /// The recorded failures.
-    internal var failures: [InterceptedFailure]
-    {
-        return state.withLock { $0.failures }
+        
+        super.init()
     }
     
     
@@ -106,34 +91,6 @@ package final class PropertyInterceptor: Sendable
     internal var tableCoverageRequirements: [String : [String : Double]]
     {
         return state.withLock { $0.tableCoverageRequirements }
-    }
-    
-    
-    
-    /// Records the specified assertion failure.
-    /// - Parameters:
-    ///   - message: An optional description of a failure.
-    ///   - fileID: The ID of the file where the failure occurs.
-    ///   - file: The file where the failure occurs.
-    ///   - line: The line where the failure occurs.
-    ///   - column: The column where the failure occurs.
-    package func recordFailure(
-        message : String,
-        fileID  : StaticString,
-        file    : StaticString,
-        line    : UInt,
-        column  : UInt
-    )
-    {
-        let failure = InterceptedFailure(
-            message:    message,
-            fileID:     fileID,
-            file:       file,
-            line:       line,
-            column:     column
-        )
-        
-        state.withLock { $0.failures.append(failure) }
     }
     
     
@@ -346,11 +303,12 @@ package final class PropertyInterceptor: Sendable
     ///
     /// - Note: The distribution and coverage requirements are not cleared,
     /// since they accumulate across iterations.
-    internal func reset()
+    override internal func reset()
     {
+        super.reset()
+        
         state.withLock
         {
-            $0.failures     = []
             $0.labels       = []
             $0.tableLabels  = [:]
         }
@@ -364,9 +322,6 @@ package final class PropertyInterceptor: Sendable
 /// The state of ``PropertyInterceptor``.
 private struct InterceptorState: Equatable, Sendable
 {
-    /// Assertion failures for the current iteration.
-    var failures                    : [InterceptedFailure]          = []
-    
     /// Labels applied to the current iteration.
     var labels                      : Set<String>                   = []
     
@@ -387,41 +342,4 @@ private struct InterceptorState: Equatable, Sendable
     /// The minimum percentage required for each table value, mapping the
     /// table name to a map of labels and their minimum percentages.
     var tableCoverageRequirements   : [String : [String : Double]]  = [:]
-}
-
-
-
-// MARK: - InterceptedFailure
-
-/// A failure intercepted during property evaluation.
-internal struct InterceptedFailure: Equatable, Sendable
-{
-    /// The failure message.
-    internal let message    : String
-    
-    /// The ID of the file where the failure occured.
-    internal let fileID     : StaticString
-    
-    /// The file where the failure occurred.
-    internal let file       : StaticString
-    
-    /// The line where the failure occurred.
-    internal let line       : UInt
-    
-    /// The column where the failure occured.
-    internal let column     : UInt
-    
-    
-    
-    internal static func == (
-        lhs: InterceptedFailure,
-        rhs: InterceptedFailure
-    ) -> Bool
-    {
-        return lhs.message == rhs.message
-            && lhs.fileID.description == rhs.fileID.description
-            && lhs.file.description == rhs.file.description
-            && lhs.line == rhs.line
-            && lhs.column == rhs.column
-    }
 }

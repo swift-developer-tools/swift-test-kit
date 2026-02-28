@@ -18,18 +18,6 @@ private let logger = Logger(
 
 
 
-/// The result of running the stateful property check.
-internal struct StatefulResult<C> where C : Stateful
-{
-    /// The stateful property check result.
-    let propertyCheck   : PropertyCheckResult<[C]>
-    
-    /// The command statistics report.
-    let statistics      : String?
-}
-
-
-
 /// Runs stateful property-based tests.
 internal struct StatefulRunner<C> where C : Stateful
 {
@@ -128,12 +116,11 @@ internal struct StatefulRunner<C> where C : Stateful
                             options:    options
                         )
                     
-                    let result: PropertyCheckResult<[C]>
-                        = .failed(
-                            counterexample:     counterexample,
-                            distribution:       interceptor.distribution,
-                            tableDistribution:  interceptor.tableDistribution
-                        )
+                    let result: PropertyResult<[C]> = .failed(
+                        counterexample:     counterexample,
+                        distribution:       interceptor.distribution,
+                        tableDistribution:  interceptor.tableDistribution
+                    )
                     
                     let statistics: String? = formatStatistics(
                         presence:   commandPresence,
@@ -144,7 +131,7 @@ internal struct StatefulRunner<C> where C : Stateful
                     )
                     
                     return StatefulResult(
-                        propertyCheck:  result,
+                        property:       result,
                         statistics:     statistics
                     )
                     
@@ -154,7 +141,7 @@ internal struct StatefulRunner<C> where C : Stateful
                     
                     if discarded > maxDiscardRatio * iterations
                     {
-                        let result: PropertyCheckResult<[C]> = .exhausted(
+                        let result: PropertyResult<[C]> = .exhausted(
                             discarded:          discarded,
                             succeeded:          succeeded,
                             ratio:              maxDiscardRatio,
@@ -172,7 +159,7 @@ internal struct StatefulRunner<C> where C : Stateful
                         )
                         
                         return StatefulResult(
-                            propertyCheck:  result,
+                            property:       result,
                             statistics:     statistics
                         )
                     }
@@ -190,7 +177,7 @@ internal struct StatefulRunner<C> where C : Stateful
                     
                     if discarded > maxDiscardRatio * iterations
                     {
-                        let result: PropertyCheckResult<[C]> = .exhausted(
+                        let result: PropertyResult<[C]> = .exhausted(
                             discarded:          discarded,
                             succeeded:          succeeded,
                             ratio:              maxDiscardRatio,
@@ -208,7 +195,7 @@ internal struct StatefulRunner<C> where C : Stateful
                         )
                         
                         return StatefulResult(
-                            propertyCheck:  result,
+                            property:       result,
                             statistics:     statistics
                         )
                     }
@@ -231,7 +218,7 @@ internal struct StatefulRunner<C> where C : Stateful
         
         if !unmet.isEmpty
         {
-            let result: PropertyCheckResult<[C]> = .coverageNotMet(
+            let result: PropertyResult<[C]> = .coverageNotMet(
                 unmet:              unmet,
                 iterations:         iterations,
                 seed:               seed,
@@ -248,7 +235,7 @@ internal struct StatefulRunner<C> where C : Stateful
             )
             
             return StatefulResult(
-                propertyCheck:  result,
+                property:       result,
                 statistics:     statistics
             )
         }
@@ -266,13 +253,13 @@ internal struct StatefulRunner<C> where C : Stateful
             || !interceptor.tableDistribution.isEmpty
         {
             var flatLines: [String]
-                = PropertyCheckResult<[C]>.formatDistribution(
+                = PropertyResult<[C]>.formatDistribution(
                     interceptor.distribution,
                     iterations: iterations
                 )
             
             let tableLines: [String]
-                = PropertyCheckResult<[C]>.formatTableDistribution(
+                = PropertyResult<[C]>.formatTableDistribution(
                     interceptor.tableDistribution,
                     iterations: iterations
                 )
@@ -295,7 +282,7 @@ internal struct StatefulRunner<C> where C : Stateful
         
         
         
-        let result: PropertyCheckResult<[C]> = .passed(
+        let result: PropertyResult<[C]> = .passed(
             iterations:         iterations,
             seed:               seed,
             distribution:       interceptor.distribution,
@@ -323,7 +310,7 @@ internal struct StatefulRunner<C> where C : Stateful
         }
         
         return StatefulResult(
-            propertyCheck:  result,
+            property:       result,
             statistics:     statistics
         )
     }
@@ -439,7 +426,7 @@ internal struct StatefulRunner<C> where C : Stateful
             var discarded   : Bool      = false
             var thrownError : Error?    = nil
             
-            await PropertyInterceptor.$current.withValue(interceptor)
+            await FailureInterceptor.$current.withValue(interceptor)
             {
                 do
                 {
@@ -468,9 +455,9 @@ internal struct StatefulRunner<C> where C : Stateful
                 || thrownError != nil
             {
                 let failure = ReplayFailure(
-                    step:           index + 1,
-                    failures:       interceptor.failures,
-                    thrownError:    thrownError
+                    step:       index + 1,
+                    failures:   interceptor.failures,
+                    error:      thrownError
                 )
                 
                 return .failed(failure)
@@ -495,9 +482,9 @@ internal struct StatefulRunner<C> where C : Stateful
                 )
                 
                 let failure = ReplayFailure(
-                    step:           index + 1,
-                    failures:       interceptor.failures,
-                    thrownError:    nil
+                    step:       index + 1,
+                    failures:   interceptor.failures,
+                    error:      nil
                 )
                 
                 return .failed(failure)
@@ -510,7 +497,7 @@ internal struct StatefulRunner<C> where C : Stateful
                 var discarded   : Bool      = false
                 var thrownError : Error?    = nil
                 
-                await PropertyInterceptor.$current.withValue(interceptor)
+                await FailureInterceptor.$current.withValue(interceptor)
                 {
                     do
                     {
@@ -539,9 +526,9 @@ internal struct StatefulRunner<C> where C : Stateful
                     || thrownError != nil
                 {
                     let failure = ReplayFailure(
-                        step:           index + 1,
-                        failures:       interceptor.failures,
-                        thrownError:    thrownError
+                        step:       index + 1,
+                        failures:   interceptor.failures,
+                        error:      thrownError
                     )
                     
                     return .failed(failure)
@@ -642,7 +629,7 @@ internal struct StatefulRunner<C> where C : Stateful
             shrinkSteps:    shrunken.shrinkSteps,
             failures:       replayFailure?.failures ?? [],
             failingStep:    replayFailure?.step ?? shrunken.commands.count,
-            thrownError:    replayFailure?.thrownError
+            error:          replayFailure?.error
         )
     }
     
@@ -922,7 +909,7 @@ internal struct StatefulRunner<C> where C : Stateful
                 = "Command presence (\(succeeded)"
                 + " iteration\(succeeded == 1 ? "" : "s")):"
             
-            let lines: [String] = PropertyCheckResult<[C]>.formatDistribution(
+            let lines: [String] = PropertyResult<[C]>.formatDistribution(
                 presence,
                 iterations: succeeded
             )
@@ -942,7 +929,7 @@ internal struct StatefulRunner<C> where C : Stateful
                 = "Command frequency (\(total)"
                 + " command\(total == 1 ? "" : "s")):"
             
-            let lines: [String] = PropertyCheckResult<[C]>.formatDistribution(
+            let lines: [String] = PropertyResult<[C]>.formatDistribution(
                 frequency,
                 iterations: total
             )
@@ -1047,8 +1034,8 @@ internal struct StatefulRunner<C> where C : Stateful
         /// The assertion failures from the final run with the shrunken value.
         let failures    : [InterceptedFailure]
         
-        /// The error thrown by the property body, if any.
-        let thrownError : Error?
+        /// The error thrown by the property body.
+        let error       : Error?
     }
     
     

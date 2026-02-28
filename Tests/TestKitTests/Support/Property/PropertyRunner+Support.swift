@@ -7,9 +7,8 @@
 //
 //===----------------------------------------------------------------------===//
 
+@testable import TestKitCore
 import XCTest
-import TestKitCore
-@testable import protocol TestKitCore.Arbitrary
 
 
 
@@ -92,42 +91,4 @@ internal struct SizeCapture: Arbitrary, Equatable
     {
         return SizeCapture(size: context.size)
     }
-}
-
-
-
-// MARK: - Assert
-
-/// The associated values of a passed ``PropertyCheckResult``.
-internal struct PassedValues
-{
-    let iterations  : Int
-    let seed        : UInt64
-    let dist        : [String : Int]
-    let tableDist   : [String : [String : Int]]
-}
-
-
-
-/// The associated values of an exhausted ``PropertyCheckResult``.
-internal struct ExhaustedValues
-{
-    let discarded   : Int
-    let succeeded   : Int
-    let ratio       : Int
-    let seed        : UInt64
-    let dist        : [String : Int]
-    let tableDist   : [String : [String : Int]]
-}
-
-
-
-/// The associated values of a coverage-not-met ``PropertyCheckResult``.
-internal struct CoverageNotMetValues
-{
-    let unmet       : [UnmetCoverage]
-    let iterations  : Int
-    let seed        : UInt64
-    let dist        : [String : Int]
-    let tableDist   : [String : [String : Int]]
 }

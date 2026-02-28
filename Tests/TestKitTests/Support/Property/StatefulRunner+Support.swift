@@ -7,8 +7,7 @@
 //
 //===----------------------------------------------------------------------===//
 
-import TestKitCore
-@testable import protocol TestKitCore.Arbitrary
+@testable import TestKitCore
 
 
 
@@ -132,7 +131,7 @@ internal enum ModelAwareShrinkCommand: Stateful, Equatable, Sendable
         
         if model >= Self.threshold
         {
-            PropertyInterceptor.current?.recordFailure()
+            FailureInterceptor.current?.recordFailure()
         }
     }
     
@@ -420,7 +419,8 @@ internal enum LabelCommand: Stateful, Equatable, Sendable
         model   += 1
         system  += 1
         
-        PropertyInterceptor.current?.recordLabel(Self.text)
+        (FailureInterceptor.current as? PropertyInterceptor)?
+            .recordLabel(Self.text)
     }
     
     func advance(
@@ -686,7 +686,7 @@ internal enum RunFailCommand: Stateful, Equatable, Sendable
         
         if model >= Self.threshold
         {
-            PropertyInterceptor.current?.recordFailure()
+            FailureInterceptor.current?.recordFailure()
         }
     }
     
@@ -797,7 +797,7 @@ internal enum RunFailThrowCommand: Stateful, Equatable, Sendable
         model   += 1
         system  += 1
         
-        PropertyInterceptor.current?.recordFailure()
+        FailureInterceptor.current?.recordFailure()
         
         throw TestError()
     }
@@ -926,7 +926,7 @@ internal enum PostCAfterRunFailCommand: Stateful, Equatable, Sendable
         model   += 1
         system  += 1
         
-        PropertyInterceptor.current?.recordFailure(
+        FailureInterceptor.current?.recordFailure(
             message:    Self.message,
             fileID:     "",
             file:       "",

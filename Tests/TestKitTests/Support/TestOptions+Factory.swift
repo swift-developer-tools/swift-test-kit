@@ -37,4 +37,23 @@ internal extension TestOptions
         
         return TestOptions(propertyOptions: propertyOptions)
     }
+    
+    
+    
+    /// Initializes a ``TestOptions`` instance, optionally specifying values
+    /// for its temporal testing options property.
+    static func temporalOptions(
+        timeout         : Duration  = .seconds(2),
+        interval        : Duration  = .milliseconds(50),
+        showAllFailures : Bool      = false
+    ) -> TestOptions
+    {
+        let temporalOptions = TemporalOptions(
+            timeout:            timeout,
+            interval:           interval,
+            showAllFailures:    showAllFailures
+        )
+        
+        return TestOptions(temporalOptions: temporalOptions)
+    }
 }

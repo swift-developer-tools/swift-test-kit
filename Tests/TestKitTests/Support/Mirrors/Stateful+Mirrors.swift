@@ -8,7 +8,7 @@
 //===----------------------------------------------------------------------===//
 
 import TestKitCore
-@testable import let XCTestKit.failureContext
+@testable import XCTestKit
 
 
 
@@ -25,6 +25,7 @@ internal func TKStateful<C>(
     line        : UInt                                          = #line,
     column      : UInt                                          = #column,
     options     : TestOptions?                                  = nil,
+    context     : FailureContext                                = XCTestKit.failureContext,
     invariant   : ((C.Model, C.System) async throws -> Void)?   = nil
 ) async where C : Stateful
 {
@@ -39,6 +40,6 @@ internal func TKStateful<C>(
         column:     column,
         options:    options ?? TestConfiguration.global,
         invariant:  invariant,
-        context:    failureContext
+        context:    context
     )
 }

@@ -7,10 +7,8 @@
 //
 //===----------------------------------------------------------------------===//
 
-import TestKitCore
+@testable import TestKitCore
 import XCTest
-@testable import struct TestKitCore.StatefulRunner
-@testable import struct TestKitCore.StatefulResult
 
 
 
@@ -114,7 +112,7 @@ internal final class StatefulRunnerTests: TestKitCase
                 
                 if model > 1
                 {
-                    PropertyInterceptor.current?.recordFailure()
+                    FailureInterceptor.current?.recordFailure()
                 }
             },
             options: options
@@ -152,7 +150,7 @@ internal final class StatefulRunnerTests: TestKitCase
                     model > maxCommandCount
                     || system > maxCommandCount
                 {
-                    PropertyInterceptor.current?.recordFailure()
+                    FailureInterceptor.current?.recordFailure()
                 }
             },
             options: options
@@ -207,7 +205,7 @@ internal final class StatefulRunnerTests: TestKitCase
                 
                 if model != system
                 {
-                    PropertyInterceptor.current?.recordFailure()
+                    FailureInterceptor.current?.recordFailure()
                 }
             },
             options: options
@@ -239,7 +237,7 @@ internal final class StatefulRunnerTests: TestKitCase
                 
                 if model >= target
                 {
-                    PropertyInterceptor.current?.recordFailure()
+                    FailureInterceptor.current?.recordFailure()
                 }
             },
             options: options
@@ -279,7 +277,7 @@ internal final class StatefulRunnerTests: TestKitCase
                 
                 if model >= target
                 {
-                    PropertyInterceptor.current?.recordFailure()
+                    FailureInterceptor.current?.recordFailure()
                 }
             },
             options: options
@@ -313,8 +311,8 @@ internal final class StatefulRunnerTests: TestKitCase
         let counterexample: Counterexample<[IncrementCommand]>
             = try XCTUnwrap(result.assertFailed())
         
-        XCTAssertNotNil(counterexample.thrownError)
-        XCTAssertTrue(counterexample.thrownError is TestError)
+        XCTAssertNotNil(counterexample.error)
+        XCTAssertTrue(counterexample.error is TestError)
         XCTAssertTrue(counterexample.failures.isEmpty)
     }
     
@@ -335,7 +333,7 @@ internal final class StatefulRunnerTests: TestKitCase
             {
                 _, _ async throws in
                 
-                PropertyInterceptor.current?.recordFailure()
+                FailureInterceptor.current?.recordFailure()
                 
                 throw TestError()
             },
@@ -345,8 +343,8 @@ internal final class StatefulRunnerTests: TestKitCase
         let counterexample: Counterexample<[IncrementCommand]>
             = try XCTUnwrap(result.assertFailed())
         
-        XCTAssertNotNil(counterexample.thrownError)
-        XCTAssertTrue(counterexample.thrownError is TestError)
+        XCTAssertNotNil(counterexample.error)
+        XCTAssertTrue(counterexample.error is TestError)
         XCTAssertEqual(counterexample.failures.count, 1)
     }
     
@@ -369,7 +367,7 @@ internal final class StatefulRunnerTests: TestKitCase
             {
                 _, _ async in
                 
-                PropertyInterceptor.current?.recordFailure()
+                FailureInterceptor.current?.recordFailure()
             },
             options: options
         )
@@ -399,7 +397,7 @@ internal final class StatefulRunnerTests: TestKitCase
             
             if model >= 3
             {
-                PropertyInterceptor.current?.recordFailure()
+                FailureInterceptor.current?.recordFailure()
             }
         }
         
@@ -419,7 +417,7 @@ internal final class StatefulRunnerTests: TestKitCase
             options:    options
         )
         
-        switch (resultA.propertyCheck, resultB.propertyCheck)
+        switch (resultA.property, resultB.property)
         {
             case let (
                 .failed(counterA, _, _),
@@ -454,7 +452,7 @@ internal final class StatefulRunnerTests: TestKitCase
             {
                 _, _ async throws in
                 
-                PropertyInterceptor.current?.recordFailure()
+                FailureInterceptor.current?.recordFailure()
                 
                 throw TestError()
             },
@@ -485,7 +483,7 @@ internal final class StatefulRunnerTests: TestKitCase
             {
                 _, _ async in
                 
-                PropertyInterceptor.current?.recordFailure()
+                FailureInterceptor.current?.recordFailure()
             },
             options: options
         )
@@ -610,7 +608,7 @@ internal final class StatefulRunnerTests: TestKitCase
             
                 if model >= DivergentCommand.threshold
                 {
-                    PropertyInterceptor.current?.recordFailure()
+                    FailureInterceptor.current?.recordFailure()
                 }
             },
             options: options
@@ -647,7 +645,7 @@ internal final class StatefulRunnerTests: TestKitCase
                 
                 if model >= target
                 {
-                    PropertyInterceptor.current?.recordFailure()
+                    FailureInterceptor.current?.recordFailure()
                 }
             },
             options: options
@@ -683,7 +681,7 @@ internal final class StatefulRunnerTests: TestKitCase
                 
                 if model >= 3
                 {
-                    PropertyInterceptor.current?.recordFailure()
+                    FailureInterceptor.current?.recordFailure()
                 }
             },
             options: options
@@ -720,7 +718,7 @@ internal final class StatefulRunnerTests: TestKitCase
                 
                 if model >= 3
                 {
-                    PropertyInterceptor.current?.recordFailure()
+                    FailureInterceptor.current?.recordFailure()
                 }
             },
             options: options
@@ -760,7 +758,7 @@ internal final class StatefulRunnerTests: TestKitCase
                 
                 if model > target
                 {
-                    PropertyInterceptor.current?.recordFailure()
+                    FailureInterceptor.current?.recordFailure()
                 }
             },
             options: options
@@ -800,7 +798,7 @@ internal final class StatefulRunnerTests: TestKitCase
                 
                 if model >= target
                 {
-                    PropertyInterceptor.current?.recordFailure()
+                    FailureInterceptor.current?.recordFailure()
                 }
             },
             options: options
@@ -843,7 +841,7 @@ internal final class StatefulRunnerTests: TestKitCase
                 
                 if model > target
                 {
-                    PropertyInterceptor.current?.recordFailure()
+                    FailureInterceptor.current?.recordFailure()
                 }
             },
             options: options
@@ -916,7 +914,7 @@ internal final class StatefulRunnerTests: TestKitCase
                 
                 if model >= target
                 {
-                    PropertyInterceptor.current?.recordFailure()
+                    FailureInterceptor.current?.recordFailure()
                 }
             },
             options: options
@@ -969,7 +967,7 @@ internal final class StatefulRunnerTests: TestKitCase
                 
                 if model > target
                 {
-                    PropertyInterceptor.current?.recordFailure()
+                    FailureInterceptor.current?.recordFailure()
                 }
             },
             options: options
@@ -1004,7 +1002,7 @@ internal final class StatefulRunnerTests: TestKitCase
                 
                 if model >= target
                 {
-                    PropertyInterceptor.current?.recordFailure()
+                    FailureInterceptor.current?.recordFailure()
                 }
             },
             options: options
@@ -1044,7 +1042,7 @@ internal final class StatefulRunnerTests: TestKitCase
                 
                 if model >= target
                 {
-                    PropertyInterceptor.current?.recordFailure()
+                    FailureInterceptor.current?.recordFailure()
                 }
             },
             options: options
@@ -1088,7 +1086,7 @@ internal final class StatefulRunnerTests: TestKitCase
                 
                 if model >= target
                 {
-                    PropertyInterceptor.current?.recordFailure()
+                    FailureInterceptor.current?.recordFailure()
                 }
             },
             options: options
@@ -1137,8 +1135,8 @@ internal final class StatefulRunnerTests: TestKitCase
         
         XCTAssertEqual(counterexample.value.count, RunThrowCommand.threshold)
         XCTAssertEqual(counterexample.shrinkSteps, 0)
-        XCTAssertNotNil(counterexample.thrownError)
-        XCTAssertTrue(counterexample.thrownError is TestError)
+        XCTAssertNotNil(counterexample.error)
+        XCTAssertTrue(counterexample.error is TestError)
         XCTAssertTrue(counterexample.failures.isEmpty)
     }
     
@@ -1169,7 +1167,7 @@ internal final class StatefulRunnerTests: TestKitCase
                 
                 if model > target
                 {
-                    PropertyInterceptor.current?.recordFailure()
+                    FailureInterceptor.current?.recordFailure()
                 }
             },
             options: options
@@ -1204,7 +1202,7 @@ internal final class StatefulRunnerTests: TestKitCase
                 
                 if model >= target
                 {
-                    PropertyInterceptor.current?.recordFailure()
+                    FailureInterceptor.current?.recordFailure()
                 }
             },
             options: options
@@ -1239,7 +1237,7 @@ internal final class StatefulRunnerTests: TestKitCase
                 
                 if model >= 3
                 {
-                    PropertyInterceptor.current?.recordFailure()
+                    FailureInterceptor.current?.recordFailure()
                 }
             },
             options: options
@@ -1274,13 +1272,13 @@ internal final class StatefulRunnerTests: TestKitCase
                 
                 if model >= target
                 {
-                    PropertyInterceptor.current?.recordFailure()
+                    FailureInterceptor.current?.recordFailure()
                 }
                 
                 if model != system
                 {
                     /// If state leaked, the model and system will diverge.
-                    PropertyInterceptor.current?.recordFailure()
+                    FailureInterceptor.current?.recordFailure()
                 }
             },
             options: options
@@ -1323,7 +1321,7 @@ internal final class StatefulRunnerTests: TestKitCase
                 
                 if model >= target
                 {
-                    PropertyInterceptor.current?.recordFailure()
+                    FailureInterceptor.current?.recordFailure()
                 }
             },
             options: options
@@ -1368,7 +1366,7 @@ internal final class StatefulRunnerTests: TestKitCase
             options:    options
         )
         
-        guard case let .failed(counterexample, _, _) = result.propertyCheck
+        guard case let .failed(counterexample, _, _) = result.property
         else
         {
             XCTFail("Expected .failed, got \(result)")
@@ -1423,13 +1421,13 @@ internal final class StatefulRunnerTests: TestKitCase
                 
                 if model >= maxCommandCount
                 {
-                    PropertyInterceptor.current?.recordFailure()
+                    FailureInterceptor.current?.recordFailure()
                 }
             },
             options: options
         )
         
-        guard case let .failed(counterexample, _, _) = result.propertyCheck
+        guard case let .failed(counterexample, _, _) = result.property
         else
         {
             XCTFail("Expected .failed, got \(result)")
@@ -1497,7 +1495,7 @@ internal final class StatefulRunnerTests: TestKitCase
         
         XCTAssertEqual(counterexample.failingStep, RunFailCommand.threshold)
         XCTAssertEqual(counterexample.failures.count, 1)
-        XCTAssertNil(counterexample.thrownError)
+        XCTAssertNil(counterexample.error)
         
         XCTAssertGreaterThanOrEqual(
             counterexample.value.count,
@@ -1556,8 +1554,8 @@ internal final class StatefulRunnerTests: TestKitCase
         
         XCTAssertEqual(counterexample.failingStep, RunThrowCommand.threshold)
         XCTAssertTrue(counterexample.failures.isEmpty)
-        XCTAssertNotNil(counterexample.thrownError)
-        XCTAssertTrue(counterexample.thrownError is TestError)
+        XCTAssertNotNil(counterexample.error)
+        XCTAssertTrue(counterexample.error is TestError)
     }
     
     
@@ -1582,8 +1580,8 @@ internal final class StatefulRunnerTests: TestKitCase
             = try XCTUnwrap(result.assertFailed())
         
         XCTAssertEqual(counterexample.failures.count, 1)
-        XCTAssertNotNil(counterexample.thrownError)
-        XCTAssertTrue(counterexample.thrownError is TestError)
+        XCTAssertNotNil(counterexample.error)
+        XCTAssertTrue(counterexample.error is TestError)
     }
     
     
@@ -1617,7 +1615,7 @@ internal final class StatefulRunnerTests: TestKitCase
                     || system < 1
                     || model != system
                 {
-                    PropertyInterceptor.current?.recordFailure()
+                    FailureInterceptor.current?.recordFailure()
                 }
             },
             options: options
@@ -1652,7 +1650,7 @@ internal final class StatefulRunnerTests: TestKitCase
                 
                 if model >= RunFailCommand.threshold
                 {
-                    PropertyInterceptor.current?.recordFailure()
+                    FailureInterceptor.current?.recordFailure()
                 }
             },
             options: options
@@ -1779,8 +1777,8 @@ internal final class StatefulRunnerTests: TestKitCase
         
         XCTAssertEqual(counterexample.value.count, target)
         XCTAssertGreaterThan(counterexample.shrinkSteps, 0)
-        XCTAssertNotNil(counterexample.thrownError)
-        XCTAssertTrue(counterexample.thrownError is TestError)
+        XCTAssertNotNil(counterexample.error)
+        XCTAssertTrue(counterexample.error is TestError)
     }
     
     
@@ -1804,7 +1802,7 @@ internal final class StatefulRunnerTests: TestKitCase
                 
                 if model >= RunFailCommand.threshold
                 {
-                    PropertyInterceptor.current?.recordFailure(
+                    FailureInterceptor.current?.recordFailure(
                         message:    "invariant",
                         fileID:     "ID",
                         file:       "File.swift",
@@ -1854,7 +1852,7 @@ internal final class StatefulRunnerTests: TestKitCase
                 
                 if model >= target
                 {
-                    PropertyInterceptor.current?.recordFailure()
+                    FailureInterceptor.current?.recordFailure()
                 }
             },
             options: options
@@ -1893,7 +1891,7 @@ internal final class StatefulRunnerTests: TestKitCase
                 
                 if model >= target
                 {
-                    PropertyInterceptor.current?.recordFailure()
+                    FailureInterceptor.current?.recordFailure()
                 }
             },
             options: options
@@ -1930,7 +1928,7 @@ internal final class StatefulRunnerTests: TestKitCase
                 
                 if model > 1
                 {
-                    PropertyInterceptor.current?.recordFailure()
+                    FailureInterceptor.current?.recordFailure()
                 }
             },
             options: options
@@ -1966,7 +1964,7 @@ internal final class StatefulRunnerTests: TestKitCase
                 
                 if model >= target
                 {
-                    PropertyInterceptor.current?.recordFailure(
+                    FailureInterceptor.current?.recordFailure(
                         message:    "model \(model)",
                         fileID:     "ID",
                         file:       "File.swift",
@@ -2020,7 +2018,7 @@ internal final class StatefulRunnerTests: TestKitCase
                     || system > BoundCommand.bound
                     || model != system
                 {
-                    PropertyInterceptor.current?.recordFailure()
+                    FailureInterceptor.current?.recordFailure()
                 }
             },
             options: options
@@ -2265,7 +2263,7 @@ internal final class StatefulRunnerTests: TestKitCase
                 
                 if model >= target
                 {
-                    PropertyInterceptor.current?.recordFailure()
+                    FailureInterceptor.current?.recordFailure()
                 }
             },
             options: options
@@ -2300,7 +2298,7 @@ internal final class StatefulRunnerTests: TestKitCase
                 
                 if model != system
                 {
-                    PropertyInterceptor.current?.recordFailure()
+                    FailureInterceptor.current?.recordFailure()
                 }
             },
             options: options
@@ -2318,7 +2316,7 @@ internal final class StatefulRunnerTests: TestKitCase
                     model != system
                     || model < 0
                 {
-                    PropertyInterceptor.current?.recordFailure()
+                    FailureInterceptor.current?.recordFailure()
                 }
             },
             options: options
@@ -2360,7 +2358,7 @@ internal final class StatefulRunnerTests: TestKitCase
                 
                 if model >= 3
                 {
-                    PropertyInterceptor.current?.recordFailure()
+                    FailureInterceptor.current?.recordFailure()
                 }
             },
             options: optionsA
@@ -2376,7 +2374,7 @@ internal final class StatefulRunnerTests: TestKitCase
                 
                 if model != system
                 {
-                    PropertyInterceptor.current?.recordFailure()
+                    FailureInterceptor.current?.recordFailure()
                 }
             },
             options: optionsB

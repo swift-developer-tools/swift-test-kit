@@ -7,13 +7,9 @@
 //
 //===----------------------------------------------------------------------===//
 
-import TestKitCore
+@testable import TestKitCore
 import XCTestKit
 import XCTest
-@testable import class TestKitCore.GenerationContext
-@testable import enum TestKitCore.PropertyCheckResult
-@testable import struct TestKitCore.StatefulRunner
-@testable import struct TestKitCore.StatefulResult
 
 
 
@@ -856,7 +852,7 @@ internal final class StatefulMacroTests: TestKitCase
             options:    options
         )
         
-        guard case let .failed(counterexample, _, _) = result.propertyCheck
+        guard case let .failed(counterexample, _, _) = result.property
         else
         {
             XCTFail("Expected .failed, got \(result)")

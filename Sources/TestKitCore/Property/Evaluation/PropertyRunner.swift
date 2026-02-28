@@ -25,7 +25,7 @@ internal struct PropertyRunner
     internal static func run<T>(
         property    : (T) async throws -> Void,
         options     : TestOptions
-    ) async -> PropertyCheckResult<T> where T : Arbitrary
+    ) async -> PropertyResult<T> where T : Arbitrary
     {
         return await run(
             generate:       { context in T.arbitrary(using: context) },
@@ -49,7 +49,7 @@ internal struct PropertyRunner
         using generator : Generator<T>,
         property        : (T) async throws -> Void,
         options         : TestOptions
-    ) async -> PropertyCheckResult<T>
+    ) async -> PropertyResult<T>
     {
         return await run(
             generate:       generator.generate,
@@ -73,7 +73,7 @@ internal struct PropertyRunner
         where precondition  : @escaping (T) -> Bool,
         property            : (T) async throws -> Void,
         options             : TestOptions
-    ) async -> PropertyCheckResult<T> where T : Arbitrary
+    ) async -> PropertyResult<T> where T : Arbitrary
     {
         return await run(
             generate:       { context in T.arbitrary(using: context) },
@@ -99,7 +99,7 @@ internal struct PropertyRunner
         where precondition  : @escaping (T) -> Bool,
         property            : (T) async throws -> Void,
         options             : TestOptions
-    ) async -> PropertyCheckResult<T>
+    ) async -> PropertyResult<T>
     {
         return await run(
             generate:       generator.generate,
@@ -127,7 +127,7 @@ internal struct PropertyRunner
         precondition        : ((T) -> Bool)?,
         property            : (T) async throws -> Void,
         options             : TestOptions
-    ) async -> PropertyCheckResult<T>
+    ) async -> PropertyResult<T>
     {
         let opts: PropertyOptions = options.propertyOptions
         
@@ -255,13 +255,13 @@ internal struct PropertyRunner
             || !interceptor.tableDistribution.isEmpty
         {
             var flatLines: [String]
-                = PropertyCheckResult<T>.formatDistribution(
+                = PropertyResult<T>.formatDistribution(
                     interceptor.distribution,
                     iterations: iterations
                 )
             
             let tableLines: [String]
-                = PropertyCheckResult<T>.formatTableDistribution(
+                = PropertyResult<T>.formatTableDistribution(
                     interceptor.tableDistribution,
                     iterations: iterations
                 )
@@ -315,7 +315,7 @@ internal struct PropertyRunner
         var threwError  : Bool  = false
         var discarded   : Bool  = false
         
-        await PropertyInterceptor.$current.withValue(interceptor)
+        await FailureInterceptor.$current.withValue(interceptor)
         {
             do
             {
@@ -416,7 +416,7 @@ internal struct PropertyRunner
         let interceptor : PropertyInterceptor   = .init()
         var thrownError : Error?                = nil
         
-        await PropertyInterceptor.$current.withValue(interceptor)
+        await FailureInterceptor.$current.withValue(interceptor)
         {
             do
             {
@@ -436,7 +436,7 @@ internal struct PropertyRunner
             shrinkSteps:    steps,
             failures:       interceptor.failures,
             failingStep:    nil,
-            thrownError:    thrownError
+            error:          thrownError
         )
     }
     

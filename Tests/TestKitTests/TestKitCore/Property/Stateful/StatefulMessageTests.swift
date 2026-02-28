@@ -71,7 +71,7 @@ internal final class StatefulMessageTests: TestKitCase
                 {
                     _, _ async in
                     
-                    PropertyInterceptor.current?.recordFailure()
+                    FailureInterceptor.current?.recordFailure()
                 }
             )
         }

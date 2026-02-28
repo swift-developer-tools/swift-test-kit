@@ -34,6 +34,7 @@ for the complete API references.
 - ``DiffOptions``
 - ``FormatOptions``
 - ``PropertyOptions``
+- ``TemporalOptions``
 
 ### Property-Based Testing
 

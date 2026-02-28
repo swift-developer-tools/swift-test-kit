@@ -1,7 +1,7 @@
 # swift-test-kit
 
-Property-based and stateful testing, structural diffs, expression capture, 
-and predicate assertions for both the Swift Testing and XCTest frameworks.
+Property-based, stateful, and temporal testing, with structural diffs and 
+advanced assertions for both the Swift Testing and XCTest frameworks.
 
 
 
@@ -29,11 +29,16 @@ Predicate assertions verify conditions across collection elements and produce
 element-level failure output, identifying which elements failed, which matched 
 unexpectedly, and which threw errors.
 
-Property-based testing generates random values automatically, shrinks failures 
-to minimal counterexamples, and reports failing values with the same rich 
-output used by standalone assertions. Stateful testing extends this to systems 
+Temporal tests poll assertions continuously for a given duration, or until all 
+assertions pass within a single execution.
+
+Property-based testing generates random values automatically and shrinks 
+failures to minimal counterexamples. Stateful testing extends this to systems 
 with mutable state, generating random command sequences and verifying the 
 system against a simplified model.
+
+Temporal, property-based, and stateful testing all report failures with the 
+same rich output used by standalone assertions.
 
 > [!NOTE]
 > All examples below use XCTestKit. SwiftTestKit provides an identical API 
@@ -312,6 +317,50 @@ XCTKAssertSatisfy(values, atLeast: 4)
 //     Threw errors:
 //         [1]: -10 (threw error "invalid")
 //         [3]: -30 (threw error "invalid")
+```
+
+
+
+## Temporal Testing
+
+Temporal tests poll assertions over a configurable duration to verify 
+continuous invariants or eventual convergence.
+
+Verify an eventual outcome:
+
+```swift
+let service = DataService()
+service.startLoading()
+
+// Assert that the service eventually loads.
+await XCTKEventually(timeout: .seconds(2))
+{
+    XCTKAssertEqual(.loaded, service.state)
+}
+
+// XCTKEventually failed after 2 sec
+// 
+// XCTKAssertEqual failed
+// 
+// Expected:   loaded
+// Actual:     processing
+```
+
+Verify a continuous invariant:
+
+```swift
+let buffer = Buffer(capacity: 10)
+buffer.startProducing()
+
+// Assert that the buffer never exceeds capacity.
+await XCTKAlways(interval: .milliseconds(10))
+{
+    XCTKAssertLessThanOrEqual(buffer.count, buffer.capacity)
+}
+
+// XCTKAlways failed after 77.7 ms
+// 
+// XCTKAssertLessThanOrEqual failed: ("12") is not less than or equal to ("10")
 ```
 
 
