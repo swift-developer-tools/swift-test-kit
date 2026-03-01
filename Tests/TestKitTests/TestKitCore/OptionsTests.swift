@@ -46,6 +46,7 @@ internal final class OptionsTests: TestKitCase
         XCTAssertEqual(options.formatOptions, FormatOptions())
         XCTAssertEqual(options.propertyOptions, PropertyOptions())
         XCTAssertEqual(options.temporalOptions, TemporalOptions())
+        XCTAssertEqual(options.performanceOptions, PerformanceOptions())
     }
     
     
@@ -95,6 +96,19 @@ internal final class OptionsTests: TestKitCase
         
         XCTAssertEqual(options.timeout, .seconds(2))
         XCTAssertEqual(options.interval, .milliseconds(50))
+        XCTAssertFalse(options.showAllFailures)
+    }
+    
+    
+    
+    func testPerformanceOptions()
+    {
+        let options = PerformanceOptions()
+        
+        XCTAssertEqual(options.runs, 5)
+        XCTAssertEqual(options.warmupRuns, 1)
+        XCTAssertNil(options.timeLimit)
+        XCTAssertNil(options.peakMemoryLimit)
         XCTAssertFalse(options.showAllFailures)
     }
     
