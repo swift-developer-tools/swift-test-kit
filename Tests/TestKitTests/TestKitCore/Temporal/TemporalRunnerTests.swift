@@ -1669,25 +1669,6 @@ extension TemporalRunnerTests
     
     
     
-    private actor Counter
-    {
-        private var count: Int = 0
-        
-        var value: Int
-        {
-            return count
-        }
-        
-        @discardableResult
-        func increment() -> Int
-        {
-            count += 1
-            return count
-        }
-    }
-    
-    
-    
     struct IdentifiableError: Error
     {
         let id: Int
