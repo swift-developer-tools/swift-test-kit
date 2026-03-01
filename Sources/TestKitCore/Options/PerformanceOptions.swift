@@ -53,7 +53,8 @@ public struct PerformanceOptions: Equatable, Sendable
     /// Initializes a ``PerformanceOptions`` instance, optionally specifying
     /// values for its properties.
     ///
-    /// - Precondition: `runs` and `warmupRuns` must both be positive.
+    /// - Precondition: `runs` must be positive.
+    /// - Precondition: `warmupRuns` must not be negative.
     /// - Precondition: `timeLimit` and `memoryLimit` must be positive
     /// or `nil`.
     public init(
@@ -62,7 +63,6 @@ public struct PerformanceOptions: Equatable, Sendable
         timeLimit       : Duration?     = nil,
         memoryLimit     : UInt64?       = nil,
         showAllFailures : Bool          = false
-        
     )
     {
         precondition(
@@ -71,14 +71,14 @@ public struct PerformanceOptions: Equatable, Sendable
         )
         
         precondition(
-            warmupRuns > 0,
-            "warmupRuns must be positive"
+            warmupRuns >= 0,
+            "warmupRuns must not be negative"
         )
         
         if let timeLimit
         {
             precondition(
-                timeLimit >= .zero,
+                timeLimit > .zero,
                 "timeLimit must be positive"
             )
         }
@@ -86,7 +86,7 @@ public struct PerformanceOptions: Equatable, Sendable
         if let memoryLimit
         {
             precondition(
-                memoryLimit >= .zero,
+                memoryLimit > .zero,
                 "memoryLimit must be positive"
             )
         }
