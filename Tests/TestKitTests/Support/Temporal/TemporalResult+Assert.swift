@@ -45,7 +45,7 @@ extension TemporalResult
     /// - Returns: The associated values of the failed result, `nil` if the
     /// result did not fail.
     @discardableResult
-    internal func assertFailed() -> FailedValues?
+    internal func assertFailed() -> FailedTemporalValues?
     {
         guard case let .failed(failures, elapsed, error) = self
         else
@@ -54,7 +54,7 @@ extension TemporalResult
             return nil
         }
         
-        return FailedValues(
+        return FailedTemporalValues(
             failures:   failures,
             elapsed:    elapsed,
             error:      error
@@ -63,8 +63,9 @@ extension TemporalResult
 }
 
 
+
 /// The associated values of a failed ``TemporalResult``.
-internal struct FailedValues
+internal struct FailedTemporalValues
 {
     let failures    : [InterceptedFailure]
     let elapsed     : Duration

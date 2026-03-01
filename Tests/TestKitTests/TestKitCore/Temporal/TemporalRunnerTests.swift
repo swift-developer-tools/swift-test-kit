@@ -1665,6 +1665,10 @@ internal final class TemporalRunnerTests: TestKitCase
 
 extension TemporalRunnerTests
 {
+    private typealias FailedValues = FailedTemporalValues
+    
+    
+    
     private actor Counter
     {
         private var count: Int = 0

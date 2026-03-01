@@ -18,7 +18,7 @@ extension StatefulResult
     /// - Returns: The associated values of the passed result, or `nil` if
     /// the result did not pass.
     @discardableResult
-    internal func assertPassed() -> PassedValues?
+    internal func assertPassed() -> PassedPropertyValues?
     {
         return property.assertPassed()
     }
@@ -41,7 +41,7 @@ extension StatefulResult
     /// associated values.
     /// - Returns: The associated values, `nil` if the result was not exhausted.
     @discardableResult
-    internal func assertExhausted() -> ExhaustedValues?
+    internal func assertExhausted() -> ExhaustedPropertyValues?
     {
         return property.assertExhausted()
     }
@@ -53,7 +53,7 @@ extension StatefulResult
     /// - Returns: The associated values, `nil` if the result did not have
     /// unmet coverage.
     @discardableResult
-    internal func assertCoverageNotMet() -> CoverageNotMetValues?
+    internal func assertCoverageNotMet() -> CoverageNotMetPropertyValues?
     {
         return property.assertCoverageNotMet()
     }
