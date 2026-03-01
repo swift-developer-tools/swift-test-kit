@@ -31,16 +31,16 @@ public struct PerformanceOptions: Equatable, Sendable
     /// limit.
     public var timeLimit        : Duration?
     
-    /// The peak memory limit, in bytes.
+    /// The memory limit, in bytes.
     ///
-    /// The default value is `nil` (peak memory measurement disabled). When
-    /// non-`nil`, the test fails if the median peak memory usage difference
+    /// The default value is `nil` (memory measurement disabled). When
+    /// non-`nil`, the test fails if the median memory usage difference
     /// across measurement runs exceeds this limit.
     ///
     /// - Note: This measures the physical memory footprint of the entire
     /// process, not memory scoped to the measured block. Measurements may
     /// vary between runs due to system-level allocations.
-    public var peakMemoryLimit  : UInt64?
+    public var memoryLimit      : UInt64?
     
     /// Whether to show all assertion failures from the failing run.
     ///
@@ -54,13 +54,13 @@ public struct PerformanceOptions: Equatable, Sendable
     /// values for its properties.
     ///
     /// - Precondition: `runs` and `warmupRuns` must both be positive.
-    /// - Precondition: `timeLimit` and `peakMemoryLimit` must be positive
+    /// - Precondition: `timeLimit` and `memoryLimit` must be positive
     /// or `nil`.
     public init(
         runs            : Int           = 5,
         warmupRuns      : Int           = 1,
         timeLimit       : Duration?     = nil,
-        peakMemoryLimit : UInt64?       = nil,
+        memoryLimit     : UInt64?       = nil,
         showAllFailures : Bool          = false
         
     )
@@ -83,18 +83,18 @@ public struct PerformanceOptions: Equatable, Sendable
             )
         }
         
-        if let peakMemoryLimit
+        if let memoryLimit
         {
             precondition(
-                peakMemoryLimit >= .zero,
-                "peakMemoryLimit must be positive"
+                memoryLimit >= .zero,
+                "memoryLimit must be positive"
             )
         }
         
         self.runs               = runs
         self.warmupRuns         = warmupRuns
         self.timeLimit          = timeLimit
-        self.peakMemoryLimit    = peakMemoryLimit
+        self.memoryLimit        = memoryLimit
         self.showAllFailures    = showAllFailures
     }
 }
