@@ -14,7 +14,7 @@ extension TemporalResult
     /// Emits the temporal test result.
     /// - Parameters:
     ///   - kind: The temporal test kind.
-    ///   - timeout: The timeout duration.
+    ///   - timeout: The resolved timeout duration.
     ///   - functionName: The temporal evaluator function name.
     ///   - options: The options for testing.
     ///   - context: The assertion failure context.
