@@ -338,7 +338,7 @@ extension PropertyResult
             lines.append(statistics)
         }
         
-        lines = Self.addMessageLines(
+        lines = Formatter.addMessageLines(
             to:         lines,
             message:    message
         )
@@ -423,7 +423,7 @@ extension PropertyResult
             lines.append(statistics)
         }
         
-        lines = Self.addMessageLines(
+        lines = Formatter.addMessageLines(
             to:         lines,
             message:    message
         )
@@ -622,10 +622,12 @@ extension PropertyResult
             lines.append("")
             lines.append(failure.message)
         }
-        else if let error: Error = counterexample.error
+        else
         {
-            lines.append("")
-            lines.append("Threw error: \(error)")
+            lines = Formatter.addErrorLines(
+                to:     lines,
+                error:  counterexample.error
+            )
         }
         
         return lines
@@ -686,33 +688,6 @@ extension PropertyResult
         }
         
         lines.append(contentsOf: tableLines)
-        
-        return lines
-    }
-    
-    
-    
-    /// Appends a formatted line for the given message to the given lines.
-    /// - Parameters:
-    ///   - originalLines: The lines to update.
-    ///   - message: The description of a failure.
-    /// - Returns: The updated lines.
-    private static func addMessageLines(
-        to originalLines    : [String],
-        message             : () -> String,
-    ) -> [String]
-    {
-        let msg: String = message()
-        
-        if msg.isEmpty
-        {
-            return originalLines
-        }
-        
-        var lines: [String] = originalLines
-        
-        lines.append("")
-        lines.append(msg)
         
         return lines
     }
@@ -873,7 +848,7 @@ extension PropertyResult
             lines.append(statistics)
         }
         
-        lines = Self.addMessageLines(
+        lines = Formatter.addMessageLines(
             to:         lines,
             message:    message
         )

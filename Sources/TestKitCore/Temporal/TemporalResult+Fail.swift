@@ -168,23 +168,15 @@ extension TemporalResult
         
         
         
-        if let error
-        {
-            lines.append("")
-            lines.append("Threw error: \(error)")
-        }
+        lines = Formatter.addErrorLines(
+            to:     lines,
+            error:  error
+        )
         
-        
-        
-        let msg: String = message()
-        
-        if !msg.isEmpty
-        {
-            lines.append("")
-            lines.append(msg)
-        }
-        
-        
+        lines = Formatter.addMessageLines(
+            to:         lines,
+            message:    message
+        )
         
         return lines.joined(separator: "\n")
     }
