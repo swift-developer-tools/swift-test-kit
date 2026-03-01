@@ -122,51 +122,11 @@ extension TemporalResult
                 )
         }
         
-        
-        
-        let showAll: Bool = options.temporalOptions.showAllFailures
-        
-        let visibleFailures: [InterceptedFailure] = showAll
-            ? failures
-            : Array(failures.prefix(1))
-        
-        for (index, failure) in visibleFailures.enumerated()
-        {
-            lines.append("")
-            
-            if
-                showAll,
-                visibleFailures.count > 1
-            {
-                lines.append("Failure \(index + 1):")
-                
-                let indented: String = failure.message
-                    .split(separator: "\n", omittingEmptySubsequences: false)
-                    .map { "    \($0)" }
-                    .joined(separator: "\n")
-                
-                lines.append(indented)
-            }
-            else
-            {
-                lines.append(failure.message)
-            }
-        }
-        
-        if
-            showAll,
-            failures.count > visibleFailures.count
-        {
-            let remaining: Int = failures.count - visibleFailures.count
-            
-            lines.append("")
-            
-            lines.append(
-                "... and \(remaining) more failure\(remaining == 1 ? "" : "s")"
-            )
-        }
-        
-        
+        lines = Formatter.addInterceptedFailures(
+            to:         lines,
+            failures:   failures,
+            showAll:    options.temporalOptions.showAllFailures
+        )
         
         lines = Formatter.addErrorLines(
             to:     lines,
