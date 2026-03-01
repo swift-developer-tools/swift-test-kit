@@ -14,7 +14,7 @@ import XCTest
 
 extension TemporalResult
 {
-    /// Asserts that the temporal result canceled.
+    /// Asserts that the temporal test was canceled.
     internal func assertCanceled()
     {
         guard case .canceled = self
@@ -27,7 +27,7 @@ extension TemporalResult
     
     
     
-    /// Asserts that the temporal result passed.
+    /// Asserts that the temporal test passed.
     internal func assertPassed()
     {
         guard case .passed = self
@@ -40,7 +40,7 @@ extension TemporalResult
     
     
     
-    /// Asserts that given temporal result failed, and returns the associated
+    /// Asserts that given temporal test failed, and returns the associated
     /// values.
     /// - Returns: The associated values of the failed result, `nil` if the
     /// result did not fail.

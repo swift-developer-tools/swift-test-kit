@@ -14,8 +14,8 @@ import XCTest
 
 extension PropertyResult
 {
-    /// Asserts that the property check result passed, and returns the
-    /// associated values.
+    /// Asserts that the property check passed, and returns the associated
+    /// values.
     /// - Returns: The associated values of the passed result, or `nil` if
     /// the result did not pass.
     @discardableResult
@@ -38,7 +38,7 @@ extension PropertyResult
     
     
     
-    /// Asserts that given property check result failed, and returns the
+    /// Asserts that given property check failed, and returns the
     /// counterexample.
     /// - Returns: The counterexample of the failed result, `nil` if the
     /// result did not fail.
@@ -57,7 +57,7 @@ extension PropertyResult
     
     
     
-    /// Asserts that the property check result was exhausted, and returns the
+    /// Asserts that the property check was exhausted, and returns the
     /// associated values.
     /// - Returns: The associated values, `nil` if the result was not exhausted.
     @discardableResult
@@ -84,7 +84,7 @@ extension PropertyResult
     
     
     
-    /// Asserts that the property check result has unmet coverage, and returns
+    /// Asserts that the property check had unmet coverage, and returns
     /// the associated values.
     /// - Returns: The associated values, `nil` if the result did not have
     /// unmet coverage.
