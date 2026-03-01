@@ -105,7 +105,7 @@ internal final class OptionsTests: TestKitCase
     {
         let options = PerformanceOptions()
         
-        XCTAssertEqual(options.runs, 5)
+        XCTAssertEqual(options.runs, 10)
         XCTAssertEqual(options.warmupRuns, 1)
         XCTAssertNil(options.timeLimit)
         XCTAssertNil(options.memoryLimit)

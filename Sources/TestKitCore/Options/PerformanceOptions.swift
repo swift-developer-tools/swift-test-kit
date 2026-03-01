@@ -12,7 +12,7 @@ public struct PerformanceOptions: Equatable, Sendable
 {
     /// The number of measurement runs.
     ///
-    /// The default value is `5`.
+    /// The default value is `10`.
     public var runs             : Int
     
     /// The number of warmup runs before measurement begins.
@@ -58,7 +58,7 @@ public struct PerformanceOptions: Equatable, Sendable
     /// - Precondition: `timeLimit` and `memoryLimit` must be positive
     /// or `nil`.
     public init(
-        runs            : Int           = 5,
+        runs            : Int           = 10,
         warmupRuns      : Int           = 1,
         timeLimit       : Duration?     = nil,
         memoryLimit     : UInt64?       = nil,
