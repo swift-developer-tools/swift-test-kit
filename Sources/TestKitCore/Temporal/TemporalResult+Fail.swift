@@ -17,7 +17,6 @@ extension TemporalResult
     ///   - timeout: The timeout duration.
     ///   - functionName: The temporal evaluator function name.
     ///   - options: The options for testing.
-    ///   - statistics: The command statistics for stateful tests.
     ///   - context: The assertion failure context.
     ///   - message: The description of a failure.
     ///   - fileID: The ID of the file where the failure occurs.
