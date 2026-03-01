@@ -319,11 +319,11 @@ extension PropertyResult
             + " (max ratio: \(ratio))"
         )
         
-        lines.append("")
-        lines.append(Self.makeSeedLine(
+        lines = Self.addSeedLines(
+            to:             lines,
             seed:           seed,
             functionName:   functionName
-        ))
+        )
         
         lines = Self.addDistributionLines(
             to:                 lines,
@@ -332,11 +332,10 @@ extension PropertyResult
             tableDistribution:  tableDistribution
         )
         
-        if let statistics
-        {
-            lines.append("")
-            lines.append(statistics)
-        }
+        lines = Self.addStatisticsLines(
+            to:             lines,
+            statistics:     statistics
+        )
         
         lines = Formatter.addMessageLines(
             to:         lines,
@@ -411,17 +410,16 @@ extension PropertyResult
         
         
         
-        lines.append("")
-        lines.append(Self.makeSeedLine(
+        lines = Self.addSeedLines(
+            to:             lines,
             seed:           seed,
             functionName:   functionName
-        ))
+        )
         
-        if let statistics
-        {
-            lines.append("")
-            lines.append(statistics)
-        }
+        lines = Self.addStatisticsLines(
+            to:             lines,
+            statistics:     statistics
+        )
         
         lines = Formatter.addMessageLines(
             to:         lines,
@@ -635,6 +633,57 @@ extension PropertyResult
     
     
     
+    /// Appends formatted lines for the given statistics to the given lines.
+    /// - Parameters:
+    ///   - originalLines: The lines to update.
+    ///   - statistics: The command statistics for stateful tests.
+    /// - Returns: The updated lines.
+    internal static func addStatisticsLines(
+        to originalLines    : [String],
+        statistics          : String?,
+    ) -> [String]
+    {
+        guard let statistics
+        else
+        {
+            return originalLines
+        }
+        
+        var lines: [String] = originalLines
+        
+        lines.append("")
+        lines.append(statistics)
+        
+        return lines
+    }
+    
+    
+    
+    /// Appends formatted lines for the given seed to the given lines.
+    /// - Parameters:
+    ///   - originalLines: The lines to update.
+    ///   - seed: The seed used to initialize the random number generator.
+    ///   - functionName: The property evaluator function name.
+    /// - Returns: The updated lines.
+    internal static func addSeedLines(
+        to originalLines    : [String],
+        seed                : UInt64,
+        functionName        : String
+    ) -> [String]
+    {
+        var lines: [String] = originalLines
+        
+        lines.append("")
+        lines.append(Self.makeSeedLine(
+            seed:           seed,
+            functionName:   functionName
+        ))
+        
+        return lines
+    }
+    
+    
+    
     /// Appends formatted lines for the given distributions to the given lines.
     /// - Parameters:
     ///   - originalLines: The lines to update.
@@ -829,11 +878,11 @@ extension PropertyResult
             counterexample:     counterexample
         )
         
-        lines.append("")
-        lines.append(Self.makeSeedLine(
+        lines = Self.addSeedLines(
+            to:             lines,
             seed:           counterexample.seed,
             functionName:   functionName
-        ))
+        )
         
         lines = Self.addDistributionLines(
             to:                 lines,
@@ -842,11 +891,10 @@ extension PropertyResult
             tableDistribution:  tableDistribution
         )
         
-        if let statistics
-        {
-            lines.append("")
-            lines.append(statistics)
-        }
+        lines = Self.addStatisticsLines(
+            to:             lines,
+            statistics:     statistics
+        )
         
         lines = Formatter.addMessageLines(
             to:         lines,
