@@ -18,42 +18,49 @@ import TestKitCore
 /// - Note: See
 /// [`TestConfiguration`](https://swift-developer-tools.github.io/swift-test-kit/documentation/testkitcore/testconfiguration)
 /// for the complete API reference.
-public typealias TestConfiguration  = TestKitCore.TestConfiguration
+public typealias TestConfiguration      = TestKitCore.TestConfiguration
 
 /// The options for testing.
 ///
 /// - Note: See
 /// [`TestOptions`](https://swift-developer-tools.github.io/swift-test-kit/documentation/testkitcore/testoptions)
 /// for the complete API reference.
-public typealias TestOptions        = TestKitCore.TestOptions
+public typealias TestOptions            = TestKitCore.TestOptions
 
 /// The options for computing diffs.
 ///
 /// - Note: See
 /// [`DiffOptions`](https://swift-developer-tools.github.io/swift-test-kit/documentation/testkitcore/diffoptions)
 /// for the complete API reference.
-public typealias DiffOptions        = TestKitCore.DiffOptions
+public typealias DiffOptions            = TestKitCore.DiffOptions
 
 /// The options for formatting assertion failures.
 ///
 /// - Note: See
 /// [`FormatOptions`](https://swift-developer-tools.github.io/swift-test-kit/documentation/testkitcore/formatoptions)
 /// for the complete API reference.
-public typealias FormatOptions      = TestKitCore.FormatOptions
+public typealias FormatOptions          = TestKitCore.FormatOptions
 
 /// The options for property-based testing.
 ///
 /// - Note: See
 /// [`PropertyOptions`](https://swift-developer-tools.github.io/swift-test-kit/documentation/testkitcore/propertyoptions)
 /// for the complete API reference.
-public typealias PropertyOptions    = TestKitCore.PropertyOptions
+public typealias PropertyOptions        = TestKitCore.PropertyOptions
 
 /// The options for temporal testing.
 ///
 /// - Note: See
 /// [`TemporalOptions`](https://swift-developer-tools.github.io/swift-test-kit/documentation/testkitcore/temporaloptions)
 /// for the complete API reference.
-public typealias TemporalOptions    = TestKitCore.TemporalOptions
+public typealias TemporalOptions        = TestKitCore.TemporalOptions
+
+/// The options for performance testing.
+///
+/// - Note: See
+/// [`PerformanceOptions`](https://swift-developer-tools.github.io/swift-test-kit/documentation/testkitcore/performanceoptions)
+/// for the complete API reference.
+public typealias PerformanceOptions     = TestKitCore.PerformanceOptions
 
 
 
@@ -64,7 +71,7 @@ public typealias TemporalOptions    = TestKitCore.TemporalOptions
 /// - Note: See
 /// [`UnwrapError`](https://swift-developer-tools.github.io/swift-test-kit/documentation/testkitcore/unwraperror)
 /// for the complete API reference.
-public typealias UnwrapError        = TestKitCore.UnwrapError
+public typealias UnwrapError            = TestKitCore.UnwrapError
 
 
 
@@ -75,25 +82,25 @@ public typealias UnwrapError        = TestKitCore.UnwrapError
 /// - Note: See
 /// [`Arbitrary`](https://swift-developer-tools.github.io/swift-test-kit/documentation/testkitcore/arbitrary)
 /// for the complete API reference.
-public typealias Arbitrary          = TestKitCore.Arbitrary
+public typealias Arbitrary              = TestKitCore.Arbitrary
 
 /// A custom generator for producing values of a specific type.
 ///
 /// - Note: See
 /// [`Generator`](https://swift-developer-tools.github.io/swift-test-kit/documentation/testkitcore/generator)
 /// for the complete API reference.
-public typealias Generator          = TestKitCore.Generator
+public typealias Generator              = TestKitCore.Generator
 
 /// The options for property-based testing.
 ///
 /// - Note: See
 /// [`GenerationContext`](https://swift-developer-tools.github.io/swift-test-kit/documentation/testkitcore/generationcontext)
 /// for the complete API reference.
-public typealias GenerationContext  = TestKitCore.GenerationContext
+public typealias GenerationContext      = TestKitCore.GenerationContext
 
 /// A type that defines commands for stateful property-based testing.
 ///
 /// - Note: See
 /// [`Stateful`](https://swift-developer-tools.github.io/swift-test-kit/documentation/testkitcore/stateful)
 /// for the complete API reference.
-public typealias Stateful           = TestKitCore.Stateful
+public typealias Stateful               = TestKitCore.Stateful

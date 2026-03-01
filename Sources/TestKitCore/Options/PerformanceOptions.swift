@@ -1,0 +1,100 @@
+//===----------------------------------------------------------------------===//
+//
+// This source file is part of the swift-test-kit open source project.
+//
+// Copyright (c) Margins Technologies LLC.
+// Licensed under the Apache License, Version 2.0.
+//
+//===----------------------------------------------------------------------===//
+
+/// The options for performance testing.
+public struct PerformanceOptions: Equatable, Sendable
+{
+    /// The number of measurement runs.
+    ///
+    /// The default value is `5`.
+    public var runs             : Int
+    
+    /// The number of warmup runs before measurement begins.
+    ///
+    /// The default value is `1`.
+    ///
+    /// Warmup runs execute the body without recording measurements. Use this
+    /// to prime caches and other system state to reduce noise in the
+    /// measured runs.
+    public var warmupRuns       : Int
+    
+    /// The time limit.
+    ///
+    /// The default value is `nil` (time measurement disabled). When non-`nil`,
+    /// the test fails if the median time across measurement runs exceeds this
+    /// limit.
+    public var timeLimit        : Duration?
+    
+    /// The peak memory limit, in bytes.
+    ///
+    /// The default value is `nil` (peak memory measurement disabled). When
+    /// non-`nil`, the test fails if the median peak memory usage difference
+    /// across measurement runs exceeds this limit.
+    ///
+    /// - Note: This measures the physical memory footprint of the entire
+    /// process, not memory scoped to the measured block. Measurements may
+    /// vary between runs due to system-level allocations.
+    public var peakMemoryLimit  : UInt64?
+    
+    /// Whether to show all assertion failures from the failing run.
+    ///
+    /// The default value is `false`. When `false`, only the first assertion
+    /// failure is shown.
+    public var showAllFailures  : Bool
+    
+    
+    
+    /// Initializes a ``PerformanceOptions`` instance, optionally specifying
+    /// values for its properties.
+    ///
+    /// - Precondition: `runs` and `warmupRuns` must both be positive.
+    /// - Precondition: `timeLimit` and `peakMemoryLimit` must be positive
+    /// or `nil`.
+    public init(
+        runs            : Int           = 5,
+        warmupRuns      : Int           = 1,
+        timeLimit       : Duration?     = nil,
+        peakMemoryLimit : UInt64?       = nil,
+        showAllFailures : Bool          = false
+        
+    )
+    {
+        precondition(
+            runs > 0,
+            "runs must be positive"
+        )
+        
+        precondition(
+            warmupRuns > 0,
+            "warmupRuns must be positive"
+        )
+        
+        if let timeLimit
+        {
+            precondition(
+                timeLimit >= .zero,
+                "timeLimit must be positive"
+            )
+        }
+        
+        if let peakMemoryLimit
+        {
+            precondition(
+                peakMemoryLimit >= .zero,
+                "peakMemoryLimit must be positive"
+            )
+        }
+        
+        self.runs               = runs
+        self.warmupRuns         = warmupRuns
+        self.timeLimit          = timeLimit
+        self.peakMemoryLimit    = peakMemoryLimit
+        self.showAllFailures    = showAllFailures
+    }
+}

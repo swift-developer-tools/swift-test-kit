@@ -64,3 +64,4 @@ final class TestClass: XCTKCase
 - ``FormatOptions``
 - ``PropertyOptions``
 - ``TemporalOptions``
+- ``PerformanceOptions``

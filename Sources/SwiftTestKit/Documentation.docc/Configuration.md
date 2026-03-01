@@ -36,3 +36,4 @@ STKAssertEqual(expected, actual, options: options)
 - ``FormatOptions``
 - ``PropertyOptions``
 - ``TemporalOptions``
+- ``PerformanceOptions``
