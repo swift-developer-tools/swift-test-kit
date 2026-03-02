@@ -11,13 +11,8 @@ with an exhaustion error.
 can lead to exhaustion. Prefer constructing valid values using a custom
 ``Generator`` rather than discarding invalid values with a precondition.
 
-SwiftTestKit assertions used inside a property body are automatically
-intercepted rather than reported directly to Swift Testing.
-
-- Important: Native Swift Testing assertions are not intercepted by
-SwiftTestKit. If a native Swift Testing assertion fails inside a property
-body, it bypasses shrinking and produces an immediate test failure. Use
-only SwiftTestKit assertions inside property bodies.
+- Important: Use only SwiftTestKit assertions inside property bodies. 
+Native Swift Testing assertions are not intercepted.
 
 - Parameters:
   - precondition: The condition which generated values must satisfy.

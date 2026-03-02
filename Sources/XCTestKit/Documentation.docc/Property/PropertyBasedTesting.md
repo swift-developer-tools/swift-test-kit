@@ -23,19 +23,6 @@ strings) and grows across iterations to explore progressively larger values.
 Types used with property-based evaluators conform to the ``Arbitrary`` protocol, 
 which defines how to generate random values and optionally how to shrink them.
 
-### Assertion Interception
-
-XCTestKit assertions used inside a property body are automatically intercepted 
-rather than reported directly to XCTest. This allows XCTestKit to re-run the 
-property body during shrinking without producing intermediate test failures. 
-After shrinking completes, a single failure is reported containing the minimal 
-counterexample and the intercepted assertion output.
-
-- Important: Native XCTest assertions are not intercepted by XCTestKit. If a 
-native XCTest assertion fails inside a property body, it bypasses shrinking and 
-produces an immediate test failure. Use only XCTestKit assertions inside 
-property bodies.
-
 ### Stateful Testing
 
 Stateful testing extends property-based testing to systems with mutable state. 

@@ -2,13 +2,8 @@
 
 Asserts that the given property holds for all generated values.
 
-SwiftTestKit assertions used inside a property body are automatically
-intercepted rather than reported directly to Swift Testing.
-
-- Important: Native Swift Testing assertions are not intercepted by
-SwiftTestKit. If a native Swift Testing assertion fails inside a property
-body, it bypasses shrinking and produces an immediate test failure. Use
-only SwiftTestKit assertions inside property bodies.
+- Important: Use only SwiftTestKit assertions inside property bodies. 
+Native Swift Testing assertions are not intercepted.
 
 - Parameters:
   - message: An optional description of a failure.

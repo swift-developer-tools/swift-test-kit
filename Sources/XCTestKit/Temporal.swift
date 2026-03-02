@@ -16,13 +16,8 @@ import TestKitCore
 /// The temporal body is polled at the given interval. If any assertion fails
 /// on any poll, the test fails immediately.
 ///
-/// XCTestKit assertions used inside a temporal body are automatically
-/// intercepted rather than reported directly to XCTest.
-///
-/// - Important: Native XCTest assertions are not intercepted by XCTestKit.
-/// If a native XCTest assertion fails inside a temporal body, it bypasses
-/// polling and produces an immediate test failure. Use only XCTestKit
-/// assertions inside temporal bodies.
+/// - Important: Use only XCTestKit assertions inside temporal bodies.
+/// Native XCTest assertions are not intercepted.
 ///
 /// - Parameters:
 ///   - timeout: The timeout duration. The default value is `nil`, which falls
@@ -74,13 +69,8 @@ public func XCTKAlways(
 /// The temporal body is polled at the given interval until all assertions
 /// pass in a single execution, or the timeout is reached.
 ///
-/// XCTestKit assertions used inside a temporal body are automatically
-/// intercepted rather than reported directly to XCTest.
-///
-/// - Important: Native XCTest assertions are not intercepted by XCTestKit.
-/// If a native XCTest assertion fails inside a temporal body, it bypasses
-/// polling and produces an immediate test failure. Use only XCTestKit
-/// assertions inside temporal bodies.
+/// - Important: Use only XCTestKit assertions inside temporal bodies.
+/// Native XCTest assertions are not intercepted.
 ///
 /// - Parameters:
 ///   - timeout: The timeout duration. The default value is `nil`, which falls

@@ -11,13 +11,8 @@ with an exhaustion error.
 can lead to exhaustion. Prefer constructing valid values using a custom
 ``Generator`` rather than discarding invalid values with a precondition.
 
-XCTestKit assertions used inside a property body are automatically
-intercepted rather than reported directly to XCTest.
-
-- Important: Native XCTest assertions are not intercepted by XCTestKit.
-If a native XCTest assertion fails inside a property body, it bypasses
-shrinking and produces an immediate test failure. Use only XCTestKit
-assertions inside property bodies.
+- Important: Use only XCTestKit assertions inside property bodies. 
+Native XCTest assertions are not intercepted.
 
 - Parameters:
   - precondition: The condition which generated values must satisfy.
