@@ -63,7 +63,7 @@ internal struct PerformanceMeasurements: Equatable, Sendable
     /// The median memory usage difference, in bytes.
     internal let medianMemory   : UInt64?
     
-    /// The memory limit, in bytes.
+    /// The physical memory footprint limit, in bytes.
     internal let memoryLimit    : UInt64?
     
     

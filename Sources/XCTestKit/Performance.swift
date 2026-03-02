@@ -26,8 +26,8 @@ import TestKitCore
 ///   - warmupRuns: The number of warmup runs before measurement begins.
 ///   The default value is `nil`, which falls back to using global options.
 ///   - timeLimit: The time limit.
-///   - memoryLimit: The memory limit, in bytes. The default value is `nil`,
-///   which falls back to using global options.
+///   - memoryLimit: The physical memory footprint limit, in bytes. The
+///   default value is `nil`, which falls back to using global options.
 ///   - message: An optional description of a failure. The default value is
 ///   `nil`, which falls back to using global options.
 ///   - fileID: The ID of the file where the failure occurs. The default value

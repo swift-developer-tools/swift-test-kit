@@ -31,7 +31,7 @@ public struct PerformanceOptions: Equatable, Sendable
     /// limit.
     public var timeLimit        : Duration?
     
-    /// The memory limit, in bytes.
+    /// The physical memory footprint limit, in bytes.
     ///
     /// The default value is `nil` (memory measurement disabled). When
     /// non-`nil`, the test fails if the median memory usage difference

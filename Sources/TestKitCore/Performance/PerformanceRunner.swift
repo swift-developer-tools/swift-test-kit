@@ -20,7 +20,7 @@ internal struct PerformanceRunner
     ///   - runs: The number of measurement runs.
     ///   - warmupRuns: The number of warmup runs before measurement begins.
     ///   - timeLimit: The time limit.
-    ///   - memoryLimit: The memory limit, in bytes.
+    ///   - memoryLimit: The physical memory footprint limit, in bytes.
     ///   - body: The performance body.
     /// - Returns: The result of running the performance test.
     internal static func run(
