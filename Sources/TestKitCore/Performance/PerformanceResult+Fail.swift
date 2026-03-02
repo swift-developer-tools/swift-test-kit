@@ -222,9 +222,29 @@ extension PerformanceResult
         exceeded    : Bool
     ) -> [String]
     {
+        let thresholdLabel  : String    = "Threshold:"
+        let medianLabel     : String    = "Median:"
+        
+        let maxLabelWidth: Int = max(
+            thresholdLabel.count,
+            medianLabel.count
+        )
+        
         let maxValueWidth: Int = max(
             threshold.count,
             median.count
+        )
+        
+        let paddedThresholdLabel = thresholdLabel.padding(
+            toLength:       maxLabelWidth,
+            withPad:        " ",
+            startingAt:     0
+        )
+        
+        let paddedMedianLabel = medianLabel.padding(
+            toLength:       maxLabelWidth,
+            withPad:        " ",
+            startingAt:     0
         )
         
         let paddedThreshold = String(
@@ -237,10 +257,11 @@ extension PerformanceResult
             count:      maxValueWidth - median.count
         ) + median
         
-        let thresholdLine: String = "    Threshold: \(paddedThreshold)"
+        let thresholdLine: String
+            = "    \(paddedThresholdLabel) \(paddedThreshold)"
         
         var medianLine: String
-            = "    Median: \(paddedMedian) (\(runs)"
+            = "    \(paddedMedianLabel) \(paddedMedian) (\(runs)"
             + " run\(runs == 1 ? "" : "s"))"
         
         if exceeded
