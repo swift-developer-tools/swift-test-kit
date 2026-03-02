@@ -30,7 +30,7 @@ element-level failure output, identifying which elements failed, which matched
 unexpectedly, and which threw errors.
 
 Performance tests measure execution time and physical memory footprint across
-multiple runs and verify that median values stay within configurable limits.
+multiple runs, and verify that median values stay within configurable limits.
 
 Temporal tests poll assertions continuously for a given duration, or until all 
 assertions pass within a single execution.

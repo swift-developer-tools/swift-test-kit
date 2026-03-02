@@ -1,7 +1,7 @@
 # Performance Testing
 
-Measure execution time and physical memory footprint across multiple runs and 
-verify that median values stay within configurable limits.
+Measure execution time and physical memory footprint across multiple runs, 
+and verify that median values stay within configurable limits.
 
 ## Overview
 
