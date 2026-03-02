@@ -10,7 +10,7 @@ duration, or until all assertions pass within a single execution.
 
 ## Topics
 
-### Temporal Tests
+### Polling Assertions
 
 - ``XCTKAlways(timeout:interval:_:fileID:file:line:column:options:_:)``
 - ``XCTKEventually(timeout:interval:_:fileID:file:line:column:options:_:)``
