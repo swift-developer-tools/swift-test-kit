@@ -41,7 +41,7 @@ import TestKitCore
 ///   - options: The options for testing. The default value is `nil`, which
 ///   falls back to using global options.
 ///   - body: The performance body.
-public func XCTKAssertPerformance(
+public func XCTKPerformance(
     runs        : @autoclosure () -> Int?       = nil,
     warmupRuns  : @autoclosure () -> Int?       = nil,
     timeLimit   : @autoclosure () -> Duration?  = nil,
@@ -55,7 +55,7 @@ public func XCTKAssertPerformance(
     _ body      : () async throws -> Void
 ) async
 {
-    await TKAssertPerformance(
+    await TKPerformance(
         runs:           runs,
         warmupRuns:     warmupRuns,
         timeLimit:      timeLimit,

@@ -7,7 +7,7 @@
 //
 //===----------------------------------------------------------------------===//
 
-package func TKAssertPerformance(
+package func TKPerformance(
     runs        : () -> Int?,
     warmupRuns  : () -> Int?,
     timeLimit   : () -> Duration?,
@@ -40,7 +40,7 @@ package func TKAssertPerformance(
     result.emit(
         runs:           runs,
         warmupRuns:     warmupRuns,
-        functionName:   "\(context.framework.rawValue)AssertPerformance",
+        functionName:   "\(context.framework.rawValue)Performance",
         options:        options,
         context:        context,
         message:        message,
