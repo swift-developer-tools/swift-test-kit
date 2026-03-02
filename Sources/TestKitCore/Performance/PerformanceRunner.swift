@@ -17,16 +17,22 @@ internal struct PerformanceRunner
 {
     /// Runs a performance test.
     /// - Parameters:
-    ///   - options: The options for performance testing.
+    ///   - runs: The number of measurement runs.
+    ///   - warmupRuns: The number of warmup runs before measurement begins.
+    ///   - timeLimit: The time limit.
+    ///   - memoryLimit: The memory limit, in bytes.
     ///   - body: The performance body.
     /// - Returns: The result of running the performance test.
     internal static func run(
-        options : PerformanceOptions,
-        body    : () async throws -> Void
+        runs        : Int,
+        warmupRuns  : Int,
+        timeLimit   : Duration?,
+        memoryLimit : UInt64?,
+        body        : () async throws -> Void
     ) async -> PerformanceResult
     {
-        let timeEnabled     : Bool  = options.timeLimit != nil
-        var memoryEnabled   : Bool  = options.memoryLimit != nil
+        let timeEnabled     : Bool  = timeLimit != nil
+        var memoryEnabled   : Bool  = memoryLimit != nil
         
         if
             memoryEnabled,
@@ -53,7 +59,7 @@ internal struct PerformanceRunner
         
         let interceptor = PerformanceInterceptor()
         
-        for warmupRun in 0..<options.warmupRuns
+        for warmupRun in 0..<warmupRuns
         {
             guard !Task.isCancelled
             else
@@ -96,7 +102,7 @@ internal struct PerformanceRunner
         var timeMeasurements    : [Duration]    = []
         var memoryMeasurements  : [UInt64]      = []
         
-        for measurementRun in 0..<options.runs
+        for measurementRun in 0..<runs
         {
             guard !Task.isCancelled
             else
@@ -169,13 +175,13 @@ internal struct PerformanceRunner
         
         
         let measurements = PerformanceMeasurements(
-            runs:         options.runs,
+            runs:         runs,
             time:         timeEnabled ? timeMeasurements : nil,
             medianTime:   timeEnabled ? median(of: timeMeasurements) : nil,
-            timeLimit:    timeEnabled ? options.timeLimit : nil,
+            timeLimit:    timeLimit,
             memory:       memoryEnabled ? memoryMeasurements : nil,
             medianMemory: memoryEnabled ? median(of: memoryMeasurements) : nil,
-            memoryLimit:  memoryEnabled ? options.memoryLimit : nil
+            memoryLimit:  memoryLimit
         )
         
         return .completed(measurements: measurements)

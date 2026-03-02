@@ -22,14 +22,12 @@ internal final class PerformanceRunnerTests: TestKitCase
     
     func testBothThresholdsNilReturnsNoMetrics() async
     {
-        let options = PerformanceOptions(
-            timeLimit:      nil,
-            memoryLimit:    nil
-        )
-        
         let result: PerformanceResult = await PerformanceRunner.run(
-            options:    options,
-            body:       { }
+            runs:           10,
+            warmupRuns:     1,
+            timeLimit:      nil,
+            memoryLimit:    nil,
+            body:           { }
         )
         
         result.assertNoMetrics()
@@ -43,15 +41,12 @@ internal final class PerformanceRunnerTests: TestKitCase
     {
         let runs: Int = 3
         
-        let options = PerformanceOptions(
+        let result: PerformanceResult = await PerformanceRunner.run(
             runs:           runs,
             warmupRuns:     0,
-            timeLimit:      .seconds(10)
-        )
-        
-        let result: PerformanceResult = await PerformanceRunner.run(
-            options:    options,
-            body:       { }
+            timeLimit:      .seconds(10),
+            memoryLimit:    nil,
+            body:           { }
         )
         
         let measurements: PerformanceMeasurements
@@ -77,15 +72,12 @@ internal final class PerformanceRunnerTests: TestKitCase
     
     func testTimeExceedsLimitFails() async throws
     {
-        let options = PerformanceOptions(
+        let result: PerformanceResult = await PerformanceRunner.run(
             runs:           3,
             warmupRuns:     0,
-            timeLimit:      .nanoseconds(1)
-        )
-        
-        let result: PerformanceResult = await PerformanceRunner.run(
-            options:    options,
-            body:       { try? await Task.sleep(for: .milliseconds(5)) }
+            timeLimit:      .nanoseconds(1),
+            memoryLimit:    nil,
+            body:           { try? await Task.sleep(for: .milliseconds(5)) }
         )
         
         let measurements: PerformanceMeasurements
@@ -105,15 +97,12 @@ internal final class PerformanceRunnerTests: TestKitCase
         let warmupRuns  : Int       = 3
         let runs        : Int       = 2
         
-        let options = PerformanceOptions(
+        let result: PerformanceResult = await PerformanceRunner.run(
             runs:           runs,
             warmupRuns:     warmupRuns,
-            timeLimit:      .seconds(10)
-        )
-        
-        let result: PerformanceResult = await PerformanceRunner.run(
-            options:    options,
-            body:       { await counter.increment() }
+            timeLimit:      .seconds(10),
+            memoryLimit:    nil,
+            body:           { await counter.increment() }
         )
         
         let measurements: PerformanceMeasurements
@@ -132,15 +121,12 @@ internal final class PerformanceRunnerTests: TestKitCase
     {
         let counter = Counter()
         
-        let options = PerformanceOptions(
+        let result: PerformanceResult = await PerformanceRunner.run(
             runs:           1,
             warmupRuns:     0,
-            timeLimit:      .seconds(10)
-        )
-        
-        let result: PerformanceResult = await PerformanceRunner.run(
-            options:    options,
-            body:       { await counter.increment() }
+            timeLimit:      .seconds(10),
+            memoryLimit:    nil,
+            body:           { await counter.increment() }
         )
         
         let measurements: PerformanceMeasurements
@@ -158,15 +144,12 @@ internal final class PerformanceRunnerTests: TestKitCase
     
     func testAssertionFalureDuringWarmupReturnsFailed() async throws
     {
-        let options = PerformanceOptions(
+        let result: PerformanceResult = await PerformanceRunner.run(
             runs:           5,
             warmupRuns:     2,
-            timeLimit:      .seconds(10)
-        )
-        
-        let result: PerformanceResult = await PerformanceRunner.run(
-            options:    options,
-            body:       { FailureInterceptor.current?.recordFailure() }
+            timeLimit:      .seconds(10),
+            memoryLimit:    nil,
+            body:           { FailureInterceptor.current?.recordFailure() }
         )
         
         let failed: FailedValues = try XCTUnwrap(result.assertFailed())
@@ -181,15 +164,12 @@ internal final class PerformanceRunnerTests: TestKitCase
     
     func testThrownErrorDuringWarmupReturnsFailed() async throws
     {
-        let options = PerformanceOptions(
+        let result: PerformanceResult = await PerformanceRunner.run(
             runs:           5,
             warmupRuns:     2,
-            timeLimit:      .seconds(10)
-        )
-        
-        let result: PerformanceResult = await PerformanceRunner.run(
-            options:    options,
-            body:       { throw TestError() }
+            timeLimit:      .seconds(10),
+            memoryLimit:    nil,
+            body:           { throw TestError() }
         )
         
         let failed: FailedValues = try XCTUnwrap(result.assertFailed())
@@ -205,14 +185,11 @@ internal final class PerformanceRunnerTests: TestKitCase
     
     func testFailureAndThrownErrorDuringWarmupCaptured() async throws
     {
-        let options = PerformanceOptions(
+        let result: PerformanceResult = await PerformanceRunner.run(
             runs:           5,
             warmupRuns:     2,
-            timeLimit:      .seconds(10)
-        )
-        
-        let result: PerformanceResult = await PerformanceRunner.run(
-            options: options,
+            timeLimit:      .seconds(10),
+            memoryLimit:    nil,
             body:
             {
                 FailureInterceptor.current?.recordFailure()
@@ -234,14 +211,11 @@ internal final class PerformanceRunnerTests: TestKitCase
     {
         let counter = Counter()
         
-        let options = PerformanceOptions(
+        let result: PerformanceResult = await PerformanceRunner.run(
             runs:           5,
             warmupRuns:     1,
-            timeLimit:      .seconds(10)
-        )
-        
-        let result: PerformanceResult = await PerformanceRunner.run(
-            options: options,
+            timeLimit:      .seconds(10),
+            memoryLimit:    nil,
             body:
             {
                 await counter.increment()
@@ -267,14 +241,11 @@ internal final class PerformanceRunnerTests: TestKitCase
         let counter : Counter   = .init()
         let target  : Int       = 2
         
-        let options = PerformanceOptions(
+        let result: PerformanceResult = await PerformanceRunner.run(
             runs:           5,
             warmupRuns:     3,
-            timeLimit:      .seconds(10)
-        )
-        
-        let result: PerformanceResult = await PerformanceRunner.run(
-            options: options,
+            timeLimit:      .seconds(10),
+            memoryLimit:    nil,
             body:
             {
                 let count: Int = await counter.increment()
@@ -301,14 +272,11 @@ internal final class PerformanceRunnerTests: TestKitCase
     
     func testMultipleFailuresCapturedInSingleWarmupRun() async throws
     {
-        let options = PerformanceOptions(
+        let result: PerformanceResult = await PerformanceRunner.run(
             runs:           5,
             warmupRuns:     2,
-            timeLimit:      .seconds(10)
-        )
-        
-        let result: PerformanceResult = await PerformanceRunner.run(
-            options: options,
+            timeLimit:      .seconds(10),
+            memoryLimit:    nil,
             body:
             {
                 FailureInterceptor.current?.recordFailure(
@@ -345,16 +313,12 @@ internal final class PerformanceRunnerTests: TestKitCase
     {
         let runs: Int = 3
         
-        let options = PerformanceOptions(
+        let result: PerformanceResult = await PerformanceRunner.run(
             runs:           runs,
             warmupRuns:     0,
             timeLimit:      .seconds(10),
-            memoryLimit:    .max
-        )
-        
-        let result: PerformanceResult = await PerformanceRunner.run(
-            options:    options,
-            body:       { }
+            memoryLimit:    .max,
+            body:           { }
         )
         
         let measurements: PerformanceMeasurements
@@ -379,16 +343,12 @@ internal final class PerformanceRunnerTests: TestKitCase
     
     func testBothMetricsEnabledOnlyTimeExceeded() async throws
     {
-        let options = PerformanceOptions(
+        let result: PerformanceResult = await PerformanceRunner.run(
             runs:           3,
             warmupRuns:     0,
             timeLimit:      .nanoseconds(1),
-            memoryLimit:    .max
-        )
-        
-        let result: PerformanceResult = await PerformanceRunner.run(
-            options:    options,
-            body:       { try? await Task.sleep(for: .milliseconds(5)) }
+            memoryLimit:    .max,
+            body:           { try? await Task.sleep(for: .milliseconds(5)) }
         )
         
         let measurements: PerformanceMeasurements
@@ -409,15 +369,12 @@ internal final class PerformanceRunnerTests: TestKitCase
     {
         let runs: Int = 3
         
-        let options = PerformanceOptions(
+        let result: PerformanceResult = await PerformanceRunner.run(
             runs:           runs,
             warmupRuns:     0,
-            timeLimit:      .seconds(10)
-        )
-        
-        let result: PerformanceResult = await PerformanceRunner.run(
-            options:    options,
-            body:       { }
+            timeLimit:      .seconds(10),
+            memoryLimit:    nil,
+            body:           { }
         )
         
         let measurements: PerformanceMeasurements
@@ -438,15 +395,12 @@ internal final class PerformanceRunnerTests: TestKitCase
     {
         let runs: Int = 4
         
-        let options = PerformanceOptions(
+        let result: PerformanceResult = await PerformanceRunner.run(
             runs:           runs,
             warmupRuns:     0,
-            timeLimit:      .seconds(10)
-        )
-        
-        let result: PerformanceResult = await PerformanceRunner.run(
-            options:    options,
-            body:       { }
+            timeLimit:      .seconds(10),
+            memoryLimit:    nil,
+            body:           { }
         )
         
         let measurements: PerformanceMeasurements
@@ -467,15 +421,12 @@ internal final class PerformanceRunnerTests: TestKitCase
     {
         let runs: Int = 1
         
-        let options = PerformanceOptions(
+        let result: PerformanceResult = await PerformanceRunner.run(
             runs:           runs,
             warmupRuns:     0,
-            timeLimit:      .seconds(10)
-        )
-        
-        let result: PerformanceResult = await PerformanceRunner.run(
-            options:    options,
-            body:       { }
+            timeLimit:      .seconds(10),
+            memoryLimit:    nil,
+            body:           { }
         )
         
         let measurements: PerformanceMeasurements
@@ -491,15 +442,12 @@ internal final class PerformanceRunnerTests: TestKitCase
     
     func testAssertionFalureDuringMeasurementReturnsFailed() async throws
     {
-        let options = PerformanceOptions(
+        let result: PerformanceResult = await PerformanceRunner.run(
             runs:           5,
             warmupRuns:     0,
-            timeLimit:      .seconds(10)
-        )
-        
-        let result: PerformanceResult = await PerformanceRunner.run(
-            options:    options,
-            body:       { FailureInterceptor.current?.recordFailure() }
+            timeLimit:      .seconds(10),
+            memoryLimit:    nil,
+            body:           { FailureInterceptor.current?.recordFailure() }
         )
         
         let failed: FailedValues = try XCTUnwrap(result.assertFailed())
@@ -514,15 +462,12 @@ internal final class PerformanceRunnerTests: TestKitCase
     
     func testThrownErrorDuringMeasurementReturnsFailed() async throws
     {
-        let options = PerformanceOptions(
+        let result: PerformanceResult = await PerformanceRunner.run(
             runs:           5,
             warmupRuns:     0,
-            timeLimit:      .seconds(10)
-        )
-        
-        let result: PerformanceResult = await PerformanceRunner.run(
-            options:    options,
-            body:       { throw TestError() }
+            timeLimit:      .seconds(10),
+            memoryLimit:    nil,
+            body:           { throw TestError() }
         )
         
         let failed: FailedValues = try XCTUnwrap(result.assertFailed())
@@ -538,14 +483,11 @@ internal final class PerformanceRunnerTests: TestKitCase
     
     func testFailureAndThrownErrorDuringMeasurementCaptured() async throws
     {
-        let options = PerformanceOptions(
+        let result: PerformanceResult = await PerformanceRunner.run(
             runs:           5,
             warmupRuns:     0,
-            timeLimit:      .seconds(10)
-        )
-        
-        let result: PerformanceResult = await PerformanceRunner.run(
-            options: options,
+            timeLimit:      .seconds(10),
+            memoryLimit:    nil,
             body:
             {
                 FailureInterceptor.current?.recordFailure()
@@ -568,14 +510,11 @@ internal final class PerformanceRunnerTests: TestKitCase
         let counter : Counter   = .init()
         let target  : Int       = 3
         
-        let options = PerformanceOptions(
+        let result: PerformanceResult = await PerformanceRunner.run(
             runs:           5,
             warmupRuns:     0,
-            timeLimit:      .seconds(10)
-        )
-        
-        let result: PerformanceResult = await PerformanceRunner.run(
-            options: options,
+            timeLimit:      .seconds(10),
+            memoryLimit:    nil,
             body:
             {
                 let count: Int = await counter.increment()
@@ -599,14 +538,11 @@ internal final class PerformanceRunnerTests: TestKitCase
     
     func testMultipleFailuresCapturedInSingleMeasurementRun() async throws
     {
-        let options = PerformanceOptions(
+        let result: PerformanceResult = await PerformanceRunner.run(
             runs:           5,
             warmupRuns:     0,
-            timeLimit:      .seconds(10)
-        )
-        
-        let result: PerformanceResult = await PerformanceRunner.run(
-            options: options,
+            timeLimit:      .seconds(10),
+            memoryLimit:    nil,
             body:
             {
                 FailureInterceptor.current?.recordFailure(
@@ -641,17 +577,17 @@ internal final class PerformanceRunnerTests: TestKitCase
     
     func testCancelationBeforeAnyRuns() async
     {
-        let options = PerformanceOptions(
-            runs:           5,
-            warmupRuns:     1,
-            timeLimit:      .seconds(10)
-        )
-        
         let task = Task
         {
             await PerformanceRunner.run(
-                options:    options,
-                body:       { try? await Task.sleep(for: .milliseconds(100)) }
+                runs:           5,
+                warmupRuns:     1,
+                timeLimit:      .seconds(10),
+                memoryLimit:    nil,
+                body:
+                {
+                    try? await Task.sleep(for: .milliseconds(100))
+                }
             )
         }
         
@@ -666,17 +602,17 @@ internal final class PerformanceRunnerTests: TestKitCase
     
     func testCancelationDuringMeasurement() async
     {
-        let options = PerformanceOptions(
-            runs:           100,
-            warmupRuns:     0,
-            timeLimit:      .seconds(60)
-        )
-        
         let task = Task
         {
             await PerformanceRunner.run(
-                options:    options,
-                body:       { try? await Task.sleep(for: .milliseconds(50)) }
+                runs:           100,
+                warmupRuns:     0,
+                timeLimit:      .seconds(60),
+                memoryLimit:    nil,
+                body:
+                {
+                    try? await Task.sleep(for: .milliseconds(50))
+                }
             )
         }
         
@@ -697,15 +633,12 @@ internal final class PerformanceRunnerTests: TestKitCase
     {
         let sleepDuration: Duration = .milliseconds(20)
         
-        let options = PerformanceOptions(
+        let result: PerformanceResult = await PerformanceRunner.run(
             runs:           3,
             warmupRuns:     0,
-            timeLimit:      .seconds(10)
-        )
-        
-        let result: PerformanceResult = await PerformanceRunner.run(
-            options:    options,
-            body:       { try? await Task.sleep(for: sleepDuration) }
+            timeLimit:      .seconds(10),
+            memoryLimit:    nil,
+            body:           { try? await Task.sleep(for: sleepDuration) }
         )
         
         let measurements: PerformanceMeasurements
@@ -729,14 +662,11 @@ internal final class PerformanceRunnerTests: TestKitCase
     {
         let runs: Int = 3
         
-        let options = PerformanceOptions(
+        let result: PerformanceResult = await PerformanceRunner.run(
             runs:           runs,
             warmupRuns:     0,
-            memoryLimit:    .max
-        )
-        
-        let result: PerformanceResult = await PerformanceRunner.run(
-            options: options,
+            timeLimit:      nil,
+            memoryLimit:    .max,
             body:
             {
                 /// Allocate a buffer large enough to produce a measurable
@@ -775,17 +705,14 @@ internal final class PerformanceRunnerTests: TestKitCase
     {
         let outer = FailureInterceptor()
         
-        let options = PerformanceOptions(
-            runs:           3,
-            warmupRuns:     0,
-            timeLimit:      .seconds(10)
-        )
-        
         await FailureInterceptor.$current.withValue(outer)
         {
             let result: PerformanceResult = await PerformanceRunner.run(
-                options:    options,
-                body:       { FailureInterceptor.current?.recordFailure() }
+                runs:           3,
+                warmupRuns:     0,
+                timeLimit:      .seconds(10),
+                memoryLimit:    nil,
+                body:           { FailureInterceptor.current?.recordFailure() }
             )
             
             result.assertFailed()
@@ -801,17 +728,14 @@ internal final class PerformanceRunnerTests: TestKitCase
     {
         let outer = FailureInterceptor()
         
-        let options = PerformanceOptions(
-            runs:           1,
-            warmupRuns:     0,
-            timeLimit:      .seconds(10)
-        )
-        
         await FailureInterceptor.$current.withValue(outer)
         {
             _ = await PerformanceRunner.run(
-                options:    options,
-                body:       { }
+                runs:           1,
+                warmupRuns:     0,
+                timeLimit:      .seconds(10),
+                memoryLimit:    nil,
+                body:           { }
             )
             
             XCTAssertIdentical(FailureInterceptor.current, outer)
@@ -824,16 +748,13 @@ internal final class PerformanceRunnerTests: TestKitCase
     {
         let outer = FailureInterceptor()
         
-        let options = PerformanceOptions(
-            runs:           1,
-            warmupRuns:     0,
-            timeLimit:      .seconds(10)
-        )
-        
         await FailureInterceptor.$current.withValue(outer)
         {
             _ = await PerformanceRunner.run(
-                options: options,
+                runs:           1,
+                warmupRuns:     0,
+                timeLimit:      .seconds(10),
+                memoryLimit:    nil,
                 body:
                 {
                     XCTAssertNotNil(FailureInterceptor.current)
@@ -854,14 +775,11 @@ internal final class PerformanceRunnerTests: TestKitCase
         let target  : Int       = 3
         let runs    : Int       = 5
         
-        let options = PerformanceOptions(
+        let result: PerformanceResult = await PerformanceRunner.run(
             runs:           runs,
             warmupRuns:     0,
-            timeLimit:      .seconds(10)
-        )
-        
-        let result: PerformanceResult = await PerformanceRunner.run(
-            options: options,
+            timeLimit:      .seconds(10),
+            memoryLimit:    nil,
             body:
             {
                 let count: Int = await counter.increment()
