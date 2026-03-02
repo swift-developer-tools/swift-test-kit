@@ -35,60 +35,6 @@ internal final class PerformanceRunnerTests: TestKitCase
     
     
     
-    // MARK: - Time (passing)
-    
-    func testTimeWithinLimitPasses() async throws
-    {
-        let runs: Int = 3
-        
-        let result: PerformanceResult = await PerformanceRunner.run(
-            runs:           runs,
-            warmupRuns:     0,
-            timeLimit:      .seconds(10),
-            memoryLimit:    nil,
-            body:           { }
-        )
-        
-        let measurements: PerformanceMeasurements
-            = try XCTUnwrap(result.assertCompleted())
-        
-        XCTAssertTrue(measurements.success)
-        
-        XCTAssertNotNil(measurements.time)
-        XCTAssertEqual(measurements.time?.count, runs)
-        XCTAssertNotNil(measurements.medianTime)
-        XCTAssertNotNil(measurements.timeLimit)
-        XCTAssertFalse(measurements.timeLimitExceeded)
-        
-        XCTAssertNil(measurements.memory)
-        XCTAssertNil(measurements.medianMemory)
-        XCTAssertNil(measurements.memoryLimit)
-        XCTAssertFalse(measurements.memoryLimitExceeded)
-    }
-    
-    
-    
-    // MARK: - Time (failing)
-    
-    func testTimeExceedsLimitFails() async throws
-    {
-        let result: PerformanceResult = await PerformanceRunner.run(
-            runs:           3,
-            warmupRuns:     0,
-            timeLimit:      .nanoseconds(1),
-            memoryLimit:    nil,
-            body:           { try? await Task.sleep(for: .milliseconds(5)) }
-        )
-        
-        let measurements: PerformanceMeasurements
-            = try XCTUnwrap(result.assertCompleted())
-        
-        XCTAssertFalse(measurements.success)
-        XCTAssertTrue(measurements.timeLimitExceeded)
-    }
-    
-    
-    
     // MARK: - Warmup (passing)
     
     func testWarmupRunsNotIncludedInMeasurements() async throws
@@ -438,6 +384,105 @@ internal final class PerformanceRunnerTests: TestKitCase
     
     
     
+    func testTimeWithinLimitPasses() async throws
+    {
+        let runs: Int = 3
+        
+        let result: PerformanceResult = await PerformanceRunner.run(
+            runs:           runs,
+            warmupRuns:     0,
+            timeLimit:      .seconds(10),
+            memoryLimit:    nil,
+            body:           { }
+        )
+        
+        let measurements: PerformanceMeasurements
+            = try XCTUnwrap(result.assertCompleted())
+        
+        XCTAssertTrue(measurements.success)
+        
+        XCTAssertNotNil(measurements.time)
+        XCTAssertEqual(measurements.time?.count, runs)
+        XCTAssertNotNil(measurements.medianTime)
+        XCTAssertNotNil(measurements.timeLimit)
+        XCTAssertFalse(measurements.timeLimitExceeded)
+        
+        XCTAssertNil(measurements.memory)
+        XCTAssertNil(measurements.medianMemory)
+        XCTAssertNil(measurements.memoryLimit)
+        XCTAssertFalse(measurements.memoryLimitExceeded)
+    }
+    
+    
+    
+    func testTimeMeasurementReflectsSleep() async throws
+    {
+        let sleepDuration: Duration = .milliseconds(20)
+        
+        let result: PerformanceResult = await PerformanceRunner.run(
+            runs:           3,
+            warmupRuns:     0,
+            timeLimit:      .seconds(10),
+            memoryLimit:    nil,
+            body:           { try? await Task.sleep(for: sleepDuration) }
+        )
+        
+        let measurements: PerformanceMeasurements
+            = try XCTUnwrap(result.assertCompleted())
+        
+        XCTAssertTrue(measurements.success)
+        XCTAssertNotNil(measurements.medianTime)
+        XCTAssertGreaterThanOrEqual(measurements.medianTime!, sleepDuration)
+        
+        XCTAssertLessThan(
+            measurements.medianTime!,
+            sleepDuration + .milliseconds(200)
+        )
+    }
+    
+    
+    
+    func testMemoryMeasurementProducesMeasurableDifference() async throws
+    {
+        let runs: Int = 3
+        
+        let result: PerformanceResult = await PerformanceRunner.run(
+            runs:           runs,
+            warmupRuns:     0,
+            timeLimit:      nil,
+            memoryLimit:    .max,
+            body:
+            {
+                /// Allocate a buffer large enough to produce a measurable
+                /// footprint difference.
+                let buffer: [UInt8] = Array(
+                    repeating:  0,
+                    count:      1_000_000
+                )
+                
+                _ = buffer.count
+            }
+        )
+        
+        let measurements: PerformanceMeasurements
+            = try XCTUnwrap(result.assertCompleted())
+        
+        XCTAssertTrue(measurements.success)
+        
+        XCTAssertNil(measurements.time)
+        XCTAssertNil(measurements.medianTime)
+        XCTAssertNil(measurements.timeLimit)
+        XCTAssertFalse(measurements.timeLimitExceeded)
+        
+        XCTAssertNotNil(measurements.memory)
+        XCTAssertEqual(measurements.memory?.count, runs)
+        XCTAssertNotNil(measurements.medianMemory)
+        XCTAssertNotNil(measurements.memoryLimit)
+        XCTAssertFalse(measurements.memoryLimitExceeded)
+    }
+    
+    
+    
     // MARK: - Measurement (failing)
     
     func testAssertionFalureDuringMeasurementReturnsFailed() async throws
@@ -627,74 +672,21 @@ internal final class PerformanceRunnerTests: TestKitCase
     
     
     
-    // MARK: - Time
-    
-    func testTimeMeasurementReflectsSleep() async throws
+    func testTimeExceedsLimitFails() async throws
     {
-        let sleepDuration: Duration = .milliseconds(20)
-        
         let result: PerformanceResult = await PerformanceRunner.run(
             runs:           3,
             warmupRuns:     0,
-            timeLimit:      .seconds(10),
+            timeLimit:      .nanoseconds(1),
             memoryLimit:    nil,
-            body:           { try? await Task.sleep(for: sleepDuration) }
+            body:           { try? await Task.sleep(for: .milliseconds(5)) }
         )
         
         let measurements: PerformanceMeasurements
             = try XCTUnwrap(result.assertCompleted())
         
-        XCTAssertTrue(measurements.success)
-        XCTAssertNotNil(measurements.medianTime)
-        XCTAssertGreaterThanOrEqual(measurements.medianTime!, sleepDuration)
-        
-        XCTAssertLessThan(
-            measurements.medianTime!,
-            sleepDuration + .milliseconds(200)
-        )
-    }
-    
-    
-    
-    // MARK: - Memory
-    
-    func testMemoryMeasurementProducesMeasurableDifference() async throws
-    {
-        let runs: Int = 3
-        
-        let result: PerformanceResult = await PerformanceRunner.run(
-            runs:           runs,
-            warmupRuns:     0,
-            timeLimit:      nil,
-            memoryLimit:    .max,
-            body:
-            {
-                /// Allocate a buffer large enough to produce a measurable
-                /// footprint difference.
-                let buffer: [UInt8] = Array(
-                    repeating:  0,
-                    count:      1_000_000
-                )
-                
-                _ = buffer.count
-            }
-        )
-        
-        let measurements: PerformanceMeasurements
-            = try XCTUnwrap(result.assertCompleted())
-        
-        XCTAssertTrue(measurements.success)
-        
-        XCTAssertNil(measurements.time)
-        XCTAssertNil(measurements.medianTime)
-        XCTAssertNil(measurements.timeLimit)
-        XCTAssertFalse(measurements.timeLimitExceeded)
-        
-        XCTAssertNotNil(measurements.memory)
-        XCTAssertEqual(measurements.memory?.count, runs)
-        XCTAssertNotNil(measurements.medianMemory)
-        XCTAssertNotNil(measurements.memoryLimit)
-        XCTAssertFalse(measurements.memoryLimitExceeded)
+        XCTAssertFalse(measurements.success)
+        XCTAssertTrue(measurements.timeLimitExceeded)
     }
     
     
