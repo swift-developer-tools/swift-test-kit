@@ -56,4 +56,27 @@ internal extension TestOptions
         
         return TestOptions(temporalOptions: temporalOptions)
     }
+    
+    
+    
+    /// Initializes a ``TestOptions`` instance, optionally specifying values
+    /// for its performance testing options property.
+    static func performanceOptions(
+        runs            : Int           = 10,
+        warmupRuns      : Int           = 1,
+        timeLimit       : Duration?     = nil,
+        memoryLimit     : UInt64?       = nil,
+        showAllFailures : Bool          = false
+    ) -> TestOptions
+    {
+        let performanceOptions = PerformanceOptions(
+            runs:               runs,
+            warmupRuns:         warmupRuns,
+            timeLimit:          timeLimit,
+            memoryLimit:        memoryLimit,
+            showAllFailures:    showAllFailures
+        )
+        
+        return TestOptions(performanceOptions: performanceOptions)
+    }
 }
