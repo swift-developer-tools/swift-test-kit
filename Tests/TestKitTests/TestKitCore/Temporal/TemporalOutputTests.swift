@@ -7,7 +7,7 @@
 //
 //===----------------------------------------------------------------------===//
 
-@testable import TestKitCore
+import TestKitCore
 import Synchronization
 import XCTest
 
@@ -750,8 +750,8 @@ internal final class TemporalOutputTests: TestKitCase
 
 private extension String
 {
-    /// Removes the non-deterministic time portion of an `always` failure
-    /// message, and replaces it with `<T>`.
+    /// Replaces the non-deterministic time portion of an `always` failure
+    /// message with `<T>`.
     var timeless: String
     {
         return replacing(
