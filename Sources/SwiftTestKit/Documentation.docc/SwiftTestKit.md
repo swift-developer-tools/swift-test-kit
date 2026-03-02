@@ -367,6 +367,8 @@ await STKPerformance(memoryLimit: 5_000_000)
 Temporal tests poll assertions over a configurable duration to verify 
 continuous invariants or eventual convergence.
 
+### Eventually
+
 Verify an eventual outcome:
 
 ```swift
@@ -386,6 +388,8 @@ await STKEventually(timeout: .seconds(2))
 // Expected:   loaded
 // Actual:     processing
 ```
+
+### Always
 
 Verify a continuous invariant:
 
