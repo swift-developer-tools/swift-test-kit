@@ -733,5 +733,6 @@ for the complete license terms.
 - <doc:Configuration>
 - <doc:FunctionAssertions>
 - <doc:MacroAssertions>
+- <doc:PerformanceTesting>
 - <doc:TemporalTesting>
 - <doc:PropertyBasedTesting>
