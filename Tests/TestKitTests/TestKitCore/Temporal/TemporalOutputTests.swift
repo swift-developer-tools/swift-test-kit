@@ -811,20 +811,3 @@ internal final class TemporalOutputTests: TestKitCase
         XCTAssertEqual(expected, actual?.timeless)
     }
 }
-
-
-
-// MARK: - Support
-
-private extension String
-{
-    /// Replaces the non-deterministic time portion of an `always` failure
-    /// message with `<T>`.
-    var timeless: String
-    {
-        return replacing(
-            /failed after \d+(\.\d+)?\s*(ms|sec)/,
-            with: "failed after <T>"
-        )
-    }
-}
