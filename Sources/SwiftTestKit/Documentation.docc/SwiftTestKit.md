@@ -1,7 +1,7 @@
 # ``SwiftTestKit``
 
-Property-based, stateful, and temporal testing, with structural diffs and 
-advanced assertions for the Swift Testing framework.
+Property-based, stateful, performance, and temporal testing, with structural 
+diffs and advanced assertions for the Swift Testing framework.
 
 
 
@@ -22,6 +22,9 @@ making CI/CD logs actionable without needing access to the source code.
 Predicate assertions verify conditions across collection elements and produce 
 element-level failure output, identifying which elements failed, which matched 
 unexpectedly, and which threw errors.
+
+Performance tests measure execution time and physical memory footprint across
+multiple runs and verify that median values stay within configurable limits.
 
 Temporal tests poll assertions continuously for a given duration, or until all 
 assertions pass within a single execution.
