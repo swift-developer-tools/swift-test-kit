@@ -324,6 +324,50 @@ XCTKAssertSatisfy(values, atLeast: 4)
 
 
 
+## Performance Testing
+
+Performance tests measure execution time and physical memory footprint across
+multiple runs, and verify that median values stay within configurable limits.
+
+### Time
+
+Verify the execution time:
+
+```swift
+// Assert that a custom sort function is working correctly,
+// and that it sorts within 50 milliseconds.
+await XCTKPerformance(timeLimit: .milliseconds(50))
+{
+    XCTKAssertSorted(customSort(array), by: >=)
+}
+
+// XCTKPerformance failed
+// 
+// Time:
+//     Threshold:   50 ms
+//     Median:    77.2 ms (10 runs) ←
+```
+
+### Memory
+
+Verify the physical memory footprint:
+
+```swift
+// Assert that a tokenizer's memory footprint is less than 5 MB.
+await XCTKPerformance(memoryLimit: 5_000_000)
+{
+    _ = try await tokenize(source)
+}
+
+// XCTKPerformance failed
+// 
+// Memory:
+//     Threshold: 4.8 MB
+//     Median:    9.5 MB (10 runs) ←
+```
+
+
+
 ## Temporal Testing
 
 Temporal tests poll assertions over a configurable duration to verify 
