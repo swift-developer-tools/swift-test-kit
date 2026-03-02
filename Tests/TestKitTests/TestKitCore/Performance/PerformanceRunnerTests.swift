@@ -444,25 +444,18 @@ internal final class PerformanceRunnerTests: TestKitCase
     
     func testMemoryMeasurementProducesMeasurableDifference() async throws
     {
-        let runs: Int = 3
+        let runs    : Int           = 3
+        let holder  : MemoryHolder  = .init()
         
         let result: PerformanceResult = await PerformanceRunner.run(
             runs:           runs,
             warmupRuns:     0,
             timeLimit:      nil,
             memoryLimit:    .max,
-            body:
-            {
-                /// Allocate a buffer large enough to produce a measurable
-                /// footprint difference.
-                let buffer: [UInt8] = Array(
-                    repeating:  0,
-                    count:      1_000_000
-                )
-                
-                _ = buffer.count
-            }
+            body:           { holder.allocate() }
         )
+        
+        withExtendedLifetime(holder) { }
         
         let measurements: PerformanceMeasurements
             = try XCTUnwrap(result.assertCompleted())
@@ -479,6 +472,11 @@ internal final class PerformanceRunnerTests: TestKitCase
         XCTAssertNotNil(measurements.medianMemory)
         XCTAssertNotNil(measurements.memoryLimit)
         XCTAssertFalse(measurements.memoryLimitExceeded)
+        
+        for measurement in measurements.memory ?? []
+        {
+            XCTAssertGreaterThan(measurement, 0)
+        }
     }
     
     
