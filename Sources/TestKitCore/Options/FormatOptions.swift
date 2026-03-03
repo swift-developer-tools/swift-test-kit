@@ -59,7 +59,7 @@ public struct FormatOptions: Equatable, Sendable
     /// Initializes a ``FormatOptions`` instance, optionally specifying values
     /// for its properties.
     ///
-    /// - Precondition: `indentationSpaces` must be non-negative.
+    /// - Precondition: `indentationSpaces` must not be negative.
     /// - Precondition: `maxLineLength` must be positive.
     /// - Precondition: `maxDiffs` must be positive or `nil`.
     public init(
@@ -73,7 +73,7 @@ public struct FormatOptions: Equatable, Sendable
     {
         precondition(
             indentationSpaces >= 0,
-            "indentationSpaces must be non-negative"
+            "indentationSpaces must not be negative"
         )
         
         precondition(

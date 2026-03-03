@@ -1021,7 +1021,7 @@ public func XCTKAssertNoneSatisfy<C>(
 /// Asserts that at least the specified number of elements of the given
 /// collection satisfy the given predicate.
 ///
-/// - Precondition: `atLeast` must be non-negative.
+/// - Precondition: `atLeast` must not be negative.
 ///
 /// - Parameters:
 ///   - collection: The collection to evaluate.
@@ -1071,7 +1071,7 @@ public func XCTKAssertSatisfy<C>(
 /// Asserts that up to the specified number of elements of the given collection
 /// satisfy the given predicate.
 ///
-/// - Precondition: `atMost` must be non-negative.
+/// - Precondition: `atMost` must not be negative.
 ///
 /// - Parameters:
 ///   - collection: The collection to evaluate.
@@ -1122,7 +1122,7 @@ public func XCTKAssertSatisfy<C>(
 /// the given predicate is within the specified range.
 ///
 /// - Precondition: `range.lowerBound` must be less than or equal to
-/// `range.upperBound`, and non-negative.
+/// `range.upperBound`, and must not be negative.
 ///
 /// - Parameters:
 ///   - collection: The collection to evaluate.
@@ -1171,7 +1171,7 @@ public func XCTKAssertSatisfy<C>(
 /// Asserts that exactly the specified number of elements of the given
 /// collection satisfy the given predicate.
 ///
-/// - Precondition: `count` must be non-negative.
+/// - Precondition: `count` must not be negative.
 ///
 /// - Parameters:
 ///   - collection: The collection to evaluate.
