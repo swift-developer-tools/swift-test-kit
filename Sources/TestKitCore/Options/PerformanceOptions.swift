@@ -31,7 +31,7 @@ public struct PerformanceOptions: Equatable, Sendable
     /// limit.
     public var timeLimit        : Duration?
     
-    /// The physical memory footprint limit, in bytes.
+    /// The physical memory footprint limit.
     ///
     /// The default value is `nil` (memory measurement disabled). When
     /// non-`nil`, the test fails if the median memory usage difference
@@ -40,7 +40,7 @@ public struct PerformanceOptions: Equatable, Sendable
     /// - Note: This measures the physical memory footprint of the entire
     /// process, not memory scoped to the measured block. Measurements may
     /// vary between runs due to system-level allocations.
-    public var memoryLimit      : UInt64?
+    public var memoryLimit      : ByteCount?
     
     /// Whether to show all assertion failures from the failing run.
     ///
@@ -61,7 +61,7 @@ public struct PerformanceOptions: Equatable, Sendable
         runs            : Int           = 10,
         warmupRuns      : Int           = 1,
         timeLimit       : Duration?     = nil,
-        memoryLimit     : UInt64?       = nil,
+        memoryLimit     : ByteCount?    = nil,
         showAllFailures : Bool          = false
     )
     {

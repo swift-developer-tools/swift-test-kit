@@ -16,17 +16,17 @@ import TestKitCore
 /// allowing tests to benefit from autoclosures and default parameters.
 /// The XCTestKit failure context is used since tests are run with XCTest.
 internal func TKPerformance(
-    runs        : @autoclosure () -> Int?       = nil,
-    warmupRuns  : @autoclosure () -> Int?       = nil,
-    timeLimit   : @autoclosure () -> Duration?  = nil,
-    memoryLimit : @autoclosure () -> UInt64?    = nil,
-    _ message   : @autoclosure () -> String     = "",
-    fileID      : StaticString                  = #fileID,
-    file        : StaticString                  = #filePath,
-    line        : UInt                          = #line,
-    column      : UInt                          = #column,
-    options     : TestOptions?                  = nil,
-    context     : FailureContext                = XCTestKit.failureContext,
+    runs        : @autoclosure () -> Int?           = nil,
+    warmupRuns  : @autoclosure () -> Int?           = nil,
+    timeLimit   : @autoclosure () -> Duration?      = nil,
+    memoryLimit : @autoclosure () -> ByteCount?     = nil,
+    _ message   : @autoclosure () -> String         = "",
+    fileID      : StaticString                      = #fileID,
+    file        : StaticString                      = #filePath,
+    line        : UInt                              = #line,
+    column      : UInt                              = #column,
+    options     : TestOptions?                      = nil,
+    context     : FailureContext                    = XCTestKit.failureContext,
     _ body      : () async throws -> Void
 ) async
 {

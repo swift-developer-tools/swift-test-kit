@@ -57,14 +57,14 @@ internal struct PerformanceMeasurements: Equatable, Sendable
     /// The time limit.
     internal let timeLimit      : Duration?
     
-    /// The per-run memory measurements, in bytes.
-    internal let memory         : [UInt64]?
+    /// The per-run memory measurements.
+    internal let memory         : [ByteCount]?
     
-    /// The median memory usage difference, in bytes.
-    internal let medianMemory   : UInt64?
+    /// The median memory usage difference.
+    internal let medianMemory   : ByteCount?
     
-    /// The physical memory footprint limit, in bytes.
-    internal let memoryLimit    : UInt64?
+    /// The physical memory footprint limit.
+    internal let memoryLimit    : ByteCount?
     
     
     

@@ -184,15 +184,15 @@ extension PerformanceResult
         }
         
         if
-            let memoryLimit     : UInt64    = measurements.memoryLimit,
-            let medianMemory    : UInt64    = measurements.medianMemory
+            let memoryLimit     : ByteCount     = measurements.memoryLimit,
+            let medianMemory    : ByteCount     = measurements.medianMemory
         {
             lines.append("")
             lines.append("Memory:")
             
             lines.append(contentsOf: formatMetricLines(
-                threshold:  memoryLimit.readableBytes,
-                median:     medianMemory.readableBytes,
+                threshold:  memoryLimit.description,
+                median:     medianMemory.description,
                 runs:       measurements.runs,
                 exceeded:   measurements.memoryLimitExceeded
             ))

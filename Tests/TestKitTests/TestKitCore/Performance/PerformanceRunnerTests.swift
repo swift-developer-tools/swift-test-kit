@@ -263,7 +263,7 @@ internal final class PerformanceRunnerTests: TestKitCase
             runs:           runs,
             warmupRuns:     0,
             timeLimit:      .seconds(10),
-            memoryLimit:    .max,
+            memoryLimit:    .bytes(UInt64.max),
             body:           { }
         )
         
@@ -293,7 +293,7 @@ internal final class PerformanceRunnerTests: TestKitCase
             runs:           3,
             warmupRuns:     0,
             timeLimit:      .nanoseconds(1),
-            memoryLimit:    .max,
+            memoryLimit:    .bytes(UInt64.max),
             body:           { try? await Task.sleep(for: .milliseconds(5)) }
         )
         
@@ -451,7 +451,7 @@ internal final class PerformanceRunnerTests: TestKitCase
             runs:           runs,
             warmupRuns:     0,
             timeLimit:      nil,
-            memoryLimit:    .max,
+            memoryLimit:    .bytes(UInt64.max),
             body:           { holder.allocate() }
         )
         
@@ -475,7 +475,7 @@ internal final class PerformanceRunnerTests: TestKitCase
         
         for measurement in measurements.memory ?? []
         {
-            XCTAssertGreaterThan(measurement, 0)
+            XCTAssertGreaterThan(measurement, .zero)
         }
     }
     

@@ -80,9 +80,9 @@ internal final class PerformanceAlignmentTests: TestKitCase
             time:           nil,
             medianTime:     nil,
             timeLimit:      nil,
-            memory:         Array(repeating: UInt64(524_288), count: 3),
-            medianMemory:   524_288,
-            memoryLimit:    1024
+            memory:         Array(repeating: .kilobytes(512), count: 3),
+            medianMemory:   .kilobytes(512),
+            memoryLimit:    .kilobytes(1)
         ))
         
         let actual: String? = emit(result)
@@ -108,9 +108,9 @@ internal final class PerformanceAlignmentTests: TestKitCase
             time:           Array(repeating: .milliseconds(5), count: 5),
             medianTime:     .milliseconds(5),
             timeLimit:      .milliseconds(500),
-            memory:         Array(repeating: UInt64(2_500_000), count: 5),
-            medianMemory:   2_500_000,
-            memoryLimit:    1_048_576
+            memory:         Array(repeating: .megabytes(2.5), count: 5),
+            medianMemory:   .megabytes(2.5),
+            memoryLimit:    .megabytes(1)
         ))
         
         let actual: String? = emit(result)
@@ -125,7 +125,7 @@ internal final class PerformanceAlignmentTests: TestKitCase
         
         Memory:
             Threshold:   1 MB
-            Median:    2.4 MB (5 runs) ←
+            Median:    2.5 MB (5 runs) ←
         """
         
         XCTAssertEqual(expected, actual)
@@ -140,9 +140,9 @@ internal final class PerformanceAlignmentTests: TestKitCase
             time:           Array(repeating: .milliseconds(123), count: 5),
             medianTime:     .milliseconds(123),
             timeLimit:      .milliseconds(50),
-            memory:         Array(repeating: UInt64(2_500_000), count: 5),
-            medianMemory:   2_500_000,
-            memoryLimit:    1_048_576
+            memory:         Array(repeating: .megabytes(2.5), count: 5),
+            medianMemory:   .megabytes(2.5),
+            memoryLimit:    .megabytes(1)
         ))
         
         let actual: String? = emit(result)
@@ -157,7 +157,7 @@ internal final class PerformanceAlignmentTests: TestKitCase
         
         Memory:
             Threshold:   1 MB
-            Median:    2.4 MB (5 runs) ←
+            Median:    2.5 MB (5 runs) ←
         """
         
         XCTAssertEqual(expected, actual)

@@ -57,7 +57,7 @@ internal final class PerformanceIntegrationTests: TestKitCase
         let options: TestOptions = .performanceOptions(
             runs:           3,
             warmupRuns:     0,
-            memoryLimit:    100_000_000
+            memoryLimit:    .megabytes(100)
         )
         
         await TKPerformance(options: options) { }
@@ -71,7 +71,7 @@ internal final class PerformanceIntegrationTests: TestKitCase
             runs:           3,
             warmupRuns:     0,
             timeLimit:      .seconds(10),
-            memoryLimit:    100_000_000
+            memoryLimit:    .megabytes(100)
         )
         
         await TKPerformance(options: options) { }
@@ -168,13 +168,13 @@ internal final class PerformanceIntegrationTests: TestKitCase
         let options: TestOptions = .performanceOptions(
             runs:           1,
             warmupRuns:     0,
-            memoryLimit:    100_000_000
+            memoryLimit:    .megabytes(100)
         )
         
         let actual: String? = await withOneExpectedFailure
         {
             await TKPerformance(
-                memoryLimit:    1,
+                memoryLimit:    .bytes(1),
                 options:        options
             )
             {

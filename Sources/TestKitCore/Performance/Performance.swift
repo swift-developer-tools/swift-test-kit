@@ -11,7 +11,7 @@ package func TKPerformance(
     runs        : () -> Int?,
     warmupRuns  : () -> Int?,
     timeLimit   : () -> Duration?,
-    memoryLimit : () -> UInt64?,
+    memoryLimit : () -> ByteCount?,
     _ message   : () -> String,
     fileID      : StaticString,
     file        : StaticString,
@@ -27,7 +27,7 @@ package func TKPerformance(
     let runs        : Int           = runs()        ?? perfOptions.runs
     let warmupRuns  : Int           = warmupRuns()  ?? perfOptions.warmupRuns
     let timeLimit   : Duration?     = timeLimit()   ?? perfOptions.timeLimit
-    let memoryLimit : UInt64?       = memoryLimit() ?? perfOptions.memoryLimit
+    let memoryLimit : ByteCount?    = memoryLimit() ?? perfOptions.memoryLimit
     
     let result: PerformanceResult = await PerformanceRunner.run(
         runs:           runs,

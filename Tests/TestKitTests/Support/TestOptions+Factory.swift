@@ -65,7 +65,7 @@ internal extension TestOptions
         runs            : Int           = 10,
         warmupRuns      : Int           = 1,
         timeLimit       : Duration?     = nil,
-        memoryLimit     : UInt64?       = nil,
+        memoryLimit     : ByteCount?    = nil,
         showAllFailures : Bool          = false
     ) -> TestOptions
     {

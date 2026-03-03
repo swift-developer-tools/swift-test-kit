@@ -20,14 +20,14 @@ internal struct PerformanceRunner
     ///   - runs: The number of measurement runs.
     ///   - warmupRuns: The number of warmup runs before measurement begins.
     ///   - timeLimit: The time limit.
-    ///   - memoryLimit: The physical memory footprint limit, in bytes.
+    ///   - memoryLimit: The physical memory footprint limit.
     ///   - body: The performance body.
     /// - Returns: The result of running the performance test.
     internal static func run(
         runs        : Int,
         warmupRuns  : Int,
         timeLimit   : Duration?,
-        memoryLimit : UInt64?,
+        memoryLimit : ByteCount?,
         body        : () async throws -> Void
     ) async -> PerformanceResult
     {
@@ -100,7 +100,7 @@ internal struct PerformanceRunner
         
         
         var timeMeasurements    : [Duration]    = []
-        var memoryMeasurements  : [UInt64]      = []
+        var memoryMeasurements  : [ByteCount]   = []
         
         for measurementRun in 0..<runs
         {
@@ -115,7 +115,7 @@ internal struct PerformanceRunner
             /// Measure the memory footprint before starting the clock, and
             /// then again after stopping the clock, so any memory measurement
             /// overhead is not included in the time measurement.
-            let preMemory: UInt64? = memoryEnabled
+            let preMemory: ByteCount? = memoryEnabled
                 ? physicalMemoryFootprint()
                 : nil
             
@@ -136,7 +136,7 @@ internal struct PerformanceRunner
             
             let elapsed: Duration = start.elapsed
             
-            let postMemory: UInt64? = memoryEnabled
+            let postMemory: ByteCount? = memoryEnabled
                 ? physicalMemoryFootprint()
                 : nil
             
@@ -164,11 +164,12 @@ internal struct PerformanceRunner
             {
                 /// Prefer zero to an underflow if the footprint decreases
                 /// between pre- and post-clock-start.
-                let difference: UInt64 = postMemory > preMemory
-                    ? postMemory - preMemory
-                    : 0
+                let difference: UInt64
+                    = postMemory.rawValue > preMemory.rawValue
+                        ? postMemory.rawValue - preMemory.rawValue
+                        : 0
                 
-                memoryMeasurements.append(difference)
+                memoryMeasurements.append(.bytes(difference))
             }
         }
         
@@ -198,9 +199,9 @@ internal struct PerformanceRunner
     
     
     
-    /// Gets the physical memory footprint of the process, in bytes.
-    /// - Returns: The physical memory footprint of the process, in bytes.
-    private static func physicalMemoryFootprint() -> UInt64?
+    /// Gets the physical memory footprint of the process.
+    /// - Returns: The physical memory footprint of the process.
+    private static func physicalMemoryFootprint() -> ByteCount?
     {
         var info = task_vm_info_data_t()
         
@@ -237,7 +238,7 @@ internal struct PerformanceRunner
             return nil
         }
         
-        return info.phys_footprint
+        return .bytes(info.phys_footprint)
     }
     
     
@@ -267,17 +268,17 @@ internal struct PerformanceRunner
     
     
     
-    /// Computes the median of the given values.
+    /// Computes the median of the given byte counts.
     ///
     /// If the given array has an even number of elements, the lower-middle
     /// value is used.
     ///
-    /// - Parameter values: The values.
+    /// - Parameter values: The byte counts.
     /// - Returns: The median of the given values, or `nil` if the array
     /// is empty.
     private static func median(
-        of values: [UInt64]
-    ) -> UInt64?
+        of values: [ByteCount]
+    ) -> ByteCount?
     {
         guard !values.isEmpty
         else
@@ -285,7 +286,7 @@ internal struct PerformanceRunner
             return nil
         }
         
-        let sorted: [UInt64] = values.sorted()
+        let sorted: [ByteCount] = values.sorted()
         
         return sorted[(sorted.count - 1) / 2]
     }

@@ -387,7 +387,7 @@ internal final class PerformanceOutputTests: TestKitCase
         let options: TestOptions = .performanceOptions(
             runs:           1,
             warmupRuns:     0,
-            memoryLimit:    1
+            memoryLimit:    .bytes(1)
         )
         
         let holder = MemoryHolder()
@@ -424,7 +424,7 @@ internal final class PerformanceOutputTests: TestKitCase
             runs:           3,
             warmupRuns:     0,
             timeLimit:      .milliseconds(1),
-            memoryLimit:    1
+            memoryLimit:    .bytes(1)
         )
         
         let holder = MemoryHolder()
@@ -469,7 +469,7 @@ internal final class PerformanceOutputTests: TestKitCase
             runs:           3,
             warmupRuns:     0,
             timeLimit:      .milliseconds(1),
-            memoryLimit:    1
+            memoryLimit:    .bytes(1)
         )
         
         let actual: String? = await withCapturedFailure
@@ -509,7 +509,7 @@ internal final class PerformanceOutputTests: TestKitCase
             runs:           3,
             warmupRuns:     0,
             timeLimit:      .seconds(10),
-            memoryLimit:    1
+            memoryLimit:    .bytes(1)
         )
         
         let holder = MemoryHolder()
