@@ -75,6 +75,17 @@ public typealias UnwrapError            = TestKitCore.UnwrapError
 
 
 
+// MARK: - Performance testing
+
+/// A representation of memory, in bytes.
+///
+/// - Note: See
+/// [`ByteCount`](https://swift-developer-tools.github.io/swift-test-kit/documentation/testkitcore/bytecount)
+/// for the complete API reference.
+public typealias ByteCount              = TestKitCore.ByteCount
+
+
+
 // MARK: - Property-based testing
 
 /// A type that can generate arbitrary random values.

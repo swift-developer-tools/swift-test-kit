@@ -14,3 +14,4 @@ exceeds the configured limits.
 ### Measuring Performance
 
 - ``XCTKPerformance(runs:warmupRuns:timeLimit:memoryLimit:_:fileID:file:line:column:options:_:)``
+- ``ByteCount``
