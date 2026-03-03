@@ -354,7 +354,7 @@ Verify the physical memory footprint:
 
 ```swift
 // Assert that a tokenizer's memory footprint is less than 5 MB.
-await XCTKPerformance(memoryLimit: 5_000_000)
+await XCTKPerformance(memoryLimit: .megabytes(4.5))
 {
     _ = try await tokenize(source)
 }
@@ -362,7 +362,7 @@ await XCTKPerformance(memoryLimit: 5_000_000)
 // XCTKPerformance failed
 // 
 // Memory:
-//     Threshold: 4.8 MB
+//     Threshold: 4.5 MB
 //     Median:    9.5 MB (10 runs) ←
 ```
 
