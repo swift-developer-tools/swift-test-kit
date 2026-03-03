@@ -66,7 +66,7 @@ public struct PropertyOptions: Equatable, Sendable
     /// values for its properties.
     ///
     /// - Precondition: `iterations`, `maxShrinkSteps`, `maxSize`,
-    /// `maxDiscardRatio`, and `maxCommandCount` must all be non-negative.
+    /// `maxDiscardRatio`, and `maxCommandCount` must not be negative.
     ///
     /// - Warning: Very large `maxSize` values can cause significant memory
     /// pressure, especially for collection types, which generate up to
@@ -83,27 +83,27 @@ public struct PropertyOptions: Equatable, Sendable
     {
         precondition(
             iterations >= 0,
-            "iterations must be non-negative"
+            "iterations must not be negative"
         )
         
         precondition(
             maxShrinkSteps >= 0,
-            "maxShrinkSteps must be non-negative"
+            "maxShrinkSteps must not be negative"
         )
         
         precondition(
             maxSize >= 0,
-            "maxSize must be non-negative"
+            "maxSize must not be negative"
         )
         
         precondition(
             maxDiscardRatio >= 0,
-            "maxDiscardRatio must be non-negative"
+            "maxDiscardRatio must not be negative"
         )
         
         precondition(
             maxCommandCount >= 0,
-            "maxCommandCount must be non-negative"
+            "maxCommandCount must not be negative"
         )
         
         self.iterations         = iterations

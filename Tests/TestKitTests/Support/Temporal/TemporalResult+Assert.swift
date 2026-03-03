@@ -14,7 +14,7 @@ import XCTest
 
 extension TemporalResult
 {
-    /// Asserts that the temporal result canceled.
+    /// Asserts that the temporal test was canceled.
     internal func assertCanceled()
     {
         guard case .canceled = self
@@ -27,7 +27,7 @@ extension TemporalResult
     
     
     
-    /// Asserts that the temporal result passed.
+    /// Asserts that the temporal test passed.
     internal func assertPassed()
     {
         guard case .passed = self
@@ -40,12 +40,12 @@ extension TemporalResult
     
     
     
-    /// Asserts that given temporal result failed, and returns the associated
+    /// Asserts that given temporal test failed, and returns the associated
     /// values.
     /// - Returns: The associated values of the failed result, `nil` if the
     /// result did not fail.
     @discardableResult
-    internal func assertFailed() -> FailedValues?
+    internal func assertFailed() -> FailedTemporalValues?
     {
         guard case let .failed(failures, elapsed, error) = self
         else
@@ -54,7 +54,7 @@ extension TemporalResult
             return nil
         }
         
-        return FailedValues(
+        return FailedTemporalValues(
             failures:   failures,
             elapsed:    elapsed,
             error:      error
@@ -63,8 +63,9 @@ extension TemporalResult
 }
 
 
+
 /// The associated values of a failed ``TemporalResult``.
-internal struct FailedValues
+internal struct FailedTemporalValues
 {
     let failures    : [InterceptedFailure]
     let elapsed     : Duration

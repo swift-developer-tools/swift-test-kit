@@ -14,13 +14,8 @@ import TestKitCore
 /// Runs a stateful property test that validates the given system against the
 /// given model.
 ///
-/// SwiftTestKit assertions used inside commands or invariants are
-/// automatically intercepted rather than reported directly to Swift Testing.
-///
-/// - Important: Native Swift Testing assertions are not intercepted by
-/// SwiftTestKit. If a native Swift Testing assertion fails inside a command
-/// or invariant, it bypasses shrinking and produces an immediate test failure.
-/// Use only SwiftTestKit assertions inside commands or invariants.
+/// - Important: Use only SwiftTestKit assertions inside commands or invariants.
+/// Native Swift Testing assertions are not intercepted.
 ///
 /// - Parameters:
 ///   - message: An optional description of a failure.

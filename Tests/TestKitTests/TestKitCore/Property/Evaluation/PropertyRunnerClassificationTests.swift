@@ -2210,6 +2210,11 @@ internal final class PropertyRunnerClassificationTests: TestKitCase
 
 extension PropertyRunnerClassificationTests
 {
+    private typealias PassedValues          = PassedPropertyValues
+    private typealias ExhaustedValues       = ExhaustedPropertyValues
+    private typealias CoverageNotMetValues  = CoverageNotMetPropertyValues
+    
+    
     /// The seed used to initialize the random number generator.
     ///
     /// Use a fixed seed rather than a random seed for deterministic tests.

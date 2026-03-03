@@ -14,13 +14,8 @@ import TestKitCore
 /// Runs a stateful property test that validates the given system against the
 /// given model.
 ///
-/// XCTestKit assertions used inside commands or invariants are automatically
-/// intercepted rather than reported directly to XCTest.
-///
-/// - Important: Native XCTest assertions are not intercepted by XCTestKit.
-/// If a native XCTest assertion fails inside a command or invariant, it
-/// bypasses shrinking and produces an immediate test failure. Use only
-/// XCTestKit assertions inside commands or invariants.
+/// - Important: Use only XCTestKit assertions inside commands or invariants.
+/// Native XCTest assertions are not intercepted.
 ///
 /// - Parameters:
 ///   - message: An optional description of a failure.

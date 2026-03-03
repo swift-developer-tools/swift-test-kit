@@ -554,7 +554,7 @@ internal func evaluateTKAssertEqual<T>(
     
     
     
-    guard options.diffEnabled
+    guard options.diffOptions.enabled
     else
     {
         assertion.fail(
@@ -1827,7 +1827,7 @@ internal func evaluateTKAssertSatisfy<C>(
 {
     precondition(
         atLeast >= 0,
-        "atLeast must be non-negative"
+        "atLeast must not be negative"
     )
     
     let assertion: AssertionKind = .satisfyAtLeast
@@ -1909,7 +1909,7 @@ internal func evaluateTKAssertSatisfy<C>(
 {
     precondition(
         atMost >= 0,
-        "atMost must be non-negative"
+        "atMost must not be negative"
     )
     
     let assertion: AssertionKind = .satisfyAtMost
@@ -1996,7 +1996,7 @@ internal func evaluateTKAssertSatisfy<C>(
     
     precondition(
         range.lowerBound >= 0,
-        "range.lowerBound must be non-negative"
+        "range.lowerBound must not be negative"
     )
     
     let assertion: AssertionKind = .satisfyRange
@@ -2079,7 +2079,7 @@ internal func evaluateTKAssertExactly<C>(
 {
     precondition(
         count >= 0,
-        "count must be non-negative"
+        "count must not be negative"
     )
     
     let assertion: AssertionKind = .exactly

@@ -50,12 +50,12 @@ extension Generator
     {
         precondition(
             count >= 0,
-            "count must be non-negative"
+            "count must not be negative"
         )
         
         precondition(
             maxSize >= 0,
-            "maxSize must be non-negative"
+            "maxSize must not be negative"
         )
         
         let seed: UInt64 = seed ?? .random(in: UInt64.min...UInt64.max)
@@ -85,7 +85,7 @@ extension Generator
     /// Since the count of elements is fixed, shrinking only applies to
     /// individual elements.
     ///
-    /// - Precondition: `count` must be non-negative.
+    /// - Precondition: `count` must not be negative.
     ///
     /// - Parameters:
     ///   - type: The element type. The default value is inferred.
@@ -99,7 +99,7 @@ extension Generator
     {
         precondition(
             count >= 0,
-            "count must be non-negative"
+            "count must not be negative"
         )
         
         return Generator<[E]>(
@@ -445,7 +445,7 @@ extension Generator where V == String
     /// Since the count of characters is fixed, shrinking only applies to
     /// individual characters.
     ///
-    /// - Precondition: `count` must be non-negative.
+    /// - Precondition: `count` must not be negative.
     ///
     /// - Parameters:
     ///   - count: The exact count of characters.
@@ -460,7 +460,7 @@ extension Generator where V == String
     {
         precondition(
             count >= 0,
-            "count must be non-negative"
+            "count must not be negative"
         )
         
         return Generator<String>(

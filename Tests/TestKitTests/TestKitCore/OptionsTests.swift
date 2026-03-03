@@ -41,11 +41,11 @@ internal final class OptionsTests: TestKitCase
     {
         let options = TestOptions()
         
-        XCTAssertEqual(options.diffEnabled, true)
         XCTAssertEqual(options.diffOptions, DiffOptions())
         XCTAssertEqual(options.formatOptions, FormatOptions())
         XCTAssertEqual(options.propertyOptions, PropertyOptions())
         XCTAssertEqual(options.temporalOptions, TemporalOptions())
+        XCTAssertEqual(options.performanceOptions, PerformanceOptions())
     }
     
     
@@ -54,6 +54,7 @@ internal final class OptionsTests: TestKitCase
     {
         let options = DiffOptions()
         
+        XCTAssertTrue(options.enabled)
         XCTAssertEqual(options.maxRecursionDepth, 20)
         XCTAssertNil(options.characterDiffThreshold)
     }
@@ -100,21 +101,34 @@ internal final class OptionsTests: TestKitCase
     
     
     
+    func testPerformanceOptions()
+    {
+        let options = PerformanceOptions()
+        
+        XCTAssertEqual(options.runs, 10)
+        XCTAssertEqual(options.warmupRuns, 1)
+        XCTAssertNil(options.timeLimit)
+        XCTAssertNil(options.memoryLimit)
+        XCTAssertFalse(options.showAllFailures)
+    }
+    
+    
+    
     func testGlobalConfigAssignment()
     {
         var options = TC.global
         
-        TKAssertEqual(options.diffEnabled, true)
+        TKAssertEqual(options.diffOptions.enabled, true)
         TKAssertEqual(options.diffOptions.maxRecursionDepth, 20)
         TKAssertEqual(options.formatOptions.maxLineLength, 80)
         
-        options.diffEnabled                     = false
+        options.diffOptions.enabled             = false
         options.diffOptions.maxRecursionDepth   = 1
         options.formatOptions.maxLineLength     = 40
 
         TC.global = options
         
-        TKAssertEqual(options.diffEnabled, false)
+        TKAssertEqual(options.diffOptions.enabled, false)
         TKAssertEqual(TC.global.diffOptions.maxRecursionDepth, 1)
         TKAssertEqual(TC.global.formatOptions.maxLineLength, 40)
     }
@@ -125,7 +139,7 @@ internal final class OptionsTests: TestKitCase
     {
         let options = TC.global
         
-        TKAssertEqual(options.diffEnabled, true)
+        TKAssertEqual(options.diffOptions.enabled, true)
         TKAssertEqual(options.diffOptions, DiffOptions())
         TKAssertEqual(options.formatOptions, FormatOptions())
     }
@@ -134,11 +148,11 @@ internal final class OptionsTests: TestKitCase
     
     func testGlobalConfigDirectModification()
     {
-        TKAssertTrue(TC.global.diffEnabled)
+        TKAssertTrue(TC.global.diffOptions.enabled)
         
-        TC.global.diffEnabled = false
+        TC.global.diffOptions.enabled = false
         
-        TKAssertFalse(TC.global.diffEnabled)
+        TKAssertFalse(TC.global.diffOptions.enabled)
     }
     
     

@@ -124,12 +124,12 @@ internal class TestKitCase: XCTestCase
     /// Calls the given closure with an XCTestKit failure context, and captures
     /// the failure message.
     ///
-    /// - Important: Only use this when testing the `eventually` temporal
-    /// evaluator with expected failures. All other expected failures should
-    /// use ``withOneExpectedFailure(_:)`` to test the framework failure path.
+    /// - Important: Only use this when testing functions that may sleep. All
+    /// other expected failures should use ``withOneExpectedFailure(_:)`` to
+    /// test the framework failure path.
     ///
-    /// The ``FailureContext`` is necessary when expecting failures from the
-    /// `eventually` temporal evaluator.
+    /// For example, a different ``FailureContext`` is necessary when expecting
+    /// failures from the `eventually` temporal evaluator.
     ///
     /// `XCTExpectFailure()` likely uses thread-local storage to track
     /// active failure expectations. Since temporal tests poll repeatedly

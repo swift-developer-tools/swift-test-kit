@@ -8,13 +8,8 @@ not produce the necessary distribution of values. For example, a
 generator may be used to test only positive integers, or only non-empty
 arrays.
 
-SwiftTestKit assertions used inside a property body are automatically
-intercepted rather than reported directly to Swift Testing.
-
-- Important: Native Swift Testing assertions are not intercepted by
-SwiftTestKit. If a native Swift Testing assertion fails inside a property
-body, it bypasses shrinking and produces an immediate test failure. Use
-only SwiftTestKit assertions inside property bodies.
+- Important: Use only SwiftTestKit assertions inside property bodies. 
+Native Swift Testing assertions are not intercepted.
 
 - Parameters:
   - generators: The generators to use to produce values.

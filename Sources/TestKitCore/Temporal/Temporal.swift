@@ -20,10 +20,11 @@ package func TKAlways(
     context     : FailureContext
 ) async
 {
-    let kind: TemporalRunner.Kind = .always
+    let kind            : TemporalRunner.Kind   = .always
+    let temporalOptions : TemporalOptions       = options.temporalOptions
     
-    let timeout     : Duration  = timeout()  ?? options.temporalOptions.timeout
-    let interval    : Duration  = interval() ?? options.temporalOptions.interval
+    let timeout     : Duration  = timeout()     ?? temporalOptions.timeout
+    let interval    : Duration  = interval()    ?? temporalOptions.interval
     
     let result: TemporalResult = await TemporalRunner.run(
         kind:       kind,
@@ -61,10 +62,11 @@ package func TKEventually(
     context     : FailureContext
 ) async
 {
-    let kind: TemporalRunner.Kind = .eventually
+    let kind            : TemporalRunner.Kind   = .eventually
+    let temporalOptions : TemporalOptions       = options.temporalOptions
     
-    let timeout     : Duration  = timeout()  ?? options.temporalOptions.timeout
-    let interval    : Duration  = interval() ?? options.temporalOptions.interval
+    let timeout     : Duration  = timeout()     ?? temporalOptions.timeout
+    let interval    : Duration  = interval()    ?? temporalOptions.interval
     
     let result: TemporalResult = await TemporalRunner.run(
         kind:       kind,

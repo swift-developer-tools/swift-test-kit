@@ -1,7 +1,7 @@
 # swift-test-kit
 
-Property-based, stateful, and temporal testing, with structural diffs and 
-advanced assertions for both the Swift Testing and XCTest frameworks.
+Property-based, stateful, performance, and temporal testing, with structural 
+diffs and advanced assertions for both the Swift Testing and XCTest frameworks.
 
 
 
@@ -28,6 +28,9 @@ making CI/CD logs actionable without needing access to the source code.
 Predicate assertions verify conditions across collection elements and produce 
 element-level failure output, identifying which elements failed, which matched 
 unexpectedly, and which threw errors.
+
+Performance tests measure execution time and physical memory footprint across
+multiple runs, and verify that median values stay within configurable limits.
 
 Temporal tests poll assertions continuously for a given duration, or until all 
 assertions pass within a single execution.
@@ -321,10 +324,56 @@ XCTKAssertSatisfy(values, atLeast: 4)
 
 
 
+## Performance Testing
+
+Performance tests measure execution time and physical memory footprint across
+multiple runs, and verify that median values stay within configurable limits.
+
+### Time
+
+Verify the execution time:
+
+```swift
+// Assert that a custom sort function is working correctly,
+// and that it sorts within 50 milliseconds.
+await XCTKPerformance(timeLimit: .milliseconds(50))
+{
+    XCTKAssertSorted(customSort(array), by: >=)
+}
+
+// XCTKPerformance failed
+// 
+// Time:
+//     Threshold:   50 ms
+//     Median:    77.2 ms (10 runs) ←
+```
+
+### Memory
+
+Verify the physical memory footprint:
+
+```swift
+// Assert that a tokenizer's memory footprint is less than 5 MB.
+await XCTKPerformance(memoryLimit: .megabytes(4.5))
+{
+    _ = try await tokenize(source)
+}
+
+// XCTKPerformance failed
+// 
+// Memory:
+//     Threshold: 4.5 MB
+//     Median:    9.5 MB (10 runs) ←
+```
+
+
+
 ## Temporal Testing
 
 Temporal tests poll assertions over a configurable duration to verify 
 continuous invariants or eventual convergence.
+
+### Eventually
 
 Verify an eventual outcome:
 
@@ -345,6 +394,8 @@ await XCTKEventually(timeout: .seconds(2))
 // Expected:   loaded
 // Actual:     processing
 ```
+
+### Always
 
 Verify a continuous invariant:
 

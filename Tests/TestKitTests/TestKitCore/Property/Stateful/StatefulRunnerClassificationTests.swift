@@ -636,6 +636,12 @@ internal final class StatefulRunnerClassificationTests: TestKitCase
 
 extension StatefulRunnerClassificationTests
 {
+    private typealias PassedValues          = PassedPropertyValues
+    private typealias ExhaustedValues       = ExhaustedPropertyValues
+    private typealias CoverageNotMetValues  = CoverageNotMetPropertyValues
+    
+    
+    
     /// The seed used to initialize the random number generator.
     ///
     /// Use a fixed seed rather than a random seed for deterministic tests.

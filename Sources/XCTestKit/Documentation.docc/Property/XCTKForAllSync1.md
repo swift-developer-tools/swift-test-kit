@@ -2,13 +2,8 @@
 
 Asserts that the given property holds for all generated values.
 
-XCTestKit assertions used inside a property body are automatically
-intercepted rather than reported directly to XCTest.
-
-- Important: Native XCTest assertions are not intercepted by XCTestKit.
-If a native XCTest assertion fails inside a property body, it bypasses
-shrinking and produces an immediate test failure. Use only XCTestKit
-assertions inside property bodies.
+- Important: Use only XCTestKit assertions inside property bodies. 
+Native XCTest assertions are not intercepted.
 
 - Parameters:
   - message: An optional description of a failure.

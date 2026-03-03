@@ -22,7 +22,7 @@ public final class GenerationContext
         {
             precondition(
                 size >= 0,
-                "size must be non-negative"
+                "size must not be negative"
             )
         }
     }
@@ -46,7 +46,7 @@ public final class GenerationContext
     ///
     /// This is used by property runners.
     ///
-    /// - Precondition: `size` must be non-negative.
+    /// - Precondition: `size` must not be negative.
     internal init(
         seed    : UInt64,
         size    : Int       = 0
@@ -54,7 +54,7 @@ public final class GenerationContext
     {
         precondition(
             size >= 0,
-            "size must be non-negative"
+            "size must not be negative"
         )
         
         self.rng    = SeededRNG(seed: seed)

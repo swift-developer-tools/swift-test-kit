@@ -35,6 +35,11 @@ for the complete API references.
 - ``FormatOptions``
 - ``PropertyOptions``
 - ``TemporalOptions``
+- ``PerformanceOptions``
+
+### Performance Testing
+
+- ``ByteCount``
 
 ### Property-Based Testing
 

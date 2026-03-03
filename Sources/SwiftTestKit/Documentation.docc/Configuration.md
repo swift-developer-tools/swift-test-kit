@@ -13,8 +13,8 @@ Use ``TestConfiguration`` to set options that apply to all assertions by
 default.
 
 ```swift
-TestConfiguration.global.diffEnabled                = true
-TestConfiguration.global.formatOptions.maxDiffs     = 5
+TestConfiguration.global.diffOptions.maxRecursionDepth  = 20
+TestConfiguration.global.formatOptions.maxDiffs         = 5
 ```
 
 ### Assertion Configuration
@@ -36,3 +36,4 @@ STKAssertEqual(expected, actual, options: options)
 - ``FormatOptions``
 - ``PropertyOptions``
 - ``TemporalOptions``
+- ``PerformanceOptions``

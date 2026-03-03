@@ -16,13 +16,8 @@ import TestKitCore
 /// The temporal body is polled at the given interval. If any assertion fails
 /// on any poll, the test fails immediately.
 ///
-/// SwiftTestKit assertions used inside a temporal body are automatically
-/// intercepted rather than reported directly to Swift Testing.
-///
-/// - Important: Native Swift Testing assertions are not intercepted by
-/// SwiftTestKit. If a native Swift Testing assertion fails inside a temporal
-/// body, it bypasses polling and produces an immediate test failure. Use only
-/// SwiftTestKit assertions inside temporal bodies.
+/// - Important: Use only SwiftTestKit assertions inside temporal bodies.
+/// Native Swift Testing assertions are not intercepted.
 ///
 /// - Parameters:
 ///   - timeout: The timeout duration. The default value is `nil`, which falls
@@ -74,13 +69,8 @@ public func STKAlways(
 /// The temporal body is polled at the given interval until all assertions
 /// pass in a single execution, or the timeout is reached.
 ///
-/// SwiftTestKit assertions used inside a temporal body are automatically
-/// intercepted rather than reported directly to Swift Testing.
-///
-/// - Important: Native Swift Testing assertions are not intercepted by
-/// SwiftTestKit. If a native Swift Testing assertion fails inside a temporal
-/// body, it bypasses polling and produces an immediate test failure. Use only
-/// SwiftTestKit assertions inside temporal bodies.
+/// - Important: Use only SwiftTestKit assertions inside temporal bodies.
+/// Native Swift Testing assertions are not intercepted.
 ///
 /// - Parameters:
 ///   - timeout: The timeout duration. The default value is `nil`, which falls

@@ -14,10 +14,9 @@ extension TemporalResult
     /// Emits the temporal test result.
     /// - Parameters:
     ///   - kind: The temporal test kind.
-    ///   - timeout: The timeout duration.
+    ///   - timeout: The resolved timeout duration.
     ///   - functionName: The temporal evaluator function name.
     ///   - options: The options for testing.
-    ///   - statistics: The command statistics for stateful tests.
     ///   - context: The assertion failure context.
     ///   - message: The description of a failure.
     ///   - fileID: The ID of the file where the failure occurs.
@@ -123,69 +122,21 @@ extension TemporalResult
                 )
         }
         
+        lines = Formatter.addInterceptedFailures(
+            to:         lines,
+            failures:   failures,
+            showAll:    options.temporalOptions.showAllFailures
+        )
         
+        lines = Formatter.addErrorLines(
+            to:     lines,
+            error:  error
+        )
         
-        let showAll: Bool = options.temporalOptions.showAllFailures
-        
-        let visibleFailures: [InterceptedFailure] = showAll
-            ? failures
-            : Array(failures.prefix(1))
-        
-        for (index, failure) in visibleFailures.enumerated()
-        {
-            lines.append("")
-            
-            if
-                showAll,
-                visibleFailures.count > 1
-            {
-                lines.append("Failure \(index + 1):")
-                
-                let indented: String = failure.message
-                    .split(separator: "\n", omittingEmptySubsequences: false)
-                    .map { "    \($0)" }
-                    .joined(separator: "\n")
-                
-                lines.append(indented)
-            }
-            else
-            {
-                lines.append(failure.message)
-            }
-        }
-        
-        if
-            showAll,
-            failures.count > visibleFailures.count
-        {
-            let remaining: Int = failures.count - visibleFailures.count
-            
-            lines.append("")
-            
-            lines.append(
-                "... and \(remaining) more failure\(remaining == 1 ? "" : "s")"
-            )
-        }
-        
-        
-        
-        if let error
-        {
-            lines.append("")
-            lines.append("Threw error: \(error)")
-        }
-        
-        
-        
-        let msg: String = message()
-        
-        if !msg.isEmpty
-        {
-            lines.append("")
-            lines.append(msg)
-        }
-        
-        
+        lines = Formatter.addMessageLines(
+            to:         lines,
+            message:    message
+        )
         
         return lines.joined(separator: "\n")
     }

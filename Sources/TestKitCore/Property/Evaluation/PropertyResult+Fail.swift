@@ -319,11 +319,11 @@ extension PropertyResult
             + " (max ratio: \(ratio))"
         )
         
-        lines.append("")
-        lines.append(Self.makeSeedLine(
+        lines = Self.addSeedLines(
+            to:             lines,
             seed:           seed,
             functionName:   functionName
-        ))
+        )
         
         lines = Self.addDistributionLines(
             to:                 lines,
@@ -332,13 +332,12 @@ extension PropertyResult
             tableDistribution:  tableDistribution
         )
         
-        if let statistics
-        {
-            lines.append("")
-            lines.append(statistics)
-        }
+        lines = Self.addStatisticsLines(
+            to:             lines,
+            statistics:     statistics
+        )
         
-        lines = Self.addMessageLines(
+        lines = Formatter.addMessageLines(
             to:         lines,
             message:    message
         )
@@ -411,19 +410,18 @@ extension PropertyResult
         
         
         
-        lines.append("")
-        lines.append(Self.makeSeedLine(
+        lines = Self.addSeedLines(
+            to:             lines,
             seed:           seed,
             functionName:   functionName
-        ))
+        )
         
-        if let statistics
-        {
-            lines.append("")
-            lines.append(statistics)
-        }
+        lines = Self.addStatisticsLines(
+            to:             lines,
+            statistics:     statistics
+        )
         
-        lines = Self.addMessageLines(
+        lines = Formatter.addMessageLines(
             to:         lines,
             message:    message
         )
@@ -622,11 +620,64 @@ extension PropertyResult
             lines.append("")
             lines.append(failure.message)
         }
-        else if let error: Error = counterexample.error
+        else
         {
-            lines.append("")
-            lines.append("Threw error: \(error)")
+            lines = Formatter.addErrorLines(
+                to:     lines,
+                error:  counterexample.error
+            )
         }
+        
+        return lines
+    }
+    
+    
+    
+    /// Appends formatted lines for the given statistics to the given lines.
+    /// - Parameters:
+    ///   - originalLines: The lines to update.
+    ///   - statistics: The command statistics for stateful tests.
+    /// - Returns: The updated lines.
+    internal static func addStatisticsLines(
+        to originalLines    : [String],
+        statistics          : String?,
+    ) -> [String]
+    {
+        guard let statistics
+        else
+        {
+            return originalLines
+        }
+        
+        var lines: [String] = originalLines
+        
+        lines.append("")
+        lines.append(statistics)
+        
+        return lines
+    }
+    
+    
+    
+    /// Appends formatted lines for the given seed to the given lines.
+    /// - Parameters:
+    ///   - originalLines: The lines to update.
+    ///   - seed: The seed used to initialize the random number generator.
+    ///   - functionName: The property evaluator function name.
+    /// - Returns: The updated lines.
+    internal static func addSeedLines(
+        to originalLines    : [String],
+        seed                : UInt64,
+        functionName        : String
+    ) -> [String]
+    {
+        var lines: [String] = originalLines
+        
+        lines.append("")
+        lines.append(Self.makeSeedLine(
+            seed:           seed,
+            functionName:   functionName
+        ))
         
         return lines
     }
@@ -686,33 +737,6 @@ extension PropertyResult
         }
         
         lines.append(contentsOf: tableLines)
-        
-        return lines
-    }
-    
-    
-    
-    /// Appends a formatted line for the given message to the given lines.
-    /// - Parameters:
-    ///   - originalLines: The lines to update.
-    ///   - message: The description of a failure.
-    /// - Returns: The updated lines.
-    private static func addMessageLines(
-        to originalLines    : [String],
-        message             : () -> String,
-    ) -> [String]
-    {
-        let msg: String = message()
-        
-        if msg.isEmpty
-        {
-            return originalLines
-        }
-        
-        var lines: [String] = originalLines
-        
-        lines.append("")
-        lines.append(msg)
         
         return lines
     }
@@ -854,11 +878,11 @@ extension PropertyResult
             counterexample:     counterexample
         )
         
-        lines.append("")
-        lines.append(Self.makeSeedLine(
+        lines = Self.addSeedLines(
+            to:             lines,
             seed:           counterexample.seed,
             functionName:   functionName
-        ))
+        )
         
         lines = Self.addDistributionLines(
             to:                 lines,
@@ -867,13 +891,12 @@ extension PropertyResult
             tableDistribution:  tableDistribution
         )
         
-        if let statistics
-        {
-            lines.append("")
-            lines.append(statistics)
-        }
+        lines = Self.addStatisticsLines(
+            to:             lines,
+            statistics:     statistics
+        )
         
-        lines = Self.addMessageLines(
+        lines = Formatter.addMessageLines(
             to:         lines,
             message:    message
         )

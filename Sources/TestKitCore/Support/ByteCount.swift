@@ -1,0 +1,273 @@
+//===----------------------------------------------------------------------===//
+//
+// This source file is part of the swift-test-kit open source project.
+//
+// Copyright (c) Margins Technologies LLC.
+// Licensed under the Apache License, Version 2.0.
+//
+//===----------------------------------------------------------------------===//
+
+/// A representation of memory, in bytes.
+public struct ByteCount:
+    Comparable, CustomStringConvertible, Equatable, Hashable, Sendable
+{
+    /// The byte count.
+    public let rawValue: UInt64
+    
+    /// Zero bytes.
+    public static let zero = ByteCount(rawValue: 0)
+    
+    
+    
+    // MARK: - Initialize
+    
+    /// Initializes a ``ByteCount`` instance from the given byte count.
+    /// - Parameter rawValue: The byte count.
+    private init(
+        rawValue: UInt64
+    )
+    {
+        self.rawValue = rawValue
+    }
+    
+    
+    
+    /// Creates a ``ByteCount`` instance from the given value and scale.
+    /// - Parameters:
+    ///   - value: The value to scale.
+    ///   - scale: The amount by which to scale.
+    /// - Returns: A ``ByteCount`` instance representing the given value and
+    /// scale.
+    private static func makeByteCount<T>(
+        _ value : T,
+        scale   : ByteCountScale
+    ) -> ByteCount where T : BinaryInteger
+    {
+        return ByteCount(rawValue: scaled(value, by: scale))
+    }
+    
+    
+    
+    /// Creates a ``ByteCount`` instance from the given value and scale.
+    /// - Parameters:
+    ///   - value: The value to scale.
+    ///   - scale: The amount by which to scale.
+    /// - Returns: A ``ByteCount`` instance representing the given value and
+    /// scale.
+    private static func makeByteCount(
+        _ value : Double,
+        scale   : ByteCountScale
+    ) -> ByteCount
+    {
+        return ByteCount(rawValue: scaled(value, by: scale))
+    }
+    
+    
+    
+    // MARK: - Bytes
+    
+    /// Creates a ``ByteCount`` instance from the given number of bytes.
+    /// - Parameter bytes: The number of bytes.
+    /// - Returns: A ``ByteCount`` instance representing the given number of
+    /// bytes.
+    public static func bytes<T>(
+        _ bytes: T
+    ) -> ByteCount where T : BinaryInteger
+    {
+        return makeByteCount(bytes, scale: .bytes)
+    }
+    
+    
+    
+    // MARK: - Kilobytes
+    
+    /// Creates a ``ByteCount`` instance from the given number of kilobytes.
+    /// - Parameter kilobytes: The number of kilobytes.
+    /// - Returns: A ``ByteCount`` instance representing the given number of
+    /// kilobytes.
+    public static func kilobytes<T>(
+        _ kilobytes: T
+    ) -> ByteCount where T : BinaryInteger
+    {
+        return makeByteCount(kilobytes, scale: .kilobytes)
+    }
+    
+    
+    
+    /// Creates a ``ByteCount`` instance from the given number of kilobytes.
+    /// - Parameter kilobytes: The number of kilobytes.
+    /// - Returns: A ``ByteCount`` instance representing the given number of
+    /// kilobytes.
+    public static func kilobytes(
+        _ kilobytes: Double
+    ) -> ByteCount
+    {
+        return makeByteCount(kilobytes, scale: .kilobytes)
+    }
+    
+    
+    
+    
+    // MARK: - Megabytes
+    
+    /// Creates a ``ByteCount`` instance from the given number of megabytes.
+    /// - Parameter megabytes: The number of megabytes.
+    /// - Returns: A ``ByteCount`` instance representing the given number of
+    /// megabytes.
+    public static func megabytes<T>(
+        _ megabytes: T
+    ) -> ByteCount where T : BinaryInteger
+    {
+        return makeByteCount(megabytes, scale: .megabytes)
+    }
+    
+    
+    
+    /// Creates a ``ByteCount`` instance from the given number of megabytes.
+    /// - Parameter megabytes: The number of megabytes.
+    /// - Returns: A ``ByteCount`` instance representing the given number of
+    /// megabytes.
+    public static func megabytes(
+        _ megabytes: Double
+    ) -> ByteCount
+    {
+        return makeByteCount(megabytes, scale: .megabytes)
+    }
+    
+    
+    
+    
+    // MARK: - Gigabytes
+    
+    /// Creates a ``ByteCount`` instance from the given number of gigabytes.
+    /// - Parameter gigabytes: The number of gigabytes.
+    /// - Returns: A ``ByteCount`` instance representing the given number of
+    /// gigabytes.
+    public static func gigabytes<T>(
+        _ gigabytes: T
+    ) -> ByteCount where T : BinaryInteger
+    {
+        return makeByteCount(gigabytes, scale: .gigabytes)
+    }
+    
+    
+    
+    /// Creates a ``ByteCount`` instance from the given number of gigabytes.
+    /// - Parameter gigabytes: The number of gigabytes.
+    /// - Returns: A ``ByteCount`` instance representing the given number of
+    /// gigabytes.
+    public static func gigabytes(
+        _ gigabytes: Double
+    ) -> ByteCount
+    {
+        return makeByteCount(gigabytes, scale: .gigabytes)
+    }
+    
+    
+    
+    // MARK: - Scale
+    
+    /// Byte count scales.
+    private enum ByteCountScale: UInt64
+    {
+        case bytes      = 1
+        case kilobytes  = 1_024
+        case megabytes  = 1_048_576
+        case gigabytes  = 1_073_741_824
+    }
+    
+    
+    
+    /// Scales the given value by the specified amount.
+    ///
+    /// - Precondition: `value` must not be negative.
+    /// - Precondition: The ``ByteCount`` instance must not overflow.
+    ///
+    /// - Parameters:
+    ///   - value: The value to scale.
+    ///   - scale: The amount by which to scale.
+    /// - Returns: The scaled value.
+    private static func scaled<T>(
+        _   value   : T,
+        by  scale   : ByteCountScale
+    ) -> UInt64 where T : BinaryInteger
+    {
+        precondition(
+            value >= 0,
+            "ByteCount must not be negative"
+        )
+        
+        guard let base = UInt64(exactly: value)
+        else
+        {
+            preconditionFailure("ByteCount overflow")
+        }
+        
+        let (result, overflow)
+            = base.multipliedReportingOverflow(by: scale.rawValue)
+        
+        precondition(
+            !overflow,
+            "ByteCount overflow"
+        )
+        
+        return result
+    }
+    
+    
+    
+    /// Scales the given value by the specified amount.
+    ///
+    /// - Precondition: `value` must be finite and must not be negative.
+    /// - Precondition: The ``ByteCount`` instance must not overflow.
+    ///
+    /// - Parameters:
+    ///   - value: The value to scale.
+    ///   - scale: The amount by which to scale.
+    /// - Returns: The scaled value.
+    private static func scaled(
+        _   value   : Double,
+        by  scale   : ByteCountScale
+    ) -> UInt64
+    {
+        precondition(
+            value >= 0
+            && value.isFinite,
+            "ByteCount must be finite and must not be negative"
+        )
+        
+        let scaledValue: Double = value * Double(scale.rawValue)
+        
+        precondition(
+            scaledValue <= Double(UInt64.max),
+            "ByteCount overflow"
+        )
+        
+        return UInt64(scaledValue)
+    }
+    
+    
+    
+    // MARK: - Conformance
+    
+    /// Checks whether the first value is less than the second value.
+    /// - Parameters:
+    ///   - lhs: A value to compare.
+    ///   - rhs: A value to compare.
+    /// - Returns: Whether the first value is less than the second value.
+    public static func < (
+        lhs : ByteCount,
+        rhs : ByteCount
+    ) -> Bool
+    {
+        return lhs.rawValue < rhs.rawValue
+    }
+    
+    
+    
+    /// A textual representation of this instance.
+    public var description: String
+    {
+        return rawValue.readableBytes
+    }
+}

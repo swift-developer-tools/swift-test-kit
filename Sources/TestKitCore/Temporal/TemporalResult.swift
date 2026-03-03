@@ -8,7 +8,7 @@
 //===----------------------------------------------------------------------===//
 
 /// The result of running a temporal test.
-internal enum TemporalResult
+internal enum TemporalResult: Sendable
 {
     /// The enclosing task was canceled.
     case canceled

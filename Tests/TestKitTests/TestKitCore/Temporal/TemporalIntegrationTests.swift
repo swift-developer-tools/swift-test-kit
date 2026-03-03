@@ -7,7 +7,7 @@
 //
 //===----------------------------------------------------------------------===//
 
-@testable import TestKitCore
+import TestKitCore
 import Synchronization
 import XCTest
 

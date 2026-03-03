@@ -14,12 +14,12 @@ import XCTest
 
 extension PropertyResult
 {
-    /// Asserts that the property check result passed, and returns the
-    /// associated values.
+    /// Asserts that the property check passed, and returns the associated
+    /// values.
     /// - Returns: The associated values of the passed result, or `nil` if
     /// the result did not pass.
     @discardableResult
-    internal func assertPassed() -> PassedValues?
+    internal func assertPassed() -> PassedPropertyValues?
     {
         guard case let .passed(iterations, seed, dist, tableDist) = self
         else
@@ -28,7 +28,7 @@ extension PropertyResult
             return nil
         }
         
-        return PassedValues(
+        return PassedPropertyValues(
             iterations:     iterations,
             seed:           seed,
             dist:           dist,
@@ -38,7 +38,7 @@ extension PropertyResult
     
     
     
-    /// Asserts that given property check result failed, and returns the
+    /// Asserts that given property check failed, and returns the
     /// counterexample.
     /// - Returns: The counterexample of the failed result, `nil` if the
     /// result did not fail.
@@ -57,11 +57,11 @@ extension PropertyResult
     
     
     
-    /// Asserts that the property check result was exhausted, and returns the
+    /// Asserts that the property check was exhausted, and returns the
     /// associated values.
     /// - Returns: The associated values, `nil` if the result was not exhausted.
     @discardableResult
-    internal func assertExhausted() -> ExhaustedValues?
+    internal func assertExhausted() -> ExhaustedPropertyValues?
     {
         guard case let .exhausted(
             discarded, succeeded, ratio, seed, dist, tableDist
@@ -72,7 +72,7 @@ extension PropertyResult
             return nil
         }
         
-        return ExhaustedValues(
+        return ExhaustedPropertyValues(
             discarded:  discarded,
             succeeded:  succeeded,
             ratio:      ratio,
@@ -84,12 +84,12 @@ extension PropertyResult
     
     
     
-    /// Asserts that the property check result has unmet coverage, and returns
+    /// Asserts that the property check had unmet coverage, and returns
     /// the associated values.
     /// - Returns: The associated values, `nil` if the result did not have
     /// unmet coverage.
     @discardableResult
-    internal func assertCoverageNotMet() -> CoverageNotMetValues?
+    internal func assertCoverageNotMet() -> CoverageNotMetPropertyValues?
     {
         guard case let .coverageNotMet(
             unmet, iterations, seed, dist, tableDist
@@ -100,7 +100,7 @@ extension PropertyResult
             return nil
         }
         
-        return CoverageNotMetValues(
+        return CoverageNotMetPropertyValues(
             unmet:          unmet,
             iterations:     iterations,
             seed:           seed,
@@ -113,7 +113,7 @@ extension PropertyResult
 
 
 /// The associated values of a passed ``PropertyResult``.
-internal struct PassedValues
+internal struct PassedPropertyValues
 {
     let iterations  : Int
     let seed        : UInt64
@@ -124,7 +124,7 @@ internal struct PassedValues
 
 
 /// The associated values of an exhausted ``PropertyResult``.
-internal struct ExhaustedValues
+internal struct ExhaustedPropertyValues
 {
     let discarded   : Int
     let succeeded   : Int
@@ -137,7 +137,7 @@ internal struct ExhaustedValues
 
 
 /// The associated values of a coverage-not-met ``PropertyResult``.
-internal struct CoverageNotMetValues
+internal struct CoverageNotMetPropertyValues
 {
     let unmet       : [UnmetCoverage]
     let iterations  : Int

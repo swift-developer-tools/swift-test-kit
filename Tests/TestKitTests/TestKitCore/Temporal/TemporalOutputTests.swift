@@ -7,7 +7,7 @@
 //
 //===----------------------------------------------------------------------===//
 
-@testable import TestKitCore
+import TestKitCore
 import Synchronization
 import XCTest
 
@@ -552,6 +552,74 @@ internal final class TemporalOutputTests: TestKitCase
     
     // MARK: - Nested
     
+    func testAlwaysInsideEventually() async
+    {
+        let actual: String? = await withCapturedFailure
+        {
+            context in
+            
+            await TKEventually(
+                timeout:    .milliseconds(100),
+                interval:   .milliseconds(10),
+                context:    context
+            )
+            {
+                await TKAlways
+                {
+                    TKAssertTrue(false)
+                }
+            }
+        }
+        
+        let expected: String =
+        """
+        XCTKEventually failed after <T>
+        
+        XCTKAlways failed after <T>
+        
+        XCTKAssertTrue failed
+        """
+        
+        XCTAssertEqual(expected, actual?.timeless)
+    }
+    
+    
+    
+    func testEventuallyInsideAlways() async
+    {
+        let actual: String? = await withCapturedFailure
+        {
+            context in
+            
+            await TKAlways(
+                timeout:    .milliseconds(200),
+                context:    context
+            )
+            {
+                await TKEventually(
+                    timeout:    .milliseconds(50),
+                    interval:   .milliseconds(10)
+                )
+                {
+                    TKAssertTrue(false)
+                }
+            }
+        }
+        
+        let expected: String =
+        """
+        XCTKAlways failed after <T>
+        
+        XCTKEventually failed after <T>
+        
+        XCTKAssertTrue failed
+        """
+        
+        XCTAssertEqual(expected, actual?.timeless)
+    }
+    
+    
+    
     func testAlwaysInsideForAll() async
     {
         let options: TestOptions = .propertyOptions(
@@ -741,22 +809,5 @@ internal final class TemporalOutputTests: TestKitCase
         """
         
         XCTAssertEqual(expected, actual?.timeless)
-    }
-}
-
-
-
-// MARK: - Support
-
-private extension String
-{
-    /// Removes the non-deterministic time portion of an `always` failure
-    /// message, and replaces it with `<T>`.
-    var timeless: String
-    {
-        return replacing(
-            /failed after \d+(\.\d+)?\s*(ms|sec)/,
-            with: "failed after <T>"
-        )
     }
 }
