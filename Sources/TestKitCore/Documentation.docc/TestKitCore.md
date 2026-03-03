@@ -37,6 +37,10 @@ for the complete API references.
 - ``TemporalOptions``
 - ``PerformanceOptions``
 
+### Performance Testing
+
+- ``ByteCount``
+
 ### Property-Based Testing
 
 - ``Arbitrary``
