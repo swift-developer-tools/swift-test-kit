@@ -554,7 +554,7 @@ internal func evaluateTKAssertEqual<T>(
     
     
     
-    guard options.diffEnabled
+    guard options.diffOptions.enabled
     else
     {
         assertion.fail(

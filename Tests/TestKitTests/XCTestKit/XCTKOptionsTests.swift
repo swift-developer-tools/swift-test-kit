@@ -40,7 +40,7 @@ internal final class XCTKOptionsTests: TestKitCase
     
     func testAssertionOptionsOverridePrecedence()
     {
-        TC.global.diffEnabled = true
+        TC.global.diffOptions.enabled = true
         
         let output1: String? = withOneExpectedFailure
         {
@@ -49,7 +49,9 @@ internal final class XCTKOptionsTests: TestKitCase
         
         let output2: String? = withOneExpectedFailure
         {
-            XCTKAssertEqual(1, 2, options: .init(diffEnabled: false))
+            let options = TestOptions(diffOptions: .init(enabled: false))
+            
+            XCTKAssertEqual(1, 2, options: options)
         }
         
         XCTKAssertNotNil(output1)

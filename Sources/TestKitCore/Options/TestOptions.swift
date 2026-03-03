@@ -10,11 +10,6 @@
 /// The options for testing.
 public struct TestOptions: Equatable, Sendable
 {
-    /// Whether to compute and display diffs on assertion failure.
-    ///
-    /// The default value is `true`.
-    public var diffEnabled          : Bool
-    
     /// The options for computing diffs.
     ///
     /// The default value is a default-initialized ``DiffOptions`` instance.
@@ -48,7 +43,6 @@ public struct TestOptions: Equatable, Sendable
     /// Initializes a ``TestOptions`` instance, optionally specifying values
     /// for its properties.
     public init(
-        diffEnabled         : Bool                  = true,
         diffOptions         : DiffOptions           = .init(),
         formatOptions       : FormatOptions         = .init(),
         propertyOptions     : PropertyOptions       = .init(),
@@ -56,7 +50,6 @@ public struct TestOptions: Equatable, Sendable
         performanceOptions  : PerformanceOptions    = .init()
     )
     {
-        self.diffEnabled            = diffEnabled
         self.diffOptions            = diffOptions
         self.formatOptions          = formatOptions
         self.propertyOptions        = propertyOptions

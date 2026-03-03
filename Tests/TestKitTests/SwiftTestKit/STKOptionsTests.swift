@@ -40,7 +40,7 @@ internal final class STKOptionsTests: TestKitCase
     
     func testAssertionOptionsOverridePrecedence()
     {
-        TC.global.diffEnabled = true
+        TC.global.diffOptions.enabled = true
         
         let output1: String? = withOneExpectedFailure
         {
@@ -49,7 +49,9 @@ internal final class STKOptionsTests: TestKitCase
         
         let output2: String? = withOneExpectedFailure
         {
-            STKAssertEqual(1, 2, options: .init(diffEnabled: false))
+            let options = TestOptions(diffOptions: .init(enabled: false))
+            
+            STKAssertEqual(1, 2, options: options)
         }
         
         STKAssertNotNil(output1)

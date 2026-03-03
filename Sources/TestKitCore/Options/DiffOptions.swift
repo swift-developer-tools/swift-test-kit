@@ -10,6 +10,11 @@
 /// The options for computing diffs.
 public struct DiffOptions: Equatable, Sendable
 {
+    /// Whether to compute and display diffs on assertion failure.
+    ///
+    /// The default value is `true`.
+    public var enabled                  : Bool
+    
     /// The maximum recursion depth when computing diffs.
     ///
     /// The default value is `20`. Pass `nil` to disable the depth limit.
@@ -60,6 +65,7 @@ public struct DiffOptions: Equatable, Sendable
     /// - Precondition: `characterDiffThreshold` must be must be in the
     /// range `0.0...1.0` or `nil`.
     public init(
+        enabled                 : Bool      = true,
         maxRecursionDepth       : Int?      = 20,
         characterDiffThreshold  : Double?   = nil
     )
@@ -79,6 +85,7 @@ public struct DiffOptions: Equatable, Sendable
             "characterDiffThreshold must be in the range 0.0...1.0 or nil"
         )
         
+        self.enabled                    = enabled
         self.maxRecursionDepth          = maxRecursionDepth
         self.characterDiffThreshold     = characterDiffThreshold
     }

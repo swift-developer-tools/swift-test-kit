@@ -36,8 +36,8 @@ extension TestKitCase
         {
             case .equal:
                 
-                let options1    = TestOptions(diffEnabled: true)
-                let options2    = TestOptions(diffEnabled: false)
+                let options1 = TestOptions(diffOptions: .init(enabled: true))
+                let options2 = TestOptions(diffOptions: .init(enabled: false))
                 
                 body1 =
                 {
@@ -449,8 +449,8 @@ extension TestKitCase
                 
             case .equal:
                 
-                let options1    = TestOptions(diffEnabled: true)
-                let options2    = TestOptions(diffEnabled: false)
+                let options1 = TestOptions(diffOptions: .init(enabled: true))
+                let options2 = TestOptions(diffOptions: .init(enabled: false))
                 
                 body1 =
                 {
