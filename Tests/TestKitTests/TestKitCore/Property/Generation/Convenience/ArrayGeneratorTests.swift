@@ -51,6 +51,70 @@ internal final class ArrayGeneratorTests: TestKitCase
     
     
     
+    func testCustomGeneratorExactCountDeterminism()
+    {
+        let generator: Generator<[Int]> = .array(
+            using:  .integer(in: 0...50),
+            count:  5
+        )
+        
+        generator.assertDeterministic()
+    }
+    
+    
+    
+    func testGeneratorExactCountProducesCorrectCount()
+    {
+        let generator: Generator<[Int]> = .array(
+            using:  .integer(in: 0...50),
+            count:  7
+        )
+        
+        validateCount(
+            of:         generator,
+            expected:   7...7
+        )
+    }
+    
+    
+    
+    func testGeneratorExactCountZeroProducesEmpty()
+    {
+        let generator: Generator<[Int]> = .array(
+            using:  .integer(in: 0...50),
+            count:  0
+        )
+        
+        for _ in 0..<1000
+        {
+            let array: [Int] = generator.generate(.random)
+            
+            XCTAssertTrue(array.isEmpty)
+        }
+    }
+    
+    
+    
+    func testGeneratorExactCountUsesGenerator()
+    {
+        let generator: Generator<[Int]> = .array(
+            using:  .integer(in: 0...50).map { $0 * 2 },
+            count:  5
+        )
+        
+        for _ in 0..<1000
+        {
+            let array: [Int] = generator.generate(.random)
+            
+            for element in array
+            {
+                XCTAssertEqual(element % 2, 0)
+            }
+        }
+    }
+    
+    
+    
     // MARK: - Exact count shrinking
     
     func testExactCountShrinkPreservesCount()
@@ -112,6 +176,66 @@ internal final class ArrayGeneratorTests: TestKitCase
     
     
     
+    func testGeneratorExactCountShrinkUsesGenerator()
+    {
+        let sentinel: Int = 999
+        
+        let elementGenerator = Generator<Int>(
+            generate:   { context in context.random(in: 0...100) },
+            shrink:     { _ in [sentinel] }
+        )
+        
+        let generator: Generator<[Int]> = .array(
+            using:  elementGenerator,
+            count:  2
+        )
+        
+        let candidates: [[Int]] = generator.shrink([10, 20, 30])
+        
+        XCTAssertFalse(candidates.isEmpty)
+        
+        let containsSentinel: Bool
+            = candidates.contains { $0.contains(sentinel) }
+        
+        XCTAssertTrue(containsSentinel)
+    }
+    
+    
+    
+    func testGeneratorExactCountShrinkPreservesCount()
+    {
+        let generator: Generator<[Int]> = .array(
+            using:  .integer(in: 0...50),
+            count:  3
+        )
+        
+        let array       : [Int]     = [10, 20, 30]
+        let candidates  : [[Int]]   = generator.shrink(array)
+        
+        XCTAssertFalse(candidates.isEmpty)
+        
+        for candidate in candidates
+        {
+            XCTAssertEqual(candidate.count, array.count)
+        }
+    }
+    
+    
+    
+    func testGeneratorExactCountShrinkAtTargetProducesEmpty()
+    {
+        let generator: Generator<[Int]> = .array(
+            using:  .integer(in: 0...50),
+            count:  3
+        )
+        
+        let candidates: [[Int]] = generator.shrink([0, 0, 0])
+        
+        XCTAssertTrue(candidates.isEmpty)
+    }
+    
+    
+    
     // MARK: - Closed range generation
     
     func testClosedRangeDeterminism()
@@ -148,6 +272,34 @@ internal final class ArrayGeneratorTests: TestKitCase
         }
         
         XCTAssertGreaterThanOrEqual(counts.count, 9)
+    }
+    
+    
+    
+    
+    func testGeneratorClosedRangeDeterminism()
+    {
+        let generator: Generator<[Int]> = .array(
+            using:  .integer(in: 0...50),
+            count:  2...8
+        )
+        
+        generator.assertDeterministic()
+    }
+    
+    
+    
+    func testGeneratorClosedRangeCountRespectsBounds()
+    {
+        let generator: Generator<[Int]> = .array(
+            using:  .integer(in: 0...50),
+            count:  3...7
+        )
+        
+        validateCount(
+            of:         generator,
+            expected:   3...7
+        )
     }
     
     
@@ -206,6 +358,100 @@ internal final class ArrayGeneratorTests: TestKitCase
     
     
     
+    func testGeneratorClosedRangeShrinkReducesCount()
+    {
+        let generator: Generator<[Int]> = .array(
+            using:  .integer(in: 0...50),
+            count:  2...8
+        )
+        
+        let array       : [Int]     = [10, 20, 30, 40, 50]
+        let candidates  : [[Int]]   = generator.shrink(array)
+        
+        let isShorter: Bool = candidates.contains { $0.count < array.count }
+        
+        XCTAssertTrue(isShorter)
+    }
+    
+    
+    
+    func testGeneratorClosedRangeShrinkRespectsLowerBound()
+    {
+        let generator: Generator<[Int]> = .array(
+            using:  .integer(in: 0...50),
+            count:  3...8
+        )
+        
+        let array       : [Int]     = [10, 20, 30, 40, 50]
+        let candidates  : [[Int]]   = generator.shrink(array)
+        
+        for candidate in candidates
+        {
+            XCTAssertGreaterThanOrEqual(candidate.count, 3)
+        }
+    }
+    
+    
+    
+    func testGeneratorClosedRangeShrinkAtLowerBoundOnlyShrinkElements()
+    {
+        let generator: Generator<[Int]> = .array(
+            using:  .integer(in: 0...50),
+            count:  3...8
+        )
+        
+        let array       : [Int]     = [10, 20, 30]
+        let candidates  : [[Int]]   = generator.shrink(array)
+        
+        for candidate in candidates
+        {
+            XCTAssertEqual(candidate.count, 3)
+        }
+    }
+    
+    
+    
+    func testGeneratorClosedRangeShrinkZeroLowerBoundIncludesEmpty()
+    {
+        let generator: Generator<[Int]> = .array(
+            using:  .integer(in: 0...50),
+            count:  0...5
+        )
+        
+        let array       : [Int]     = [10, 20, 30]
+        let candidates  : [[Int]]   = generator.shrink(array)
+        
+        XCTAssertTrue(candidates.contains([]))
+    }
+    
+    
+    
+    func testGeneratorClosedRangeShrinkUsesGenerator()
+    {
+        let sentinel: Int = 999
+        
+        let elementGenerator = Generator<Int>(
+            generate:   { context in context.random(in: 0...100) },
+            shrink:     { _ in [sentinel] }
+        )
+        
+        let generator: Generator<[Int]> = .array(
+            using:  elementGenerator,
+            count:  2...8
+        )
+        
+        let candidates: [[Int]] = generator.shrink([10, 20, 30])
+        
+        XCTAssertFalse(candidates.isEmpty)
+        
+        let containsSentinel: Bool
+            = candidates.contains { $0.contains(sentinel) }
+        
+        XCTAssertTrue(containsSentinel)
+    }
+    
+    
+    
     // MARK: - Range generation
     
     func testRangeDeterminism()
@@ -242,6 +488,33 @@ internal final class ArrayGeneratorTests: TestKitCase
         }
         
         XCTAssertGreaterThanOrEqual(counts.count, 9)
+    }
+    
+    
+    
+    func testGeneratorRangeDeterminism()
+    {
+        let generator: Generator<[Int]> = .array(
+            using:  .integer(in: 0...50),
+            count:  2..<9
+        )
+        
+        generator.assertDeterministic()
+    }
+    
+    
+    
+    func testGeneratorRangeCountRespectsBounds()
+    {
+        let generator: Generator<[Int]> = .array(
+            using:  .integer(in: 0...50),
+            count:  3..<8
+        )
+        
+        validateCount(
+            of:         generator,
+            expected:   3...7
+        )
     }
     
     
@@ -294,6 +567,74 @@ internal final class ArrayGeneratorTests: TestKitCase
         let generator   : Generator<[Int]>  = .array(count: 0..<6)
         let array       : [Int]             = [10, 20, 30]
         let candidates  : [[Int]]           = generator.shrink(array)
+        
+        XCTAssertTrue(candidates.contains([]))
+    }
+    
+    
+    
+    func testGeneratorRangeShrinkReducesCount()
+    {
+        let generator: Generator<[Int]> = .array(
+            using:  .integer(in: 0...50),
+            count:  2..<9
+        )
+        
+        let array       : [Int]     = [10, 20, 30, 40, 50]
+        let candidates  : [[Int]]   = generator.shrink(array)
+        
+        let isShorter: Bool = candidates.contains { $0.count < array.count }
+        
+        XCTAssertTrue(isShorter)
+    }
+    
+    
+    
+    func testGeneratorRangeShrinkRespectsLowerBound()
+    {
+        let generator: Generator<[Int]> = .array(
+            using:  .integer(in: 0...50),
+            count:  3..<9
+        )
+        
+        let array       : [Int]     = [10, 20, 30, 40, 50]
+        let candidates  : [[Int]]   = generator.shrink(array)
+        
+        for candidate in candidates
+        {
+            XCTAssertGreaterThanOrEqual(candidate.count, 3)
+        }
+    }
+    
+    
+    
+    func testGeneratorRangeShrinkAtLowerBoundOnlyShrinkElements()
+    {
+        let generator: Generator<[Int]> = .array(
+            using:  .integer(in: 0...50),
+            count:  3..<9
+        )
+        
+        let array       : [Int]     = [10, 20, 30]
+        let candidates  : [[Int]]   = generator.shrink(array)
+        
+        for candidate in candidates
+        {
+            XCTAssertEqual(candidate.count, 3)
+        }
+    }
+    
+    
+    
+    func testGeneratorRangeShrinkZeroLowerBoundIncludesEmpty()
+    {
+        let generator: Generator<[Int]> = .array(
+            using:  .integer(in: 0...50),
+            count:  0..<6
+        )
+        
+        let array       : [Int]     = [10, 20, 30]
+        let candidates  : [[Int]]   = generator.shrink(array)
         
         XCTAssertTrue(candidates.contains([]))
     }
