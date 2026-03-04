@@ -138,15 +138,26 @@ internal struct PropertyRunner
         let context         : GenerationContext     = .init(seed: seed)
         let maxSize         : Int                   = opts.maxSize
         let maxDiscardRatio : Int                   = opts.maxDiscardRatio
-        let iterations      : Int                   = opts.iterations
+        var iterations      : Int                   = opts.iterations
         var iteration       : Int                   = 0
         var discarded       : Int                   = 0
         var succeeded       : Int                   = 0
         
-        
+        let deadline: ContinuousClock.Instant?
+            = opts.timeout.map { ContinuousClock.now.advanced(by: $0) }
         
         while succeeded < iterations
         {
+            if
+                let deadline,
+                ContinuousClock.now >= deadline
+            {
+                let ratio: String = "\(succeeded) of \(iterations) iterations"
+                
+                logger.warning("Property-based test timed out after \(ratio)")
+                break
+            }
+            
             iteration       += 1
             context.size    = succeeded * maxSize / iterations
             
@@ -196,7 +207,8 @@ internal struct PropertyRunner
                             seed:           seed,
                             iteration:      iteration,
                             property:       property,
-                            options:        options
+                            options:        options,
+                            deadline:       deadline
                         )
                     
                     return .failed(
@@ -222,6 +234,14 @@ internal struct PropertyRunner
                     }
             }
         }
+        
+        
+        
+        /// If the test timed out, `succeeded` is less than `iterations`.
+        /// Otherwise, the two values are the same. Adjust `iterations` so if
+        /// the test timed out, subsequent logic reflects the actual number
+        /// of completed iterations.
+        iterations = succeeded
         
         
         
@@ -358,6 +378,7 @@ internal struct PropertyRunner
     ///   - iteration: The iteraton at which the failure occurred.
     ///   - property: The property body.
     ///   - options: The options for testing.
+    ///   - deadline: The timeout deadline.
     /// - Returns: The minimal counterexample for the given value.
     @Reasync
     private static func makeCounterexample<T>(
@@ -367,7 +388,8 @@ internal struct PropertyRunner
         seed            : UInt64,
         iteration       : Int,
         property        : (T) async throws -> Void,
-        options         : TestOptions
+        options         : TestOptions,
+        deadline        : ContinuousClock.Instant?
     ) async -> Counterexample<T>
     {
         var current : T     = value
@@ -375,6 +397,13 @@ internal struct PropertyRunner
         
         while steps < options.propertyOptions.maxShrinkSteps
         {
+            if
+                let deadline,
+                ContinuousClock.now >= deadline
+            {
+                break
+            }
+            
             let candidates  : [T]   = shrink(current)
             var improved    : Bool  = false
             
