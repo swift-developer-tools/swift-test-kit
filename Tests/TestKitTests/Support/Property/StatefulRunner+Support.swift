@@ -44,6 +44,41 @@ internal enum IncrementCommand: Stateful, Equatable, Sendable
 
 
 
+// MARK: - SlowIncrement
+
+internal enum SlowIncrementCommand: Stateful, Equatable, Sendable
+{
+    case increment
+    
+    static func arbitrary(
+        using context   : GenerationContext,
+        model           : Int
+    ) -> Self
+    {
+        return .increment
+    }
+    
+    func run(
+        model   : inout Int,
+        system  : inout Int
+    ) async
+    {
+        model   += 1
+        system  += 1
+        
+        try? await Task.sleep(for: .milliseconds(2))
+    }
+    
+    func advance(
+        model: inout Int
+    )
+    {
+        model += 1
+    }
+}
+
+
+
 // MARK: - ShrinkableIncrement
 
 internal enum ShrinkableIncrementCommand: Stateful, Equatable, Sendable
