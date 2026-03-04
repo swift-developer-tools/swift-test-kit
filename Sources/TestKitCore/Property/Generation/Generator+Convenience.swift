@@ -88,6 +88,152 @@ extension Generator
     /// - Precondition: `count` must not be negative.
     ///
     /// - Parameters:
+    ///   - generator: The element generator.
+    ///   - count: The exact count of elements.
+    /// - Returns: A generator that produces arrays with exactly the given
+    /// count of elements.
+    public static func array<E>(
+        using generator : Generator<E>,
+        count           : Int
+    ) -> Generator<[E]> where V == [E]
+    {
+        precondition(
+            count >= 0,
+            "count must not be negative"
+        )
+        
+        return Generator<[E]>(
+            generate:
+            {
+                context in
+                
+                return (0..<count).map
+                {
+                    _ in
+                    
+                    return generator.generate(context)
+                }
+            },
+            shrink:
+            {
+                array in
+                
+                let shrinkElements: () -> [[E]] =
+                {
+                    return array.shrinkElements(by: { generator.shrink($0) })
+                }
+                
+                return array.shrinkToward(
+                    minCount:           count,
+                    shrinkElements:     shrinkElements
+                )
+            }
+        )
+    }
+    
+    
+    
+    /// Creates a generator that produces arrays with a count of elements
+    /// within the given range.
+    ///
+    /// Shrinking reduces the count of elements toward the lower bound and
+    /// shrinks individual elements.
+    ///
+    /// - Precondition: `count` must not contain negative values.
+    ///
+    /// - Parameters:
+    ///   - generator: The element generator.
+    ///   - count: The range of valid element counts.
+    /// - Returns: A generator that produces arrays with a count of elements
+    /// within the given range.
+    public static func array<E>(
+        using generator : Generator<E>,
+        count           : ClosedRange<Int>
+    ) -> Generator<[E]> where V == [E]
+    {
+        precondition(
+            count.lowerBound >= 0,
+            "count must not contain negative values"
+        )
+        
+        return Generator<[E]>(
+            generate:
+            {
+                context in
+                
+                let length: Int = context.random(in: count)
+                
+                return (0..<length).map
+                {
+                    _ in
+                    
+                    return generator.generate(context)
+                }
+            },
+            shrink:
+            {
+                array in
+                
+                let shrinkElements: () -> [[E]] =
+                {
+                    return array.shrinkElements(by: { generator.shrink($0) })
+                }
+                
+                return array.shrinkToward(
+                    minCount:           count.lowerBound,
+                    shrinkElements:     shrinkElements
+                )
+            }
+        )
+    }
+    
+    
+    
+    /// Creates a generator that produces arrays with a count of elements
+    /// within the given range.
+    ///
+    /// Shrinking reduces the count of elements toward the lower bound and
+    /// shrinks individual elements.
+    ///
+    /// - Precondition: `count` must not be empty or contain negative values.
+    ///
+    /// - Parameters:
+    ///   - generator: The element generator.
+    ///   - count: The range of valid element counts.
+    /// - Returns: A generator that produces arrays with a count of elements
+    /// within the given range.
+    public static func array<E>(
+        using generator : Generator<E>,
+        count           : Range<Int>
+    ) -> Generator<[E]> where V == [E]
+    {
+        precondition(
+            !count.isEmpty,
+            "count must not be empty"
+        )
+        
+        precondition(
+            count.lowerBound >= 0,
+            "count must not contain negative values"
+        )
+        
+        return array(
+            using:  generator,
+            count:  count.lowerBound...(count.upperBound - 1)
+        )
+    }
+    
+    
+    
+    /// Creates a generator that produces arrays with exactly the given count
+    /// of elements.
+    ///
+    /// Since the count of elements is fixed, shrinking only applies to
+    /// individual elements.
+    ///
+    /// - Precondition: `count` must not be negative.
+    ///
+    /// - Parameters:
     ///   - type: The element type. The default value is inferred.
     ///   - count: The exact count of elements.
     /// - Returns: A generator that produces arrays with exactly the given
