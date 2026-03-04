@@ -51,6 +51,175 @@ internal final class ArrayGeneratorTests: TestKitCase
     
     
     
+    func testGeneratorExactCountDeterminism()
+    {
+        let generator: Generator<[Int]> = .array(
+            using:  .integer(in: 0...50),
+            count:  5
+        )
+        
+        generator.assertDeterministic()
+    }
+    
+    
+    
+    func testGeneratorExactCountProducesCorrectCount()
+    {
+        let generator: Generator<[Int]> = .array(
+            using:  .integer(in: 0...50),
+            count:  7
+        )
+        
+        validateCount(
+            of:         generator,
+            expected:   7...7
+        )
+    }
+    
+    
+    
+    func testGeneratorExactCountZeroProducesEmpty()
+    {
+        let generator: Generator<[Int]> = .array(
+            using:  .integer(in: 0...50),
+            count:  0
+        )
+        
+        for _ in 0..<1000
+        {
+            let array: [Int] = generator.generate(.random)
+            
+            XCTAssertTrue(array.isEmpty)
+        }
+    }
+    
+    
+    
+    func testGeneratorExactCountUsesGenerator()
+    {
+        let generator: Generator<[Int]> = .array(
+            using:  .integer(in: 0...50).map { $0 * 2 },
+            count:  5
+        )
+        
+        for _ in 0..<1000
+        {
+            let array: [Int] = generator.generate(.random)
+            
+            for element in array
+            {
+                XCTAssertEqual(element % 2, 0)
+            }
+        }
+    }
+    
+    
+    
+    func testUniqueExactCountDeterminism()
+    {
+        let generator: Generator<[Int]> = .uniqueArray(
+            using:  .integer(in: 0...1000),
+            count:  5
+        )
+        
+        generator.assertDeterministic()
+    }
+    
+    
+    
+    func testUniqueExactCountProducesCorrectCount()
+    {
+        let generator: Generator<[Int]> = .uniqueArray(
+            using:  .integer(in: 0...1000),
+            count:  7
+        )
+        
+        validateCount(
+            of:         generator,
+            expected:   7...7
+        )
+    }
+    
+    
+    
+    func testUniqueExactCountZeroProducesEmpty()
+    {
+        let generator: Generator<[Int]> = .uniqueArray(
+            using:  .integer(in: 0...1000),
+            count:  0
+        )
+        
+        for _ in 0..<1000
+        {
+            let array: [Int] = generator.generate(.random)
+            
+            XCTAssertTrue(array.isEmpty)
+        }
+    }
+    
+    
+    
+    func testUniqueExactCountUsesGenerator()
+    {
+        let generator: Generator<[Int]> = .uniqueArray(
+            using:  .integer(in: 0...500).map { $0 * 2 },
+            count:  5
+        )
+        
+        for _ in 0..<1000
+        {
+            let array: [Int] = generator.generate(.random)
+            
+            for element in array
+            {
+                XCTAssertEqual(element % 2, 0)
+            }
+        }
+    }
+    
+    
+    
+    func testUniqueExactCountElementsAreUnique()
+    {
+        let generator: Generator<[Int]> = .uniqueArray(
+            using:  .integer(in: 0...1000),
+            count:  10
+        )
+        
+        for _ in 0..<1000
+        {
+            let array: [Int] = generator.generate(.random)
+            
+            XCTAssertEqual(Set(array).count, array.count)
+        }
+    }
+    
+    
+    
+    func testUniqueArbitraryExactCountDeterminism()
+    {
+        let generator: Generator<[Int]> = .uniqueArray(count: 5)
+        
+        generator.assertDeterministic(size: 100)
+    }
+    
+    
+    
+    func testUniqueArbitraryExactCountElementsAreUnique()
+    {
+        let generator: Generator<[Int]> = .uniqueArray(count: 10)
+        
+        for _ in 0..<1000
+        {
+            let array: [Int] = generator.generate(.randomSeed(size: 100))
+            
+            XCTAssertEqual(array.count, 10)
+            XCTAssertEqual(Set(array).count, array.count)
+        }
+    }
+    
+    
+    
     // MARK: - Exact count shrinking
     
     func testExactCountShrinkPreservesCount()
@@ -112,6 +281,177 @@ internal final class ArrayGeneratorTests: TestKitCase
     
     
     
+    func testGeneratorExactCountShrinkUsesGenerator()
+    {
+        let sentinel: Int = 999
+        
+        let elementGenerator = Generator<Int>(
+            generate:   { context in context.random(in: 0...100) },
+            shrink:     { _ in [sentinel] }
+        )
+        
+        let generator: Generator<[Int]> = .array(
+            using:  elementGenerator,
+            count:  2
+        )
+        
+        let candidates: [[Int]] = generator.shrink([10, 20, 30])
+        
+        XCTAssertFalse(candidates.isEmpty)
+        
+        let containsSentinel: Bool
+            = candidates.contains { $0.contains(sentinel) }
+        
+        XCTAssertTrue(containsSentinel)
+    }
+    
+    
+    
+    func testGeneratorExactCountShrinkPreservesCount()
+    {
+        let generator: Generator<[Int]> = .array(
+            using:  .integer(in: 0...50),
+            count:  3
+        )
+        
+        let array       : [Int]     = [10, 20, 30]
+        let candidates  : [[Int]]   = generator.shrink(array)
+        
+        XCTAssertFalse(candidates.isEmpty)
+        
+        for candidate in candidates
+        {
+            XCTAssertEqual(candidate.count, 3)
+        }
+    }
+    
+    
+    
+    func testGeneratorExactCountShrinkAtTargetProducesEmpty()
+    {
+        let generator: Generator<[Int]> = .array(
+            using:  .integer(in: 0...50),
+            count:  3
+        )
+        
+        let candidates: [[Int]] = generator.shrink([0, 0, 0])
+        
+        XCTAssertTrue(candidates.isEmpty)
+    }
+    
+    
+    
+    func testUniqueExactCountShrinkUsesGenerator()
+    {
+        let sentinel: Int = 999
+        
+        let elementGenerator = Generator<Int>(
+            generate:   { context in context.random(in: 0...100) },
+            shrink:     { _ in [sentinel] }
+        )
+        
+        let generator: Generator<[Int]> = .uniqueArray(
+            using:  elementGenerator,
+            count:  2
+        )
+        
+        let candidates: [[Int]] = generator.shrink([10, 20])
+        
+        XCTAssertFalse(candidates.isEmpty)
+        
+        let containsSentinel: Bool
+            = candidates.contains { $0.contains(sentinel) }
+        
+        XCTAssertTrue(containsSentinel)
+    }
+    
+    
+    
+    func testUniqueExactCountShrinkPreservesCount()
+    {
+        let generator: Generator<[Int]> = .uniqueArray(
+            using:  .integer(in: 0...1000),
+            count:  3
+        )
+        
+        let array       : [Int]     = [10, 20, 30]
+        let candidates  : [[Int]]   = generator.shrink(array)
+        
+        XCTAssertFalse(candidates.isEmpty)
+        
+        for candidate in candidates
+        {
+            XCTAssertEqual(candidate.count, 3)
+        }
+    }
+    
+    
+    
+    func testUniqueExactCountShrinkPreservesUniqueness()
+    {
+        let generator: Generator<[Int]> = .uniqueArray(
+            using:  .integer(in: 0...1000),
+            count:  3
+        )
+        
+        let array       : [Int]     = [10, 20, 30]
+        let candidates  : [[Int]]   = generator.shrink(array)
+        
+        XCTAssertFalse(candidates.isEmpty)
+        
+        for candidate in candidates
+        {
+            XCTAssertEqual(Set(candidate).count, candidate.count)
+        }
+    }
+    
+    
+    
+    func testUniqueExactCountShrinkAtTargetProducesEmpty()
+    {
+        let elementGenerator = Generator<Int>(
+            generate:   { context in context.random(in: 0...1000) },
+            shrink:     { _ in [] }
+        )
+        
+        let generator: Generator<[Int]> = .uniqueArray(
+            using:  elementGenerator,
+            count:  3
+        )
+        
+        let candidates: [[Int]] = generator.shrink([10, 20, 30])
+        
+        XCTAssertTrue(candidates.isEmpty)
+    }
+    
+    
+    
+    func testUniqueExactCountShrinkSkipsDuplicates()
+    {
+        /// The generator always shrinks to a fixed set, including `0`, which
+        /// is already present in the array. The duplicate must be filtered.
+        
+        let elementGenerator = Generator<Int>(
+            generate:   { context in context.random(in: 0...1000) },
+            shrink:     { value in [0, value / 2] }
+        )
+        
+        let generator: Generator<[Int]> = .uniqueArray(
+            using:  elementGenerator,
+            count:  3
+        )
+        
+        let array       : [Int]     = [0, 20, 30]
+        let candidates  : [[Int]]   = generator.shrink(array)
+        
+        for candidate in candidates
+        {
+            XCTAssertEqual(Set(candidate).count, candidate.count)
+        }
+    }
+    
+    
+    
     // MARK: - Closed range generation
     
     func testClosedRangeDeterminism()
@@ -148,6 +488,93 @@ internal final class ArrayGeneratorTests: TestKitCase
         }
         
         XCTAssertGreaterThanOrEqual(counts.count, 9)
+    }
+    
+    
+    
+    func testGeneratorClosedRangeDeterminism()
+    {
+        let generator: Generator<[Int]> = .array(
+            using:  .integer(in: 0...50),
+            count:  2...8
+        )
+        
+        generator.assertDeterministic()
+    }
+    
+    
+    
+    func testGeneratorClosedRangeCountRespectsBounds()
+    {
+        let generator: Generator<[Int]> = .array(
+            using:  .integer(in: 0...50),
+            count:  3...7
+        )
+        
+        validateCount(
+            of:         generator,
+            expected:   3...7
+        )
+    }
+    
+    
+    
+    func testUniqueClosedRangeDeterminism()
+    {
+        let generator: Generator<[Int]> = .uniqueArray(
+            using:  .integer(in: 0...1000),
+            count:  2...8
+        )
+        
+        generator.assertDeterministic()
+    }
+    
+    
+    
+    func testUniqueClosedRangeCountRespectsBounds()
+    {
+        let generator: Generator<[Int]> = .uniqueArray(
+            using:  .integer(in: 0...1000),
+            count:  3...7
+        )
+        
+        validateCount(
+            of:         generator,
+            expected:   3...7
+        )
+    }
+    
+    
+    
+    func testUniqueClosedRangeElementsAreUnique()
+    {
+        let generator: Generator<[Int]> = .uniqueArray(
+            using:  .integer(in: 0...1000),
+            count:  3...10
+        )
+        
+        for _ in 0..<1000
+        {
+            let array: [Int] = generator.generate(.random)
+            
+            XCTAssertEqual(Set(array).count, array.count)
+        }
+    }
+    
+    
+    
+    func testUniqueArbitraryClosedRangeElementsAreUnique()
+    {
+        let generator: Generator<[Int]> = .uniqueArray(count: 3...10)
+        
+        for _ in 0..<1000
+        {
+            let array: [Int] = generator.generate(.randomSeed(size: 100))
+            
+            XCTAssertGreaterThanOrEqual(array.count, 3)
+            XCTAssertLessThanOrEqual(array.count, 10)
+            XCTAssertEqual(Set(array).count, array.count)
+        }
     }
     
     
@@ -206,6 +633,190 @@ internal final class ArrayGeneratorTests: TestKitCase
     
     
     
+    func testGeneratorClosedRangeShrinkReducesCount()
+    {
+        let generator: Generator<[Int]> = .array(
+            using:  .integer(in: 0...50),
+            count:  2...8
+        )
+        
+        let array       : [Int]     = [10, 20, 30, 40, 50]
+        let candidates  : [[Int]]   = generator.shrink(array)
+        
+        let isShorter: Bool = candidates.contains { $0.count < array.count }
+        
+        XCTAssertTrue(isShorter)
+    }
+    
+    
+    
+    func testGeneratorClosedRangeShrinkRespectsLowerBound()
+    {
+        let generator: Generator<[Int]> = .array(
+            using:  .integer(in: 0...50),
+            count:  3...8
+        )
+        
+        let array       : [Int]     = [10, 20, 30, 40, 50]
+        let candidates  : [[Int]]   = generator.shrink(array)
+        
+        for candidate in candidates
+        {
+            XCTAssertGreaterThanOrEqual(candidate.count, 3)
+        }
+    }
+    
+    
+    
+    func testGeneratorClosedRangeShrinkAtLowerBoundOnlyShrinkElements()
+    {
+        let generator: Generator<[Int]> = .array(
+            using:  .integer(in: 0...50),
+            count:  3...8
+        )
+        
+        let array       : [Int]     = [10, 20, 30]
+        let candidates  : [[Int]]   = generator.shrink(array)
+        
+        for candidate in candidates
+        {
+            XCTAssertEqual(candidate.count, 3)
+        }
+    }
+    
+    
+    
+    func testGeneratorClosedRangeShrinkZeroLowerBoundIncludesEmpty()
+    {
+        let generator: Generator<[Int]> = .array(
+            using:  .integer(in: 0...50),
+            count:  0...5
+        )
+        
+        let array       : [Int]     = [10, 20, 30]
+        let candidates  : [[Int]]   = generator.shrink(array)
+        
+        XCTAssertTrue(candidates.contains([]))
+    }
+    
+    
+    
+    func testGeneratorClosedRangeShrinkUsesGenerator()
+    {
+        let sentinel: Int = 999
+        
+        let elementGenerator = Generator<Int>(
+            generate:   { context in context.random(in: 0...100) },
+            shrink:     { _ in [sentinel] }
+        )
+        
+        let generator: Generator<[Int]> = .array(
+            using:  elementGenerator,
+            count:  2...8
+        )
+        
+        let candidates: [[Int]] = generator.shrink([10, 20, 30])
+        
+        XCTAssertFalse(candidates.isEmpty)
+        
+        let containsSentinel: Bool
+            = candidates.contains { $0.contains(sentinel) }
+        
+        XCTAssertTrue(containsSentinel)
+    }
+    
+    
+    
+    func testUniqueClosedRangeShrinkReducesCount()
+    {
+        let generator: Generator<[Int]> = .uniqueArray(
+            using:  .integer(in: 0...1000),
+            count:  2...8
+        )
+        
+        let array       : [Int]     = [10, 20, 30, 40, 50]
+        let candidates  : [[Int]]   = generator.shrink(array)
+        
+        let isShorter: Bool = candidates.contains { $0.count < array.count }
+        
+        XCTAssertTrue(isShorter)
+    }
+    
+    
+    
+    func testUniqueClosedRangeShrinkRespectsLowerBound()
+    {
+        let generator: Generator<[Int]> = .uniqueArray(
+            using:  .integer(in: 0...1000),
+            count:  3...8
+        )
+        
+        let array       : [Int]     = [10, 20, 30, 40, 50]
+        let candidates  : [[Int]]   = generator.shrink(array)
+        
+        for candidate in candidates
+        {
+            XCTAssertGreaterThanOrEqual(candidate.count, 3)
+        }
+    }
+    
+    
+    
+    func testUniqueClosedRangeShrinkPreservesUniqueness()
+    {
+        let generator: Generator<[Int]> = .uniqueArray(
+            using:  .integer(in: 0...1000),
+            count:  2...8
+        )
+        
+        let array       : [Int]     = [10, 20, 30, 40, 50]
+        let candidates  : [[Int]]   = generator.shrink(array)
+        
+        XCTAssertFalse(candidates.isEmpty)
+        
+        for candidate in candidates
+        {
+            XCTAssertEqual(Set(candidate).count, candidate.count)
+        }
+    }
+    
+    
+    
+    func testUniqueClosedRangeShrinkAtLowerBoundOnlyShrinksElements()
+    {
+        let generator: Generator<[Int]> = .uniqueArray(
+            using:  .integer(in: 0...1000),
+            count:  3...8
+        )
+        
+        let array       : [Int]     = [10, 20, 30]
+        let candidates  : [[Int]]   = generator.shrink(array)
+        
+        XCTAssertFalse(candidates.isEmpty)
+        
+        for candidate in candidates
+        {
+            XCTAssertEqual(candidate.count, 3)
+        }
+    }
+    
+    
+    
+    func testUniqueClosedRangeShrinkZeroLowerBoundIncludesEmpty()
+    {
+        let generator: Generator<[Int]> = .uniqueArray(
+            using:  .integer(in: 0...1000),
+            count:  0...5
+        )
+        
+        let array       : [Int]     = [10, 20, 30]
+        let candidates  : [[Int]]   = generator.shrink(array)
+        
+        XCTAssertTrue(candidates.contains([]))
+    }
+    
+    
+    
     // MARK: - Range generation
     
     func testRangeDeterminism()
@@ -242,6 +853,93 @@ internal final class ArrayGeneratorTests: TestKitCase
         }
         
         XCTAssertGreaterThanOrEqual(counts.count, 9)
+    }
+    
+    
+    
+    func testGeneratorRangeDeterminism()
+    {
+        let generator: Generator<[Int]> = .array(
+            using:  .integer(in: 0...50),
+            count:  2..<9
+        )
+        
+        generator.assertDeterministic()
+    }
+    
+    
+    
+    func testGeneratorRangeCountRespectsBounds()
+    {
+        let generator: Generator<[Int]> = .array(
+            using:  .integer(in: 0...50),
+            count:  3..<8
+        )
+        
+        validateCount(
+            of:         generator,
+            expected:   3...7
+        )
+    }
+    
+    
+    
+    func testUniqueRangeDeterminism()
+    {
+        let generator: Generator<[Int]> = .uniqueArray(
+            using:  .integer(in: 0...1000),
+            count:  2..<9
+        )
+        
+        generator.assertDeterministic()
+    }
+    
+    
+    
+    func testUniqueRangeCountRespectsBounds()
+    {
+        let generator: Generator<[Int]> = .uniqueArray(
+            using:  .integer(in: 0...1000),
+            count:  3..<8
+        )
+        
+        validateCount(
+            of:         generator,
+            expected:   3...7
+        )
+    }
+    
+    
+    
+    func testUniqueRangeElementsAreUnique()
+    {
+        let generator: Generator<[Int]> = .uniqueArray(
+            using:  .integer(in: 0...1000),
+            count:  3..<11
+        )
+        
+        for _ in 0..<1000
+        {
+            let array: [Int] = generator.generate(.random)
+            
+            XCTAssertEqual(Set(array).count, array.count)
+        }
+    }
+    
+    
+    
+    func testUniqueArbitraryRangeElementsAreUnique()
+    {
+        let generator: Generator<[Int]> = .uniqueArray(count: 3..<11)
+        
+        for _ in 0..<1000
+        {
+            let array: [Int] = generator.generate(.randomSeed(size: 100))
+            
+            XCTAssertGreaterThanOrEqual(array.count, 3)
+            XCTAssertLessThanOrEqual(array.count, 10)
+            XCTAssertEqual(Set(array).count, array.count)
+        }
     }
     
     
@@ -300,7 +998,165 @@ internal final class ArrayGeneratorTests: TestKitCase
     
     
     
-    // MARK: - Non-empty array generation
+    func testGeneratorRangeShrinkReducesCount()
+    {
+        let generator: Generator<[Int]> = .array(
+            using:  .integer(in: 0...50),
+            count:  2..<9
+        )
+        
+        let array       : [Int]     = [10, 20, 30, 40, 50]
+        let candidates  : [[Int]]   = generator.shrink(array)
+        
+        let isShorter: Bool = candidates.contains { $0.count < array.count }
+        
+        XCTAssertTrue(isShorter)
+    }
+    
+    
+    
+    func testGeneratorRangeShrinkRespectsLowerBound()
+    {
+        let generator: Generator<[Int]> = .array(
+            using:  .integer(in: 0...50),
+            count:  3..<9
+        )
+        
+        let array       : [Int]     = [10, 20, 30, 40, 50]
+        let candidates  : [[Int]]   = generator.shrink(array)
+        
+        for candidate in candidates
+        {
+            XCTAssertGreaterThanOrEqual(candidate.count, 3)
+        }
+    }
+    
+    
+    
+    func testGeneratorRangeShrinkAtLowerBoundOnlyShrinkElements()
+    {
+        let generator: Generator<[Int]> = .array(
+            using:  .integer(in: 0...50),
+            count:  3..<9
+        )
+        
+        let array       : [Int]     = [10, 20, 30]
+        let candidates  : [[Int]]   = generator.shrink(array)
+        
+        for candidate in candidates
+        {
+            XCTAssertEqual(candidate.count, 3)
+        }
+    }
+    
+    
+    
+    func testGeneratorRangeShrinkZeroLowerBoundIncludesEmpty()
+    {
+        let generator: Generator<[Int]> = .array(
+            using:  .integer(in: 0...50),
+            count:  0..<6
+        )
+        
+        let array       : [Int]     = [10, 20, 30]
+        let candidates  : [[Int]]   = generator.shrink(array)
+        
+        XCTAssertTrue(candidates.contains([]))
+    }
+    
+    
+    
+    func testUniqueRangeShrinkReducesCount()
+    {
+        let generator: Generator<[Int]> = .uniqueArray(
+            using:  .integer(in: 0...1000),
+            count:  2..<9
+        )
+        
+        let array       : [Int]     = [10, 20, 30, 40, 50]
+        let candidates  : [[Int]]   = generator.shrink(array)
+        
+        let isShorter: Bool = candidates.contains { $0.count < array.count }
+        
+        XCTAssertTrue(isShorter)
+    }
+    
+    
+    
+    func testUniqueRangeShrinkRespectsLowerBound()
+    {
+        let generator: Generator<[Int]> = .uniqueArray(
+            using:  .integer(in: 0...1000),
+            count:  3..<9
+        )
+        
+        let array       : [Int]     = [10, 20, 30, 40, 50]
+        let candidates  : [[Int]]   = generator.shrink(array)
+        
+        for candidate in candidates
+        {
+            XCTAssertGreaterThanOrEqual(candidate.count, 3)
+        }
+    }
+    
+    
+    
+    func testUniqueRangeShrinkPreservesUniqueness()
+    {
+        let generator: Generator<[Int]> = .uniqueArray(
+            using:  .integer(in: 0...1000),
+            count:  2..<9
+        )
+        
+        let array       : [Int]     = [10, 20, 30, 40, 50]
+        let candidates  : [[Int]]   = generator.shrink(array)
+        
+        XCTAssertFalse(candidates.isEmpty)
+        
+        for candidate in candidates
+        {
+            XCTAssertEqual(Set(candidate).count, candidate.count)
+        }
+    }
+    
+    
+    
+    func testUniqueRangeShrinkAtLowerBoundOnlyShrinksElements()
+    {
+        let generator: Generator<[Int]> = .uniqueArray(
+            using:  .integer(in: 0...1000),
+            count:  3..<9
+        )
+        
+        let array       : [Int]     = [10, 20, 30]
+        let candidates  : [[Int]]   = generator.shrink(array)
+        
+        XCTAssertFalse(candidates.isEmpty)
+        
+        for candidate in candidates
+        {
+            XCTAssertEqual(candidate.count, 3)
+        }
+    }
+    
+    
+    
+    func testUniqueRangeShrinkZeroLowerBoundIncludesEmpty()
+    {
+        let generator: Generator<[Int]> = .uniqueArray(
+            using:  .integer(in: 0...1000),
+            count:  0..<6
+        )
+        
+        let array       : [Int]     = [10, 20, 30]
+        let candidates  : [[Int]]   = generator.shrink(array)
+        
+        XCTAssertTrue(candidates.contains([]))
+    }
+    
+    
+    
+    // MARK: - Non-empty generation
     
     func testNonEmptyArrayDeterminism()
     {
@@ -323,7 +1179,7 @@ internal final class ArrayGeneratorTests: TestKitCase
     
     
     
-    // MARK: - Non-empty array shrinking
+    // MARK: - Non-empty shrinking
     
     func testNonEmptyArrayShrinkNeverProducesEmpty()
     {
