@@ -64,6 +64,43 @@ extension Array: Arbitrary where Element : Arbitrary
         minCount: Int
     ) -> [[Element]]
     {
+        return shrinkToward(
+            minCount:           minCount,
+            shrinkElements:     self.shrinkElements
+        )
+    }
+    
+    
+    
+    /// Shrinks individual elements of the array, holding the others constant.
+    /// - Returns: The shrink candidates.
+    internal func shrinkElements() -> [[Element]]
+    {
+        return shrinkElements(by: { $0.shrink() })
+    }
+}
+
+
+
+extension Array
+{
+    /// Shrinks the array by removing elements (down to the given minimum
+    /// count) and shrinking individual elements.
+    ///
+    /// Candidates include the minimum-length prefix, halves clamped to the
+    /// minimum count, individual element removals, and individual element
+    /// shrinks.
+    ///
+    /// - Parameters:
+    ///   - minCount: The minimum number of elements.
+    ///   - shrinkElements: Shrinks individual elements of the array.
+    ///   ``Array/shrinkElements()``.
+    /// - Returns: The shrink candidates.
+    internal func shrinkToward(
+        minCount        : Int,
+        shrinkElements  : () -> [[Element]]
+    ) -> [[Element]]
+    {
         guard !isEmpty
         else
         {
@@ -128,14 +165,17 @@ extension Array: Arbitrary where Element : Arbitrary
     
     
     /// Shrinks individual elements of the array, holding the others constant.
+    /// - Parameter shrink: Shrinks the given element.
     /// - Returns: The shrink candidates.
-    internal func shrinkElements() -> [[Element]]
+    internal func shrinkElements(
+        by shrink: (Element) -> [Element]
+    ) -> [[Element]]
     {
         var candidates: [[Element]] = []
         
         for index in indices
         {
-            for shrunkenElement in self[index].shrink()
+            for shrunkenElement in shrink(self[index])
             {
                 var copy: [Element] = self
                 
