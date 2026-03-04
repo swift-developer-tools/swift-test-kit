@@ -389,6 +389,347 @@ extension Generator
             }
         )
     }
+    
+    
+    
+    /// Creates a generator that produces arrays of unique elements with
+    /// exactly the given count.
+    ///
+    /// Since the count of elements is fixed, shrinking only applies to
+    /// individual elements. Shrink candidates that would introduce duplicate
+    /// elements are skipped.
+    ///
+    /// - Precondition: `count` must not be negative.
+    /// - Precondition: `generator` must produce at least `count` distinct
+    /// values within a reasonable number of attempts.
+    ///
+    /// - Parameters:
+    ///   - generator: The element generator.
+    ///   - count: The exact count of elements.
+    /// - Returns: A generator that produces arrays of unique elements with
+    /// exactly the given count.
+    public static func uniqueArray<E>(
+        using generator : Generator<E>,
+        count           : Int
+    ) -> Generator<[E]> where V == [E], E : Hashable
+    {
+        precondition(
+            count >= 0,
+            "count must not be negative"
+        )
+        
+        return Generator<[E]>(
+            generate:
+            {
+                context in
+                
+                return generateUniqueElements(
+                    count:      count,
+                    generator:  generator,
+                    context:    context
+                )
+            },
+            shrink:
+            {
+                array in
+                
+                let shrinkElements: () -> [[E]] =
+                {
+                    return shrinkUniqueElements(
+                        of:     array,
+                        using:  generator
+                    )
+                }
+                
+                return array.shrinkToward(
+                    minCount:           count,
+                    shrinkElements:     shrinkElements
+                )
+            }
+        )
+    }
+    
+    
+    
+    /// Creates a generator that produces arrays of unique elements with
+    /// a count within the given range.
+    ///
+    /// Shrinking reduces the count toward the lower bound of the given range,
+    /// and shrinks individual elements. Shrink candidates that would introduce
+    /// duplicate elements are skipped.
+    ///
+    /// - Precondition: `count.lowerBound` must not be negative.
+    /// - Precondition: `generator` must produce at least `count.upperBound`
+    /// distinct values within a reasonable number of attempts.
+    ///
+    /// - Parameters:
+    ///   - generator: The element generator.
+    ///   - count: The range of element counts.
+    /// - Returns: A generator that produces arrays of unique elements with
+    /// a count within the given range.
+    public static func uniqueArray<E>(
+        using generator : Generator<E>,
+        count           : ClosedRange<Int>
+    ) -> Generator<[E]> where V == [E], E : Hashable
+    {
+        precondition(
+            count.lowerBound >= 0,
+            "count.lowerBound must not be negative"
+        )
+        
+        return Generator<[E]>(
+            generate:
+            {
+                context in
+                
+                return generateUniqueElements(
+                    count:      context.random(in: count),
+                    generator:  generator,
+                    context:    context
+                )
+            },
+            shrink:
+            {
+                array in
+                
+                let shrinkElements: () -> [[E]] =
+                {
+                    return shrinkUniqueElements(
+                        of:     array,
+                        using:  generator
+                    )
+                }
+                
+                return array.shrinkToward(
+                    minCount:           count.lowerBound,
+                    shrinkElements:     shrinkElements
+                )
+            }
+        )
+    }
+    
+    
+    
+    /// Creates a generator that produces arrays of unique elements with
+    /// a count within the given range.
+    ///
+    /// Shrinking reduces the count toward the lower bound of the given range,
+    /// and shrinks individual elements. Shrink candidates that would introduce
+    /// duplicate elements are skipped.
+    ///
+    /// - Precondition: `count` must not be empty.
+    /// - Precondition: `count.lowerBound` must not be negative.
+    /// - Precondition: `generator` must produce at least `count.upperBound - 1`
+    /// distinct values within a reasonable number of attempts.
+    ///
+    /// - Parameters:
+    ///   - generator: The element generator.
+    ///   - count: The range of element counts.
+    /// - Returns: A generator that produces arrays of unique elements with
+    /// a count within the given range.
+    public static func uniqueArray<E>(
+        using generator : Generator<E>,
+        count           : Range<Int>
+    ) -> Generator<[E]> where V == [E], E : Hashable
+    {
+        precondition(
+            !count.isEmpty,
+            "count must not be empty"
+        )
+        
+        precondition(
+            count.lowerBound >= 0,
+            "count.lowerBound must not be negative"
+        )
+        
+        return uniqueArray(
+            using:  generator,
+            count:  count.lowerBound...(count.upperBound - 1)
+        )
+    }
+    
+    
+    
+    /// Creates a generator that produces arrays of unique elements with
+    /// exactly the given count.
+    ///
+    /// Since the count of elements is fixed, shrinking only applies to
+    /// individual elements. Shrink candidates that would introduce duplicate
+    /// elements are skipped.
+    ///
+    /// - Precondition: `count` must not be negative.
+    /// - Precondition: `generator` must produce at least `count` distinct
+    /// values within a reasonable number of attempts.
+    ///
+    /// - Parameters:
+    ///   - type: The element type. The default value is inferred.
+    ///   - count: The exact count of elements.
+    /// - Returns: A generator that produces arrays of unique elements with
+    /// exactly the given count.
+    public static func uniqueArray<E>(
+        of type : E.Type    = E.self,
+        count   : Int
+    ) -> Generator<[E]> where V == [E], E : Arbitrary & Hashable
+    {
+        return uniqueArray(
+            using:  .arbitrary(),
+            count:  count
+        )
+    }
+    
+    
+    
+    /// Creates a generator that produces arrays of unique elements with
+    /// a count within the given range.
+    ///
+    /// Shrinking reduces the count toward the lower bound of the given range,
+    /// and shrinks individual elements. Shrink candidates that would introduce
+    /// duplicate elements are skipped.
+    ///
+    /// - Precondition: `count.lowerBound` must not be negative.
+    /// - Precondition: `generator` must produce at least `count.upperBound`
+    /// distinct values within a reasonable number of attempts.
+    ///
+    /// - Parameters:
+    ///   - type: The element type. The default value is inferred.
+    ///   - count: The range of element counts.
+    /// - Returns: A generator that produces arrays of unique elements with
+    /// a count within the given range.
+    public static func uniqueArray<E>(
+        of type : E.Type    = E.self,
+        count   : ClosedRange<Int>
+    ) -> Generator<[E]> where V == [E], E : Arbitrary & Hashable
+    {
+        return uniqueArray(
+            using:  .arbitrary(),
+            count:  count
+        )
+    }
+    
+    
+    
+    /// Creates a generator that produces arrays of unique elements with
+    /// a count within the given range.
+    ///
+    /// Shrinking reduces the count toward the lower bound of the given range,
+    /// and shrinks individual elements. Shrink candidates that would introduce
+    /// duplicate elements are skipped.
+    ///
+    /// - Precondition: `count` must not be empty.
+    /// - Precondition: `count.lowerBound` must not be negative.
+    /// - Precondition: `generator` must produce at least `count.upperBound - 1`
+    /// distinct values within a reasonable number of attempts.
+    ///
+    /// - Parameters:
+    ///   - type: The element type. The default value is inferred.
+    ///   - count: The range of element counts.
+    /// - Returns: A generator that produces arrays of unique elements with
+    /// a count within the given range.
+    public static func uniqueArray<E>(
+        of type : E.Type    = E.self,
+        count   : Range<Int>
+    ) -> Generator<[E]> where V == [E], E : Arbitrary & Hashable
+    {
+        return uniqueArray(
+            using:  .arbitrary(),
+            count:  count
+        )
+    }
+    
+    
+    
+    /// Generates an array of unique elements.
+    ///
+    /// - Precondition: A valid array must be produced within
+    /// `count * 10 + 1000` attempts.
+    ///
+    /// - Parameters:
+    ///   - count: The number of unique elements to generate.
+    ///   - generator: The element generator.
+    ///   - context: The generation context.
+    /// - Returns: An array of unique elements.
+    private static func generateUniqueElements<E>(
+        count       : Int,
+        generator   : Generator<E>,
+        context     : GenerationContext
+    ) -> [E] where E : Hashable
+    {
+        guard count > 0
+        else
+        {
+            return []
+        }
+        
+        var elements    : [E]       = []
+        var seen        : Set<E>    = []
+        
+        /// Multiply by `10` to scale with the request, and add `1000` to
+        /// prevent trivially low limits when `count` is small.
+        let maxAttempts: Int = count * 10 + 1000
+        
+        for _ in 0..<maxAttempts
+        {
+            let element: E = generator.generate(context)
+            
+            if seen.insert(element).inserted
+            {
+                elements.append(element)
+                
+                if elements.count == count
+                {
+                    return elements
+                }
+            }
+        }
+        
+        preconditionFailure(
+            "Generator.uniqueArray(of:count:) failed to produce \(count)"
+            + " distinct values after \(maxAttempts) attempts. The element"
+            + " generator may not produce enough distinct values."
+        )
+    }
+    
+    
+    
+    /// Shrinks individual elements of the given unique array, skipping
+    /// candidates that would introduce duplicates.
+    /// - Parameters:
+    ///   - array: The array to shrink.
+    ///   - generator: The element generator (for element shrinking).
+    /// - Returns: The shrink candidates.
+    private static func shrinkUniqueElements<E>(
+        of      array       : [E],
+        using   generator   : Generator<E>
+    ) -> [[E]] where E : Hashable
+    {
+        let elements    : Set<E>    = Set(array)
+        var candidates  : [[E]]     = []
+        
+        for index in array.indices
+        {
+            /// Elements other than the one being shrunk.
+            var others: Set<E> = elements
+            
+            others.remove(array[index])
+            
+            for shrunken in generator.shrink(array[index])
+            {
+                guard !others.contains(shrunken)
+                else
+                {
+                    continue
+                }
+                
+                var copy: [E] = array
+                
+                copy[index] = shrunken
+                
+                candidates.append(copy)
+            }
+        }
+        
+        return candidates
+    }
 }
 
 
