@@ -126,7 +126,7 @@ extension Generator
     
     
     /// Creates a generator that produces arrays with a count of elements
-    /// within the given closed range.
+    /// within the given range.
     ///
     /// Shrinking reduces the count of elements toward the lower bound and
     /// shrinks individual elements.
@@ -135,9 +135,9 @@ extension Generator
     ///
     /// - Parameters:
     ///   - type: The element type. The default value is inferred.
-    ///   - count: The closed range of valid element counts.
+    ///   - count: The range of valid element counts.
     /// - Returns: A generator that produces arrays with a count of elements
-    /// within the given closed range.
+    /// within the given range.
     public static func array<E>(
         of type : E.Type            = E.self,
         count   : ClosedRange<Int>
@@ -174,7 +174,7 @@ extension Generator
     
     
     /// Creates a generator that produces arrays with a count of elements
-    /// within the given half-open range.
+    /// within the given range.
     ///
     /// Shrinking reduces the count of elements toward the lower bound and
     /// shrinks individual elements.
@@ -183,9 +183,9 @@ extension Generator
     ///
     /// - Parameters:
     ///   - type: The element type. The default value is inferred.
-    ///   - count: The closed range of valid element counts.
+    ///   - count: The range of valid element counts.
     /// - Returns: A generator that produces arrays with a count of elements
-    /// within the given half-open range.
+    /// within the given range.
     public static func array<E>(
         of type : E.Type        = E.self,
         count   : Range<Int>
@@ -543,7 +543,7 @@ extension Generator where V == String
     
     
     /// Creates a generator that produces strings with a count of characters
-    /// within the given closed range.
+    /// within the given range.
     ///
     /// Shrinking reduces the count of characters toward the lower bound and
     /// shrinks individual characters.
@@ -551,11 +551,11 @@ extension Generator where V == String
     /// - Precondition: `count` must not contain negative values.
     ///
     /// - Parameters:
-    ///   - count: The exact count of characters.
+    ///   - count: The range of character counts.
     ///   - characters: The character generator to use. The default value is
     ///   ``Generator/ascii()``.
     /// - Returns: A generator that produces strings with a count of characters
-    /// within the given closed range.
+    /// within the given range.
     public static func string(
         count       : ClosedRange<Int>,
         characters  : Generator<Character>  = .ascii()
@@ -594,7 +594,7 @@ extension Generator where V == String
     
     
     /// Creates a generator that produces strings with a count of characters
-    /// within the given half-open range.
+    /// within the given range.
     ///
     /// Shrinking reduces the count of characters toward the lower bound and
     /// shrinks individual characters.
@@ -602,11 +602,11 @@ extension Generator where V == String
     /// - Precondition: `count` must not be empty or contain negative values.
     ///
     /// - Parameters:
-    ///   - count: The exact count of characters.
+    ///   - count: The range of character counts.
     ///   - characters: The character generator to use. The default value is
     ///   ``Generator/ascii()``.
     /// - Returns: A generator that produces strings with a count of characters
-    /// within the given half-open range.
+    /// within the given range.
     public static func string(
         count       : Range<Int>,
         characters  : Generator<Character>  = .ascii()
@@ -675,13 +675,13 @@ extension Generator where V == String
 
 extension Generator where V : FixedWidthInteger
 {
-    /// Creates a generator that produces integers in the given closed range.
+    /// Creates a generator that produces integers in the given range.
     ///
     /// Shrink candidates converge toward zero if zero is in the range,
     /// otherwise toward the nearest bound.
     ///
-    /// - Parameter range: The closed range in which to generate integers.
-    /// - Returns: A generator that produces integers in the given closed range.
+    /// - Parameter range: The range in which to generate integers.
+    /// - Returns: A generator that produces integers in the given range.
     public static func integer(
         in range: ClosedRange<V>
     ) -> Generator<V>
@@ -704,16 +704,15 @@ extension Generator where V : FixedWidthInteger
     
     
     
-    /// Creates a generator that produces integers in the given half-open range.
+    /// Creates a generator that produces integers in the given range.
     ///
     /// Shrink candidates converge toward zero if zero is in the range,
     /// otherwise toward the nearest bound.
     ///
     /// - Precondition: `range` must not be empty.
     ///
-    /// - Parameter range: The half-open range in which to generate integers.
-    /// - Returns: A generator that produces integers in the given half-open
-    /// range.
+    /// - Parameter range: The range in which to generate integers.
+    /// - Returns: A generator that produces integers in the given range.
     public static func integer(
         in range: Range<V>
     ) -> Generator<V>
@@ -736,15 +735,15 @@ extension Generator
           V.RawSignificand : FixedWidthInteger
 {
     /// Creates a generator that produces floating-point numbers in the given
-    /// closed range.
+    /// range.
     ///
     /// Shrink candidates converge toward zero if zero is in the range,
     /// otherwise toward the nearest bound.
     ///
-    /// - Parameter range: The closed range in which to generate
-    /// floating-point numbers.
+    /// - Parameter range: The range in which to generate floating-point
+    /// numbers.
     /// - Returns: A generator that produces floating-point numbers in the
-    /// given closed range.
+    /// given range.
     public static func floatingPoint(
         in range: ClosedRange<V>
     ) -> Generator<V>
@@ -767,16 +766,15 @@ extension Generator
     
     
     
-    /// Creates a generator that produces integers in the given half-open range.
+    /// Creates a generator that produces integers in the given range.
     ///
     /// Shrink candidates converge toward zero if zero is in the range,
     /// otherwise toward the nearest bound.
     ///
     /// - Precondition: `range` must not be empty.
     ///
-    /// - Parameter range: The half-open range in which to generate integers.
-    /// - Returns: A generator that produces integers in the given half-open
-    /// range.
+    /// - Parameter range: The range in which to generate integers.
+    /// - Returns: A generator that produces integers in the given range.
     public static func floatingPoint(
         in range: Range<V>
     ) -> Generator<V>
