@@ -21,6 +21,7 @@ internal extension TestOptions
         maxSize         : Int                   = 100,
         maxDiscardRatio : Int                   = 10,
         maxCommandCount : Int                   = 100,
+        timeout         : Duration?             = nil,
         statistics      : CommandStatistics     = [],
         seed            : UInt64?               = nil
     ) -> TestOptions
@@ -31,6 +32,7 @@ internal extension TestOptions
             maxSize:            maxSize,
             maxDiscardRatio:    maxDiscardRatio,
             maxCommandCount:    maxCommandCount,
+            timeout:            timeout,
             statistics:         statistics,
             seed:               seed
         )

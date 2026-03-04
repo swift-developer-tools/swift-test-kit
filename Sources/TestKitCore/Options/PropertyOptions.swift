@@ -47,6 +47,14 @@ public struct PropertyOptions: Equatable, Sendable
     /// this maximum value in later iterations.
     public var maxCommandCount  : Int
     
+    /// The maximum duration for the property-based test, including generation,
+    /// evaluation, and shrinking.
+    ///
+    /// The default value is `nil`, which imposes no time limit. When non-`nil`,
+    /// the test will stop once the deadline is exceeded, and will return the
+    /// best result found so far.
+    public var timeout          : Duration?
+    
     /// The options for reporting command statistics in stateful
     /// property-based tests.
     ///
@@ -77,6 +85,7 @@ public struct PropertyOptions: Equatable, Sendable
         maxSize         : Int                   = 100,
         maxDiscardRatio : Int                   = 10,
         maxCommandCount : Int                   = 100,
+        timeout         : Duration?             = nil,
         statistics      : CommandStatistics     = [],
         seed            : UInt64?               = nil
     )
@@ -111,6 +120,7 @@ public struct PropertyOptions: Equatable, Sendable
         self.maxSize            = maxSize
         self.maxDiscardRatio    = maxDiscardRatio
         self.maxCommandCount    = maxCommandCount
+        self.timeout            = timeout
         self.statistics         = statistics
         self.seed               = seed
     }
