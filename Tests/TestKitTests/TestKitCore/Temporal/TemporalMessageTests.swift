@@ -8,7 +8,6 @@
 //===----------------------------------------------------------------------===//
 
 import TestKitCore
-import Synchronization
 import XCTest
 
 
