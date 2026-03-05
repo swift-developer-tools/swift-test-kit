@@ -50,7 +50,7 @@ internal struct StatefulRunner<C> where C : Stateful
         let maxSize             : Int                   = opts.maxSize
         let maxDiscardRatio     : Int                   = opts.maxDiscardRatio
         let maxCommandCount     : Int                   = opts.maxCommandCount
-        let iterations          : Int                   = opts.iterations
+        var iterations          : Int                   = opts.iterations
         var iteration           : Int                   = 0
         var discarded           : Int                   = 0
         var succeeded           : Int                   = 0
@@ -58,10 +58,21 @@ internal struct StatefulRunner<C> where C : Stateful
         var commandFrequency    : [String : Int]        = [:]
         var sequenceCounts      : [Int]                 = []
         
-        
+        let deadline: ContinuousClock.Instant?
+            = opts.timeout.map { ContinuousClock.now.advanced(by: $0) }
         
         while succeeded < iterations
         {
+            if
+                let deadline,
+                ContinuousClock.now >= deadline
+            {
+                let ratio: String = "\(succeeded) of \(iterations) iterations"
+                
+                logger.warning("Stateful test timed out after \(ratio)")
+                break
+            }
+            
             iteration       += 1
             context.size    = succeeded * maxSize / iterations
             
@@ -113,7 +124,8 @@ internal struct StatefulRunner<C> where C : Stateful
                             invariant:  invariant,
                             seed:       seed,
                             iteration:  iteration,
-                            options:    options
+                            options:    options,
+                            deadline:   deadline
                         )
                     
                     let result: PropertyResult<[C]> = .failed(
@@ -201,6 +213,14 @@ internal struct StatefulRunner<C> where C : Stateful
                     }
             }
         }
+        
+        
+        
+        /// If the test timed out, `succeeded` is less than `iterations`.
+        /// Otherwise, the two values are the same. Adjust `iterations` so if
+        /// the test timed out, subsequent logic reflects the actual number
+        /// of completed iterations.
+        iterations = succeeded
         
         
         
@@ -583,6 +603,7 @@ internal struct StatefulRunner<C> where C : Stateful
     ///   - seed: The seed used to initialize the random number generator.
     ///   - iteration: The iteration at which the failure occurred.
     ///   - options: The options for testing.
+    ///   - deadline: The timeout deadline.
     /// - Returns: The counterexample for the given failing command sequence.
     private static func makeCounterexample(
         commands    : [C],
@@ -591,7 +612,8 @@ internal struct StatefulRunner<C> where C : Stateful
         invariant   : ((C.Model, C.System) async throws -> Void)?,
         seed        : UInt64,
         iteration   : Int,
-        options     : TestOptions
+        options     : TestOptions,
+        deadline    : ContinuousClock.Instant?
     ) async -> Counterexample<[C]>
     {
         let shrunken: ShrunkenSequence = await shrinkSequence(
@@ -599,7 +621,8 @@ internal struct StatefulRunner<C> where C : Stateful
             model:      model,
             system:     system,
             invariant:  invariant,
-            options:    options
+            options:    options,
+            deadline:   deadline
         )
         
         /// Run one more time to capture the assertion output.
@@ -654,13 +677,15 @@ internal struct StatefulRunner<C> where C : Stateful
     ///   - invariant: An optional closure that checks invariants after each
     ///   command.
     ///   - options: The options for testing.
+    ///   - deadline: The timeout deadline.
     /// - Returns: The shrunken command sequence.
     private static func shrinkSequence(
         commands    : [C],
         model       : () -> C.Model,
         system      : () -> C.System,
         invariant   : ((C.Model, C.System) async throws -> Void)?,
-        options     : TestOptions
+        options     : TestOptions,
+        deadline    : ContinuousClock.Instant?
     ) async -> ShrunkenSequence
     {
         let maxSteps: Int = options.propertyOptions.maxShrinkSteps
@@ -668,6 +693,16 @@ internal struct StatefulRunner<C> where C : Stateful
         let interceptor : PropertyInterceptor   = .init()
         var current     : [C]                   = commands
         var steps       : Int                   = 0
+        
+        let pastDeadline: () -> Bool =
+        {
+            if let deadline
+            {
+                return ContinuousClock.now >= deadline
+            }
+            
+            return false
+        }
         
         
         
@@ -683,7 +718,8 @@ internal struct StatefulRunner<C> where C : Stateful
             
             while
                 offset + chunkSize <= current.count,
-                steps < maxSteps
+                steps < maxSteps,
+                !pastDeadline()
             {
                 var candidate: [C] = current
                 
@@ -729,7 +765,8 @@ internal struct StatefulRunner<C> where C : Stateful
         
         while
             index < current.count,
-            steps < maxSteps
+            steps < maxSteps,
+            !pastDeadline()
         {
             let modelAtIndex: C.Model? = replayModel(
                 model,

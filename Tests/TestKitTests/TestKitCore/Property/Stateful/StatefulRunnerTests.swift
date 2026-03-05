@@ -2385,6 +2385,233 @@ internal final class StatefulRunnerTests: TestKitCase
         _ = try XCTUnwrap(a.assertFailed())
         _ = try XCTUnwrap(b.assertPassed())
     }
+    
+    
+    
+    // MARK: - Timeout
+    
+    func testTimeoutNotReachedReturnsPassed() async throws
+    {
+        let iterations: Int = 50
+        
+        let options: TestOptions = .propertyOptions(
+            iterations:         iterations,
+            maxCommandCount:    10,
+            timeout:            .seconds(60),
+            seed:               Self.seed
+        )
+        
+        let result: StatefulResult = await StatefulRunner.run(
+            command:    IncrementCommand.self,
+            model:      { 0 },
+            system:     { 0 },
+            invariant:  nil,
+            options:    options
+        )
+        
+        let passed: PassedValues = try XCTUnwrap(result.assertPassed())
+        
+        XCTAssertEqual(passed.iterations, iterations)
+        XCTAssertEqual(passed.seed, Self.seed)
+    }
+    
+    
+    
+    func testZeroTimeoutReturnsPassedWithZeroIterations() async throws
+    {
+        let options: TestOptions = .propertyOptions(
+            iterations:         100,
+            maxCommandCount:    10,
+            timeout:            .zero,
+            seed:               Self.seed
+        )
+        
+        let result: StatefulResult = await StatefulRunner.run(
+            command:    IncrementCommand.self,
+            model:      { 0 },
+            system:     { 0 },
+            invariant:  nil,
+            options:    options
+        )
+        
+        let passed: PassedValues = try XCTUnwrap(result.assertPassed())
+        
+        XCTAssertEqual(passed.iterations, 0)
+    }
+    
+    
+    
+    func testZeroTimeoutWithFailingInvariantReturnsPassed() async throws
+    {
+        let options: TestOptions = .propertyOptions(
+            iterations:         100,
+            maxCommandCount:    10,
+            timeout:            .zero,
+            seed:               Self.seed
+        )
+        
+        let result: StatefulResult = await StatefulRunner.run(
+            command:    IncrementCommand.self,
+            model:      { 0 },
+            system:     { 0 },
+            invariant:
+            {
+                _, _ async in
+                
+                FailureInterceptor.current?.recordFailure()
+            },
+            options: options
+        )
+        
+        /// The timeout fires before any iteration runs, so the failing
+        /// invariant is never evaluated.
+        let passed: PassedValues = try XCTUnwrap(result.assertPassed())
+        
+        XCTAssertEqual(passed.iterations, 0)
+    }
+    
+    
+    
+    func testTimeoutReturnsPartialIterationCount() async throws
+    {
+        let iterations: Int = 1000
+        
+        let options: TestOptions = .propertyOptions(
+            iterations:         iterations,
+            maxCommandCount:    10,
+            timeout:            .milliseconds(100),
+            seed:               Self.seed
+        )
+        
+        let result: StatefulResult = await StatefulRunner.run(
+            command:    IncrementCommand.self,
+            model:      { 0 },
+            system:     { 0 },
+            invariant:
+            {
+                _, _ async in
+                
+                try? await Task.sleep(for: .milliseconds(5))
+            },
+            options: options
+        )
+        
+        let passed: PassedValues = try XCTUnwrap(result.assertPassed())
+        
+        XCTAssertGreaterThan(passed.iterations, 0)
+        XCTAssertLessThan(passed.iterations, iterations)
+    }
+    
+    
+    
+    func testTimeoutDoesNotInterfereWithNormalFailure() async throws
+    {
+        let target: Int = 3
+        
+        let options: TestOptions = .propertyOptions(
+            iterations:         100,
+            maxShrinkSteps:     0,
+            maxCommandCount:    10,
+            timeout:            .seconds(60),
+            seed:               Self.seed
+        )
+        
+        let result: StatefulResult = await StatefulRunner.run(
+            command:    IncrementCommand.self,
+            model:      { 0 },
+            system:     { 0 },
+            invariant:
+            {
+                model, _ async in
+                
+                if model >= target
+                {
+                    FailureInterceptor.current?.recordFailure()
+                }
+            },
+            options: options
+        )
+        
+        let counterexample: Counterexample<[IncrementCommand]>
+            = try XCTUnwrap(result.assertFailed())
+        
+        XCTAssertEqual(counterexample.failingStep, target)
+        XCTAssertGreaterThanOrEqual(counterexample.value.count, target)
+    }
+    
+    
+    
+    func testTimeoutDoesNotInterfereWithExhaustion() async throws
+    {
+        let maxDiscardRatio: Int = 2
+        
+        let options: TestOptions = .propertyOptions(
+            iterations:         10,
+            maxDiscardRatio:    maxDiscardRatio,
+            maxCommandCount:    10,
+            timeout:            .seconds(60),
+            seed:               Self.seed
+        )
+        
+        let result: StatefulResult = await StatefulRunner.run(
+            command:    RunDiscardCommand.self,
+            model:      { 0 },
+            system:     { 0 },
+            invariant:  nil,
+            options:    options
+        )
+        
+        let exhausted: ExhaustedValues
+            = try XCTUnwrap(result.assertExhausted())
+        
+        XCTAssertEqual(exhausted.succeeded, 0)
+        XCTAssertGreaterThan(exhausted.discarded, 0)
+        XCTAssertEqual(exhausted.ratio, maxDiscardRatio)
+    }
+    
+    
+    
+    func testTimeoutDuringShrinkingLimitsShrinkSteps() async throws
+    {
+        let target          : Int   = 30
+        let maxShrinkSteps  : Int   = 100
+        
+        let options: TestOptions = .propertyOptions(
+            iterations:         2,
+            maxShrinkSteps:     maxShrinkSteps,
+            maxCommandCount:    200,
+            timeout:            .seconds(2),
+            seed:               Self.seed
+        )
+        
+        let result: StatefulResult = await StatefulRunner.run(
+            command:    SlowIncrementCommand.self,
+            model:      { 0 },
+            system:     { 0 },
+            invariant:
+            {
+                model, _ async in
+                
+                try? await Task.sleep(for: .milliseconds(50))
+                
+                if model >= target
+                {
+                    FailureInterceptor.current?.recordFailure()
+                }
+            },
+            options: options
+        )
+        
+        let counterexample: Counterexample<[SlowIncrementCommand]>
+            = try XCTUnwrap(result.assertFailed())
+        
+        /// Shrinking must have started but been cut short by the timeout,
+        /// and the value must not have been fully shrunk to the minimum
+        /// length of `target` before timing out.
+        XCTAssertGreaterThan(counterexample.shrinkSteps, 0)
+        XCTAssertLessThan(counterexample.shrinkSteps, maxShrinkSteps)
+        XCTAssertGreaterThan(counterexample.value.count, target)
+    }
 }
 
 

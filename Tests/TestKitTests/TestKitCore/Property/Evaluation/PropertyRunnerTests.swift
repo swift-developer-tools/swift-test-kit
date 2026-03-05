@@ -1802,6 +1802,214 @@ internal final class PropertyRunnerTests: TestKitCase
         
         XCTAssertEqual(accepted.count, iterations)
     }
+    
+    
+    
+    // MARK: - Timeout
+    
+    @Reasync
+    func testTimeoutNotReachedReturnsPassed() async throws
+    {
+        let iterations: Int = 50
+        
+        let options: TestOptions = .propertyOptions(
+            iterations:     iterations,
+            timeout:        .seconds(60),
+            seed:           Self.seed
+        )
+        
+        let result: PropertyResult<BoundInt> = await PropertyRunner.run(
+            property:   { _ async in },
+            options:    options
+        )
+        
+        let passed: PassedValues = try XCTUnwrap(result.assertPassed())
+        
+        XCTAssertEqual(passed.iterations, iterations)
+        XCTAssertEqual(passed.seed, Self.seed)
+    }
+    
+    
+    
+    @Reasync
+    func testZeroTimeoutReturnsPassedWithZeroIterations() async throws
+    {
+        let options: TestOptions = .propertyOptions(
+            iterations:     100,
+            timeout:        .zero,
+            seed:           Self.seed
+        )
+        
+        let result: PropertyResult<BoundInt> = await PropertyRunner.run(
+            property:   { _ async in },
+            options:    options
+        )
+        
+        let passed: PassedValues = try XCTUnwrap(result.assertPassed())
+        
+        XCTAssertEqual(passed.iterations, 0)
+    }
+    
+    
+    
+    @Reasync
+    func testZeroTimeoutWithFailingPropertyReturnsPassed() async throws
+    {
+        let options: TestOptions = .propertyOptions(
+            iterations:     100,
+            timeout:        .zero,
+            seed:           Self.seed
+        )
+        
+        let result: PropertyResult<BoundInt> = await PropertyRunner.run(
+            property:
+            {
+                _ async in
+                
+                FailureInterceptor.current?.recordFailure()
+            },
+            options: options
+        )
+        
+        /// The timeout fires before any iteration runs, so the failing
+        /// property is never evaluated.
+        let passed: PassedValues = try XCTUnwrap(result.assertPassed())
+        
+        XCTAssertEqual(passed.iterations, 0)
+    }
+    
+    
+    
+    func testTimeoutReturnsPartialIterationCount() async throws
+    {
+        let iterations: Int = 1000
+        
+        let options: TestOptions = .propertyOptions(
+            iterations:     iterations,
+            timeout:        .milliseconds(100),
+            seed:           Self.seed
+        )
+        
+        let result: PropertyResult<BoundInt> = await PropertyRunner.run(
+            property:
+            {
+                _ async in
+                
+                try? await Task.sleep(for: .milliseconds(5))
+            },
+            options: options
+        )
+        
+        let passed: PassedValues = try XCTUnwrap(result.assertPassed())
+        
+        XCTAssertGreaterThan(passed.iterations, 0)
+        XCTAssertLessThan(passed.iterations, iterations)
+    }
+    
+    
+    
+    @Reasync
+    func testTimeoutDoesNotInterfereWithNormalFailure() async throws
+    {
+        let target: Int = 10
+        
+        let options: TestOptions = .propertyOptions(
+            maxSize:    200,
+            timeout:    .seconds(60),
+            seed:       Self.seed
+        )
+        
+        let result: PropertyResult<BoundInt> = await PropertyRunner.run(
+            property:
+            {
+                boundInt async in
+                
+                if boundInt.value > target
+                {
+                    FailureInterceptor.current?.recordFailure()
+                }
+            },
+            options: options
+        )
+        
+        let counterexample: Counterexample<BoundInt>
+            = try XCTUnwrap(result.assertFailed())
+        
+        XCTAssertEqual(counterexample.value, BoundInt(target + 1))
+        XCTAssertGreaterThan(counterexample.shrinkSteps, 0)
+    }
+    
+    
+    
+    @Reasync
+    func testTimeoutDoesNotInterfereWithExhaustion() async throws
+    {
+        let maxDiscardRatio: Int = 2
+        
+        let options: TestOptions = .propertyOptions(
+            iterations:         10,
+            maxDiscardRatio:    maxDiscardRatio,
+            timeout:            .seconds(60),
+            seed:               Self.seed
+        )
+        
+        let result: PropertyResult<BoundInt> = await PropertyRunner.run(
+            where:      { _ in false },
+            property:   { _ async in },
+            options:    options
+        )
+        
+        let exhausted: ExhaustedValues
+            = try XCTUnwrap(result.assertExhausted())
+        
+        XCTAssertEqual(exhausted.succeeded, 0)
+        XCTAssertGreaterThan(exhausted.discarded, 0)
+        XCTAssertEqual(exhausted.ratio, maxDiscardRatio)
+    }
+    
+    
+    
+    func testTimeoutDuringShrinkingLimitsShrinkSteps() async throws
+    {
+        let maxShrinkSteps: Int = 100
+        
+        let options: TestOptions = .propertyOptions(
+            maxShrinkSteps:     maxShrinkSteps,
+            timeout:            .milliseconds(500),
+            seed:               Self.seed
+        )
+        
+        let generator = Generator<Int>(
+            generate:   { _ in 1000 },
+            shrink:     { value in value.shrinkTowardZero() }
+        )
+        
+        let result: PropertyResult<Int> = await PropertyRunner.run(
+            using: generator,
+            property:
+            {
+                int async in
+                
+                try? await Task.sleep(for: .milliseconds(50))
+                
+                if int > 0
+                {
+                    FailureInterceptor.current?.recordFailure()
+                }
+            },
+            options: options
+        )
+        
+        let counterexample: Counterexample<Int>
+            = try XCTUnwrap(result.assertFailed())
+        
+        /// Shrinking must have started but been cut short by the timeout,
+        /// and the value must not have been fully shrunk to the minimum of
+        /// `1` before timing out.
+        XCTAssertGreaterThan(counterexample.shrinkSteps, 0)
+        XCTAssertLessThan(counterexample.shrinkSteps, maxShrinkSteps)
+        XCTAssertGreaterThan(counterexample.value, 1)
+    }
 }
 
 
