@@ -88,6 +88,7 @@ extension TemporalResult
     /// - Parameters:
     ///   - kind: The temporal test kind.
     ///   - timeout: The timeout duration.
+    ///   - failures: The intercepted failures.
     ///   - elapsed: The elapsed duration at the point of resolution.
     ///   - error: The thrown error.
     ///   - functionName: The temporal evaluator function name.
