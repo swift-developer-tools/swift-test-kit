@@ -46,7 +46,7 @@ internal struct TemporalRunner
     ///   - timeout: The timeout duration.
     ///   - interval: The polling interval.
     ///   - body: The temporal body.
-    /// - Returns: The result of running the temporal test.
+    /// - Returns: The result of the temporal test.
     internal static func run(
         kind        : Kind,
         timeout     : Duration,

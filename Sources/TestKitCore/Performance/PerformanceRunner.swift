@@ -22,7 +22,7 @@ internal struct PerformanceRunner
     ///   - timeLimit: The time limit.
     ///   - memoryLimit: The physical memory footprint limit.
     ///   - body: The performance body.
-    /// - Returns: The result of running the performance test.
+    /// - Returns: The result of the performance test.
     internal static func run(
         runs        : Int,
         warmupRuns  : Int,

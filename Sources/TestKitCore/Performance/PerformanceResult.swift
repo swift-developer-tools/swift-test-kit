@@ -9,7 +9,7 @@
 
 // MARK: - PerformanceResult
 
-/// The result of running a performance test.
+/// The result of a performance test.
 internal enum PerformanceResult: Sendable
 {
     /// No metrics were enabled.

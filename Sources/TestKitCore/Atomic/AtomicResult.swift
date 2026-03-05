@@ -7,7 +7,7 @@
 //
 //===----------------------------------------------------------------------===//
 
-/// The result of running an atomic test.
+/// The result of an atomic test.
 internal enum AtomicResult
 {
     /// All assertions passed and the body did not throw an error.
