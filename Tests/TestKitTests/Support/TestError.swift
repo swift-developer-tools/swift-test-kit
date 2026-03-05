@@ -7,7 +7,7 @@
 //
 //===----------------------------------------------------------------------===//
 
-/// A test error..
+/// A test error.
 internal struct TestError: Error { }
 
 
