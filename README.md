@@ -43,8 +43,11 @@ failures to minimal counterexamples. Stateful testing extends this to systems
 with mutable state, generating random command sequences and verifying the 
 system against a simplified model.
 
-Temporal, property-based, and stateful testing all report failures with the 
-same rich output used by standalone assertions.
+> [!TIP]
+> Property-based tests, stateful tests, temporal tests, performance tests, 
+> and atomic tests compose freely. Any evaluator may be nested inside any 
+> other evaluator, and all evaluators can wrap standalone assertions. Any 
+> failures propagate with the same rich output used by standalone assertions.
 
 > [!NOTE]
 > All examples below use XCTestKit. SwiftTestKit provides an identical API 
