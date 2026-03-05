@@ -22,8 +22,7 @@ within complex data structures, using path-based output that scales from flat
 primitives to deeply-nested structs, collections, and multi-line strings. 
 
 Macro assertions capture the literal source text of expressions and decompose 
-compound boolean logic to identify which sub-expression caused the failure, 
-making CI/CD logs actionable without needing access to the source code.
+compound boolean logic to identify which sub-expression caused the failure.
 
 Predicate assertions verify conditions across collection elements and produce 
 element-level failure output, identifying which elements failed, which matched 
