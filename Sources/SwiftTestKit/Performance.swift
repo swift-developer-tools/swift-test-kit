@@ -14,8 +14,10 @@ import TestKitCore
 /// Asserts that the given body meets performance thresholds across the
 /// given number of runs.
 ///
-/// The performance body is executed the given number of times. If any
-/// assertion fails on any run, the test fails immediately.
+/// The performance body is executed the given number of times. All assertions
+/// are executed on each run, regardless of individual failures. If any
+/// assertion fails during a run, measurement stops and all failures from that
+/// run are reported together.
 ///
 /// - Important: Use only SwiftTestKit assertions inside performance bodies.
 /// Native Swift Testing assertions are not intercepted.

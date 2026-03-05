@@ -13,8 +13,10 @@ import TestKitCore
 
 /// Asserts that the given body passes continuously for the given duration.
 ///
-/// The temporal body is polled at the given interval. If any assertion fails
-/// on any poll, the test fails immediately.
+/// The temporal body is polled at the given interval. All assertions are
+/// executed on each poll, regardless of individual failures. If any assertion
+/// fails during a poll, polling stops and all failures from that poll are
+/// reported together.
 ///
 /// - Important: Use only SwiftTestKit assertions inside temporal bodies.
 /// Native Swift Testing assertions are not intercepted.

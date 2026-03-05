@@ -13,7 +13,8 @@ import TestKitCore
 
 /// Asserts that all assertions in the given body pass.
 ///
-/// If any assertion fails, the test fails immediately.
+/// The atomic body is executed once, running all assertions regardless of
+/// individual failures. All assertion failures are reported together.
 ///
 /// - Important: Use only XCTestKit assertions inside atomic bodies.
 /// Native XCTest assertions are not intercepted.
