@@ -31,7 +31,7 @@ import TestKitCore
 ///   column number where this function was called.
 ///   - body: The atomic body.
 @Reasync
-package func STKAtomic(
+public func STKAtomic(
     _ message   : @autoclosure () -> String     = "",
     fileID      : StaticString                  = #fileID,
     file        : StaticString                  = #filePath,
