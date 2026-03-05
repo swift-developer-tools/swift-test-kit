@@ -29,8 +29,6 @@ import TestKitCore
 ///   number where this function was called.
 ///   - column: The column where the failure occurs. The default value is the
 ///   column number where this function was called.
-///   - options: The options for testing. The default value is `nil`, which
-///   falls back to using global options.
 ///   - body: The atomic body.
 @Reasync
 package func STKAtomic(
@@ -39,7 +37,6 @@ package func STKAtomic(
     file        : StaticString                  = #filePath,
     line        : UInt                          = #line,
     column      : UInt                          = #column,
-    options     : TestOptions?                  = nil,
     _ body      : () async throws -> Void
 ) async
 {
@@ -49,7 +46,6 @@ package func STKAtomic(
         file:       file,
         line:       line,
         column:     column,
-        options:    options ?? TestConfiguration.global,
         body,
         context:    failureContext
     )

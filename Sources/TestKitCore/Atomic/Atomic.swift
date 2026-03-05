@@ -14,7 +14,6 @@ package func TKAtomic(
     file        : StaticString,
     line        : UInt,
     column      : UInt,
-    options     : TestOptions,
     _ body      : () async throws -> Void,
     context     : FailureContext
 ) async
@@ -23,7 +22,6 @@ package func TKAtomic(
     
     result.emit(
         functionName:   "\(context.framework.rawValue)Atomic",
-        options:        options,
         context:        context,
         message:        message,
         fileID:         fileID,

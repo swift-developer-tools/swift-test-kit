@@ -14,7 +14,6 @@ extension AtomicResult
     /// Emits the atomic test result.
     /// - Parameters:
     ///   - functionName: The atomic evaluator function name.
-    ///   - options: The options for testing.
     ///   - context: The assertion failure context.
     ///   - message: The description of a failure.
     ///   - fileID: The ID of the file where the failure occurs.
@@ -23,7 +22,6 @@ extension AtomicResult
     ///   - column: The column where the failure occurs.
     internal func emit(
         functionName    : String,
-        options         : TestOptions,
         context         : FailureContext,
         message         : () -> String,
         fileID          : StaticString,

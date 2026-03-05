@@ -22,7 +22,6 @@ internal func TKAtomic(
     file        : StaticString                  = #filePath,
     line        : UInt                          = #line,
     column      : UInt                          = #column,
-    options     : TestOptions?                  = nil,
     context     : FailureContext                = XCTestKit.failureContext,
     _ body      : () async throws -> Void
 ) async
@@ -33,7 +32,6 @@ internal func TKAtomic(
         file:       file,
         line:       line,
         column:     column,
-        options:    options ?? TestConfiguration.global,
         body,
         context:    context
     )
