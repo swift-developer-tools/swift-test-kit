@@ -23,6 +23,9 @@ Predicate assertions verify conditions across collection elements and produce
 element-level failure output, identifying which elements failed, which matched 
 unexpectedly, and which threw errors.
 
+Atomic tests group assertions into a single atomic evaluation and verify that 
+all assertions pass within a single execution.
+
 Performance tests measure execution time and physical memory footprint across
 multiple runs, and verify that median values stay within configurable limits.
 
@@ -314,6 +317,35 @@ XCTKAssertSatisfy(values, atLeast: 4)
 //     Threw errors:
 //         [1]: -10 (threw error "invalid")
 //         [3]: -30 (threw error "invalid")
+```
+
+
+
+## Atomic Testing
+
+Atomic tests group assertions into a single atomic evaluation and verify that 
+all assertions pass within a single execution.
+
+```swift
+await XCTKAtomic
+{
+    let result = try await DataService.process("raw-data")
+    
+    XCTKAssertGreaterThan(result.iterations, 0)
+    XCTKAssertNotNil(result.output)
+    XCTKAssertEqual(.completed, result.state)
+}
+
+// XCTKAtomic failed (2 failed assertions)
+// 
+// Failure 1:
+//     XCTKAssertNotNil failed
+// 
+// Failure 2:
+//     XCTKAssertEqual failed
+//     
+//     Expected:   completed
+//     Actual:     failed
 ```
 
 

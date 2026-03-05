@@ -23,6 +23,9 @@ Predicate assertions verify conditions across collection elements and produce
 element-level failure output, identifying which elements failed, which matched 
 unexpectedly, and which threw errors.
 
+Atomic tests group assertions into a single atomic evaluation and verify that 
+all assertions pass within a single execution.
+
 Performance tests measure execution time and physical memory footprint across
 multiple runs, and verify that median values stay within configurable limits.
 
@@ -314,6 +317,35 @@ STKAssertSatisfy(values, atLeast: 4)
 //     Threw errors:
 //         [1]: -10 (threw error "invalid")
 //         [3]: -30 (threw error "invalid")
+```
+
+
+
+## Atomic Testing
+
+Atomic tests group assertions into a single atomic evaluation and verify that 
+all assertions pass within a single execution.
+
+```swift
+await STKAtomic
+{
+    let result = try await DataService.process("raw-data")
+    
+    STKAssertGreaterThan(result.iterations, 0)
+    STKAssertNotNil(result.output)
+    STKAssertEqual(.completed, result.state)
+}
+
+// STKAtomic failed (2 failed assertions)
+// 
+// Failure 1:
+//     STKAssertNotNil failed
+// 
+// Failure 2:
+//     STKAssertEqual failed
+//     
+//     Expected:   completed
+//     Actual:     failed
 ```
 
 
