@@ -372,8 +372,8 @@ await STKPerformance(timeLimit: .milliseconds(50))
 // STKPerformance failed
 // 
 // Time:
-//     Threshold:   50 ms
-//     Median:    77.2 ms (10 runs) ←
+//     Threshold: 50 ms
+//     Median:    77 ms (10 runs) ←
 ```
 
 ### Memory
