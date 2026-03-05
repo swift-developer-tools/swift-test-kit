@@ -7,5 +7,13 @@
 //
 //===----------------------------------------------------------------------===//
 
-/// An error thrown in property bodies to test the thrown error path.
+/// A test error..
 internal struct TestError: Error { }
+
+
+
+/// An identifiable test error.
+internal struct IdentifiableTestError: Error
+{
+    let id: Int
+}

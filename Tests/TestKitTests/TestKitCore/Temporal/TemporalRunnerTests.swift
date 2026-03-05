@@ -14,6 +14,10 @@ import XCTest
 
 internal final class TemporalRunnerTests: TestKitCase
 {
+    private typealias FailedValues = FailedTemporalValues
+    
+    
+    
     // MARK: - Eventually (passing)
     
     func testEventuallyPassesOnFirstPoll() async
@@ -1368,7 +1372,7 @@ internal final class TemporalRunnerTests: TestKitCase
     
     func testEventuallyFailurePreservesError() async throws
     {
-        let expected = IdentifiableError(id: 50)
+        let expected = IdentifiableTestError(id: 50)
         
         let result: TemporalResult = await TemporalRunner.run(
             kind:       .eventually,
@@ -1379,8 +1383,8 @@ internal final class TemporalRunnerTests: TestKitCase
         
         let failed: FailedValues = try XCTUnwrap(result.assertFailed())
         
-        let actual: IdentifiableError
-            = try XCTUnwrap(failed.error as? IdentifiableError)
+        let actual: IdentifiableTestError
+            = try XCTUnwrap(failed.error as? IdentifiableTestError)
         
         XCTAssertEqual(expected.id, actual.id)
     }
@@ -1389,7 +1393,7 @@ internal final class TemporalRunnerTests: TestKitCase
     
     func testEventuallyTimeoutPreservesError() async throws
     {
-        let expected = IdentifiableError(id: 50)
+        let expected = IdentifiableTestError(id: 50)
         
         let result: TemporalResult = await TemporalRunner.run(
             kind:       .eventually,
@@ -1414,8 +1418,8 @@ internal final class TemporalRunnerTests: TestKitCase
         XCTAssertEqual(failed.failures.count, 1)
         XCTAssertEqual(failed.failures[0].message, "hello world")
         
-        let actual: IdentifiableError
-            = try XCTUnwrap(failed.error as? IdentifiableError)
+        let actual: IdentifiableTestError
+            = try XCTUnwrap(failed.error as? IdentifiableTestError)
         
         XCTAssertEqual(expected.id, actual.id)
     }
@@ -1656,21 +1660,5 @@ internal final class TemporalRunnerTests: TestKitCase
         let countAfterSleep: Int = await counter.value
         
         XCTAssertEqual(countAfterSleep, countAtFailure)
-    }
-}
-
-
-
-// MARK: - Support
-
-extension TemporalRunnerTests
-{
-    private typealias FailedValues = FailedTemporalValues
-    
-    
-    
-    struct IdentifiableError: Error
-    {
-        let id: Int
     }
 }
