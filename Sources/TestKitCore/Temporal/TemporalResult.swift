@@ -20,7 +20,7 @@ internal enum TemporalResult: Sendable
     /// - Parameters:
     ///   - failures: The intercepted failures.
     ///   - elapsed: The elapsed duration at the point of resolution.
-    ///   - error: The error thrown by the assertion.
+    ///   - error: The thrown error.
     case failed(
         failures    : [InterceptedFailure],
         elapsed     : Duration,

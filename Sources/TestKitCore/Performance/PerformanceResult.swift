@@ -24,12 +24,12 @@ internal enum PerformanceResult: Sendable
         measurements: PerformanceMeasurements
     )
     
-    /// The performance test failed due to an assertion failure.
+    /// The performance test failed.
     /// - Parameters:
     ///   - failures: The intercepted failures.
     ///   - run: The 1-indexed run during which the failure occurred.
     ///   - warmup: Whether the failure occurred during a warmup run.
-    ///   - error: The error thrown by the assertion.
+    ///   - error: The thrown error.
     case failed(
         failures    : [InterceptedFailure],
         run         : Int,
