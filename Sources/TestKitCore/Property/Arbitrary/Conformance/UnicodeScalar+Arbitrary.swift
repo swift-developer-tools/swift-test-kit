@@ -87,6 +87,38 @@ extension Unicode.Scalar: Arbitrary
     
     
     
+    /// Produces a value that is a small perturbation of the receiver value.
+    /// - Parameter context: The generation context.
+    /// - Returns: A mutated ASCII printable scalar.
+    public func mutate(
+        using context: GenerationContext
+    ) -> Unicode.Scalar
+    {
+        let maxDelta    : Int   = max(1, context.size / 10)
+        let delta       : Int   = context.random(in: -maxDelta...maxDelta)
+        
+        if delta == 0
+        {
+            return self
+        }
+        
+        let candidate: Int = Int(value) + delta
+        
+        guard
+            candidate >= 0,
+            let scalar = Unicode.Scalar(UInt32(candidate))
+        else
+        {
+            return Unicode.Scalar.arbitrary(using: context)
+        }
+        
+        return scalar
+    }
+    
+    
+    
+    // MARK: - Support
+    
     /// The ASCII printable range.
     internal static let asciiPrintableRange : ClosedRange<Int>  = 0x20...0x7E
     
