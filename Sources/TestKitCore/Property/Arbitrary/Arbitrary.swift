@@ -127,7 +127,7 @@ public protocol Arbitrary
     
     
     
-    /// Produces a value that is a small perturbation of the receive value.
+    /// Produces a value that is a small perturbation of the receiver value.
     ///
     /// The default implementation falls back to ``arbitrary(using:)``,
     /// generating a value with no relation to the receiver. Override this
