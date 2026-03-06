@@ -63,7 +63,9 @@ extension Set: Arbitrary where Element : Arbitrary
         let chance  : Int   = context.random(in: 1...20)
         var copy    : Set   = self
         
-        if chance <= 14
+        if
+            chance <= 14
+            || copy.count == 1
         {
             let index: Int = context.random(in: 0...(copy.count - 1))
             

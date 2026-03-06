@@ -152,7 +152,9 @@ extension Dictionary : Arbitrary where Key : Arbitrary, Value : Arbitrary
         let chance  : Int           = context.random(in: 1...20)
         var copy    : Dictionary    = self
         
-        if chance <= 14
+        if
+            chance <= 14
+            || copy.count == 1
         {
             let keys : [Key] = Array(self.keys)
             let key  : Key   = keys[context.random(in: 0...(keys.count - 1))]
