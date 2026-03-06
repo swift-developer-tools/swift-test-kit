@@ -41,7 +41,7 @@ extension Bool: Arbitrary
     
     /// Produces a value that is a small perturbation of the receiver value.
     ///
-    /// `true` mutates to `false`. `false` mutates to `treu`.
+    /// `true` mutates to `false`. `false` mutates to `true`.
     ///
     /// - Parameter context: The generation context.
     /// - Returns: A mutated Boolean.
