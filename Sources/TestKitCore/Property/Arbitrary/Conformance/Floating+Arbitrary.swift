@@ -37,6 +37,18 @@ extension Double: Arbitrary
     {
         return self.shrinkTowardZero()
     }
+    
+    
+    
+    /// Produces a value that is a small perturbation of the receiver value.
+    /// - Parameter context: The generation context.
+    /// - Returns: A mutated value.
+    public func mutate(
+        using context: GenerationContext
+    ) -> Double
+    {
+        return mutateValue(using: context)
+    }
 }
 
 
@@ -71,6 +83,18 @@ extension Float: Arbitrary
     {
         return self.shrinkTowardZero()
     }
+    
+    
+    
+    /// Produces a value that is a small perturbation of the receiver value.
+    /// - Parameter context: The generation context.
+    /// - Returns: A mutated value.
+    public func mutate(
+        using context: GenerationContext
+    ) -> Float
+    {
+        return mutateValue(using: context)
+    }
 }
 
 
@@ -104,6 +128,18 @@ extension Float16: Arbitrary
     public func shrink() -> [Float16]
     {
         return self.shrinkTowardZero()
+    }
+    
+    
+    
+    /// Produces a value that is a small perturbation of the receiver value.
+    /// - Parameter context: The generation context.
+    /// - Returns: A mutated value.
+    public func mutate(
+        using context: GenerationContext
+    ) -> Float16
+    {
+        return mutateValue(using: context)
     }
 }
 
@@ -295,5 +331,50 @@ extension BinaryFloatingPoint
         
         return nil
     }
+    
+    
+    
+    /// Mutates the value by applying a random perturbation.
+    ///
+    /// Non-finite values (`NaN`, infinity) fall back to arbitrary generation.
+    /// Finite values are perturbed either by adding a random amount (80%
+    /// probability) or by scaling a factor near `1.0` (20% probability). If
+    /// the resulting value is non-finite, the receiver value is returned.
+    ///
+    /// - Parameter context: The generation context.
+    /// - Returns: A mutated value.
+    internal func mutateValue(
+        using context: GenerationContext
+    ) -> Self
+    {
+        guard
+            isFinite,
+            !isNaN
+        else
+        {
+            return Self.makeArbitrary(using: context)
+        }
+        
+        let result: Self
+        
+        if context.random(in: 1...5) == 1
+        {
+            let factor = Self(context.random(in: 0.5...1.5))
+            
+            result = self * factor
+        }
+        else
+        {
+            let bound       : Int   = Self.bound(from: context)
+            let maxDelta    : Self  = Self(max(1, bound))
+            
+            let delta = Self(context.random(in: -1.0...1.0)) * maxDelta
+            
+            result = self + delta
+        }
+        
+        return result.isFinite
+            ? result
+            : self
+    }
 }
-
