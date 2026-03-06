@@ -44,6 +44,35 @@ extension UUID: Arbitrary
     
     
     
+    /// Produces a value that is a small perturbation of the receiver value.
+    /// - Parameter context: The generation context.
+    /// - Returns: A mutated RFC 4122 v4 UUID.
+    public func mutate(
+        using context: GenerationContext
+    ) -> UUID
+    {
+        var bytes: (
+            UInt8, UInt8, UInt8, UInt8,
+            UInt8, UInt8, UInt8, UInt8,
+            UInt8, UInt8, UInt8, UInt8,
+            UInt8, UInt8, UInt8, UInt8
+        ) = uuid
+        
+        let index: Int = context.random(in: 0...15)
+        
+        withUnsafeMutableBytes(of: &bytes)
+        {
+            $0[index] = UInt8.arbitrary(using: context)
+        }
+        
+        bytes.6 = (bytes.6 & 0x0F) | 0x40 /// Version 4.
+        bytes.8 = (bytes.8 & 0x3F) | 0x80 /// Variant 1.
+        
+        return UUID(uuid: bytes)
+    }
+    
+    
+    
     /// UUID uses the default shrinking implementation of returning an empty
     /// array to indicate that no shrinking should occur. UUIDs are opaque
     /// identifiers without meaningful ordering. The method is not implemented
