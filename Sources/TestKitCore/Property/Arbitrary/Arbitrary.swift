@@ -24,6 +24,13 @@
 /// default implementation returns an empty array to indicate that no shrinking
 /// should occur.
 ///
+/// An arbitrary type may also optionally define a ``mutate(using:)`` method
+/// to produce a value that is a small perturbation of the receiver value.
+/// The default implementation falls back to ``arbitrary(using:)``, generating
+/// a value with no relation to the receiver. Override the default
+/// implementation to improve convergence speed for targeted property-based
+/// testing.
+///
 /// Below is an example of adding ``Arbitrary`` conformance to a custom type.
 ///
 /// ```swift
@@ -61,6 +68,28 @@
 ///
 ///         return results
 ///     }
+///
+///     func mutate(
+///         using context: GenerationContext
+///     ) -> User
+///     {
+///         switch context.random(in: 0..<2)
+///         {
+///             case 0:
+///
+///                 return User(
+///                     name:   name.mutate(using: context),
+///                     age:    age
+///                 )
+///
+///             case 1:
+///
+///                 return User(
+///                     name:   name,
+///                     age:    age.mutate(using: context)
+///                 )
+///         }
+///     }
 /// }
 /// ```
 public protocol Arbitrary
@@ -95,6 +124,24 @@ public protocol Arbitrary
     /// - Returns: An array of smaller candidate values, or an empty array
     /// to indicate that no shrinking should occur.
     func shrink() -> [Self]
+    
+    
+    
+    /// Produces a value that is a small perturbation of the receive value.
+    ///
+    /// The default implementation falls back to ``arbitrary(using:)``,
+    /// generating a value with no relation to the receiver. Override this
+    /// method to improve convergence speed by providing type-appropriate
+    /// mutation.
+    ///
+    /// - Note: An effective mutation implementation changes one aspect of the
+    /// value while holding the other aspects constant.
+    ///
+    /// - Parameter context: The generation context.
+    /// - Returns: A mutated value.
+    func mutate(
+        using context: GenerationContext
+    ) -> Self
 }
 
 
@@ -112,5 +159,22 @@ extension Arbitrary
     public func shrink() -> [Self]
     {
         return []
+    }
+    
+    
+    
+    /// Falls back to ``arbitrary(using:)``, generating a value with no
+    /// relation to the receiver.
+    ///
+    /// This is the default implementation. Override this method to improve
+    /// convergence speed by providing type-appropriate mutation.
+    ///
+    /// - Parameter context: The generation context.
+    /// - Returns: A mutated value.
+    public func mutate(
+        using context: GenerationContext
+    ) -> Self
+    {
+        return Self.arbitrary(using: context)
     }
 }
