@@ -7,16 +7,13 @@
 //
 //===----------------------------------------------------------------------===//
 
-extension TemporalResult
+extension AtomicResult
 {
     // MARK: - Emit
     
-    /// Emits the temporal test result.
+    /// Emits the atomic test result.
     /// - Parameters:
-    ///   - kind: The temporal test kind.
-    ///   - timeout: The resolved timeout duration.
-    ///   - functionName: The temporal evaluator function name.
-    ///   - options: The options for testing.
+    ///   - functionName: The atomic evaluator function name.
     ///   - context: The assertion failure context.
     ///   - message: The description of a failure.
     ///   - fileID: The ID of the file where the failure occurs.
@@ -24,10 +21,7 @@ extension TemporalResult
     ///   - line: The line where the failure occurs.
     ///   - column: The column where the failure occurs.
     internal func emit(
-        kind            : TemporalRunner.Kind,
-        timeout         : Duration,
         functionName    : String,
-        options         : TestOptions,
         context         : FailureContext,
         message         : () -> String,
         fileID          : StaticString,
@@ -38,22 +32,16 @@ extension TemporalResult
     {
         switch self
         {
-            case
-                .passed,
-                .canceled:
+            case .passed:
                 
                 return
                 
-            case let .failed(failures, elapsed, error):
+            case let .failed(failures, error):
                 
                 let text: String = Self.formatFailure(
-                    kind:           kind,
-                    timeout:        timeout,
-                    elapsed:        elapsed,
                     failures:       failures,
                     error:          error,
                     functionName:   functionName,
-                    options:        options,
                     message:        message
                 )
                 
@@ -84,49 +72,37 @@ extension TemporalResult
     
     // MARK: - Format
     
-    /// Creates a temporal test failure message.
+    /// Creates an atomic test failure message.
     /// - Parameters:
-    ///   - kind: The temporal test kind.
-    ///   - timeout: The timeout duration.
     ///   - failures: The intercepted failures.
-    ///   - elapsed: The elapsed duration at the point of resolution.
     ///   - error: The thrown error.
-    ///   - functionName: The temporal evaluator function name.
-    ///   - options: The options for testing.
+    ///   - functionName: The atomic evaluator function name.
     ///   - message: The description of a failure.
-    /// - Returns: The temporal test failure message.
+    /// - Returns: The atomic test failure message.
     private static func formatFailure(
-        kind            : TemporalRunner.Kind,
-        timeout         : Duration,
-        elapsed         : Duration,
         failures        : [InterceptedFailure],
         error           : Error?,
         functionName    : String,
-        options         : TestOptions,
         message         : () -> String
     ) -> String
     {
-        var lines: [String] = []
+        var lines   : [String]  = []
+        var header  : String    = "\(functionName) failed"
         
-        switch kind
+        if !failures.isEmpty
         {
-            case .eventually:
-                
-                lines.append(
-                    "\(functionName) failed after \(timeout.readable)"
-                )
-                
-            case .always:
-                
-                lines.append(
-                    "\(functionName) failed after \(elapsed.readable)"
-                )
+            header += " ("
+            header += "\(failures.count) failed"
+            header += " assertion\(failures.count == 1 ? "" : "s")"
+            header += ")"
         }
+        
+        lines.append(header)
         
         lines = Formatter.addInterceptedFailures(
             to:         lines,
             failures:   failures,
-            showAll:    options.temporalOptions.showAllFailures
+            showAll:    true
         )
         
         lines = Formatter.addErrorLines(

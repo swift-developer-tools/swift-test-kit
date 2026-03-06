@@ -22,12 +22,14 @@ within complex data structures, using path-based output that scales from flat
 primitives to deeply-nested structs, collections, and multi-line strings. 
 
 Macro assertions capture the literal source text of expressions and decompose 
-compound boolean logic to identify which sub-expression caused the failure, 
-making CI/CD logs actionable without needing access to the source code.
+compound boolean logic to identify which sub-expression caused the failure.
 
 Predicate assertions verify conditions across collection elements and produce 
 element-level failure output, identifying which elements failed, which matched 
 unexpectedly, and which threw errors.
+
+Atomic tests group assertions into a single atomic evaluation and verify that 
+all assertions pass within a single execution.
 
 Performance tests measure execution time and physical memory footprint across
 multiple runs, and verify that median values stay within configurable limits.
@@ -40,8 +42,11 @@ failures to minimal counterexamples. Stateful testing extends this to systems
 with mutable state, generating random command sequences and verifying the 
 system against a simplified model.
 
-Temporal, property-based, and stateful testing all report failures with the 
-same rich output used by standalone assertions.
+> [!TIP]
+> Property-based tests, stateful tests, temporal tests, performance tests, 
+> and atomic tests compose freely. Any evaluator may be nested inside any 
+> other evaluator, and all evaluators can wrap standalone assertions. Any 
+> failures propagate with the same rich output used by standalone assertions.
 
 > [!NOTE]
 > All examples below use XCTestKit. SwiftTestKit provides an identical API 
@@ -324,6 +329,35 @@ XCTKAssertSatisfy(values, atLeast: 4)
 
 
 
+## Atomic Testing
+
+Atomic tests group assertions into a single atomic evaluation and verify that 
+all assertions pass within a single execution.
+
+```swift
+await XCTKAtomic
+{
+    let result = try await DataService.process("raw-data")
+    
+    XCTKAssertGreaterThan(result.iterations, 0)
+    XCTKAssertNotNil(result.output)
+    XCTKAssertEqual(.completed, result.state)
+}
+
+// XCTKAtomic failed (2 failed assertions)
+// 
+// Failure 1:
+//     XCTKAssertNotNil failed
+// 
+// Failure 2:
+//     XCTKAssertEqual failed
+//     
+//     Expected:   completed
+//     Actual:     failed
+```
+
+
+
 ## Performance Testing
 
 Performance tests measure execution time and physical memory footprint across
@@ -344,8 +378,8 @@ await XCTKPerformance(timeLimit: .milliseconds(50))
 // XCTKPerformance failed
 // 
 // Time:
-//     Threshold:   50 ms
-//     Median:    77.2 ms (10 runs) ←
+//     Threshold: 50 ms
+//     Median:    77 ms (10 runs) ←
 ```
 
 ### Memory

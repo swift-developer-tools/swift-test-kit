@@ -31,7 +31,7 @@ internal struct StatefulRunner<C> where C : Stateful
     ///   - invariant: An optional closure that checks invariants after each
     ///   command.
     ///   - options: The options for testing.
-    /// - Returns: The result of running the stateful property check.
+    /// - Returns: The result of the stateful property check.
     internal static func run(
         command     : C.Type,
         model       : () -> C.Model,

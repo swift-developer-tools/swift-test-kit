@@ -7,23 +7,18 @@
 //
 //===----------------------------------------------------------------------===//
 
-/// The result of a temporal test.
-internal enum TemporalResult: Sendable
+/// The result of an atomic test.
+internal enum AtomicResult
 {
-    /// The enclosing task was canceled.
-    case canceled
-    
-    /// The temporal test passed.
+    /// All assertions passed and the body did not throw an error.
     case passed
     
-    /// The temporal test failed.
+    /// The atomic test failed.
     /// - Parameters:
     ///   - failures: The intercepted failures.
-    ///   - elapsed: The elapsed duration at the point of resolution.
     ///   - error: The thrown error.
     case failed(
-        failures    : [InterceptedFailure],
-        elapsed     : Duration,
-        error       : Error?
+        failures:   [InterceptedFailure],
+        error:      Error?
     )
 }
