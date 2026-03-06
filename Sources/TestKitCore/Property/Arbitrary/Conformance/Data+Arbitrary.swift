@@ -49,4 +49,20 @@ extension Data: Arbitrary
     {
         return Array(self).shrinkTowardEmpty().map { Data($0) }
     }
+    
+    
+    
+    /// Produces a value that is a small perturbation of the receiver value.
+    /// - Parameter context: The generation context.
+    /// - Returns: A mutated data value.
+    public func mutate(
+        using context: GenerationContext
+    ) -> Data
+    {
+        return Data(Array(self).mutateElements(
+            using:          context,
+            mutateElement:  { $0.mutate(using: $1 )},
+            makeElement:    { Element.arbitrary(using: $0) }
+        ))
+    }
 }
