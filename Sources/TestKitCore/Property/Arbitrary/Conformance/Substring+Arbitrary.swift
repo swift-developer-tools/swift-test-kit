@@ -33,4 +33,16 @@ extension Substring: Arbitrary
     {
         return String(self).shrink().map { $0[...] }
     }
+    
+    
+    
+    /// Produces a value that is a small perturbation of the receiver value.
+    /// - Parameter context: The generation context.
+    /// - Returns: A mutated substring.
+    public func mutate(
+        using context: GenerationContext
+    ) -> Substring
+    {
+        return String(self).mutate(using: context)[...]
+    }
 }
