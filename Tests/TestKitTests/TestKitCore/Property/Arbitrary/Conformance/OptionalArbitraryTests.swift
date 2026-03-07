@@ -302,4 +302,158 @@ internal final class OptionalArbitraryTests: TestKitCase
             ]
         )
     }
+    
+    
+    
+    // MARK: - Mutation
+    
+    func testMutateNilAlwaysProducesSome()
+    {
+        for _ in 0..<1000
+        {
+            let value   : Optional<Int>     = nil
+            let mutated : Optional<Int>     = value.mutate(using: .random)
+            
+            XCTAssertNotNil(mutated)
+        }
+    }
+    
+    
+    
+    func testMutateSomeProducesBothNilAndNonNil()
+    {
+        var hasNil      : Bool  = false
+        var hasNonNil   : Bool  = false
+        
+        for _ in 0..<1000
+        {
+            let value   : Optional<Int>     = 50
+            let mutated : Optional<Int>     = value.mutate(using: .random)
+            
+            if mutated == nil
+            {
+                hasNil = true
+            }
+            else
+            {
+                hasNonNil = true
+            }
+            
+            if
+                hasNil,
+                hasNonNil
+            {
+                break
+            }
+        }
+        
+        XCTAssertTrue(hasNil)
+        XCTAssertTrue(hasNonNil)
+    }
+    
+    
+    
+    func testMutateSomeNilRatio()
+    {
+        var nilCount    : Int   = 0
+        let iterations  : Int   = 10_000
+        
+        for _ in 0..<iterations
+        {
+            let value   : Optional<Int>     = 50
+            let mutated : Optional<Int>     = value.mutate(using: .random)
+            
+            if mutated == nil
+            {
+                nilCount += 1
+            }
+        }
+        
+        let ratio = Double(nilCount) / Double(iterations)
+        
+        assertApproximateRatio(ratio, 0.1, n: iterations)
+    }
+    
+    
+    
+    func testMutateSomeDelegatesToWrappedMutate()
+    {
+        var changed: Int = 0
+        
+        for _ in 0..<1000
+        {
+            let value   : Optional<Int>     = 50
+            let mutated : Optional<Int>     = value.mutate(using: .random)
+            
+            guard let unwrapped: Int = mutated
+            else
+            {
+                continue
+            }
+            
+            if unwrapped != 50
+            {
+                changed += 1
+            }
+        }
+        
+        /// Most non-`nil` mutations should change the wrapped value.
+        XCTAssertGreaterThan(changed, 0)
+    }
+    
+    
+    
+    func testMutateNestedOptional()
+    {
+        var nilToSome       : Bool  = false
+        var someNilToSome   : Bool  = false
+        var someToNil       : Bool  = false
+        var someToMutated   : Bool  = false
+        
+        for _ in 0..<10_000
+        {
+            let outerNil    : Optional<Optional<Int>>   = nil
+            let innerNil    : Optional<Optional<Int>>   = .some(nil)
+            let someValue   : Optional<Optional<Int>>   = .some(50)
+            
+            let m1: Optional<Optional<Int>> = outerNil.mutate(using: .random)
+            let m2: Optional<Optional<Int>> = innerNil.mutate(using: .random)
+            let m3: Optional<Optional<Int>> = someValue.mutate(using: .random)
+            
+            if m1 != nil
+            {
+                nilToSome = true
+            }
+            
+            if case .some(.some) = m2
+            {
+                someNilToSome = true
+            }
+            
+            if m3 == nil
+            {
+                someToNil = true
+            }
+            else if
+                case let .some(.some(v)) = m3,
+                v != 50
+            {
+                someToMutated = true
+            }
+            
+            if
+                nilToSome,
+                someNilToSome,
+                someToNil,
+                someToMutated
+            {
+                break
+            }
+        }
+        
+        XCTAssertTrue(nilToSome)
+        XCTAssertTrue(someNilToSome)
+        XCTAssertTrue(someToNil)
+        XCTAssertTrue(someToMutated)
+    }
 }

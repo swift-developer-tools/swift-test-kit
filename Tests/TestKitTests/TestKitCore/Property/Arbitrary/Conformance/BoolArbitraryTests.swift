@@ -68,4 +68,20 @@ internal final class BoolArbitraryTests: TestKitCase
     {
         XCTAssertEqual(false.shrink(), [])
     }
+    
+    
+    
+    // MARK: - Mutation
+    
+    func testMutateTrue()
+    {
+        XCTAssertEqual(true.mutate(using: .random), false)
+    }
+    
+    
+    
+    func testMutateFalse()
+    {
+        XCTAssertEqual(false.mutate(using: .random), true)
+    }
 }

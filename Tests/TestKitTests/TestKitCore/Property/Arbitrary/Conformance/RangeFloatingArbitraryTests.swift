@@ -57,6 +57,29 @@ internal final class RangeFloatingArbitraryTests: TestKitCase
     {
         validateShrinking(of: Range<Float16>.self)
     }
+    
+    
+    
+    // MARK: - Mutation
+    
+    func testRangeDoubleMutation()
+    {
+        validateMutation(of: Range<Double>.self)
+    }
+    
+    
+    
+    func testRangeFloatMutation()
+    {
+        validateMutation(of: Range<Float>.self)
+    }
+    
+    
+    
+    func testRangeFloat16Mutation()
+    {
+        validateMutation(of: Range<Float16>.self)
+    }
 }
 
 
@@ -257,7 +280,7 @@ extension RangeFloatingArbitraryTests
     // MARK: - Shrinking support
     
     /// Validates the shrink candidates of the given type.
-    /// - Parameter type: The type to test.
+    /// - Parameter type: The type to evaluate.
     private func validateShrinking<R>(
         of type: R.Type
     ) where R : Arbitrary & ArbitraryRange & Equatable,
@@ -289,7 +312,7 @@ extension RangeFloatingArbitraryTests
     
     /// Validates that a range with both bounds equal to zero produces no
     /// shrink candidates.
-    /// - Parameter type: The type to test.
+    /// - Parameter type: The type to evaluate.
     private func validateZeroBoundsShrinking<R>(
         of type: R.Type
     ) where R : Arbitrary & ArbitraryRange & Equatable,
@@ -304,7 +327,7 @@ extension RangeFloatingArbitraryTests
     
     
     /// Validates the expected shrink candidates of specific ranges.
-    /// - Parameter type: The type to test.
+    /// - Parameter type: The type to evaluate.
     private func validateCuratedCandidates<R>(
         of type: R.Type
     ) where R : Arbitrary & ArbitraryRange & Equatable,
@@ -352,6 +375,210 @@ extension RangeFloatingArbitraryTests
             
             /// At least one bound must be closer to zero (or equal).
             XCTAssertTrue(lowerCloser || upperCloser)
+        }
+    }
+    
+    
+    
+    // MARK: - Mutation support
+    
+    /// Validates mutation of the given type.
+    /// - Parameter type: The type to evaluate.
+    private func validateMutation<R>(
+        of type: R.Type
+    ) where R : Arbitrary & ArbitraryRange & Equatable,
+            R.Bound : Arbitrary & BinaryFloatingPoint,
+            R.Bound.RawSignificand : FixedWidthInteger
+    {
+        let range = R(lower: 2.5, upper: 7.5)
+        
+        validateMutateBoundInvariant(of: range)
+        validateMutateProducesDifferentValues(for: range)
+        validateMutateSingleBoundChange(of: range)
+        validateMutatePointRangeInvariant(of: R(lower: 5.0, upper: 5.0))
+        validateMutateSizeScaling(of: range)
+        validateMutateFiniteBounds(of: range)
+        validateMutateBoundInvariant(of: R(lower: 0, upper: 0))
+        validateMutateBoundInvariant(of: R(lower: 5.0, upper: 5.5))
+        validateMutateBoundInvariant(of: R(lower: -3.0, upper: 3.0))
+    }
+    
+    
+    
+    /// Validates the post-mutation bounds of the given range.
+    /// - Parameter range: The range to evaluate.
+    private func validateMutateBoundInvariant<R>(
+        of range: R
+    ) where R : Arbitrary & ArbitraryRange & Equatable,
+            R.Bound : Arbitrary & BinaryFloatingPoint,
+            R.Bound.RawSignificand : FixedWidthInteger
+    {
+        for _ in 0..<1000
+        {
+            let mutated: R = range.mutate(using: .random)
+            
+            XCTAssertLessThanOrEqual(mutated.lowerBound, mutated.upperBound)
+        }
+    }
+    
+    
+    
+    /// Validates that mutation of the given range produces values different
+    /// from the receiver.
+    /// - Parameter range: The range to evaluate.
+    private func validateMutateProducesDifferentValues<R>(
+        for range: R
+    ) where R : Arbitrary & ArbitraryRange & Equatable,
+            R.Bound : Arbitrary & BinaryFloatingPoint,
+            R.Bound.RawSignificand : FixedWidthInteger
+    {
+        var hasDifferent: Bool = false
+        
+        for _ in 0..<1000
+        {
+            let mutated: R = range.mutate(using: .randomSeed(size: 10))
+            
+            if mutated != range
+            {
+                hasDifferent = true
+                break
+            }
+        }
+        
+        XCTAssertTrue(hasDifferent)
+    }
+    
+    
+    
+    /// Validates that at least one mutation of the given range changes only
+    /// the lower bound and at least one mutation changes only the upper bound.
+    /// - Parameter range: The range to evaluate.
+    private func validateMutateSingleBoundChange<R>(
+        of range: R
+    ) where R : Arbitrary & ArbitraryRange & Equatable,
+            R.Bound : Arbitrary & BinaryFloatingPoint,
+            R.Bound.RawSignificand : FixedWidthInteger
+    {
+        var hasUpperOnly    : Bool  = false
+        var hasLowerOnly    : Bool  = false
+        
+        for _ in 0..<1000
+        {
+            let mutated: R = range.mutate(using: .randomSeed(size: 10))
+            
+            let upperChanged: Bool = mutated.upperBound != range.upperBound
+            let lowerChanged: Bool = mutated.lowerBound != range.lowerBound
+            
+            if
+                upperChanged,
+                !lowerChanged
+            {
+                hasUpperOnly = true
+            }
+            
+            if
+                lowerChanged,
+                !upperChanged
+            {
+                hasLowerOnly = true
+            }
+            
+            if
+                hasUpperOnly,
+                hasLowerOnly
+            {
+                break
+            }
+        }
+        
+        XCTAssertTrue(hasUpperOnly)
+        XCTAssertTrue(hasLowerOnly)
+    }
+    
+    
+    
+    /// Validates that mutating the given point range maintains bound
+    /// invariants.
+    /// - Parameter range: The range to evaluate.
+    private func validateMutatePointRangeInvariant<R>(
+        of range: R
+    ) where R : Arbitrary & ArbitraryRange & Equatable,
+            R.Bound : Arbitrary & BinaryFloatingPoint,
+            R.Bound.RawSignificand : FixedWidthInteger
+    {
+        XCTAssertEqual(range.lowerBound, range.upperBound)
+        
+        for _ in 0..<1000
+        {
+            let mutated: R = range.mutate(using: .randomSeed(size: 10))
+            
+            XCTAssertLessThanOrEqual(mutated.lowerBound, mutated.upperBound)
+        }
+    }
+    
+    
+    
+    /// Validates that mutation magnitude scales with context size.
+    ///
+    /// The average total bound delta at a large size must exceed the average
+    /// at a small size.
+    ///
+    /// - Parameter range: The range to evaluate.
+    private func validateMutateSizeScaling<R>(
+        of range: R
+    ) where R : Arbitrary & ArbitraryRange & Equatable,
+            R.Bound : Arbitrary & BinaryFloatingPoint,
+            R.Bound.RawSignificand : FixedWidthInteger
+    {
+        var smallTotal  : Double    = 0
+        var largeTotal  : Double    = 0
+        
+        for _ in 0..<1000
+        {
+            let smallContext    = GenerationContext.randomSeed(size: 1)
+            let largeContext    = GenerationContext.randomSeed(size: 50)
+            
+            let smallMutated    : R     = range.mutate(using: smallContext)
+            let largeMutated    : R     = range.mutate(using: largeContext)
+            
+            smallTotal += abs(Double(
+                Int64(smallMutated.lowerBound) - Int64(range.lowerBound)
+            ))
+            
+            smallTotal += abs(Double(
+                Int64(smallMutated.upperBound) - Int64(range.upperBound)
+            ))
+            
+            largeTotal += abs(Double(
+                Int64(largeMutated.lowerBound) - Int64(range.lowerBound)
+            ))
+            
+            largeTotal += abs(Double(
+                Int64(largeMutated.upperBound) - Int64(range.upperBound)
+            ))
+        }
+        
+        XCTAssertGreaterThan(largeTotal, smallTotal)
+    }
+    
+    
+    
+    /// Validates that mutated bounds are always finite and non-`NaN`.
+    /// - Parameter range: The range to evaluate.
+    private func validateMutateFiniteBounds<R>(
+        of range: R
+    ) where R : Arbitrary & ArbitraryRange & Equatable,
+            R.Bound : Arbitrary & BinaryFloatingPoint,
+            R.Bound.RawSignificand : FixedWidthInteger
+    {
+        for _ in 0..<1000
+        {
+            let mutated: R = range.mutate(using: .random)
+            
+            XCTAssertTrue(mutated.lowerBound.isFinite)
+            XCTAssertFalse(mutated.lowerBound.isNaN)
+            XCTAssertTrue(mutated.upperBound.isFinite)
+            XCTAssertFalse(mutated.upperBound.isNaN)
         }
     }
 }

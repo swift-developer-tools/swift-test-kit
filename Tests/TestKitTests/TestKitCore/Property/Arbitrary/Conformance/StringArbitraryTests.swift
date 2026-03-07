@@ -368,6 +368,499 @@ internal final class StringArbitraryTests: TestKitCase
             )
         }
     }
+    
+    
+    
+    // MARK: - Character mutation
+    
+    func testCharacterMutateMultiScalarCollapsesToSingleScalar()
+    {
+        /// Multi-scalar: combining accent (é = e + combining acute).
+        let multiScalar = Character("\u{0065}\u{0301}")
+        
+        XCTAssertGreaterThan(multiScalar.unicodeScalars.count, 1)
+        
+        for _ in 0..<1000
+        {
+            let mutated: Character = multiScalar.mutate(using: .random)
+            
+            XCTAssertEqual(mutated.unicodeScalars.count, 1)
+        }
+    }
+    
+    
+    
+    func testCharacterMutateMultiScalarMutatesBaseScalar()
+    {
+        /// Multi-scalar: combining accent (é = e + combining acute).
+        /// Mutation must produce values near the base of `e`.
+        let multiScalar     : Character     = .init("\u{0065}\u{0301}")
+        let baseValue       : UInt32        = 0x0065
+        var totalDistance   : Int           = 0
+        let iterations      : Int           = 1000
+        
+        for _ in 0..<iterations
+        {
+            let mutated: Character = multiScalar.mutate(using: .random)
+            
+            let mutatedValue: UInt32 = mutated.unicodeScalars.first!.value
+            
+            totalDistance += abs(Int(mutatedValue) - Int(baseValue))
+        }
+        
+        /// The average distance should be less than the full ASCII range,
+        /// since mutation applies a small delta to the base.
+        let averageDistance = Double(totalDistance) / Double(iterations)
+        
+        XCTAssertLessThan(averageDistance, 50)
+    }
+    
+    
+    
+    func testCharacterMutationSingleScalarProducesVariety()
+    {
+        let base    : Character         = .init("k")
+        var unique  : Set<Character>    = []
+        
+        for _ in 0..<10_000
+        {
+            unique.insert(base.mutate(using: .random))
+        }
+        
+        XCTAssertGreaterThan(unique.count, 5)
+    }
+    
+    
+    
+    func testCharacterMutateProducesValidCharacters()
+    {
+        let characters: [Character] =
+        [
+            /// Target.
+            .init("a"),
+            
+            /// Single-scalars: ASCII.
+            .init("z"),
+            .init("A"),
+            .init("Z"),
+            .init("0"),
+            .init("~"),
+            .init(" "),
+            
+            /// Single-scalars: emoji.
+            .init("\u{1F600}"),
+            
+            /// Multi-scalar: combining accent (é = e + combining acute).
+            .init("\u{0065}\u{0301}"),
+            
+            /// Multi-scalar: base is target (à = a + combining grave).
+            .init("\u{0061}\u{0300}"),
+            
+            /// Multi-scalars: emoji.
+            .init("\u{1F636}\u{200D}\u{1F32B}\u{FE0F}"),
+            .init("\u{1F642}\u{200D}\u{2194}\u{FE0F}")
+        ]
+        
+        for character in characters
+        {
+            for _ in 0..<1000
+            {
+                let mutated: Character = character.mutate(using: .random)
+                
+                /// A valid character must have at least one scalar.
+                XCTAssertFalse(mutated.unicodeScalars.isEmpty)
+            }
+        }
+    }
+    
+    
+    
+    // MARK: - Scalar mutation
+    
+    func testScalarMutateSizeZeroProducesSmallDelta()
+    {
+        let base: Unicode.Scalar = "m"
+        
+        for _ in 0..<1000
+        {
+            let mutated: Unicode.Scalar = base.mutate(using: .randomZeroSize)
+            
+            let distance: Int = abs(Int(mutated.value) - Int(base.value))
+            
+            /// At size `0`, `maxDelta` is `1`, so the distance must be within
+            /// 1 scalar value of the original (or fall back for edge cases).
+            XCTAssertLessThanOrEqual(distance, 1)
+        }
+    }
+    
+    
+    
+    func testScalarMutateDeltaScalesWithSizes()
+    {
+        let base                : Unicode.Scalar    = "a"
+        var maxDistanceSmall    : Int               = 0
+        var maxDistanceLarge    : Int               = 0
+        
+        for _ in 0..<10_000
+        {
+            let smallContext    = GenerationContext.randomSeed(size: 10)
+            let largeConext     = GenerationContext.randomSeed(size: 100)
+            
+            let mutatedSmall: Unicode.Scalar = base.mutate(using: smallContext)
+            let mutatedLarge: Unicode.Scalar = base.mutate(using: largeConext)
+            
+            maxDistanceSmall = max(
+                maxDistanceSmall,
+                abs(Int(mutatedSmall.value) - Int(base.value))
+            )
+            
+            maxDistanceLarge = max(
+                maxDistanceLarge,
+                abs(Int(mutatedLarge.value) - Int(base.value))
+            )
+        }
+        
+        XCTAssertLessThanOrEqual(maxDistanceSmall, 1)
+        XCTAssertGreaterThan(maxDistanceLarge, 1)
+    }
+    
+    
+    
+    func testScalarMutateCanReturnSelf()
+    {
+        let base            : Unicode.Scalar    = "m"
+        var returnedSelf    : Bool              = false
+        
+        for _ in 0..<10_000
+        {
+            let mutated: Unicode.Scalar = base.mutate(using: .random)
+            
+            if mutated == base
+            {
+                returnedSelf = true
+                break
+            }
+        }
+        
+        XCTAssertTrue(returnedSelf)
+    }
+    
+    
+    
+    func testScalarMutateProducesVariety()
+    {
+        let base    : Unicode.Scalar    = "m"
+        var unique  : Set<UInt32>       = []
+        
+        for _ in 0..<10_000
+        {
+            let mutated: Unicode.Scalar = base.mutate(using: .random)
+            
+            unique.insert(mutated.value)
+        }
+        
+        XCTAssertGreaterThan(unique.count, 5)
+    }
+    
+    
+    
+    func testScalarMutateNearZeroFallback()
+    {
+        /// `U+0001` with a negative delta would produce `0` or negative.
+        /// It must be handled gracefully without crashing.
+        let base = Unicode.Scalar(1)!
+        
+        for _ in 0..<10_000
+        {
+            let mutated: Unicode.Scalar = base.mutate(using: .random)
+            
+            XCTAssertTrue(mutated.value > 0 || mutated.value == 0)
+        }
+    }
+    
+    
+    
+    func testScalarMutatProducesValidScalars()
+    {
+        let scalars: [Unicode.Scalar] =
+        [
+            .init(0x0001),      /// Near minimum.
+            .init("a"),         /// Target.
+            .init(0xD7FF)!,     /// Just below surrogate range.
+            .init(0xE000)!,     /// Just above surrogate range.
+            .init(0x1F600)!     /// Emoji.
+        ]
+        
+        for scalar in scalars
+        {
+            for _ in 0..<1000
+            {
+                /// Any return value means the scalar is valid.
+                _ = scalar.mutate(using: .random)
+            }
+        }
+    }
+    
+    
+    
+    // MARK: - String mutation
+    
+    func testStringMutateEmptyProducesSingleCharacter()
+    {
+        for _ in 0..<1000
+        {
+            let mutated: String = "".mutate(using: .random)
+            
+            XCTAssertEqual(mutated.count, 1)
+        }
+    }
+    
+    
+    
+    func testStringMutateProducesVariety()
+    {
+        let base    : String        = "hello world"
+        var unique  : Set<String>   = []
+        
+        for _ in 0..<1000
+        {
+            unique.insert(base.mutate(using: .random))
+        }
+        
+        XCTAssertGreaterThan(unique.count, 100)
+    }
+    
+    
+    
+    func testStringMutateCountDistribution()
+    {
+        let iterations  : Int       = 10_000
+        let base        : String    = "abcde"
+        var same        : Int       = 0
+        var more        : Int       = 0
+        var fewer       : Int       = 0
+        
+        for _ in 0..<iterations
+        {
+            let mutated: String = base.mutate(using: .random)
+            
+            if mutated.count == base.count
+            {
+                same += 1
+            }
+            else if mutated.count == base.count + 1
+            {
+                more += 1
+            }
+            else if mutated.count == base.count - 1
+            {
+                fewer += 1
+            }
+            else
+            {
+                XCTFail(
+                    "Unexpected count change:"
+                    + " \(base.count) to \(mutated.count)"
+                )
+            }
+        }
+        
+        XCTAssertGreaterThan(same, Int(Double(iterations) * 0.7 * 0.95))
+        XCTAssertGreaterThan(more, Int(Double(iterations) * 0.15 * 0.95))
+        XCTAssertGreaterThan(fewer, Int(Double(iterations) * 0.15 * 0.95))
+    }
+    
+    
+    
+    func testStringMutateSingleCharacterAllPathsReachable()
+    {
+        let base    : String    = "x"
+        var same    : Bool      = false
+        var more    : Bool      = false
+        var empty   : Bool      = false
+        
+        for _ in 0..<10_000
+        {
+            let mutated: String = base.mutate(using: .random)
+            
+            switch mutated.count
+            {
+                case 0  : empty     = true
+                case 1  : same      = true
+                case 2  : more      = true
+                    
+                default:
+                    
+                    XCTFail("Unexpected count: \(mutated.count)")
+            }
+            
+            if
+                same,
+                more,
+                empty
+            {
+                break
+            }
+        }
+        
+        XCTAssertTrue(same)
+        XCTAssertTrue(more)
+        XCTAssertTrue(empty)
+    }
+    
+    
+    
+    func testStringMutateInPlaceChangesAtMostOneCharacter()
+    {
+        let base        : String    = "abcde"
+        var verified    : Int       = 0
+        
+        for _ in 0..<10_000
+        {
+            let mutated: String = base.mutate(using: .random)
+            
+            guard mutated.count == base.count
+            else
+            {
+                continue
+            }
+            
+            let differences: Int = zip(base, mutated)
+                .filter { $0.0 != $0.1 }
+                .count
+            
+            XCTAssertLessThanOrEqual(differences, 1)
+            
+            verified += 1
+        }
+        
+        XCTAssertGreaterThan(verified, 1000)
+    }
+    
+    
+    
+    func testStringMutateInsertionAddsOneCharacter()
+    {
+        let base        : String    = "abc"
+        var verified    : Int       = 0
+        
+        for _ in 0..<10_000
+        {
+            let mutated: String = base.mutate(using: .random)
+            
+            guard mutated.count == base.count + 1
+            else
+            {
+                continue
+            }
+            
+            var found: Bool = false
+            
+            for index in mutated.indices
+            {
+                var candidate: String = mutated
+                
+                candidate.remove(at: index)
+                
+                if candidate == base
+                {
+                    found = true
+                    break
+                }
+            }
+            
+            XCTAssertTrue(found)
+            
+            verified += 1
+        }
+        
+        XCTAssertGreaterThan(verified, 1000)
+    }
+    
+    
+    
+    func testStringMutateRemovalRemovesOneCharacter()
+    {
+        let base        : String    = "abcde"
+        var verified    : Int       = 0
+        
+        for _ in 0..<10_000
+        {
+            let mutated: String = base.mutate(using: .random)
+            
+            guard mutated.count == base.count - 1
+            else
+            {
+                continue
+            }
+            
+            /// The mutated string must be a subsequence of the original,
+            /// less one character.
+            var baseIndex       : String.Index  = base.startIndex
+            var mutatedIndex    : String.Index  = mutated.startIndex
+            var skipped         : Int           = 0
+            
+            while
+                baseIndex < base.endIndex,
+                mutatedIndex < mutated.endIndex
+            {
+                if base[baseIndex] == mutated[mutatedIndex]
+                {
+                    mutatedIndex = mutated.index(after: mutatedIndex)
+                }
+                else
+                {
+                    skipped += 1
+                }
+                
+                baseIndex = base.index(after: baseIndex)
+            }
+            
+            /// Acount for removal at the end.
+            skipped += base.distance(from: baseIndex, to: base.endIndex)
+            
+            XCTAssertEqual(skipped, 1)
+            
+            verified += 1
+        }
+        
+        XCTAssertGreaterThan(verified, 1000)
+    }
+    
+    
+    
+    // MARK: - Substring mutation
+    
+    func testSubstringMutateMatchesStringMutate()
+    {
+        for _ in 0..<1000
+        {
+            let (context1, context2) = GenerationContext.sameRandomContexts
+            
+            let string  = String.arbitrary(using: context1)
+            let sub     = Substring.arbitrary(using: context2)
+            
+            let (context3, context4) = GenerationContext.sameRandomContexts
+            
+            let stringMutated   : String    = string.mutate(using: context3)
+            let subMutated      : Substring = sub.mutate(using: context4)
+            
+            XCTAssertEqual(String(subMutated), stringMutated)
+        }
+    }
+    
+    
+    
+    func testSubstringMutateEmptyProducesSingleCharacter()
+    {
+        for _ in 0..<1000
+        {
+            let empty   : Substring     = ""[...]
+            let mutated : Substring     = empty.mutate(using: .random)
+            
+            XCTAssertEqual(mutated.count, 1)
+        }
+    }
 }
 
 

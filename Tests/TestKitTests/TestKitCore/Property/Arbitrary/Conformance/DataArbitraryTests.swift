@@ -230,4 +230,111 @@ internal final class DataArbitraryTests: TestKitCase
         XCTAssertTrue(candidates.contains(Data([1, 2, 4])))
         XCTAssertTrue(candidates.contains(Data([1, 2, 3])))
     }
+    
+    
+    
+    // MARK: - Mutation
+    
+    func testMutateEmptyProducesNonEmpty()
+    {
+        for _ in 0..<1000
+        {
+            let mutated = Data().mutate(using: .random)
+            
+            XCTAssertEqual(mutated.count, 1)
+        }
+    }
+    
+    
+    
+    func testMutationCountChangesByAtMostOne()
+    {
+        for _ in 0..<1000
+        {
+            let value = Data.arbitrary(using: .randomSeed(size: 20))
+            
+            guard !value.isEmpty
+            else
+            {
+                continue
+            }
+            
+            let mutated     = value.mutate(using: .random)
+            let delta       = mutated.count - value.count
+            
+            XCTAssertTrue((-1...1).contains(delta))
+        }
+    }
+    
+    
+    
+    func testMutateProducesAllOperationTypes()
+    {
+        var hasSameCount    : Bool  = false
+        var hasMoreCount    : Bool  = false
+        var hasFewerCount   : Bool  = false
+        
+        for _ in 0..<10_000
+        {
+            let value = Data.arbitrary(using: .randomSeed(size: 20))
+            
+            guard !value.isEmpty
+            else
+            {
+                continue
+            }
+            
+            let mutated : Data  = value.mutate(using: .random)
+            let delta   : Int   = mutated.count - value.count
+            
+            switch delta
+            {
+                case 0  : hasSameCount      = true
+                case 1  : hasMoreCount      = true
+                case -1 : hasFewerCount     = true
+                default : break
+            }
+            
+            if
+                hasSameCount,
+                hasMoreCount,
+                hasFewerCount
+            {
+                break
+            }
+        }
+        
+        XCTAssertTrue(hasSameCount)
+        XCTAssertTrue(hasMoreCount)
+        XCTAssertTrue(hasFewerCount)
+    }
+    
+    
+    
+    func testMutateInPlaceChangesByteContent()
+    {
+        var verified: Int = 0
+        
+        for _ in 0..<10_000
+        {
+            let value   : Data  = Data([10, 20, 30, 40, 50])
+            let mutated : Data  = value.mutate(using: .random)
+            
+            guard mutated.count == value.count
+            else
+            {
+                continue
+            }
+            
+            let differences = zip(value, mutated)
+                .filter { $0 != $1 }
+                .count
+            
+            XCTAssertLessThanOrEqual(differences, 1)
+            
+            verified += 1
+        }
+        
+        XCTAssertGreaterThan(verified, 0)
+    }
 }

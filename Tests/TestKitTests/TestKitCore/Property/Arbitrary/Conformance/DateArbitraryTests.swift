@@ -262,4 +262,119 @@ internal final class DateArbitraryTests: TestKitCase
             }
         }
     }
+    
+    
+    
+    // MARK: - Mutation
+    
+    func testMutateSizeZeroOffsetBounded()
+    {
+        let oneDay: TimeInterval = 60 * 60 * 24
+        
+        for _ in 0..<1000
+        {
+            let date    : Date  = Date.arbitrary(using: .random)
+            let mutated : Date  = date.mutate(using: .randomZeroSize)
+            
+            let offset: TimeInterval = abs(
+                mutated.timeIntervalSinceReferenceDate
+                - date.timeIntervalSinceReferenceDate
+            )
+            
+            /// At size `0`, `maxDays` is `1`, so `offset` is at most `1`.
+            XCTAssertLessThanOrEqual(offset, oneDay)
+        }
+    }
+    
+    
+    
+    func testMutationOffsetScalesWithSize()
+    {
+        let smallSize       : Int           = 1
+        let largeSize       : Int           = 100
+        let oneDay          : TimeInterval  = 60 * 60 * 24
+        var maxSmallOffset  : TimeInterval  = 0
+        var maxLargeOffset  : TimeInterval  = 0
+        
+        let date = Date(timeIntervalSinceReferenceDate: 0)
+        
+        for _ in 0..<1000
+        {
+            let smallMutated: Date
+                = date.mutate(using: .randomSeed(size: smallSize))
+            
+            let largeMutated: Date
+                = date.mutate(using: .randomSeed(size: largeSize))
+            
+            maxSmallOffset = max(
+                maxSmallOffset,
+                abs(smallMutated.timeIntervalSinceReferenceDate)
+            )
+            
+            maxLargeOffset = max(
+                maxLargeOffset,
+                abs(largeMutated.timeIntervalSinceReferenceDate)
+            )
+        }
+        
+        /// Small size offsets must be bounded by `smallSize` days, and large
+        /// size offsets must reach beyond `smallSize` days.
+        XCTAssertLessThanOrEqual(maxSmallOffset, Double(smallSize) * oneDay)
+        XCTAssertGreaterThan(maxLargeOffset, Double(smallSize) * oneDay)
+    }
+    
+    
+    
+    func testMutationIsRelativeToOriginal()
+    {
+        let oneDay  : TimeInterval  = 60 * 60 * 24
+        let size    : Int           = 5
+        let bound   : TimeInterval  = Double(size) * oneDay
+        
+        for _ in 0..<1000
+        {
+            let date    : Date  = Date.arbitrary(using: .random)
+            let mutated : Date  = date.mutate(using: .randomSeed(size: size))
+            
+            let offset: TimeInterval = abs(
+                mutated.timeIntervalSinceReferenceDate
+                - date.timeIntervalSinceReferenceDate
+            )
+            
+            XCTAssertLessThanOrEqual(offset, bound)
+        }
+    }
+    
+    
+    
+    func testMutateProducesBothDirections()
+    {
+        let date        : Date  = Date(timeIntervalSinceReferenceDate: 0)
+        var hasBefore   : Bool  = false
+        var hasAfter    : Bool  = false
+        
+        for _ in 0..<1000
+        {
+            let mutated: Date = date.mutate(using: .random)
+            
+            if mutated < date
+            {
+                hasBefore = true
+            }
+            else if mutated > date
+            {
+                hasAfter = true
+            }
+            
+            if
+                hasBefore,
+                hasAfter
+            {
+                break
+            }
+        }
+        
+        XCTAssertTrue(hasBefore)
+        XCTAssertTrue(hasAfter)
+    }
 }

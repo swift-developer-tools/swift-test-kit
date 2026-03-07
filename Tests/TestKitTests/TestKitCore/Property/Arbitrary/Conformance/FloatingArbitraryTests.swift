@@ -57,6 +57,29 @@ internal final class FloatingArbitraryTests: TestKitCase
     {
         validateShrinking(of: Float16.self)
     }
+    
+    
+    
+    // MARK: - Mutation
+    
+    func testDoubleMutation()
+    {
+        validateMutation(of: Double.self)
+    }
+    
+    
+    
+    func testFloatMutation()
+    {
+        validateMutation(of: Float.self)
+    }
+    
+    
+    
+    func testFloat16Mutation()
+    {
+        validateMutation(of: Float16.self)
+    }
 }
 
 
@@ -415,5 +438,144 @@ extension FloatingArbitraryTests
                 XCTAssertGreaterThan(candidate, value)
             }
         }
+    }
+    
+    
+    
+    // MARK: Mutation support
+    
+    /// Validates mutation of the given type.
+    /// - Parameter type: The type to evaluate.
+    private func validateMutation<T>(
+        of type: T.Type
+    ) where T : Arbitrary & BinaryFloatingPoint
+    {
+        validateMutateFiniteInputProducesFiniteOutput(of: type)
+        validateMutateNonFiniteInputFallback(of: type)
+        validateMutateProducesDifferentValues(of: type)
+        validateMutateSizeScaling(of: type)
+    }
+    
+    
+    
+    /// Validates that mutating a finite value always produces a finite value.
+    /// - Parameter type: The type to evaluate.
+    private func validateMutateFiniteInputProducesFiniteOutput<T>(
+        of type: T.Type
+    ) where T : Arbitrary & BinaryFloatingPoint
+    {
+        let values: [T] =
+        [
+            0,
+            1,
+            -1,
+            T(52.5),
+            T(-52.5)
+        ]
+        
+        for value in values
+        {
+            for _ in 0..<1000
+            {
+                let mutated: T = value.mutate(using: .random)
+                
+                XCTAssertTrue(mutated.isFinite)
+                XCTAssertFalse(mutated.isNaN)
+            }
+        }
+    }
+    
+    
+    
+    /// Validates that mutating a non-finite value produces finite values at
+    /// least some of the time.
+    /// - Parameter type: The type to evaluate.
+    private func validateMutateNonFiniteInputFallback<T>(
+        of type: T.Type
+    ) where T : Arbitrary & BinaryFloatingPoint
+    {
+        let values: [T] =
+        [
+            .infinity,
+            -.infinity,
+            .nan
+        ]
+        
+        for value in values
+        {
+            var hasFinite: Bool = false
+            
+            for _ in 0..<1000
+            {
+                let mutated: T = value.mutate(using: .random)
+                
+                if
+                    mutated.isFinite,
+                    !mutated.isNaN
+                {
+                    hasFinite = true
+                    break
+                }
+            }
+            
+            XCTAssertTrue(hasFinite)
+        }
+    }
+    
+    
+    
+    /// Validates that mutation produces values different from the input.
+    /// - Parameter type: The type to evaluate.
+    private func validateMutateProducesDifferentValues<T>(
+        of type: T.Type
+    ) where T : Arbitrary & BinaryFloatingPoint
+    {
+        let value           : T     = T(10)
+        var hasDifferent    : Bool  = false
+        
+        for _ in 0..<1000
+        {
+            let context : GenerationContext     = .randomSeed(size: 10)
+            let mutated : T                     = value.mutate(using: context)
+            
+            if mutated != value
+            {
+                hasDifferent = true
+                break
+            }
+        }
+        
+        XCTAssertTrue(hasDifferent)
+    }
+    
+    
+    
+    /// Validates that mutation magnitude scales with context size.
+    ///
+    /// The average absolute deviation from the input at a large size must
+    /// exceed the average at a small size.
+    ///
+    /// - Parameter type: The type to evaluate.
+    private func validateMutateSizeScaling<T>(
+        of type: T.Type
+    ) where T : Arbitrary & BinaryFloatingPoint
+    {
+        let value       : T         = T(10)
+        var smallTotal  : Double    = 0
+        var largeTotal  : Double    = 0
+        
+        for _ in 0..<1000
+        {
+            let smallContext = GenerationContext.randomSeed(size: 1)
+            let largeContext = GenerationContext.randomSeed(size: 50)
+            
+            let smallMutated    : T     = value.mutate(using: smallContext)
+            let largeMutated    : T     = value.mutate(using: largeContext)
+            
+            smallTotal += abs(Double(smallMutated) - Double(value))
+            largeTotal += abs(Double(largeMutated) - Double(value))
+        }
+        
+        XCTAssertGreaterThan(largeTotal, smallTotal)
     }
 }
