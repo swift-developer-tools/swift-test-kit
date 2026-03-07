@@ -14,6 +14,29 @@ import XCTest
 
 internal final class RangeFloatingArbitraryTests: TestKitCase
 {
+    // MARK: - Determinism
+    
+    func testClosedRangeDoubleDeterminism()
+    {
+        assertArbitraryDeterminism(of: ClosedRange<Double>.self)
+    }
+    
+    
+    
+    func testClosedRangeFloatDeterminism()
+    {
+        assertArbitraryDeterminism(of: ClosedRange<Float>.self)
+    }
+    
+    
+    
+    func testClosedRangeFloat16Determinism()
+    {
+        assertArbitraryDeterminism(of: ClosedRange<Float16>.self)
+    }
+    
+    
+    
     // MARK: - Generation
     
     func testClosedRangeDoubleGeneration()
@@ -98,7 +121,6 @@ extension RangeFloatingArbitraryTests
             R.Bound : Arbitrary & BinaryFloatingPoint,
             R.Bound.RawSignificand : FixedWidthInteger
     {
-        assertArbitraryDeterminism(of: type)
         validateSizeZeroProduction(of: type)
         validateSizeBounds(of: type)
         validateBoundInvariant(of: type)

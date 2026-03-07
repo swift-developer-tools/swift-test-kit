@@ -14,14 +14,16 @@ import XCTest
 
 internal final class DecimalArbitraryTests: TestKitCase
 {
-    // MARK: - Generation
+    // MARK: - Determinism
     
-    func testGenerationDeterminism()
+    func testArbitraryDeterminism()
     {
         assertArbitraryDeterminism(of: Decimal.self)
     }
     
     
+    
+    // MARK: - Generation
     
     func testGenerationSizeZeroBounds()
     {

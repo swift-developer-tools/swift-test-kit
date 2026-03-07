@@ -14,7 +14,7 @@ import XCTest
 
 internal final class StringArbitraryTests: TestKitCase
 {
-    // MARK: - Character generation
+    // MARK: - Determinism
     
     func testCharGenerationDeterminism()
     {
@@ -22,6 +22,29 @@ internal final class StringArbitraryTests: TestKitCase
     }
     
     
+    
+    func testScalarGenerationDeterminism()
+    {
+        assertArbitraryDeterminism(of: Unicode.Scalar.self)
+    }
+    
+    
+    
+    func testStringGenerationDeterminism()
+    {
+        assertArbitraryDeterminism(of: String.self)
+    }
+    
+    
+    
+    func testSubstringGenerationDeterminism()
+    {
+        assertArbitraryDeterminism(of: Substring.self)
+    }
+    
+    
+    
+    // MARK: - Character generation
     
     func testCharacterGenerationSizeZeroProducesASCII()
     {
@@ -61,13 +84,6 @@ internal final class StringArbitraryTests: TestKitCase
     
     
     // MARK: - Scalar generation
-    
-    func testScalarGenerationDeterminism()
-    {
-        assertArbitraryDeterminism(of: Unicode.Scalar.self)
-    }
-    
-    
     
     func testScalarGenerationSizeZeroProducesASCII()
     {
@@ -135,13 +151,6 @@ internal final class StringArbitraryTests: TestKitCase
     
     
     // MARK: - String generation
-    
-    func testStringGenerationDeterminism()
-    {
-        assertArbitraryDeterminism(of: String.self)
-    }
-    
-    
     
     func testStringGenerationSizeZeroProducesEmpty()
     {
@@ -217,13 +226,6 @@ internal final class StringArbitraryTests: TestKitCase
     
     
     // MARK: - Substring generation
-    
-    func testSubstringGenerationDeterminism()
-    {
-        assertArbitraryDeterminism(of: Substring.self)
-    }
-    
-    
     
     func testSubstringGenerationSizeZeroProducesEmpty()
     {

@@ -14,6 +14,29 @@ import XCTest
 
 internal final class FloatingArbitraryTests: TestKitCase
 {
+    // MARK: - Determinism
+    
+    func testDoubleDeterminism()
+    {
+        assertArbitraryDeterminism(of: Double.self)
+    }
+    
+    
+    
+    func testFloatDeterminism()
+    {
+        assertArbitraryDeterminism(of: Float.self)
+    }
+    
+    
+    
+    func testFloat16Determinism()
+    {
+        assertArbitraryDeterminism(of: Float16.self)
+    }
+    
+    
+    
     // MARK: - Generation
     
     func testDoubleGeneration()
@@ -96,7 +119,6 @@ extension FloatingArbitraryTests
         of type: T.Type
     ) where T : Arbitrary & BinaryFloatingPoint
     {
-        assertArbitraryDeterminism(of: type)
         validateSizeZeroBounds(of: type)
         validateSizeBounds(of: type)
         validateSignedValueProduction(of: type)

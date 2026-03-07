@@ -14,7 +14,7 @@ import XCTest
 
 internal final class UUIDArbitraryTests: TestKitCase
 {
-    // MARK: - Generation
+    // MARK: - Determinism
     
     func testGenerationDeterminism()
     {
@@ -22,6 +22,8 @@ internal final class UUIDArbitraryTests: TestKitCase
     }
     
     
+    
+    // MARK: - Generation
     
     func testGenerationPreservesVersion4()
     {

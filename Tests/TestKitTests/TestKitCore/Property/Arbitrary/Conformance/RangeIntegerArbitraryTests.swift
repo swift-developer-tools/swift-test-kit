@@ -14,6 +14,148 @@ import XCTest
 
 internal final class RangeIntegerArbitraryTests: TestKitCase
 {
+    // MARK: - Determinism
+    
+    func testClosedRangeIntDeterminism()
+    {
+        assertArbitraryDeterminism(of: ClosedRange<Int>.self)
+    }
+    
+    
+    
+    func testClosedRangeInt8Determinism()
+    {
+        assertArbitraryDeterminism(of: ClosedRange<Int8>.self)
+    }
+    
+    
+    
+    func testClosedRangeInt16Determinism()
+    {
+        assertArbitraryDeterminism(of: ClosedRange<Int16>.self)
+    }
+    
+    
+    
+    func testClosedRangeInt32Determinism()
+    {
+        assertArbitraryDeterminism(of: ClosedRange<Int32>.self)
+    }
+    
+    
+    
+    func testClosedRangeInt64Determinism()
+    {
+        assertArbitraryDeterminism(of: ClosedRange<Int64>.self)
+    }
+    
+    
+    
+    func testClosedRangeUIntDeterminism()
+    {
+        assertArbitraryDeterminism(of: ClosedRange<UInt>.self)
+    }
+    
+    
+    
+    func testClosedRangeUInt8Determinism()
+    {
+        assertArbitraryDeterminism(of: ClosedRange<UInt8>.self)
+    }
+    
+    
+    
+    func testClosedRangeUInt16Determinism()
+    {
+        assertArbitraryDeterminism(of: ClosedRange<UInt16>.self)
+    }
+    
+    
+    
+    func testClosedRangeUInt32Determinism()
+    {
+        assertArbitraryDeterminism(of: ClosedRange<UInt32>.self)
+    }
+    
+    
+    
+    func testClosedRangeUInt64Determinism()
+    {
+        assertArbitraryDeterminism(of: ClosedRange<UInt64>.self)
+    }
+    
+    
+    
+    func testRangeIntDeterminism()
+    {
+        assertArbitraryDeterminism(of: Range<Int>.self)
+    }
+    
+    
+    
+    func testRangeInt8Determinism()
+    {
+        assertArbitraryDeterminism(of: Range<Int8>.self)
+    }
+    
+    
+    
+    func testRangeInt16Determinism()
+    {
+        assertArbitraryDeterminism(of: Range<Int16>.self)
+    }
+    
+    
+    
+    func testRangeInt32Determinism()
+    {
+        assertArbitraryDeterminism(of: Range<Int32>.self)
+    }
+    
+    
+    
+    func testRangeInt64Determinism()
+    {
+        assertArbitraryDeterminism(of: Range<Int64>.self)
+    }
+    
+    
+    
+    func testRangeUIntDeterminism()
+    {
+        assertArbitraryDeterminism(of: Range<UInt>.self)
+    }
+    
+    
+    
+    func testRangeUInt8Determinism()
+    {
+        assertArbitraryDeterminism(of: Range<UInt8>.self)
+    }
+    
+    
+    
+    func testRangeUInt16Determinism()
+    {
+        assertArbitraryDeterminism(of: Range<UInt16>.self)
+    }
+    
+    
+    
+    func testRangeUInt32Determinism()
+    {
+        assertArbitraryDeterminism(of: Range<UInt32>.self)
+    }
+    
+    
+    
+    func testRangeUInt64Determinism()
+    {
+        assertArbitraryDeterminism(of: Range<UInt64>.self)
+    }
+    
+    
+    
     // MARK: - Generation
     
     func testClosedRangeIntGeneration()
@@ -454,7 +596,6 @@ extension RangeIntegerArbitraryTests
     ) where R : Arbitrary & ArbitraryRange & Equatable,
             R.Bound : Arbitrary & FixedWidthInteger
     {
-        assertArbitraryDeterminism(of: type)
         validateSizeZeroProduction(of: type)
         validateSizeBounds(of: type)
         validateBoundInvariant(of: type)

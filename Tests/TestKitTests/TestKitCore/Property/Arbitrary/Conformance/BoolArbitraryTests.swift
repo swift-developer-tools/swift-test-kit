@@ -14,6 +14,15 @@ import XCTest
 
 internal final class BoolArbitraryTests: TestKitCase
 {
+    // MARK: - Determinism
+    
+    func testArbitraryDeterminism()
+    {
+        assertArbitraryDeterminism(of: Bool.self)
+    }
+    
+    
+    
     // MARK: - Generation
     
     func testArbitraryProducesBothValues()
@@ -44,13 +53,6 @@ internal final class BoolArbitraryTests: TestKitCase
         
         XCTAssertTrue(hasTrue)
         XCTAssertTrue(hasFalse)
-    }
-    
-    
-    
-    func testArbitraryDeterminism()
-    {
-        assertArbitraryDeterminism(of: Bool.self)
     }
     
     

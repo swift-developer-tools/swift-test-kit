@@ -14,7 +14,7 @@ import XCTest
 
 internal final class ResultArbitraryTests: TestKitCase
 {
-    // MARK: - Generation
+    // MARK: - Determinism
     
     func testArbitraryDeterminism()
     {
@@ -22,6 +22,8 @@ internal final class ResultArbitraryTests: TestKitCase
     }
     
     
+    
+    // MARK: - Generation
     
     func testArbitraryProducesBothCases()
     {

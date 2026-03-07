@@ -14,6 +14,78 @@ import XCTest
 
 internal final class IntegerArbitraryTests: TestKitCase
 {
+    // MARK: - Determinism
+        
+    func testIntDeterminism()
+    {
+        assertArbitraryDeterminism(of: Int.self)
+    }
+    
+    
+    
+    func testInt8Determinism()
+    {
+        assertArbitraryDeterminism(of: Int8.self)
+    }
+    
+    
+    
+    func testInt16Determinism()
+    {
+        assertArbitraryDeterminism(of: Int16.self)
+    }
+    
+    
+    
+    func testInt32Determinism()
+    {
+        assertArbitraryDeterminism(of: Int32.self)
+    }
+    
+    
+    
+    func testInt64Determinism()
+    {
+        assertArbitraryDeterminism(of: Int64.self)
+    }
+    
+    
+    
+    func testUIntDeterminism()
+    {
+        assertArbitraryDeterminism(of: UInt.self)
+    }
+    
+    
+    
+    func testUInt8Determinism()
+    {
+        assertArbitraryDeterminism(of: UInt8.self)
+    }
+    
+    
+    
+    func testUInt16Determinism()
+    {
+        assertArbitraryDeterminism(of: UInt16.self)
+    }
+    
+    
+    
+    func testUInt32Determinism()
+    {
+        assertArbitraryDeterminism(of: UInt32.self)
+    }
+    
+    
+    
+    func testUInt64Determinism()
+    {
+        assertArbitraryDeterminism(of: UInt64.self)
+    }
+    
+    
+    
     // MARK: - Generation
     
     func testIntGeneration()
@@ -243,7 +315,6 @@ extension IntegerArbitraryTests
         of type: T.Type
     ) where T : Arbitrary & FixedWidthInteger
     {
-        assertArbitraryDeterminism(of: type)
         validateSizeZeroProduction(of: type)
         validateSizeBounds(of: type)
         validateSignedValueProduction(of: type)

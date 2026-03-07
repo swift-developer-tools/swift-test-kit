@@ -14,14 +14,16 @@ import XCTest
 
 internal final class DataArbitraryTests: TestKitCase
 {
-    // MARK: - Generation
+    // MARK: - Determinism
     
-    func testGenerationDeterminism()
+    func testArbitraryDeterminism()
     {
         assertArbitraryDeterminism(of: Data.self)
     }
     
     
+    
+    // MARK: - Generation
     
     func testGenerationSizeZeroProducesEmpty()
     {

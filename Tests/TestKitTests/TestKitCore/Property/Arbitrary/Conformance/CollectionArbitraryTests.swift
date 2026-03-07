@@ -14,6 +14,29 @@ import XCTest
 
 internal final class CollectionArbitraryTests: TestKitCase
 {
+    // MARK: - Determinism
+    
+    func testArrayDeterminism()
+    {
+        assertArbitraryDeterminism(of: Array<Int>.self)
+    }
+    
+    
+    
+    func testDictionaryDeterminism()
+    {
+        assertArbitraryDeterminism(of: Dictionary<Int, Int>.self)
+    }
+    
+    
+    
+    func testSetDeterminism()
+    {
+        assertArbitraryDeterminism(of: Set<Int>.self)
+    }
+    
+    
+    
     // MARK: - Generation
     
     func testArrayGeneration()
@@ -1060,7 +1083,6 @@ extension CollectionArbitraryTests
         of type: T.Type
     ) where T : Arbitrary & Collection & Equatable
     {
-        assertArbitraryDeterminism(of: type)
         validateSizeZeroProducesEmpty(for: type)
         validateCountRespectsSizeBounds(for: type)
         validateProducesEmptyAndNonEmpty(for: type)
