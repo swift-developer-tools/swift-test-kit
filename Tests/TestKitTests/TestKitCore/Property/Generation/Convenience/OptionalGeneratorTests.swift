@@ -190,4 +190,113 @@ internal final class OptionalGeneratorTests: TestKitCase
             XCTAssertEqual(wrapped, base)
         }
     }
+    
+    
+    
+    // MARK: - Mutation
+    
+    func testMutateNilAlwaysProducesNonNil()
+    {
+        let generator: Generator<Int?> = Generator<Int>
+            .integer(in: 0...100)
+            .optional()
+        
+        for _ in 0..<10_000
+        {
+            XCTAssertNotNil(generator.mutate(nil, .random))
+        }
+    }
+    
+    
+    
+    func testMutateNonNilProducesNilAtExpectedRate()
+    {
+        let generator: Generator<Int?> = Generator<Int>
+            .integer(in: 0...100)
+            .optional()
+        
+        var nilCount    : Int   = 0
+        let iterations  : Int   = 10_000
+        
+        for _ in 0..<iterations
+        {
+            let result: Int? = generator.mutate(50, .random)
+            
+            if result == nil
+            {
+                nilCount += 1
+            }
+        }
+        
+        XCTAssertGreaterThan(nilCount, Int(Double(iterations) * 0.10 * 0.95))
+    }
+    
+    
+    
+    func testMutateNonNilRespectsUnderlyingBounds()
+    {
+        let generator: Generator<Int?> = Generator<Int>
+            .integer(in: 10...20)
+            .optional()
+        
+        for _ in 0..<10_000
+        {
+            let result: Int? = generator.mutate(15, .random)
+            
+            guard let unwrapped: Int = result
+            else
+            {
+                continue
+            }
+            
+            XCTAssertGreaterThanOrEqual(unwrapped, 10)
+            XCTAssertLessThanOrEqual(unwrapped, 20)
+        }
+    }
+    
+    
+    
+    func testMutateNilRespectsUnderlyingBounds()
+    {
+        let generator: Generator<Int?> = Generator<Int>
+            .integer(in: 10...20)
+            .optional()
+        
+        for _ in 0..<10_000
+        {
+            let result: Int? = generator.mutate(nil, .random)
+            
+            guard let unwrapped: Int = result
+            else
+            {
+                continue
+            }
+            
+            XCTAssertGreaterThanOrEqual(unwrapped, 10)
+            XCTAssertLessThanOrEqual(unwrapped, 20)
+        }
+    }
+    
+    
+    
+    func testMutateNonNilProducesVariety()
+    {
+        let generator: Generator<Int?> = Generator<Int>
+            .integer(in: 0...1000)
+            .optional()
+        
+        var seen: Set<Int> = []
+        
+        for _ in 0..<10_000
+        {
+            let result: Int? = generator.mutate(500, .random)
+            
+            if let unwrapped: Int = result
+            {
+                seen.insert(unwrapped)
+            }
+        }
+        
+        XCTAssertGreaterThan(seen.count, 50)
+    }
 }

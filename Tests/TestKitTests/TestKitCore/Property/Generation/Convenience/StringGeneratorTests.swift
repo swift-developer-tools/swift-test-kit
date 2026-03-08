@@ -155,6 +155,92 @@ internal final class StringGeneratorTests: TestKitCase
     
     
     
+    // MARK: - Exact count mutation
+    
+    func testExactCountMutationPreservesCount()
+    {
+        let generator: Generator<String> = .string(count: 5)
+        
+        for _ in 0..<1000
+        {
+            let context: GenerationContext = .random
+            
+            let original    : String    = generator.generate(context)
+            let mutated     : String    = generator.mutate(original, context)
+            
+            XCTAssertEqual(mutated.count, 5)
+        }
+    }
+    
+    
+    
+    func testExactCountZeroMutationReturnEmpty()
+    {
+        let generator: Generator<String> = .string(count: 0)
+        
+        for _ in 0..<1000
+        {
+            let context: GenerationContext = .random
+            
+            let mutated: String = generator.mutate("", context)
+            
+            XCTAssertTrue(mutated.isEmpty)
+        }
+    }
+    
+    
+    
+    func testExactCountMutationChangesCharacters()
+    {
+        let generator   : Generator<String>     = .string(count: 5)
+        var changed     : Bool                  = false
+        
+        for _ in 0..<1000
+        {
+            let context: GenerationContext = .random
+            
+            let original    : String    = generator.generate(context)
+            let mutated     : String    = generator.mutate(original, context)
+            
+            if mutated != original
+            {
+                changed = true
+                break
+            }
+        }
+        
+        XCTAssertTrue(changed)
+    }
+    
+    
+    
+    func testExactCountMutationUsesCharacterGenerator()
+    {
+        let generator: Generator<String> = .string(
+            count:          5,
+            characters:     .digit()
+        )
+        
+        let digits: String = "0123456789"
+        
+        for _ in 0..<1000
+        {
+            let context: GenerationContext = .random
+            
+            let original    : String    = generator.generate(context)
+            let mutated     : String    = generator.mutate(original, context)
+            
+            XCTAssertEqual(mutated.count, 5)
+            
+            for character in mutated
+            {
+                XCTAssertTrue(digits.contains(character))
+            }
+        }
+    }
+    
+    
+    
     // MARK: - Closed range generation
     
     func testClosedRangeDeterminism()
@@ -249,6 +335,142 @@ internal final class StringGeneratorTests: TestKitCase
     
     
     
+    // MARK: - Closed range mutation
+    
+    func testClosedRangeMutationRespectsBounds()
+    {
+        let generator: Generator<String> = .string(count: 3...7)
+        
+        for _ in 0..<1000
+        {
+            let context: GenerationContext = .random
+            
+            let original    : String    = generator.generate(context)
+            let mutated     : String    = generator.mutate(original, context)
+            
+            XCTAssertGreaterThanOrEqual(mutated.count, 3)
+            XCTAssertLessThanOrEqual(mutated.count, 7)
+        }
+    }
+    
+    
+    
+    func testClosedRangeMutationCanIncreaseCount()
+    {
+        let generator   : Generator<String>     = .string(count: 1...10)
+        var increased   : Bool                  = false
+        
+        for _ in 0..<1000
+        {
+            let context: GenerationContext = .random
+            
+            let original    : String    = generator.generate(context)
+            let mutated     : String    = generator.mutate(original, context)
+            
+            if mutated.count > original.count
+            {
+                increased = true
+                break
+            }
+        }
+        
+        XCTAssertTrue(increased)
+    }
+    
+    
+    
+    func testClosedRangeMutationCanDecreaseCount()
+    {
+        let generator   : Generator<String>     = .string(count: 1...10)
+        var decreased   : Bool                  = false
+        
+        for _ in 0..<1000
+        {
+            let context: GenerationContext = .random
+            
+            let original    : String    = generator.generate(context)
+            let mutated     : String    = generator.mutate(original, context)
+            
+            guard original.count > 1
+            else
+            {
+                continue
+            }
+            
+            if mutated.count < original.count
+            {
+                decreased = true
+                break
+            }
+        }
+        
+        XCTAssertTrue(decreased)
+    }
+    
+    
+    
+    func testClosedRangeMutationAtLowerBoundCannotRemove()
+    {
+        let generator: Generator<String> = .string(count: 3...7)
+        
+        for _ in 0..<1000
+        {
+            let context: GenerationContext = .random
+            
+            let original    : String    = "abc"
+            let mutated     : String    = generator.mutate(original, context)
+            
+            XCTAssertGreaterThanOrEqual(mutated.count, 3)
+        }
+    }
+    
+    
+    
+    func testClosedRangeMutationAtUpperBoundCannotInsert()
+    {
+        let generator: Generator<String> = .string(count: 3...5)
+        
+        for _ in 0..<1000
+        {
+            let context: GenerationContext = .random
+            
+            let original    : String    = "abcde"
+            let mutated     : String    = generator.mutate(original, context)
+            
+            XCTAssertLessThanOrEqual(mutated.count, 5)
+        }
+    }
+    
+    
+    
+    func testClosedRangeMutationUsesCharacterGenerator()
+    {
+        let generator: Generator<String> = .string(
+            count:          3...7,
+            characters:     .digit()
+        )
+        
+        let digits: String = "0123456789"
+        
+        for _ in 0..<1000
+        {
+            let context: GenerationContext = .random
+            
+            let original    : String    = generator.generate(context)
+            let mutated     : String    = generator.mutate(original, context)
+            
+            XCTAssertGreaterThanOrEqual(mutated.count, 3)
+            XCTAssertLessThanOrEqual(mutated.count, 7)
+            
+            for character in mutated
+            {
+                XCTAssertTrue(digits.contains(character))
+            }
+        }
+    }
+    
+    
+    
     // MARK: - Range generation
     
     func testRangeDeterminism()
@@ -313,6 +535,26 @@ internal final class StringGeneratorTests: TestKitCase
         for candidate in candidates
         {
             XCTAssertGreaterThanOrEqual(candidate.count, 3)
+        }
+    }
+    
+    
+    
+    // MARK: - Range mutation
+    
+    func testRangeMutationRespectsBounds()
+    {
+        let generator: Generator<String> = .string(count: 3..<8)
+        
+        for _ in 0..<1000
+        {
+            let context: GenerationContext = .random
+            
+            let original    : String    = generator.generate(context)
+            let mutated     : String    = generator.mutate(original, context)
+            
+            XCTAssertGreaterThanOrEqual(mutated.count, 3)
+            XCTAssertLessThanOrEqual(mutated.count, 7)
         }
     }
     
@@ -415,6 +657,64 @@ internal final class StringGeneratorTests: TestKitCase
         for candidate in candidates
         {
             XCTAssertEqual(candidate.count, 1)
+        }
+    }
+    
+    
+    
+    // MARK: - Non-empty string mutation
+    
+    func testNonEmptyStringMutationNeverProducesEmpty()
+    {
+        let generator: Generator<String> = .nonEmptyString()
+        
+        for _ in 0..<1000
+        {
+            let context: GenerationContext = .random
+            
+            let original    : String    = generator.generate(context)
+            let mutated     : String    = generator.mutate(original, context)
+            
+            XCTAssertFalse(mutated.isEmpty)
+        }
+    }
+    
+    
+    
+    func testNonEmptyStringMutationUsesCharacterGenerator()
+    {
+        let generator: Generator<String>
+            = .nonEmptyString(characters: .digit())
+        
+        let digits: String = "0123456789"
+        
+        for _ in 0..<1000
+        {
+            let context: GenerationContext = .random
+            
+            let original    : String    = generator.generate(context)
+            let mutated     : String    = generator.mutate(original, context)
+            
+            XCTAssertFalse(mutated.isEmpty)
+            
+            for character in mutated
+            {
+                XCTAssertTrue(digits.contains(character))
+            }
+        }
+    }
+    
+    
+    
+    func testNonEmptyStringSingleCharacterMutationCannotRemove()
+    {
+        let generator: Generator<String> = .nonEmptyString()
+        
+        for _ in 0..<1000
+        {
+            let mutated: String = generator.mutate("x", .random)
+            
+            XCTAssertFalse(mutated.isEmpty)
         }
     }
 }
