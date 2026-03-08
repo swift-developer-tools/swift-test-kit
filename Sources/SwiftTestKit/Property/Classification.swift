@@ -11,6 +11,27 @@ import TestKitCore
 
 
 
+/// Records the given target value for guided generation.
+///
+/// Use this inside a property body to enable targeted property-based testing.
+/// The target value is maximized across iterations, guiding generation toward
+/// values that produce higher target values.
+///
+/// If this function is called multiple times within a single iteration, the
+/// last target value is used.
+///
+/// - Note: This function has no effect outside a property body.
+///
+/// - Parameter target: The target value to maximize. Pass a negative value to
+/// minimize a metric.
+public func STKTarget(
+    _ target: @autoclosure () -> Double
+)
+{
+    TKTarget(target)
+}
+
+
 
 /// Discards the current iteration when the given condition is false.
 ///
