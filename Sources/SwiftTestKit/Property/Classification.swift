@@ -22,7 +22,7 @@ import TestKitCore
 /// can lead to exhaustion. Prefer constructing valid values using a custom
 /// ``Generator`` rather than discarding invalid values with a precondition.
 ///
-/// - Note: This function does nothing when called outside a property body.
+/// - Note: This function has no effect outside a property body.
 ///
 /// - Parameter condition: The condition to evaluate.
 /// - Throws: An error if the given condition is false.
@@ -41,7 +41,7 @@ public func STKAssume(
 /// An iteration can receive multiple labels. Calling this function multiple
 /// times with the same label within a single iteration is idempotent.
 ///
-/// - Note: This function does nothing when called outside a property body.
+/// - Note: This function has no effect outside a property body.
 ///
 /// - Parameters:
 ///   - label: The label to apply.
@@ -67,7 +67,7 @@ public func STKClassify(
 /// If the same label is covered multiple times with different thresholds,
 /// the maximum threshold is used.
 ///
-/// - Note: This function does nothing when called outside a property body.
+/// - Note: This function has no effect outside a property body.
 ///
 /// - Parameters:
 ///   - percentage: The minimum percentage of iterations that must be tagged
@@ -91,7 +91,7 @@ public func STKCover(
 
 /// Tags the current iteration with the given label.
 ///
-/// - Note: This function does nothing when called outside a property body.
+/// - Note: This function has no effect outside a property body.
 ///
 /// - Parameter label: The label to apply.
 public func STKLabel(
@@ -106,7 +106,7 @@ public func STKLabel(
 /// Tags the current iteration with the string representation of the given
 /// value.
 ///
-/// - Note: This function does nothing when called outside a property body.
+/// - Note: This function has no effect outside a property body.
 ///
 /// - Parameter value: The value whose string representation to apply as
 /// a label.
@@ -124,7 +124,7 @@ public func STKCollect<T>(
 /// An iteration can receive multiple labels. Calling this function multiple
 /// times with the same table and label within a single iteration is idempotent.
 ///
-/// - Note: This function does nothing when called outside a property body.
+/// - Note: This function has no effect outside a property body.
 ///
 /// - Parameters:
 ///   - table: The table to update.
@@ -151,7 +151,7 @@ public func STKTabulate(
 /// If the same label is covered multiple times with different thresholds,
 /// the maximum threshold is used.
 ///
-/// - Note: This function does nothing when called outside a property body.
+/// - Note: This function has no effect outside a property body.
 ///
 /// - Parameters:
 ///   - table: The table to update.
