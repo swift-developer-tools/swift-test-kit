@@ -25,6 +25,8 @@ extension Generator where V : Equatable
         {
             let context1    : GenerationContext
             let context2    : GenerationContext
+            let context3    : GenerationContext
+            let context4    : GenerationContext
             
             if let size
             {
@@ -32,10 +34,13 @@ extension Generator where V : Equatable
                 
                 context1    = GenerationContext(seed: seed, size: size)
                 context2    = GenerationContext(seed: seed, size: size)
+                context3    = GenerationContext(seed: seed, size: size)
+                context4    = GenerationContext(seed: seed, size: size)
             }
             else
             {
                 (context1, context2) = GenerationContext.sameRandomContexts
+                (context3, context4) = GenerationContext.sameRandomContexts
             }
             
             let value1  : V     = self.generate(context1)
@@ -48,6 +53,20 @@ extension Generator where V : Equatable
             else
             {
                 XCTAssertEqual(value1, value2)
+            }
+            
+            /// Mutate the same value to handle unordered collections.
+            /// See comment in ``assertArbitraryDeterminism(of:)``.
+            let mutated1    : V     = mutate(value1, context3)
+            let mutated2    : V     = mutate(value1, context4)
+            
+            if mutated1.isNaN
+            {
+                XCTAssertTrue(mutated2.isNaN)
+            }
+            else
+            {
+                XCTAssertEqual(mutated1, mutated2)
             }
         }
     }
