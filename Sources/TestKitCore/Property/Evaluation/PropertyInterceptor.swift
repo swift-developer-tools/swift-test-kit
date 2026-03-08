@@ -44,6 +44,14 @@ package final class PropertyInterceptor:
     
     
     
+    /// The target value recorded for the current iteration.
+    internal var target: Double?
+    {
+        return state.withLock { $0.target }
+    }
+    
+    
+    
     /// Labels applied to the current iteration.
     internal var labels: Set<String>
     {
@@ -91,6 +99,20 @@ package final class PropertyInterceptor:
     internal var tableCoverageRequirements: [String : [String : Double]]
     {
         return state.withLock { $0.tableCoverageRequirements }
+    }
+    
+    
+    
+    /// Records the given target value.
+    ///
+    /// If there are multiple calls within an iteration, the last value is used.
+    ///
+    /// - Parameter target: The target value to record.
+    internal func recordTarget(
+        _ target: Double
+    )
+    {
+        state.withLock { $0.target = target }
     }
     
     
@@ -290,17 +312,15 @@ package final class PropertyInterceptor:
                 }
             }
             
-            state.labels       = []
-            state.tableLabels  = [:]
+            state.target        = nil
+            state.labels        = []
+            state.tableLabels   = [:]
         }
     }
     
     
     
     /// Resets the interceptor for reuse.
-    ///
-    /// This is used to reset the interceptor between shrink attempts.
-    ///
     /// - Note: The distribution and coverage requirements are not cleared,
     /// since they accumulate across iterations.
     override internal func reset()
@@ -309,6 +329,7 @@ package final class PropertyInterceptor:
         
         state.withLock
         {
+            $0.target       = nil
             $0.labels       = []
             $0.tableLabels  = [:]
         }
@@ -322,6 +343,9 @@ package final class PropertyInterceptor:
 /// The state of ``PropertyInterceptor``.
 private struct InterceptorState: Equatable, Sendable
 {
+    /// The target value recorded for the current iteration.
+    var target                      : Double?                       = nil
+    
     /// Labels applied to the current iteration.
     var labels                      : Set<String>                   = []
     
