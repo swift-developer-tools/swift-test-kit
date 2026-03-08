@@ -15,7 +15,7 @@ internal struct AnyMutator
     
     
     
-    /// Initializes an ``mutator`` instance from the given mutate function.
+    /// Initializes an ``AnyMutator`` instance from the given mutate function.
     /// - Parameter mutate: The function to mutate a given value.
     internal init<T>(
         _ mutate: @escaping (T, GenerationContext) -> T
