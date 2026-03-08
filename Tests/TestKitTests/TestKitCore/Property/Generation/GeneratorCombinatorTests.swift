@@ -55,6 +55,24 @@ internal final class GeneratorCombinatorTests: TestKitCase
     
     
     
+    func testMapMutationProducesTransformedValues()
+    {
+        let generator: Generator<Int> = Generator<Int>
+            .integer(in: 0...50)
+            .map { $0 * 2 }
+        
+        for _ in 0..<1000
+        {
+            let value: Int = generator.mutate(25, .random)
+            
+            XCTAssertEqual(value % 2, 0)
+            XCTAssertGreaterThanOrEqual(value, 0)
+            XCTAssertLessThanOrEqual(value, 100)
+        }
+    }
+    
+    
+    
     // MARK: - flatMap
     
     func testFlatMapDeterminism()
@@ -88,6 +106,23 @@ internal final class GeneratorCombinatorTests: TestKitCase
         for _ in 0..<1000
         {
             let value: Int = generator.generate(.random)
+            
+            XCTAssertGreaterThanOrEqual(value, 0)
+            XCTAssertLessThanOrEqual(value, 20)
+        }
+    }
+    
+    
+    
+    func testFlatMapMutationProducesValidValues()
+    {
+        let generator: Generator<Int> = Generator<Int>
+            .integer(in: 10...20)
+            .flatMap { .integer(in: 0...$0) }
+        
+        for _ in 0..<1000
+        {
+            let value: Int = generator.mutate(5, .random)
             
             XCTAssertGreaterThanOrEqual(value, 0)
             XCTAssertLessThanOrEqual(value, 20)
@@ -159,6 +194,73 @@ internal final class GeneratorCombinatorTests: TestKitCase
     
     
     
+    func testFilterMutationSatisfiesPredicate()
+    {
+        let generator: Generator<Int> = Generator<Int>
+            .integer(in: 1...100)
+            .filter { $0 % 3 == 0 }
+        
+        for _ in 0..<1000
+        {
+            let value: Int = generator.mutate(33, .random)
+            
+            XCTAssertEqual(value % 3, 0)
+            XCTAssertGreaterThanOrEqual(value, 1)
+            XCTAssertLessThanOrEqual(value, 100)
+        }
+    }
+    
+    
+    
+    func testFilterMutationDelegatesToUnderlyingMutate()
+    {
+        /// Integer mutation adds small deltas scaled by context size. With a
+        /// small size, mutating from `90` must produce values clustered near
+        /// `90` (generation would average around `50`). With a size of `3`,
+        /// integer mutation adds deltas in the range `-3...3`.
+        
+        let generator: Generator<Int> = Generator<Int>
+            .integer(in: 0...100)
+            .filter { $0 % 2 == 0 }
+        
+        var sum         : Int   = 0
+        let iterations  : Int   = 1000
+        
+        for _ in 0..<iterations
+        {
+            let value: Int = generator.mutate(90, .randomSeed(size: 3))
+            
+            sum += value
+        }
+        
+        let average = Double(sum) / Double(iterations)
+        
+        XCTAssertGreaterThan(average, 75.0)
+    }
+    
+    
+    
+    func testFilterMutationFallsBackOnMutationFailure()
+    {
+        let base = Generator<Int>(
+            generate:   { context in context.random(in: 0...100) },
+            shrink:     { _ in [] },
+            mutate:     { _, _ in -1 }
+        )
+        
+        let generator: Generator<Int> = base.filter { $0 >= 0 }
+        
+        for _ in 0..<1000
+        {
+            let mutated: Int = generator.mutate(50, .random)
+            
+            XCTAssertGreaterThanOrEqual(mutated, 0)
+            XCTAssertLessThanOrEqual(mutated, 100)
+        }
+    }
+    
+    
+    
     // MARK: - constant
     
     func testConstantDeterminism()
@@ -198,6 +300,20 @@ internal final class GeneratorCombinatorTests: TestKitCase
         for _ in 0..<1000
         {
             XCTAssertEqual(generator.generate(.random), 25)
+        }
+    }
+    
+    
+    
+    func testConstantMutationAlwaysReturnsConstant()
+    {
+        let generator: Generator<Int> = .constant(25)
+        
+        for _ in 0..<1000
+        {
+            let value: Int = generator.mutate(99, .random)
+            
+            XCTAssertEqual(value, 25)
         }
     }
     
@@ -258,6 +374,28 @@ internal final class GeneratorCombinatorTests: TestKitCase
         {
             XCTAssertEqual(generator.generate(.random), 30)
         }
+    }
+    
+    
+    
+    func testOneOfMutationProducesValidValues()
+    {
+        let generator: Generator<Int> = .oneOf(
+            .constant(1),
+            .constant(2),
+            .constant(3)
+        )
+        
+        var seen: Set<Int> = []
+        
+        for _ in 0..<1000
+        {
+            let value: Int = generator.mutate(1, .random)
+            
+            seen.insert(value)
+        }
+        
+        XCTAssertEqual(seen, [1, 2, 3])
     }
     
     
@@ -356,6 +494,27 @@ internal final class GeneratorCombinatorTests: TestKitCase
     
     
     
+    func testFrequencyMutationProducesValidValues()
+    {
+        let generator: Generator<Int> = .frequency(
+            (9, .constant(1)),
+            (1, .constant(2))
+        )
+        
+        var seen: Set<Int> = []
+        
+        for _ in 0..<10_000
+        {
+            let value: Int = generator.mutate(1, .random)
+            
+            seen.insert(value)
+        }
+        
+        XCTAssertEqual(seen, [1, 2])
+    }
+    
+    
+    
     // MARK: - elements
     
     func testElementsDeterminism()
@@ -380,8 +539,7 @@ internal final class GeneratorCombinatorTests: TestKitCase
     {
         let options     : [String]              = ["red", "green", "blue"]
         let generator   : Generator<String>     = .elements(of: options)
-        
-        var seen: Set<String> = []
+        var seen        : Set<String>           = []
         
         for _ in 0..<1000
         {
@@ -405,6 +563,26 @@ internal final class GeneratorCombinatorTests: TestKitCase
         {
             XCTAssertEqual(generator.generate(.random), 30)
         }
+    }
+    
+    
+    
+    func testElementsMutationProducesCollectionElements()
+    {
+        let options     : [String]              = ["red", "green", "blue"]
+        let generator   : Generator<String>     = .elements(of: options)
+        var seen        : Set<String>           = []
+        
+        for _ in 0..<1000
+        {
+            let value: String = generator.mutate(options[0], .random)
+            
+            XCTAssertTrue(options.contains(value))
+            
+            seen.insert(value)
+        }
+        
+        XCTAssertEqual(seen, Set(options))
     }
     
     
@@ -435,11 +613,25 @@ internal final class GeneratorCombinatorTests: TestKitCase
         
         for _ in 0..<1000
         {
-            let randomSize: Int = GenerationContext.randomSize
+            let size    : Int   = GenerationContext.randomSize
+            let value   : Int   = generator.generate(.randomSeed(size: size))
             
-            let value: Int = generator.generate(.randomSeed(size: randomSize))
+            XCTAssertEqual(value, size)
+        }
+    }
+    
+    
+    
+    func testSizedMutationProducesValidValues()
+    {
+        let generator: Generator<Int> = .sized { .constant($0) }
+        
+        for _ in 0..<1000
+        {
+            let size    : Int   = GenerationContext.randomSize
+            let value   : Int   = generator.mutate(99, .randomSeed(size: size))
             
-            XCTAssertEqual(value, randomSize)
+            XCTAssertEqual(value, size)
         }
     }
     
@@ -1011,5 +1203,121 @@ internal final class GeneratorCombinatorTests: TestKitCase
             = generator.shrink((1, "a", true))
         
         XCTAssertTrue(candidates.isEmpty)
+    }
+    
+    
+    
+    func testZipMutationChangesAtMostOneElement()
+    {
+        let generator: Generator<(Int, Int, Int)> = .zip(
+            .integer(in: 0...100),
+            .integer(in: 0...100),
+            .integer(in: 0...100)
+        )
+        
+        let original    : (Int, Int, Int)   = (50, 60, 70)
+        var changed     : Set<Int>          = []
+        
+        for _ in 0..<1000
+        {
+            let mutated: (Int, Int, Int) = generator.mutate(original, .random)
+            
+            var diffCount: Int = 0
+            
+            if mutated.0 != original.0
+            {
+                diffCount += 1
+                changed.insert(0)
+            }
+            
+            if mutated.1 != original.1
+            {
+                diffCount += 1
+                changed.insert(1)
+            }
+            
+            if mutated.2 != original.2
+            {
+                diffCount += 1
+                changed.insert(2)
+            }
+            
+            XCTAssertLessThanOrEqual(diffCount, 1)
+        }
+        
+        XCTAssertEqual(changed, [0, 1, 2])
+    }
+    
+    
+    
+    func testZipSingleElementMutationDelegatesToUnderlyingMutate()
+    {
+        /// Integer mutation adds small deltas scaled by context size. With a
+        /// small size, mutating from `90` must produce values clustered near
+        /// `90` (generation would average around `50`). With a size of `3`,
+        /// integer mutation adds deltas in the range `-3...3`.
+        
+        let generator   : Generator<Int>    = .zip(.integer(in: 0...100))
+        var sum         : Int               = 0
+        let iterations  : Int               = 1000
+        
+        for _ in 0..<iterations
+        {
+            let mutated: Int = generator.mutate(90, .randomSeed(size: 3))
+            
+            XCTAssertGreaterThanOrEqual(mutated, 0)
+            XCTAssertLessThanOrEqual(mutated, 100)
+            
+            sum += mutated
+        }
+        
+        let average = Double(sum) / Double(iterations)
+        
+        XCTAssertGreaterThan(average, 75.0)
+    }
+    
+    
+    
+    func testZipAllConstantMutationReturnsConstants()
+    {
+        let generator: Generator<(Int, String, Bool)> = .zip(
+            .constant(1),
+            .constant("a"),
+            .constant(true)
+        )
+        
+        for _ in 0..<1000
+        {
+            let mutated: (Int, String, Bool)
+                = generator.mutate((1, "a", true), .random)
+            
+            XCTAssertEqual(mutated.0, 1)
+            XCTAssertEqual(mutated.1, "a")
+            XCTAssertEqual(mutated.2, true)
+        }
+    }
+    
+    
+    
+    func testZipMutationDelegatesToUnderlyingMutate()
+    {
+        let addOne = Generator<Int>(
+            generate:   { context in context.random(in: 0...100) },
+            shrink:     { _ in [] },
+            mutate:     { value, _ in value + 1}
+        )
+        
+        let generator   : Generator<(Int, Int)>     = .zip(addOne, addOne)
+        let original    : (Int, Int)                = (10, 20)
+        
+        for _ in 0..<1000
+        {
+            let mutated: (Int, Int) = generator.mutate(original, .random)
+            
+            let firstMutated    : Bool  = mutated.0 == 11 && mutated.1 == 20
+            let secondMutated   : Bool  = mutated.0 == 10 && mutated.1 == 21
+            
+            XCTAssertTrue(firstMutated || secondMutated)
+        }
     }
 }
