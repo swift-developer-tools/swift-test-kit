@@ -23,14 +23,17 @@ extension Generator
         _ transform: @escaping (V) -> T
     ) -> Generator<T>
     {
+        let generate: (GenerationContext) -> T =
+        {
+            context in
+            
+            return transform(self.generate(context))
+        }
+        
         return Generator<T>(
-            generate:
-            {
-                context in
-                
-                return transform(self.generate(context))
-            },
-            shrink: { _ in return [] }
+            generate:   generate,
+            shrink:     { _ in return [] },
+            mutate:     { _, context in generate(context) }
         )
     }
     
@@ -50,17 +53,20 @@ extension Generator
         _ transform: @escaping (V) -> Generator<T>
     ) -> Generator<T>
     {
+        let generate: (GenerationContext) -> T =
+        {
+            context in
+            
+            let value       : V             = self.generate(context)
+            let generator   : Generator<T>  = transform(value)
+            
+            return generator.generate(context)
+        }
+        
         return Generator<T>(
-            generate:
-            {
-                context in
-                
-                let value       : V             = self.generate(context)
-                let generator   : Generator<T>  = transform(value)
-                
-                return generator.generate(context)
-            },
-            shrink: { _ in return [] }
+            generate:   generate,
+            shrink:     {  _ in return [] },
+            mutate:     { _, context in generate(context) }
         )
     }
     
@@ -77,7 +83,8 @@ extension Generator
     /// - Important: Precidates that reject most values slow down generation.
     /// Prefer constructing valid values directly.
     ///
-    /// - Precondition: A matching value must be produced within 1,000 attempts.
+    /// - Precondition: A matching value must be produced within 1,000 attempts,
+    /// or within 2,000 attempts for mutation.
     ///
     /// - Parameter predicate: The predicate to call with each generated value.
     /// - Returns: A generator that only produces values satisfying the given
@@ -112,6 +119,36 @@ extension Generator
                 value in
                 
                 return self.shrink(value).filter(predicate)
+            },
+            mutate:
+            {
+                value, context in
+                
+                for _ in 0..<1000
+                {
+                    let mutated: V = self.mutate(value, context)
+                    
+                    if predicate(mutated)
+                    {
+                        return mutated
+                    }
+                }
+                
+                for _ in 0..<1000
+                {
+                    let generated: V = self.generate(context)
+                    
+                    if predicate(generated)
+                    {
+                        return generated
+                    }
+                }
+                
+                preconditionFailure(
+                    "Generator.filter(_:) failed to produce a mutated value"
+                    + " after 2000 attempts. The predicate may be too"
+                    + " restrictive for this generator"
+                )
             }
         )
     }
@@ -132,7 +169,8 @@ extension Generator
     {
         return Generator<V>(
             generate:   { _ in return value },
-            shrink:     { _ in return [] }
+            shrink:     { _ in return [] },
+            mutate:     { _, _ in return value }
         )
     }
     
@@ -162,17 +200,20 @@ extension Generator
             "generators must not be empty"
         )
         
+        let generate: (GenerationContext) -> V =
+        {
+            context in
+            
+            let generator: Generator<V>
+                = context.randomElement(of: generators)!
+            
+            return generator.generate(context)
+        }
+        
         return Generator<V>(
-            generate:
-            {
-                context in
-                
-                let generator: Generator<V>
-                    = context.randomElement(of: generators)!
-                
-                return generator.generate(context)
-            },
-            shrink: { _ in return [] }
+            generate:   generate,
+            shrink:     { _ in return [] },
+            mutate:     { _, context in generate(context) }
         )
     }
     
@@ -233,19 +274,22 @@ extension Generator
             "weighted must not be empty"
         )
         
+        let generate: (GenerationContext) -> V =
+        {
+            context in
+            
+            let result: (Int, Generator<V>) = context.randomElement(
+                of:             weighted,
+                weightedBy:     { $0.0 }
+            )!
+            
+            return result.1.generate(context)
+        }
+        
         return Generator<V>(
-            generate:
-            {
-                context in
-                
-                let result: (Int, Generator<V>) = context.randomElement(
-                    of:             weighted,
-                    weightedBy:     { $0.0 }
-                )!
-                
-                return result.1.generate(context)
-            },
-            shrink: { _ in return [] }
+            generate:   generate,
+            shrink:     { _ in return [] },
+            mutate:     { _, context in generate(context) }
         )
     }
     
@@ -301,14 +345,17 @@ extension Generator
             "collection must not be empty"
         )
         
+        let generate: (GenerationContext) -> V =
+        {
+            context in
+            
+            return context.randomElement(of: collection)!
+        }
+        
         return Generator<V>(
-            generate:
-            {
-                context in
-                
-                return context.randomElement(of: collection)!
-            },
-            shrink: { _ in return [] }
+            generate:   generate,
+            shrink:     { _ in return [] },
+            mutate:     { _, context in generate(context) }
         )
     }
     
@@ -341,16 +388,19 @@ extension Generator
         _ make: @escaping (Int) -> Generator<V>
     ) -> Generator<V>
     {
+        let generate: (GenerationContext) -> V =
+        {
+            context in
+            
+            let generator: Generator<V> = make(context.size)
+            
+            return generator.generate(context)
+        }
+        
         return Generator<V>(
-            generate:
-            {
-                context in
-                
-                let generator: Generator<V> = make(context.size)
-                
-                return generator.generate(context)
-            },
-            shrink: { _ in return [] }
+            generate:   generate,
+            shrink:     { _ in return [] },
+            mutate:     { _, context in generate(context) }
         )
     }
     
@@ -370,11 +420,13 @@ extension Generator
         _ generators: repeat Generator<each T>
     ) -> Generator<(repeat each T)> where V == (repeat each T)
     {
-        var shrinkers: [AnyShrinker] = []
+        var shrinkers   : [AnyShrinker]     = []
+        var mutators    : [AnyMutator]      = []
         
         for generator in repeat each generators
         {
             shrinkers.append(AnyShrinker(generator.shrink))
+            mutators.append(AnyMutator(generator.mutate))
         }
         
         return Generator<(repeat each T)>(
@@ -407,6 +459,20 @@ extension Generator
                     
                     return (repeat copy[packIndex.next()] as! each T)
                 }
+            },
+            mutate:
+            {
+                tuple, context in
+                
+                let copy: [Any] = AnyMutator.mutateSingleElement(
+                    of:     tuple,
+                    with:   mutators,
+                    using:  context
+                )
+                
+                let packIndex = PackIndex()
+                
+                return (repeat copy[packIndex.next()] as! each T)
             }
         )
     }

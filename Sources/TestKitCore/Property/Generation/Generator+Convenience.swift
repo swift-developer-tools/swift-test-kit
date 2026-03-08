@@ -19,7 +19,8 @@ extension Generator where V : Arbitrary
     {
         return Generator<V>(
             generate:   { context in V.arbitrary(using: context) },
-            shrink:     { value in value.shrink() }
+            shrink:     { value in value.shrink() },
+            mutate:     { value, context in value.mutate(using: context) }
         )
     }
 }
@@ -127,6 +128,19 @@ extension Generator
                     minCount:           count,
                     shrinkElements:     shrinkElements
                 )
+            },
+            mutate:
+            {
+                array, context in
+                
+                return mutateArray(
+                    array,
+                    minCount:           count,
+                    maxCount:           count,
+                    mutateElement:      generator.mutate,
+                    generateElement:    generator.generate,
+                    using:              context
+                )
             }
         )
     }
@@ -182,6 +196,19 @@ extension Generator
                 return array.shrinkToward(
                     minCount:           count.lowerBound,
                     shrinkElements:     shrinkElements
+                )
+            },
+            mutate:
+            {
+                array, context in
+                
+                return mutateArray(
+                    array,
+                    minCount:           count.lowerBound,
+                    maxCount:           count.upperBound,
+                    mutateElement:      generator.mutate,
+                    generateElement:    generator.generate,
+                    using:              context
                 )
             }
         )
@@ -265,6 +292,19 @@ extension Generator
                 array in
                 
                 return array.shrinkElements()
+            },
+            mutate:
+            {
+                array, context in
+                
+                return mutateArray(
+                    array,
+                    minCount:           count,
+                    maxCount:           count,
+                    mutateElement:      { $0.mutate(using: $1) },
+                    generateElement:    { E.arbitrary(using: $0) },
+                    using:              context
+                )
             }
         )
     }
@@ -313,6 +353,19 @@ extension Generator
                 array in
                 
                 return array.shrinkToward(minCount: count.lowerBound)
+            },
+            mutate:
+            {
+                array, context in
+                
+                return mutateArray(
+                    array,
+                    minCount:           count.lowerBound,
+                    maxCount:           count.upperBound,
+                    mutateElement:      { $0.mutate(using: $1) },
+                    generateElement:    { E.arbitrary(using: $0) },
+                    using:              context
+                )
             }
         )
     }
@@ -386,6 +439,19 @@ extension Generator
                 array in
                 
                 return array.shrinkToward(minCount: 1)
+            },
+            mutate:
+            {
+                array, context in
+                
+                return mutateArray(
+                    array,
+                    minCount:           1,
+                    maxCount:           nil,
+                    mutateElement:      { $0.mutate(using: $1) },
+                    generateElement:    { E.arbitrary(using: $0) },
+                    using:              context
+                )
             }
         )
     }
@@ -445,6 +511,19 @@ extension Generator
                     minCount:           count,
                     shrinkElements:     shrinkElements
                 )
+            },
+            mutate:
+            {
+                array, context in
+                
+                return mutateUniqueArray(
+                    array,
+                    minCount:           count,
+                    maxCount:           count,
+                    mutateElement:      generator.mutate,
+                    generateElement:    generator.generate,
+                    using:              context
+                )
             }
         )
     }
@@ -503,6 +582,19 @@ extension Generator
                 return array.shrinkToward(
                     minCount:           count.lowerBound,
                     shrinkElements:     shrinkElements
+                )
+            },
+            mutate:
+            {
+                array, context in
+                
+                return mutateUniqueArray(
+                    array,
+                    minCount:           count.lowerBound,
+                    maxCount:           count.upperBound,
+                    mutateElement:      generator.mutate,
+                    generateElement:    generator.generate,
+                    using:              context
                 )
             }
         )
@@ -730,6 +822,171 @@ extension Generator
         
         return candidates
     }
+    
+    
+    
+    /// Mutates the given array.
+    /// - Parameters:
+    ///   - array: The array to mutate.
+    ///   - minCount: The minimum count of elements.
+    ///   - maxCount: The maximum count of elements.
+    ///   - mutateElement: The function to mutate the given element.
+    ///   - generateElement: The function to generate an element.
+    ///   - context: The generation context.
+    /// - Returns: The mutated array.
+    private static func mutateArray<E>(
+        _ array         : [E],
+        minCount        : Int,
+        maxCount        : Int?,
+        mutateElement   : (E, GenerationContext) -> E,
+        generateElement : (GenerationContext) -> E,
+        using context   : GenerationContext
+    ) -> [E]
+    {
+        /// If `maxCount` is `nil`, there is no upper bound. Default to `true`.
+        let canInsert: Bool = maxCount.map { array.count < $0 } ?? true
+        
+        guard !array.isEmpty
+        else
+        {
+            guard canInsert
+            else
+            {
+                return array
+            }
+            
+            return [generateElement(context)]
+        }
+        
+        let canRemove       : Bool  = array.count > minCount
+        let mutateWeight    : Int   = 70
+        let insertWeight    : Int   = canInsert ? 15 : 0
+        let removeWeight    : Int   = canRemove ? 15 : 0
+        let totalWeight     : Int   = mutateWeight + insertWeight + removeWeight
+        let chance          : Int   = context.random(in: 1...totalWeight)
+        
+        var copy: [E] = array
+        
+        if chance <= mutateWeight
+        {
+            let index: Int = context.random(in: 0..<copy.count)
+            
+            copy[index] = mutateElement(copy[index], context)
+        }
+        else if chance <= mutateWeight + insertWeight
+        {
+            let index: Int = context.random(in: 0...copy.count)
+            
+            copy.insert(
+                generateElement(context),
+                at: index
+            )
+        }
+        else
+        {
+            let index: Int = context.random(in: 0..<copy.count)
+            
+            copy.remove(at: index)
+        }
+        
+        return copy
+    }
+    
+    
+    
+    /// Mutates the given array.
+    /// - Parameters:
+    ///   - array: The array to mutate.
+    ///   - minCount: The minimum count of elements.
+    ///   - maxCount: The maximum count of elements.
+    ///   - mutateElement: The function to mutate the given element.
+    ///   - generateElement: The function to generate an element.
+    ///   - context: The generation context.
+    /// - Returns: The mutated array.
+    private static func mutateUniqueArray<E>(
+        _ array         : [E],
+        minCount        : Int,
+        maxCount        : Int?,
+        mutateElement   : (E, GenerationContext) -> E,
+        generateElement : (GenerationContext) -> E,
+        using context   : GenerationContext
+    ) -> [E] where E : Hashable
+    {
+        /// If `maxCount` is `nil`, there is no upper bound. Default to `true`.
+        let canInsert: Bool = maxCount.map { array.count < $0 } ?? true
+        
+        guard !array.isEmpty
+        else
+        {
+            guard canInsert
+            else
+            {
+                return array
+            }
+            
+            return [generateElement(context)]
+        }
+        
+        let canRemove       : Bool  = array.count > minCount
+        let mutateWeight    : Int   = 70
+        let insertWeight    : Int   = canInsert ? 15 : 0
+        let removeWeight    : Int   = canRemove ? 15 : 0
+        let totalWeight     : Int   = mutateWeight + insertWeight + removeWeight
+        let chance          : Int   = context.random(in: 1...totalWeight)
+        
+        var copy        : [E]       = array
+        let existing    : Set<E>    = Set(array)
+        
+        if chance <= mutateWeight
+        {
+            let index   : Int       = context.random(in: 0..<copy.count)
+            var others  : Set<E>    = existing
+            
+            others.remove(copy[index])
+            
+            for _ in 0..<1000
+            {
+                let mutated: E = mutateElement(
+                    copy[index],
+                    context
+                )
+                
+                if !others.contains(mutated)
+                {
+                    copy[index] = mutated
+                    
+                    return copy
+                }
+            }
+        }
+        else if chance <= mutateWeight + insertWeight
+        {
+            for _ in 0..<1000
+            {
+                let element: E = generateElement(context)
+                
+                if !existing.contains(element)
+                {
+                    let index: Int = context.random(in: 0...copy.count)
+                    
+                    copy.insert(
+                        element,
+                        at: index
+                    )
+                    
+                    return copy
+                }
+            }
+        }
+        else
+        {
+            let index: Int = context.random(in: 0..<copy.count)
+            
+            copy.remove(at: index)
+        }
+        
+        return copy
+    }
 }
 
 
@@ -781,6 +1038,28 @@ extension Generator
                 }
                 
                 return [nil] + self.shrink(wrapped).map { .some($0) }
+            },
+            mutate:
+            {
+                value, context in
+                
+                if context.random(in: 1...10) == 1
+                {
+                    if value == nil
+                    {
+                        return self.generate(context)
+                    }
+                    
+                    return nil
+                }
+                
+                guard let wrapped: V = value
+                else
+                {
+                    return self.generate(context)
+                }
+                
+                return self.mutate(wrapped, context)
             }
         )
     }
@@ -815,6 +1094,16 @@ extension Generator where V == Character
                 character in
                 
                 return character.shrink()
+            },
+            mutate:
+            {
+                character, context in
+                
+                return mutateCharacter(
+                    character,
+                    in:     Unicode.Scalar.asciiPrintableRange,
+                    using:  context
+                )
             }
         )
     }
@@ -845,6 +1134,16 @@ extension Generator where V == Character
                 character in
                 
                 return character.shrink()
+            },
+            mutate:
+            {
+                character, context in
+                
+                return mutateCharacter(
+                    character,
+                    in:     Unicode.Scalar.asciiLowercaseRange,
+                    using:  context
+                )
             }
         )
     }
@@ -875,6 +1174,16 @@ extension Generator where V == Character
                 character in
                 
                 return character.shrink()
+            },
+            mutate:
+            {
+                character, context in
+                
+                return mutateCharacter(
+                    character,
+                    in:     Unicode.Scalar.asciiUppercaseRange,
+                    using:  context
+                )
             }
         )
     }
@@ -904,6 +1213,16 @@ extension Generator where V == Character
                 character in
                 
                 return character.shrink()
+            },
+            mutate:
+            {
+                character, context in
+                
+                return mutateCharacter(
+                    character,
+                    in:     Unicode.Scalar.asciiDigitRange,
+                    using:  context
+                )
             }
         )
     }
@@ -936,6 +1255,24 @@ extension Generator where V == Character
                 character in
                 
                 return character.shrink()
+            },
+            mutate:
+            {
+                character, context in
+                
+                let scalar: Int
+                    = character.unicodeScalars.first.map { Int($0.value) }
+                    ?? Unicode.Scalar.asciiLowercaseRange.lowerBound
+                
+                let range: ClosedRange<Int> = Unicode.Scalar.alphanumericRanges
+                    .first { $0.contains(scalar) }
+                    ?? Unicode.Scalar.asciiLowercaseRange
+                
+                return mutateCharacter(
+                    character,
+                    in:     range,
+                    using:  context
+                )
             }
         )
     }
@@ -969,8 +1306,41 @@ extension Generator where V == Character
                 character in
                 
                 return character.shrink()
+            },
+            mutate:
+            {
+                _, context in
+                
+                return context.randomElement(of: characters)!
             }
         )
+    }
+    
+    
+    
+    /// Mutates the given character.
+    /// - Parameters:
+    ///   - character: The character to mutate.
+    ///   - range: The ASCII range in which the character exists.
+    ///   - context: The generation context.
+    /// - Returns: The mutated character.
+    private static func mutateCharacter(
+        _       character   : Character,
+        in      range       : ClosedRange<Int>,
+        using   context     : GenerationContext
+    ) -> Character
+    {
+        let scalar: UInt32 = character.unicodeScalars.first.map { UInt32($0) }
+            ?? UInt32(range.lowerBound)
+        
+        let delta: Int = context.random(in: -context.size...context.size)
+        
+        let mutated = UInt32(min(
+            range.upperBound,
+            max(range.lowerBound, Int(scalar) + delta)
+        ))
+        
+        return Character(Unicode.Scalar(mutated)!)
     }
 }
 
@@ -1023,6 +1393,18 @@ extension Generator where V == String
                 string in
                 
                 return string.shrinkCharacters()
+            },
+            mutate:
+            {
+                string, context in
+                
+                return mutateString(
+                    string,
+                    minCount:       count,
+                    maxCount:       count,
+                    characters:     characters,
+                    using:          context
+                )
             }
         )
     }
@@ -1074,6 +1456,18 @@ extension Generator where V == String
                 string in
                 
                 return string.shrinkToward(minCount: count.lowerBound)
+            },
+            mutate:
+            {
+                string, context in
+                
+                return mutateString(
+                    string,
+                    minCount:       count.lowerBound,
+                    maxCount:       count.upperBound,
+                    characters:     characters,
+                    using:          context
+                )
             }
         )
     }
@@ -1151,8 +1545,87 @@ extension Generator where V == String
                 string in
                 
                 return string.shrinkToward(minCount: 1)
+            },
+            mutate:
+            {
+                string, context in
+                
+                return mutateString(
+                    string,
+                    minCount:       1,
+                    maxCount:       nil,
+                    characters:     characters,
+                    using:          context
+                )
             }
         )
+    }
+    
+    
+    
+    /// Mutates the given string.
+    /// - Parameters:
+    ///   - string: The string to mutate.
+    ///   - minCount: The minimum character count.
+    ///   - maxCount: The maximum character count.
+    ///   - characters: The character generator.
+    ///   - context: The generation context.
+    /// - Returns: The mutated string.
+    private static func mutateString(
+        _ string        : String,
+        minCount        : Int,
+        maxCount        : Int?,
+        characters      : Generator<Character>,
+        using context   : GenerationContext
+    ) -> String
+    {
+        /// If `maxCount` is `nil`, there is no upper bound. Default to `true`.
+        let canInsert: Bool = maxCount.map { string.count < $0 } ?? true
+        
+        guard !string.isEmpty
+        else
+        {
+            guard canInsert
+            else
+            {
+                return string
+            }
+            
+            return String(characters.generate(context))
+        }
+        
+        let canRemove       : Bool  = string.count > minCount
+        let mutateWeight    : Int   = 70
+        let insertWeight    : Int   = canInsert ? 15 : 0
+        let removeWeight    : Int   = canRemove ? 15 : 0
+        let totalWeight     : Int   = mutateWeight + insertWeight + removeWeight
+        let chance          : Int   = context.random(in: 1...totalWeight)
+        
+        var charArray: [Character] = Array(string)
+        
+        if chance <= mutateWeight
+        {
+            let index: Int = context.random(in: 0..<charArray.count)
+            
+            charArray[index] = characters.mutate(charArray[index], context)
+        }
+        else if chance <= mutateWeight + insertWeight
+        {
+            let index: Int = context.random(in: 0...charArray.count)
+            
+            charArray.insert(
+                characters.generate(context),
+                at: index
+            )
+        }
+        else
+        {
+            let index: Int = context.random(in: 0..<charArray.count)
+            
+            charArray.remove(at: index)
+        }
+        
+        return String(charArray)
     }
 }
 
@@ -1185,6 +1658,32 @@ extension Generator where V : FixedWidthInteger
                 value in
                 
                 return value.shrinkTowardZero(in: range)
+            },
+            mutate:
+            {
+                value, context in
+                
+                let maxDelta    : V     = V(clamping: max(1, context.size))
+                let delta       : V     = context.random(in: 0...maxDelta)
+                
+                if context.randomBool()
+                {
+                    let (result, overflow)
+                        = value.addingReportingOverflow(delta)
+                    
+                    return overflow
+                        ? range.upperBound
+                        : min(range.upperBound, result)
+                }
+                else
+                {
+                    let (result, overflow)
+                        = value.subtractingReportingOverflow(delta)
+                    
+                    return overflow
+                        ? range.lowerBound
+                        : max(range.lowerBound, result)
+                }
             }
         )
     }
@@ -1247,6 +1746,18 @@ extension Generator
                 value in
                 
                 return value.shrinkTowardZero(in: range)
+            },
+            mutate:
+            {
+                value, context in
+                
+                return mutateFloatingPoint(
+                    value,
+                    lowerBound:     range.lowerBound,
+                    upperBound:     range.upperBound,
+                    using:          context,
+                    generate:       { context.random(in: range) }
+                )
             }
         )
     }
@@ -1288,7 +1799,73 @@ extension Generator
                 
                 return value.shrinkTowardZero(in: closed)
                     .filter { range.contains($0) }
+            },
+            mutate:
+            {
+                value, context in
+                
+                return mutateFloatingPoint(
+                    value,
+                    lowerBound:     range.lowerBound,
+                    upperBound:     range.upperBound.nextDown,
+                    using:          context,
+                    generate:   {    context.random(in: range) }
+                )
             }
         )
+    }
+    
+    
+    
+    /// Mutates the given floating-point number.
+    /// - Parameters:
+    ///   - value: The floating-point number to mutate.
+    ///   - lowerBound: The lower bound of the range.
+    ///   - upperBound: The upper bound of the range.
+    ///   - context: The generation context.
+    ///   - generate: The function to generate a value.
+    /// - Returns: The mutated floating-point number.
+    private static func mutateFloatingPoint(
+        _ value         : V,
+        lowerBound      : V,
+        upperBound      : V,
+        using context   : GenerationContext,
+        generate        : () -> V
+    ) -> V
+    {
+        guard value.isFinite
+        else
+        {
+            return generate()
+        }
+        
+        if context.random(in: 1...5) == 1
+        {
+            let factor  : V     = context.random(in: 0.5...1.5)
+            let scaled  : V     = value * factor
+            
+            let clamped: V = min(
+                upperBound,
+                max(lowerBound, scaled)
+            )
+            
+            return clamped.isFinite
+                ? clamped
+                : generate()
+        }
+        else
+        {
+            let magnitude   : V     = max(1.0, abs(value) * 0.1)
+            let delta       : V     = context.random(in: -magnitude...magnitude)
+            
+            let result: V = min(
+                upperBound,
+                max(lowerBound, value + delta)
+            )
+            
+            return result.isFinite
+                ? result
+                : generate()
+        }
     }
 }
