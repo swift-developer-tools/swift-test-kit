@@ -12,7 +12,7 @@ import XCTest
 
 
 
-internal final class PackShrinkingTests: TestKitCase
+internal final class AnyShrinkerTests: TestKitCase
 {
     // MARK: - AnyShrinker
     
@@ -257,48 +257,6 @@ internal final class PackShrinkingTests: TestKitCase
         XCTAssertEqual(first, 1)
         XCTAssertEqual(second, 2)
         XCTAssertEqual(third, 3)
-    }
-    
-    
-    
-    // MARK: - PackIndex
-    
-    func testSingleNextCall()
-    {
-        let packIndex = PackIndex()
-        
-        XCTAssertEqual(packIndex.next(), 0)
-    }
-    
-    
-    
-    func testSequentialFromZero()
-    {
-        let packIndex = PackIndex()
-        
-        for index in 0..<1000
-        {
-            XCTAssertEqual(packIndex.next(), index)
-        }
-    }
-    
-    
-    
-    func testNewInstanceStartsAtZero()
-    {
-        let packIndex1 = PackIndex()
-        
-        for index in 0..<1000
-        {
-            XCTAssertEqual(packIndex1.next(), index)
-        }
-        
-        let packIndex2 = PackIndex()
-        
-        for index in 0..<1000
-        {
-            XCTAssertEqual(packIndex2.next(), index)
-        }
     }
     
     
@@ -1034,7 +992,7 @@ internal final class PackShrinkingTests: TestKitCase
 
 // MARK: - Support
 
-extension PackShrinkingTests
+extension AnyShrinkerTests
 {
     /// Computes the shrink candidates of the given values.
     /// - Parameters:
