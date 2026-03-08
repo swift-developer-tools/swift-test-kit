@@ -448,7 +448,7 @@ extension Generator
                 
                 let rawCandidates: [[Any]] = AnyShrinker.shrinkCandidates(
                     of:     tuple,
-                    using:  shrinkers
+                    with:   shrinkers
                 )
                 
                 return rawCandidates.map

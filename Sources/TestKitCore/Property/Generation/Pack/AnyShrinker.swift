@@ -79,7 +79,7 @@ internal struct AnyShrinker
     /// - Returns: The type-erased shrink candidates.
     internal static func shrinkCandidates(
         of      value       : Any,
-        using   shrinkers   : [AnyShrinker]
+        with    shrinkers   : [AnyShrinker]
     ) -> [[Any]]
     {
         var candidates  : [[Any]]   = []

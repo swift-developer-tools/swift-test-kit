@@ -824,7 +824,7 @@ internal final class AnyShrinkerTests: TestKitCase
         
         let candidates: [[Any]] = AnyShrinker.shrinkCandidates(
             of:     (10, "abc"),
-            using:  shrinkers
+            with:   shrinkers
         )
         
         XCTAssertEqual(candidates.count, p0Count + p1Count)
@@ -872,7 +872,7 @@ internal final class AnyShrinkerTests: TestKitCase
         
         let candidates: [[Any]] = AnyShrinker.shrinkCandidates(
             of:     value,
-            using:  shrinkers
+            with:   shrinkers
         )
         
         let expected: [Int] = value.shrinkTowardZero()
@@ -894,7 +894,7 @@ internal final class AnyShrinkerTests: TestKitCase
         /// No shrinkers or values. Nothing to shrink.
         let zeroResult: [[Any]] = AnyShrinker.shrinkCandidates(
             of:     40,
-            using:  []
+            with:   []
         )
         
         XCTAssertTrue(zeroResult.isEmpty)
@@ -903,7 +903,7 @@ internal final class AnyShrinkerTests: TestKitCase
         /// single-element pack.
         let twoResult: [[Any]] = AnyShrinker.shrinkCandidates(
             of: 40,
-            using:
+            with:
             [
                 .makeShrinker(for: Int.self),
                 .makeShrinker(for: Int.self)
@@ -919,7 +919,7 @@ internal final class AnyShrinkerTests: TestKitCase
     {
         let candidates: [[Any]] = AnyShrinker.shrinkCandidates(
             of: (0, false, ""),
-            using:
+            with:
             [
                 .makeShrinker(for: Int.self),
                 .makeShrinker(for: Bool.self),
@@ -936,7 +936,7 @@ internal final class AnyShrinkerTests: TestKitCase
     {
         let candidates: [[Any]] = AnyShrinker.shrinkCandidates(
             of:     0,
-            using:  [.makeShrinker(for: Int.self)]
+            with:   [.makeShrinker(for: Int.self)]
         )
         
         XCTAssertTrue(candidates.isEmpty)
@@ -969,7 +969,7 @@ internal final class AnyShrinkerTests: TestKitCase
         
         let candidates: [[Any]] = AnyShrinker.shrinkCandidates(
             of:     value,
-            using:  [shrinker]
+            with:   [shrinker]
         )
         
         let expected: [Int] = (50 as Int).shrinkTowardZero()
