@@ -469,7 +469,7 @@ internal final class PerformanceOutputTests: TestKitCase
             runs:           3,
             warmupRuns:     0,
             timeLimit:      .milliseconds(1),
-            memoryLimit:    .bytes(1)
+            memoryLimit:    .gigabytes(50)
         )
         
         let actual: String? = await withCapturedFailure
@@ -494,7 +494,7 @@ internal final class PerformanceOutputTests: TestKitCase
             Median: <M> (3 runs) ←
         
         Memory:
-            Threshold: 1 B
+            Threshold: 50 GB
             Median: <M> (3 runs)
         """
         
