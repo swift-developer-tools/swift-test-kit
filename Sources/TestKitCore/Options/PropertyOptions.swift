@@ -90,8 +90,9 @@ public struct PropertyOptions: Equatable, Sendable
     /// Initializes a ``PropertyOptions`` instance, optionally specifying
     /// values for its properties.
     ///
-    /// - Precondition: `iterations`, `poolSize`, `maxShrinkSteps`, `maxSize`,
+    /// - Precondition: `iterations`, `maxShrinkSteps`, `maxSize`,
     /// `maxDiscardRatio`, and `maxCommandCount` must not be negative.
+    /// - Precondition: `poolSize` must be positive.
     /// - Precondition: `explorationRatio` must be in the range `0.0...1.0`.
     ///
     /// - Warning: Very large `maxSize` values can cause significant memory
@@ -136,8 +137,8 @@ public struct PropertyOptions: Equatable, Sendable
         )
         
         precondition(
-            poolSize >= 0,
-            "poolSize must not be negative"
+            poolSize > 0,
+            "poolSize must be positive"
         )
         
         precondition(
