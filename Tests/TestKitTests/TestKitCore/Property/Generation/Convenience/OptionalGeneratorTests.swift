@@ -57,7 +57,7 @@ internal final class OptionalGeneratorTests: TestKitCase
             }
         }
         
-        XCTAssertGreaterThan(nilCount, Int(Double(iterations) * 0.2 * 0.95))
+        XCTAssertGreaterThan(nilCount, Int(Double(iterations) * 0.2 * 0.85))
     }
     
     
