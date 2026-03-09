@@ -26,6 +26,7 @@ internal final class ClassificationIntegrationTests: TestKitCase
     
     func testClassificationOutsidePropertyBodyIsNoOp()
     {
+        TKTarget(50.0)
         TKClassify("label", when: true)
         TKCover(50, "label", when: true)
         TKLabel("label")
@@ -763,6 +764,46 @@ internal final class ClassificationIntegrationTests: TestKitCase
             
             try TKAssume(true)
             TKCover(100, "always", when: true)
+        }
+    }
+    
+    
+    
+    @Reasync
+    func testTargetPassesThroughForAll() async
+    {
+        await TKForAll(
+            using:      Generator<Int>.integer(in: 0...100),
+            options:    .propertyOptions(iterations: 50, seed: 1)
+        )
+        {
+            (n: Int) async throws in
+            
+            TKTarget(Double(n))
+        }
+    }
+    
+    
+    
+    @Reasync
+    func testTargetFailureThroughForAll() async
+    {
+        await withOneExpectedFailure
+        {
+            await TKForAll(
+                using:      Generator<Int>.integer(in: 0...100),
+                options:    .propertyOptions(iterations: 100, seed: 1)
+            )
+            {
+                (n: Int) async throws in
+                
+                TKTarget(Double(n))
+                
+                if n > 50
+                {
+                    TKAssertTrue(false)
+                }
+            }
         }
     }
 }
