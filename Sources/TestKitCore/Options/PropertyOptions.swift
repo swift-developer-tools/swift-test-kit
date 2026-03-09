@@ -47,6 +47,23 @@ public struct PropertyOptions: Equatable, Sendable
     /// this maximum value in later iterations.
     public var maxCommandCount  : Int
     
+    /// The number of high-target-value entries retained for mutation during
+    /// targeted property-based testing.
+    ///
+    /// The default value is `20`.
+    ///
+    /// Larger pools maintain more diversity at the cost of slower convergence.
+    /// Smaller pools converge faster but risk local optima.
+    public var poolSize         : Int
+    
+    /// The balance between exploration and exploitation during targeted
+    /// property-based testing.
+    ///
+    /// The default value is `0.3`, which means that 30% of iterations generate
+    /// a new value (exploration), while 70% of iterations mutate existing pool
+    /// entries (exploitation).
+    public var explorationRatio : Double
+    
     /// The maximum duration for the property-based test, including generation,
     /// evaluation, and shrinking.
     ///
@@ -73,21 +90,24 @@ public struct PropertyOptions: Equatable, Sendable
     /// Initializes a ``PropertyOptions`` instance, optionally specifying
     /// values for its properties.
     ///
-    /// - Precondition: `iterations`, `maxShrinkSteps`, `maxSize`,
+    /// - Precondition: `iterations`, `poolSize`, `maxShrinkSteps`, `maxSize`,
     /// `maxDiscardRatio`, and `maxCommandCount` must not be negative.
+    /// - Precondition: `explorationRatio` must be in the range `0.0...1.0`.
     ///
     /// - Warning: Very large `maxSize` values can cause significant memory
     /// pressure, especially for collection types, which generate up to
     /// `maxSize` elements per iteration.
     public init(
-        iterations      : Int                   = 100,
-        maxShrinkSteps  : Int                   = 100,
-        maxSize         : Int                   = 100,
-        maxDiscardRatio : Int                   = 10,
-        maxCommandCount : Int                   = 100,
-        timeout         : Duration?             = nil,
-        statistics      : CommandStatistics     = [],
-        seed            : UInt64?               = nil
+        iterations          : Int                   = 100,
+        maxShrinkSteps      : Int                   = 100,
+        maxSize             : Int                   = 100,
+        maxDiscardRatio     : Int                   = 10,
+        maxCommandCount     : Int                   = 100,
+        poolSize            : Int                   = 20,
+        explorationRatio    : Double                = 0.3,
+        timeout             : Duration?             = nil,
+        statistics          : CommandStatistics     = [],
+        seed                : UInt64?               = nil
     )
     {
         precondition(
@@ -115,11 +135,23 @@ public struct PropertyOptions: Equatable, Sendable
             "maxCommandCount must not be negative"
         )
         
+        precondition(
+            poolSize >= 0,
+            "poolSize must not be negative"
+        )
+        
+        precondition(
+            (0.0...1.0).contains(explorationRatio),
+            "explorationRatio must be in the range 0.0...1.0"
+        )
+        
         self.iterations         = iterations
         self.maxShrinkSteps     = maxShrinkSteps
         self.maxSize            = maxSize
         self.maxDiscardRatio    = maxDiscardRatio
         self.maxCommandCount    = maxCommandCount
+        self.poolSize           = poolSize
+        self.explorationRatio   = explorationRatio
         self.timeout            = timeout
         self.statistics         = statistics
         self.seed               = seed
