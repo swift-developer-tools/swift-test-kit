@@ -30,6 +30,7 @@ internal struct PropertyRunner
         return await run(
             generate:       { context in T.arbitrary(using: context) },
             shrink:         { value in value.shrink() },
+            mutate:         { value, context in value.mutate(using: context) },
             precondition:   nil,
             property:       property,
             options:        options
@@ -54,6 +55,7 @@ internal struct PropertyRunner
         return await run(
             generate:       generator.generate,
             shrink:         generator.shrink,
+            mutate:         generator.mutate,
             precondition:   nil,
             property:       property,
             options:        options
@@ -78,6 +80,7 @@ internal struct PropertyRunner
         return await run(
             generate:       { context in T.arbitrary(using: context) },
             shrink:         { value in value.shrink() },
+            mutate:         { value, context in value.mutate(using: context) },
             precondition:   precondition,
             property:       property,
             options:        options
@@ -104,6 +107,7 @@ internal struct PropertyRunner
         return await run(
             generate:       generator.generate,
             shrink:         generator.shrink,
+            mutate:         generator.mutate,
             precondition:   precondition,
             property:       property,
             options:        options
@@ -116,6 +120,7 @@ internal struct PropertyRunner
     /// - Parameters:
     ///   - generate: The function to generate a value from the given context.
     ///   - shrink: The function to shrink the given value.
+    ///   - mutate: The function to mutate the given value.
     ///   - precondition: The condition which generated values must satisfy.
     ///   - property: The property body.
     ///   - options: The options for testing.
@@ -124,6 +129,7 @@ internal struct PropertyRunner
     private static func run<T>(
         generate            : (GenerationContext) -> T,
         shrink              : @escaping (T) -> [T],
+        mutate              : (T, GenerationContext) -> T,
         precondition        : ((T) -> Bool)?,
         property            : (T) async throws -> Void,
         options             : TestOptions
@@ -142,9 +148,14 @@ internal struct PropertyRunner
         var iteration       : Int                   = 0
         var discarded       : Int                   = 0
         var succeeded       : Int                   = 0
+        var targetedMode    : Bool                  = false
+        
+        var targetPool = TargetPool<T>(capacity: opts.poolSize)
         
         let deadline: ContinuousClock.Instant?
             = opts.timeout.map { ContinuousClock.now.advanced(by: $0) }
+        
+
         
         while succeeded < iterations
         {
@@ -158,10 +169,30 @@ internal struct PropertyRunner
                 break
             }
             
+            
+            
             iteration       += 1
             context.size    = succeeded * maxSize / iterations
             
-            let value: T = generate(context)
+            
+            
+            let value: T
+            
+            if
+                targetedMode,
+                context.random(in: 0.0..<1.0) >= opts.explorationRatio,
+                !targetPool.isEmpty
+            {
+                let base: T = targetPool.select(using: context)
+                
+                value = mutate(base, context)
+            }
+            else
+            {
+                value = generate(context)
+            }
+            
+            
             
             if
                 let precondition,
@@ -193,6 +224,19 @@ internal struct PropertyRunner
             switch evaluationResult
             {
                 case .passed:
+                    
+                    if let target: Double = interceptor.target
+                    {
+                        if !targetedMode
+                        {
+                            targetedMode = true
+                        }
+                        
+                        targetPool.insert(
+                            value:      value,
+                            target:     target
+                        )
+                    }
                     
                     interceptor.finalizeIteration()
                     succeeded += 1
