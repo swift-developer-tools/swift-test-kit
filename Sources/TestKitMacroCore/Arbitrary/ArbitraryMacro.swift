@@ -223,10 +223,10 @@ extension ArbitraryMacro
                     ? ","
                     : ""
                 
-                let text: String = "\(property.name): \(property.typeName)"
+                lines.append(indent(3,
+                    "\(property.name): \(property.typeName)"
                     + ".arbitrary(using: context)\(trailing)"
-                
-                lines.append(indent(3, text))
+                ))
             }
             
             lines.append(indent(2, ")"))
@@ -277,16 +277,16 @@ extension ArbitraryMacro
             {
                 lines.append("")
                 
-                let text1: String
-                    = "for \(property.name) in \(property.name).shrink()"
+                lines.append(indent(2,
+                    "for \(property.name) in \(property.name).shrink()"
+                ))
                 
-                lines.append(indent(2, text1))
                 lines.append(indent(2, "{"))
                 
-                let text2: String
-                    = "_$results.append(\(typeName)(\(initArgs)))"
+                lines.append(
+                    indent(3, "_$results.append(\(typeName)(\(initArgs)))")
+                )
                 
-                lines.append(indent(3, text2))
                 lines.append(indent(2, "}"))
             }
             

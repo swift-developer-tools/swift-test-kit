@@ -306,10 +306,10 @@ internal func makeEnumShrink(
                 bindings:   bindings
             )
             
-            let text1: String
-                = "case let .\(enumCase.name)(\(patternArgs)):"
+            lines.append(
+                indent(3, "case let .\(enumCase.name)(\(patternArgs)):")
+            )
             
-            lines.append(indent(3, text1))
             lines.append("")
             lines.append(indent(4, "var _$results: [\(typeName)] = []"))
             
@@ -331,10 +331,9 @@ internal func makeEnumShrink(
                 {
                     lines.append("")
                     
-                    let appendText: String =
+                    lines.append(indent(4,
                         "_$results.append(\(bindings[valueIndex]))"
-                    
-                    lines.append(indent(4, appendText))
+                    ))
                 }
             }
             
@@ -346,15 +345,13 @@ internal func makeEnumShrink(
                 
                 lines.append("")
                 
-                let text2: String = "for \(binding) in \(binding).shrink()"
-                
-                lines.append(indent(4, text2))
+                lines.append(indent(4, "for \(binding) in \(binding).shrink()"))
                 lines.append(indent(4, "{"))
                 
-                let text3: String = "_$results.append(.\(enumCase.name)"
-                    + "(\(reconstructionArgs)))"
+                lines.append(indent(5, 
+                    "_$results.append(.\(enumCase.name)(\(reconstructionArgs)))"
+                ))
                 
-                lines.append(indent(5, text3))
                 lines.append(indent(4, "}"))
             }
             
@@ -753,18 +750,17 @@ private func appendCaseReturn(
         
         lines.append(indent(baseIndent, "{"))
         
-        let caseText: String
-            = "return \(makeCaseConstruction(enumCase))"
+        lines.append(
+            indent(baseIndent + 1, "return \(makeCaseConstruction(enumCase))")
+        )
         
-        lines.append(indent(baseIndent + 1, caseText))
         lines.append(indent(baseIndent, "}"))
     }
     else
     {
-        let caseText: String
-            = "return \(makeCaseConstruction(enumCase))"
-        
-        lines.append(indent(baseIndent, caseText))
+        lines.append(
+            indent(baseIndent, "return \(makeCaseConstruction(enumCase))")
+        )
     }
 }
 
