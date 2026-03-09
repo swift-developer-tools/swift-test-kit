@@ -16,14 +16,16 @@ internal extension TestOptions
     /// Initializes a ``TestOptions`` instance, optionally specifying values
     /// for its property-based testing options property.
     static func propertyOptions(
-        iterations      : Int                   = 100,
-        maxShrinkSteps  : Int                   = 100,
-        maxSize         : Int                   = 100,
-        maxDiscardRatio : Int                   = 10,
-        maxCommandCount : Int                   = 100,
-        timeout         : Duration?             = nil,
-        statistics      : CommandStatistics     = [],
-        seed            : UInt64?               = nil
+        iterations          : Int                   = 100,
+        maxShrinkSteps      : Int                   = 100,
+        maxSize             : Int                   = 100,
+        maxDiscardRatio     : Int                   = 10,
+        maxCommandCount     : Int                   = 100,
+        poolSize            : Int                   = 20,
+        explorationRatio    : Double                = 0.3,
+        timeout             : Duration?             = nil,
+        statistics          : CommandStatistics     = [],
+        seed                : UInt64?               = nil
     ) -> TestOptions
     {
         let propertyOptions = PropertyOptions(
@@ -32,6 +34,8 @@ internal extension TestOptions
             maxSize:            maxSize,
             maxDiscardRatio:    maxDiscardRatio,
             maxCommandCount:    maxCommandCount,
+            poolSize:           poolSize,
+            explorationRatio:   explorationRatio,
             timeout:            timeout,
             statistics:         statistics,
             seed:               seed
