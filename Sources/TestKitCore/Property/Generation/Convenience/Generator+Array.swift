@@ -352,11 +352,11 @@ extension Generator
     /// The produced arrays have a count of elements within the range
     /// `1...max(1, context.size)`.
     ///
-    /// - Parameter type: The element type. The default value is inferred.
+    /// - Parameter generator: The element generator.
     /// - Returns: A generator that produces non-empty arrays.
     public static func nonEmptyArray<E>(
-        of type: E.Type = E.self
-    ) -> Generator<[E]> where V == [E], E : Arbitrary
+        using generator: Generator<E>
+    ) -> Generator<[E]> where V == [E]
     {
         return Generator<[E]>(
             generate:
@@ -370,14 +370,22 @@ extension Generator
                 {
                     _ in
                     
-                    return E.arbitrary(using: context)
+                    return generator.generate(context)
                 }
             },
             shrink:
             {
                 array in
                 
-                return array.shrinkToward(minCount: 1)
+                let shrinkElements: () -> [[E]] =
+                {
+                    return array.shrinkElements(by: { generator.shrink($0) })
+                }
+                
+                return array.shrinkToward(
+                    minCount:           1,
+                    shrinkElements:     shrinkElements
+                )
             },
             mutate:
             {
@@ -387,12 +395,28 @@ extension Generator
                     array,
                     minCount:           1,
                     maxCount:           nil,
-                    mutateElement:      { $0.mutate(using: $1) },
-                    generateElement:    { E.arbitrary(using: $0) },
+                    mutateElement:      generator.mutate,
+                    generateElement:    generator.generate,
                     using:              context
                 )
             }
         )
+    }
+    
+    
+    
+    /// Creates a generator that produces non-empty arrays.
+    ///
+    /// The produced arrays have a count of elements within the range
+    /// `1...max(1, context.size)`.
+    ///
+    /// - Parameter type: The element type. The default value is inferred.
+    /// - Returns: A generator that produces non-empty arrays.
+    public static func nonEmptyArray<E>(
+        of type: E.Type = E.self
+    ) -> Generator<[E]> where V == [E], E : Arbitrary
+    {
+        return nonEmptyArray(using: .arbitrary())
     }
     
     
