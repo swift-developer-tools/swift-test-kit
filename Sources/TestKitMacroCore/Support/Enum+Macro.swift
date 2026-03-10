@@ -487,12 +487,14 @@ internal func makeEnumMutate(
             
             if enumCase.associatedValues.count == 1
             {
-                let args: String = makeReconstructionArgs(
+                let reconstructionArgs: String = makeReconstructionArgs(
                     for:        enumCase.associatedValues,
                     bindings:   ["\(bindings[0]).mutate(using: context)"]
                 )
                 
-                lines.append(indent(4, "return .\(enumCase.name)(\(args))"))
+                lines.append(indent(4,
+                    "return .\(enumCase.name)(\(reconstructionArgs))"
+                ))
             }
             else
             {
@@ -525,14 +527,14 @@ internal func makeEnumMutate(
                             : binding
                     }
                     
-                    let args: String = makeReconstructionArgs(
+                    let reconstructionArgs: String = makeReconstructionArgs(
                         for:        enumCase.associatedValues,
                         bindings:   mutatedBindings
                     )
                     
-                    lines.append(
-                        indent(6, "return .\(enumCase.name)(\(args))")
-                    )
+                    lines.append(indent(6,
+                        "return .\(enumCase.name)(\(reconstructionArgs))"
+                    ))
                     
                     if valueIndex < enumCase.associatedValues.count - 1
                     {
