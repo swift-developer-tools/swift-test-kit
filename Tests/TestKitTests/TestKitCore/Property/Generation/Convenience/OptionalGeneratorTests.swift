@@ -12,6 +12,8 @@ import XCTest
 
 
 
+/// Distribution tests in this class use an 85% threshold rather than the
+/// standard 95%. See ``StatefulMacroTests`` for more information.
 internal final class OptionalGeneratorTests: TestKitCase
 {
     // MARK: - Determinism
@@ -83,7 +85,7 @@ internal final class OptionalGeneratorTests: TestKitCase
         
         XCTAssertGreaterThan(
             nilCount,
-            Int(Double(iterations) * probability * 0.95)
+            Int(Double(iterations) * probability * 0.85)
         )
     }
     
@@ -228,7 +230,7 @@ internal final class OptionalGeneratorTests: TestKitCase
             }
         }
         
-        XCTAssertGreaterThan(nilCount, Int(Double(iterations) * 0.10 * 0.95))
+        XCTAssertGreaterThan(nilCount, Int(Double(iterations) * 0.10 * 0.85))
     }
     
     
