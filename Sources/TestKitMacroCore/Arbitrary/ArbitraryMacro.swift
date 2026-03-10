@@ -123,6 +123,26 @@ extension ArbitraryMacro
         }
         else
         {
+            let hasExplicitInit: Bool = declaration.memberBlock.members
+                .contains { $0.decl.is(InitializerDeclSyntax.self) }
+            
+            if hasExplicitInit
+            {
+                /// The macro needs to initialize the struct using a memberwise
+                /// initializer. If the struct declared an initializer, Swift
+                /// does not synthesize the implicit memberwise initializer.
+                /// Even if the declared initializer is memberwise, the macro
+                /// does not have access to the resolved semantic types, so it
+                /// cannot reliably verify that the custom method matches the
+                /// memberwise pattern.
+                context.diagnose(Diagnostic(
+                    node:       node,
+                    message:    ArbitraryDiagnosticKind.structHasExplicitInit
+                ))
+                
+                return []
+            }
+            
             let result: StoredProperties = declaration.storedProperties
             
             if !result.missingAnnotations.isEmpty
@@ -415,6 +435,9 @@ private enum ArbitraryDiagnosticKind: DiagnosticMessage
     /// Properties with missing type annotations are not supported.
     case missingTypeAnnotation(typeName: String)
     
+    /// Structs must have memberwise initializers.
+    case structHasExplicitInit
+    
     /// An unsupported declaration kind.
     case unsupportedDeclaration
     
@@ -437,6 +460,11 @@ private enum ArbitraryDiagnosticKind: DiagnosticMessage
                 
                 return "@Arbitrary requires an explicit type annotation"
                 
+            case .structHasExplicitInit:
+                
+                return "@Arbitrary cannot be applied to structs with"
+                        + " explicit initializers"
+                
             case .unsupportedDeclaration:
                 
                 return "@Arbitrary can only be applied to structs and enums"
@@ -455,6 +483,7 @@ private enum ArbitraryDiagnosticKind: DiagnosticMessage
             case .classNotSupported         : id = "classNotSupported"
             case .uninhabitedEnum           : id = "uninhabitedEnum"
             case .missingTypeAnnotation     : id = "missingTypeAnnotation"
+            case .structHasExplicitInit     : id = "structHasExplicitInit"
             case .unsupportedDeclaration    : id = "unsupportedDeclaration"
         }
         
