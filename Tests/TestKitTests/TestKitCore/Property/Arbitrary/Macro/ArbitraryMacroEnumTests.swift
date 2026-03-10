@@ -48,6 +48,16 @@ internal final class ArbitraryMacroEnumTests: TestKitCase
     
     
     
+    func testSingleNoValuesMutationReturnsSelf()
+    {
+        for _ in 0..<1000
+        {
+            XCTAssertEqual(SingleNoValues.only.mutate(using: .random), .only)
+        }
+    }
+    
+    
+    
     // MARK: - MultipleNoValues
     
     func testMultipleNoValuesDeterminism()
@@ -57,7 +67,7 @@ internal final class ArbitraryMacroEnumTests: TestKitCase
     
     
     
-    func testMultipleNoValuesDistribution()
+    func testMultipleNoValuesShrinkingDistribution()
     {
         let iterations  : Int                       = 10_000
         var counts      : [MultipleNoValues : Int]  = [:]
@@ -85,6 +95,29 @@ internal final class ArbitraryMacroEnumTests: TestKitCase
         XCTAssertEqual(MultipleNoValues.a.shrink(), [])
         XCTAssertEqual(MultipleNoValues.b.shrink(), [])
         XCTAssertEqual(MultipleNoValues.c.shrink(), [])
+    }
+    
+    
+    
+    func testMultipleNoValuesMutationDistribution()
+    {
+        let iterations  : Int                       = 10_000
+        var counts      : [MultipleNoValues : Int]  = [:]
+        
+        for _ in 0..<iterations
+        {
+            let mutated = MultipleNoValues.a
+                .mutate(using: .randomSeed(size: 100))
+            
+            counts[mutated, default: 0] += 1
+        }
+        
+        XCTAssertEqual(counts.count, 3)
+        
+        for (_, count) in counts
+        {
+            XCTAssertGreaterThan(count, Int(Double(iterations / 3) * 0.85))
+        }
     }
     
     
@@ -156,6 +189,46 @@ internal final class ArbitraryMacroEnumTests: TestKitCase
     
     
     
+    func testSingleLabeledMutationPreservesCase()
+    {
+        for _ in 0..<1000
+        {
+            let mutated = SingleLabeled.value(id: 50).mutate(using: .random)
+            
+            guard case .value = mutated
+            else
+            {
+                XCTFail("Expected .value, got \(mutated)")
+                return
+            }
+        }
+    }
+    
+    
+    
+    func testSingleLabeledMutationChangesValue()
+    {
+        var changed: Bool = false
+        
+        for _ in 0..<1000
+        {
+            let value: SingleLabeled = .value(id: 50)
+            
+            let mutated: SingleLabeled
+                = value.mutate(using: .randomSeed(size: 100))
+            
+            if mutated != value
+            {
+                changed = true
+                break
+            }
+        }
+        
+        XCTAssertTrue(changed)
+    }
+    
+    
+    
     // MARK: - SingleUnlabeled
     
     func testSingleUnlabeledDeterminism()
@@ -222,6 +295,23 @@ internal final class ArbitraryMacroEnumTests: TestKitCase
     
     
     
+    func testSingleUnlabeledMutationPreservesCase()
+    {
+        for _ in 0..<1000
+        {
+            let mutated = SingleUnlabeled.value(50).mutate(using: .random)
+            
+            guard case .value = mutated
+            else
+            {
+                XCTFail("Expected .value, got \(mutated)")
+                return
+            }
+        }
+    }
+    
+    
+    
     // MARK: - MultipleLabeled
     
     func testMultipleLabeledDeterminism()
@@ -231,7 +321,7 @@ internal final class ArbitraryMacroEnumTests: TestKitCase
     
     
     
-    func testMultipleLabeledDistribution()
+    func testMultipleLabeledShrinkingDistribution()
     {
         let iterations  : Int   = 10_000
         var circles     : Int   = 0
@@ -323,6 +413,33 @@ internal final class ArbitraryMacroEnumTests: TestKitCase
     
     
     
+    func testMultipleLabeledMutationMostlyPreservesCase()
+    {
+        let iterations  : Int   = 10_000
+        var preserved   : Int   = 0
+        
+        for _ in 0..<iterations
+        {
+            let mutated = MultipleLabeled.circle(r: 50)
+                .mutate(using: .randomSeed(size: 500))
+            
+            if case .circle = mutated
+            {
+                preserved += 1
+            }
+        }
+        
+        /// With two cases, the case-switch probability is 50%.
+        XCTAssertGreaterThan(
+            preserved,
+            Int(Double(iterations) * (1 / 2) *  0.85)
+        )
+        
+        XCTAssertLessThan(preserved, Int(Double(iterations) * 0.85))
+    }
+    
+    
+    
     // MARK: - MixedCases
     
     func testMixedCasesDeterminism()
@@ -332,7 +449,7 @@ internal final class ArbitraryMacroEnumTests: TestKitCase
     
     
     
-    func testMixedCasesDistribution()
+    func testMixedCasesShrinkingDistribution()
     {
         let iterations  : Int   = 10_000
         var noneCount   : Int   = 0
@@ -432,6 +549,61 @@ internal final class ArbitraryMacroEnumTests: TestKitCase
     
     
     
+    func testMixedCasesMutationFromNoValueCase()
+    {
+        let iterations  : Int               = 10_000
+        var counts      : [String : Int]    = [:]
+        
+        for _ in 0..<iterations
+        {
+            let mutated = MixedCases.none
+                .mutate(using: .randomSeed(size: 500))
+            
+            switch mutated
+            {
+                case .none  : counts["none",    default: 0] += 1
+                case .value : counts["value",   default: 0] += 1
+                case .pair  : counts["pair",    default: 0] += 1
+            }
+        }
+        
+        XCTAssertEqual(counts.count, 3)
+        
+        for (_, count) in counts
+        {
+            XCTAssertGreaterThan(count, Int(Double(iterations / 3) * 0.85))
+        }
+    }
+    
+    
+    
+    func testMixedCasesMutationMostlyPreservesCase()
+    {
+        let iterations  : Int   = 10_000
+        var preserved   : Int   = 0
+        
+        for _ in 0..<iterations
+        {
+            let mutated = MixedCases.value(id: 50)
+                .mutate(using: .randomSeed(size: 500))
+            
+            if case .value = mutated
+            {
+                preserved += 1
+            }
+        }
+        
+        /// With three cases, the case-switch probability is 33%.
+        XCTAssertGreaterThan(
+            preserved,
+            Int(Double(iterations / 3) * (1 / 3) * 0.85)
+        )
+        
+        XCTAssertLessThan(preserved, Int(Double(iterations) * 0.85))
+    }
+    
+    
+    
     // MARK: - UnlabeledMultiple
     
     func testUnlabeledMultipleDeterminism()
@@ -489,6 +661,32 @@ internal final class ArbitraryMacroEnumTests: TestKitCase
     
     
     
+    func testUnlabeledMultipleMutatesOneAtATime()
+    {
+        for _ in 0..<1000
+        {
+            let a   : Int       = 50
+            let b   : String    = "abc"
+            
+            let mutated = UnlabeledMultiple.pair(a, b)
+                .mutate(using: .randomSeed(size: 500))
+            
+            guard case let .pair(mA, mB) = mutated
+            else
+            {
+                XCTFail("Expected .pair, got \(mutated)")
+                return
+            }
+            
+            let aChanged    : Bool  = mA != a
+            let bChanged    : Bool  = mB != b
+            
+            XCTAssertFalse(aChanged && bChanged)
+        }
+    }
+    
+    
+    
     // MARK: - MixedLabels
     
     func testMixedLabelsDeterminism()
@@ -541,6 +739,32 @@ internal final class ArbitraryMacroEnumTests: TestKitCase
         }
         
         XCTAssertEqual(candidates, expected)
+    }
+    
+    
+    
+    func testMixedLabelsMutatesOneAtATime()
+    {
+        for _ in 0..<1000
+        {
+            let name    : String    = "abc"
+            let id      : Int       = 50
+            
+            let mutated = MixedLabels.value(name: name, id)
+                .mutate(using: .randomSeed(size: 500))
+            
+            guard case let .value(mName, mID) = mutated
+            else
+            {
+                XCTFail("Expected .value, got \(mutated)")
+                return
+            }
+            
+            let nameChanged : Bool  = mName != name
+            let idChanged   : Bool  = mID != id
+            
+            XCTAssertFalse(nameChanged && idChanged)
+        }
     }
     
     
@@ -622,6 +846,33 @@ internal final class ArbitraryMacroEnumTests: TestKitCase
                 return
             }
         }
+    }
+    
+    
+    
+    func testGenericsMutationMostlyPreservesCase()
+    {
+        let iterations  : Int   = 10_000
+        var preserved   : Int   = 0
+        
+        for _ in 0..<iterations
+        {
+            let mutated = Generics<Int, String>.a(50)
+                .mutate(using: .randomSeed(size: 500))
+            
+            if case .a = mutated
+            {
+                preserved += 1
+            }
+        }
+        
+        /// With three cases, the case-switch probability is 33%.
+        XCTAssertGreaterThan(
+            preserved,
+            Int(Double(iterations / 3) * (1 / 3) * 0.85)
+        )
+        
+        XCTAssertLessThan(preserved, Int(Double(iterations) * 0.85))
     }
     
     
@@ -789,7 +1040,7 @@ internal final class ArbitraryMacroEnumTests: TestKitCase
     
     
     
-    func testManyDistribution()
+    func testManyShrinkingDistribution()
     {
         let iterations  : Int               = 10_000
         var counts      : [String : Int]    = [:]
@@ -803,11 +1054,9 @@ internal final class ArbitraryMacroEnumTests: TestKitCase
         
         XCTAssertEqual(counts.count, 5)
         
-        let expected = Int(Double(iterations / 5) * 0.85)
-        
         for (_, count) in counts
         {
-            XCTAssertGreaterThan(count, expected)
+            XCTAssertGreaterThan(count, Int(Double(iterations / 5) * 0.85))
         }
     }
     
@@ -841,7 +1090,7 @@ internal final class ArbitraryMacroEnumTests: TestKitCase
     
     
     
-    func testMultipleCaseDeclDistribution()
+    func testMultipleCaseDeclShrinkingDistribution()
     {
         let iterations  : Int               = 10_000
         var counts      : [String : Int]    = [:]
@@ -861,11 +1110,9 @@ internal final class ArbitraryMacroEnumTests: TestKitCase
         
         XCTAssertEqual(counts.count, 3)
         
-        let expected = Int(Double(iterations / 3) * 0.85)
-        
         for (_, count) in counts
         {
-            XCTAssertGreaterThan(count, expected)
+            XCTAssertGreaterThan(count, Int(Double(iterations / 3) * 0.85))
         }
     }
     
@@ -907,7 +1154,7 @@ internal final class ArbitraryMacroEnumTests: TestKitCase
     
     
     
-    func testNestedCompositionDistribution()
+    func testNestedCompositionShrinkingDistribution()
     {
         let iterations      : Int   = 10_000
         var labeledCount    : Int   = 0
@@ -983,6 +1230,33 @@ internal final class ArbitraryMacroEnumTests: TestKitCase
                 return
             }
         }
+    }
+    
+    
+    
+    func testNestedCompositionMutationMostlyPreservesCase()
+    {
+        let iterations  : Int   = 10_000
+        var preserved   : Int   = 0
+        
+        for _ in 0..<iterations
+        {
+            let mutated = NestedComposition.labeled(shape: .circle(r: 50))
+                .mutate(using: .randomSeed(size: 500))
+            
+            if case .labeled = mutated
+            {
+                preserved += 1
+            }
+        }
+        
+        /// With three cases, the case-switch probability is 33%.
+        XCTAssertGreaterThan(
+            preserved,
+            Int(Double(iterations / 3) * (1 / 3) * 0.85)
+        )
+        
+        XCTAssertLessThan(preserved, Int(Double(iterations) * 0.85))
     }
     
     
@@ -1151,7 +1425,7 @@ internal final class ArbitraryMacroEnumTests: TestKitCase
     
     
     
-    func testWithRawValueDistribution()
+    func testWithRawValueShrinkingDistribution()
     {
         let iterations  : Int                   = 10_000
         var counts      : [WithRawValue : Int]  = [:]
@@ -1165,11 +1439,9 @@ internal final class ArbitraryMacroEnumTests: TestKitCase
         
         XCTAssertEqual(counts.count, 3)
         
-        let expected = Int(Double(iterations / 3) * 0.85)
-        
         for (_, count) in counts
         {
-            XCTAssertGreaterThan(count, expected)
+            XCTAssertGreaterThan(count, Int(Double(iterations / 3) * 0.85))
         }
     }
     
@@ -1184,6 +1456,28 @@ internal final class ArbitraryMacroEnumTests: TestKitCase
     
     
     
+    func testWithRawValueMutationDistribution()
+    {
+        let iterations  : Int                   = 10_000
+        var counts      : [WithRawValue : Int]  = [:]
+        
+        for _ in 0..<iterations
+        {
+            let mutated = WithRawValue.a.mutate(using: .randomSeed(size: 500))
+            
+            counts[mutated, default: 0] += 1
+        }
+        
+        XCTAssertEqual(counts.count, 3)
+        
+        for (_, count) in counts
+        {
+            XCTAssertGreaterThan(count, Int(Double(iterations / 3) * 0.85))
+        }
+    }
+    
+    
+    
     // MARK: - WithIndirectCase
     
     func testWithIndirectCaseDeterminism()
@@ -1193,7 +1487,7 @@ internal final class ArbitraryMacroEnumTests: TestKitCase
     
     
     
-    func testWithIndirectDistribution()
+    func testWithIndirectShrinkingDistribution()
     {
         let iterations  : Int   = 10_000
         var smallCount  : Int   = 0
@@ -1383,6 +1677,18 @@ internal final class ArbitraryMacroEnumTests: TestKitCase
     
     
     
+    func testTreeMutationTerminates()
+    {
+        for _ in 0..<1000
+        {
+            let value = Tree.node(.leaf, .leaf)
+            
+            _ = value.mutate(using: .random)
+        }
+    }
+    
+    
+    
     // MARK: - MutualA
     
     func testMutualADeterminism()
@@ -1443,6 +1749,18 @@ internal final class ArbitraryMacroEnumTests: TestKitCase
     
     
     
+    func testMutualAMutationTerminates()
+    {
+        for _ in 0..<1000
+        {
+            let value = MutualA.mutual(.mutual(.leaf))
+            
+            _ = value.mutate(using: .random)
+        }
+    }
+    
+    
+    
     // MARK: - MutualB
     
     func testMutualBDeterminism()
@@ -1499,6 +1817,18 @@ internal final class ArbitraryMacroEnumTests: TestKitCase
         let expected: [MutualB] = inner.shrink().map { .mutual($0) }
         
         XCTAssertEqual(candidates, expected)
+    }
+    
+    
+    
+    func testMutualBMutationTerminates()
+    {
+        for _ in 0..<1000
+        {
+            let value = MutualB.mutual(.mutual(.leaf))
+            
+            _ = value.mutate(using: .random)
+        }
     }
     
     
@@ -1594,6 +1924,18 @@ internal final class ArbitraryMacroEnumTests: TestKitCase
         
         XCTAssertEqual(current, .end)
         XCTAssertGreaterThan(steps, 0)
+    }
+    
+    
+    
+    func testLinkedListMutationTerminates()
+    {
+        for _ in 0..<1000
+        {
+            let value = LinkedList.node(5, .node(3, .end))
+            
+            _ = value.mutate(using: .random)
+        }
     }
     
     
@@ -1695,6 +2037,18 @@ internal final class ArbitraryMacroEnumTests: TestKitCase
     
     
     
+    func testRecursiveGenericMutationTerminates()
+    {
+        for _ in 0..<1000
+        {
+            let value = RecursiveGeneric<Int>.node(5, .node(3, .leaf))
+            
+            _ = value.mutate(using: .random)
+        }
+    }
+    
+    
+    
     // MARK: - RecursiveOptional
     
     func testRecursiveOptionalDeterminism()
@@ -1759,6 +2113,18 @@ internal final class ArbitraryMacroEnumTests: TestKitCase
             = (inner as Optional<RecursiveOptional>).shrink().map { .node($0) }
         
         XCTAssertEqual(candidates, expected)
+    }
+    
+    
+    
+    func testRecursiveOptionalMutationTerminates()
+    {
+        for _ in 0..<1000
+        {
+            let value = RecursiveOptional.node(.node(.leaf))
+            
+            _ = value.mutate(using: .random)
+        }
     }
     
     
@@ -1861,6 +2227,22 @@ internal final class ArbitraryMacroEnumTests: TestKitCase
         }
         
         XCTAssertEqual(candidates, expected)
+    }
+    
+    
+    
+    func testLabeledRecursiveMutationTerminates()
+    {
+        for _ in 0..<1000
+        {
+            let value = LabeledRecursive.node(
+                left:   .leaf,
+                value:  5,
+                right:  .leaf
+            )
+            
+            _ = value.mutate(using: .random)
+        }
     }
     
     
