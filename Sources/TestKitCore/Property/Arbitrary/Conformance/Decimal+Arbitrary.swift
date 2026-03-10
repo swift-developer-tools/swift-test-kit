@@ -50,6 +50,26 @@ extension Decimal: Arbitrary
     
     
     
+    /// Produces a value that is a small perturbation of the receiver value.
+    /// - Parameter context: The generation context.
+    /// - Returns: A mutated value.
+    public func mutate(
+        using context: GenerationContext
+    ) -> Decimal
+    {
+        if isNaN
+        {
+            return Decimal.arbitrary(using: context)
+        }
+        
+        let maxDelta    = Decimal(max(1, context.size))
+        let scale       = Decimal(context.random(in: -1000...1000)) / 1000
+        
+        return self + (scale * maxDelta)
+    }
+    
+    
+    
     // MARK: - Support
     
     private static func shrink(

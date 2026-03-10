@@ -42,6 +42,8 @@
 /// properties with default values (for example, `var x: Int = 100`)
 /// participate in generation and shrinking normally.
 ///
+/// - Note: The macro cannot be applied to structs with explicit initializers.
+///
 /// ## Enums
 ///
 /// Conforming enums must have at least one case, and the cases are selected
@@ -80,7 +82,7 @@
 @attached(
     extension,
     conformances:   Arbitrary,
-    names:          named(arbitrary), named(shrink)
+    names:          named(arbitrary), named(shrink), named(mutate)
 )
 public macro Arbitrary() = #externalMacro(
     module:     "TestKitMacros",

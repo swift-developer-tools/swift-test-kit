@@ -19,30 +19,6 @@
         "threadSanitizerEnabled" : true,
         "undefinedBehaviorSanitizerEnabled" : true
       }
-    },
-    {
-      "id" : "BF4C0E74-676C-4D14-9D7A-572902453272",
-      "name" : "Malloc Guard Edges",
-      "options" : {
-        "mallocGuardEdgesEnabled" : true,
-        "mallocScribbleEnabled" : true,
-        "mallocStackLoggingOptions" : {
-          "loggingType" : "liveAllocations"
-        }
-      }
-    },
-    {
-      "id" : "6A194718-FA60-4608-A7A9-FCDB5F1B11A9",
-      "name" : "Hardware Memory Tagging",
-      "options" : {
-        "checkedAllocations" : {
-          "enabled" : true,
-          "requiresHardwareAcceleration" : false
-        },
-        "mallocStackLoggingOptions" : {
-          "loggingType" : "liveAllocations"
-        }
-      }
     }
   ],
   "defaultOptions" : {

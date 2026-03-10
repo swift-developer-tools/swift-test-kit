@@ -53,4 +53,23 @@ extension Date: Arbitrary
             return Date(timeIntervalSinceReferenceDate: $0)
         }
     }
+    
+    
+    
+    /// Produces a value that is a small perturbation of the receiver value.
+    /// - Parameter context: The generation context.
+    /// - Returns: A mutated date.
+    public func mutate(
+        using context: GenerationContext
+    ) -> Date
+    {
+        let maxDays = Double(max(1, context.size))
+        
+        let interval: TimeInterval
+            = context.random(in: -maxDays...maxDays) * 60 * 60 * 24
+        
+        return Date(timeIntervalSinceReferenceDate:
+            timeIntervalSinceReferenceDate + interval
+        )
+    }
 }

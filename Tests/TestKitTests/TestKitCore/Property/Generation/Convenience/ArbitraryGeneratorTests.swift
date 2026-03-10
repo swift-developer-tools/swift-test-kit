@@ -56,6 +56,20 @@ internal final class ArbitraryGeneratorTests: TestKitCase
     
     
     
+    func testMutationEquivalence()
+    {
+        validateMutationEquivalence(of: Int.self)
+        validateMutationEquivalence(of: UInt8.self)
+        validateMutationEquivalence(of: Double.self)
+        validateMutationEquivalence(of: Bool.self)
+        validateMutationEquivalence(of: [Int].self)
+        validateMutationEquivalence(of: String.self)
+        validateMutationEquivalence(of: Substring.self)
+        validateMutationEquivalence(of: Character.self)
+    }
+    
+    
+    
     func testShrinkAtTargetProducesEmpty()
     {
         let intGen          = Generator<Int>.arbitrary()
@@ -168,6 +182,36 @@ extension ArbitraryGeneratorTests
             let fromProtocol    : [T]   = value.shrink()
             
             XCTAssertEqual(fromGenerator, fromProtocol)
+        }
+    }
+    
+    
+    
+    /// Validates that ``Generator/arbitrary()`` produces the same mutations
+    /// as ``Arbitrary/mutate(using:)`` for the given type.
+    /// - Parameter type: The type to evaluate.
+    private func validateMutationEquivalence<T>(
+        of type: T.Type
+    ) where T : Arbitrary & Equatable
+    {
+        let generator: Generator<T> = .arbitrary()
+        
+        for _ in 0..<1000
+        {
+            let (context1, context2) = GenerationContext.sameRandomContexts
+            
+            let value           : T     = T.arbitrary(using: .random)
+            let fromGenerator   : T     = generator.mutate(value, context1)
+            let fromProtocol    : T     = value.mutate(using: context2)
+            
+            if fromGenerator.isNaN
+            {
+                XCTAssertTrue(fromProtocol.isNaN)
+            }
+            else
+            {
+                XCTAssertEqual(fromGenerator, fromProtocol)
+            }
         }
     }
 }

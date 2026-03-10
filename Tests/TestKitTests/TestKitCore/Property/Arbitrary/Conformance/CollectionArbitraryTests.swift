@@ -14,6 +14,29 @@ import XCTest
 
 internal final class CollectionArbitraryTests: TestKitCase
 {
+    // MARK: - Determinism
+    
+    func testArrayDeterminism()
+    {
+        assertArbitraryDeterminism(of: Array<Int>.self)
+    }
+    
+    
+    
+    func testDictionaryDeterminism()
+    {
+        assertArbitraryDeterminism(of: Dictionary<Int, Int>.self)
+    }
+    
+    
+    
+    func testSetDeterminism()
+    {
+        assertArbitraryDeterminism(of: Set<Int>.self)
+    }
+    
+    
+    
     // MARK: - Generation
     
     func testArrayGeneration()
@@ -680,6 +703,370 @@ internal final class CollectionArbitraryTests: TestKitCase
             }
         }
     }
+    
+    
+    
+    // MARK: - Array mutation
+    
+    func testArrayMutation()
+    {
+        validateMutation(of: Array<Int>.self)
+    }
+    
+    
+    
+    func testArrayMutateInPlaceChangesAtMostOneElement()
+    {
+        var verified: Int = 0
+        
+        for _ in 0..<10_000
+        {
+            let value   : [Int]     = [100, 200, 300, 400, 500]
+            let mutated : [Int]     = value.mutate(using: .random)
+            
+            guard mutated.count == value.count
+            else
+            {
+                continue
+            }
+            
+            let differences: Int = zip(value, mutated)
+                .filter { $0 != $1 }
+                .count
+            
+            XCTAssertLessThanOrEqual(differences, 1)
+            
+            verified += 1
+        }
+        
+        XCTAssertGreaterThan(verified, 0)
+    }
+    
+    
+    
+    func testArrayMutateInsertPreservesOriginalElement()
+    {
+        var verified: Int = 0
+        
+        for _ in 0..<10_000
+        {
+            let value   : [Int]     = [100, 200, 300]
+            let mutated : [Int]     = value.mutate(using: .random)
+            
+            guard mutated.count == value.count + 1
+            else
+            {
+                continue
+            }
+            
+            /// Removing an element from the mutated array must yield the
+            /// original array.
+            var found: Bool = false
+            
+            for index in mutated.indices
+            {
+                var candidate: [Int] = mutated
+                
+                candidate.remove(at: index)
+                
+                if candidate == value
+                {
+                    found = true
+                    break
+                }
+            }
+            
+            XCTAssertTrue(found)
+            
+            verified += 1
+        }
+        
+        XCTAssertGreaterThan(verified, 0)
+    }
+    
+    
+    
+    func testArrayMutateRemoveProducesSubsequence()
+    {
+        var verified: Int = 0
+        
+        for _ in 0..<10_000
+        {
+            let value   : [Int]     = [100, 200, 300, 400]
+            let mutated : [Int]     = value.mutate(using: .random)
+            
+            guard mutated.count == value.count - 1
+            else
+            {
+                continue
+            }
+            
+            /// Removing an element from the original array must yield the
+            /// mutated array.
+            var found: Bool = false
+            
+            for index in value.indices
+            {
+                var candidate: [Int] = value
+                
+                candidate.remove(at: index)
+                
+                if candidate == mutated
+                {
+                    found = true
+                    break
+                }
+            }
+            
+            XCTAssertTrue(found)
+            
+            verified += 1
+        }
+        
+        XCTAssertGreaterThan(verified, 0)
+    }
+    
+    
+    
+    func testArrayMutateSingleElementCannotProduceEmpty()
+    {
+        for _ in 0..<1000
+        {
+            let mutated: [Int] = [50].mutate(using: .random)
+            
+            XCTAssertFalse(mutated.isEmpty)
+        }
+    }
+    
+    
+    
+    // MARK: - CollectionOfOne mutation
+    
+    func testCollectionOfOneMutateMatchesElementMutate()
+    {
+        for _ in 0..<1000
+        {
+            let (context1, context2) = GenerationContext.sameRandomContexts
+            
+            let value       = CollectionOfOne<Int>(50)
+            let mutated     = value.mutate(using: context1)
+            let expected    = CollectionOfOne(50.mutate(using: context2))
+            
+            XCTAssertEqual(Array(mutated), Array(expected))
+        }
+    }
+    
+    
+    
+    // MARK: - Dictionary mutation
+    
+    func testDictionaryMutation()
+    {
+        validateMutation(of: Dictionary<Int, Int>.self)
+    }
+    
+    
+    
+    func testDictionaryMutateInPlacePreservesKeys()
+    {
+        var verified: Int = 0
+        
+        for _ in 0..<10_000
+        {
+            let value   : [Int : Int]   = [1: 100, 2: 200, 3: 300]
+            let mutated : [Int : Int]   = value.mutate(using: .random)
+            
+            guard mutated.count == value.count
+            else
+            {
+                continue
+            }
+            
+            XCTAssertEqual(Set(mutated.keys), Set(value.keys))
+            
+            let differences: Int = value.keys.filter
+            {
+                return mutated[$0] != value[$0]
+            }.count
+            
+            XCTAssertLessThanOrEqual(differences, 1)
+            
+            verified += 1
+        }
+        
+        XCTAssertGreaterThan(verified, 0)
+    }
+    
+    
+    
+    func testDictionaryMutateInsertAddsOneEntry()
+    {
+        var verified: Int = 0
+        
+        for _ in 0..<10_000
+        {
+            let value   : [Int : Int]   = [1: 100, 2: 200]
+            let mutated : [Int : Int]   = value.mutate(using: .random)
+            
+            guard mutated.count == value.count + 1
+            else
+            {
+                continue
+            }
+            
+            /// All original entries must be present in the mutated dictionary.
+            /// Insertion with a colliding key would overwrite, producing the
+            /// same count.
+            for (key, val) in value
+            {
+                XCTAssertEqual(mutated[key], val)
+            }
+            
+            verified += 1
+        }
+        
+        XCTAssertGreaterThan(verified, 0)
+    }
+    
+    
+    
+    func testDictionaryMutateRemovePreservesRemainingEntries()
+    {
+        var verified: Int = 0
+        
+        for _ in 0..<10_000
+        {
+            let value   : [Int : Int]   = [1: 100, 2: 200, 3: 300]
+            let mutated : [Int : Int]   = value.mutate(using: .random)
+            
+            guard mutated.count == value.count - 1
+            else
+            {
+                continue
+            }
+            
+            for (key, val) in mutated
+            {
+                XCTAssertEqual(value[key], val)
+            }
+            
+            verified += 1
+        }
+        
+        XCTAssertGreaterThan(verified, 0)
+    }
+    
+    
+    
+    func testDictionaryMutateSingleEntryCannotProduceEmpty()
+    {
+        for _ in 0..<1000
+        {
+            let mutated: [Int : Int] = [1: 50].mutate(using: .random)
+            
+            XCTAssertFalse(mutated.isEmpty)
+        }
+    }
+    
+    
+    
+    // MARK: - Set mutation
+    
+    func testSetMutation()
+    {
+        validateMutation(of: Set<Int>.self)
+    }
+    
+    
+    
+    func testSetMutateInPlaceChangesAtMostOneElement()
+    {
+        var verified: Int = 0
+        
+        for _ in 0..<10_000
+        {
+            let value   : Set<Int>  = [100, 200, 300, 400, 500]
+            let mutated : Set<Int>  = value.mutate(using: .random)
+            
+            guard mutated.count == value.count
+            else
+            {
+                continue
+            }
+            
+            let removed : Set<Int>  = value.subtracting(mutated)
+            let added   : Set<Int>  = mutated.subtracting(value)
+            
+            XCTAssertLessThanOrEqual(removed.count, 1)
+            XCTAssertLessThanOrEqual(added.count, 1)
+            
+            verified += 1
+        }
+        
+        XCTAssertGreaterThan(verified, 0)
+    }
+    
+    
+    
+    func testSetMutateInsertAddsOneElement()
+    {
+        var verified: Int = 0
+        
+        for _ in 0..<10_000
+        {
+            let value   : Set<Int>  = [100, 200, 300]
+            let mutated : Set<Int>  = value.mutate(using: .random)
+            
+            guard mutated.count == value.count + 1
+            else
+            {
+                continue
+            }
+            
+            XCTAssertTrue(value.isSubset(of: mutated))
+            
+            verified += 1
+        }
+        
+        XCTAssertGreaterThan(verified, 0)
+    }
+    
+    
+    
+    func testSetMutateRemoveProducesSubset()
+    {
+        var verified: Int = 0
+        
+        for _ in 0..<10_000
+        {
+            let value   : Set<Int>  = [100, 200, 300, 400]
+            let mutated : Set<Int>  = value.mutate(using: .random)
+            
+            guard mutated.count == value.count - 1
+            else
+            {
+                continue
+            }
+            
+            XCTAssertTrue(mutated.isSubset(of: value))
+            
+            verified += 1
+        }
+        
+        XCTAssertGreaterThan(verified, 0)
+    }
+    
+    
+    
+    func testSetMutateSingleEntryCannotProduceEmpty()
+    {
+        for _ in 0..<1000
+        {
+            let mutated: Set<Int> = Set([50]).mutate(using: .random)
+            
+            XCTAssertFalse(mutated.isEmpty)
+        }
+    }
 }
 
 
@@ -688,13 +1075,14 @@ internal final class CollectionArbitraryTests: TestKitCase
 
 extension CollectionArbitraryTests
 {
+    // MARK: - Generation support
+    
     /// Validates arbitrary value generation of the given type.
     /// - Parameter type: The type to evaluate.
     private func validateGeneration<T>(
         of type: T.Type
     ) where T : Arbitrary & Collection & Equatable
     {
-        assertArbitraryDeterminism(of: type)
         validateSizeZeroProducesEmpty(for: type)
         validateCountRespectsSizeBounds(for: type)
         validateProducesEmptyAndNonEmpty(for: type)
@@ -792,5 +1180,115 @@ extension CollectionArbitraryTests
         }
         
         XCTAssertGreaterThan(counts.count, 10)
+    }
+    
+    
+    
+    // MARK: Mutation support
+    
+    /// Validates arbitrary value mutation of the given type.
+    /// - Parameter type: The type to evaluate.
+    private func validateMutation<T>(
+        of type: T.Type
+    ) where T : Arbitrary & Collection & Equatable
+    {
+        validateMutateEmptyProducesNonEmpty(for: type)
+        validateMutateCountChangesByAtMostOne(for: type)
+        validateMutateProducesAllOperationTypes(for: type)
+    }
+    
+    
+    
+    /// Validates that mutating an empty collection produces a non-empty
+    /// collection.
+    /// - Parameter type: The type to evaluate.
+    private func validateMutateEmptyProducesNonEmpty<T>(
+        for type: T.Type
+    ) where T : Arbitrary & Collection
+    {
+        for _ in 0..<1000
+        {
+            let value = T.arbitrary(using: .randomZeroSize)
+            
+            XCTAssertTrue(value.isEmpty)
+            
+            let mutated = value.mutate(using: .random)
+            
+            XCTAssertEqual(mutated.count, 1)
+        }
+    }
+    
+    
+    
+    /// Validates that mutating a collection changes its count by at most one.
+    /// - Parameter type: The type to evaluate.
+    private func validateMutateCountChangesByAtMostOne<T>(
+        for type: T.Type
+    ) where T : Arbitrary & Collection
+    {
+        for _ in 0..<1000
+        {
+            let context : GenerationContext     = .randomSeed(size: 20)
+            let value   : T                     = T.arbitrary(using: context)
+            
+            guard !value.isEmpty
+            else
+            {
+                continue
+            }
+            
+            let mutated : T     = value.mutate(using: context)
+            let delta   : Int   = mutated.count - value.count
+            
+            XCTAssertTrue((-1...1).contains(delta))
+        }
+    }
+    
+    
+    
+    /// Validates that mutating a collection increases, decreases, and does
+    /// not change its count.
+    /// - Parameter type: The type to evaluate.
+    private func validateMutateProducesAllOperationTypes<T>(
+        for type: T.Type
+    ) where T : Arbitrary & Collection
+    {
+        var hasSameCount    : Bool  = false
+        var hasMoreCount    : Bool  = false
+        var hasFewerCount   : Bool  = false
+        
+        for _ in 0..<10_000
+        {
+            let value = T.arbitrary(using: .randomSeed(size: 20))
+            
+            guard !value.isEmpty
+            else
+            {
+                continue
+            }
+            
+            let mutated : T     = value.mutate(using: .random)
+            let delta   : Int   = mutated.count - value.count
+            
+            switch delta
+            {
+                case 0  : hasSameCount      = true
+                case 1  : hasMoreCount      = true
+                case -1 : hasFewerCount     = true
+                default : break
+            }
+            
+            if
+                hasSameCount,
+                hasMoreCount,
+                hasFewerCount
+            {
+                break
+            }
+        }
+        
+        XCTAssertTrue(hasSameCount)
+        XCTAssertTrue(hasMoreCount)
+        XCTAssertTrue(hasFewerCount)
     }
 }

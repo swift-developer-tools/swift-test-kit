@@ -15,6 +15,15 @@ import TestKitCore
 
 
 
+internal func TKTarget(
+    _ target: @autoclosure () -> Double
+)
+{
+    TestKitCore.TKTarget(target)
+}
+
+
+
 internal func TKAssume(
     _ condition: @autoclosure () -> Bool
 ) throws

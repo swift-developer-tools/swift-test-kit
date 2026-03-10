@@ -39,6 +39,22 @@ extension Array: Arbitrary where Element : Arbitrary
     
     
     
+    /// Produces a value that is a small perturbation of the receiver value.
+    /// - Parameter context: The generation context.
+    /// - Returns: A mutated array.
+    public func mutate(
+        using context: GenerationContext
+    ) -> Array
+    {
+        return mutateElements(
+            using:          context,
+            mutateElement:  { $0.mutate(using: $1 )},
+            makeElement:    { Element.arbitrary(using: $0) }
+        )
+    }
+    
+    
+    
     // MARK: - Support
     
     /// Shrinks the array by removing elements and shrinking individual
@@ -186,5 +202,61 @@ extension Array
         }
         
         return candidates
+    }
+    
+    
+    
+    /// Mutates the value by modifying, inserting, or removing an element.
+    ///
+    /// There is a 70% chance of mutating in place, 15% chance of inserting
+    /// an element, and 15% chance if removing an element.
+    /// 
+    /// - Parameters:
+    ///   - context: The generation context.
+    ///   - mutateElement: Mutates the given element.
+    ///   - makeElement: Creates an element.
+    /// - Returns: A mutated array.
+    internal func mutateElements(
+        using context   : GenerationContext,
+        mutateElement   : (Element, GenerationContext) -> Element,
+        makeElement     : (GenerationContext) -> Element
+    ) -> [Element]
+    {
+        var copy: [Element] = self
+        
+        if copy.isEmpty
+        {
+            copy.append(makeElement(context))
+            
+            return copy
+        }
+        
+        let chance: Int = context.random(in: 1...20)
+        
+        if
+            chance <= 14
+            || copy.count == 1
+        {
+            let index: Int = context.random(in: 0...(copy.count - 1))
+            
+            copy[index] = mutateElement(copy[index], context)
+        }
+        else if chance <= 17
+        {
+            let index: Int = context.random(in: 0...copy.count)
+            
+            copy.insert(
+                makeElement(context),
+                at: index
+            )
+        }
+        else
+        {
+            let index: Int = context.random(in: 0...(copy.count - 1))
+            
+            copy.remove(at: index)
+        }
+        
+        return copy
     }
 }

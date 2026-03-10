@@ -63,7 +63,7 @@ public struct DiffOptions: Equatable, Sendable
     ///
     /// - Precondition: `maxRecursionDepth` must be positive or `nil`.
     /// - Precondition: `characterDiffThreshold` must be must be in the
-    /// range `0.0...1.0` or `nil`.
+    /// range `0.0...1.0`, or `nil`.
     public init(
         enabled                 : Bool      = true,
         maxRecursionDepth       : Int?      = 20,
@@ -78,11 +78,8 @@ public struct DiffOptions: Equatable, Sendable
         
         precondition(
             characterDiffThreshold == nil
-            || (
-                characterDiffThreshold! >= 0.0
-                && characterDiffThreshold! <= 1.0
-            ),
-            "characterDiffThreshold must be in the range 0.0...1.0 or nil"
+            || (0.0...1.0).contains(characterDiffThreshold!),
+            "characterDiffThreshold must be in the range 0.0...1.0, or nil"
         )
         
         self.enabled                    = enabled

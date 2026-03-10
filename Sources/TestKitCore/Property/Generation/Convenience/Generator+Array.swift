@@ -7,78 +7,10 @@
 //
 //===----------------------------------------------------------------------===//
 
-// MARK: - Arbitrary
-
-extension Generator where V : Arbitrary
-{
-    /// Creates a generator that produces values by delegating to the type's
-    /// ``Arbitrary`` conformance.
-    /// - Returns: A generator that produces values by delegating to the type's
-    /// ``Arbitrary`` conformance.
-    public static func arbitrary() -> Generator<V>
-    {
-        return Generator<V>(
-            generate:   { context in V.arbitrary(using: context) },
-            shrink:     { value in value.shrink() }
-        )
-    }
-}
-
-
-
-// MARK: - Sample
-
 extension Generator
 {
-    /// Generates samples values.
-    ///
-    /// Use this to verify that a custom generator produces the expected
-    /// distribution of values.
-    ///
-    /// - Parameters:
-    ///   - count: The number of values to generate. The default value is `10`.
-    ///   - seed: The seed used to initialize the random number generator.
-    ///   The default value is `nil`, which generates a random seed from the
-    ///   system random number generator.
-    ///   - maxSize: The maximum generation size. The default value is `100`.
-    /// - Returns: The sample values.
-    public func sample(
-        count   : Int       = 10,
-        seed    : UInt64?   = nil,
-        maxSize : Int       = 100
-    ) -> [V]
-    {
-        precondition(
-            count >= 0,
-            "count must not be negative"
-        )
-        
-        precondition(
-            maxSize >= 0,
-            "maxSize must not be negative"
-        )
-        
-        let seed: UInt64 = seed ?? .random(in: UInt64.min...UInt64.max)
-        
-        let context = GenerationContext(seed: seed)
-        
-        return (0..<count).map
-        {
-            context.size = count > 0
-                ? $0 * maxSize / count
-                : 0
-            
-            return generate(context)
-        }
-    }
-}
-
-
-
-// MARK: - Array
-
-extension Generator
-{
+    // MARK: - Generator exact
+    
     /// Creates a generator that produces arrays with exactly the given count
     /// of elements.
     ///
@@ -127,11 +59,26 @@ extension Generator
                     minCount:           count,
                     shrinkElements:     shrinkElements
                 )
+            },
+            mutate:
+            {
+                array, context in
+                
+                return mutateArray(
+                    array,
+                    minCount:           count,
+                    maxCount:           count,
+                    mutateElement:      generator.mutate,
+                    generateElement:    generator.generate,
+                    using:              context
+                )
             }
         )
     }
     
     
+    
+    // MARK: - Generator range
     
     /// Creates a generator that produces arrays with a count of elements
     /// within the given range.
@@ -183,6 +130,19 @@ extension Generator
                     minCount:           count.lowerBound,
                     shrinkElements:     shrinkElements
                 )
+            },
+            mutate:
+            {
+                array, context in
+                
+                return mutateArray(
+                    array,
+                    minCount:           count.lowerBound,
+                    maxCount:           count.upperBound,
+                    mutateElement:      generator.mutate,
+                    generateElement:    generator.generate,
+                    using:              context
+                )
             }
         )
     }
@@ -225,6 +185,8 @@ extension Generator
     
     
     
+    // MARK: - Arbitrary exact
+    
     /// Creates a generator that produces arrays with exactly the given count
     /// of elements.
     ///
@@ -265,11 +227,26 @@ extension Generator
                 array in
                 
                 return array.shrinkElements()
+            },
+            mutate:
+            {
+                array, context in
+                
+                return mutateArray(
+                    array,
+                    minCount:           count,
+                    maxCount:           count,
+                    mutateElement:      { $0.mutate(using: $1) },
+                    generateElement:    { E.arbitrary(using: $0) },
+                    using:              context
+                )
             }
         )
     }
     
     
+    
+    // MARK: - Arbitrary range
     
     /// Creates a generator that produces arrays with a count of elements
     /// within the given range.
@@ -313,6 +290,19 @@ extension Generator
                 array in
                 
                 return array.shrinkToward(minCount: count.lowerBound)
+            },
+            mutate:
+            {
+                array, context in
+                
+                return mutateArray(
+                    array,
+                    minCount:           count.lowerBound,
+                    maxCount:           count.upperBound,
+                    mutateElement:      { $0.mutate(using: $1) },
+                    generateElement:    { E.arbitrary(using: $0) },
+                    using:              context
+                )
             }
         )
     }
@@ -355,6 +345,8 @@ extension Generator
     
     
     
+    // MARK: - Non-empty
+    
     /// Creates a generator that produces non-empty arrays.
     ///
     /// The produced arrays have a count of elements within the range
@@ -386,11 +378,26 @@ extension Generator
                 array in
                 
                 return array.shrinkToward(minCount: 1)
+            },
+            mutate:
+            {
+                array, context in
+                
+                return mutateArray(
+                    array,
+                    minCount:           1,
+                    maxCount:           nil,
+                    mutateElement:      { $0.mutate(using: $1) },
+                    generateElement:    { E.arbitrary(using: $0) },
+                    using:              context
+                )
             }
         )
     }
     
     
+    
+    // MARK: - Unique Generator exact
     
     /// Creates a generator that produces arrays of unique elements with
     /// exactly the given count.
@@ -445,11 +452,26 @@ extension Generator
                     minCount:           count,
                     shrinkElements:     shrinkElements
                 )
+            },
+            mutate:
+            {
+                array, context in
+                
+                return mutateUniqueArray(
+                    array,
+                    minCount:           count,
+                    maxCount:           count,
+                    mutateElement:      generator.mutate,
+                    generateElement:    generator.generate,
+                    using:              context
+                )
             }
         )
     }
     
     
+    
+    // MARK: - Unique Generator range
     
     /// Creates a generator that produces arrays of unique elements with
     /// a count within the given range.
@@ -504,6 +526,19 @@ extension Generator
                     minCount:           count.lowerBound,
                     shrinkElements:     shrinkElements
                 )
+            },
+            mutate:
+            {
+                array, context in
+                
+                return mutateUniqueArray(
+                    array,
+                    minCount:           count.lowerBound,
+                    maxCount:           count.upperBound,
+                    mutateElement:      generator.mutate,
+                    generateElement:    generator.generate,
+                    using:              context
+                )
             }
         )
     }
@@ -550,6 +585,8 @@ extension Generator
     
     
     
+    // MARK: - Unique Arbitrary exact
+    
     /// Creates a generator that produces arrays of unique elements with
     /// exactly the given count.
     ///
@@ -578,6 +615,8 @@ extension Generator
     }
     
     
+    
+    // MARK: - Unique Arbitrary range
     
     /// Creates a generator that produces arrays of unique elements with
     /// a count within the given range.
@@ -637,6 +676,8 @@ extension Generator
     }
     
     
+    
+    // MARK: - Support
     
     /// Generates an array of unique elements.
     ///
@@ -730,565 +771,169 @@ extension Generator
         
         return candidates
     }
-}
-
-
-
-// MARK: - Optional
-
-extension Generator
-{
-    /// Creates a generator that produces optional values, generating `nil`
-    /// with the given  probability.
-    ///
-    /// Shrink candidates for non-`nil` values include `nil` followed by the
-    /// shrunken wrapped values. `nil` does not shrink.
-    ///
-    /// - Precondition: `probability` must be in the range `0.0...1.0`.
-    ///
-    /// - Parameter probability: The probability of generating `nil`. The
-    /// default value is `0.2`, generating `nil` 20% of the time.
-    /// - Returns: A generator that produces optional values.
-    public func optional(
-        probability: Double = 0.2
-    ) -> Generator<V?>
-    {
-        precondition(
-            (0.0...1.0).contains(probability),
-            "probability must be in the range 0.0...1.0"
-        )
-        
-        return Generator<V?>(
-            generate:
-            {
-                context in
-                
-                if context.random(in: 0.0..<1.0) < probability
-                {
-                    return nil
-                }
-                
-                return self.generate(context)
-            },
-            shrink:
-            {
-                value in
-                
-                guard let wrapped: V = value
-                else
-                {
-                    return []
-                }
-                
-                return [nil] + self.shrink(wrapped).map { .some($0) }
-            }
-        )
-    }
-}
-
-
-
-// MARK: - Character
-
-extension Generator where V == Character
-{
-    /// Creates a generator that produces printable ASCII characters.
-    ///
-    /// Shrink candidates converge toward `"a"`.
-    ///
-    /// - Returns: A generator that produces printable ASCII characters.
-    public static func ascii() -> Generator<Character>
-    {
-        return Generator<Character>(
-            generate:
-            {
-                context in
-                
-                let value = UInt32(
-                    context.random(in: Unicode.Scalar.asciiPrintableRange)
-                )
-                
-                return Character(Unicode.Scalar(value)!)
-            },
-            shrink:
-            {
-                character in
-                
-                return character.shrink()
-            }
-        )
-    }
     
     
     
-    /// Creates a generator that produces lowercase printable ASCII characters.
-    ///
-    /// Shrink candidates converge toward `"a"`.
-    ///
-    /// - Returns: A generator that produces lowercase printable ASCII
-    /// characters.
-    public static func lowercase() -> Generator<Character>
-    {
-        return Generator<Character>(
-            generate:
-            {
-                context in
-                
-                let value = UInt32(
-                    context.random(in: Unicode.Scalar.asciiLowercaseRange)
-                )
-                
-                return Character(Unicode.Scalar(value)!)
-            },
-            shrink:
-            {
-                character in
-                
-                return character.shrink()
-            }
-        )
-    }
-    
-    
-    
-    /// Creates a generator that produces uppercase printable ASCII characters.
-    ///
-    /// Shrink candidates converge toward `"a"`.
-    ///
-    /// - Returns: A generator that produces uppercase printable ASCII
-    /// characters.
-    public static func uppercase() -> Generator<Character>
-    {
-        return Generator<Character>(
-            generate:
-            {
-                context in
-                
-                let value = UInt32(
-                    context.random(in: Unicode.Scalar.asciiUppercaseRange)
-                )
-                
-                return Character(Unicode.Scalar(value)!)
-            },
-            shrink:
-            {
-                character in
-                
-                return character.shrink()
-            }
-        )
-    }
-    
-    
-    
-    /// Creates a generator that produces printable ASCII digit characters.
-    ///
-    /// Shrink candidates converge toward `"a"`.
-    ///
-    /// - Returns: A generator that produces printable ASCII digit characters.
-    public static func digit() -> Generator<Character>
-    {
-        return Generator<Character>(
-            generate:
-            {
-                context in
-                
-                let value = UInt32(
-                    context.random(in: Unicode.Scalar.asciiDigitRange)
-                )
-                
-                return Character(Unicode.Scalar(value)!)
-            },
-            shrink:
-            {
-                character in
-                
-                return character.shrink()
-            }
-        )
-    }
-    
-    
-    
-    /// Creates a generator that produces alphanumeric characters.
-    ///
-    /// Shrink candidates converge toward `"a"`.
-    ///
-    /// - Returns: A generator that produces alphanumeric characters.
-    public static func alphanumeric() -> Generator<Character>
-    {
-        return Generator<Character>(
-            generate:
-            {
-                context in
-                
-                let range: ClosedRange<Int> = context.randomElement(
-                    of:             Unicode.Scalar.alphanumericRanges,
-                    weightedBy:     { $0.count }
-                )!
-                
-                let value = UInt32(context.random(in: range))
-                
-                return Character(Unicode.Scalar(value)!)
-            },
-            shrink:
-            {
-                character in
-                
-                return character.shrink()
-            }
-        )
-    }
-    
-    
-    
-    /// Creates a generator that selects characters from the given string.
-    ///
-    /// - Precondition: `characters` must not be empty.
-    ///
-    /// - Parameter characters: The characters from which to select.
-    /// - Returns: A generator that selects characters from the given string.
-    public static func from(
-        _ characters: String
-    ) -> Generator<Character>
-    {
-        precondition(
-            !characters.isEmpty,
-            "characters must not be empty"
-        )
-        
-        return Generator<Character>(
-            generate:
-            {
-                context in
-                
-                return context.randomElement(of: characters)!
-            },
-            shrink:
-            {
-                character in
-                
-                return character.shrink()
-            }
-        )
-    }
-}
-
-
-
-// MARK: - String
-
-extension Generator where V == String
-{
-    /// Creates a generator that produces strings with exactly the given count
-    /// of characters.
-    ///
-    /// Since the count of characters is fixed, shrinking only applies to
-    /// individual characters.
-    ///
-    /// - Precondition: `count` must not be negative.
-    ///
+    /// Mutates the given array.
     /// - Parameters:
-    ///   - count: The exact count of characters.
-    ///   - characters: The character generator to use. The default value is
-    ///   ``Generator/ascii()``.
-    /// - Returns: A generator that produces strings with exactly the given
-    /// count of characters.
-    public static func string(
-        count       : Int,
-        characters  : Generator<Character>  = .ascii()
-    ) -> Generator<String>
+    ///   - array: The array to mutate.
+    ///   - minCount: The minimum count of elements.
+    ///   - maxCount: The maximum count of elements.
+    ///   - mutateElement: The function to mutate the given element.
+    ///   - generateElement: The function to generate an element.
+    ///   - context: The generation context.
+    /// - Returns: The mutated array.
+    private static func mutateArray<E>(
+        _ array         : [E],
+        minCount        : Int,
+        maxCount        : Int?,
+        mutateElement   : (E, GenerationContext) -> E,
+        generateElement : (GenerationContext) -> E,
+        using context   : GenerationContext
+    ) -> [E]
     {
-        precondition(
-            count >= 0,
-            "count must not be negative"
-        )
+        /// If `maxCount` is `nil`, there is no upper bound. Default to `true`.
+        let canInsert: Bool = maxCount.map { array.count < $0 } ?? true
         
-        return Generator<String>(
-            generate:
+        guard !array.isEmpty
+        else
+        {
+            guard canInsert
+            else
             {
-                context in
-                
-                let chars: [Character] = (0..<count).map
-                {
-                    _ in
-                    
-                    return characters.generate(context)
-                }
-                
-                return String(chars)
-            },
-            shrink:
-            {
-                string in
-                
-                return string.shrinkCharacters()
+                return array
             }
-        )
+            
+            return [generateElement(context)]
+        }
+        
+        let canRemove       : Bool  = array.count > minCount
+        let mutateWeight    : Int   = 70
+        let insertWeight    : Int   = canInsert ? 15 : 0
+        let removeWeight    : Int   = canRemove ? 15 : 0
+        let totalWeight     : Int   = mutateWeight + insertWeight + removeWeight
+        let chance          : Int   = context.random(in: 1...totalWeight)
+        
+        var copy: [E] = array
+        
+        if chance <= mutateWeight
+        {
+            let index: Int = context.random(in: 0..<copy.count)
+            
+            copy[index] = mutateElement(copy[index], context)
+        }
+        else if chance <= mutateWeight + insertWeight
+        {
+            let index: Int = context.random(in: 0...copy.count)
+            
+            copy.insert(
+                generateElement(context),
+                at: index
+            )
+        }
+        else
+        {
+            let index: Int = context.random(in: 0..<copy.count)
+            
+            copy.remove(at: index)
+        }
+        
+        return copy
     }
     
     
     
-    /// Creates a generator that produces strings with a count of characters
-    /// within the given range.
-    ///
-    /// Shrinking reduces the count of characters toward the lower bound and
-    /// shrinks individual characters.
-    ///
-    /// - Precondition: `count` must not contain negative values.
-    ///
+    /// Mutates the given array.
     /// - Parameters:
-    ///   - count: The range of character counts.
-    ///   - characters: The character generator to use. The default value is
-    ///   ``Generator/ascii()``.
-    /// - Returns: A generator that produces strings with a count of characters
-    /// within the given range.
-    public static func string(
-        count       : ClosedRange<Int>,
-        characters  : Generator<Character>  = .ascii()
-    ) -> Generator<String>
+    ///   - array: The array to mutate.
+    ///   - minCount: The minimum count of elements.
+    ///   - maxCount: The maximum count of elements.
+    ///   - mutateElement: The function to mutate the given element.
+    ///   - generateElement: The function to generate an element.
+    ///   - context: The generation context.
+    /// - Returns: The mutated array.
+    private static func mutateUniqueArray<E>(
+        _ array         : [E],
+        minCount        : Int,
+        maxCount        : Int?,
+        mutateElement   : (E, GenerationContext) -> E,
+        generateElement : (GenerationContext) -> E,
+        using context   : GenerationContext
+    ) -> [E] where E : Hashable
     {
-        precondition(
-            count.lowerBound >= 0,
-            "count must not contain negative values"
-        )
+        /// If `maxCount` is `nil`, there is no upper bound. Default to `true`.
+        let canInsert: Bool = maxCount.map { array.count < $0 } ?? true
         
-        return Generator<String>(
-            generate:
+        guard !array.isEmpty
+        else
+        {
+            guard canInsert
+            else
             {
-                context in
+                return array
+            }
+            
+            return [generateElement(context)]
+        }
+        
+        let canRemove       : Bool  = array.count > minCount
+        let mutateWeight    : Int   = 70
+        let insertWeight    : Int   = canInsert ? 15 : 0
+        let removeWeight    : Int   = canRemove ? 15 : 0
+        let totalWeight     : Int   = mutateWeight + insertWeight + removeWeight
+        let chance          : Int   = context.random(in: 1...totalWeight)
+        
+        var copy        : [E]       = array
+        let existing    : Set<E>    = Set(array)
+        
+        if chance <= mutateWeight
+        {
+            let index   : Int       = context.random(in: 0..<copy.count)
+            var others  : Set<E>    = existing
+            
+            others.remove(copy[index])
+            
+            for _ in 0..<1000
+            {
+                let mutated: E = mutateElement(
+                    copy[index],
+                    context
+                )
                 
-                let length: Int = context.random(in: count)
-                
-                let chars: [Character] = (0..<length).map
+                if !others.contains(mutated)
                 {
-                    _ in
+                    copy[index] = mutated
                     
-                    return characters.generate(context)
+                    return copy
                 }
-                
-                return String(chars)
-            },
-            shrink:
-            {
-                string in
-                
-                return string.shrinkToward(minCount: count.lowerBound)
             }
-        )
-    }
-    
-    
-    
-    /// Creates a generator that produces strings with a count of characters
-    /// within the given range.
-    ///
-    /// Shrinking reduces the count of characters toward the lower bound and
-    /// shrinks individual characters.
-    ///
-    /// - Precondition: `count` must not be empty or contain negative values.
-    ///
-    /// - Parameters:
-    ///   - count: The range of character counts.
-    ///   - characters: The character generator to use. The default value is
-    ///   ``Generator/ascii()``.
-    /// - Returns: A generator that produces strings with a count of characters
-    /// within the given range.
-    public static func string(
-        count       : Range<Int>,
-        characters  : Generator<Character>  = .ascii()
-    ) -> Generator<String>
-    {
-        precondition(
-            !count.isEmpty,
-            "count must not be empty"
-        )
-        
-        precondition(
-            count.lowerBound >= 0,
-            "count must not contain negative values"
-        )
-        
-        return string(
-            count:          count.lowerBound...(count.upperBound - 1),
-            characters:     characters
-        )
-    }
-    
-    
-    
-    /// Creates a generator that produces non-empty strings.
-    ///
-    /// The produced strings have a count of characters within the range
-    /// `1...max(1, context.size)`.
-    ///
-    /// - Parameter characters: The character generator to use. The default
-    /// value is ``Generator/ascii()``.
-    /// - Returns: A generator that produces non-empty strings.
-    public static func nonEmptyString(
-        characters: Generator<Character> = .ascii()
-    ) -> Generator<String>
-    {
-        return Generator<String>(
-            generate:
+        }
+        else if chance <= mutateWeight + insertWeight
+        {
+            for _ in 0..<1000
             {
-                context in
+                let element: E = generateElement(context)
                 
-                let range   : ClosedRange<Int>  = 1...max(1, context.size)
-                let length  : Int               = context.random(in: range)
-                
-                let chars: [Character] = (0..<length).map
+                if !existing.contains(element)
                 {
-                    _ in
+                    let index: Int = context.random(in: 0...copy.count)
                     
-                    return characters.generate(context)
+                    copy.insert(
+                        element,
+                        at: index
+                    )
+                    
+                    return copy
                 }
-                
-                return String(chars)
-            },
-            shrink:
-            {
-                string in
-                
-                return string.shrinkToward(minCount: 1)
             }
-        )
-    }
-}
-
-
-
-// MARK: - Integer
-
-extension Generator where V : FixedWidthInteger
-{
-    /// Creates a generator that produces integers in the given range.
-    ///
-    /// Shrink candidates converge toward zero if zero is in the range,
-    /// otherwise toward the nearest bound.
-    ///
-    /// - Parameter range: The range in which to generate integers.
-    /// - Returns: A generator that produces integers in the given range.
-    public static func integer(
-        in range: ClosedRange<V>
-    ) -> Generator<V>
-    {
-        return Generator<V>(
-            generate:
-            {
-                context in
-                
-                return context.random(in: range)
-            },
-            shrink:
-            {
-                value in
-                
-                return value.shrinkTowardZero(in: range)
-            }
-        )
-    }
-    
-    
-    
-    /// Creates a generator that produces integers in the given range.
-    ///
-    /// Shrink candidates converge toward zero if zero is in the range,
-    /// otherwise toward the nearest bound.
-    ///
-    /// - Precondition: `range` must not be empty.
-    ///
-    /// - Parameter range: The range in which to generate integers.
-    /// - Returns: A generator that produces integers in the given range.
-    public static func integer(
-        in range: Range<V>
-    ) -> Generator<V>
-    {
-        precondition(
-            !range.isEmpty,
-            "range must not be empty"
-        )
+        }
+        else
+        {
+            let index: Int = context.random(in: 0..<copy.count)
+            
+            copy.remove(at: index)
+        }
         
-        return integer(in: range.lowerBound...(range.upperBound - 1))
-    }
-}
-
-
-
-// MARK: - Floating
-
-extension Generator
-    where V : BinaryFloatingPoint,
-          V.RawSignificand : FixedWidthInteger
-{
-    /// Creates a generator that produces floating-point numbers in the given
-    /// range.
-    ///
-    /// Shrink candidates converge toward zero if zero is in the range,
-    /// otherwise toward the nearest bound.
-    ///
-    /// - Parameter range: The range in which to generate floating-point
-    /// numbers.
-    /// - Returns: A generator that produces floating-point numbers in the
-    /// given range.
-    public static func floatingPoint(
-        in range: ClosedRange<V>
-    ) -> Generator<V>
-    {
-        return Generator<V>(
-            generate:
-            {
-                context in
-                
-                return context.random(in: range)
-            },
-            shrink:
-            {
-                value in
-                
-                return value.shrinkTowardZero(in: range)
-            }
-        )
-    }
-    
-    
-    
-    /// Creates a generator that produces integers in the given range.
-    ///
-    /// Shrink candidates converge toward zero if zero is in the range,
-    /// otherwise toward the nearest bound.
-    ///
-    /// - Precondition: `range` must not be empty.
-    ///
-    /// - Parameter range: The range in which to generate integers.
-    /// - Returns: A generator that produces integers in the given range.
-    public static func floatingPoint(
-        in range: Range<V>
-    ) -> Generator<V>
-    {
-        precondition(
-            !range.isEmpty,
-            "range must not be empty"
-        )
-        
-        return Generator<V>(
-            generate:
-            {
-                context in
-                
-                return context.random(in: range)
-            },
-            shrink:
-            {
-                value in
-                
-                /// Shrink with a closed range and filter out the upper bound.
-                let closed: ClosedRange<V>
-                    = range.lowerBound...range.upperBound
-                
-                return value.shrinkTowardZero(in: closed)
-                    .filter { range.contains($0) }
-            }
-        )
+        return copy
     }
 }

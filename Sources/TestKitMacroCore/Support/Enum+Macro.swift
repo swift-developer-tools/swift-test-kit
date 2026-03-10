@@ -295,9 +295,8 @@ internal func makeEnumShrink(
         }
         else
         {
-            let bindings: [String] = makeBindingNames(
-                for: enumCase.associatedValues
-            )
+            let bindings: [String]
+                = makeBindingNames(for: enumCase.associatedValues)
             
             let patternArgs: String = bindings.joined(separator: ", ")
             
@@ -306,10 +305,10 @@ internal func makeEnumShrink(
                 bindings:   bindings
             )
             
-            let text1: String
-                = "case let .\(enumCase.name)(\(patternArgs)):"
+            lines.append(
+                indent(3, "case let .\(enumCase.name)(\(patternArgs)):")
+            )
             
-            lines.append(indent(3, text1))
             lines.append("")
             lines.append(indent(4, "var _$results: [\(typeName)] = []"))
             
@@ -331,10 +330,9 @@ internal func makeEnumShrink(
                 {
                     lines.append("")
                     
-                    let appendText: String =
+                    lines.append(indent(4,
                         "_$results.append(\(bindings[valueIndex]))"
-                    
-                    lines.append(indent(4, appendText))
+                    ))
                 }
             }
             
@@ -346,15 +344,13 @@ internal func makeEnumShrink(
                 
                 lines.append("")
                 
-                let text2: String = "for \(binding) in \(binding).shrink()"
-                
-                lines.append(indent(4, text2))
+                lines.append(indent(4, "for \(binding) in \(binding).shrink()"))
                 lines.append(indent(4, "{"))
                 
-                let text3: String = "_$results.append(.\(enumCase.name)"
-                    + "(\(reconstructionArgs)))"
+                lines.append(indent(5, 
+                    "_$results.append(.\(enumCase.name)(\(reconstructionArgs)))"
+                ))
                 
-                lines.append(indent(5, text3))
                 lines.append(indent(4, "}"))
             }
             
@@ -362,6 +358,192 @@ internal func makeEnumShrink(
             
             lines.append("")
             lines.append(indent(4, "return _$results"))
+        }
+        
+        
+        
+        if caseIndex < cases.count - 1
+        {
+            lines.append("")
+        }
+    }
+    
+    
+    
+    lines.append(indent(2, "}"))
+    lines.append(indent(1, "}"))
+    
+    return lines.joined(separator: "\n")
+}
+
+
+
+// MARK: - Mutation
+
+/// Generates the ``Arbitrary/mutate(using:)`` method for an enum.
+///
+/// Cases without associated values return a new case using
+/// ``Arbitrary/arbitrary(using:)``, unless the enum has only one case, in
+/// which case `self` is returned unchanged. Cases with associated values
+/// mutate one associated value at random, while holding the others constant,
+/// with a low probability of switching to a different case entirely.
+///
+/// - Parameters:
+///   - cases: The enum cases.
+///   - typeName: The enum name.
+///   - accessLevel: The access level.
+/// - Returns: The method expansion.
+internal func makeEnumMutate(
+    cases       : [EnumCase],
+    typeName    : String,
+    accessLevel : String
+) -> String
+{
+    var lines: [String] = []
+    
+    lines.append(indent(1, "\(accessLevel)func mutate("))
+    lines.append(indent(2, "using context: GenerationContext"))
+    lines.append(indent(1, ") -> \(typeName)"))
+    lines.append(indent(1, "{"))
+    
+    
+    
+    let totalCases: Int = cases.count
+    
+    let hasAssociatedValues: Bool = cases.contains
+    {
+        return !$0.associatedValues.isEmpty
+    }
+    
+    if !hasAssociatedValues
+    {
+        if totalCases == 1
+        {
+            lines.append(indent(2, "return self"))
+        }
+        else
+        {
+            lines.append(
+                indent(2, "return \(typeName).arbitrary(using: context)")
+            )
+        }
+        
+        lines.append(indent(1, "}"))
+        
+        return lines.joined(separator: "\n")
+    }
+    
+    
+    
+    lines.append(indent(2, "switch self"))
+    lines.append(indent(2, "{"))
+    
+    for (caseIndex, enumCase) in cases.enumerated()
+    {
+        if enumCase.associatedValues.isEmpty
+        {
+            lines.append(indent(3, "case .\(enumCase.name):"))
+            lines.append("")
+            
+            /// This case does not have associated values, but at least one
+            /// other case does, since `hasAssociatedValues == true`.
+            /// Therefore, there is no need to check whether `totalCases == 1`
+            /// and `return self` if so, since there is at least one other case.
+            lines.append(
+                indent(4, "return \(typeName).arbitrary(using: context)")
+            )
+        }
+        else
+        {
+            let bindings: [String]
+                = makeBindingNames(for: enumCase.associatedValues)
+            
+            let patternArgs: String = bindings.joined(separator: ", ")
+            
+            lines.append(
+                indent(3, "case let .\(enumCase.name)(\(patternArgs)):")
+            )
+            
+            lines.append("")
+            
+            /// Case-switch probability (only for multi-case enums).
+            if totalCases > 1
+            {
+                lines.append(
+                    indent(4, "if context.random(in: 0..<\(totalCases)) == 0")
+                )
+                
+                lines.append(indent(4, "{"))
+                
+                lines.append(
+                    indent(5, "return \(typeName).arbitrary(using: context)")
+                )
+                
+                lines.append(indent(4, "}"))
+                lines.append("")
+            }
+            
+            
+            
+            if enumCase.associatedValues.count == 1
+            {
+                let reconstructionArgs: String = makeReconstructionArgs(
+                    for:        enumCase.associatedValues,
+                    bindings:   ["\(bindings[0]).mutate(using: context)"]
+                )
+                
+                lines.append(indent(4,
+                    "return .\(enumCase.name)(\(reconstructionArgs))"
+                ))
+            }
+            else
+            {
+                lines.append(indent(4,
+                    "let _$index: Int"
+                    + " = context.random(in:"
+                    + " 0..<\(enumCase.associatedValues.count))"
+                ))
+                
+                lines.append("")
+                lines.append(indent(4, "switch _$index"))
+                lines.append(indent(4, "{"))
+                
+                for (valueIndex, _) in enumCase.associatedValues.enumerated()
+                {
+                    let patternText: String
+                        = valueIndex < enumCase.associatedValues.count - 1
+                            ? "case \(valueIndex):"
+                            : "default:"
+                    
+                    lines.append(indent(5, patternText))
+                    lines.append("")
+                    
+                    let mutatedBindings: [String] = bindings.enumerated().map
+                    {
+                        (bindingIndex, binding) in
+                        
+                        return bindingIndex == valueIndex
+                            ? "\(binding).mutate(using: context)"
+                            : binding
+                    }
+                    
+                    let reconstructionArgs: String = makeReconstructionArgs(
+                        for:        enumCase.associatedValues,
+                        bindings:   mutatedBindings
+                    )
+                    
+                    lines.append(indent(6,
+                        "return .\(enumCase.name)(\(reconstructionArgs))"
+                    ))
+                    
+                    if valueIndex < enumCase.associatedValues.count - 1
+                    {
+                        lines.append("")
+                    }
+                }
+                
+                lines.append(indent(4, "}"))
+            }
         }
         
         
@@ -753,18 +935,17 @@ private func appendCaseReturn(
         
         lines.append(indent(baseIndent, "{"))
         
-        let caseText: String
-            = "return \(makeCaseConstruction(enumCase))"
+        lines.append(
+            indent(baseIndent + 1, "return \(makeCaseConstruction(enumCase))")
+        )
         
-        lines.append(indent(baseIndent + 1, caseText))
         lines.append(indent(baseIndent, "}"))
     }
     else
     {
-        let caseText: String
-            = "return \(makeCaseConstruction(enumCase))"
-        
-        lines.append(indent(baseIndent, caseText))
+        lines.append(
+            indent(baseIndent, "return \(makeCaseConstruction(enumCase))")
+        )
     }
 }
 

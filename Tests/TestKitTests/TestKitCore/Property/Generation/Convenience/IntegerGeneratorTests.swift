@@ -192,6 +192,8 @@ extension IntegerGeneratorTests
         {
             validateClosedRange(range)
         }
+        
+        validateMutationOverflow(of: type)
     }
     
     
@@ -213,11 +215,12 @@ extension IntegerGeneratorTests
         
         if range.lowerBound != range.upperBound
         {
-            validateVariety(of: generator)
+            validateGenerationVariety(of: generator)
+            validateMutationVariety(of: generator)
         }
         else
         {
-            validateConstant(
+            validateConstantGeneration(
                 of:         generator,
                 expected:   range.lowerBound
             )
@@ -229,6 +232,16 @@ extension IntegerGeneratorTests
         )
         
         validateShrinkCandidateBounds(
+            of:     generator,
+            in:     range
+        )
+        
+        validateMutationBounds(
+            of:     generator,
+            in:     range
+        )
+        
+        validateMutationSizeScaling(
             of:     generator,
             in:     range
         )
@@ -264,6 +277,8 @@ extension IntegerGeneratorTests
         {
             validateRange(range)
         }
+        
+        validateMutationOverflow(of: type)
     }
     
     
@@ -285,11 +300,12 @@ extension IntegerGeneratorTests
         
         if range.lowerBound + 1 != range.upperBound
         {
-            validateVariety(of: generator)
+            validateGenerationVariety(of: generator)
+            validateMutationVariety(of: generator)
         }
         else
         {
-            validateConstant(
+            validateConstantGeneration(
                 of:         generator,
                 expected:   range.lowerBound
             )
@@ -305,6 +321,16 @@ extension IntegerGeneratorTests
         )
         
         validateShrinkCandidateBounds(
+            of:     generator,
+            in:     closed
+        )
+        
+        validateMutationBounds(
+            of:     generator,
+            in:     closed
+        )
+        
+        validateMutationSizeScaling(
             of:     generator,
             in:     closed
         )
@@ -358,7 +384,7 @@ extension IntegerGeneratorTests
     
     /// Validates that the given generator generates a variety of values.
     /// - Parameter generator: The generator to use.
-    private func validateVariety<T>(
+    private func validateGenerationVariety<T>(
         of generator: Generator<T>
     ) where T : FixedWidthInteger
     {
@@ -378,7 +404,7 @@ extension IntegerGeneratorTests
     /// - Parameters:
     ///   - generator: The generator to use.
     ///   - expected: The expected value.
-    private func validateConstant<T>(
+    private func validateConstantGeneration<T>(
         of generator    : Generator<T>,
         expected        : T
     ) where T : FixedWidthInteger
@@ -470,5 +496,141 @@ extension IntegerGeneratorTests
         }
         
         return range.upperBound
+    }
+    
+    
+    
+    // MARK: - Mutation support
+    
+    /// Validates that mutation of the given generator produces values within
+    /// the given range.
+    /// - Parameters:
+    ///   - generator: The generator to use.
+    ///   - range: The range to use.
+    func validateMutationBounds<T>(
+        of  generator   : Generator<T>,
+        in  range       : ClosedRange<T>
+    ) where T : FixedWidthInteger
+    {
+        for _ in 0..<1000
+        {
+            let context: GenerationContext = .random
+            
+            let value   : T     = generator.generate(context)
+            let mutated : T     = generator.mutate(value, context)
+            
+            XCTAssertGreaterThanOrEqual(mutated, range.lowerBound)
+            XCTAssertLessThanOrEqual(mutated, range.upperBound)
+        }
+        
+        for value in [range.lowerBound, range.upperBound]
+        {
+            for _ in 0..<1000
+            {
+                let mutated: T = generator.mutate(value, .random)
+                
+                XCTAssertGreaterThanOrEqual(mutated, range.lowerBound)
+                XCTAssertLessThanOrEqual(mutated, range.upperBound)
+            }
+        }
+    }
+    
+    
+    
+    /// Validates that mutation of the given generator produces a variety of
+    /// values.
+    /// - Parameter generator: The generator to use.
+    func validateMutationVariety<T>(
+        of generator: Generator<T>
+    ) where T : FixedWidthInteger
+    {
+        let value   : T         = generator.generate(.random)
+        var unique  : Set<T>    = []
+        
+        for _ in 0..<1000
+        {
+            unique.insert(generator.mutate(value, .random))
+        }
+        
+        XCTAssertGreaterThan(unique.count, 1)
+    }
+    
+    
+    
+    /// Validates that mutation magnitude of the given generator scales with
+    /// context size.
+    /// - Parameters:
+    ///   - generator: The generator to use.
+    ///   - range: The range to use.
+    func validateMutationSizeScaling<T>(
+        of  generator   : Generator<T>,
+        in  range       : ClosedRange<T>
+    ) where T : FixedWidthInteger
+    {
+        guard (range.upperBound - range.lowerBound) > 20
+        else
+        {
+            /// The range needs to be large enough that clamping does not
+            /// dominate the delta distribution at large and small sizes.
+            return
+        }
+        
+        let mid: T
+            = range.lowerBound
+            + (range.upperBound - range.lowerBound) / 2
+        
+        var smallTotal  : Int   = 0
+        var largeTotal  : Int   = 0
+        
+        for _ in 0..<1000
+        {
+            let smallMutated: T = generator.mutate(mid, .randomSeed(size: 1))
+            let largeMutated: T = generator.mutate(mid, .randomSeed(size: 100))
+            
+            smallTotal += abs(
+                Int(clamping: smallMutated) - Int(clamping: mid)
+            )
+            
+            largeTotal += abs(
+                Int(clamping: largeMutated) - Int(clamping: mid)
+            )
+        }
+        
+        XCTAssertGreaterThan(largeTotal, smallTotal)
+    }
+    
+    
+    
+    /// Validates mutation clamping near the bounds of the given type.
+    /// - Parameter type: The type to evaluate.
+    func validateMutationOverflow<T>(
+        of type: T.Type
+    ) where T : FixedWidthInteger
+    {
+        let highRange       : ClosedRange<T>    = (T.max - 10)...T.max
+        let highGenerator   : Generator<T>      = .integer(in: highRange)
+        
+        for _ in 0..<1000
+        {
+            let mutated: T = highGenerator.mutate(T.max, .random)
+            
+            XCTAssertTrue(highRange.contains(mutated))
+        }
+        
+        guard T.isSigned
+        else
+        {
+            return
+        }
+        
+        let lowRange        : ClosedRange<T>    = T.min...(T.min + 10)
+        let lowGenerator    : Generator<T>      = .integer(in: lowRange)
+        
+        for _ in 0..<1000
+        {
+            let mutated: T = lowGenerator.mutate(T.min, .random)
+            
+            XCTAssertTrue(lowRange.contains(mutated))
+        }
     }
 }

@@ -12,7 +12,7 @@ import XCTest
 
 
 
-internal final class PackShrinkingTests: TestKitCase
+internal final class AnyShrinkerTests: TestKitCase
 {
     // MARK: - AnyShrinker
     
@@ -257,48 +257,6 @@ internal final class PackShrinkingTests: TestKitCase
         XCTAssertEqual(first, 1)
         XCTAssertEqual(second, 2)
         XCTAssertEqual(third, 3)
-    }
-    
-    
-    
-    // MARK: - PackIndex
-    
-    func testSingleNextCall()
-    {
-        let packIndex = PackIndex()
-        
-        XCTAssertEqual(packIndex.next(), 0)
-    }
-    
-    
-    
-    func testSequentialFromZero()
-    {
-        let packIndex = PackIndex()
-        
-        for index in 0..<1000
-        {
-            XCTAssertEqual(packIndex.next(), index)
-        }
-    }
-    
-    
-    
-    func testNewInstanceStartsAtZero()
-    {
-        let packIndex1 = PackIndex()
-        
-        for index in 0..<1000
-        {
-            XCTAssertEqual(packIndex1.next(), index)
-        }
-        
-        let packIndex2 = PackIndex()
-        
-        for index in 0..<1000
-        {
-            XCTAssertEqual(packIndex2.next(), index)
-        }
     }
     
     
@@ -866,7 +824,7 @@ internal final class PackShrinkingTests: TestKitCase
         
         let candidates: [[Any]] = AnyShrinker.shrinkCandidates(
             of:     (10, "abc"),
-            using:  shrinkers
+            with:   shrinkers
         )
         
         XCTAssertEqual(candidates.count, p0Count + p1Count)
@@ -914,7 +872,7 @@ internal final class PackShrinkingTests: TestKitCase
         
         let candidates: [[Any]] = AnyShrinker.shrinkCandidates(
             of:     value,
-            using:  shrinkers
+            with:   shrinkers
         )
         
         let expected: [Int] = value.shrinkTowardZero()
@@ -936,7 +894,7 @@ internal final class PackShrinkingTests: TestKitCase
         /// No shrinkers or values. Nothing to shrink.
         let zeroResult: [[Any]] = AnyShrinker.shrinkCandidates(
             of:     40,
-            using:  []
+            with:   []
         )
         
         XCTAssertTrue(zeroResult.isEmpty)
@@ -945,7 +903,7 @@ internal final class PackShrinkingTests: TestKitCase
         /// single-element pack.
         let twoResult: [[Any]] = AnyShrinker.shrinkCandidates(
             of: 40,
-            using:
+            with:
             [
                 .makeShrinker(for: Int.self),
                 .makeShrinker(for: Int.self)
@@ -961,7 +919,7 @@ internal final class PackShrinkingTests: TestKitCase
     {
         let candidates: [[Any]] = AnyShrinker.shrinkCandidates(
             of: (0, false, ""),
-            using:
+            with:
             [
                 .makeShrinker(for: Int.self),
                 .makeShrinker(for: Bool.self),
@@ -978,7 +936,7 @@ internal final class PackShrinkingTests: TestKitCase
     {
         let candidates: [[Any]] = AnyShrinker.shrinkCandidates(
             of:     0,
-            using:  [.makeShrinker(for: Int.self)]
+            with:   [.makeShrinker(for: Int.self)]
         )
         
         XCTAssertTrue(candidates.isEmpty)
@@ -1011,7 +969,7 @@ internal final class PackShrinkingTests: TestKitCase
         
         let candidates: [[Any]] = AnyShrinker.shrinkCandidates(
             of:     value,
-            using:  [shrinker]
+            with:   [shrinker]
         )
         
         let expected: [Int] = (50 as Int).shrinkTowardZero()
@@ -1034,7 +992,7 @@ internal final class PackShrinkingTests: TestKitCase
 
 // MARK: - Support
 
-extension PackShrinkingTests
+extension AnyShrinkerTests
 {
     /// Computes the shrink candidates of the given values.
     /// - Parameters:

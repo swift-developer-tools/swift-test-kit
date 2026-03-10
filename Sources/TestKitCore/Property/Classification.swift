@@ -11,6 +11,22 @@ import OSLog
 
 
 
+package func TKTarget(
+    _ target: () -> Double
+)
+{
+    guard let interceptor = FailureInterceptor.current as? PropertyInterceptor
+    else
+    {
+        warnNoOp(for: "Target")
+        return
+    }
+    
+    interceptor.recordTarget(target())
+}
+
+
+
 package func TKAssume(
     _ condition: () -> Bool
 ) throws

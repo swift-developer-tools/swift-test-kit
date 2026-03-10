@@ -26,6 +26,7 @@ internal final class ClassificationIntegrationTests: TestKitCase
     
     func testClassificationOutsidePropertyBodyIsNoOp()
     {
+        TKTarget(50.0)
         TKClassify("label", when: true)
         TKCover(50, "label", when: true)
         TKLabel("label")
@@ -764,5 +765,198 @@ internal final class ClassificationIntegrationTests: TestKitCase
             try TKAssume(true)
             TKCover(100, "always", when: true)
         }
+    }
+    
+    
+    
+    @Reasync
+    func testTargetPassesThroughForAll() async
+    {
+        await TKForAll(
+            using:      Generator<Int>.integer(in: 0...100),
+            options:    .propertyOptions(iterations: 50, seed: 1)
+        )
+        {
+            (n: Int) async throws in
+            
+            TKTarget(Double(n))
+        }
+    }
+    
+    
+    
+    @Reasync
+    func testTargetFailureThroughForAll() async
+    {
+        await withOneExpectedFailure
+        {
+            await TKForAll(
+                using:      Generator<Int>.integer(in: 0...100),
+                options:    .propertyOptions(iterations: 100, seed: 1)
+            )
+            {
+                (n: Int) async throws in
+                
+                TKTarget(Double(n))
+                
+                if n > 50
+                {
+                    TKAssertTrue(false)
+                }
+            }
+        }
+    }
+    
+    
+    
+    @Reasync
+    func testTargetedConvergenceOnPartitionImbalance() async
+    {
+        /// This test verifies that targeted property-based testing produces
+        /// values that are on average 50% higher than those produced by an
+        /// identical non-targeted run.
+        ///
+        /// The underlying test was run 5,000 times with random seeds, passing
+        /// 4,999 times (99.98%). The same test passes about 99.7% of the time
+        /// when the expectation is that targeted runs produce values that are
+        /// on average 100% higher than the same non-targeted run.
+        ///
+        /// Some seeds produce baseline distributions that yield moderately
+        /// adversarial arrays by chance. In these cases, targeted property-
+        /// based testing still improves the result, but not necessarily by
+        /// 50%. Rather than rely on non-deterministic results, this test uses
+        /// three seeds with varying baseline characteristics:
+        ///
+        /// | Seed                 | Baseline | Targeted | Ratio |
+        /// |----------------------|----------|----------|-------|
+        /// | 13333452750707912999 | 6.64     | 50.29    | 7.57  |
+        /// | 1060906943278724082  | 8.46     | 53.56    | 6.33  |
+        /// | 2426678483484296804  | 10.94    | 45.35    | 4.15  |
+        ///
+        /// The seeds represent low, medium, and high baselines. This also has
+        /// the benefit of making test failures reproducible, similar to other
+        /// tests that do not use random seeds.
+        
+        let seeds: [UInt64] =
+        [
+            13333452750707912999,
+            1060906943278724082,
+            2426678483484296804
+        ]
+        
+        for seed in seeds
+        {
+            await validateTargetedConvergenceOnPartitionImbalance(seed: seed)
+        }
+    }
+}
+
+
+
+// MARK: - Support
+
+extension ClassificationIntegrationTests
+{
+    /// Validates that targeted property-based testing produces values that
+    /// are, on average, 50% larger in the last quarter of the run than in
+    /// an identical non-targeted run.
+    /// - Parameter seed: The seed used to initialize the random number
+    /// generator.
+    @Reasync
+    private func validateTargetedConvergenceOnPartitionImbalance(
+        seed: UInt64
+    ) async
+    {
+        var baselineImbalances  : [Int]     = []
+        var targetedImbalances  : [Int]     = []
+        
+        let generator: Generator<[Int]> = .array(
+            using:  .integer(in: 1...100),
+            count:  5...15
+        )
+        
+        let options: TestOptions = .propertyOptions(
+            iterations:     500,
+            seed:           seed
+        )
+        
+        await TKForAll(
+            using:      generator,
+            options:    options
+        )
+        {
+            (numbers: [Int]) async throws in
+            
+            let imbalance: Int = greedyPartitionImbalance(of: numbers)
+            
+            baselineImbalances.append(imbalance)
+        }
+        
+        await TKForAll(
+            using:      generator,
+            options:    options
+        )
+        {
+            (numbers: [Int]) async throws in
+            
+            let imbalance: Int = greedyPartitionImbalance(of: numbers)
+            
+            targetedImbalances.append(imbalance)
+
+            TKTarget(Double(imbalance))
+        }
+        
+        let baselineLastQuarter: ArraySlice<Int>
+            = baselineImbalances.suffix(baselineImbalances.count / 4)
+        
+        let targetedLastQuarter: ArraySlice<Int>
+            = targetedImbalances.suffix(targetedImbalances.count / 4)
+        
+        let baselineAverage: Double
+            = Double(baselineLastQuarter.reduce(0, +))
+            / Double(baselineLastQuarter.count)
+        
+        let targetedAverage: Double
+            = Double(targetedLastQuarter.reduce(0, +))
+            / Double(targetedLastQuarter.count)
+        
+        XCTAssertGreaterThan(targetedAverage, baselineAverage * 1.5)
+    }
+    
+    
+    
+    /// Computes the imbalance of a greedy partition of the given array.
+    ///
+    /// The greedy algorithm assigns each number (largest first) to the
+    /// partition with the smaller current sum. The imbalance is computed as
+    /// the absolute difference between the two partition sums.
+    ///
+    /// This is a candidate for targeted property-based testing since random
+    /// values generally do not produce a high imbalance, but targeted
+    /// property-based testing can be used to converge toward adversarial
+    /// values that maximize the imbalance and stress test the algorithm.
+    ///
+    /// - Parameter numbers: The array to evaluate.
+    /// - Returns: The imbalance of a greedy partition of the given array.
+    private func greedyPartitionImbalance(
+        of numbers: [Int]
+    ) -> Int
+    {
+        var sumA    : Int   = 0
+        var sumB    : Int   = 0
+        
+        for number in numbers.sorted(by: >)
+        {
+            if sumA <= sumB
+            {
+                sumA += number
+            }
+            else
+            {
+                sumB += number
+            }
+        }
+        
+        return abs(sumA - sumB)
     }
 }

@@ -31,4 +31,16 @@ extension CollectionOfOne: Arbitrary where Element : Arbitrary
     {
         return self[startIndex].shrink().map { CollectionOfOne($0) }
     }
+    
+    
+    
+    /// Produces a value that is a small perturbation of the receiver value.
+    /// - Parameter context: The generation context.
+    /// - Returns: A mutated collection.
+    public func mutate(
+        using context: GenerationContext
+    ) -> CollectionOfOne
+    {
+        return CollectionOfOne(self[startIndex].mutate(using: context))
+    }
 }

@@ -14,6 +14,78 @@ import XCTest
 
 internal final class IntegerArbitraryTests: TestKitCase
 {
+    // MARK: - Determinism
+        
+    func testIntDeterminism()
+    {
+        assertArbitraryDeterminism(of: Int.self)
+    }
+    
+    
+    
+    func testInt8Determinism()
+    {
+        assertArbitraryDeterminism(of: Int8.self)
+    }
+    
+    
+    
+    func testInt16Determinism()
+    {
+        assertArbitraryDeterminism(of: Int16.self)
+    }
+    
+    
+    
+    func testInt32Determinism()
+    {
+        assertArbitraryDeterminism(of: Int32.self)
+    }
+    
+    
+    
+    func testInt64Determinism()
+    {
+        assertArbitraryDeterminism(of: Int64.self)
+    }
+    
+    
+    
+    func testUIntDeterminism()
+    {
+        assertArbitraryDeterminism(of: UInt.self)
+    }
+    
+    
+    
+    func testUInt8Determinism()
+    {
+        assertArbitraryDeterminism(of: UInt8.self)
+    }
+    
+    
+    
+    func testUInt16Determinism()
+    {
+        assertArbitraryDeterminism(of: UInt16.self)
+    }
+    
+    
+    
+    func testUInt32Determinism()
+    {
+        assertArbitraryDeterminism(of: UInt32.self)
+    }
+    
+    
+    
+    func testUInt64Determinism()
+    {
+        assertArbitraryDeterminism(of: UInt64.self)
+    }
+    
+    
+    
     // MARK: - Generation
     
     func testIntGeneration()
@@ -155,6 +227,78 @@ internal final class IntegerArbitraryTests: TestKitCase
     {
         validateShrinking(of: UInt64.self)
     }
+    
+    
+    
+    // MARK: - Mutation
+    
+    func testIntMutation()
+    {
+        validateMutation(of: Int.self)
+    }
+    
+    
+    
+    func testInt8Mutation()
+    {
+        validateMutation(of: Int8.self)
+    }
+    
+    
+    
+    func testInt16Mutation()
+    {
+        validateMutation(of: Int16.self)
+    }
+    
+    
+    
+    func testInt32Mutation()
+    {
+        validateMutation(of: Int32.self)
+    }
+    
+    
+    
+    func testInt64Mutation()
+    {
+        validateMutation(of: Int64.self)
+    }
+    
+    
+    
+    func testUIntMutation()
+    {
+        validateMutation(of: UInt.self)
+    }
+    
+    
+    
+    func testUInt8Mutation()
+    {
+        validateMutation(of: UInt8.self)
+    }
+    
+    
+    
+    func testUInt16Mutation()
+    {
+        validateMutation(of: UInt16.self)
+    }
+    
+    
+    
+    func testUInt32Mutation()
+    {
+        validateMutation(of: UInt32.self)
+    }
+    
+    
+    
+    func testUInt64Mutation()
+    {
+        validateMutation(of: UInt64.self)
+    }
 }
 
 
@@ -171,7 +315,6 @@ extension IntegerArbitraryTests
         of type: T.Type
     ) where T : Arbitrary & FixedWidthInteger
     {
-        assertArbitraryDeterminism(of: type)
         validateSizeZeroProduction(of: type)
         validateSizeBounds(of: type)
         validateSignedValueProduction(of: type)
@@ -424,5 +567,166 @@ extension IntegerArbitraryTests
         {
             XCTAssertEqual(candidates.last, value + 1)
         }
+    }
+    
+    
+    
+    // MARK: Mutation support
+    
+    /// Validates mutation of the given type.
+    /// - Parameter type: The type to evaluate.
+    private func validateMutation<T>(
+        of type: T.Type
+    ) where T : Arbitrary & FixedWidthInteger
+    {
+        validateMutateSizeZeroBounds(of: type)
+        validateMutateProducesDifferentValues(of: type)
+        validateMutateOverflowClamping(of: type)
+        validateMutateSizeScaling(of: type)
+    }
+    
+    
+    
+    /// Validates that at size `0`, mutation perturbs by at most `±1`.
+    ///
+    /// At size `0`, `maxDelta` is `max(1, 0) = 1`, so the delta is in the
+    /// range `-1...1`. The mutated value must be within one step of the input.
+    ///
+    /// - Parameter type: The type to evaluate.
+    private func validateMutateSizeZeroBounds<T>(
+        of type: T.Type
+    ) where T : Arbitrary & FixedWidthInteger
+    {
+        let value = T(clamping: 10)
+        
+        for _ in 0..<1000
+        {
+            let context : GenerationContext     = .randomSeed(size: 0)
+            let mutated : T                     = value.mutate(using: context)
+            
+            let distance: Int64 = abs(Int64(mutated) - Int64(value))
+            
+            XCTAssertLessThanOrEqual(distance, 1)
+        }
+    }
+    
+    
+    
+    /// Validates that mutation produces values different from the input.
+    /// - Parameter type: The type to evaluate.
+    private func validateMutateProducesDifferentValues<T>(
+        of type: T.Type
+    ) where T : Arbitrary & FixedWidthInteger
+    {
+        let value           : T     = T(clamping: 50)
+        var hasDifferent    : Bool  = false
+        
+        for _ in 0..<1000
+        {
+            let context : GenerationContext     = .randomSeed(size: 10)
+            let mutated : T                     = value.mutate(using: context)
+            
+            if mutated != value
+            {
+                hasDifferent = true
+                break
+            }
+        }
+        
+        XCTAssertTrue(hasDifferent)
+    }
+    
+    
+    
+    /// Validates that mutation at type boundaries produces clamped values.
+    ///
+    /// For all types, this verifies that `T.max` and `T.min` at large sizes
+    /// produce clamped values. For amsll types where `T.max` is at most
+    /// `Int16.max`, this also verifies that the clamped boundary value is
+    /// produced, confirming that the overflow is handled by clamping rather
+    /// than by wrapping.
+    ///
+    /// - Parameter type: The type to evaluate.
+    private func validateMutateOverflowClamping<T>(
+        of type: T.Type
+    ) where T : Arbitrary & FixedWidthInteger
+    {
+        for _ in 0..<1000
+        {
+            let context     = GenerationContext.randomSeed(size: 10)
+            let maxMutated  = T.max.mutate(using: context)
+            let minMutated  = T.min.mutate(using: context)
+            
+            XCTAssertGreaterThanOrEqual(maxMutated, T.min)
+            XCTAssertLessThanOrEqual(maxMutated, T.max)
+            XCTAssertGreaterThanOrEqual(minMutated, T.min)
+            XCTAssertLessThanOrEqual(minMutated, T.max)
+        }
+        
+        guard T.max <= T(clamping: Int16.max)
+        else
+        {
+            return
+        }
+        
+        var hasMaxClamp : Bool  = false
+        var hasMinClamp : Bool  = false
+        
+        for _ in 0..<1000
+        {
+            let maxContext  = GenerationContext.randomSeed(size: 100)
+            let minContext  = GenerationContext.randomSeed(size: 100)
+            
+            if T.max.mutate(using: maxContext) == .max
+            {
+                hasMaxClamp = true
+            }
+            
+            if T.min.mutate(using: minContext) == .min
+            {
+                hasMinClamp = true
+            }
+            
+            if
+                hasMaxClamp,
+                hasMinClamp
+            {
+                break
+            }
+        }
+        
+        XCTAssertTrue(hasMaxClamp)
+        XCTAssertTrue(hasMinClamp)
+    }
+    
+    
+    
+    /// Validates that mutation magnitude scales with context size.
+    ///
+    /// The average absolute deviation from the input at a large size must
+    /// exceed the average at a small size.
+    ///
+    /// - Parameter type: The type to evaluate.
+    private func validateMutateSizeScaling<T>(
+        of type: T.Type
+    ) where T : Arbitrary & FixedWidthInteger
+    {
+        let value       : T         = T(clamping: 50)
+        var smallTotal  : Double    = 0
+        var largeTotal  : Double    = 0
+        
+        for _ in 0..<1000
+        {
+            let smallContext    = GenerationContext.randomSeed(size: 1)
+            let largeContext    = GenerationContext.randomSeed(size: 50)
+            
+            let smallMutated    : T     = value.mutate(using: smallContext)
+            let largeMutated    : T     = value.mutate(using: largeContext)
+            
+            smallTotal += abs(Double(Int64(smallMutated) - Int64(value)))
+            largeTotal += abs(Double(Int64(largeMutated) - Int64(value)))
+        }
+        
+        XCTAssertGreaterThan(largeTotal, smallTotal)
     }
 }

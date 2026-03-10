@@ -11,6 +11,27 @@ import TestKitCore
 
 
 
+/// Records the given target value for guided generation.
+///
+/// Use this inside a property body to enable targeted property-based testing.
+/// The target value is maximized across iterations, guiding generation toward
+/// values that produce higher target values.
+///
+/// If this function is called multiple times within a single iteration, the
+/// last target value is used.
+///
+/// - Note: This function has no effect outside a property body.
+///
+/// - Parameter target: The target value to maximize. Pass a negative value to
+/// minimize a metric.
+public func XCTKTarget(
+    _ target: @autoclosure () -> Double
+)
+{
+    TKTarget(target)
+}
+
+
 
 /// Discards the current iteration when the given condition is false.
 ///
@@ -22,7 +43,7 @@ import TestKitCore
 /// can lead to exhaustion. Prefer constructing valid values using a custom
 /// ``Generator`` rather than discarding invalid values with a precondition.
 ///
-/// - Note: This function does nothing when called outside a property body.
+/// - Note: This function has no effect outside a property body.
 ///
 /// - Parameter condition: The condition to evaluate.
 /// - Throws: An error if the given condition is false.
@@ -41,7 +62,7 @@ public func XCTKAssume(
 /// An iteration can receive multiple labels. Calling this function multiple
 /// times with the same label within a single iteration is idempotent.
 ///
-/// - Note: This function does nothing when called outside a property body.
+/// - Note: This function has no effect outside a property body.
 ///
 /// - Parameters:
 ///   - label: The label to apply.
@@ -67,7 +88,7 @@ public func XCTKClassify(
 /// If the same label is covered multiple times with different thresholds,
 /// the maximum threshold is used.
 ///
-/// - Note: This function does nothing when called outside a property body.
+/// - Note: This function has no effect outside a property body.
 ///
 /// - Parameters:
 ///   - percentage: The minimum percentage of iterations that must be tagged
@@ -91,7 +112,7 @@ public func XCTKCover(
 
 /// Tags the current iteration with the given label.
 ///
-/// - Note: This function does nothing when called outside a property body.
+/// - Note: This function has no effect outside a property body.
 ///
 /// - Parameter label: The label to apply.
 public func XCTKLabel(
@@ -106,7 +127,7 @@ public func XCTKLabel(
 /// Tags the current iteration with the string representation of the given
 /// value.
 ///
-/// - Note: This function does nothing when called outside a property body.
+/// - Note: This function has no effect outside a property body.
 ///
 /// - Parameter value: The value whose string representation to apply as
 /// a label.
@@ -124,7 +145,7 @@ public func XCTKCollect<T>(
 /// An iteration can receive multiple labels. Calling this function multiple
 /// times with the same table and label within a single iteration is idempotent.
 ///
-/// - Note: This function does nothing when called outside a property body.
+/// - Note: This function has no effect outside a property body.
 ///
 /// - Parameters:
 ///   - table: The table to update.
@@ -151,7 +172,7 @@ public func XCTKTabulate(
 /// If the same label is covered multiple times with different thresholds,
 /// the maximum threshold is used.
 ///
-/// - Note: This function does nothing when called outside a property body.
+/// - Note: This function has no effect outside a property body.
 ///
 /// - Parameters:
 ///   - table: The table to update.

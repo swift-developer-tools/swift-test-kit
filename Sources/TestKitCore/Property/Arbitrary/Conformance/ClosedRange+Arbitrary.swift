@@ -87,4 +87,42 @@ extension ClosedRange: Arbitrary where Bound : Arbitrary & Comparable
         
         return candidates
     }
+    
+    
+    
+    /// Produces a value that is a small perturbation of the receiver value.
+    /// - Parameter context: The generation context.
+    /// - Returns: A mutated range.
+    public func mutate(
+        using context: GenerationContext
+    ) -> ClosedRange
+    {
+        /// If the mutated bound overshoots, collapse to a point range. An
+        /// alternative would be to swap the bounds, but that may produce
+        /// a very large range from a small mutation, which is not helpful
+        /// for convergence. Prefer a more recoverable effect.
+        
+        if context.randomBool()
+        {
+            let lower: Bound = lowerBound.mutate(using: context)
+            
+            if lower <= upperBound
+            {
+                return lower...upperBound
+            }
+            
+            return lowerBound...lowerBound
+        }
+        else
+        {
+            let upper: Bound = upperBound.mutate(using: context)
+            
+            if lowerBound <= upper
+            {
+                return lowerBound...upper
+            }
+            
+            return upperBound...upperBound
+        }
+    }
 }

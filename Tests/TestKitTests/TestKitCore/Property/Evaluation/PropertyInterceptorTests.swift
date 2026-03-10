@@ -22,6 +22,7 @@ internal final class PropertyInterceptorTests: TestKitCase
         
         XCTAssertFalse(interceptor.didFail)
         XCTAssertTrue(interceptor.failures.isEmpty)
+        XCTAssertNil(interceptor.target)
         XCTAssertTrue(interceptor.labels.isEmpty)
         XCTAssertTrue(interceptor.distribution.isEmpty)
         XCTAssertTrue(interceptor.coverageRequirements.isEmpty)
@@ -40,12 +41,14 @@ internal final class PropertyInterceptorTests: TestKitCase
         
         interceptor.recordFailure()
         
+        interceptor.recordTarget(50)
         interceptor.recordLabel("label")
         interceptor.recordCoverageRequirement(50, for: "req")
         interceptor.recordTableLabel("v", table: "t")
         
         XCTAssertTrue(interceptor.didFail)
         XCTAssertEqual(interceptor.failures.count, 1)
+        XCTAssertEqual(interceptor.target, 50)
         XCTAssertEqual(interceptor.labels, ["label"])
         XCTAssertEqual(interceptor.coverageRequirements, ["req": 50])
         XCTAssertEqual(interceptor.tableLabels, ["t": ["v"]])
@@ -54,6 +57,7 @@ internal final class PropertyInterceptorTests: TestKitCase
         
         XCTAssertFalse(interceptor.didFail)
         XCTAssertTrue(interceptor.failures.isEmpty)
+        XCTAssertNil(interceptor.target)
         XCTAssertTrue(interceptor.labels.isEmpty)
         XCTAssertEqual(interceptor.coverageRequirements, ["req": 50])
         XCTAssertTrue(interceptor.tableLabels.isEmpty)
@@ -91,6 +95,83 @@ internal final class PropertyInterceptorTests: TestKitCase
         XCTAssertTrue(interceptor.labels.isEmpty)
         XCTAssertEqual(interceptor.tableCoverageRequirements, ["t": ["x": 20]])
         XCTAssertEqual(interceptor.tableDistribution, ["t": ["x": 1, "y": 1]])
+    }
+    
+    
+    
+    // MARK: - Target
+    
+    func testRecordTargetStoresValue()
+    {
+        let interceptor = PropertyInterceptor()
+        
+        interceptor.recordTarget(50)
+        
+        XCTAssertEqual(interceptor.target, 50)
+    }
+    
+    
+    
+    func testRecordMultipleTargets()
+    {
+        let interceptor = PropertyInterceptor()
+        
+        interceptor.recordTarget(50)
+        interceptor.recordTarget(100)
+        interceptor.recordTarget(1)
+        
+        XCTAssertEqual(interceptor.target, 1)
+    }
+    
+    
+    
+    func testResetClearsTarget()
+    {
+        let interceptor = PropertyInterceptor()
+        
+        interceptor.recordTarget(50)
+        
+        XCTAssertEqual(interceptor.target, 50)
+        
+        interceptor.reset()
+        
+        XCTAssertNil(interceptor.target)
+    }
+    
+    
+    
+    func testFinalizeIterationClearsTarget()
+    {
+        let interceptor = PropertyInterceptor()
+        
+        interceptor.recordTarget(50)
+        
+        XCTAssertEqual(interceptor.target, 50)
+        
+        interceptor.finalizeIteration()
+        
+        XCTAssertNil(interceptor.target)
+    }
+    
+    
+    
+    func testRecordTargetIndependentOfLabels()
+    {
+        let interceptor = PropertyInterceptor()
+        
+        interceptor.recordTarget(50)
+        interceptor.recordLabel("a")
+        interceptor.recordTableLabel("z", table: "t")
+        
+        XCTAssertEqual(interceptor.target, 50)
+        XCTAssertEqual(interceptor.labels, ["a"])
+        XCTAssertEqual(interceptor.tableLabels, ["t": ["z"]])
+        
+        interceptor.finalizeIteration()
+        
+        XCTAssertNil(interceptor.target)
+        XCTAssertEqual(interceptor.distribution, ["a": 1])
+        XCTAssertEqual(interceptor.tableDistribution, ["t": ["z": 1]])
     }
     
     

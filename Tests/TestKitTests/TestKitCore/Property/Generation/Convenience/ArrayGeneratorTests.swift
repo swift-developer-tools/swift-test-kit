@@ -452,6 +452,158 @@ internal final class ArrayGeneratorTests: TestKitCase
     
     
     
+    // MARK: - Exact count mutation
+    
+    func testExactCountMutationPreservesCount()
+    {
+        let generator: Generator<[Int]> = .array(count: 5)
+        
+        for _ in 0..<1000
+        {
+            let array   : [Int]     = generator.generate(.random)
+            let mutated : [Int]     = generator.mutate(array, .random)
+            
+            XCTAssertEqual(mutated.count, 5)
+        }
+    }
+    
+    
+    
+    func testExactCountMutationChangesElements()
+    {
+        let generator   : Generator<[Int]>  = .array(count: 5)
+        var changed     : Bool              = false
+        
+        for _ in 0..<1000
+        {
+            let array   : [Int]     = generator.generate(.randomSeed(size: 50))
+            let mutated : [Int]     = generator.mutate(array, .random)
+            
+            if mutated != array
+            {
+                changed = true
+                break
+            }
+        }
+        
+        XCTAssertTrue(changed)
+    }
+    
+    
+    
+    func testExactCountMutationUsesGenerator()
+    {
+        var mutateCallCount: Int = 0
+        
+        let elementGenerator = Generator<Int>(
+            generate:   { context in context.random(in: 0...100 ) },
+            shrink:     { _ in [] },
+            mutate:
+            {
+                value, context in
+                
+                mutateCallCount += 1
+                return value + 1
+            }
+        )
+        
+        let generator: Generator<[Int]> = .array(
+            using:  elementGenerator,
+            count:  3
+        )
+        
+        let array       : [Int]     = [10, 20, 30]
+        let iterations  : Int       = 1000
+        
+        for _ in 0..<iterations
+        {
+            _ = generator.mutate(array, .random)
+        }
+        
+        XCTAssertEqual(mutateCallCount, iterations)
+    }
+    
+    
+    
+    func testUniqueExactCountMutationPreservesUniqueness()
+    {
+        let generator: Generator<[Int]> = .uniqueArray(
+            using:  .integer(in: 0...100),
+            count:  5
+        )
+        
+        for _ in 0..<1000
+        {
+            let array   : [Int]     = generator.generate(.random)
+            let mutated : [Int]     = generator.mutate(array, .random)
+            
+            XCTAssertEqual(Set(mutated).count, mutated.count)
+        }
+    }
+    
+    
+    
+    func testUniqueExactCountMutationPreservesCount()
+    {
+        let generator: Generator<[Int]> = .uniqueArray(
+            using:  .integer(in: 0...100),
+            count:  5
+        )
+        
+        for _ in 0..<1000
+        {
+            let array   : [Int]     = generator.generate(.random)
+            let mutated : [Int]     = generator.mutate(array, .random)
+            
+            XCTAssertEqual(mutated.count, 5)
+        }
+    }
+    
+    
+    
+    func testUniqueExactCountMutationFallbackOnExhaustion()
+    {
+        let generator: Generator<[Int]> = .uniqueArray(
+            using:  .integer(in: 0...2),
+            count:  3
+        )
+        
+        let array: [Int] = [0, 1, 2]
+        
+        for _ in 0..<1000
+        {
+            let mutated: [Int] = generator.mutate(array, .random)
+            
+            XCTAssertEqual(Set(mutated).count, mutated.count)
+        }
+    }
+    
+    
+    
+    func testUniqueExactCountZeroMutationReturnsEmpty()
+    {
+        let generator: Generator<[Int]> = .uniqueArray(
+            using:  .integer(in: 0...1000),
+            count:  0
+        )
+        
+        let mutated: [Int] = generator.mutate([], .random)
+        
+        XCTAssertTrue(mutated.isEmpty)
+    }
+    
+    
+    
+    func testExactCountZeroMutationReturnsEmpty()
+    {
+        let generator   : Generator<[Int]>  = .array(count: 0)
+        let mutated     : [Int]             = generator.mutate([], .random)
+        
+        XCTAssertTrue(mutated.isEmpty)
+    }
+    
+    
+    
     // MARK: - Closed range generation
     
     func testClosedRangeDeterminism()
@@ -817,6 +969,162 @@ internal final class ArrayGeneratorTests: TestKitCase
     
     
     
+    // MARK: - Closed range mutation
+    
+    func testClosedRangeMutationRespectsBounds()
+    {
+        let generator: Generator<[Int]> = .array(count: 3...7)
+        
+        for _ in 0..<1000
+        {
+            let array   : [Int]     = generator.generate(.random)
+            let mutated : [Int]     = generator.mutate(array, .random)
+            
+            XCTAssertGreaterThanOrEqual(mutated.count, 3)
+            XCTAssertLessThanOrEqual(mutated.count, 7)
+        }
+    }
+    
+    
+    
+    func testClosedRangeMutationAtLowerBoundCannotRemove()
+    {
+        let generator   : Generator<[Int]>  = .array(count: 3...7)
+        let array       : [Int]             = [10, 20, 30]
+        
+        for _ in 0..<1000
+        {
+            let mutated: [Int] = generator.mutate(array, .random)
+            
+            XCTAssertGreaterThanOrEqual(mutated.count, 3)
+            XCTAssertLessThanOrEqual(mutated.count, 7)
+        }
+    }
+    
+    
+    
+    func testClosedRangeMutationAtLowerBoundCannotInsert()
+    {
+        let generator   : Generator<[Int]>  = .array(count: 3...5)
+        let array       : [Int]             = [10, 20, 30, 40, 50]
+        
+        for _ in 0..<1000
+        {
+            let mutated: [Int] = generator.mutate(array, .random)
+            
+            XCTAssertGreaterThanOrEqual(mutated.count, 3)
+            XCTAssertLessThanOrEqual(mutated.count, 5)
+        }
+    }
+    
+    
+    
+    func testUniqueClosedRangeMutationPreservesUniqueness()
+    {
+        let generator: Generator<[Int]> = .uniqueArray(
+            using:  .integer(in: 0...1000),
+            count:  3...8
+        )
+        
+        for _ in 0..<1000
+        {
+            let array   : [Int]     = generator.generate(.random)
+            let mutated : [Int]     = generator.mutate(array, .random)
+            
+            XCTAssertEqual(Set(mutated).count, mutated.count)
+        }
+    }
+    
+    
+    
+    func testUniqueClosedRangeMutationRespectsBounds()
+    {
+        let generator: Generator<[Int]> = .uniqueArray(
+            using:  .integer(in: 0...1000),
+            count:  3...7
+        )
+        
+        for _ in 0..<1000
+        {
+            let array   : [Int]     = generator.generate(.random)
+            let mutated : [Int]     = generator.mutate(array, .random)
+            
+            XCTAssertGreaterThanOrEqual(mutated.count, 3)
+            XCTAssertLessThanOrEqual(mutated.count, 7)
+        }
+    }
+    
+    
+    
+    func testClosedRangeMutationEmptyArrayInserts()
+    {
+        let generator: Generator<[Int]> = .array(count: 0...5)
+        
+        for _ in 0..<1000
+        {
+            let mutated: [Int] = generator.mutate([], .random)
+            
+            XCTAssertEqual(mutated.count, 1)
+        }
+    }
+    
+    
+    
+    func testUniqueClosedRangeMutationEmptyArrayInserts()
+    {
+        let generator: Generator<[Int]> = .uniqueArray(
+            using:  .integer(in: 0...1000),
+            count:  0...5
+        )
+        
+        for _ in 0..<1000
+        {
+            let mutated: [Int] = generator.mutate([], .random)
+            
+            XCTAssertEqual(mutated.count, 1)
+        }
+    }
+    
+    
+    
+    func testClosedRangeMutationUsesGenerator()
+    {
+        var mutateCallCount: Int = 0
+        
+        let elementGenerator = Generator<Int>(
+            generate:   { context in context.random(in: 0...100 ) },
+            shrink:     { _ in [] },
+            mutate:
+            {
+                value, context in
+                
+                mutateCallCount += 1
+                
+                return value + 1
+            }
+        )
+        
+        let generator: Generator<[Int]> = .array(
+            using:  elementGenerator,
+            count:  3...7
+        )
+        
+        let array       : [Int]     = [10, 20, 30, 40, 50]
+        let iterations  : Int       = 10_000
+        
+        for _ in 0..<iterations
+        {
+            _ = generator.mutate(array, .random)
+        }
+        
+        XCTAssertGreaterThan(
+            mutateCallCount,
+            Int(Double(iterations) * 0.7 * 0.95)
+        )
+    }
+    
+    
+    
     // MARK: - Range generation
     
     func testRangeDeterminism()
@@ -1156,6 +1464,61 @@ internal final class ArrayGeneratorTests: TestKitCase
     
     
     
+    // MARK: - Range mutation
+    
+    func testRangeMutationRespectsBounds()
+    {
+        let generator: Generator<[Int]> = .array(count: 3..<8)
+        
+        for _ in 0..<1000
+        {
+            let array   : [Int]     = generator.generate(.random)
+            let mutated : [Int]     = generator.mutate(array, .random)
+            
+            XCTAssertGreaterThanOrEqual(mutated.count, 3)
+            XCTAssertLessThanOrEqual(mutated.count, 7)
+        }
+    }
+    
+    
+    
+    func testUniqueRangeMutationPreservesUniqueness()
+    {
+        let generator: Generator<[Int]> = .uniqueArray(
+            using:  .integer(in: 0...1000),
+            count:  3..<9
+        )
+        
+        for _ in 0..<1000
+        {
+            let array   : [Int]     = generator.generate(.random)
+            let mutated : [Int]     = generator.mutate(array, .random)
+            
+            XCTAssertEqual(Set(mutated).count, mutated.count)
+        }
+    }
+    
+    
+    
+    func testUniqueRangeMutationRespectsBounds()
+    {
+        let generator: Generator<[Int]> = .uniqueArray(
+            using:  .integer(in: 0...1000),
+            count:  3..<8
+        )
+        
+        for _ in 0..<1000
+        {
+            let array   : [Int]     = generator.generate(.random)
+            let mutated : [Int]     = generator.mutate(array, .random)
+            
+            XCTAssertGreaterThanOrEqual(mutated.count, 3)
+            XCTAssertLessThanOrEqual(mutated.count, 7)
+        }
+    }
+    
+    
+    
     // MARK: - Non-empty generation
     
     func testNonEmptyArrayDeterminism()
@@ -1208,6 +1571,37 @@ internal final class ArrayGeneratorTests: TestKitCase
         for candidate in candidates
         {
             XCTAssertEqual(candidate.count, 1)
+        }
+    }
+    
+    
+    
+    // MARK: - Non-empty mutation
+    
+    func testNonEmptyArrayMutationNeverProducesEmpty()
+    {
+        let generator: Generator<[Int]> = .nonEmptyArray()
+        
+        for _ in 0..<1000
+        {
+            let array   : [Int]     = generator.generate(.random)
+            let mutated : [Int]     = generator.mutate(array, .random)
+            
+            XCTAssertFalse(mutated.isEmpty)
+        }
+    }
+    
+    
+    
+    func testNonEmptyArrayMutationSingleElementCannotRemove()
+    {
+        let generator: Generator<[Int]> = .nonEmptyArray()
+        
+        for _ in 0..<1000
+        {
+            let mutated: [Int] = generator.mutate([50], .random)
+            
+            XCTAssertGreaterThanOrEqual(mutated.count, 1)
         }
     }
 }

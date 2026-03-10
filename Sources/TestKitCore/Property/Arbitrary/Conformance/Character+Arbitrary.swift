@@ -78,4 +78,26 @@ extension Character: Arbitrary
         
         return scalar.shrink().map { Character($0) }
     }
+    
+    
+    
+    /// Produces a value that is a small perturbation of the receiver value.
+    /// - Parameter context: The generation context.
+    /// - Returns: A mutated character.
+    public func mutate(
+        using context: GenerationContext
+    ) -> Character
+    {
+        /// Multi-scalars (grapheme clusters) collapse to a single scalar
+        /// after mutation, similar to shrinking. An alternative would be
+        /// to preserve the cluster while mutating only a single scalar.
+        
+        guard let base: Unicode.Scalar = unicodeScalars.first
+        else
+        {
+            return Character.arbitrary(using: context)
+        }
+        
+        return Character(base.mutate(using: context))
+    }
 }

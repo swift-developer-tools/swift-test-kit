@@ -14,14 +14,16 @@ import XCTest
 
 internal final class DecimalArbitraryTests: TestKitCase
 {
-    // MARK: - Generation
+    // MARK: - Determinism
     
-    func testGenerationDeterminism()
+    func testArbitraryDeterminism()
     {
         assertArbitraryDeterminism(of: Decimal.self)
     }
     
     
+    
+    // MARK: - Generation
     
     func testGenerationSizeZeroBounds()
     {
@@ -319,5 +321,110 @@ extension DecimalArbitraryTests
                 XCTAssertGreaterThan(candidate, value)
             }
         }
+    }
+    
+    
+    
+    // MARK: - Decimal
+    
+    func testMutateNaNFallsBackToArbitrary()
+    {
+        var hasNaN      : Bool  = false
+        var hasFinite   : Bool  = false
+        
+        for _ in 0..<1000
+        {
+            let mutated = Decimal.nan.mutate(using: .random)
+            
+            if mutated.isNaN
+            {
+                hasNaN = true
+            }
+            else
+            {
+                hasFinite = true
+            }
+            
+            if
+                hasNaN,
+                hasFinite
+            {
+                break
+            }
+        }
+        
+        XCTAssertTrue(hasNaN)
+        XCTAssertTrue(hasFinite)
+    }
+    
+    
+    
+    func testMutateFiniteProducesFinite()
+    {
+        for _ in 0..<1000
+        {
+            let value   : Decimal   = Decimal(42)
+            let mutated : Decimal   = value.mutate(using: .random)
+            
+            XCTAssertFalse(mutated.isNaN)
+        }
+    }
+    
+    
+    
+    func testMutateOffsetBoundedBySize()
+    {
+        let size: Int = 5
+        
+        for _ in 0..<1000
+        {
+            let value = Decimal.arbitrary(using: .random)
+            
+            guard !value.isNaN
+            else
+            {
+                continue
+            }
+            
+            let mutated: Decimal = value.mutate(using: .randomSeed(size: size))
+            
+            let maxDelta    : Decimal   = Decimal(max(1, size))
+            let offset      : Decimal   = abs(mutated - value)
+            
+            XCTAssertLessThanOrEqual(offset, maxDelta)
+        }
+    }
+    
+    
+    
+    func testMutateProducesBothDirections()
+    {
+        let value       : Decimal   = Decimal(50)
+        var hasSmaller  : Bool      = false
+        var hasLarger   : Bool      = false
+        
+        for _ in 0..<1000
+        {
+            let mutated = Decimal.nan.mutate(using: .random)
+            
+            if mutated < value
+            {
+                hasSmaller = true
+            }
+            else if mutated > value
+            {
+                hasLarger = true
+            }
+            
+            if
+                hasSmaller,
+                hasLarger
+            {
+                break
+            }
+        }
+        
+        XCTAssertTrue(hasSmaller)
+        XCTAssertTrue(hasLarger)
     }
 }

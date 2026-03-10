@@ -112,11 +112,12 @@ extension FloatingGeneratorTests
         
         if range.lowerBound != range.upperBound
         {
-            validateVariety(of: generator)
+            validateGenerationVariety(of: generator)
+            validateMutationVariety(of: generator)
         }
         else
         {
-            validateConstant(
+            validateConstantGeneration(
                 of:         generator,
                 expected:   range.lowerBound
             )
@@ -128,6 +129,16 @@ extension FloatingGeneratorTests
         )
         
         validateShrinkCandidateBounds(
+            of:     generator,
+            in:     range
+        )
+        
+        validateMutationBounds(
+            of:     generator,
+            in:     range
+        )
+        
+        validateMutationNonFinite(
             of:     generator,
             in:     range
         )
@@ -179,11 +190,27 @@ extension FloatingGeneratorTests
             in:     range
         )
         
-        validateVariety(of: generator)
+        validateGenerationVariety(of: generator)
+        validateMutationVariety(of: generator)
+        
+        /// The half-open range implementation delegates to the closed range
+        /// implementation, so validate against the equivalent closed range.
+        let closed: ClosedRange<T>
+            = range.lowerBound...range.upperBound.nextDown
         
         validateShrinkCandidateBounds(
             of:     generator,
-            in:     range
+            in:     closed
+        )
+        
+        validateMutationBounds(
+            of:     generator,
+            in:     closed
+        )
+        
+        validateMutationNonFinite(
+            of:     generator,
+            in:     closed
         )
     }
     
@@ -235,7 +262,7 @@ extension FloatingGeneratorTests
     
     /// Validates that the given generator generates a variety of values.
     /// - Parameter generator: The generator to use.
-    private func validateVariety<T>(
+    private func validateGenerationVariety<T>(
         of generator: Generator<T>
     ) where T : BinaryFloatingPoint
     {
@@ -255,7 +282,7 @@ extension FloatingGeneratorTests
     /// - Parameters:
     ///   - generator: The generator to use.
     ///   - expected: The expected value.
-    private func validateConstant<T>(
+    private func validateConstantGeneration<T>(
         of generator    : Generator<T>,
         expected        : T
     ) where T : BinaryFloatingPoint
@@ -329,33 +356,6 @@ extension FloatingGeneratorTests
     
     
     
-    /// Validates the given range contains the shrink candidates produced by
-    /// the given generator.
-    /// - Parameters:
-    ///   - generator: The generator to use.
-    ///   - range: The range to use.
-    private func validateShrinkCandidateBounds<T>(
-        of  generator   : Generator<T>,
-        in  range       : Range<T>
-    ) where T : Arbitrary & BinaryFloatingPoint
-    {
-        let values: [T] =
-        [
-            range.lowerBound,
-            range.upperBound - .ulpOfOne
-        ]
-        
-        for value in values
-        {
-            for candidate in generator.shrink(value)
-            {
-                XCTAssertTrue(range.contains(candidate))
-            }
-        }
-    }
-    
-    
-    
     /// Returns the shrink target for the given range.
     /// - Parameter range: The range to use.
     /// - Returns: The shrink target for the given range.
@@ -375,5 +375,86 @@ extension FloatingGeneratorTests
         
         return range.upperBound
     }
+    
+    
+    
+    // MARK: - Mutation support
+    
+    /// Validates that mutation of the given generator produces values within
+    /// the given range.
+    /// - Parameters:
+    ///   - generator: The generator to use.
+    ///   - range: The range to use.
+    func validateMutationBounds<T>(
+        of  generator   : Generator<T>,
+        in  range       : ClosedRange<T>
+    ) where T : BinaryFloatingPoint, T.RawSignificand : FixedWidthInteger
+    {
+        for _ in 0..<1000
+        {
+            let context: GenerationContext = .random
+            
+            let value   : T     = generator.generate(context)
+            let mutated : T     = generator.mutate(value, context)
+            
+            XCTAssertGreaterThanOrEqual(mutated, range.lowerBound)
+            XCTAssertLessThanOrEqual(mutated, range.upperBound)
+        }
+        
+        for value in [range.lowerBound, range.upperBound]
+        {
+            for _ in 0..<1000
+            {
+                let mutated: T = generator.mutate(value, .random)
+                
+                XCTAssertGreaterThanOrEqual(mutated, range.lowerBound)
+                XCTAssertLessThanOrEqual(mutated, range.upperBound)
+            }
+        }
+    }
+    
+    
+    
+    /// Validates that mutation of the given generator produces a variety of
+    /// values.
+    /// - Parameter generator: The generator to use.
+    func validateMutationVariety<T>(
+        of generator: Generator<T>
+    ) where T : BinaryFloatingPoint, T.RawSignificand : FixedWidthInteger
+    {
+        let value   : T         = generator.generate(.random)
+        var unique  : Set<T>    = []
+        
+        for _ in 0..<1000
+        {
+            unique.insert(generator.mutate(value, .random))
+        }
+        
+        XCTAssertGreaterThan(unique.count, 1)
+    }
+    
+    
+    
+    /// Validates that mutation of non-finite values produces finite, in-range
+    /// values.
+    /// - Parameters:
+    ///   - generator: The generator to use.
+    ///   - range: The range to use.
+    func validateMutationNonFinite<T>(
+        of  generator   : Generator<T>,
+        in  range       : ClosedRange<T>
+    ) where T : BinaryFloatingPoint, T.RawSignificand : FixedWidthInteger
+    {
+        for value in [T.nan, T.infinity, -T.infinity]
+        {
+            for _ in 0..<1000
+            {
+                let mutated: T = generator.mutate(value, .random)
+                
+                XCTAssertTrue(mutated.isFinite)
+                XCTAssertGreaterThanOrEqual(mutated, range.lowerBound)
+                XCTAssertLessThanOrEqual(mutated, range.upperBound)
+            }
+        }
+    }
 }
-

@@ -128,4 +128,53 @@ extension Dictionary : Arbitrary where Key : Arbitrary, Value : Arbitrary
         
         return candidates
     }
+    
+    
+    
+    /// Produces a value that is a small perturbation of the receiver value.
+    /// - Parameter context: The generation context.
+    /// - Returns: A mutated dictionary.
+    public func mutate(
+        using context: GenerationContext
+    ) -> Dictionary
+    {
+        /// There is a 70% chance of mutating in place, 15% chance of
+        /// inserting an element, and 15% chance if removing an element.
+        
+        if isEmpty
+        {
+            let key     = Key.arbitrary(using: context)
+            let value   = Value.arbitrary(using: context)
+            
+            return [key: value]
+        }
+        
+        let chance  : Int           = context.random(in: 1...20)
+        var copy    : Dictionary    = self
+        
+        if
+            chance <= 14
+            || copy.count == 1
+        {
+            let keys : [Key] = Array(self.keys)
+            let key  : Key   = keys[context.random(in: 0...(keys.count - 1))]
+            
+            copy[key] = copy[key]!.mutate(using: context)
+        }
+        else if chance <= 17
+        {
+            let key = Key.arbitrary(using: context)
+            
+            copy[key] = Value.arbitrary(using: context)
+        }
+        else
+        {
+            let keys : [Key] = Array(self.keys)
+            let key  : Key   = keys[context.random(in: 0...(keys.count - 1))]
+            
+            copy.removeValue(forKey: key)
+        }
+        
+        return copy
+    }
 }

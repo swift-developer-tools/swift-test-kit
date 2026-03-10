@@ -42,4 +42,53 @@ extension Set: Arbitrary where Element : Arbitrary
         
         return arrays.map { Set($0) }
     }
+    
+    
+    
+    /// Produces a value that is a small perturbation of the receiver value.
+    /// - Parameter context: The generation context.
+    /// - Returns: A mutated set.
+    public func mutate(
+        using context: GenerationContext
+    ) -> Set
+    {
+        /// There is a 70% chance of mutating in place, 15% chance of
+        /// inserting an element, and 15% chance if removing an element.
+        
+        if isEmpty
+        {
+            return Set([Element.arbitrary(using: context)])
+        }
+        
+        let chance  : Int   = context.random(in: 1...20)
+        var copy    : Set   = self
+        
+        if
+            chance <= 14
+            || copy.count == 1
+        {
+            let index: Int = context.random(in: 0...(copy.count - 1))
+            
+            let elements    : [Element]     = Array(self)
+            let original    : Element       = elements[index]
+            
+            copy.remove(original)
+            copy.insert(original.mutate(using: context))
+        }
+        else if chance <= 17
+        {
+            copy.insert(Element.arbitrary(using: context))
+        }
+        else
+        {
+            let index: Int = context.random(in: 0...(copy.count - 1))
+            
+            let elements    : [Element]     = Array(self)
+            let original    : Element       = elements[index]
+            
+            copy.remove(original)
+        }
+        
+        return copy
+    }
 }

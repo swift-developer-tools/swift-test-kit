@@ -14,7 +14,7 @@ import XCTest
 
 internal final class ResultArbitraryTests: TestKitCase
 {
-    // MARK: - Generation
+    // MARK: - Determinism
     
     func testArbitraryDeterminism()
     {
@@ -22,6 +22,8 @@ internal final class ResultArbitraryTests: TestKitCase
     }
     
     
+    
+    // MARK: - Generation
     
     func testArbitraryProducesBothCases()
     {
@@ -265,6 +267,85 @@ internal final class ResultArbitraryTests: TestKitCase
         let candidates  : [TestResult]  = value.shrink()
         
         XCTAssertEqual(candidates, [.failure(ArbitraryError(code: 0))])
+    }
+    
+    
+    
+    // MARK: - Mutation
+    
+    func testMutateSuccessPreservesCase()
+    {
+        for _ in 0..<1000
+        {
+            let value   : TestResult    = .success(50)
+            let mutated : TestResult    = value.mutate(using: .random)
+            
+            guard case .success = mutated
+            else
+            {
+                XCTFail("Expected .success, got \(mutated)")
+                return
+            }
+        }
+    }
+    
+    
+    
+    func testMutateFailurePreservesCase()
+    {
+        for _ in 0..<1000
+        {
+            let value   : TestResult    = .failure(ArbitraryError(code: 50))
+            let mutated : TestResult    = value.mutate(using: .random)
+            
+            guard case .failure = mutated
+            else
+            {
+                XCTFail("Expected .failure, got \(mutated)")
+                return
+            }
+        }
+    }
+    
+    
+    
+    func testMutateDelegatesToAssociatedValue()
+    {
+        var successChanged  : Bool  = false
+        var failureChanged  : Bool  = false
+        
+        for _ in 0..<1000
+        {
+            let s           : TestResult    = .success(50)
+            let sMutated    : TestResult    = s.mutate(using: .random)
+            
+            if
+                case let .success(v) = sMutated,
+                v != 50
+            {
+                successChanged = true
+            }
+            
+            let f           : TestResult    = .failure(ArbitraryError(code: 50))
+            let fMutated    : TestResult    = f.mutate(using: .random)
+            
+            if
+                case let .failure(e) = fMutated,
+                e.code != 50
+            {
+                failureChanged = true
+            }
+            
+            if
+                successChanged,
+                failureChanged
+            {
+                break
+            }
+        }
+        
+        XCTAssertTrue(successChanged)
+        XCTAssertTrue(failureChanged)
     }
 }
 

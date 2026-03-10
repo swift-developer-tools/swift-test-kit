@@ -7,8 +7,6 @@
 //
 //===----------------------------------------------------------------------===//
 
-// MARK: - AnyShrinker
-
 /// A type-erased shrinker for indexed shrinking of parameter pack elements.
 internal struct AnyShrinker
 {
@@ -81,7 +79,7 @@ internal struct AnyShrinker
     /// - Returns: The type-erased shrink candidates.
     internal static func shrinkCandidates(
         of      value       : Any,
-        using   shrinkers   : [AnyShrinker]
+        with    shrinkers   : [AnyShrinker]
     ) -> [[Any]]
     {
         var candidates  : [[Any]]   = []
@@ -137,41 +135,5 @@ internal struct AnyShrinker
         }
         
         return candidates
-    }
-}
-
-
-
-// MARK: - PackIndex
-
-/// A sequential counter for reconstructing typed tuples from arrays via
-/// pack expansion.
-internal final class PackIndex
-{
-    /// The current pack index.
-    private var current: Int = 0
-    
-    
-    
-    /// Initializes a ``PackIndex`` instance.
-    internal init() { }
-    
-    
-    
-    /// Gets the next pack index.
-    ///
-    /// Each call to this method returns and increments ``current``. This
-    /// allows `repeat array[index.next()] as! each T` to map each pack
-    /// position to the correct array parameter.
-    ///
-    /// - Returns: The next pack index.
-    internal func next() -> Int
-    {
-        defer
-        {
-            current += 1
-        }
-        
-        return current
     }
 }

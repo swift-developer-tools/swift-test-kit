@@ -14,7 +14,7 @@ import XCTest
 
 internal final class UUIDArbitraryTests: TestKitCase
 {
-    // MARK: - Generation
+    // MARK: - Determinism
     
     func testGenerationDeterminism()
     {
@@ -23,7 +23,9 @@ internal final class UUIDArbitraryTests: TestKitCase
     
     
     
-    func testGenerationVersion4()
+    // MARK: - Generation
+    
+    func testGenerationPreservesVersion4()
     {
         for _ in 0..<1000
         {
@@ -38,7 +40,7 @@ internal final class UUIDArbitraryTests: TestKitCase
     
     
     
-    func testGenerationVariant1()
+    func testGenerationPreservesVariant1()
     {
         for _ in 0..<1000
         {
@@ -162,5 +164,92 @@ internal final class UUIDArbitraryTests: TestKitCase
             
             XCTAssertEqual(uuid.shrink(), [])
         }
+    }
+    
+    
+    
+    // MARK: - Mutation
+    
+    func testMutatePreservesVersion4()
+    {
+        for _ in 0..<1000
+        {
+            let uuid    : UUID  = UUID.arbitrary(using: .random)
+            let mutated : UUID  = uuid.mutate(using: .random)
+            
+            /// Byte 6 upper nibble must be `0100`, indicating version 4.
+            let version: UInt8 = mutated.uuid.6 >> 4
+            
+            XCTAssertEqual(version, 4)
+        }
+    }
+    
+    
+    
+    func testMutatePreservesVariant1()
+    {
+        for _ in 0..<1000
+        {
+            let uuid    : UUID  = UUID.arbitrary(using: .random)
+            let mutated : UUID  = uuid.mutate(using: .random)
+            
+            /// Byte 8 upper two bits must be `10`, indicating variant 1.
+            let variant: UInt8 = mutated.uuid.8 >> 6
+            
+            XCTAssertEqual(variant, 0b10)
+        }
+    }
+    
+    
+    
+    func testMutateChangesAtMostOneByte()
+    {
+        for _ in 0..<1000
+        {
+            let uuid    : UUID  = UUID.arbitrary(using: .random)
+            let mutated : UUID  = uuid.mutate(using: .random)
+            
+            let original = Mirror(reflecting: uuid.uuid).children.map
+            {
+                return $0.value as! UInt8
+            }
+            
+            let mutatedBytes = Mirror(reflecting: mutated.uuid).children.map
+            {
+                return $0.value as! UInt8
+            }
+            
+            var differences: Int = 0
+            
+            for (a, b) in zip(original, mutatedBytes)
+            {
+                if a != b
+                {
+                    differences += 1
+                }
+            }
+            
+            /// One byte is replaced, but the version/variant re-stamping may
+            /// also changes bytes 6 and 8. At most, 3 bytes can differ (the
+            /// target byte, plus bytes 6 and 8).
+            XCTAssertLessThanOrEqual(differences, 3)
+        }
+    }
+    
+    
+    
+    func testMutateProducesVariety()
+    {
+        let uuid    : UUID          = UUID.arbitrary(using: .random)
+        var unique  : Set<String>   = []
+        
+        for _ in 0..<1000
+        {
+            let mutated: UUID = uuid.mutate(using: .random)
+            
+            unique.insert(mutated.uuidString)
+        }
+        
+        XCTAssertGreaterThan(unique.count, 100)
     }
 }

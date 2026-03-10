@@ -48,4 +48,25 @@ extension Result: Arbitrary
                 return error.shrink().map { .failure($0) }
         }
     }
+    
+    
+    
+    /// Produces a value that is a small perturbation of the receiver value.
+    /// - Parameter context: The generation context.
+    /// - Returns: A mutated value.
+    public func mutate(
+        using context: GenerationContext
+    ) -> Result
+    {
+        switch self
+        {
+            case let .success(value):
+                
+                return .success(value.mutate(using: context))
+                
+            case let .failure(error):
+                
+                return .failure(error.mutate(using: context))
+        }
+    }
 }

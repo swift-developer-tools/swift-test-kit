@@ -33,13 +33,30 @@ internal final class CharacterGeneratorTests: TestKitCase
     
     
     
-    func testASCIIProducesVariety()
+    func testASCIIGenerationVariety()
     {
         let min = Double(Unicode.Scalar.asciiPrintableRange.count) * 0.95
         
-        validateVariety(
+        validateGenerationVariety(
             of:         .ascii(),
             minUnique:  Int(min)
+        )
+    }
+    
+    
+    
+    func testASCIIMutationVariety()
+    {
+        validateMutationVariety(of: .ascii())
+    }
+    
+    
+    
+    func testASCIIMutationStaysInRange()
+    {
+        validateMutationRange(
+            of:     .ascii(),
+            range:  Unicode.Scalar.asciiPrintableRange
         )
     }
     
@@ -64,13 +81,30 @@ internal final class CharacterGeneratorTests: TestKitCase
     
     
     
-    func testLowercaseProducesVariety()
+    func testLowercaseGenerationVariety()
     {
         let min = Double(Unicode.Scalar.asciiLowercaseRange.count) * 0.95
         
-        validateVariety(
+        validateGenerationVariety(
             of:         .lowercase(),
             minUnique:  Int(min)
+        )
+    }
+    
+    
+    
+    func testLowercaseMutationVariety()
+    {
+        validateMutationVariety(of: .lowercase())
+    }
+    
+    
+    
+    func testLowercaseMutationStaysInRange()
+    {
+        validateMutationRange(
+            of:     .lowercase(),
+            range:  Unicode.Scalar.asciiLowercaseRange
         )
     }
     
@@ -95,13 +129,30 @@ internal final class CharacterGeneratorTests: TestKitCase
     
     
     
-    func testUppercaseProducesVariety()
+    func testUppercaseGenerationVariety()
     {
         let min = Double(Unicode.Scalar.asciiUppercaseRange.count) * 0.95
         
-        validateVariety(
+        validateGenerationVariety(
             of:         .uppercase(),
             minUnique:  Int(min)
+        )
+    }
+    
+    
+    
+    func testUppercaseMutationVariety()
+    {
+        validateMutationVariety(of: .uppercase())
+    }
+    
+    
+    
+    func testUppercaseMutationStaysInRange()
+    {
+        validateMutationRange(
+            of:     .uppercase(),
+            range:  Unicode.Scalar.asciiUppercaseRange
         )
     }
     
@@ -126,13 +177,30 @@ internal final class CharacterGeneratorTests: TestKitCase
     
     
     
-    func testDigitProducesVariety()
+    func testDigitGenerationVariety()
     {
         let min = Double(Unicode.Scalar.asciiDigitRange.count) * 0.95
         
-        validateVariety(
+        validateGenerationVariety(
             of:         .digit(),
             minUnique:  Int(min)
+        )
+    }
+    
+    
+    
+    func testDigitMutationVariety()
+    {
+        validateMutationVariety(of: .digit())
+    }
+    
+    
+    
+    func testDigitsMutationStaysInRange()
+    {
+        validateMutationRange(
+            of:     .digit(),
+            range:  Unicode.Scalar.asciiDigitRange
         )
     }
     
@@ -168,14 +236,84 @@ internal final class CharacterGeneratorTests: TestKitCase
     
     
     
-    func testAlphanumericProducesVariety()
+    func testAlphanumericGenerationVariety()
     {
         let min = Double(Unicode.Scalar.asciiDigitRange.count) * 0.95
         
-        validateVariety(
+        validateGenerationVariety(
             of:         .alphanumeric(),
             minUnique:  Int(min)
         )
+    }
+    
+    
+    
+    func testAlphanumericMutationVariety()
+    {
+        validateMutationVariety(of: .alphanumeric())
+    }
+    
+    
+    
+    func testAlphanumericMutationStaysInRange()
+    {
+        let ranges: [ClosedRange<Int>] = Unicode.Scalar.alphanumericRanges
+        
+        for _ in 0..<1000
+        {
+            let context: GenerationContext = .random
+            
+            let original: Character = Generator.alphanumeric()
+                .generate(context)
+            
+            let mutated: Character = Generator.alphanumeric()
+                .mutate(original, context)
+            
+            let value = Int(mutated.unicodeScalars.first!.value)
+            
+            XCTAssertTrue(ranges.contains { $0.contains(value) })
+        }
+    }
+    
+    
+    
+    func testAlphanumericMutationStaysInSubrange()
+    {
+        let ranges: [ClosedRange<Int>] = Unicode.Scalar.alphanumericRanges
+        
+        for _ in 0..<1000
+        {
+            let context: GenerationContext = .random
+            
+            let original: Character = Generator.alphanumeric()
+                .generate(context)
+            
+            let mutated: Character = Generator.alphanumeric()
+                .mutate(original, context)
+            
+            let originalValue   = Int(original.unicodeScalars.first!.value)
+            let mutatedValue    = Int(mutated.unicodeScalars.first!.value)
+            
+            let originalRange: ClosedRange<Int>
+                = ranges.first { $0.contains(originalValue) }!
+            
+            XCTAssertTrue(originalRange.contains(mutatedValue))
+        }
+    }
+    
+    
+    
+    func testAlphanumericMutationWithNonAlphanumericCharacterFallback()
+    {
+        for _ in 0..<1000
+        {
+            let mutated: Character = Generator.alphanumeric()
+                .mutate("!", .random)
+            
+            let value = Int(mutated.unicodeScalars.first!.value)
+            
+            XCTAssertTrue(Unicode.Scalar.asciiLowercaseRange.contains(value))
+        }
     }
     
     
@@ -231,6 +369,39 @@ internal final class CharacterGeneratorTests: TestKitCase
     
     
     
+    func testFromMutationStaysWithinRange()
+    {
+        let characters: String = "abcdef"
+        
+        for _ in 0..<1000
+        {
+            let context: GenerationContext = .random
+            
+            let original: Character = Generator.from(characters)
+                .generate(context)
+            
+            let mutated: Character = Generator.from(characters)
+                .mutate(original, context)
+            
+            XCTAssertTrue(characters.contains(mutated))
+        }
+    }
+    
+    
+    
+    func testFromSingleCharacterMutationAlwaysReturnsSameCharacter()
+    {
+        for _ in 0..<1000
+        {
+            let mutated: Character = Generator.from("x")
+                .mutate("x", .random)
+            
+            XCTAssertEqual(mutated, "x")
+        }
+    }
+    
+    
+    
     // MARK: - Shrinking
     
     func testAllCharacterGeneratorsShrinkTowardA()
@@ -273,6 +444,36 @@ internal final class CharacterGeneratorTests: TestKitCase
             XCTAssertTrue(generator.shrink("a").isEmpty)
         }
     }
+    
+    
+    
+    // MARK: - Mutation
+    
+    func testMutationAtSizeZeroReturnsSameCharacter()
+    {
+        let generators: [Generator<Character>] =
+        [
+            .ascii(),
+            .lowercase(),
+            .uppercase(),
+            .digit(),
+            .alphanumeric()
+        ]
+        
+        for generator in generators
+        {
+            for _ in 0..<1000
+            {
+                let original: Character = generator
+                    .generate(.randomZeroSize)
+                
+                let mutated: Character = generator
+                    .mutate(original, .randomZeroSize)
+                
+                XCTAssertEqual(original, mutated)
+            }
+        }
+    }
 }
 
 
@@ -313,7 +514,7 @@ extension CharacterGeneratorTests
     /// - Parameters:
     ///   - generator: The generator to evaluate.
     ///   - minUnique: The expected minimum number of unique characters.
-    private func validateVariety(
+    private func validateGenerationVariety(
         of generator    : Generator<Character>,
         minUnique       : Int
     )
@@ -326,5 +527,57 @@ extension CharacterGeneratorTests
         }
         
         XCTAssertGreaterThanOrEqual(unique.count, minUnique)
+    }
+    
+    
+    
+    /// Validates that mutation of the given generator produces more than one
+    /// distinct character.
+    /// - Parameter generator: The generator to evaluate.
+    private func validateMutationVariety(
+        of generator: Generator<Character>
+    )
+    {
+        let base: Character = generator
+            .generate(.random)
+        
+        var unique: Set<Character> = []
+        
+        for _ in 0..<1000
+        {
+            unique.insert(generator.mutate(base, .random))
+        }
+        
+        XCTAssertGreaterThan(unique.count, 1)
+    }
+    
+    
+    
+    /// Validates that mutation of the given generator only produces characters
+    /// with scalar values within the given range.
+    /// - Parameters:
+    ///   - generator: The generator to evaluate.
+    ///   - minUnique: The expected range of scalar values.
+    private func validateMutationRange(
+        of generator    : Generator<Character>,
+        range           : ClosedRange<Int>
+    )
+    {
+        for _ in 0..<1000
+        {
+            let context: GenerationContext = .random
+            
+            let original    : Character = generator.generate(context)
+            let mutated     : Character = generator.mutate(original, context)
+            
+            let scalars: Character.UnicodeScalarView = mutated.unicodeScalars
+            
+            XCTAssertEqual(scalars.count, 1)
+            
+            let value: UInt32 = scalars.first!.value
+            
+            XCTAssertGreaterThanOrEqual(value, UInt32(range.lowerBound))
+            XCTAssertLessThanOrEqual(value, UInt32(range.upperBound))
+        }
     }
 }

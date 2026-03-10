@@ -34,6 +34,18 @@ extension Int: Arbitrary
     {
         return self.shrinkTowardZero()
     }
+    
+    
+    
+    /// Produces a value that is a small perturbation of the receiver value.
+    /// - Parameter context: The generation context.
+    /// - Returns: A mutated integer.
+    public func mutate(
+        using context: GenerationContext
+    ) -> Int
+    {
+        return mutateValue(using: context)
+    }
 }
 
 
@@ -66,6 +78,18 @@ extension Int8: Arbitrary
     public func shrink() -> [Int8]
     {
         return self.shrinkTowardZero()
+    }
+    
+    
+    
+    /// Produces a value that is a small perturbation of the receiver value.
+    /// - Parameter context: The generation context.
+    /// - Returns: A mutated integer.
+    public func mutate(
+        using context: GenerationContext
+    ) -> Int8
+    {
+        return mutateValue(using: context)
     }
 }
 
@@ -100,6 +124,18 @@ extension Int16: Arbitrary
     {
         return self.shrinkTowardZero()
     }
+    
+    
+    
+    /// Produces a value that is a small perturbation of the receiver value.
+    /// - Parameter context: The generation context.
+    /// - Returns: A mutated integer.
+    public func mutate(
+        using context: GenerationContext
+    ) -> Int16
+    {
+        return mutateValue(using: context)
+    }
 }
 
 
@@ -133,6 +169,18 @@ extension Int32: Arbitrary
     {
         return self.shrinkTowardZero()
     }
+    
+    
+    
+    /// Produces a value that is a small perturbation of the receiver value.
+    /// - Parameter context: The generation context.
+    /// - Returns: A mutated integer.
+    public func mutate(
+        using context: GenerationContext
+    ) -> Int32
+    {
+        return mutateValue(using: context)
+    }
 }
 
 
@@ -164,6 +212,18 @@ extension Int64: Arbitrary
     {
         return self.shrinkTowardZero()
     }
+    
+    
+    
+    /// Produces a value that is a small perturbation of the receiver value.
+    /// - Parameter context: The generation context.
+    /// - Returns: A mutated integer.
+    public func mutate(
+        using context: GenerationContext
+    ) -> Int64
+    {
+        return mutateValue(using: context)
+    }
 }
 
 
@@ -193,6 +253,18 @@ extension UInt: Arbitrary
     public func shrink() -> [UInt]
     {
         return self.shrinkTowardZero()
+    }
+    
+    
+    
+    /// Produces a value that is a small perturbation of the receiver value.
+    /// - Parameter context: The generation context.
+    /// - Returns: A mutated integer.
+    public func mutate(
+        using context: GenerationContext
+    ) -> UInt
+    {
+        return mutateValue(using: context)
     }
 }
 
@@ -227,6 +299,18 @@ extension UInt8: Arbitrary
     {
         return self.shrinkTowardZero()
     }
+    
+    
+    
+    /// Produces a value that is a small perturbation of the receiver value.
+    /// - Parameter context: The generation context.
+    /// - Returns: A mutated integer.
+    public func mutate(
+        using context: GenerationContext
+    ) -> UInt8
+    {
+        return mutateValue(using: context)
+    }
 }
 
 
@@ -259,6 +343,18 @@ extension UInt16: Arbitrary
     public func shrink() -> [UInt16]
     {
         return self.shrinkTowardZero()
+    }
+    
+    
+    
+    /// Produces a value that is a small perturbation of the receiver value.
+    /// - Parameter context: The generation context.
+    /// - Returns: A mutated integer.
+    public func mutate(
+        using context: GenerationContext
+    ) -> UInt16
+    {
+        return mutateValue(using: context)
     }
 }
 
@@ -293,6 +389,18 @@ extension UInt32: Arbitrary
     {
         return self.shrinkTowardZero()
     }
+    
+    
+    
+    /// Produces a value that is a small perturbation of the receiver value.
+    /// - Parameter context: The generation context.
+    /// - Returns: A mutated integer.
+    public func mutate(
+        using context: GenerationContext
+    ) -> UInt32
+    {
+        return mutateValue(using: context)
+    }
 }
 
 
@@ -323,6 +431,18 @@ extension UInt64: Arbitrary
     public func shrink() -> [UInt64]
     {
         return self.shrinkTowardZero()
+    }
+    
+    
+    
+    /// Produces a value that is a small perturbation of the receiver value.
+    /// - Parameter context: The generation context.
+    /// - Returns: A mutated integer.
+    public func mutate(
+        using context: GenerationContext
+    ) -> UInt64
+    {
+        return mutateValue(using: context)
     }
 }
 
@@ -406,5 +526,48 @@ extension FixedWidthInteger
         }
         
         return candidates
+    }
+    
+    
+    
+    /// Mutates the value by adding a random amount scaled by
+    /// ``GenerationContext/size``.
+    ///
+    /// If the random amount is zero, the receiver value is returned.
+    /// Overflows are clamped to the representable range.
+    ///
+    /// - Parameter context: The generation context.
+    /// - Returns: A mutated integer.
+    internal func mutateValue(
+        using context: GenerationContext
+    ) -> Self
+    {
+        let maxDelta    : Int   = Swift.max(1, context.size)
+        let delta       : Int   = context.random(in: -maxDelta...maxDelta)
+        
+        if delta == 0
+        {
+            return self
+        }
+        else if delta > 0
+        {
+            let amount = Self(clamping: delta)
+            
+            let (result, overflow) = self.addingReportingOverflow(amount)
+            
+            return overflow
+                ? .max
+                : result
+        }
+        else
+        {
+            let amount = Self(clamping: -delta)
+            
+            let (result, overflow) = self.subtractingReportingOverflow(amount)
+            
+            return overflow
+                ? .min
+                : result
+        }
     }
 }

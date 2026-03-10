@@ -41,6 +41,20 @@ extension String: Arbitrary
     
     
     
+    /// Produces a value that is a small perturbation of the receiver value.
+    /// - Parameter context: The generation context.
+    /// - Returns: A mutated string.
+    public func mutate(
+        using context: GenerationContext
+    ) -> String
+    {
+        return mutateCharacters(using: context)
+    }
+    
+    
+    
+    // MARK: - Support
+    
     /// Shrinks the string by removing characters and shrinking individual
     /// characters.
     /// - Returns: The shrink candidates.
@@ -50,8 +64,6 @@ extension String: Arbitrary
     }
     
     
-    
-    // MARK: - Support
     
     /// Shrinks the string by removing characters (down to the given minimum
     /// count) and shrinking individual characters.
@@ -151,5 +163,54 @@ extension String: Arbitrary
         }
         
         return candidates
+    }
+    
+    
+    
+    /// Mutates the value by modifying, inserting, or removing a character.
+    ///
+    /// There is a 70% chance of mutating in place, 15% chance of inserting
+    /// a character, and 15% chance if removing a character.
+    ///
+    /// - Parameter context: The generation context.
+    /// - Returns: A mutated string.
+    internal func mutateCharacters(
+        using context: GenerationContext
+    ) -> String
+    {
+        var characters: [Character] = Array(self)
+        
+        if characters.isEmpty
+        {
+            characters.append(Character.arbitrary(using: context))
+            
+            return String(characters)
+        }
+        
+        let chance: Int = context.random(in: 1...20)
+        
+        if chance <= 14
+        {
+            let index: Int = context.random(in: 0...(characters.count - 1))
+            
+            characters[index] = characters[index].mutate(using: context)
+        }
+        else if chance <= 17
+        {
+            let index: Int = context.random(in: 0...characters.count)
+            
+            characters.insert(
+                Character.arbitrary(using: context),
+                at: index
+            )
+        }
+        else
+        {
+            let index: Int = context.random(in: 0...(characters.count - 1))
+            
+            characters.remove(at: index)
+        }
+        
+        return String(characters)
     }
 }

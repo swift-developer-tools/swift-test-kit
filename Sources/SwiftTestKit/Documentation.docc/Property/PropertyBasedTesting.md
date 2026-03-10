@@ -23,6 +23,18 @@ strings) and grows across iterations to explore progressively larger values.
 Types used with property-based evaluators conform to the ``Arbitrary`` protocol, 
 which defines how to generate random values and optionally how to shrink them.
 
+### Targeted Testing
+
+Targeted property-based testing guides generation toward values that maximize 
+a numeric target. While standard property-based testing generates a new value 
+on each iteration, targeted testing maintains a pool of high-target values 
+and either generates a new value (exploration) or selects and mutates a pooled 
+value (exploitation) on each iteration.
+
+Over many iterations, the targeting process converges toward values that 
+maximize the target metric, testing edge cases and worst-case behavior that 
+random generation alone is unlikely to reach.
+
 ### Stateful Testing
 
 Stateful testing extends property-based testing to systems with mutable state. 
@@ -62,6 +74,10 @@ and argument shrinking reduces individual command parameters.
 - ``Stateful``
 - ``Stateful()``
 - ``Weight(_:)``
+
+### Targeting Properties
+
+- ``STKTarget(_:)``
 
 ### Classifying Properties
 

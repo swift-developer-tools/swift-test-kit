@@ -32,9 +32,10 @@ Temporal tests poll assertions continuously for a given duration, or until all
 assertions pass within a single execution.
 
 Property-based testing generates random values automatically and shrinks 
-failures to minimal counterexamples. Stateful testing extends this to systems 
-with mutable state, generating random command sequences and verifying the 
-system against a simplified model.
+failures to minimal counterexamples. Targeted testing guides generation toward 
+inputs that maximize a numeric value. Stateful testing extends property-based 
+testing to systems with mutable state, generating random command sequences and 
+verifying the system against a simplified model.
 
 - Tip: Property-based tests, stateful tests, temporal tests, performance tests, 
 and atomic tests compose freely. Any evaluator may be nested inside any 
@@ -572,6 +573,37 @@ XCTKForAll(using: generator)
     XCTKCoverTable("parity", (50, "even"))
     
     // Test properties that must hold for any integer.
+}
+```
+
+### Targeted Testing
+
+Targeted property-based testing guides generation toward values that maximize 
+a numeric target. While standard property-based testing generates a new value 
+on each iteration, targeted testing maintains a pool of high-target values 
+and either generates a new value (exploration) or selects and mutates a pooled 
+value (exploitation) on each iteration.
+
+Over many iterations, the targeting process converges toward values that 
+maximize the target metric, testing edge cases and worst-case behavior that 
+random generation alone is unlikely to reach.
+
+```swift
+func partition(_ array: [Int]) -> (left: [Int], right: [Int]) { /* ... */ }
+
+XCTKForAll(using: .nonEmptyArray(of: Int.self))
+{
+    (array: [Int]) in
+    
+    let (left, right) = partition(array)
+    
+    let imbalance: Int = abs(left.reduce(0, +) - right.reduce(0, +))
+    
+    // Guide generation toward arrays that maximize the partition imbalance.
+    XCTKTarget(Double(imbalance))
+    
+    // Test properties that must hold for any partition.
+    XCTKAssertEqual(left.count + right.count, array.count)
 }
 ```
 

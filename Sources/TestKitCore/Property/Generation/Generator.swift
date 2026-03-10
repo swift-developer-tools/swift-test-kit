@@ -81,6 +81,14 @@
 ///         let candidates: [Int] = value.shrink()
 ///
 ///         return candidates.filter { $0.isMultiple(of: 2) }
+///     },
+///     mutate:
+///     {
+///         (value: Int, context: GenerationContext) in
+///
+///         let delta: Int = context.random(in: -context.size...context.size)
+///
+///         return max(0, value + delta * 2)
 ///     }
 /// )
 /// ```
@@ -92,18 +100,25 @@ public struct Generator<V>
     /// Shrinks the given value.
     internal let shrink     : (V) -> [V]
     
+    /// Mutates the given value, using the given context.
+    internal let mutate     : (V, GenerationContext) -> V
+    
     
     
     /// Initializes a ``Generator`` instance from the given values.
     /// - Parameters:
     ///   - generate: The function to generate a value from the given context.
     ///   - shrink: The function to shrink the given value.
+    ///   - mutate: The function to mutate the given value, using the given
+    ///   context.
     public init(
         generate    : @escaping (GenerationContext) -> V,
-        shrink      : @escaping (V) -> [V]
+        shrink      : @escaping (V) -> [V],
+        mutate      : @escaping (V, GenerationContext) -> V
     )
     {
         self.generate   = generate
         self.shrink     = shrink
+        self.mutate     = mutate
     }
 }
