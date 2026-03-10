@@ -1542,6 +1542,34 @@ internal final class ArrayGeneratorTests: TestKitCase
     
     
     
+    func testNonEmptyArrayGeneratorDeterminism()
+    {
+        let generator: Generator<[Int]>
+            = .nonEmptyArray(using: .integer(in: 0...50))
+        
+        generator.assertDeterministic()
+    }
+    
+    
+    
+    func testNonEmptyArrayGeneratorUsesGenerator()
+    {
+        let generator: Generator<[Int]>
+            = .nonEmptyArray(using: .integer(in: 0...50).map { $0 * 2 })
+        
+        for _ in 0..<1000
+        {
+            let array: [Int] = generator.generate(.random)
+            
+            for element in array
+            {
+                XCTAssertEqual(element % 2, 0)
+            }
+        }
+    }
+    
+    
+    
     // MARK: - Non-empty shrinking
     
     func testNonEmptyArrayShrinkNeverProducesEmpty()
@@ -1576,6 +1604,30 @@ internal final class ArrayGeneratorTests: TestKitCase
     
     
     
+    func testNonEmptyArrayGeneratorShrinkUsesGenerator()
+    {
+        let sentinel: Int = 999
+        
+        let elementGenerator = Generator<Int>(
+            generate:   { context in context.random(in: 0...100) },
+            shrink:     { _ in [sentinel] }
+        )
+        
+        let generator: Generator<[Int]>
+            = .nonEmptyArray(using: elementGenerator)
+        
+        let candidates: [[Int]] = generator.shrink([10, 20, 30])
+        
+        XCTAssertFalse(candidates.isEmpty)
+        
+        let containsSentinel: Bool
+            = candidates.contains { $0.contains(sentinel) }
+        
+        XCTAssertTrue(containsSentinel)
+    }
+    
+    
+    
     // MARK: - Non-empty mutation
     
     func testNonEmptyArrayMutationNeverProducesEmpty()
@@ -1603,6 +1655,41 @@ internal final class ArrayGeneratorTests: TestKitCase
             
             XCTAssertGreaterThanOrEqual(mutated.count, 1)
         }
+    }
+    
+    
+    
+    func testNonEmptyArrayGeneratorMutationUsesGenerator()
+    {
+        var mutateCallCount: Int = 0
+        
+        let elementGenerator = Generator<Int>(
+            generate:   { context in context.random(in: 0...100) },
+            shrink:     { _ in [] },
+            mutate:
+            {
+                value, context in
+                
+                mutateCallCount += 1
+                return value + 1
+            }
+        )
+        
+        let generator: Generator<[Int]>
+            = .nonEmptyArray(using: elementGenerator)
+        
+        let iterations  : Int       = 10_000
+        let array       : [Int]     = [10, 20, 30]
+        
+        for _ in 0..<iterations
+        {
+            _ = generator.mutate(array, .random)
+        }
+        
+        XCTAssertGreaterThan(
+            mutateCallCount,
+            Int(Double(iterations) * 0.7 * 0.95)
+        )
     }
 }
 
