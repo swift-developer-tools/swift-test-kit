@@ -1512,7 +1512,7 @@ internal final class ArrayGeneratorTests: TestKitCase
     
     
     
-    func testNonEmptyArrayGeneratorDeterminism()
+    func testGeneratorNonEmptyArrayDeterminism()
     {
         let generator: Generator<[Int]>
             = .nonEmptyArray(using: .integer(in: 0...50))
@@ -1522,7 +1522,7 @@ internal final class ArrayGeneratorTests: TestKitCase
     
     
     
-    func testNonEmptyArrayGeneratorUsesGenerator()
+    func testGeneratorNonEmptyArrayUsesGenerator()
     {
         let generator: Generator<[Int]>
             = .nonEmptyArray(using: .integer(in: 0...50).map { $0 * 2 })
@@ -1574,7 +1574,7 @@ internal final class ArrayGeneratorTests: TestKitCase
     
     
     
-    func testNonEmptyArrayGeneratorShrinkUsesGenerator()
+    func testGeneratorNonEmptyArrayShrinkUsesGenerator()
     {
         let sentinel: Int = 999
         
@@ -1629,7 +1629,7 @@ internal final class ArrayGeneratorTests: TestKitCase
     
     
     
-    func testNonEmptyArrayGeneratorMutationUsesGenerator()
+    func testGeneratorNonEmptyArrayMutationUsesGenerator()
     {
         var mutateCallCount: Int = 0
         
