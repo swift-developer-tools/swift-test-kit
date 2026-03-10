@@ -80,7 +80,7 @@
 @attached(
     extension,
     conformances:   Arbitrary,
-    names:          named(arbitrary), named(shrink)
+    names:          named(arbitrary), named(shrink), named(mutate)
 )
 public macro Arbitrary() = #externalMacro(
     module:     "TestKitMacros",

@@ -114,6 +114,12 @@ extension ArbitraryMacro
                 typeName:       typeName,
                 accessLevel:    accessLevel
             )
+            + "\n\n"
+            + makeEnumMutate(
+                cases:          cases,
+                typeName:       typeName,
+                accessLevel:    accessLevel
+            )
         }
         else
         {
@@ -142,6 +148,12 @@ extension ArbitraryMacro
             )
             + "\n\n"
             + makeStructShrink(
+                properties:     result.properties,
+                typeName:       typeName,
+                accessLevel:    accessLevel
+            )
+            + "\n\n"
+            + makeStructMutate(
                 properties:     result.properties,
                 typeName:       typeName,
                 accessLevel:    accessLevel
@@ -292,6 +304,93 @@ extension ArbitraryMacro
             
             lines.append("")
             lines.append(indent(2, "return _$results"))
+        }
+        
+        lines.append(indent(1, "}"))
+        
+        return lines.joined(separator: "\n")
+    }
+    
+    
+    
+    // MARK: Struct mutation
+    
+    /// Generates the ``Arbitrary/mutate(using:)`` method for a struct.
+    /// - Parameters:
+    ///   - properties: The stored properties.
+    ///   - typeName: The struct name.
+    ///   - accessLevel: The access level.
+    /// - Returns: The method expansion.
+    private static func makeStructMutate(
+        properties  : [StoredProperty],
+        typeName    : String,
+        accessLevel : String
+    ) -> String
+    {
+        var lines: [String] = []
+        
+        lines.append(indent(1, "\(accessLevel)func mutate("))
+        lines.append(indent(2, "using context: GenerationContext"))
+        lines.append(indent(1, ") -> \(typeName)"))
+        lines.append(indent(1, "{"))
+        
+        let initProperties: [StoredProperty]
+            = properties.filter { !$0.isImmutableWithDefault }
+        
+        if initProperties.isEmpty
+        {
+            lines.append(
+                indent(2, "return \(typeName).arbitrary(using: context)")
+            )
+        }
+        else if initProperties.count == 1
+        {
+            let name: String = initProperties[0].name
+            
+            lines.append(indent(2,
+                "return \(typeName)(\(name): \(name).mutate(using: context))"
+            ))
+        }
+        else
+        {
+            lines.append(indent(2,
+                "let _$index: Int"
+                + " = context.random(in: 0..<\(initProperties.count))"
+            ))
+            
+            lines.append("")
+            lines.append(indent(2, "switch _$index"))
+            lines.append(indent(2, "{"))
+            
+            for (index, _) in initProperties.enumerated()
+            {
+                let patternText: String = index < initProperties.count - 1
+                    ? "case \(index):"
+                    : "default:"
+                
+                lines.append(indent(3, patternText))
+                lines.append("")
+                
+                let args: String = initProperties.enumerated().map
+                {
+                    (subIndex, subProperty) in
+                    
+                    let value: String = subIndex == index
+                        ? "\(subProperty.name).mutate(using: context)"
+                        : subProperty.name
+                    
+                    return "\(subProperty.name): \(value)"
+                }.joined(separator: ", ")
+                
+                lines.append(indent(4, "return \(typeName)(\(args))"))
+                
+                if index < initProperties.count - 1
+                {
+                    lines.append("")
+                }
+            }
+            
+            lines.append(indent(2, "}"))
         }
         
         lines.append(indent(1, "}"))
