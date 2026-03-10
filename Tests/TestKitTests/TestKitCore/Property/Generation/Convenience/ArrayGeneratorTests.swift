@@ -435,6 +435,8 @@ internal final class ArrayGeneratorTests: TestKitCase
         let array       : [Int]     = [0, 20, 30]
         let candidates  : [[Int]]   = generator.shrink(array)
         
+        XCTAssertFalse(candidates.isEmpty)
+        
         for candidate in candidates
         {
             XCTAssertEqual(Set(candidate).count, candidate.count)
@@ -734,6 +736,8 @@ internal final class ArrayGeneratorTests: TestKitCase
         let array       : [Int]             = [10, 20, 30, 40, 50]
         let candidates  : [[Int]]           = generator.shrink(array)
         
+        XCTAssertFalse(candidates.isEmpty)
+        
         for candidate in candidates
         {
             XCTAssertGreaterThanOrEqual(candidate.count, 3)
@@ -747,6 +751,8 @@ internal final class ArrayGeneratorTests: TestKitCase
         let generator   : Generator<[Int]>  = .array(count: 3...8)
         let array       : [Int]             = [10, 20, 30]
         let candidates  : [[Int]]           = generator.shrink(array)
+        
+        XCTAssertFalse(candidates.isEmpty)
         
         for candidate in candidates
         {
@@ -794,6 +800,8 @@ internal final class ArrayGeneratorTests: TestKitCase
         let array       : [Int]     = [10, 20, 30, 40, 50]
         let candidates  : [[Int]]   = generator.shrink(array)
         
+        XCTAssertFalse(candidates.isEmpty)
+        
         for candidate in candidates
         {
             XCTAssertGreaterThanOrEqual(candidate.count, 3)
@@ -811,6 +819,8 @@ internal final class ArrayGeneratorTests: TestKitCase
         
         let array       : [Int]     = [10, 20, 30]
         let candidates  : [[Int]]   = generator.shrink(array)
+        
+        XCTAssertFalse(candidates.isEmpty)
         
         for candidate in candidates
         {
@@ -887,6 +897,8 @@ internal final class ArrayGeneratorTests: TestKitCase
         
         let array       : [Int]     = [10, 20, 30, 40, 50]
         let candidates  : [[Int]]   = generator.shrink(array)
+        
+        XCTAssertFalse(candidates.isEmpty)
         
         for candidate in candidates
         {
@@ -1246,6 +1258,8 @@ internal final class ArrayGeneratorTests: TestKitCase
         let array       : [Int]             = [10, 20, 30, 40, 50]
         let candidates  : [[Int]]           = generator.shrink(array)
         
+        XCTAssertFalse(candidates.isEmpty)
+        
         for candidate in candidates
         {
             XCTAssertGreaterThanOrEqual(candidate.count, 3)
@@ -1259,6 +1273,8 @@ internal final class ArrayGeneratorTests: TestKitCase
         let generator   : Generator<[Int]>  = .array(count: 3..<9)
         let array       : [Int]             = [10, 20, 30]
         let candidates  : [[Int]]           = generator.shrink(array)
+        
+        XCTAssertFalse(candidates.isEmpty)
         
         for candidate in candidates
         {
@@ -1306,6 +1322,8 @@ internal final class ArrayGeneratorTests: TestKitCase
         let array       : [Int]     = [10, 20, 30, 40, 50]
         let candidates  : [[Int]]   = generator.shrink(array)
         
+        XCTAssertFalse(candidates.isEmpty)
+        
         for candidate in candidates
         {
             XCTAssertGreaterThanOrEqual(candidate.count, 3)
@@ -1323,6 +1341,8 @@ internal final class ArrayGeneratorTests: TestKitCase
         
         let array       : [Int]     = [10, 20, 30]
         let candidates  : [[Int]]   = generator.shrink(array)
+        
+        XCTAssertFalse(candidates.isEmpty)
         
         for candidate in candidates
         {
@@ -1373,6 +1393,8 @@ internal final class ArrayGeneratorTests: TestKitCase
         
         let array       : [Int]     = [10, 20, 30, 40, 50]
         let candidates  : [[Int]]   = generator.shrink(array)
+        
+        XCTAssertFalse(candidates.isEmpty)
         
         for candidate in candidates
         {
