@@ -29,10 +29,7 @@ internal final class ArrayGeneratorTests: TestKitCase
     {
         let generator: Generator<[Int]> = .array(count: 7)
         
-        validateCount(
-            of:         generator,
-            expected:   7...7
-        )
+        generator.assertCount(in: 7...7)
     }
     
     
@@ -70,10 +67,7 @@ internal final class ArrayGeneratorTests: TestKitCase
             count:  7
         )
         
-        validateCount(
-            of:         generator,
-            expected:   7...7
-        )
+        generator.assertCount(in: 7...7)
     }
     
     
@@ -134,10 +128,7 @@ internal final class ArrayGeneratorTests: TestKitCase
             count:  7
         )
         
-        validateCount(
-            of:         generator,
-            expected:   7...7
-        )
+        generator.assertCount(in: 7...7)
     }
     
     
@@ -619,10 +610,7 @@ internal final class ArrayGeneratorTests: TestKitCase
     {
         let generator: Generator<[Int]> = .array(count: 3...7)
         
-        validateCount(
-            of:         generator,
-            expected:   3...7
-        )
+        generator.assertCount(in: 3...7)
     }
     
     
@@ -663,10 +651,7 @@ internal final class ArrayGeneratorTests: TestKitCase
             count:  3...7
         )
         
-        validateCount(
-            of:         generator,
-            expected:   3...7
-        )
+        generator.assertCount(in: 3...7)
     }
     
     
@@ -690,10 +675,7 @@ internal final class ArrayGeneratorTests: TestKitCase
             count:  3...7
         )
         
-        validateCount(
-            of:         generator,
-            expected:   3...7
-        )
+        generator.assertCount(in: 3...7)
     }
     
     
@@ -1140,10 +1122,7 @@ internal final class ArrayGeneratorTests: TestKitCase
     {
         let generator: Generator<[Int]> = .array(count: 3..<8)
         
-        validateCount(
-            of:         generator,
-            expected:   3...7
-        )
+        generator.assertCount(in: 3...7)
     }
     
     
@@ -1184,10 +1163,7 @@ internal final class ArrayGeneratorTests: TestKitCase
             count:  3..<8
         )
         
-        validateCount(
-            of:         generator,
-            expected:   3...7
-        )
+        generator.assertCount(in: 3...7)
     }
     
     
@@ -1211,10 +1187,7 @@ internal final class ArrayGeneratorTests: TestKitCase
             count:  3..<8
         )
         
-        validateCount(
-            of:         generator,
-            expected:   3...7
-        )
+        generator.assertCount(in: 3...7)
     }
     
     
@@ -1534,10 +1507,7 @@ internal final class ArrayGeneratorTests: TestKitCase
     {
         let generator: Generator<[Int]> = .nonEmptyArray()
         
-        validateCount(
-            of:         generator,
-            expected:   1...Int.max
-        )
+        generator.assertCount(in: 1...Int.max)
     }
     
     
@@ -1690,31 +1660,5 @@ internal final class ArrayGeneratorTests: TestKitCase
             mutateCallCount,
             Int(Double(iterations) * 0.7 * 0.95)
         )
-    }
-}
-
-
-
-// MARK: - Support
-
-extension ArrayGeneratorTests
-{
-    /// Validates that the given generator produces arrays with counts within
-    /// the given range.
-    /// - Parameters:
-    ///   - generator: The generator to evaluate.
-    ///   - expected: The expected range of counts.
-    private func validateCount(
-        of generator    : Generator<[Int]>,
-        expected        : ClosedRange<Int>
-    )
-    {
-        for _ in 0..<1000
-        {
-            let array: [Int] = generator.generate(.random)
-            
-            XCTAssertGreaterThanOrEqual(array.count, expected.lowerBound)
-            XCTAssertLessThanOrEqual(array.count, expected.upperBound)
-        }
     }
 }
