@@ -40,6 +40,16 @@ internal final class ArbitraryMacroStructTests: TestKitCase
     
     
     
+    func testEmptyMutationReturnsSelf()
+    {
+        for _ in 0..<1000
+        {
+            XCTAssertEqual(Empty().mutate(using: .random), Empty())
+        }
+    }
+    
+    
+    
     // MARK: - SingleLet
     
     func testSingleLetDeterminism()
@@ -108,6 +118,28 @@ internal final class ArbitraryMacroStructTests: TestKitCase
             XCTAssertGreaterThanOrEqual(candidate.id, 0)
             XCTAssertLessThan(candidate.id, 10)
         }
+    }
+    
+    
+    
+    func testSingleLetMutateProducesDifferentValues()
+    {
+        let value       : SingleLet     = .init(id: 50)
+        let iterations  : Int           = 10_000
+        var changed     : Int           = 0
+        
+        for _ in 0..<iterations
+        {
+            let mutated: SingleLet
+                = value.mutate(using: .randomSeed(size: 100))
+            
+            if mutated.id != value.id
+            {
+                changed += 1
+            }
+        }
+        
+        XCTAssertGreaterThan(changed, Int(Double(iterations) * 0.95))
     }
     
     
@@ -273,6 +305,79 @@ internal final class ArbitraryMacroStructTests: TestKitCase
     
     
     
+    func testMultipleMutateChangesExactlyOneProperty()
+    {
+        let value: Multiple = .init(name: "abc", id: 7, char: "z")
+        
+        for _ in 0..<1000
+        {
+            let mutated: Multiple = value.mutate(using: .randomSeed(size: 100))
+            
+            var changed: Int = 0
+            
+            if mutated.name != value.name
+            {
+                changed += 1
+            }
+            
+            if mutated.id != value.id
+            {
+                changed += 1
+            }
+            
+            if mutated.char != value.char
+            {
+                changed += 1
+            }
+            
+            XCTAssertLessThanOrEqual(changed, 1)
+        }
+    }
+    
+    
+    
+    func testMultipleMutateReachesAllProperties()
+    {
+        let value       : Multiple  = .init(name: "abc", id: 7, char: "z")
+        var nameChanged : Bool      = false
+        var idChanged   : Bool      = false
+        var charChanged : Bool      = false
+        
+        for _ in 0..<1000
+        {
+            let mutated: Multiple = value.mutate(using: .randomSeed(size: 100))
+            
+            if mutated.name != value.name
+            {
+                nameChanged = true
+            }
+            
+            if mutated.id != value.id
+            {
+                idChanged = true
+            }
+            
+            if mutated.char != value.char
+            {
+                charChanged = true
+            }
+            
+            if
+                nameChanged,
+                idChanged,
+                charChanged
+            {
+                break
+            }
+        }
+        
+        XCTAssertTrue(nameChanged)
+        XCTAssertTrue(idChanged)
+        XCTAssertTrue(charChanged)
+    }
+    
+    
+    
     // MARK: - LetDefault
     
     func testLetDefaultDeterminism()
@@ -349,6 +454,43 @@ internal final class ArbitraryMacroStructTests: TestKitCase
     func testLetDefaultShrinkMinimal()
     {
         XCTAssertEqual(LetDefault(x: 0).shrink(), [])
+    }
+    
+    
+    
+    func testLetDefaultMutationPreservesDefault()
+    {
+        let value = LetDefault(x: 10)
+        
+        for _ in 0..<1000
+        {
+            let mutated: LetDefault
+                = value.mutate(using: .randomSeed(size: 100))
+            
+            XCTAssertEqual(mutated.y, "abc")
+        }
+    }
+    
+    
+    
+    func testLetDefaultMutationChangesX()
+    {
+        let value       : LetDefault    = .init(x: 50)
+        let iterations  : Int           = 10_000
+        var changed     : Int           = 0
+        
+        for _ in 0..<iterations
+        {
+            let mutated: LetDefault
+                = value.mutate(using: .randomSeed(size: 100))
+            
+            if mutated.x != value.x
+            {
+                changed += 1
+            }
+        }
+        
+        XCTAssertGreaterThan(changed, Int(Double(iterations) * 0.95))
     }
     
     
@@ -447,6 +589,20 @@ internal final class ArbitraryMacroStructTests: TestKitCase
     func testAllLetDefaultsShrinkMinimal()
     {
         XCTAssertEqual(AllLetDefaults().shrink(), [])
+    }
+    
+    
+    
+    func testAllLetDefaultsMutationReturnsFixedValues()
+    {
+        for _ in 0..<1000
+        {
+            let value   : AllLetDefaults    = .init()
+            let mutated : AllLetDefaults    = value.mutate(using: .random)
+            
+            XCTAssertEqual(mutated.x, 100)
+            XCTAssertEqual(mutated.y, "abc")
+        }
     }
     
     
@@ -553,6 +709,68 @@ internal final class ArbitraryMacroStructTests: TestKitCase
         }
         
         XCTAssertEqual(candidates, expected)
+    }
+    
+    
+    
+    func testGenericPairMutationChangesExactlyOneProperty()
+    {
+        let value = GenericPair(a: 10, b: "abc")
+        
+        for _ in 0..<1000
+        {
+            let mutated: GenericPair
+                = value.mutate(using: .randomSeed(size: 100))
+            
+            var changed: Int = 0
+            
+            if mutated.a != value.a
+            {
+                changed += 1
+            }
+            
+            if mutated.b != value.b
+            {
+                changed += 1
+            }
+            
+            XCTAssertLessThanOrEqual(changed, 1)
+        }
+    }
+    
+    
+    
+    func testGenericPairMutationReachesAllProperties()
+    {
+        let value       : GenericPair   = .init(a: 10, b: "abc")
+        var aChanged    : Bool          = false
+        var bChanged    : Bool          = false
+        
+        for _ in 0..<1000
+        {
+            let mutated: GenericPair
+                = value.mutate(using: .randomSeed(size: 100))
+            
+            if mutated.a != value.a
+            {
+                aChanged = true
+            }
+            
+            if mutated.b != value.b
+            {
+                bChanged = true
+            }
+            
+            if
+                aChanged,
+                bChanged
+            {
+                break
+            }
+        }
+        
+        XCTAssertTrue(aChanged)
+        XCTAssertTrue(bChanged)
     }
     
     
@@ -822,6 +1040,41 @@ internal final class ArbitraryMacroStructTests: TestKitCase
         }
         
         XCTAssertEqual(candidates, expected)
+    }
+    
+    
+    
+    func testNestedMutationChangesExactlyOneProperty()
+    {
+        let value = Nested(
+            pair:       GenericPair(a: 10, b: "abc"),
+            single:     SingleLet(id: 5),
+            inner:      Nested.Inner(id: 7)
+        )
+        
+        for _ in 0..<1000
+        {
+            let mutated: Nested = value.mutate(using: .randomSeed(size: 100))
+            
+            var changed: Int = 0
+            
+            if mutated.pair != value.pair
+            {
+                changed += 1
+            }
+            
+            if mutated.single != value.single
+            {
+                changed += 1
+            }
+            
+            if mutated.inner != value.inner
+            {
+                changed += 1
+            }
+            
+            XCTAssertLessThanOrEqual(changed, 1)
+        }
     }
     
     
@@ -1312,6 +1565,44 @@ internal final class ArbitraryMacroStructTests: TestKitCase
             = (10 as Int).shrink().map { MixedDefaults(c: $0) }
         
         XCTAssertEqual(candidates, expected)
+    }
+    
+    
+    
+    func testMixedDefaultsMutationPreservesLetDefaults()
+    {
+        let value = MixedDefaults(c: 10)
+        
+        for _ in 0..<1000
+        {
+            let mutated: MixedDefaults
+                = value.mutate(using: .randomSeed(size: 100))
+            
+            XCTAssertEqual(mutated.a, 100)
+            XCTAssertEqual(mutated.b, "abc")
+        }
+    }
+    
+    
+    
+    func testMixedDefaultsMutationChangesC()
+    {
+        let value       : MixedDefaults     = .init(c: 10)
+        let iterations  : Int               = 10_000
+        var changed     : Int               = 0
+        
+        for _ in 0..<iterations
+        {
+            let mutated: MixedDefaults
+                = value.mutate(using: .randomSeed(size: 100))
+            
+            if mutated.c != value.c
+            {
+                changed += 1
+            }
+        }
+        
+        XCTAssertGreaterThan(changed, Int(Double(iterations) * 0.95))
     }
     
     
