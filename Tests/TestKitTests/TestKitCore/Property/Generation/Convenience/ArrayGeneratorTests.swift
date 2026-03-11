@@ -1093,7 +1093,6 @@ internal final class ArrayGeneratorTests: TestKitCase
                 value, context in
                 
                 mutateCallCount += 1
-                
                 return value + 1
             }
         )
@@ -1670,8 +1669,8 @@ internal final class ArrayGeneratorTests: TestKitCase
         let generator: Generator<[Int]>
             = .nonEmptyArray(using: elementGenerator)
         
-        let iterations  : Int       = 10_000
         let array       : [Int]     = [10, 20, 30]
+        let iterations  : Int       = 10_000
         
         for _ in 0..<iterations
         {
