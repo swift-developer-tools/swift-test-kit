@@ -448,7 +448,7 @@ extension Generator
     ///   - keyGenerator: The key generator.
     ///   - valueGenerator: The value generator.
     /// - Returns: The shrink candidates.
-    internal static func shrinkDictionary<K, V>(
+    private static func shrinkDictionary<K, V>(
         _       entries         : [(K, V)],
         keys    keyGenerator    : Generator<K>,
         values  valueGenerator  : Generator<V>
@@ -503,7 +503,7 @@ extension Generator
     ///   - valueGenerator: The value generator.
     ///   - context: The generation context.
     /// - Returns: The mutated entries.
-    internal static func mutateDictionary<K, V>(
+    private static func mutateDictionary<K, V>(
         _           entries         : [(K, V)],
         minCount                    : Int,
         maxCount                    : Int?,
