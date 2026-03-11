@@ -80,7 +80,7 @@ extension Generator where G == String
     /// Shrinking reduces the count of characters toward the lower bound and
     /// shrinks individual characters.
     ///
-    /// - Precondition: `count` must not contain negative values.
+    /// - Precondition: `count.lowerBound` must not be negative.
     ///
     /// - Parameters:
     ///   - count: The range of character counts.
@@ -95,7 +95,7 @@ extension Generator where G == String
     {
         precondition(
             count.lowerBound >= 0,
-            "count must not contain negative values"
+            "count.lowerBound must not be negative"
         )
         
         return Generator<String>(
@@ -143,7 +143,8 @@ extension Generator where G == String
     /// Shrinking reduces the count of characters toward the lower bound and
     /// shrinks individual characters.
     ///
-    /// - Precondition: `count` must not be empty or contain negative values.
+    /// - Precondition: `count` must not be empty.
+    /// - Precondition: `count.lowerBound` must not be negative.
     ///
     /// - Parameters:
     ///   - count: The range of character counts.
@@ -163,7 +164,7 @@ extension Generator where G == String
         
         precondition(
             count.lowerBound >= 0,
-            "count must not contain negative values"
+            "count.lowerBound must not be negative"
         )
         
         return string(

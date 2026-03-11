@@ -86,7 +86,7 @@ extension Generator
     /// Shrinking reduces the count of elements toward the lower bound and
     /// shrinks individual elements.
     ///
-    /// - Precondition: `count` must not contain negative values.
+    /// - Precondition: `count.lowerBound` must not be negative.
     ///
     /// - Parameters:
     ///   - generator: The element generator.
@@ -100,7 +100,7 @@ extension Generator
     {
         precondition(
             count.lowerBound >= 0,
-            "count must not contain negative values"
+            "count.lowerBound must not be negative"
         )
         
         return Generator<[E]>(
@@ -155,7 +155,8 @@ extension Generator
     /// Shrinking reduces the count of elements toward the lower bound and
     /// shrinks individual elements.
     ///
-    /// - Precondition: `count` must not be empty or contain negative values.
+    /// - Precondition: `count` must not be empty.
+    /// - Precondition: `count.lowerBound` must not be negative.
     ///
     /// - Parameters:
     ///   - generator: The element generator.
@@ -174,7 +175,7 @@ extension Generator
         
         precondition(
             count.lowerBound >= 0,
-            "count must not contain negative values"
+            "count.lowerBound must not be negative"
         )
         
         return array(
@@ -254,7 +255,7 @@ extension Generator
     /// Shrinking reduces the count of elements toward the lower bound and
     /// shrinks individual elements.
     ///
-    /// - Precondition: `count` must not contain negative values.
+    /// - Precondition: `count.lowerBound` must not be negative.
     ///
     /// - Parameters:
     ///   - type: The element type. The default value is inferred.
@@ -268,7 +269,7 @@ extension Generator
     {
         precondition(
             count.lowerBound >= 0,
-            "count must not contain negative values"
+            "count.lowerBound must not be negative"
         )
         
         return Generator<[E]>(
@@ -315,7 +316,8 @@ extension Generator
     /// Shrinking reduces the count of elements toward the lower bound and
     /// shrinks individual elements.
     ///
-    /// - Precondition: `count` must not be empty or contain negative values.
+    /// - Precondition: `count` must not be empty.
+    /// - Precondition: `count.lowerBound` must not be negative.
     ///
     /// - Parameters:
     ///   - type: The element type. The default value is inferred.
@@ -334,7 +336,7 @@ extension Generator
         
         precondition(
             count.lowerBound >= 0,
-            "count must not contain negative values"
+            "count.lowerBound must not be negative"
         )
         
         return array(
