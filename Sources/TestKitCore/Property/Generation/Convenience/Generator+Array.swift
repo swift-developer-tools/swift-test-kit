@@ -713,7 +713,7 @@ extension Generator
     ///   - generator: The element generator.
     ///   - context: The generation context.
     /// - Returns: An array of unique elements.
-    private static func generateUniqueElements<E>(
+    internal static func generateUniqueElements<E>(
         count       : Int,
         generator   : Generator<E>,
         context     : GenerationContext
@@ -762,7 +762,7 @@ extension Generator
     ///   - array: The array to shrink.
     ///   - generator: The element generator (for element shrinking).
     /// - Returns: The shrink candidates.
-    private static func shrinkUniqueElements<E>(
+    internal static func shrinkUniqueElements<E>(
         of      array       : [E],
         using   generator   : Generator<E>
     ) -> [[E]] where E : Hashable
@@ -876,7 +876,7 @@ extension Generator
     ///   - generateElement: The function to generate an element.
     ///   - context: The generation context.
     /// - Returns: The mutated array.
-    private static func mutateUniqueArray<E>(
+    internal static func mutateUniqueArray<E>(
         _ array         : [E],
         minCount        : Int,
         maxCount        : Int?,
