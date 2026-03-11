@@ -92,23 +92,23 @@ extension Generator
     /// Shrinking reduces the count toward the lower bound of the given range,
     /// and shrinks individual elements.
     ///
-    /// - Precondition: `count.lowerBound` must not be negative.
-    /// - Precondition: `generator` must produce at least `count.upperBound`
+    /// - Precondition: `range.lowerBound` must not be negative.
+    /// - Precondition: `generator` must produce at least `range.upperBound`
     /// distinct values within a reasonable number of attempts.
     ///
     /// - Parameters:
     ///   - generator: The element generator.
-    ///   - count: The range of element counts.
+    ///   - range: The range of element counts.
     /// - Returns: A generator that produces sets of unique elements with
     /// a count within the given range.
     public static func set<E>(
-        using generator : Generator<E>,
-        count           : ClosedRange<Int>
+        using   generator   : Generator<E>,
+        count   range       : ClosedRange<Int>
     ) -> Generator<Set<E>> where G == Set<E>, E : Hashable
     {
         precondition(
-            count.lowerBound >= 0,
-            "count.lowerBound must not be negative"
+            range.lowerBound >= 0,
+            "range.lowerBound must not be negative"
         )
         
         return Generator<Set<E>>(
@@ -117,7 +117,7 @@ extension Generator
                 context in
                 
                 return Set(generateUniqueElements(
-                    count:      context.random(in: count),
+                    count:      context.random(in: range),
                     generator:  generator,
                     context:    context
                 ))
@@ -137,7 +137,7 @@ extension Generator
                 }
                 
                 return array.shrinkToward(
-                    minCount:           count.lowerBound,
+                    minCount:           range.lowerBound,
                     shrinkElements:     shrinkElements
                 ).map { Set($0) }
             },
@@ -147,8 +147,8 @@ extension Generator
                 
                 return Set(mutateUniqueArray(
                     Array(set),
-                    minCount:           count.lowerBound,
-                    maxCount:           count.upperBound,
+                    minCount:           range.lowerBound,
+                    maxCount:           range.upperBound,
                     mutateElement:      generator.mutate,
                     generateElement:    generator.generate,
                     using:              context
@@ -165,34 +165,34 @@ extension Generator
     /// Shrinking reduces the count toward the lower bound of the given range,
     /// and shrinks individual elements.
     ///
-    /// - Precondition: `count` must not be empty.
-    /// - Precondition: `count.lowerBound` must not be negative.
-    /// - Precondition: `generator` must produce at least `count.upperBound - 1`
+    /// - Precondition: `range` must not be empty.
+    /// - Precondition: `range.lowerBound` must not be negative.
+    /// - Precondition: `generator` must produce at least `range.upperBound - 1`
     /// distinct values within a reasonable number of attempts.
     ///
     /// - Parameters:
     ///   - generator: The element generator.
-    ///   - count: The range of element counts.
+    ///   - range: The range of element counts.
     /// - Returns: A generator that produces sets of unique elements with
     /// a count within the given range.
     public static func set<E>(
-        using generator : Generator<E>,
-        count           : Range<Int>
+        using   generator   : Generator<E>,
+        count   range       : Range<Int>
     ) -> Generator<Set<E>> where G == Set<E>, E : Hashable
     {
         precondition(
-            !count.isEmpty,
-            "count must not be empty"
+            !range.isEmpty,
+            "range must not be empty"
         )
         
         precondition(
-            count.lowerBound >= 0,
-            "count.lowerBound must not be negative"
+            range.lowerBound >= 0,
+            "range.lowerBound must not be negative"
         )
         
         return set(
             using:  generator,
-            count:  count.lowerBound...(count.upperBound - 1)
+            count:  range.lowerBound...(range.upperBound - 1)
         )
     }
     
@@ -236,23 +236,23 @@ extension Generator
     /// Shrinking reduces the count toward the lower bound of the given range,
     /// and shrinks individual elements.
     ///
-    /// - Precondition: `count.lowerBound` must not be negative.
-    /// - Precondition: `generator` must produce at least `count.upperBound`
+    /// - Precondition: `range.lowerBound` must not be negative.
+    /// - Precondition: `generator` must produce at least `range.upperBound`
     /// distinct values within a reasonable number of attempts.
     ///
     /// - Parameters:
     ///   - type: The element type. The default value is inferred.
-    ///   - count: The range of element counts.
+    ///   - range: The range of element counts.
     /// - Returns: A generator that produces sets of unique elements with
     /// a count within the given range.
     public static func set<E>(
-        of type : E.Type    = E.self,
-        count   : ClosedRange<Int>
+        of      type    : E.Type    = E.self,
+        count   range   : ClosedRange<Int>
     ) -> Generator<Set<E>> where G == Set<E>, E : Arbitrary & Hashable
     {
         return set(
             using:  .arbitrary(),
-            count:  count
+            count:  range
         )
     }
     
@@ -264,24 +264,24 @@ extension Generator
     /// Shrinking reduces the count toward the lower bound of the given range,
     /// and shrinks individual elements.
     ///
-    /// - Precondition: `count` must not be empty.
-    /// - Precondition: `count.lowerBound` must not be negative.
-    /// - Precondition: `generator` must produce at least `count.upperBound - 1`
+    /// - Precondition: `range` must not be empty.
+    /// - Precondition: `range.lowerBound` must not be negative.
+    /// - Precondition: `generator` must produce at least `range.upperBound - 1`
     /// distinct values within a reasonable number of attempts.
     ///
     /// - Parameters:
     ///   - type: The element type. The default value is inferred.
-    ///   - count: The range of element counts.
+    ///   - range: The range of element counts.
     /// - Returns: A generator that produces sets of unique elements with
     /// a count within the given range.
     public static func set<E>(
-        of type : E.Type    = E.self,
-        count   : Range<Int>
+        of      type    : E.Type    = E.self,
+        count   range   : Range<Int>
     ) -> Generator<Set<E>> where G == Set<E>, E : Arbitrary & Hashable
     {
         return set(
             using:  .arbitrary(),
-            count:  count
+            count:  range
         )
     }
     
