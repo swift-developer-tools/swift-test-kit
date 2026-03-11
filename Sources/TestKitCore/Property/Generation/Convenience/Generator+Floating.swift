@@ -46,8 +46,8 @@ extension Generator
                     value,
                     lowerBound:     range.lowerBound,
                     upperBound:     range.upperBound,
-                    using:          context,
-                    generate:       { context.random(in: range) }
+                    generate:       { context.random(in: range) },
+                    using:          context
                 )
             }
         )
@@ -99,8 +99,8 @@ extension Generator
                     value,
                     lowerBound:     range.lowerBound,
                     upperBound:     range.upperBound.nextDown,
-                    using:          context,
-                    generate:       { context.random(in: range) }
+                    generate:       { context.random(in: range) },
+                    using:          context
                 )
             }
         )
@@ -115,15 +115,15 @@ extension Generator
     ///   - value: The floating-point number to mutate.
     ///   - lowerBound: The lower bound of the range.
     ///   - upperBound: The upper bound of the range.
-    ///   - context: The generation context.
     ///   - generate: The function to generate a value.
+    ///   - context: The generation context.
     /// - Returns: The mutated floating-point number.
     private static func mutateFloatingPoint(
         _ value         : G,
         lowerBound      : G,
         upperBound      : G,
-        using context   : GenerationContext,
-        generate        : () -> G
+        generate        : () -> G,
+        using context   : GenerationContext
     ) -> G
     {
         guard value.isFinite
