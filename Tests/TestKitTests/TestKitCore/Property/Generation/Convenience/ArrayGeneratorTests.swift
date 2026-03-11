@@ -997,7 +997,7 @@ internal final class ArrayGeneratorTests: TestKitCase
     
     
     
-    func testClosedRangeMutationAtLowerBoundCannotInsert()
+    func testClosedRangeMutationAtUpperBoundCannotInsert()
     {
         let generator   : Generator<[Int]>  = .array(count: 3...5)
         let array       : [Int]             = [10, 20, 30, 40, 50]
