@@ -12,7 +12,7 @@ import XCTest
 
 
 
-extension Generator where V : Collection
+extension Generator where G : Collection
 {
     /// Asserts that the generator produces collections with counts within
     /// the given range.
@@ -27,7 +27,7 @@ extension Generator where V : Collection
     {
         for _ in 0..<1000
         {
-            let value: V = size == nil
+            let value: G = size == nil
                 ? generate(.random)
                 : generate(.randomSeed(size: size!))
             

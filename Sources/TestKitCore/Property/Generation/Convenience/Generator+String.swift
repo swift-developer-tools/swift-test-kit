@@ -7,7 +7,7 @@
 //
 //===----------------------------------------------------------------------===//
 
-extension Generator where V == String
+extension Generator where G == String
 {
     // MARK: - Exact
     

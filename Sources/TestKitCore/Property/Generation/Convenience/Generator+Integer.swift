@@ -7,7 +7,7 @@
 //
 //===----------------------------------------------------------------------===//
 
-extension Generator where V : FixedWidthInteger
+extension Generator where G : FixedWidthInteger
 {
     /// Creates a generator that produces integers in the given range.
     ///
@@ -17,10 +17,10 @@ extension Generator where V : FixedWidthInteger
     /// - Parameter range: The range in which to generate integers.
     /// - Returns: A generator that produces integers in the given range.
     public static func integer(
-        in range: ClosedRange<V>
-    ) -> Generator<V>
+        in range: ClosedRange<G>
+    ) -> Generator<G>
     {
-        return Generator<V>(
+        return Generator<G>(
             generate:
             {
                 context in
@@ -37,8 +37,8 @@ extension Generator where V : FixedWidthInteger
             {
                 value, context in
                 
-                let maxDelta    : V     = V(clamping: max(1, context.size))
-                let delta       : V     = context.random(in: 0...maxDelta)
+                let maxDelta    : G     = G(clamping: max(1, context.size))
+                let delta       : G     = context.random(in: 0...maxDelta)
                 
                 if context.randomBool()
                 {
@@ -74,8 +74,8 @@ extension Generator where V : FixedWidthInteger
     /// - Parameter range: The range in which to generate integers.
     /// - Returns: A generator that produces integers in the given range.
     public static func integer(
-        in range: Range<V>
-    ) -> Generator<V>
+        in range: Range<G>
+    ) -> Generator<G>
     {
         precondition(
             !range.isEmpty,

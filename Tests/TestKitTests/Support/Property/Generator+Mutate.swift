@@ -25,8 +25,8 @@ extension Generator
     ///   - generate: The function to generate a value from the given context.
     ///   - shrink: The function to shrink the given value.
     internal init(
-        generate    : @escaping (GenerationContext) -> V,
-        shrink      : @escaping (V) -> [V]
+        generate    : @escaping (GenerationContext) -> G,
+        shrink      : @escaping (G) -> [G]
     )
     {
         self = Generator(

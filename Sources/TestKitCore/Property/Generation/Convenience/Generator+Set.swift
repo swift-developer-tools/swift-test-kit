@@ -29,7 +29,7 @@ extension Generator
     public static func set<E>(
         using generator : Generator<E>,
         count           : Int
-    ) -> Generator<Set<E>> where V == Set<E>, E : Hashable
+    ) -> Generator<Set<E>> where G == Set<E>, E : Hashable
     {
         precondition(
             count >= 0,
@@ -104,7 +104,7 @@ extension Generator
     public static func set<E>(
         using generator : Generator<E>,
         count           : ClosedRange<Int>
-    ) -> Generator<Set<E>> where V == Set<E>, E : Hashable
+    ) -> Generator<Set<E>> where G == Set<E>, E : Hashable
     {
         precondition(
             count.lowerBound >= 0,
@@ -178,7 +178,7 @@ extension Generator
     public static func set<E>(
         using generator : Generator<E>,
         count           : Range<Int>
-    ) -> Generator<Set<E>> where V == Set<E>, E : Hashable
+    ) -> Generator<Set<E>> where G == Set<E>, E : Hashable
     {
         precondition(
             !count.isEmpty,
@@ -218,7 +218,7 @@ extension Generator
     public static func set<E>(
         of type : E.Type    = E.self,
         count   : Int
-    ) -> Generator<Set<E>> where V == Set<E>, E : Arbitrary & Hashable
+    ) -> Generator<Set<E>> where G == Set<E>, E : Arbitrary & Hashable
     {
         return set(
             using:  .arbitrary(),
@@ -248,7 +248,7 @@ extension Generator
     public static func set<E>(
         of type : E.Type    = E.self,
         count   : ClosedRange<Int>
-    ) -> Generator<Set<E>> where V == Set<E>, E : Arbitrary & Hashable
+    ) -> Generator<Set<E>> where G == Set<E>, E : Arbitrary & Hashable
     {
         return set(
             using:  .arbitrary(),
@@ -277,7 +277,7 @@ extension Generator
     public static func set<E>(
         of type : E.Type    = E.self,
         count   : Range<Int>
-    ) -> Generator<Set<E>> where V == Set<E>, E : Arbitrary & Hashable
+    ) -> Generator<Set<E>> where G == Set<E>, E : Arbitrary & Hashable
     {
         return set(
             using:  .arbitrary(),
@@ -298,7 +298,7 @@ extension Generator
     /// - Returns: A generator that produces non-empty sets.
     public static func nonEmptySet<E>(
         using generator: Generator<E>
-    ) -> Generator<Set<E>> where V == Set<E>, E : Hashable
+    ) -> Generator<Set<E>> where G == Set<E>, E : Hashable
     {
         return Generator<Set<E>>(
             generate:
@@ -360,7 +360,7 @@ extension Generator
     /// - Returns: A generator that produces non-empty sets.
     public static func nonEmptySet<E>(
         of type: E.Type = E.self
-    ) -> Generator<Set<E>> where V == Set<E>, E : Arbitrary & Hashable
+    ) -> Generator<Set<E>> where G == Set<E>, E : Arbitrary & Hashable
     {
         return nonEmptySet(using: .arbitrary())
     }

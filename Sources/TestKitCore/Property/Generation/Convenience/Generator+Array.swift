@@ -27,7 +27,7 @@ extension Generator
     public static func array<E>(
         using generator : Generator<E>,
         count           : Int
-    ) -> Generator<[E]> where V == [E]
+    ) -> Generator<[E]> where G == [E]
     {
         precondition(
             count >= 0,
@@ -96,7 +96,7 @@ extension Generator
     public static func array<E>(
         using generator : Generator<E>,
         count           : ClosedRange<Int>
-    ) -> Generator<[E]> where V == [E]
+    ) -> Generator<[E]> where G == [E]
     {
         precondition(
             count.lowerBound >= 0,
@@ -165,7 +165,7 @@ extension Generator
     public static func array<E>(
         using generator : Generator<E>,
         count           : Range<Int>
-    ) -> Generator<[E]> where V == [E]
+    ) -> Generator<[E]> where G == [E]
     {
         precondition(
             !count.isEmpty,
@@ -203,7 +203,7 @@ extension Generator
     public static func array<E>(
         of type : E.Type    = E.self,
         count   : Int
-    ) -> Generator<[E]> where V == [E], E : Arbitrary
+    ) -> Generator<[E]> where G == [E], E : Arbitrary
     {
         precondition(
             count >= 0,
@@ -264,7 +264,7 @@ extension Generator
     public static func array<E>(
         of type : E.Type            = E.self,
         count   : ClosedRange<Int>
-    ) -> Generator<[E]> where V == [E], E : Arbitrary
+    ) -> Generator<[E]> where G == [E], E : Arbitrary
     {
         precondition(
             count.lowerBound >= 0,
@@ -325,7 +325,7 @@ extension Generator
     public static func array<E>(
         of type : E.Type        = E.self,
         count   : Range<Int>
-    ) -> Generator<[E]> where V == [E], E : Arbitrary
+    ) -> Generator<[E]> where G == [E], E : Arbitrary
     {
         precondition(
             !count.isEmpty,
@@ -356,7 +356,7 @@ extension Generator
     /// - Returns: A generator that produces non-empty arrays.
     public static func nonEmptyArray<E>(
         using generator: Generator<E>
-    ) -> Generator<[E]> where V == [E]
+    ) -> Generator<[E]> where G == [E]
     {
         return Generator<[E]>(
             generate:
@@ -414,7 +414,7 @@ extension Generator
     /// - Returns: A generator that produces non-empty arrays.
     public static func nonEmptyArray<E>(
         of type: E.Type = E.self
-    ) -> Generator<[E]> where V == [E], E : Arbitrary
+    ) -> Generator<[E]> where G == [E], E : Arbitrary
     {
         return nonEmptyArray(using: .arbitrary())
     }
@@ -442,7 +442,7 @@ extension Generator
     public static func uniqueArray<E>(
         using generator : Generator<E>,
         count           : Int
-    ) -> Generator<[E]> where V == [E], E : Hashable
+    ) -> Generator<[E]> where G == [E], E : Hashable
     {
         precondition(
             count >= 0,
@@ -516,7 +516,7 @@ extension Generator
     public static func uniqueArray<E>(
         using generator : Generator<E>,
         count           : ClosedRange<Int>
-    ) -> Generator<[E]> where V == [E], E : Hashable
+    ) -> Generator<[E]> where G == [E], E : Hashable
     {
         precondition(
             count.lowerBound >= 0,
@@ -589,7 +589,7 @@ extension Generator
     public static func uniqueArray<E>(
         using generator : Generator<E>,
         count           : Range<Int>
-    ) -> Generator<[E]> where V == [E], E : Hashable
+    ) -> Generator<[E]> where G == [E], E : Hashable
     {
         precondition(
             !count.isEmpty,
@@ -630,7 +630,7 @@ extension Generator
     public static func uniqueArray<E>(
         of type : E.Type    = E.self,
         count   : Int
-    ) -> Generator<[E]> where V == [E], E : Arbitrary & Hashable
+    ) -> Generator<[E]> where G == [E], E : Arbitrary & Hashable
     {
         return uniqueArray(
             using:  .arbitrary(),
@@ -661,7 +661,7 @@ extension Generator
     public static func uniqueArray<E>(
         of type : E.Type    = E.self,
         count   : ClosedRange<Int>
-    ) -> Generator<[E]> where V == [E], E : Arbitrary & Hashable
+    ) -> Generator<[E]> where G == [E], E : Arbitrary & Hashable
     {
         return uniqueArray(
             using:  .arbitrary(),
@@ -691,7 +691,7 @@ extension Generator
     public static func uniqueArray<E>(
         of type : E.Type    = E.self,
         count   : Range<Int>
-    ) -> Generator<[E]> where V == [E], E : Arbitrary & Hashable
+    ) -> Generator<[E]> where G == [E], E : Arbitrary & Hashable
     {
         return uniqueArray(
             using:  .arbitrary(),

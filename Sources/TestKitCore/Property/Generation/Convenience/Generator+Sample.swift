@@ -25,7 +25,7 @@ extension Generator
         count   : Int       = 10,
         seed    : UInt64?   = nil,
         maxSize : Int       = 100
-    ) -> [V]
+    ) -> [G]
     {
         precondition(
             count >= 0,

@@ -92,16 +92,16 @@
 ///     }
 /// )
 /// ```
-public struct Generator<V>
+public struct Generator<G>
 {
     /// Generates a value from the given context.
-    internal let generate   : (GenerationContext) -> V
+    internal let generate   : (GenerationContext) -> G
     
     /// Shrinks the given value.
-    internal let shrink     : (V) -> [V]
+    internal let shrink     : (G) -> [G]
     
     /// Mutates the given value, using the given context.
-    internal let mutate     : (V, GenerationContext) -> V
+    internal let mutate     : (G, GenerationContext) -> G
     
     
     
@@ -112,9 +112,9 @@ public struct Generator<V>
     ///   - mutate: The function to mutate the given value, using the given
     ///   context.
     public init(
-        generate    : @escaping (GenerationContext) -> V,
-        shrink      : @escaping (V) -> [V],
-        mutate      : @escaping (V, GenerationContext) -> V
+        generate    : @escaping (GenerationContext) -> G,
+        shrink      : @escaping (G) -> [G],
+        mutate      : @escaping (G, GenerationContext) -> G
     )
     {
         self.generate   = generate

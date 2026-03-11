@@ -8,8 +8,8 @@
 //===----------------------------------------------------------------------===//
 
 extension Generator
-    where V : BinaryFloatingPoint,
-          V.RawSignificand : FixedWidthInteger
+    where G : BinaryFloatingPoint,
+          G.RawSignificand : FixedWidthInteger
 {
     /// Creates a generator that produces floating-point numbers in the given
     /// range.
@@ -22,10 +22,10 @@ extension Generator
     /// - Returns: A generator that produces floating-point numbers in the
     /// given range.
     public static func floatingPoint(
-        in range: ClosedRange<V>
-    ) -> Generator<V>
+        in range: ClosedRange<G>
+    ) -> Generator<G>
     {
-        return Generator<V>(
+        return Generator<G>(
             generate:
             {
                 context in
@@ -65,15 +65,15 @@ extension Generator
     /// - Parameter range: The range in which to generate integers.
     /// - Returns: A generator that produces integers in the given range.
     public static func floatingPoint(
-        in range: Range<V>
-    ) -> Generator<V>
+        in range: Range<G>
+    ) -> Generator<G>
     {
         precondition(
             !range.isEmpty,
             "range must not be empty"
         )
         
-        return Generator<V>(
+        return Generator<G>(
             generate:
             {
                 context in
@@ -85,7 +85,7 @@ extension Generator
                 value in
                 
                 /// Shrink with a closed range and filter out the upper bound.
-                let closed: ClosedRange<V>
+                let closed: ClosedRange<G>
                     = range.lowerBound...range.upperBound
                 
                 return value.shrinkTowardZero(in: closed)
@@ -100,7 +100,7 @@ extension Generator
                     lowerBound:     range.lowerBound,
                     upperBound:     range.upperBound.nextDown,
                     using:          context,
-                    generate:   {    context.random(in: range) }
+                    generate:       { context.random(in: range) }
                 )
             }
         )
@@ -119,12 +119,12 @@ extension Generator
     ///   - generate: The function to generate a value.
     /// - Returns: The mutated floating-point number.
     private static func mutateFloatingPoint(
-        _ value         : V,
-        lowerBound      : V,
-        upperBound      : V,
+        _ value         : G,
+        lowerBound      : G,
+        upperBound      : G,
         using context   : GenerationContext,
-        generate        : () -> V
-    ) -> V
+        generate        : () -> G
+    ) -> G
     {
         guard value.isFinite
         else
@@ -134,10 +134,10 @@ extension Generator
         
         if context.random(in: 1...5) == 1
         {
-            let factor  : V     = context.random(in: 0.5...1.5)
-            let scaled  : V     = value * factor
+            let factor  : G     = context.random(in: 0.5...1.5)
+            let scaled  : G     = value * factor
             
-            let clamped: V = min(
+            let clamped: G = min(
                 upperBound,
                 max(lowerBound, scaled)
             )
@@ -148,10 +148,10 @@ extension Generator
         }
         else
         {
-            let magnitude   : V     = max(1.0, abs(value) * 0.1)
-            let delta       : V     = context.random(in: -magnitude...magnitude)
+            let magnitude   : G     = max(1.0, abs(value) * 0.1)
+            let delta       : G     = context.random(in: -magnitude...magnitude)
             
-            let result: V = min(
+            let result: G = min(
                 upperBound,
                 max(lowerBound, value + delta)
             )
