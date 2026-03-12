@@ -799,6 +799,60 @@ await STKStateful(
 
 
 
+## Composition
+
+Property-based tests, stateful tests, temporal tests, performance tests, 
+and atomic tests compose freely. Any evaluator may be nested inside any 
+other evaluator, and all evaluators can wrap standalone assertions. Any 
+failures propagate with the same rich output used by standalone assertions.
+
+```swift
+// Assert that any random array is correctly sorted within 50 milliseconds.
+await STKForAll
+{
+    (array: [Int]) in
+    
+    await STKPerformance(timeLimit: .milliseconds(50))
+    {
+        STKAssertSorted(customSort(array), by: >=)
+    }
+}
+```
+
+```swift
+let pipeline = Pipeline()
+pipeline.start()
+
+// Assert that all stages are eventually ready at the same time.
+await STKEventually(timeout: .seconds(5))
+{
+    STKAtomic
+    {
+        STKAssertEqual(.ready, pipeline.stage1)
+        STKAssertEqual(.ready, pipeline.stage2)
+        STKAssertEqual(.ready, pipeline.stage3)
+    }
+}
+```
+
+```swift
+// Assert that any random number is eventually processed.
+await STKForAll
+{
+    (n: Int) in
+    
+    let processor = Processor(value: n)
+    processor.start()
+    
+    await STKEventually(timeout: .seconds(2))
+    {
+        STKAssertEqual(.completed, processor.state)
+    }
+}
+```
+
+
+
 ## Installation
 
 ### Swift Package Manager

@@ -807,6 +807,60 @@ await XCTKStateful(
 
 
 
+## Composition
+
+Property-based tests, stateful tests, temporal tests, performance tests, 
+and atomic tests compose freely. Any evaluator may be nested inside any 
+other evaluator, and all evaluators can wrap standalone assertions. Any 
+failures propagate with the same rich output used by standalone assertions.
+
+```swift
+// Assert that any random array is correctly sorted within 50 milliseconds.
+await XCTKForAll
+{
+    (array: [Int]) in
+    
+    await XCTKPerformance(timeLimit: .milliseconds(50))
+    {
+        XCTKAssertSorted(customSort(array), by: >=)
+    }
+}
+```
+
+```swift
+let pipeline = Pipeline()
+pipeline.start()
+
+// Assert that all stages are eventually ready at the same time.
+await XCTKEventually(timeout: .seconds(5))
+{
+    XCTKAtomic
+    {
+        XCTKAssertEqual(.ready, pipeline.stage1)
+        XCTKAssertEqual(.ready, pipeline.stage2)
+        XCTKAssertEqual(.ready, pipeline.stage3)
+    }
+}
+```
+
+```swift
+// Assert that any random number is eventually processed.
+await XCTKForAll
+{
+    (n: Int) in
+    
+    let processor = Processor(value: n)
+    processor.start()
+    
+    await XCTKEventually(timeout: .seconds(2))
+    {
+        XCTKAssertEqual(.completed, processor.state)
+    }
+}
+```
+
+
+
 ## Installation
 
 ### Swift Package Manager
