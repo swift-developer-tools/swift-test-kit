@@ -9,7 +9,7 @@
 
 extension Generator
 {
-    /// Generates samples values.
+    /// Samples values from this generator.
     ///
     /// Use this to verify that a custom generator produces the expected
     /// distribution of values.
