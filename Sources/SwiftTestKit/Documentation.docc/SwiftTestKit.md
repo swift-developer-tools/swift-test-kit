@@ -1,15 +1,15 @@
 # ``SwiftTestKit``
 
-Property-based, stateful, performance, and temporal testing, with structural 
-diffs and advanced assertions for the Swift Testing framework.
+Property-based, stateful, performance, temporal, and atomic testing, with 
+structural diffs and advanced assertions for the Swift Testing framework.
 
 
 
 ## Overview
 
 SwiftTestKit extends the [Swift Testing](https://developer.apple.com/xcode/swift-testing) 
-framework with property-based testing, stateful testing, and advanced assertions 
-with structural diffs and expression capture.
+framework with composable test evaluators, advanced assertions, structural 
+diffs, and expression capture.
 
 When assertions fail, structural diffs pinpoint exactly where values diverge 
 within complex data structures, using path-based output that scales from flat 

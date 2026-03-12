@@ -1,15 +1,18 @@
 # swift-test-kit
 
-Property-based, stateful, performance, and temporal testing, with structural 
-diffs and advanced assertions for both the Swift Testing and XCTest frameworks.
+Property-based, stateful, performance, temporal, and atomic testing, with 
+structural diffs and advanced assertions for the Swift Testing and XCTest 
+frameworks.
 
 
 
 ## Overview
 
-SwiftTestKit and XCTestKit extend Swift's testing frameworks with property-based 
-testing, stateful testing, and advanced assertions with structural diffs and 
-expression capture. Both libraries are included in the swift-test-kit package.
+[SwiftTestKit](https://swift-developer-tools.github.io/swift-test-kit/documentation/swifttestkit) 
+and [XCTestKit](https://swift-developer-tools.github.io/swift-test-kit/documentation/xctestkit) 
+extend Swift's testing frameworks with composable test evaluators, advanced 
+assertions, structural diffs, and expression capture. Both libraries are 
+included in the swift-test-kit package.
 
 SwiftTestKit integrates directly with 
 [Swift Testing](https://developer.apple.com/xcode/swift-testing), and 
