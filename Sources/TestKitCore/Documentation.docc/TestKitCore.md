@@ -8,8 +8,20 @@ Core types shared by SwiftTestKit and XCTestKit.
 
 ## Overview
 
-SwiftTestKit and XCTestKit share the same core types. The core types are 
-automatically available when importing either framework.
+[SwiftTestKit](https://swift-developer-tools.github.io/swift-test-kit/documentation/swifttestkit) 
+and [XCTestKit](https://swift-developer-tools.github.io/swift-test-kit/documentation/xctestkit) 
+extend Swift's testing frameworks with composable test evaluators, advanced 
+assertions, structural diffs, and expression capture. Both libraries are 
+included in the swift-test-kit package.
+
+SwiftTestKit integrates directly with 
+[Swift Testing](https://developer.apple.com/xcode/swift-testing), and XCTestKit 
+integrates directly with 
+[XCTest](https://developer.apple.com/documentation/xctest). Both libraries 
+provide identical APIs.
+
+This module contains the core types shared by both SwiftTestKit and XCTestKit. 
+These types are automatically available when importing either library.
 
 ```swift
 // Includes core types for SwiftTestKit.
@@ -18,12 +30,6 @@ import SwiftTestKit
 // Includes core types for XCTestKit.
 import XCTestKit
 ```
-
-- Note: See 
-[SwiftTestKit documentation](https://swift-developer-tools.github.io/swift-test-kit/documentation/swifttestkit) 
-and 
-[XCTestKit documentation](https://swift-developer-tools.github.io/swift-test-kit/documentation/xctestkit) 
-for the complete API references.
 
 ## Topics
 
