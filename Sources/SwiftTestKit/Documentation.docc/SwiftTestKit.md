@@ -862,10 +862,12 @@ swift-test-kit may be installed using
 The package includes both SwiftTestKit and XCTestKit.
 
 ```swift
-// Use SwiftTestKit.
+// Test with Swift Testing and SwiftTestKit.
+import Testing
 import SwiftTestKit
 
-// Use XCTestKit.
+// Test with XCTest and XCTestKit.
+import XCTest
 import XCTestKit
 ```
 

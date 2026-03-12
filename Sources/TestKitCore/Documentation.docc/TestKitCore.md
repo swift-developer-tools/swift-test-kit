@@ -24,10 +24,12 @@ This module contains the core types shared by both SwiftTestKit and XCTestKit.
 These types are automatically available when importing either library.
 
 ```swift
-// Includes core types for SwiftTestKit.
+// Test with Swift Testing and SwiftTestKit.
+import Testing
 import SwiftTestKit
 
-// Includes core types for XCTestKit.
+// Test with XCTest and XCTestKit.
+import XCTest
 import XCTestKit
 ```
 
