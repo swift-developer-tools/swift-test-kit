@@ -408,7 +408,7 @@ extension Generator
     
     // MARK: - zip
     
-    /// Combines generators into a generator of tuples.
+    /// Combines the given generators into a generator of tuples.
     ///
     /// - Note: The returned generator preserves shrinking from all underlying
     /// generators. Each value is shrunk independently, while holding the
