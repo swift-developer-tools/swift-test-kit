@@ -22,14 +22,14 @@ extension Generator
     /// - Returns: A generator that produces optional values.
     public func optional(
         probability: Double = 0.2
-    ) -> Generator<V?>
+    ) -> Generator<G?>
     {
         precondition(
             (0.0...1.0).contains(probability),
             "probability must be in the range 0.0...1.0"
         )
         
-        return Generator<V?>(
+        return Generator<G?>(
             generate:
             {
                 context in
@@ -45,7 +45,7 @@ extension Generator
             {
                 value in
                 
-                guard let wrapped: V = value
+                guard let wrapped: G = value
                 else
                 {
                     return []
@@ -67,7 +67,7 @@ extension Generator
                     return nil
                 }
                 
-                guard let wrapped: V = value
+                guard let wrapped: G = value
                 else
                 {
                     return self.generate(context)

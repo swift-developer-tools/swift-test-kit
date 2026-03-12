@@ -9,7 +9,7 @@
 
 extension Generator
 {
-    /// Generates samples values.
+    /// Samples values from this generator.
     ///
     /// Use this to verify that a custom generator produces the expected
     /// distribution of values.
@@ -25,7 +25,7 @@ extension Generator
         count   : Int       = 10,
         seed    : UInt64?   = nil,
         maxSize : Int       = 100
-    ) -> [V]
+    ) -> [G]
     {
         precondition(
             count >= 0,

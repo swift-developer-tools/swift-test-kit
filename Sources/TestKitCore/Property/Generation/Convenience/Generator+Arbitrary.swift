@@ -7,16 +7,16 @@
 //
 //===----------------------------------------------------------------------===//
 
-extension Generator where V : Arbitrary
+extension Generator where G : Arbitrary
 {
     /// Creates a generator that produces values by delegating to the type's
     /// ``Arbitrary`` conformance.
     /// - Returns: A generator that produces values by delegating to the type's
     /// ``Arbitrary`` conformance.
-    public static func arbitrary() -> Generator<V>
+    public static func arbitrary() -> Generator<G>
     {
-        return Generator<V>(
-            generate:   { context in V.arbitrary(using: context) },
+        return Generator<G>(
+            generate:   { context in G.arbitrary(using: context) },
             shrink:     { value in value.shrink() },
             mutate:     { value, context in value.mutate(using: context) }
         )

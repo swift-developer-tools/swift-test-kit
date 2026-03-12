@@ -12,7 +12,7 @@ import XCTest
 
 
 
-extension Generator where V : Equatable
+extension Generator where G : Equatable
 {
     /// Asserts that output of the generator is deterministic.
     /// - Parameter size: The generation size to use. The default value is
@@ -43,8 +43,8 @@ extension Generator where V : Equatable
                 (context3, context4) = GenerationContext.sameRandomContexts
             }
             
-            let value1  : V     = self.generate(context1)
-            let value2  : V     = self.generate(context2)
+            let value1  : G     = self.generate(context1)
+            let value2  : G     = self.generate(context2)
             
             if value1.isNaN
             {
@@ -57,8 +57,8 @@ extension Generator where V : Equatable
             
             /// Mutate the same value to handle unordered collections.
             /// See comment in ``assertArbitraryDeterminism(of:)``.
-            let mutated1    : V     = mutate(value1, context3)
-            let mutated2    : V     = mutate(value1, context4)
+            let mutated1    : G     = mutate(value1, context3)
+            let mutated2    : G     = mutate(value1, context4)
             
             if mutated1.isNaN
             {

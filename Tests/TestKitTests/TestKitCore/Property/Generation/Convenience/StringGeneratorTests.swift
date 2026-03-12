@@ -302,6 +302,8 @@ internal final class StringGeneratorTests: TestKitCase
         let string      : String                = "abcde"
         let candidates  : [String]              = generator.shrink(string)
         
+        XCTAssertFalse(candidates.isEmpty)
+        
         for candidate in candidates
         {
             XCTAssertGreaterThanOrEqual(candidate.count, 3)
@@ -315,6 +317,8 @@ internal final class StringGeneratorTests: TestKitCase
         let generator   : Generator<String>     = .string(count: 3...8)
         let string      : String                = "xyz"
         let candidates  : [String]              = generator.shrink(string)
+        
+        XCTAssertFalse(candidates.isEmpty)
         
         for candidate in candidates
         {
@@ -531,6 +535,8 @@ internal final class StringGeneratorTests: TestKitCase
         let generator   : Generator<String>     = .string(count: 3..<9)
         let string      : String                = "xyz"
         let candidates  : [String]              = generator.shrink(string)
+        
+        XCTAssertFalse(candidates.isEmpty)
         
         for candidate in candidates
         {

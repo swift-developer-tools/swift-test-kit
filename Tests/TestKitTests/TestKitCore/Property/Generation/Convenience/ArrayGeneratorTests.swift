@@ -29,10 +29,7 @@ internal final class ArrayGeneratorTests: TestKitCase
     {
         let generator: Generator<[Int]> = .array(count: 7)
         
-        validateCount(
-            of:         generator,
-            expected:   7...7
-        )
+        generator.assertCount(in: 7...7)
     }
     
     
@@ -70,10 +67,7 @@ internal final class ArrayGeneratorTests: TestKitCase
             count:  7
         )
         
-        validateCount(
-            of:         generator,
-            expected:   7...7
-        )
+        generator.assertCount(in: 7...7)
     }
     
     
@@ -134,10 +128,7 @@ internal final class ArrayGeneratorTests: TestKitCase
             count:  7
         )
         
-        validateCount(
-            of:         generator,
-            expected:   7...7
-        )
+        generator.assertCount(in: 7...7)
     }
     
     
@@ -444,6 +435,8 @@ internal final class ArrayGeneratorTests: TestKitCase
         let array       : [Int]     = [0, 20, 30]
         let candidates  : [[Int]]   = generator.shrink(array)
         
+        XCTAssertFalse(candidates.isEmpty)
+        
         for candidate in candidates
         {
             XCTAssertEqual(Set(candidate).count, candidate.count)
@@ -619,10 +612,7 @@ internal final class ArrayGeneratorTests: TestKitCase
     {
         let generator: Generator<[Int]> = .array(count: 3...7)
         
-        validateCount(
-            of:         generator,
-            expected:   3...7
-        )
+        generator.assertCount(in: 3...7)
     }
     
     
@@ -663,10 +653,7 @@ internal final class ArrayGeneratorTests: TestKitCase
             count:  3...7
         )
         
-        validateCount(
-            of:         generator,
-            expected:   3...7
-        )
+        generator.assertCount(in: 3...7)
     }
     
     
@@ -690,10 +677,7 @@ internal final class ArrayGeneratorTests: TestKitCase
             count:  3...7
         )
         
-        validateCount(
-            of:         generator,
-            expected:   3...7
-        )
+        generator.assertCount(in: 3...7)
     }
     
     
@@ -752,6 +736,8 @@ internal final class ArrayGeneratorTests: TestKitCase
         let array       : [Int]             = [10, 20, 30, 40, 50]
         let candidates  : [[Int]]           = generator.shrink(array)
         
+        XCTAssertFalse(candidates.isEmpty)
+        
         for candidate in candidates
         {
             XCTAssertGreaterThanOrEqual(candidate.count, 3)
@@ -765,6 +751,8 @@ internal final class ArrayGeneratorTests: TestKitCase
         let generator   : Generator<[Int]>  = .array(count: 3...8)
         let array       : [Int]             = [10, 20, 30]
         let candidates  : [[Int]]           = generator.shrink(array)
+        
+        XCTAssertFalse(candidates.isEmpty)
         
         for candidate in candidates
         {
@@ -812,6 +800,8 @@ internal final class ArrayGeneratorTests: TestKitCase
         let array       : [Int]     = [10, 20, 30, 40, 50]
         let candidates  : [[Int]]   = generator.shrink(array)
         
+        XCTAssertFalse(candidates.isEmpty)
+        
         for candidate in candidates
         {
             XCTAssertGreaterThanOrEqual(candidate.count, 3)
@@ -829,6 +819,8 @@ internal final class ArrayGeneratorTests: TestKitCase
         
         let array       : [Int]     = [10, 20, 30]
         let candidates  : [[Int]]   = generator.shrink(array)
+        
+        XCTAssertFalse(candidates.isEmpty)
         
         for candidate in candidates
         {
@@ -905,6 +897,8 @@ internal final class ArrayGeneratorTests: TestKitCase
         
         let array       : [Int]     = [10, 20, 30, 40, 50]
         let candidates  : [[Int]]   = generator.shrink(array)
+        
+        XCTAssertFalse(candidates.isEmpty)
         
         for candidate in candidates
         {
@@ -1003,7 +997,7 @@ internal final class ArrayGeneratorTests: TestKitCase
     
     
     
-    func testClosedRangeMutationAtLowerBoundCannotInsert()
+    func testClosedRangeMutationAtUpperBoundCannotInsert()
     {
         let generator   : Generator<[Int]>  = .array(count: 3...5)
         let array       : [Int]             = [10, 20, 30, 40, 50]
@@ -1099,7 +1093,6 @@ internal final class ArrayGeneratorTests: TestKitCase
                 value, context in
                 
                 mutateCallCount += 1
-                
                 return value + 1
             }
         )
@@ -1140,10 +1133,7 @@ internal final class ArrayGeneratorTests: TestKitCase
     {
         let generator: Generator<[Int]> = .array(count: 3..<8)
         
-        validateCount(
-            of:         generator,
-            expected:   3...7
-        )
+        generator.assertCount(in: 3...7)
     }
     
     
@@ -1184,10 +1174,7 @@ internal final class ArrayGeneratorTests: TestKitCase
             count:  3..<8
         )
         
-        validateCount(
-            of:         generator,
-            expected:   3...7
-        )
+        generator.assertCount(in: 3...7)
     }
     
     
@@ -1211,10 +1198,7 @@ internal final class ArrayGeneratorTests: TestKitCase
             count:  3..<8
         )
         
-        validateCount(
-            of:         generator,
-            expected:   3...7
-        )
+        generator.assertCount(in: 3...7)
     }
     
     
@@ -1273,6 +1257,8 @@ internal final class ArrayGeneratorTests: TestKitCase
         let array       : [Int]             = [10, 20, 30, 40, 50]
         let candidates  : [[Int]]           = generator.shrink(array)
         
+        XCTAssertFalse(candidates.isEmpty)
+        
         for candidate in candidates
         {
             XCTAssertGreaterThanOrEqual(candidate.count, 3)
@@ -1286,6 +1272,8 @@ internal final class ArrayGeneratorTests: TestKitCase
         let generator   : Generator<[Int]>  = .array(count: 3..<9)
         let array       : [Int]             = [10, 20, 30]
         let candidates  : [[Int]]           = generator.shrink(array)
+        
+        XCTAssertFalse(candidates.isEmpty)
         
         for candidate in candidates
         {
@@ -1333,6 +1321,8 @@ internal final class ArrayGeneratorTests: TestKitCase
         let array       : [Int]     = [10, 20, 30, 40, 50]
         let candidates  : [[Int]]   = generator.shrink(array)
         
+        XCTAssertFalse(candidates.isEmpty)
+        
         for candidate in candidates
         {
             XCTAssertGreaterThanOrEqual(candidate.count, 3)
@@ -1350,6 +1340,8 @@ internal final class ArrayGeneratorTests: TestKitCase
         
         let array       : [Int]     = [10, 20, 30]
         let candidates  : [[Int]]   = generator.shrink(array)
+        
+        XCTAssertFalse(candidates.isEmpty)
         
         for candidate in candidates
         {
@@ -1400,6 +1392,8 @@ internal final class ArrayGeneratorTests: TestKitCase
         
         let array       : [Int]     = [10, 20, 30, 40, 50]
         let candidates  : [[Int]]   = generator.shrink(array)
+        
+        XCTAssertFalse(candidates.isEmpty)
         
         for candidate in candidates
         {
@@ -1534,10 +1528,35 @@ internal final class ArrayGeneratorTests: TestKitCase
     {
         let generator: Generator<[Int]> = .nonEmptyArray()
         
-        validateCount(
-            of:         generator,
-            expected:   1...Int.max
-        )
+        generator.assertCount(in: 1...Int.max)
+    }
+    
+    
+    
+    func testGeneratorNonEmptyArrayDeterminism()
+    {
+        let generator: Generator<[Int]>
+            = .nonEmptyArray(using: .integer(in: 0...50))
+        
+        generator.assertDeterministic()
+    }
+    
+    
+    
+    func testGeneratorNonEmptyArrayUsesGenerator()
+    {
+        let generator: Generator<[Int]>
+            = .nonEmptyArray(using: .integer(in: 0...50).map { $0 * 2 })
+        
+        for _ in 0..<1000
+        {
+            let array: [Int] = generator.generate(.random)
+            
+            for element in array
+            {
+                XCTAssertEqual(element % 2, 0)
+            }
+        }
     }
     
     
@@ -1576,6 +1595,30 @@ internal final class ArrayGeneratorTests: TestKitCase
     
     
     
+    func testGeneratorNonEmptyArrayShrinkUsesGenerator()
+    {
+        let sentinel: Int = 999
+        
+        let elementGenerator = Generator<Int>(
+            generate:   { context in context.random(in: 0...100) },
+            shrink:     { _ in [sentinel] }
+        )
+        
+        let generator: Generator<[Int]>
+            = .nonEmptyArray(using: elementGenerator)
+        
+        let candidates: [[Int]] = generator.shrink([10, 20, 30])
+        
+        XCTAssertFalse(candidates.isEmpty)
+        
+        let containsSentinel: Bool
+            = candidates.contains { $0.contains(sentinel) }
+        
+        XCTAssertTrue(containsSentinel)
+    }
+    
+    
+    
     // MARK: - Non-empty mutation
     
     func testNonEmptyArrayMutationNeverProducesEmpty()
@@ -1604,30 +1647,39 @@ internal final class ArrayGeneratorTests: TestKitCase
             XCTAssertGreaterThanOrEqual(mutated.count, 1)
         }
     }
-}
-
-
-
-// MARK: - Support
-
-extension ArrayGeneratorTests
-{
-    /// Validates that the given generator produces arrays with counts within
-    /// the given range.
-    /// - Parameters:
-    ///   - generator: The generator to evaluate.
-    ///   - expected: The expected range of counts.
-    private func validateCount(
-        of generator    : Generator<[Int]>,
-        expected        : ClosedRange<Int>
-    )
+    
+    
+    
+    func testGeneratorNonEmptyArrayMutationUsesGenerator()
     {
-        for _ in 0..<1000
+        var mutateCallCount: Int = 0
+        
+        let elementGenerator = Generator<Int>(
+            generate:   { context in context.random(in: 0...100) },
+            shrink:     { _ in [] },
+            mutate:
+            {
+                value, context in
+                
+                mutateCallCount += 1
+                return value + 1
+            }
+        )
+        
+        let generator: Generator<[Int]>
+            = .nonEmptyArray(using: elementGenerator)
+        
+        let array       : [Int]     = [10, 20, 30]
+        let iterations  : Int       = 10_000
+        
+        for _ in 0..<iterations
         {
-            let array: [Int] = generator.generate(.random)
-            
-            XCTAssertGreaterThanOrEqual(array.count, expected.lowerBound)
-            XCTAssertLessThanOrEqual(array.count, expected.upperBound)
+            _ = generator.mutate(array, .random)
         }
+        
+        XCTAssertGreaterThan(
+            mutateCallCount,
+            Int(Double(iterations) * 0.7 * 0.95)
+        )
     }
 }

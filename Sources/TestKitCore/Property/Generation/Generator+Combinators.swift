@@ -20,7 +20,7 @@ extension Generator
     /// - Returns: A generator that applies the given transform function to
     /// each generated value.
     public func map<T>(
-        _ transform: @escaping (V) -> T
+        _ transform: @escaping (G) -> T
     ) -> Generator<T>
     {
         let generate: (GenerationContext) -> T =
@@ -50,14 +50,14 @@ extension Generator
     /// - Returns: A generator that uses each generated value to select and
     /// run another generator.
     public func flatMap<T>(
-        _ transform: @escaping (V) -> Generator<T>
+        _ transform: @escaping (G) -> Generator<T>
     ) -> Generator<T>
     {
         let generate: (GenerationContext) -> T =
         {
             context in
             
-            let value       : V             = self.generate(context)
+            let value       : G             = self.generate(context)
             let generator   : Generator<T>  = transform(value)
             
             return generator.generate(context)
@@ -90,17 +90,17 @@ extension Generator
     /// - Returns: A generator that only produces values satisfying the given
     /// predicate.
     public func filter(
-        _ predicate: @escaping (V) -> Bool
-    ) -> Generator<V>
+        _ predicate: @escaping (G) -> Bool
+    ) -> Generator<G>
     {
-        return Generator<V>(
+        return Generator<G>(
             generate:
             {
                 context in
                 
                 for _ in 0..<1000
                 {
-                    let value: V = self.generate(context)
+                    let value: G = self.generate(context)
                     
                     if predicate(value)
                     {
@@ -126,7 +126,7 @@ extension Generator
                 
                 for _ in 0..<1000
                 {
-                    let mutated: V = self.mutate(value, context)
+                    let mutated: G = self.mutate(value, context)
                     
                     if predicate(mutated)
                     {
@@ -136,7 +136,7 @@ extension Generator
                 
                 for _ in 0..<1000
                 {
-                    let generated: V = self.generate(context)
+                    let generated: G = self.generate(context)
                     
                     if predicate(generated)
                     {
@@ -164,10 +164,10 @@ extension Generator
     /// - Parameter value: The value to produce.
     /// - Returns: A generator that always produces the given value.
     public static func constant(
-        _ value: V
-    ) -> Generator<V>
+        _ value: G
+    ) -> Generator<G>
     {
-        return Generator<V>(
+        return Generator<G>(
             generate:   { _ in return value },
             shrink:     { _ in return [] },
             mutate:     { _, _ in return value }
@@ -192,25 +192,25 @@ extension Generator
     /// - Returns: A generator that randomly selects from the given generators
     /// with equal probability.
     public static func oneOf(
-        _ generators: [Generator<V>]
-    ) -> Generator<V>
+        _ generators: [Generator<G>]
+    ) -> Generator<G>
     {
         precondition(
             !generators.isEmpty,
             "generators must not be empty"
         )
         
-        let generate: (GenerationContext) -> V =
+        let generate: (GenerationContext) -> G =
         {
             context in
             
-            let generator: Generator<V>
+            let generator: Generator<G>
                 = context.randomElement(of: generators)!
             
             return generator.generate(context)
         }
         
-        return Generator<V>(
+        return Generator<G>(
             generate:   generate,
             shrink:     { _ in return [] },
             mutate:     { _, context in generate(context) }
@@ -233,8 +233,8 @@ extension Generator
     /// - Returns: A generator that randomly selects from the given generators
     /// with equal probability.
     public static func oneOf(
-        _ generators: Generator<V>...
-    ) -> Generator<V>
+        _ generators: Generator<G>...
+    ) -> Generator<G>
     {
         return oneOf(generators)
     }
@@ -266,19 +266,19 @@ extension Generator
     /// - Returns: A generator that randomly selects from the given generators
     /// with weighted probability.
     public static func frequency(
-        _ weighted: [(Int, Generator<V>)]
-    ) -> Generator<V>
+        _ weighted: [(Int, Generator<G>)]
+    ) -> Generator<G>
     {
         precondition(
             !weighted.isEmpty,
             "weighted must not be empty"
         )
         
-        let generate: (GenerationContext) -> V =
+        let generate: (GenerationContext) -> G =
         {
             context in
             
-            let result: (Int, Generator<V>) = context.randomElement(
+            let result: (Int, Generator<G>) = context.randomElement(
                 of:             weighted,
                 weightedBy:     { $0.0 }
             )!
@@ -286,7 +286,7 @@ extension Generator
             return result.1.generate(context)
         }
         
-        return Generator<V>(
+        return Generator<G>(
             generate:   generate,
             shrink:     { _ in return [] },
             mutate:     { _, context in generate(context) }
@@ -318,8 +318,8 @@ extension Generator
     /// - Returns: A generator that randomly selects from the given generators
     /// with weighted probability.
     public static func frequency(
-        _ weighted: (Int, Generator<V>)...
-    ) -> Generator<V>
+        _ weighted: (Int, Generator<G>)...
+    ) -> Generator<G>
     {
         return frequency(weighted)
     }
@@ -338,21 +338,21 @@ extension Generator
     /// - Returns: A generator that randomly selects from the given collection.
     public static func elements<C>(
         of collection: C
-    ) -> Generator<V> where C : Collection, C.Element == V
+    ) -> Generator<G> where C : Collection, C.Element == G
     {
         precondition(
             !collection.isEmpty,
             "collection must not be empty"
         )
         
-        let generate: (GenerationContext) -> V =
+        let generate: (GenerationContext) -> G =
         {
             context in
             
             return context.randomElement(of: collection)!
         }
         
-        return Generator<V>(
+        return Generator<G>(
             generate:   generate,
             shrink:     { _ in return [] },
             mutate:     { _, context in generate(context) }
@@ -385,19 +385,19 @@ extension Generator
     /// - Returns: A generator whose strategy depends on the current generation
     /// size.
     public static func sized(
-        _ make: @escaping (Int) -> Generator<V>
-    ) -> Generator<V>
+        _ make: @escaping (Int) -> Generator<G>
+    ) -> Generator<G>
     {
-        let generate: (GenerationContext) -> V =
+        let generate: (GenerationContext) -> G =
         {
             context in
             
-            let generator: Generator<V> = make(context.size)
+            let generator: Generator<G> = make(context.size)
             
             return generator.generate(context)
         }
         
-        return Generator<V>(
+        return Generator<G>(
             generate:   generate,
             shrink:     { _ in return [] },
             mutate:     { _, context in generate(context) }
@@ -408,7 +408,7 @@ extension Generator
     
     // MARK: - zip
     
-    /// Combines generators into a generator of tuples.
+    /// Combines the given generators into a generator of tuples.
     ///
     /// - Note: The returned generator preserves shrinking from all underlying
     /// generators. Each value is shrunk independently, while holding the
@@ -418,7 +418,7 @@ extension Generator
     /// - Returns: A generator of tuples.
     public static func zip<each T>(
         _ generators: repeat Generator<each T>
-    ) -> Generator<(repeat each T)> where V == (repeat each T)
+    ) -> Generator<(repeat each T)> where G == (repeat each T)
     {
         var shrinkers   : [AnyShrinker]     = []
         var mutators    : [AnyMutator]      = []

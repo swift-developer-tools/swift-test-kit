@@ -7,7 +7,7 @@
 //
 //===----------------------------------------------------------------------===//
 
-extension Generator where V == Character
+extension Generator where G == Character
 {
     // MARK: - ASCII
     

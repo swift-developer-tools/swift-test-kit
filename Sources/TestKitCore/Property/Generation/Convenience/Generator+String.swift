@@ -7,7 +7,7 @@
 //
 //===----------------------------------------------------------------------===//
 
-extension Generator where V == String
+extension Generator where G == String
 {
     // MARK: - Exact
     
@@ -80,22 +80,22 @@ extension Generator where V == String
     /// Shrinking reduces the count of characters toward the lower bound and
     /// shrinks individual characters.
     ///
-    /// - Precondition: `count` must not contain negative values.
+    /// - Precondition: `range.lowerBound` must not be negative.
     ///
     /// - Parameters:
-    ///   - count: The range of character counts.
+    ///   - range: The range of character counts.
     ///   - characters: The character generator to use. The default value is
     ///   ``Generator/ascii()``.
     /// - Returns: A generator that produces strings with a count of characters
     /// within the given range.
     public static func string(
-        count       : ClosedRange<Int>,
+        count range : ClosedRange<Int>,
         characters  : Generator<Character>  = .ascii()
     ) -> Generator<String>
     {
         precondition(
-            count.lowerBound >= 0,
-            "count must not contain negative values"
+            range.lowerBound >= 0,
+            "range.lowerBound must not be negative"
         )
         
         return Generator<String>(
@@ -103,9 +103,9 @@ extension Generator where V == String
             {
                 context in
                 
-                let length: Int = context.random(in: count)
+                let count: Int = context.random(in: range)
                 
-                let chars: [Character] = (0..<length).map
+                let chars: [Character] = (0..<count).map
                 {
                     _ in
                     
@@ -118,7 +118,7 @@ extension Generator where V == String
             {
                 string in
                 
-                return string.shrinkToward(minCount: count.lowerBound)
+                return string.shrinkToward(minCount: range.lowerBound)
             },
             mutate:
             {
@@ -126,8 +126,8 @@ extension Generator where V == String
                 
                 return mutateString(
                     string,
-                    minCount:       count.lowerBound,
-                    maxCount:       count.upperBound,
+                    minCount:       range.lowerBound,
+                    maxCount:       range.upperBound,
                     characters:     characters,
                     using:          context
                 )
@@ -143,31 +143,32 @@ extension Generator where V == String
     /// Shrinking reduces the count of characters toward the lower bound and
     /// shrinks individual characters.
     ///
-    /// - Precondition: `count` must not be empty or contain negative values.
+    /// - Precondition: `range` must not be empty.
+    /// - Precondition: `range.lowerBound` must not be negative.
     ///
     /// - Parameters:
-    ///   - count: The range of character counts.
+    ///   - range: The range of character counts.
     ///   - characters: The character generator to use. The default value is
     ///   ``Generator/ascii()``.
     /// - Returns: A generator that produces strings with a count of characters
     /// within the given range.
     public static func string(
-        count       : Range<Int>,
+        count range : Range<Int>,
         characters  : Generator<Character>  = .ascii()
     ) -> Generator<String>
     {
         precondition(
-            !count.isEmpty,
-            "count must not be empty"
+            !range.isEmpty,
+            "range must not be empty"
         )
         
         precondition(
-            count.lowerBound >= 0,
-            "count must not contain negative values"
+            range.lowerBound >= 0,
+            "range.lowerBound must not be negative"
         )
         
         return string(
-            count:          count.lowerBound...(count.upperBound - 1),
+            count:          range.lowerBound...(range.upperBound - 1),
             characters:     characters
         )
     }
@@ -194,9 +195,9 @@ extension Generator where V == String
                 context in
                 
                 let range   : ClosedRange<Int>  = 1...max(1, context.size)
-                let length  : Int               = context.random(in: range)
+                let count   : Int               = context.random(in: range)
                 
-                let chars: [Character] = (0..<length).map
+                let chars: [Character] = (0..<count).map
                 {
                     _ in
                     
