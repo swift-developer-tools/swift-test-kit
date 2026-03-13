@@ -22,27 +22,9 @@ internal final class AsyncRemovalRewriter: SyntaxRewriter
         _ node: FunctionEffectSpecifiersSyntax
     ) -> FunctionEffectSpecifiersSyntax
     {
-        var visitedNode: FunctionEffectSpecifiersSyntax = super.visit(node)
+        let visitedNode: FunctionEffectSpecifiersSyntax = super.visit(node)
         
-        guard let asyncSpecifier: TokenSyntax = visitedNode.asyncSpecifier
-        else
-        {
-            return visitedNode
-        }
-        
-        if var throwsClause: ThrowsClauseSyntax = visitedNode.throwsClause
-        {
-            /// `async throws`: Transfer the leading trivia of `async` to
-            /// `throws`, so spacing relative to the prior token is preserved.
-            throwsClause.throwsSpecifier.leadingTrivia
-                = asyncSpecifier.leadingTrivia
-            
-            visitedNode.throwsClause = throwsClause
-        }
-        
-        visitedNode.asyncSpecifier = nil
-        
-        return visitedNode
+        return transferLeadingTrivia(of: visitedNode)
     }
     
     
@@ -54,27 +36,9 @@ internal final class AsyncRemovalRewriter: SyntaxRewriter
         _ node: TypeEffectSpecifiersSyntax
     ) -> TypeEffectSpecifiersSyntax
     {
-        var visitedNode: TypeEffectSpecifiersSyntax = super.visit(node)
+        let visitedNode: TypeEffectSpecifiersSyntax = super.visit(node)
         
-        guard let asyncSpecifier: TokenSyntax = visitedNode.asyncSpecifier
-        else
-        {
-            return visitedNode
-        }
-        
-        if var throwsClause: ThrowsClauseSyntax = visitedNode.throwsClause
-        {
-            /// `async throws`: Transfer the leading trivia of `async` to
-            /// `throws`, so spacing relative to the prior token is preserved.
-            throwsClause.throwsSpecifier.leadingTrivia
-                = asyncSpecifier.leadingTrivia
-            
-            visitedNode.throwsClause = throwsClause
-        }
-        
-        visitedNode.asyncSpecifier = nil
-        
-        return visitedNode
+        return transferLeadingTrivia(of: visitedNode)
     }
     
     
@@ -176,5 +140,45 @@ internal final class AsyncRemovalRewriter: SyntaxRewriter
         visitedNode.awaitKeyword = nil
         
         return StmtSyntax(visitedNode)
+    }
+    
+    
+    
+    // MARK: - Support
+    
+    /// Transfers the leading trivia of the given node to its `throws` clause
+    /// syntax node, if it has one, and sets its `async` effect specifier to
+    /// `nil`.
+    ///
+    /// This returns the visisted node without any further changes if it does
+    /// not have an `async` effect specifier.
+    ///
+    /// - Parameter node: The node containing the trivia to transfer.
+    /// - Returns: The visited node.
+    private func transferLeadingTrivia<T>(
+        of node: T
+    ) -> T where T : EffectSpecifiersSyntax
+    {
+        var visitedNode: T = node
+        
+        guard let asyncSpecifier: TokenSyntax = visitedNode.asyncSpecifier
+        else
+        {
+            return visitedNode
+        }
+        
+        if var throwsClause: ThrowsClauseSyntax = visitedNode.throwsClause
+        {
+            /// `async throws`: Transfer the leading trivia of `async` to
+            /// `throws`, so spacing relative to the prior token is preserved.
+            throwsClause.throwsSpecifier.leadingTrivia
+                = asyncSpecifier.leadingTrivia
+            
+            visitedNode.throwsClause = throwsClause
+        }
+        
+        visitedNode.asyncSpecifier = nil
+        
+        return visitedNode
     }
 }
