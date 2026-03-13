@@ -175,13 +175,63 @@ internal final class ReasyncMacroTests: TestKitCase
         
         XCTAssertEqual(result, [10, 20, 30])
     }
+    
+    
+    
+    func testApplyClosureAsync() async
+    {
+        let result: Int = await applyClosure(10)
+        
+        XCTAssertEqual(result, 20)
+    }
+    
+    
+    
+    func testApplyClosureSync()
+    {
+        let result: Int = applyClosure(10)
+        
+        XCTAssertEqual(result, 20)
+    }
+    
+    
+    
+    func testThrowsTestErrorAsync() async throws
+    {
+        do
+        {
+            try await throwsTestError()
+            
+            XCTFail("Expected thrown error")
+        }
+        catch
+        {
+            // Do nothing.
+        }
+    }
+    
+    
+    
+    func testThrowsTestErrorSync() throws
+    {
+        do
+        {
+            try throwsTestError()
+            
+            XCTFail("Expected thrown error")
+        }
+        catch
+        {
+            // Do nothing.
+        }
+    }
 }
 
 
 
 // MARK: - Support
 
-/// `func name() async` → `func name()`.
+/// `func double() async` → `func double()`.
 @Reasync
 private func double(
     _ value: Int
@@ -283,6 +333,34 @@ private func transform(
     }
     
     return results
+}
+
+
+
+/// `() async -> Int` → `() -> Int`.
+@Reasync
+private func applyClosure(
+    _ value: Int
+) async -> Int
+{
+    let result = await
+    {
+        () async -> Int in
+        
+        return value * 2
+    }()
+    
+    return result
+}
+
+
+
+/// `async throws(TestError) -> Int` → `throws(TestError) -> Int`
+@Reasync
+@discardableResult
+private func throwsTestError() async throws(TestError) -> Int
+{
+    throw TestError()
 }
 
 
