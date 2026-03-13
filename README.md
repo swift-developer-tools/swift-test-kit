@@ -1,21 +1,21 @@
 # swift-test-kit
 
-Property-based, stateful, performance, and temporal testing, with structural 
-diffs and advanced assertions for both the Swift Testing and XCTest frameworks.
+Property-based, stateful, performance, temporal, and atomic testing, with 
+structural diffs and advanced assertions for the Swift Testing and XCTest 
+frameworks.
 
 
 
 ## Overview
 
-SwiftTestKit and XCTestKit extend Swift's testing frameworks with property-based 
-testing, stateful testing, and advanced assertions with structural diffs and 
-expression capture. Both libraries are included in the swift-test-kit package.
-
-SwiftTestKit integrates directly with 
-[Swift Testing](https://developer.apple.com/xcode/swift-testing), and 
-XCTestKit integrates directly with 
-[XCTest](https://developer.apple.com/documentation/xctest). Both libraries 
-provide identical APIs.
+[SwiftTestKit](https://swift-developer-tools.github.io/swift-test-kit/documentation/swifttestkit) 
+and [XCTestKit](https://swift-developer-tools.github.io/swift-test-kit/documentation/xctestkit) 
+extend Swift's testing frameworks with composable test evaluators, advanced 
+assertions, structural diffs, and expression capture. SwiftTestKit integrates 
+directly with [Swift Testing](https://developer.apple.com/xcode/swift-testing), 
+and XCTestKit integrates directly with [XCTest](https://developer.apple.com/documentation/xctest). 
+Both libraries provide identical APIs and are included in the swift-test-kit 
+package.
 
 When assertions fail, structural diffs pinpoint exactly where values diverge 
 within complex data structures, using path-based output that scales from flat 
@@ -807,6 +807,60 @@ await XCTKStateful(
 
 
 
+## Composition
+
+Property-based tests, stateful tests, temporal tests, performance tests, 
+and atomic tests compose freely. Any evaluator may be nested inside any 
+other evaluator, and all evaluators can wrap standalone assertions. Any 
+failures propagate with the same rich output used by standalone assertions.
+
+```swift
+// Assert that any random array is correctly sorted within 50 milliseconds.
+await XCTKForAll
+{
+    (array: [Int]) in
+    
+    await XCTKPerformance(timeLimit: .milliseconds(50))
+    {
+        XCTKAssertSorted(customSort(array), by: >=)
+    }
+}
+```
+
+```swift
+let pipeline = Pipeline()
+pipeline.start()
+
+// Assert that all stages are eventually ready at the same time.
+await XCTKEventually(timeout: .seconds(5))
+{
+    XCTKAtomic
+    {
+        XCTKAssertEqual(.ready, pipeline.stage1)
+        XCTKAssertEqual(.ready, pipeline.stage2)
+        XCTKAssertEqual(.ready, pipeline.stage3)
+    }
+}
+```
+
+```swift
+// Assert that any random number is eventually processed.
+await XCTKForAll
+{
+    (n: Int) in
+    
+    let processor = Processor(value: n)
+    processor.start()
+    
+    await XCTKEventually(timeout: .seconds(2))
+    {
+        XCTKAssertEqual(.completed, processor.state)
+    }
+}
+```
+
+
+
 ## Installation
 
 ### Swift Package Manager
@@ -816,10 +870,12 @@ swift-test-kit may be installed using
 The package includes both SwiftTestKit and XCTestKit.
 
 ```swift
-// Use SwiftTestKit.
+// Test with Swift Testing and SwiftTestKit.
+import Testing
 import SwiftTestKit
 
-// Use XCTestKit.
+// Test with XCTest and XCTestKit.
+import XCTest
 import XCTestKit
 ```
 
