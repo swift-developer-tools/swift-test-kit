@@ -16,70 +16,70 @@ internal final class ComparatorCycleTests: TestKitCase
 {
     func testSelfCycleInExpected()
     {
-        testSelfCycle(in: .expected)
+        validateSelfCycle(in: .expected)
     }
     
     
     
     func testSelfCycleInActual()
     {
-        testSelfCycle(in: .actual)
+        validateSelfCycle(in: .actual)
     }
     
     
     
     func testSelfCycleInBoth()
     {
-        testSelfCycle(in: .both)
+        validateSelfCycle(in: .both)
     }
     
     
     
     func testMutualCycleInExpected()
     {
-        testMutualCycle(in: .expected)
+        validateMutualCycle(in: .expected)
     }
     
     
     
     func testMutualCycleInActual()
     {
-        testMutualCycle(in: .actual)
+        validateMutualCycle(in: .actual)
     }
     
     
     
     func testMutualCycleInBoth()
     {
-        testMutualCycle(in: .both)
+        validateMutualCycle(in: .both)
     }
     
     
     
     func testThreeNodeCycleAtRoot()
     {
-        testThreeNodeCycle(atRoot: true)
+        validateThreeNodeCycle(atRoot: true)
     }
     
     
     
     func testThreeNodeCycleNotAtRoot()
     {
-        testThreeNodeCycle(atRoot: false)
+        validateThreeNodeCycle(atRoot: false)
     }
     
     
     
     func testCycleInArray()
     {
-        testCycleInCollection(kind: .array)
+        validateCycleInCollection(kind: .array)
     }
     
     
     
     func testCycleInDictionary()
     {
-        testCycleInCollection(kind: .dictionary)
+        validateCycleInCollection(kind: .dictionary)
     }
     
     
@@ -666,11 +666,11 @@ extension ComparatorCycleTests
     
     
     
-    // MARK: - testSelfCycle
+    // MARK: - validateSelfCycle
     
-    /// Tests detection of self-cycles in the given location.
+    /// Validates detection of self-cycles in the given location.
     /// - Parameter cycleLocation: The cycle location to use.
-    private func testSelfCycle(
+    private func validateSelfCycle(
         in cycleLocation: CycleLocation
     )
     {
@@ -729,11 +729,11 @@ extension ComparatorCycleTests
     
     
     
-    // MARK: - testMutualCycle
+    // MARK: - validateMutualCycle
     
-    /// Tests detection of mutual-cycles in the given location.
+    /// Validates detection of mutual-cycles in the given location.
     /// - Parameter cycleLocation: The cycle location to use.
-    private func testMutualCycle(
+    private func validateMutualCycle(
         in cycleLocation: CycleLocation
     )
     {
@@ -825,11 +825,11 @@ extension ComparatorCycleTests
     
     
     
-    // MARK: - testThreeNodeCycle
+    // MARK: - validateThreeNodeCycle
     
-    /// Tests a three-node cycle.
+    /// Validates three-node cycle detection.
     /// - Parameter atRoot: Whether to cycle at the root.
-    private func testThreeNodeCycle(
+    private func validateThreeNodeCycle(
         atRoot: Bool
     )
     {
@@ -928,11 +928,11 @@ extension ComparatorCycleTests
     
     
     
-    // MARK: - testCycleInCollection
+    // MARK: - validateCycleInCollection
     
-    /// Tests cycles in the specified kind of collection.
+    /// Validates cycle detection in the specified kind of collection.
     /// - Parameter kind: The collection kind to use.
-    private func testCycleInCollection(
+    private func validateCycleInCollection(
         kind: CollectionKind
     )
     {
