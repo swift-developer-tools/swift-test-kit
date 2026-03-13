@@ -57,36 +57,8 @@ extension AsyncRemovalMacro
         
         
         
-        let reasyncAttrIndex: AttributeListSyntax.Index?
-            = function.attributes.firstIndex
-        {
-            element in
-            
-            guard case let .attribute(attr) = element
-            else
-            {
-                return false
-            }
-            
-            if let identifier = attr.attributeName
-                .as(IdentifierTypeSyntax.self)
-            {
-                return identifier.name.text == "Reasync"
-            }
-            
-            /// Handle `@ModuleName.Reasync()` as well.
-            if let member = attr.attributeName
-                .as(MemberTypeSyntax.self)
-            {
-                return member.name.text == "Reasync"
-            }
-            
-            return false
-        }
-        
-        
-        
-        if let reasyncAttrIndex
+        if let reasyncAttrIndex: AttributeListSyntax.Index
+            = function.reasyncAttrIndex
         {
             let reasyncAttr: AttributeListSyntax.Element
                 = function.attributes[reasyncAttrIndex]
