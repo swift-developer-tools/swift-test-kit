@@ -13,11 +13,9 @@ import SwiftSyntaxMacros
 
 
 
-// MARK: - AsyncRemovalMacro
+package protocol AsyncRemovalPeerMacro: PeerMacro { }
 
-package protocol AsyncRemovalMacro: PeerMacro { }
-
-extension AsyncRemovalMacro
+extension AsyncRemovalPeerMacro
 {
     /// Expands an attached macro to introduce peer declarations that exist
     /// alongside the given declaration.
@@ -36,13 +34,38 @@ extension AsyncRemovalMacro
         guard var function = declaration.as(FunctionDeclSyntax.self)
         else
         {
+            var fixIts: [FixIt] = []
+            
+            if
+                declaration.isProtocol(DeclGroupSyntax.self),
+                !declaration.is(ProtocolDeclSyntax.self)
+            {
+                let fixIt = FixIt(
+                    message: AsyncRemovalFixItKind.useReasyncMembers,
+                    changes:
+                    [
+                        .replace(
+                            oldNode:    Syntax(node.attributeName),
+                            newNode:    Syntax(IdentifierTypeSyntax(
+                                            name: "ReasyncMembers"
+                                        ))
+                        )
+                    ]
+                )
+                
+                fixIts.append(fixIt)
+            }
+            
             context.diagnose(Diagnostic(
                 node:       node,
-                message:    AsyncRemovalDiagnosticKind.requiresFunction
+                message:    AsyncRemovalDiagnosticKind.reasyncOnNonFunction,
+                fixIts:     fixIts
             ))
-            
+
             return []
         }
+        
+        
         
         guard function.signature.effectSpecifiers?.asyncSpecifier != nil
         else
@@ -98,62 +121,3 @@ extension AsyncRemovalMacro
         return [DeclSyntax(rewritten)]
     }
 }
-
-
-
-// MARK: - AsyncRemovalDiagnosticKind
-
-/// Diagnostics for ``Reasync()`` macro expansion.
-private enum AsyncRemovalDiagnosticKind: DiagnosticMessage
-{
-    /// Non-function declarations are not supported.
-    case requiresFunction
-    
-    /// Synchronous function declarations are not supported.
-    case requiresAsync
-    
-    
-    
-    /// The diagnostic message.
-    var message: String
-    {
-        switch self
-        {
-            case .requiresFunction:
-                
-                return "@Reasync can only be applied to functions"
-                
-            case .requiresAsync:
-                
-                return "@Reasync can only be applied to async functions"
-        }
-    }
-    
-    
-    
-    ///The diagnostic message’s type identifier.
-    var diagnosticID: MessageID
-    {
-        let id: String
-        
-        switch self
-        {
-            case .requiresFunction  : id = "requiresFunction"
-            case .requiresAsync     : id = "requiresAsync"
-        }
-        
-        return MessageID(
-            domain:     "swift-test-kit",
-            id:         id
-        )
-    }
-    
-    
-    
-    /// The diagnostic severity.
-    var severity: DiagnosticSeverity
-    {
-        return .error
-    }
-}
-
