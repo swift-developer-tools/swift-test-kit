@@ -43,4 +43,12 @@ extension FunctionDeclSyntax
             return false
         }
     }
+    
+    
+    
+    /// Whether the function declaration has an `@Reasync` attribute.
+    internal var hasReasyncAttr: Bool
+    {
+        return reasyncAttrIndex != nil
+    }
 }
