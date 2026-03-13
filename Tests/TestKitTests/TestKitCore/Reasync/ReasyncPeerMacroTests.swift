@@ -12,7 +12,7 @@ import XCTest
 
 
 
-internal final class ReasyncMacroTests: TestKitCase
+internal final class ReasyncPeerMacroTests: TestKitCase
 {
     func testDoubleAsync() async
     {
@@ -231,7 +231,6 @@ internal final class ReasyncMacroTests: TestKitCase
 
 // MARK: - Support
 
-/// `func double() async` → `func double()`.
 @Reasync
 private func double(
     _ value: Int
@@ -242,7 +241,6 @@ private func double(
 
 
 
-/// `await expr` → `expr`.
 @Reasync
 private func quadruple(
     _ value: Int
@@ -255,7 +253,6 @@ private func quadruple(
 
 
 
-/// `async throws` → `throws`.
 @Reasync
 private func increment(
     _       value       : Int,
@@ -272,7 +269,6 @@ private func increment(
 
 
 
-/// `async let` → `let`.
 @Reasync
 private func doubleThenAdd(
     _ a: Int,
@@ -287,7 +283,6 @@ private func doubleThenAdd(
 
 
 
-/// `for await` → `for`.
 @Reasync
 private func sum(
     _ elements  : [Int],
@@ -318,7 +313,6 @@ private func sum(
 
 
 
-/// Closure parameter `async throws` → `throws`.
 @Reasync
 private func transform(
     _   values      : [Int],
@@ -337,7 +331,6 @@ private func transform(
 
 
 
-/// `() async -> Int` → `() -> Int`.
 @Reasync
 private func applyClosure(
     _ value: Int
@@ -355,7 +348,6 @@ private func applyClosure(
 
 
 
-/// `async throws(TestError) -> Int` → `throws(TestError) -> Int`
 @Reasync
 @discardableResult
 private func throwsTestError() async throws(TestError) -> Int
