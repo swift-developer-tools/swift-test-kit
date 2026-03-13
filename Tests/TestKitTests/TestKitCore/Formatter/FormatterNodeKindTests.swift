@@ -22,7 +22,7 @@ internal final class FormatterNodeKindTests: TestKitCase
     
     func testCycleInExpected()
     {
-        testCycle(.expected)
+        validateCycleFormatting(in: .expected)
     }
     
     
@@ -30,14 +30,14 @@ internal final class FormatterNodeKindTests: TestKitCase
     
     func testCycleInActual()
     {
-        testCycle(.actual)
+        validateCycleFormatting(in: .actual)
     }
     
     
     
     func testCycleInBoth()
     {
-        testCycle(.both)
+        validateCycleFormatting(in: .both)
     }
     
     
@@ -530,10 +530,10 @@ internal final class FormatterNodeKindTests: TestKitCase
 
 extension FormatterNodeKindTests
 {
-    /// Tests formatting a cycle detection.
+    /// Validates cycle detection formatting.
     /// - Parameter location: The cycle location.
-    private func testCycle(
-        _ location: CycleLocation
+    private func validateCycleFormatting(
+        in location: CycleLocation
     )
     {
         let exp         : String    = "node1"

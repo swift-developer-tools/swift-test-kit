@@ -11,4 +11,5 @@ import ReasyncMacroCore
 
 
 
-package struct ReasyncMacro: AsyncRemovalMacro { }
+package struct ReasyncMemberMacro   : AsyncRemovalMemberMacro   { }
+package struct ReasyncPeerMacro     : AsyncRemovalPeerMacro     { }

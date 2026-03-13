@@ -12,7 +12,7 @@ import XCTest
 
 
 
-internal final class ReasyncMacroTests: TestKitCase
+internal final class ReasyncPeerMacroTests: TestKitCase
 {
     func testDoubleAsync() async
     {
@@ -175,13 +175,62 @@ internal final class ReasyncMacroTests: TestKitCase
         
         XCTAssertEqual(result, [10, 20, 30])
     }
+    
+    
+    
+    func testApplyClosureAsync() async
+    {
+        let result: Int = await applyClosure(10)
+        
+        XCTAssertEqual(result, 20)
+    }
+    
+    
+    
+    func testApplyClosureSync()
+    {
+        let result: Int = applyClosure(10)
+        
+        XCTAssertEqual(result, 20)
+    }
+    
+    
+    
+    func testThrowsTestErrorAsync() async throws
+    {
+        do
+        {
+            try await throwsTestError()
+            
+            XCTFail("Expected thrown error")
+        }
+        catch
+        {
+            // Do nothing.
+        }
+    }
+    
+    
+    
+    func testThrowsTestErrorSync() throws
+    {
+        do
+        {
+            try throwsTestError()
+            
+            XCTFail("Expected thrown error")
+        }
+        catch
+        {
+            // Do nothing.
+        }
+    }
 }
 
 
 
 // MARK: - Support
 
-/// `func name() async` → `func name()`.
 @Reasync
 private func double(
     _ value: Int
@@ -192,7 +241,6 @@ private func double(
 
 
 
-/// `await expr` → `expr`.
 @Reasync
 private func quadruple(
     _ value: Int
@@ -205,7 +253,6 @@ private func quadruple(
 
 
 
-/// `async throws` → `throws`.
 @Reasync
 private func increment(
     _       value       : Int,
@@ -222,7 +269,6 @@ private func increment(
 
 
 
-/// `async let` → `let`.
 @Reasync
 private func doubleThenAdd(
     _ a: Int,
@@ -237,7 +283,6 @@ private func doubleThenAdd(
 
 
 
-/// `for await` → `for`.
 @Reasync
 private func sum(
     _ elements  : [Int],
@@ -268,7 +313,6 @@ private func sum(
 
 
 
-/// Closure parameter `async throws` → `throws`.
 @Reasync
 private func transform(
     _   values      : [Int],
@@ -283,6 +327,32 @@ private func transform(
     }
     
     return results
+}
+
+
+
+@Reasync
+private func applyClosure(
+    _ value: Int
+) async -> Int
+{
+    let result = await
+    {
+        () async -> Int in
+        
+        return value * 2
+    }()
+    
+    return result
+}
+
+
+
+@Reasync
+@discardableResult
+private func throwsTestError() async throws(TestError) -> Int
+{
+    throw TestError()
 }
 
 

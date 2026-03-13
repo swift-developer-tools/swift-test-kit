@@ -517,9 +517,10 @@ internal final class AnyMutatorTests: TestKitCase
         
         for count in counts
         {
-            let ratio = Double(count) / Double(iterations)
-            
-            assertApproximateRatio(ratio, 0.33, n: iterations)
+            XCTAssertGreaterThan(
+                count,
+                Int(Double(iterations) * (1 / 3) * 0.95)
+            )
         }
     }
     
