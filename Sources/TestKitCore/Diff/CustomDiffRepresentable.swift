@@ -26,8 +26,7 @@ public protocol CustomDiffRepresentable
 /// A custom representation of a value for structural diffing.
 ///
 /// A diff representation is a list of named properties to recurse into when
-/// computing diffs. Properties not included in the list will not appear in
-/// the diff.
+/// computing diffs.
 public struct DiffRepresentation
 {
     /// The properties to include in the diff.
