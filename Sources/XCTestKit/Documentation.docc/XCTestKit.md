@@ -903,6 +903,7 @@ for the complete license terms.
 ### Articles
 
 - <doc:Configuration>
+- <doc:CustomDiffs>
 - <doc:FunctionAssertions>
 - <doc:MacroAssertions>
 - <doc:AtomicTesting>
