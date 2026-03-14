@@ -12,7 +12,7 @@ import Synchronization
 
 
 /// The global configuration.
-public enum TestConfiguration
+public enum TestConfiguration: Sendable
 {
     private static let _global = Mutex<TestOptions>(.init())
     
