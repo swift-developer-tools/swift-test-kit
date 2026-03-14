@@ -148,6 +148,19 @@ XCTKAssertEqual(expected, actual)
 //     Unexpected: "f"
 ```
 
+### Custom Diffs
+
+Types that conform to ``CustomDiffRepresentable`` can control which properties 
+are recursed into when computing diffs. This is useful for excluding properties 
+that are irrelevant to logical equality, such as timestamps and large data 
+blobs that would produce noisy output.
+
+Types that conform to ``CustomDiffStringConvertible`` can control how a value 
+appears in structural diffs. This is useful for types with verbose or unclear 
+default string representation.
+
+Both protocols may be adopted independently.
+
 
 
 ## Expression Capture
@@ -903,6 +916,7 @@ for the complete license terms.
 ### Articles
 
 - <doc:Configuration>
+- <doc:CustomDiffs>
 - <doc:FunctionAssertions>
 - <doc:MacroAssertions>
 - <doc:AtomicTesting>

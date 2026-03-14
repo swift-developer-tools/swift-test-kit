@@ -67,6 +67,11 @@ package struct RenderedValue: Equatable, Sendable, CustomStringConvertible
             self.description    = String(character).escaped
             self.kind           = .string
         }
+        else if let convertible = unwrapped as? CustomDiffStringConvertible
+        {
+            self.description    = convertible.diffDescription.collapseLines()
+            self.kind           = .other
+        }
         else
         {
             /// The string description of most Swift types is a single line,

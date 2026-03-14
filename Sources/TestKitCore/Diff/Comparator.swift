@@ -293,6 +293,21 @@ internal struct Comparator
         depth                       : Int
     ) -> DiffNodeKind
     {
+        if
+            let expectedDiffable    = expected  as? CustomDiffRepresentable,
+            let actualDiffable      = actual    as? CustomDiffRepresentable
+        {
+            return compareDiffRepresentation(
+                expected:       expected,
+                actual:         actual,
+                expectedRepr:   expectedDiffable.diffRepresentation,
+                actualRepr:     actualDiffable.diffRepresentation,
+                depth:          depth
+            )
+        }
+        
+        
+        
         let expectedMirror  = expMirror ?? Mirror(reflecting: expected)
         let actualMirror    = actMirror ?? Mirror(reflecting: actual)
         
@@ -1149,6 +1164,118 @@ internal struct Comparator
                     ]
                 )
         }
+    }
+    
+    
+    
+    // MARK: - Custom
+    
+    /// Compares the given values using their custom diff representations.
+    ///
+    /// This matches properties by name. Properties present in both
+    /// representations are compared recursively. Properties present in only
+    /// one representation are considered missing or unexpected.
+    ///
+    /// - Parameters:
+    ///   - expected: The expected value.
+    ///   - actual: The actual value.
+    ///   - expectedRepr: The diff representation of the expected value.
+    ///   - actualRepr:  The diff representation of the actual value.
+    ///   - depth: The recursion depth.
+    /// - Returns: Always ``DiffNodeKind/different(expected:actual:tree)``.
+    private func compareDiffRepresentation(
+        expected        : Any,
+        actual          : Any,
+        expectedRepr    : DiffRepresentation,
+        actualRepr      : DiffRepresentation,
+        depth           : Int
+    ) -> DiffNodeKind
+    {
+        var actualByName: [String : DiffRepresentation.Property] = [:]
+        
+        actualByName.reserveCapacity(actualRepr.properties.count)
+        
+        for actualProperty in actualRepr.properties
+        {
+            actualByName[actualProperty.name] = actualProperty
+        }
+        
+        
+        
+        var tree                : [DiffNode]    = []
+        var matchedActualNames  : Set<String>   = []
+        
+        tree.reserveCapacity(max(
+            expectedRepr.properties.count,
+            actualRepr.properties.count
+        ))
+        
+        
+        
+        for expectedProperty in expectedRepr.properties
+        {
+            let label: DiffNodeLabel = .property(name: expectedProperty.name)
+            
+            guard let actualProperty: DiffRepresentation.Property
+                    = actualByName[expectedProperty.name]
+            else
+            {
+                let node = DiffNode(
+                    label:  label,
+                    kind:   .missing(DiffValue(expectedProperty.value))
+                )
+                
+                tree.append(node)
+                
+                continue
+            }
+            
+            matchedActualNames.insert(actualProperty.name)
+            
+            let kind: DiffNodeKind = compareAny(
+                expected:       expectedProperty.value,
+                actual:         actualProperty.value,
+                parentDepth:    depth
+            )
+            
+            if kind.isSame
+            {
+                continue
+            }
+            
+            let node = DiffNode(
+                label:  label,
+                kind:   kind
+            )
+            
+            tree.append(node)
+        }
+        
+        
+        
+        for actualProperty in actualRepr.properties
+        {
+            guard !matchedActualNames.contains(actualProperty.name)
+            else
+            {
+                continue
+            }
+            
+            let node = DiffNode(
+                label:  .property(name: actualProperty.name),
+                kind:   .unexpected(DiffValue(actualProperty.value))
+            )
+            
+            tree.append(node)
+        }
+        
+        
+        
+        return .different(
+            expected:   DiffValue(expected),
+            actual:     DiffValue(actual),
+            tree:       tree
+        )
     }
     
     

@@ -64,6 +64,32 @@ public typealias PerformanceOptions     = TestKitCore.PerformanceOptions
 
 
 
+// MARK: - Diff
+
+/// A type with a customized structural diff representation.
+///
+/// - Note: See
+/// [`CustomDiffRepresentable`](https://swift-developer-tools.github.io/swift-test-kit/documentation/testkitcore/customdiffrepresentable)
+/// for the complete API reference.
+public typealias CustomDiffRepresentable  = TestKitCore.CustomDiffRepresentable
+
+/// A type with a customized structural diff representation.
+///
+/// - Note: See
+/// [`DiffRepresentation`](https://swift-developer-tools.github.io/swift-test-kit/documentation/testkitcore/diffrepresentation)
+/// for the complete API reference.
+public typealias DiffRepresentation       = TestKitCore.DiffRepresentation
+
+/// A custom representation of a value for structural diffing.
+///
+/// - Note: See
+/// [`CustomDiffStringConvertible`](https://swift-developer-tools.github.io/swift-test-kit/documentation/testkitcore/customdiffstringconvertible)
+/// for the complete API reference.
+public typealias CustomDiffStringConvertible
+    = TestKitCore.CustomDiffStringConvertible
+
+
+
 // MARK: - Assertions
 
 /// The error thrown when unwrapping a value that is `nil`.
@@ -71,7 +97,7 @@ public typealias PerformanceOptions     = TestKitCore.PerformanceOptions
 /// - Note: See
 /// [`UnwrapError`](https://swift-developer-tools.github.io/swift-test-kit/documentation/testkitcore/unwraperror)
 /// for the complete API reference.
-public typealias UnwrapError            = TestKitCore.UnwrapError
+public typealias UnwrapError = TestKitCore.UnwrapError
 
 
 
@@ -82,7 +108,7 @@ public typealias UnwrapError            = TestKitCore.UnwrapError
 /// - Note: See
 /// [`ByteCount`](https://swift-developer-tools.github.io/swift-test-kit/documentation/testkitcore/bytecount)
 /// for the complete API reference.
-public typealias ByteCount              = TestKitCore.ByteCount
+public typealias ByteCount = TestKitCore.ByteCount
 
 
 
@@ -93,25 +119,25 @@ public typealias ByteCount              = TestKitCore.ByteCount
 /// - Note: See
 /// [`Arbitrary`](https://swift-developer-tools.github.io/swift-test-kit/documentation/testkitcore/arbitrary)
 /// for the complete API reference.
-public typealias Arbitrary              = TestKitCore.Arbitrary
+public typealias Arbitrary          = TestKitCore.Arbitrary
 
 /// A custom generator for producing values of a specific type.
 ///
 /// - Note: See
 /// [`Generator`](https://swift-developer-tools.github.io/swift-test-kit/documentation/testkitcore/generator)
 /// for the complete API reference.
-public typealias Generator              = TestKitCore.Generator
+public typealias Generator          = TestKitCore.Generator
 
 /// The options for property-based testing.
 ///
 /// - Note: See
 /// [`GenerationContext`](https://swift-developer-tools.github.io/swift-test-kit/documentation/testkitcore/generationcontext)
 /// for the complete API reference.
-public typealias GenerationContext      = TestKitCore.GenerationContext
+public typealias GenerationContext  = TestKitCore.GenerationContext
 
 /// A type that defines commands for stateful property-based testing.
 ///
 /// - Note: See
 /// [`Stateful`](https://swift-developer-tools.github.io/swift-test-kit/documentation/testkitcore/stateful)
 /// for the complete API reference.
-public typealias Stateful               = TestKitCore.Stateful
+public typealias Stateful           = TestKitCore.Stateful

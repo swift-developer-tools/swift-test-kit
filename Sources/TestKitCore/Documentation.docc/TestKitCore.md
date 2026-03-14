@@ -42,6 +42,12 @@ import XCTestKit
 - ``TemporalOptions``
 - ``PerformanceOptions``
 
+### Custom Diffs
+
+- ``CustomDiffRepresentable``
+- ``DiffRepresentation``
+- ``CustomDiffStringConvertible``
+
 ### Performance Testing
 
 - ``ByteCount``
