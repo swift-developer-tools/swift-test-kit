@@ -12,10 +12,8 @@
 /// A type with a customized structural diff representation.
 ///
 /// Types that conform to this protocol can control which properties are
-/// recursed into when computing diffs. Properties not included in the
-/// representation will not appear in the diff.
-///
-/// Conformance to this protocol takes precedence over all built-in diffing.
+/// recursed into when computing diffs. Conformance to this protocol takes
+/// precedence over all built-in diffing.
 public protocol CustomDiffRepresentable
 {
     var diffRepresentation: DiffRepresentation { get }
