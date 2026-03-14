@@ -8,7 +8,7 @@
 //===----------------------------------------------------------------------===//
 
 /// The error thrown when unwrapping a value that is `nil`.
-public struct UnwrapError: Error, CustomStringConvertible
+public struct UnwrapError: Error, CustomStringConvertible, Sendable
 {
     /// The framework kind.
     private let framework: FrameworkKind
