@@ -203,8 +203,6 @@ extension PropertyResult
         let commandMirror   : Mirror  = .init(reflecting: counterexample.value)
         let commandCount    : Int     = commandMirror.children.count
         
-        
-        
         var lines: [String] = []
         
         var header: String
@@ -220,38 +218,11 @@ extension PropertyResult
         
         lines.append(header)
         
-        
-        
-        let failingStep : Int       = counterexample.failingStep ?? commandCount
-        let commands    : [Any]     = commandMirror.children.map { $0.value }
-        
-        lines.append("")
-        lines.append("Command sequence:")
-        
-        let digitWidth: Int = String(commandCount).count
-        
-        for (index, command) in commands.enumerated()
-        {
-            let step        : Int       = index + 1
-            let stepString  : String    = .init(step)
-            
-            let padding = String(
-                repeating:  " ",
-                count:      digitWidth - stepString.count
-            )
-            
-            var line: String 
-                = "    \(padding + stepString). \(String(describing: command))"
-            
-            if step == failingStep
-            {
-                line += " ←"
-            }
-            
-            lines.append(line)
-        }
-        
-        
+        lines = Self.addStatefulCounterexampleLines(
+            to:                 lines,
+            preShrink:          false,
+            counterexample:     counterexample
+        )
         
         return Self.finishCounterexampleMessage(
             counterexample,
@@ -641,6 +612,66 @@ extension PropertyResult
             let valueText = String(describing: counterexample.value)
             
             lines.append("    \(valueTypeName) = \(valueText)")
+        }
+        
+        return lines
+    }
+    
+    
+    
+    /// Appends formatted lines for the stateful pre-shrink or post-shrink
+    /// counterexample value.
+    /// - Parameters:
+    ///   - originalLines: The lines to update.
+    ///   - preShrink: Whether to append lines for the pre-shrink original
+    ///   value, or the post-shrink counterexample.
+    ///   - counterexample: The counterexample to use.
+    /// - Returns: The updated lines.
+    private static func addStatefulCounterexampleLines(
+        to originalLines    : [String],
+        preShrink           : Bool,
+        counterexample      : Counterexample<T>
+    ) -> [String]
+    {
+        let value: T = preShrink
+            ? counterexample.originalValue
+            : counterexample.value
+        
+        let label: String = preShrink
+            ? "Original sequence:"
+            : "Command sequence:"
+        
+        var lines           : [String]  = originalLines
+        let mirror          : Mirror    = .init(reflecting: value)
+        let commands        : [Any]     = mirror.children.map { $0.value }
+        let commandCount    : Int       = commands.count
+        let digitWidth      : Int       = String(commandCount).count
+        
+        lines.append("")
+        lines.append(label)
+        
+        for (index, command) in commands.enumerated()
+        {
+            let step        : Int       = index + 1
+            let stepString  : String    = .init(step)
+            
+            let padding = String(
+                repeating:  " ",
+                count:      digitWidth - stepString.count
+            )
+            
+            var line: String
+                = "    \(padding + stepString). \(String(describing: command))"
+            
+            if
+                !preShrink,
+                let failingStep: Int = counterexample.failingStep,
+                step == failingStep
+            {
+                line += " ←"
+            }
+            
+            lines.append(line)
         }
         
         return lines
