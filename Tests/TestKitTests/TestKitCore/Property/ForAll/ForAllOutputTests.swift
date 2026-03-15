@@ -197,8 +197,8 @@ internal final class ForAllOutputTests: TestKitCase
         let actual: String? = await withOneExpectedFailure
         {
             await TKForAll(
-                "hello world",
-                options: options
+                message:    "hello world",
+                options:    options
             )
             {
                 (_: Int) async throws in
@@ -237,8 +237,8 @@ internal final class ForAllOutputTests: TestKitCase
         let actual: String? = await withOneExpectedFailure
         {
             await TKForAll(
-                "hello world",
-                options: options
+                message:    "hello world",
+                options:    options
             )
             {
                 (_: Int) async in

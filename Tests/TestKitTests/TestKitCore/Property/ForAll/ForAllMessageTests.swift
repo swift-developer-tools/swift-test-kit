@@ -180,8 +180,8 @@ extension ForAllMessageTests
             case .arbitrary:
                 
                 await TKForAll(
-                    message(),
-                    options: options
+                    message:    message(),
+                    options:    options
                 )
                 {
                     (_: Int) async in
@@ -250,8 +250,8 @@ extension ForAllMessageTests
                 case .arbitrary:
                     
                     await TKForAll(
-                        message(),
-                        options: options
+                        message:    message(),
+                        options:    options
                     )
                     {
                         (_: Int) async in
@@ -378,8 +378,8 @@ extension ForAllMessageTests
                 case .arbitrary:
                     
                     await TKForAll(
-                        message(),
-                        options: options
+                        message:    message(),
+                        options:    options
                     )
                     {
                         (_: Int) async in

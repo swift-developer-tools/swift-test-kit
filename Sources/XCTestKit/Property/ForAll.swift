@@ -17,6 +17,7 @@ import TestKitCore
 /// Native XCTest assertions are not intercepted.
 ///
 /// - Parameters:
+///   - examples: The pinned values to test first. These values are not shrunk.
 ///   - message: An optional description of a failure.
 ///   - fileID: The ID of the file where the failure occurs. The default value
 ///   is the ID of the file of the test case in which this function was called.
@@ -31,7 +32,8 @@ import TestKitCore
 ///   - property: The property to evaluate.
 @Reasync
 public func XCTKForAll<each T>(
-    _ message   : @autoclosure () -> String             = "",
+    examples    : @autoclosure () -> [(repeat each T)]  = [],
+    message     : @autoclosure () -> String             = "",
     fileID      : StaticString                          = #fileID,
     file        : StaticString                          = #filePath,
     line        : UInt                                  = #line,
@@ -41,7 +43,8 @@ public func XCTKForAll<each T>(
 ) async where repeat each T : Arbitrary
 {
     await TKForAll(
-        message,
+        examples:   examples,
+        message:    message,
         fileID:     fileID,
         file:       file,
         line:       line,
@@ -67,6 +70,7 @@ public func XCTKForAll<each T>(
 ///
 /// - Parameters:
 ///   - generators: The generators to use to produce values.
+///   - examples: The pinned values to test first. These values are not shrunk.
 ///   - message: An optional description of a failure.
 ///   - fileID: The ID of the file where the failure occurs. The default value
 ///   is the ID of the file of the test case in which this function was called.
@@ -82,6 +86,7 @@ public func XCTKForAll<each T>(
 @Reasync
 public func XCTKForAll<each T>(
     using generators    : repeat Generator<each T>,
+    examples            : @autoclosure () -> [(repeat each T)]  = [],
     message             : @autoclosure () -> String             = "",
     fileID              : StaticString                          = #fileID,
     file                : StaticString                          = #filePath,
@@ -93,6 +98,7 @@ public func XCTKForAll<each T>(
 {
     await TKForAll(
         using:      repeat each generators,
+        examples:   examples,
         message:    message,
         fileID:     fileID,
         file:       file,
@@ -122,6 +128,7 @@ public func XCTKForAll<each T>(
 ///
 /// - Parameters:
 ///   - precondition: The condition which generated values must satisfy.
+///   - examples: The pinned values to test first. These values are not shrunk.
 ///   - message: An optional description of a failure.
 ///   - fileID: The ID of the file where the failure occurs. The default value
 ///   is the ID of the file of the test case in which this function was called.
@@ -137,6 +144,7 @@ public func XCTKForAll<each T>(
 @Reasync
 public func XCTKForAll<each T>(
     where precondition  : @escaping (repeat each T) -> Bool,
+    examples            : @autoclosure () -> [(repeat each T)]  = [],
     message             : @autoclosure () -> String             = "",
     fileID              : StaticString                          = #fileID,
     file                : StaticString                          = #filePath,
@@ -148,6 +156,7 @@ public func XCTKForAll<each T>(
 {
     await TKForAll(
         where:      precondition,
+        examples:   examples,
         message:    message,
         fileID:     fileID,
         file:       file,
@@ -179,6 +188,7 @@ public func XCTKForAll<each T>(
 /// - Parameters:
 ///   - generators: The generators to use to produce values.
 ///   - precondition: The condition which generated values must satisfy.
+///   - examples: The pinned values to test first. These values are not shrunk.
 ///   - message: An optional description of a failure.
 ///   - fileID: The ID of the file where the failure occurs. The default value
 ///   is the ID of the file of the test case in which this function was called.
@@ -195,6 +205,7 @@ public func XCTKForAll<each T>(
 public func XCTKForAll<each T>(
     using generators    : repeat Generator<each T>,
     where precondition  : @escaping (repeat each T) -> Bool,
+    examples            : @autoclosure () -> [(repeat each T)]  = [],
     message             : @autoclosure () -> String             = "",
     fileID              : StaticString                          = #fileID,
     file                : StaticString                          = #filePath,
@@ -207,6 +218,7 @@ public func XCTKForAll<each T>(
     await TKForAll(
         using:      repeat each generators,
         where:      precondition,
+        examples:   examples,
         message:    message,
         fileID:     fileID,
         file:       file,
