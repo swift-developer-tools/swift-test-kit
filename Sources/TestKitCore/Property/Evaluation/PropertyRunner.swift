@@ -18,11 +18,13 @@ internal struct PropertyRunner
     
     /// Runs a property check using the given ``Arbitrary`` type.
     /// - Parameters:
+    ///   - examples: The examples to test first.
     ///   - property: The property body.
     ///   - options: The options for testing.
     /// - Returns: The result of the property check.
     @Reasync
     internal static func run<T>(
+        examples    : [T]                       = [],
         property    : (T) async throws -> Void,
         options     : TestOptions
     ) async -> PropertyResult<T> where T : Arbitrary
@@ -32,6 +34,7 @@ internal struct PropertyRunner
             shrink:         { value in value.shrink() },
             mutate:         { value, context in value.mutate(using: context) },
             precondition:   nil,
+            examples:       examples,
             property:       property,
             options:        options
         )
@@ -42,12 +45,14 @@ internal struct PropertyRunner
     /// Runs a property check using the given generator.
     /// - Parameters:
     ///   - generator: The generator.
+    ///   - examples: The examples to test first.
     ///   - property: The property body.
     ///   - options: The options for testing.
     /// - Returns: The result of the property check.
     @Reasync
     internal static func run<T>(
         using generator : Generator<T>,
+        examples        : [T]                       = [],
         property        : (T) async throws -> Void,
         options         : TestOptions
     ) async -> PropertyResult<T>
@@ -57,6 +62,7 @@ internal struct PropertyRunner
             shrink:         generator.shrink,
             mutate:         generator.mutate,
             precondition:   nil,
+            examples:       examples,
             property:       property,
             options:        options
         )
@@ -67,12 +73,14 @@ internal struct PropertyRunner
     /// Runs a conditional property check.
     /// - Parameters:
     ///   - precondition: The condition which generated values must satisfy.
+    ///   - examples: The examples to test first.
     ///   - property: The property body.
     ///   - options: The options for testing.
     /// - Returns: The result of the property check.
     @Reasync
     internal static func run<T>(
         where precondition  : @escaping (T) -> Bool,
+        examples            : [T]                       = [],
         property            : (T) async throws -> Void,
         options             : TestOptions
     ) async -> PropertyResult<T> where T : Arbitrary
@@ -82,6 +90,7 @@ internal struct PropertyRunner
             shrink:         { value in value.shrink() },
             mutate:         { value, context in value.mutate(using: context) },
             precondition:   precondition,
+            examples:       examples,
             property:       property,
             options:        options
         )
@@ -93,6 +102,7 @@ internal struct PropertyRunner
     /// - Parameters:
     ///   - generator: The generator.
     ///   - precondition: The condition which generated values must satisfy.
+    ///   - examples: The examples to test first.
     ///   - property: The property body.
     ///   - options: The options for testing.
     /// - Returns: The result of the property check.
@@ -100,6 +110,7 @@ internal struct PropertyRunner
     internal static func run<T>(
         using generator     : Generator<T>,
         where precondition  : @escaping (T) -> Bool,
+        examples            : [T]                       = [],
         property            : (T) async throws -> Void,
         options             : TestOptions
     ) async -> PropertyResult<T>
@@ -109,6 +120,7 @@ internal struct PropertyRunner
             shrink:         generator.shrink,
             mutate:         generator.mutate,
             precondition:   precondition,
+            examples:       examples,
             property:       property,
             options:        options
         )
@@ -122,6 +134,7 @@ internal struct PropertyRunner
     ///   - shrink: The function to shrink the given value.
     ///   - mutate: The function to mutate the given value.
     ///   - precondition: The condition which generated values must satisfy.
+    ///   - examples: The examples to test first.
     ///   - property: The property body.
     ///   - options: The options for testing.
     /// - Returns: The result of the property check.
@@ -131,6 +144,7 @@ internal struct PropertyRunner
         shrink              : @escaping (T) -> [T],
         mutate              : (T, GenerationContext) -> T,
         precondition        : ((T) -> Bool)?,
+        examples            : [T],
         property            : (T) async throws -> Void,
         options             : TestOptions
     ) async -> PropertyResult<T>

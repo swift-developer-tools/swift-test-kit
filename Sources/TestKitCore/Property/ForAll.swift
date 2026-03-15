@@ -32,6 +32,7 @@ package func TKForAll<each T>(
     
     let result: PropertyResult<(repeat each T)> = await PropertyRunner.run(
         using:      generator,
+        examples:   examples(),
         property:   wrappedProperty,
         options:    options
     )
@@ -76,6 +77,7 @@ package func TKForAll<each T>(
     
     let result: PropertyResult<(repeat each T)> = await PropertyRunner.run(
         using:      generator,
+        examples:   examples(),
         property:   wrappedProperty,
         options:    options
     )
@@ -128,6 +130,7 @@ package func TKForAll<each T>(
     let result: PropertyResult<(repeat each T)> = await PropertyRunner.run(
         using:      generator,
         where:      wrappedPrecondition,
+        examples:   examples(),
         property:   wrappedProperty,
         options:    options
     )
@@ -181,6 +184,7 @@ package func TKForAll<each T>(
     let result: PropertyResult<(repeat each T)> = await PropertyRunner.run(
         using:      generator,
         where:      wrappedPrecondition,
+        examples:   examples(),
         property:   wrappedProperty,
         options:    options
     )
