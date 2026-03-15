@@ -24,6 +24,7 @@ internal extension TestOptions
         poolSize            : Int                   = 20,
         explorationRatio    : Double                = 0.3,
         timeout             : Duration?             = nil,
+        showOriginal        : Bool                  = false,
         statistics          : CommandStatistics     = [],
         seed                : UInt64?               = nil
     ) -> TestOptions
@@ -37,6 +38,7 @@ internal extension TestOptions
             poolSize:           poolSize,
             explorationRatio:   explorationRatio,
             timeout:            timeout,
+            showOriginal:       showOriginal,
             statistics:         statistics,
             seed:               seed
         )
