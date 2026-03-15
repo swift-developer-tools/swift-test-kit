@@ -57,6 +57,7 @@ import XCTestKit
 - ``Arbitrary``
 - ``Generator``
 - ``GenerationContext``
+- ``PropertyDiagnostics``
 
 ### Stateful Testing
 
