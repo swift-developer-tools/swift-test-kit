@@ -72,6 +72,11 @@ public struct PropertyOptions: Equatable, Sendable
     /// best result found so far.
     public var timeout          : Duration?
     
+    /// Whether to show the original counterexample before shrinking.
+    ///
+    /// The default value is `false`.
+    public var showOriginal     : Bool
+    
     /// The options for reporting command statistics in stateful
     /// property-based tests.
     ///
@@ -107,6 +112,7 @@ public struct PropertyOptions: Equatable, Sendable
         poolSize            : Int                   = 20,
         explorationRatio    : Double                = 0.3,
         timeout             : Duration?             = nil,
+        showOriginal        : Bool                  = false,
         statistics          : CommandStatistics     = [],
         seed                : UInt64?               = nil
     )
@@ -154,6 +160,7 @@ public struct PropertyOptions: Equatable, Sendable
         self.poolSize           = poolSize
         self.explorationRatio   = explorationRatio
         self.timeout            = timeout
+        self.showOriginal       = showOriginal
         self.statistics         = statistics
         self.seed               = seed
     }
