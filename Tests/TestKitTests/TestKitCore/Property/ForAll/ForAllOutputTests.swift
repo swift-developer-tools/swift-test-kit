@@ -1150,6 +1150,247 @@ internal final class ForAllOutputTests: TestKitCase
         
         XCTAssertEqual(expected, actual)
     }
+    
+    
+    
+    // MARK: - Show original
+    
+    @Reasync
+    func testShowOriginalWithShrinking() async
+    {
+        let options: TestOptions = .propertyOptions(
+            iterations:         1,
+            showOriginal:       true,
+            seed:               Self.seed
+        )
+        
+        let generator = Generator<Int>(
+            generate:   { _ in 100 },
+            shrink:     { value in value.shrink() }
+        )
+        
+        let actual: String? = await withOneExpectedFailure
+        {
+            await TKForAll(
+                using:      generator,
+                options:    options
+            )
+            {
+                (n: Int) async in
+                
+                TKAssertLessThan(n, 10)
+            }
+        }
+        
+        let expected: String =
+        """
+        XCTKForAll failed after 1 iteration (shrunk in 4 steps)
+        
+        Original:
+            Int = 100
+        
+        Counterexample:
+            Int = 10
+        
+        XCTKAssertLessThan failed: ("10") is not less than ("10")
+        
+        \(Self.seedMessage)
+        """
+        
+        XCTAssertEqual(expected, actual)
+    }
+    
+    
+    
+    @Reasync
+    func testShowOriginalWithoutShrinking() async
+    {
+        let options: TestOptions = .propertyOptions(
+            iterations:         1,
+            showOriginal:       true,
+            seed:               Self.seed
+        )
+        
+        let actual: String? = await withOneExpectedFailure
+        {
+            await TKForAll(options: options)
+            {
+                (_: Int) async in
+                
+                TKAssertTrue(false)
+            }
+        }
+        
+        /// Since there are no shrink steps, the original value is not shown.
+        let expected: String =
+        """
+        XCTKForAll failed after 1 iteration
+        
+        Counterexample:
+            Int = 0
+        
+        XCTKAssertTrue failed
+        
+        \(Self.seedMessage)
+        """
+        
+        XCTAssertEqual(expected, actual)
+    }
+    
+    
+    
+    @Reasync
+    func testShowOriginalWithCollectionShrinking() async
+    {
+        let options: TestOptions = .propertyOptions(
+            iterations:         1,
+            showOriginal:       true,
+            seed:               Self.seed
+        )
+        
+        let generator = Generator<[Int]>(
+            generate: { _ in [1, 2, 3] },
+            shrink:
+            {
+                value in
+                
+                return value.count > 1
+                    ? [Array(value.dropLast())]
+                    : []
+            }
+        )
+        
+        let actual: String? = await withOneExpectedFailure
+        {
+            await TKForAll(
+                using:      generator,
+                options:    options
+            )
+            {
+                (_: [Int]) async in
+                
+                TKAssertTrue(false)
+            }
+        }
+        
+        let expected: String =
+        """
+        XCTKForAll failed after 1 iteration (shrunk in 2 steps)
+        
+        Original:
+            Array<Int> = [1, 2, 3]
+        
+        Counterexample:
+            Array<Int> = [1]
+        
+        XCTKAssertTrue failed
+        
+        \(Self.seedMessage)
+        """
+        
+        XCTAssertEqual(expected, actual)
+    }
+    
+    
+    
+    @Reasync
+    func testShowOriginalMultiParameter() async
+    {
+        let options: TestOptions = .propertyOptions(
+            iterations:         1,
+            showOriginal:       true,
+            seed:               Self.seed
+        )
+        
+        let gen1 = Generator<Int>(
+            generate:   { _ in 20 },
+            shrink:     { value in value.shrink() }
+        )
+        
+        let gen2 = Generator<String>.constant("abc")
+        
+        let actual: String? = await withOneExpectedFailure
+        {
+            await TKForAll(
+                using:      gen1, gen2,
+                options:    options
+            )
+            {
+                (n: Int, _: String) async in
+                
+                TKAssertLessThan(n, 10)
+            }
+        }
+        
+        let expected: String =
+        """
+        XCTKForAll failed after 1 iteration (shrunk in 1 step)
+        
+        Original:
+            Int = 20
+            String = abc
+        
+        Counterexample:
+            Int = 10
+            String = abc
+        
+        XCTKAssertLessThan failed: ("10") is not less than ("10")
+        
+        \(Self.seedMessage)
+        """
+        
+        XCTAssertEqual(expected, actual)
+    }
+    
+    
+    
+    @Reasync
+    func testShowOriginalWithThrownError() async
+    {
+        let options: TestOptions = .propertyOptions(
+            iterations:         1,
+            showOriginal:       true,
+            seed:               Self.seed
+        )
+        
+        let generator = Generator<Int>(
+            generate:   { _ in 100 },
+            shrink:     { value in value > 0 ? [value / 2] : []}
+        )
+        
+        let actual: String? = await withOneExpectedFailure
+        {
+            await TKForAll(
+                using:      generator,
+                options:    options
+            )
+            {
+                (n: Int) async throws in
+                
+                if n >= 10
+                {
+                    throw TestError()
+                }
+            }
+        }
+        
+        let expected: String =
+        """
+        XCTKForAll failed after 1 iteration (shrunk in 3 steps)
+        
+        Original:
+            Int = 100
+        
+        Counterexample:
+            Int = 12
+        
+        Threw error: TestError()
+        
+        \(Self.seedMessage)
+        """
+        
+        XCTAssertEqual(expected, actual)
+    }
 }
 
 

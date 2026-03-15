@@ -55,7 +55,7 @@ internal final class StatefulOutputTests: TestKitCase
         """
         XCTKStateful failed after 1 iteration
         
-        Command sequence:
+        Counterexample:
             1. increment ←
         
         XCTKAssertTrue failed
@@ -100,7 +100,7 @@ internal final class StatefulOutputTests: TestKitCase
         """
         XCTKStateful failed after 4 iterations
         
-        Command sequence:
+        Counterexample:
             1. increment
             2. increment
             3. increment ←
@@ -146,7 +146,7 @@ internal final class StatefulOutputTests: TestKitCase
         """
         XCTKStateful failed after 2 iterations (shrunk to 3 commands)
         
-        Command sequence:
+        Counterexample:
             1. increment
             2. increment
             3. increment ←
@@ -184,7 +184,7 @@ internal final class StatefulOutputTests: TestKitCase
         """
         XCTKStateful failed after 1 iteration
         
-        Command sequence:
+        Counterexample:
             1. step ←
         
         Threw error: TestError()
@@ -227,7 +227,7 @@ internal final class StatefulOutputTests: TestKitCase
         """
         XCTKStateful failed after 1 iteration
         
-        Command sequence:
+        Counterexample:
             1. increment ←
         
         XCTKAssertTrue failed
@@ -266,7 +266,7 @@ internal final class StatefulOutputTests: TestKitCase
         """
         XCTKStateful failed after 1 iteration
         
-        Command sequence:
+        Counterexample:
             1. step ←
         
         Threw error: TestError()
@@ -312,7 +312,7 @@ internal final class StatefulOutputTests: TestKitCase
         """
         XCTKStateful failed after 1 iteration
         
-        Command sequence:
+        Counterexample:
             1. increment ←
         
         XCTKAssertTrue failed
@@ -359,7 +359,7 @@ internal final class StatefulOutputTests: TestKitCase
         """
         XCTKStateful failed after 4 iterations
         
-        Command sequence:
+        Counterexample:
             1. increment
             2. increment
             3. increment ←
@@ -411,7 +411,7 @@ internal final class StatefulOutputTests: TestKitCase
         """
         XCTKStateful failed after 4 iterations
         
-        Command sequence:
+        Counterexample:
             1. increment
             2. increment
             3. increment ←
@@ -465,7 +465,7 @@ internal final class StatefulOutputTests: TestKitCase
         """
         XCTKStateful failed after 4 iterations
         
-        Command sequence:
+        Counterexample:
             1. increment
             2. increment
             3. increment ←
@@ -520,7 +520,7 @@ internal final class StatefulOutputTests: TestKitCase
         """
         XCTKStateful failed after 4 iterations
         
-        Command sequence:
+        Counterexample:
             1. increment
             2. increment
             3. increment ←
@@ -573,7 +573,7 @@ internal final class StatefulOutputTests: TestKitCase
         """
         XCTKStateful failed after 4 iterations
         
-        Command sequence:
+        Counterexample:
             1. increment
             2. increment
             3. increment ←
@@ -628,7 +628,7 @@ internal final class StatefulOutputTests: TestKitCase
         """
         XCTKStateful failed after 4 iterations
         
-        Command sequence:
+        Counterexample:
             1. increment
             2. increment
             3. increment ←
@@ -685,7 +685,7 @@ internal final class StatefulOutputTests: TestKitCase
         """
         XCTKStateful failed after 4 iterations
         
-        Command sequence:
+        Counterexample:
             1. increment
             2. increment
             3. increment ←
@@ -740,7 +740,7 @@ internal final class StatefulOutputTests: TestKitCase
         """
         XCTKStateful failed after 4 iterations
         
-        Command sequence:
+        Counterexample:
             1. increment
             2. increment
             3. increment ←
@@ -1133,7 +1133,7 @@ internal final class StatefulOutputTests: TestKitCase
         """
         XCTKStateful failed after 2 iterations (shrunk to 3 commands)
         
-        Command sequence:
+        Counterexample:
             1. increment
             2. increment
             3. increment ←
@@ -1180,7 +1180,7 @@ internal final class StatefulOutputTests: TestKitCase
         """
         XCTKStateful failed after 11 iterations
         
-        Command sequence:
+        Counterexample:
              1. increment
              2. increment
              3. increment
@@ -1234,7 +1234,7 @@ internal final class StatefulOutputTests: TestKitCase
         """
         XCTKStateful failed after 3 iterations (shrunk to 1 command)
         
-        Command sequence:
+        Counterexample:
             1. add(20) ←
         
         XCTKAssertTrue failed
@@ -1274,7 +1274,7 @@ internal final class StatefulOutputTests: TestKitCase
         """
         XCTKStateful failed after 4 iterations
         
-        Command sequence:
+        Counterexample:
             1. step
             2. step
             3. step ←
@@ -1313,7 +1313,7 @@ internal final class StatefulOutputTests: TestKitCase
         """
         XCTKStateful failed after 2 iterations (shrunk to 3 commands)
         
-        Command sequence:
+        Counterexample:
             1. step
             2. step
             3. step ←
@@ -1682,7 +1682,7 @@ internal final class StatefulOutputTests: TestKitCase
         """
         XCTKStateful failed after 2 iterations
         
-        Command sequence:
+        Counterexample:
              1. step
              2. step
              3. step ←
@@ -1726,7 +1726,7 @@ internal final class StatefulOutputTests: TestKitCase
         """
         XCTKStateful failed after 2 iterations (shrunk to 3 commands)
         
-        Command sequence:
+        Counterexample:
             1. step
             2. step
             3. step ←
@@ -1776,7 +1776,7 @@ internal final class StatefulOutputTests: TestKitCase
         """
         XCTKStateful failed after 4 iterations
         
-        Command sequence:
+        Counterexample:
             1. increment
             2. increment
             3. increment ←
@@ -1857,7 +1857,7 @@ internal final class StatefulOutputTests: TestKitCase
         """
         XCTKStateful failed after 4 iterations
         
-        Command sequence:
+        Counterexample:
             1. increment
             2. increment
             3. increment ←
@@ -1958,7 +1958,7 @@ internal final class StatefulOutputTests: TestKitCase
         """
         XCTKStateful failed after 4 iterations
         
-        Command sequence:
+        Counterexample:
             1. increment
             2. increment
             3. increment ←
@@ -2059,7 +2059,7 @@ internal final class StatefulOutputTests: TestKitCase
         """
         XCTKStateful failed after 4 iterations
         
-        Command sequence:
+        Counterexample:
             1. increment
             2. increment
             3. increment ←
@@ -2158,7 +2158,7 @@ internal final class StatefulOutputTests: TestKitCase
         """
         XCTKStateful failed after 4 iterations
         
-        Command sequence:
+        Counterexample:
             1. increment
             2. increment
             3. increment ←
@@ -2219,7 +2219,7 @@ internal final class StatefulOutputTests: TestKitCase
         """
         XCTKStateful failed after 4 iterations
         
-        Command sequence:
+        Counterexample:
             1. increment
             2. increment
             3. increment ←
@@ -2363,7 +2363,7 @@ internal final class StatefulOutputTests: TestKitCase
         """
         XCTKStateful failed after 4 iterations
         
-        Command sequence:
+        Counterexample:
             1. increment
             2. increment
             3. increment ←
@@ -2376,6 +2376,151 @@ internal final class StatefulOutputTests: TestKitCase
             increment: 3 (100%)
         
         hello world
+        """
+        
+        XCTAssertEqual(expected, actual)
+    }
+    
+    
+    
+    // MARK: - Show original
+    
+    func testShowOriginalWithRemovalShrinking() async
+    {
+        let options: TestOptions = .propertyOptions(
+            iterations:         5,
+            maxCommandCount:    10,
+            showOriginal:       true,
+            seed:               Self.seed
+        )
+        
+        let actual: String? = await withOneExpectedFailure
+        {
+            await TKStateful(
+                model:      { 0 },
+                system:     { 0 },
+                command:    IncrementCommand.self,
+                options:    options,
+                invariant:
+                {
+                    model, _ async in
+                    
+                    if model >= 3
+                    {
+                        TKAssertTrue(false)
+                    }
+                }
+            )
+        }
+        
+        let expected: String =
+        """
+        XCTKStateful failed after 3 iterations (shrunk to 3 commands)
+        
+        Original:
+            1. increment
+            2. increment
+            3. increment
+            4. increment
+        
+        Counterexample:
+            1. increment
+            2. increment
+            3. increment ←
+        
+        XCTKAssertTrue failed
+        
+        \(Self.seedMessage)
+        """
+        
+        XCTAssertEqual(expected, actual)
+    }
+    
+    
+    
+    func testShowOriginalWithoutShrinking() async
+    {
+        let options: TestOptions = .propertyOptions(
+            iterations:         1,
+            maxShrinkSteps:     0,
+            maxCommandCount:    1,
+            showOriginal:       true,
+            seed:               Self.seed
+        )
+        
+        let actual: String? = await withOneExpectedFailure
+        {
+            await TKStateful(
+                model:      { 0 },
+                system:     { 0 },
+                command:    IncrementCommand.self,
+                options:    options,
+                invariant:
+                {
+                    _, _ async in
+                    
+                    TKAssertTrue(false)
+                }
+            )
+        }
+        
+        /// Since there are no shrink steps, the original sequence is not shown.
+        let expected: String =
+        """
+        XCTKStateful failed after 1 iteration
+        
+        Counterexample:
+            1. increment ←
+        
+        XCTKAssertTrue failed
+        
+        \(Self.seedMessage)
+        """
+        
+        XCTAssertEqual(expected, actual)
+    }
+    
+    
+    
+    func testShowOriginalWithArgumentShrinking() async
+    {
+        let options: TestOptions = .propertyOptions(
+            iterations:         1,
+            maxCommandCount:    1,
+            showOriginal:       true,
+            seed:               Self.seed
+        )
+        
+        let actual: String? = await withOneExpectedFailure
+        {
+            await TKStateful(
+                model:      { 0 },
+                system:     { 0 },
+                command:    ShrinkableIncrementCommand.self,
+                options:    options,
+                invariant:
+                {
+                    _, _ async in
+                    
+                    TKAssertTrue(false)
+                }
+            )
+        }
+        
+        /// Since there are no shrink steps, the original sequence is not shown.
+        let expected: String =
+        """
+        XCTKStateful failed after 1 iteration (shrunk to 1 command)
+        
+        Original:
+            1. increment
+        
+        Counterexample:
+            1. noOp ←
+        
+        XCTKAssertTrue failed
+        
+        \(Self.seedMessage)
         """
         
         XCTAssertEqual(expected, actual)
@@ -2425,7 +2570,7 @@ internal final class StatefulOutputTests: TestKitCase
         """
         XCTKStateful failed after 1 iteration
         
-        Command sequence:
+        Counterexample:
             1. increment ←
         
         XCTKForAll failed after 1 iteration
@@ -2487,7 +2632,7 @@ internal final class StatefulOutputTests: TestKitCase
         """
         XCTKStateful failed after 2 iterations (shrunk to 3 commands)
         
-        Command sequence:
+        Counterexample:
             1. increment
             2. increment
             3. increment ←
@@ -2561,7 +2706,7 @@ internal final class StatefulOutputTests: TestKitCase
         """
         XCTKStateful failed after 1 iteration
         
-        Command sequence:
+        Counterexample:
             1. increment ←
         
         XCTKForAll failed after 1 iteration
@@ -2627,7 +2772,7 @@ internal final class StatefulOutputTests: TestKitCase
         """
         XCTKStateful failed after 1 iteration
         
-        Command sequence:
+        Counterexample:
             1. increment ←
         
         XCTKForAll failed after 1 iteration

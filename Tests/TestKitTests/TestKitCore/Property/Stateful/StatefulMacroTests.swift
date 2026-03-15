@@ -799,7 +799,7 @@ internal final class StatefulMacroTests: TestKitCase
         """
         XCTKStateful failed after 26 iterations (shrunk to 4 commands)
 
-        Command sequence:
+        Counterexample:
             1. add(11)
             2. add(5)
             3. add(22)

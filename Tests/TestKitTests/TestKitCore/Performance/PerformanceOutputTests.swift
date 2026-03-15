@@ -860,7 +860,7 @@ internal final class PerformanceOutputTests: TestKitCase
         """
         XCTKStateful failed after 1 iteration
         
-        Command sequence:
+        Counterexample:
             1. increment ←
         
         XCTKPerformance failed (run 1 of 3)

@@ -21,6 +21,7 @@ extension PropertyResult
     ///   - file: The file where the failure occurs.
     ///   - line: The line where the failure occurs.
     ///   - column: The column where the failure occurs.
+    ///   - options: The options for testing.
     internal func emit(
         functionName    : String,
         statistics      : String?           = nil,
@@ -29,7 +30,8 @@ extension PropertyResult
         fileID          : StaticString,
         file            : StaticString,
         line            : UInt,
-        column          : UInt
+        column          : UInt,
+        options         : TestOptions
     )
     {
         let text: String
@@ -48,7 +50,8 @@ extension PropertyResult
                     statistics:         statistics,
                     message:            message,
                     distribution:       dist,
-                    tableDistribution:  tableDist
+                    tableDistribution:  tableDist,
+                    options:            options
                 )
                 
             case let .exhausted(
@@ -105,6 +108,7 @@ extension PropertyResult
     ///   - tableDistribution: The accumulated count of iterations that
     ///   matched each table value, mapping the table name to a map of values
     ///   and their counts.
+    ///   - options: The options for testing.
     /// - Returns: The counterexample failure message.
     private func formatCounterexample(
         _ counterexample    : Counterexample<T>,
@@ -112,7 +116,8 @@ extension PropertyResult
         statistics          : String?,
         message             : () -> String,
         distribution        : [String : Int],
-        tableDistribution   : [String : [String : Int]]
+        tableDistribution   : [String : [String : Int]],
+        options             : TestOptions
     ) -> String
     {
         if counterexample.failingStep != nil
@@ -123,7 +128,8 @@ extension PropertyResult
                 statistics:         statistics,
                 message:            message,
                 distribution:       distribution,
-                tableDistribution:  tableDistribution
+                tableDistribution:  tableDistribution,
+                options:            options
             )
         }
         
@@ -144,37 +150,22 @@ extension PropertyResult
         
         lines.append(header)
         
-        
-        
-        let mirror  : Mirror    = .init(reflecting: counterexample.value)
-        let values  : [Any]     = mirror.children.map { $0.value }
-        
-        lines.append("")
-        lines.append("Counterexample:")
-        
         if
-            mirror.displayStyle == .tuple,
-            values.count > 1
+            options.propertyOptions.showOriginal,
+            counterexample.shrinkSteps > 0
         {
-            for value in values
-            {
-                let valueTypeName   = String(describing: type(of: value))
-                let valueText       = String(describing: value)
-                
-                lines.append("    \(valueTypeName) = \(valueText)")
-            }
-        }
-        else
-        {
-            let valueTypeName
-                = String(describing: type(of: counterexample.value))
-            
-            let valueText = String(describing: counterexample.value)
-            
-            lines.append("    \(valueTypeName) = \(valueText)")
+            lines = Self.addCounterexampleLines(
+                to:                 lines,
+                preShrink:          true,
+                counterexample:     counterexample
+            )
         }
         
-        
+        lines = Self.addCounterexampleLines(
+            to:                 lines,
+            preShrink:          false,
+            counterexample:     counterexample
+        )
         
         return Self.finishCounterexampleMessage(
             counterexample,
@@ -200,6 +191,7 @@ extension PropertyResult
     ///   - tableDistribution: The accumulated count of iterations that
     ///   matched each table value, mapping the table name to a map of values
     ///   and their counts.
+    ///   - options: The options for testing.
     /// - Returns: The stateful counterexample failure message.
     private func formatStatefulCounterexample(
         _ counterexample    : Counterexample<T>,
@@ -207,13 +199,12 @@ extension PropertyResult
         statistics          : String?,
         message             : () -> String,
         distribution        : [String : Int],
-        tableDistribution   : [String : [String : Int]]
+        tableDistribution   : [String : [String : Int]],
+        options             : TestOptions
     ) -> String
     {
         let commandMirror   : Mirror  = .init(reflecting: counterexample.value)
         let commandCount    : Int     = commandMirror.children.count
-        
-        
         
         var lines: [String] = []
         
@@ -230,38 +221,22 @@ extension PropertyResult
         
         lines.append(header)
         
-        
-        
-        let failingStep : Int       = counterexample.failingStep ?? commandCount
-        let commands    : [Any]     = commandMirror.children.map { $0.value }
-        
-        lines.append("")
-        lines.append("Command sequence:")
-        
-        let digitWidth: Int = String(commandCount).count
-        
-        for (index, command) in commands.enumerated()
+        if
+            options.propertyOptions.showOriginal,
+            counterexample.shrinkSteps > 0
         {
-            let step        : Int       = index + 1
-            let stepString  : String    = .init(step)
-            
-            let padding = String(
-                repeating:  " ",
-                count:      digitWidth - stepString.count
+            lines = Self.addStatefulCounterexampleLines(
+                to:                 lines,
+                preShrink:          true,
+                counterexample:     counterexample
             )
-            
-            var line: String 
-                = "    \(padding + stepString). \(String(describing: command))"
-            
-            if step == failingStep
-            {
-                line += " ←"
-            }
-            
-            lines.append(line)
         }
         
-        
+        lines = Self.addStatefulCounterexampleLines(
+            to:                 lines,
+            preShrink:          false,
+            counterexample:     counterexample
+        )
         
         return Self.finishCounterexampleMessage(
             counterexample,
@@ -598,6 +573,120 @@ extension PropertyResult
     ) -> String
     {
         return "Seed: \(seed) (\(functionName))"
+    }
+    
+
+    
+    /// Appends formatted lines for the pre-shrink or post-shrink
+    /// counterexample value.
+    /// - Parameters:
+    ///   - originalLines: The lines to update.
+    ///   - preShrink: Whether to append lines for the pre-shrink original
+    ///   value, or the post-shrink counterexample.
+    ///   - counterexample: The counterexample to use.
+    /// - Returns: The updated lines.
+    private static func addCounterexampleLines(
+        to originalLines    : [String],
+        preShrink           : Bool,
+        counterexample      : Counterexample<T>
+    ) -> [String]
+    {
+        let value: T = preShrink
+            ? counterexample.originalValue
+            : counterexample.value
+        
+        let label: String = preShrink
+            ? "Original:"
+            : "Counterexample:"
+        
+        var lines   : [String]  = originalLines
+        let mirror  : Mirror    = .init(reflecting: value)
+        let values  : [Any]     = mirror.children.map { $0.value }
+        
+        lines.append("")
+        lines.append(label)
+        
+        if
+            mirror.displayStyle == .tuple,
+            values.count > 1
+        {
+            for value in values
+            {
+                let valueTypeName   = String(describing: type(of: value))
+                let valueText       = String(describing: value)
+                
+                lines.append("    \(valueTypeName) = \(valueText)")
+            }
+        }
+        else
+        {
+            let valueTypeName   = String(describing: type(of: value))
+            let valueText       = String(describing: value)
+            
+            lines.append("    \(valueTypeName) = \(valueText)")
+        }
+        
+        return lines
+    }
+    
+    
+    
+    /// Appends formatted lines for the stateful pre-shrink or post-shrink
+    /// counterexample value.
+    /// - Parameters:
+    ///   - originalLines: The lines to update.
+    ///   - preShrink: Whether to append lines for the pre-shrink original
+    ///   value, or the post-shrink counterexample.
+    ///   - counterexample: The counterexample to use.
+    /// - Returns: The updated lines.
+    private static func addStatefulCounterexampleLines(
+        to originalLines    : [String],
+        preShrink           : Bool,
+        counterexample      : Counterexample<T>
+    ) -> [String]
+    {
+        let value: T = preShrink
+            ? counterexample.originalValue
+            : counterexample.value
+        
+        let label: String = preShrink
+            ? "Original:"
+            : "Counterexample:"
+        
+        var lines           : [String]  = originalLines
+        let mirror          : Mirror    = .init(reflecting: value)
+        let commands        : [Any]     = mirror.children.map { $0.value }
+        let commandCount    : Int       = commands.count
+        let digitWidth      : Int       = String(commandCount).count
+        
+        lines.append("")
+        lines.append(label)
+        
+        for (index, command) in commands.enumerated()
+        {
+            let step        : Int       = index + 1
+            let stepString  : String    = .init(step)
+            
+            let padding = String(
+                repeating:  " ",
+                count:      digitWidth - stepString.count
+            )
+            
+            var line: String
+                = "    \(padding + stepString). \(String(describing: command))"
+            
+            if
+                !preShrink,
+                let failingStep: Int = counterexample.failingStep,
+                step == failingStep
+            {
+                line += " ←"
+            }
+            
+            lines.append(line)
+        }
+        
+        return lines
     }
     
     
