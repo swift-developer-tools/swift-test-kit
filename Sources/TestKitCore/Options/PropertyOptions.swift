@@ -72,10 +72,10 @@ public struct PropertyOptions: Equatable, Sendable
     /// best result found so far.
     public var timeout          : Duration?
     
-    /// Whether to show the original counterexample before shrinking.
+    /// The options for diagnostics reporting in property-based tests.
     ///
-    /// The default value is `false`.
-    public var showOriginal     : Bool
+    /// The default value is an empty option set.
+    public var diagnostics      : PropertyDiagnostics
     
     /// The options for reporting command statistics in stateful
     /// property-based tests.
@@ -112,7 +112,7 @@ public struct PropertyOptions: Equatable, Sendable
         poolSize            : Int                   = 20,
         explorationRatio    : Double                = 0.3,
         timeout             : Duration?             = nil,
-        showOriginal        : Bool                  = false,
+        diagnostics         : PropertyDiagnostics   = [],
         statistics          : CommandStatistics     = [],
         seed                : UInt64?               = nil
     )
@@ -160,9 +160,48 @@ public struct PropertyOptions: Equatable, Sendable
         self.poolSize           = poolSize
         self.explorationRatio   = explorationRatio
         self.timeout            = timeout
-        self.showOriginal       = showOriginal
+        self.diagnostics        = diagnostics
         self.statistics         = statistics
         self.seed               = seed
+    }
+}
+
+
+
+// MARK: - PropertyDiagnostics
+
+/// The options for diagnostics reporting in property-based tests.
+public struct PropertyDiagnostics: OptionSet, Equatable, Sendable
+{
+    /// The raw value.
+    public let rawValue: Int
+    
+    
+    
+    /// Report the original counterexample before shrinking.
+    public static let original      = PropertyDiagnostics(rawValue: 1 << 0)
+    
+    /// Report all generated values and shrink candidates.
+    ///
+    /// - Note: Verbose diagnostics are logged using `OSLog` without formatting.
+    public static let verbose       = PropertyDiagnostics(rawValue: 1 << 1)
+    
+    /// Report all diagnostics.
+    public static let all: PropertyDiagnostics =
+    [
+        .original,
+        .verbose
+    ]
+    
+    
+    
+    /// Initializes a ``PropertyDiagnostics`` instance from the given raw value.
+    /// - Parameter rawValue: The raw value to use.
+    public init(
+        rawValue: Int
+    )
+    {
+        self.rawValue = rawValue
     }
 }
 
@@ -176,6 +215,8 @@ public struct CommandStatistics: OptionSet, Equatable, Sendable
 {
     /// The raw value.
     public let rawValue: Int
+    
+    
     
     /// Report per-iteration command distribution.
     ///

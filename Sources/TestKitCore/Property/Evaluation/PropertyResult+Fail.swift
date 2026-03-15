@@ -151,7 +151,7 @@ extension PropertyResult
         lines.append(header)
         
         if
-            options.propertyOptions.showOriginal,
+            options.propertyOptions.diagnostics.contains(.original),
             counterexample.shrinkSteps > 0
         {
             lines = Self.addCounterexampleLines(
@@ -222,7 +222,7 @@ extension PropertyResult
         lines.append(header)
         
         if
-            options.propertyOptions.showOriginal,
+            options.propertyOptions.diagnostics.contains(.original),
             counterexample.shrinkSteps > 0
         {
             lines = Self.addStatefulCounterexampleLines(

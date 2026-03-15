@@ -87,7 +87,7 @@ internal final class OptionsTests: TestKitCase
         XCTAssertEqual(options.poolSize, 20)
         XCTAssertEqual(options.explorationRatio, 0.3)
         XCTAssertNil(options.timeout)
-        XCTAssertFalse(options.showOriginal)
+        XCTAssertEqual(options.diagnostics, [])
         XCTAssertEqual(options.statistics, [])
         XCTAssertNil(options.seed)
     }
