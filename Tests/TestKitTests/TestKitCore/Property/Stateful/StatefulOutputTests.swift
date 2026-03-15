@@ -2383,6 +2383,151 @@ internal final class StatefulOutputTests: TestKitCase
     
     
     
+    // MARK: - Show original
+    
+    func testShowOriginalWithRemovalShrinking() async
+    {
+        let options: TestOptions = .propertyOptions(
+            iterations:         5,
+            maxCommandCount:    10,
+            showOriginal:       true,
+            seed:               Self.seed
+        )
+        
+        let actual: String? = await withOneExpectedFailure
+        {
+            await TKStateful(
+                model:      { 0 },
+                system:     { 0 },
+                command:    IncrementCommand.self,
+                options:    options,
+                invariant:
+                {
+                    model, _ async in
+                    
+                    if model >= 3
+                    {
+                        TKAssertTrue(false)
+                    }
+                }
+            )
+        }
+        
+        let expected: String =
+        """
+        XCTKStateful failed after 3 iterations (shrunk to 3 commands)
+        
+        Original sequence:
+            1. increment
+            2. increment
+            3. increment
+            4. increment
+        
+        Command sequence:
+            1. increment
+            2. increment
+            3. increment ←
+        
+        XCTKAssertTrue failed
+        
+        \(Self.seedMessage)
+        """
+        
+        XCTAssertEqual(expected, actual)
+    }
+    
+    
+    
+    func testShowOriginalWithoutShrinking() async
+    {
+        let options: TestOptions = .propertyOptions(
+            iterations:         1,
+            maxShrinkSteps:     0,
+            maxCommandCount:    1,
+            showOriginal:       true,
+            seed:               Self.seed
+        )
+        
+        let actual: String? = await withOneExpectedFailure
+        {
+            await TKStateful(
+                model:      { 0 },
+                system:     { 0 },
+                command:    IncrementCommand.self,
+                options:    options,
+                invariant:
+                {
+                    _, _ async in
+                    
+                    TKAssertTrue(false)
+                }
+            )
+        }
+        
+        /// Since there are no shrink steps, the original sequence is not shown.
+        let expected: String =
+        """
+        XCTKStateful failed after 1 iteration
+        
+        Command sequence:
+            1. increment ←
+        
+        XCTKAssertTrue failed
+        
+        \(Self.seedMessage)
+        """
+        
+        XCTAssertEqual(expected, actual)
+    }
+    
+    
+    
+    func testShowOriginalWithArgumentShrinking() async
+    {
+        let options: TestOptions = .propertyOptions(
+            iterations:         1,
+            maxCommandCount:    1,
+            showOriginal:       true,
+            seed:               Self.seed
+        )
+        
+        let actual: String? = await withOneExpectedFailure
+        {
+            await TKStateful(
+                model:      { 0 },
+                system:     { 0 },
+                command:    ShrinkableIncrementCommand.self,
+                options:    options,
+                invariant:
+                {
+                    _, _ async in
+                    
+                    TKAssertTrue(false)
+                }
+            )
+        }
+        
+        /// Since there are no shrink steps, the original sequence is not shown.
+        let expected: String =
+        """
+        XCTKStateful failed after 1 iteration (shrunk to 1 command)
+        
+        Original sequence:
+            1. increment
+        
+        Command sequence:
+            1. noOp ←
+        
+        XCTKAssertTrue failed
+        
+        \(Self.seedMessage)
+        """
+        
+        XCTAssertEqual(expected, actual)
+    }
+    
+    
+    
     // MARK: - ForAll
     
     func testForAllFailure() async
