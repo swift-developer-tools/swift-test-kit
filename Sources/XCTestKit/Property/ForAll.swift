@@ -128,7 +128,8 @@ public func XCTKForAll<each T>(
 ///
 /// - Parameters:
 ///   - precondition: The condition which generated values must satisfy.
-///   - examples: The pinned values to test first. These values are not shrunk.
+///   - examples: The pinned values to test first. These values are not shrunk
+///   and do not respect the given precondition.
 ///   - message: An optional description of a failure.
 ///   - fileID: The ID of the file where the failure occurs. The default value
 ///   is the ID of the file of the test case in which this function was called.
@@ -188,7 +189,8 @@ public func XCTKForAll<each T>(
 /// - Parameters:
 ///   - generators: The generators to use to produce values.
 ///   - precondition: The condition which generated values must satisfy.
-///   - examples: The pinned values to test first. These values are not shrunk.
+///   - examples: The pinned values to test first. These values are not shrunk
+///   and do not respect the given precondition.
 ///   - message: An optional description of a failure.
 ///   - fileID: The ID of the file where the failure occurs. The default value
 ///   is the ID of the file of the test case in which this function was called.
