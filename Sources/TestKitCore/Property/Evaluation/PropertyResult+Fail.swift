@@ -146,37 +146,11 @@ extension PropertyResult
         
         lines.append(header)
         
-        
-        
-        let mirror  : Mirror    = .init(reflecting: counterexample.value)
-        let values  : [Any]     = mirror.children.map { $0.value }
-        
-        lines.append("")
-        lines.append("Counterexample:")
-        
-        if
-            mirror.displayStyle == .tuple,
-            values.count > 1
-        {
-            for value in values
-            {
-                let valueTypeName   = String(describing: type(of: value))
-                let valueText       = String(describing: value)
-                
-                lines.append("    \(valueTypeName) = \(valueText)")
-            }
-        }
-        else
-        {
-            let valueTypeName
-                = String(describing: type(of: counterexample.value))
-            
-            let valueText = String(describing: counterexample.value)
-            
-            lines.append("    \(valueTypeName) = \(valueText)")
-        }
-        
-        
+        lines = Self.addCounterexampleLines(
+            to:                 lines,
+            preShrink:          false,
+            counterexample:     counterexample
+        )
         
         return Self.finishCounterexampleMessage(
             counterexample,
@@ -600,6 +574,62 @@ extension PropertyResult
     ) -> String
     {
         return "Seed: \(seed) (\(functionName))"
+    }
+    
+
+    
+    /// Appends formatted lines for the pre-shrink or post-shrink
+    /// counterexample value.
+    /// - Parameters:
+    ///   - originalLines: The lines to update.
+    ///   - preShrink: Whether to append lines for the pre-shrink original
+    ///   value, or the post-shrink counterexample.
+    ///   - counterexample: The counterexample to use.
+    /// - Returns: The updated lines.
+    private static func addCounterexampleLines(
+        to originalLines    : [String],
+        preShrink           : Bool,
+        counterexample      : Counterexample<T>
+    ) -> [String]
+    {
+        let value: T = preShrink
+            ? counterexample.originalValue
+            : counterexample.value
+        
+        let label: String = preShrink
+            ? "Original:"
+            : "Counterexample:"
+        
+        var lines   : [String]  = originalLines
+        let mirror  : Mirror    = .init(reflecting: value)
+        let values  : [Any]     = mirror.children.map { $0.value }
+        
+        lines.append("")
+        lines.append(label)
+        
+        if
+            mirror.displayStyle == .tuple,
+            values.count > 1
+        {
+            for value in values
+            {
+                let valueTypeName   = String(describing: type(of: value))
+                let valueText       = String(describing: value)
+                
+                lines.append("    \(valueTypeName) = \(valueText)")
+            }
+        }
+        else
+        {
+            let valueTypeName
+                = String(describing: type(of: counterexample.value))
+            
+            let valueText = String(describing: counterexample.value)
+            
+            lines.append("    \(valueTypeName) = \(valueText)")
+        }
+        
+        return lines
     }
     
     
