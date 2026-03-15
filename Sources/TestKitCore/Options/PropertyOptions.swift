@@ -237,9 +237,6 @@ public struct CommandStatistics: OptionSet, Equatable, Sendable
     public static let sequenceCount     = CommandStatistics(rawValue: 1 << 2)
     
     /// Report all statistics.
-    ///
-    /// Enable this to report ``presence``, ``frequency``, and ``sequenceCount``
-    /// statistics.
     public static let all: CommandStatistics =
     [
         .presence,
