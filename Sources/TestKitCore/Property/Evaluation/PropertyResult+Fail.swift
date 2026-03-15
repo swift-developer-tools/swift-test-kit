@@ -128,7 +128,8 @@ extension PropertyResult
                 statistics:         statistics,
                 message:            message,
                 distribution:       distribution,
-                tableDistribution:  tableDistribution
+                tableDistribution:  tableDistribution,
+                options:            options
             )
         }
         
@@ -190,6 +191,7 @@ extension PropertyResult
     ///   - tableDistribution: The accumulated count of iterations that
     ///   matched each table value, mapping the table name to a map of values
     ///   and their counts.
+    ///   - options: The options for testing.
     /// - Returns: The stateful counterexample failure message.
     private func formatStatefulCounterexample(
         _ counterexample    : Counterexample<T>,
@@ -197,7 +199,8 @@ extension PropertyResult
         statistics          : String?,
         message             : () -> String,
         distribution        : [String : Int],
-        tableDistribution   : [String : [String : Int]]
+        tableDistribution   : [String : [String : Int]],
+        options             : TestOptions
     ) -> String
     {
         let commandMirror   : Mirror  = .init(reflecting: counterexample.value)
@@ -217,6 +220,17 @@ extension PropertyResult
         }
         
         lines.append(header)
+        
+        if
+            options.propertyOptions.showOriginal,
+            counterexample.shrinkSteps > 0
+        {
+            lines = Self.addStatefulCounterexampleLines(
+                to:                 lines,
+                preShrink:          true,
+                counterexample:     counterexample
+            )
+        }
         
         lines = Self.addStatefulCounterexampleLines(
             to:                 lines,
