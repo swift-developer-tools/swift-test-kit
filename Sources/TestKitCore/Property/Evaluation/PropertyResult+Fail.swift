@@ -50,7 +50,8 @@ extension PropertyResult
                     statistics:         statistics,
                     message:            message,
                     distribution:       dist,
-                    tableDistribution:  tableDist
+                    tableDistribution:  tableDist,
+                    options:            options
                 )
                 
             case let .exhausted(
@@ -107,6 +108,7 @@ extension PropertyResult
     ///   - tableDistribution: The accumulated count of iterations that
     ///   matched each table value, mapping the table name to a map of values
     ///   and their counts.
+    ///   - options: The options for testing.
     /// - Returns: The counterexample failure message.
     private func formatCounterexample(
         _ counterexample    : Counterexample<T>,
@@ -114,7 +116,8 @@ extension PropertyResult
         statistics          : String?,
         message             : () -> String,
         distribution        : [String : Int],
-        tableDistribution   : [String : [String : Int]]
+        tableDistribution   : [String : [String : Int]],
+        options             : TestOptions
     ) -> String
     {
         if counterexample.failingStep != nil
@@ -145,6 +148,17 @@ extension PropertyResult
         }
         
         lines.append(header)
+        
+        if
+            options.propertyOptions.showOriginal,
+            counterexample.shrinkSteps > 0
+        {
+            lines = Self.addCounterexampleLines(
+                to:                 lines,
+                preShrink:          true,
+                counterexample:     counterexample
+            )
+        }
         
         lines = Self.addCounterexampleLines(
             to:                 lines,
