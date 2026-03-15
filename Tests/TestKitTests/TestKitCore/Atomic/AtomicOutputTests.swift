@@ -443,7 +443,7 @@ internal final class AtomicOutputTests: TestKitCase
         """
         XCTKStateful failed after 1 iteration
         
-        Command sequence:
+        Counterexample:
             1. increment ←
         
         XCTKAtomic failed (2 failed assertions)
@@ -652,7 +652,7 @@ internal final class AtomicOutputTests: TestKitCase
         
         XCTKStateful failed after 1 iteration
         
-        Command sequence:
+        Counterexample:
             1. increment ←
         
         XCTKAssertTrue failed

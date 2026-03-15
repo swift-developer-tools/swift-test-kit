@@ -650,8 +650,8 @@ extension PropertyResult
             : counterexample.value
         
         let label: String = preShrink
-            ? "Original sequence:"
-            : "Command sequence:"
+            ? "Original:"
+            : "Counterexample:"
         
         var lines           : [String]  = originalLines
         let mirror          : Mirror    = .init(reflecting: value)

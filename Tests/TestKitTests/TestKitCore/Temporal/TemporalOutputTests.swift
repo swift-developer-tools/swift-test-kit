@@ -737,7 +737,7 @@ internal final class TemporalOutputTests: TestKitCase
         """
         XCTKStateful failed after 1 iteration
         
-        Command sequence:
+        Counterexample:
             1. increment ←
         
         XCTKAlways failed after <T>
@@ -796,7 +796,7 @@ internal final class TemporalOutputTests: TestKitCase
         
         XCTKStateful failed after 1 iteration
         
-        Command sequence:
+        Counterexample:
             1. increment ←
         
         XCTKAlways failed after <T>

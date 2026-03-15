@@ -797,7 +797,7 @@ await STKStateful(
 
 // STKStateful failed after 5 iterations (shrunk to 3 commands)
 // 
-// Command sequence:
+// Counterexample:
 //     1. push(0)
 //     2. push(1)
 //     3. pop ←
