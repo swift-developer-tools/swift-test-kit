@@ -119,25 +119,40 @@ public typealias ByteCount = TestKitCore.ByteCount
 /// - Note: See
 /// [`Arbitrary`](https://swift-developer-tools.github.io/swift-test-kit/documentation/testkitcore/arbitrary)
 /// for the complete API reference.
-public typealias Arbitrary          = TestKitCore.Arbitrary
+public typealias Arbitrary              = TestKitCore.Arbitrary
 
 /// A custom generator for producing values of a specific type.
 ///
 /// - Note: See
 /// [`Generator`](https://swift-developer-tools.github.io/swift-test-kit/documentation/testkitcore/generator)
 /// for the complete API reference.
-public typealias Generator          = TestKitCore.Generator
+public typealias Generator              = TestKitCore.Generator
 
 /// The options for property-based testing.
 ///
 /// - Note: See
 /// [`GenerationContext`](https://swift-developer-tools.github.io/swift-test-kit/documentation/testkitcore/generationcontext)
 /// for the complete API reference.
-public typealias GenerationContext  = TestKitCore.GenerationContext
+public typealias GenerationContext      = TestKitCore.GenerationContext
 
 /// A type that defines commands for stateful property-based testing.
 ///
 /// - Note: See
 /// [`Stateful`](https://swift-developer-tools.github.io/swift-test-kit/documentation/testkitcore/stateful)
 /// for the complete API reference.
-public typealias Stateful           = TestKitCore.Stateful
+public typealias Stateful               = TestKitCore.Stateful
+
+/// The options for reporting command statistics in stateful property-based
+/// tests.
+///
+/// - Note: See
+/// [`CommandStatistics`](https://swift-developer-tools.github.io/swift-test-kit/documentation/testkitcore/commandstatistics)
+/// for the complete API reference.
+public typealias CommandStatistics      = TestKitCore.CommandStatistics
+
+/// The options for reporting diagnostics in property-based tests.
+///
+/// - Note: See
+/// [`PropertyDiagnostics`](https://swift-developer-tools.github.io/swift-test-kit/documentation/testkitcore/propertydiagnostics)
+/// for the complete API reference.
+public typealias PropertyDiagnostics    = TestKitCore.PropertyDiagnostics
