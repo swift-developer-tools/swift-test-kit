@@ -2390,7 +2390,7 @@ internal final class StatefulOutputTests: TestKitCase
         let options: TestOptions = .propertyOptions(
             iterations:         5,
             maxCommandCount:    10,
-            showOriginal:       true,
+            diagnostics:        [.original],
             seed:               Self.seed
         )
         
@@ -2444,7 +2444,7 @@ internal final class StatefulOutputTests: TestKitCase
             iterations:         1,
             maxShrinkSteps:     0,
             maxCommandCount:    1,
-            showOriginal:       true,
+            diagnostics:        [.original],
             seed:               Self.seed
         )
         
@@ -2487,7 +2487,7 @@ internal final class StatefulOutputTests: TestKitCase
         let options: TestOptions = .propertyOptions(
             iterations:         1,
             maxCommandCount:    1,
-            showOriginal:       true,
+            diagnostics:        [.original],
             seed:               Self.seed
         )
         

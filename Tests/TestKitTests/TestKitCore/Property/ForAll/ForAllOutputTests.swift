@@ -1160,7 +1160,7 @@ internal final class ForAllOutputTests: TestKitCase
     {
         let options: TestOptions = .propertyOptions(
             iterations:         1,
-            showOriginal:       true,
+            diagnostics:        [.original],
             seed:               Self.seed
         )
         
@@ -1207,7 +1207,7 @@ internal final class ForAllOutputTests: TestKitCase
     {
         let options: TestOptions = .propertyOptions(
             iterations:         1,
-            showOriginal:       true,
+            diagnostics:        [.original],
             seed:               Self.seed
         )
         
@@ -1244,7 +1244,7 @@ internal final class ForAllOutputTests: TestKitCase
     {
         let options: TestOptions = .propertyOptions(
             iterations:         1,
-            showOriginal:       true,
+            diagnostics:        [.original],
             seed:               Self.seed
         )
         
@@ -1298,7 +1298,7 @@ internal final class ForAllOutputTests: TestKitCase
     {
         let options: TestOptions = .propertyOptions(
             iterations:         1,
-            showOriginal:       true,
+            diagnostics:        [.original],
             seed:               Self.seed
         )
         
@@ -1349,7 +1349,7 @@ internal final class ForAllOutputTests: TestKitCase
     {
         let options: TestOptions = .propertyOptions(
             iterations:         1,
-            showOriginal:       true,
+            diagnostics:        [.original],
             seed:               Self.seed
         )
         

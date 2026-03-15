@@ -61,6 +61,10 @@ internal struct StatefulRunner<C> where C : Stateful
         let deadline: ContinuousClock.Instant?
             = opts.timeout.map { ContinuousClock.now.advanced(by: $0) }
         
+        let verbose: Bool = opts.diagnostics.contains(.verbose)
+        
+        
+        
         while succeeded < iterations
         {
             if
@@ -88,6 +92,22 @@ internal struct StatefulRunner<C> where C : Stateful
                 model:      model,
                 context:    context
             )
+            
+            if verbose
+            {
+                let descriptions: String = commands
+                    .map { String(describing: $0) }
+                    .joined(separator: ", ")
+                
+                let message: String
+                    = "[\(iteration)/\(iterations)]"
+                    + " generation size = \(context.size),"
+                    + " \(commands.count)"
+                    + " command\(commands.count == 1 ? "" : "s")"
+                    + " [\(descriptions)]"
+                
+                logger.info("\(message)")
+            }
             
             let result: ReplayResult = await replaySequence(
                 commands:               commands,
@@ -151,6 +171,11 @@ internal struct StatefulRunner<C> where C : Stateful
                     
                     discarded += 1
                     
+                    if verbose
+                    {
+                        logger.info("[\(iteration)/\(iterations)] discarded")
+                    }
+                    
                     if discarded > maxDiscardRatio * iterations
                     {
                         let result: PropertyResult<[C]> = .exhausted(
@@ -186,6 +211,11 @@ internal struct StatefulRunner<C> where C : Stateful
                     logger.warning("Precondition failed during replay")
                     
                     discarded += 1
+                    
+                    if verbose
+                    {
+                        logger.info("[\(iteration)/\(iterations)] invalid")
+                    }
                     
                     if discarded > maxDiscardRatio * iterations
                     {
@@ -704,6 +734,9 @@ internal struct StatefulRunner<C> where C : Stateful
             return false
         }
         
+        let verbose: Bool = options.propertyOptions.diagnostics
+            .contains(.verbose)
+        
         
         
         /// Removal shrinking.
@@ -739,6 +772,16 @@ internal struct StatefulRunner<C> where C : Stateful
                     current     = candidate
                     steps       += 1
                     improved    = true
+                    
+                    if verbose
+                    {
+                        let message: String
+                            = "Removal shrink step \(steps): \(current.count)"
+                            + " command\(current.count == 1 ? "" : "s"),"
+                            + " chunk size = \(chunkSize)"
+                        
+                        logger.info("\(message)")
+                    }
                     
                     /// Restart with a new chunk size based on the shorter
                     /// sequence.
@@ -809,6 +852,16 @@ internal struct StatefulRunner<C> where C : Stateful
                     steps       += 1
                     improved    = true
                     
+                    if verbose
+                    {
+                        let message: String
+                            = "Argument shrink step \(steps):"
+                            + " replaced command at index \(index)"
+                            + " with \(String(describing: candidate))"
+                        
+                        logger.info("\(message)")
+                    }
+                    
                     /// Restart from the start of the sequence.
                     break
                 }
@@ -825,6 +878,17 @@ internal struct StatefulRunner<C> where C : Stateful
         }
         
         
+        
+        if
+            verbose,
+            steps > 0
+        {
+            let message: String 
+                = "Shrinking complete at step \(steps)"
+                + " (\(current.count) command\(current.count == 1 ? "" : "s"))"
+            
+            logger.info("\(message)")
+        }
         
         return ShrunkenSequence(
             commands:       current,

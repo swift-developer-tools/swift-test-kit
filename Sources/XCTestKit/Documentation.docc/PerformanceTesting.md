@@ -15,3 +15,7 @@ exceeds the configured limits.
 
 - ``XCTKPerformance(runs:warmupRuns:timeLimit:memoryLimit:_:fileID:file:line:column:options:_:)``
 - ``ByteCount``
+
+### Configuration
+
+- ``PerformanceOptions``

@@ -95,3 +95,9 @@ and argument shrinking reduces individual command parameters.
 - ``Arbitrary()``
 - ``Generator``
 - ``GenerationContext``
+
+### Configuration
+
+- ``PropertyOptions``
+- ``PropertyDiagnostics``
+- ``CommandStatistics``
