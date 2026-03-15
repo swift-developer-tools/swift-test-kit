@@ -72,7 +72,7 @@ public struct PropertyOptions: Equatable, Sendable
     /// best result found so far.
     public var timeout          : Duration?
     
-    /// The options for diagnostics reporting in property-based tests.
+    /// The options for reporting diagnostics in property-based tests.
     ///
     /// The default value is an empty option set.
     public var diagnostics      : PropertyDiagnostics
@@ -170,7 +170,7 @@ public struct PropertyOptions: Equatable, Sendable
 
 // MARK: - PropertyDiagnostics
 
-/// The options for diagnostics reporting in property-based tests.
+/// The options for reporting diagnostics in property-based tests.
 public struct PropertyDiagnostics: OptionSet, Equatable, Sendable
 {
     /// The raw value.
