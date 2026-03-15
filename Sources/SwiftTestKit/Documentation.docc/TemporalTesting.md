@@ -14,3 +14,7 @@ duration, or until all assertions pass within a single execution.
 
 - ``STKAlways(timeout:interval:_:fileID:file:line:column:options:_:)``
 - ``STKEventually(timeout:interval:_:fileID:file:line:column:options:_:)``
+
+### Configuration
+
+- ``TemporalOptions``
