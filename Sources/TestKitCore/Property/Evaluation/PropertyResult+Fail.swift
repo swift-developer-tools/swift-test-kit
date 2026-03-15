@@ -21,6 +21,7 @@ extension PropertyResult
     ///   - file: The file where the failure occurs.
     ///   - line: The line where the failure occurs.
     ///   - column: The column where the failure occurs.
+    ///   - options: The options for testing.
     internal func emit(
         functionName    : String,
         statistics      : String?           = nil,
@@ -29,7 +30,8 @@ extension PropertyResult
         fileID          : StaticString,
         file            : StaticString,
         line            : UInt,
-        column          : UInt
+        column          : UInt,
+        options         : TestOptions
     )
     {
         let text: String

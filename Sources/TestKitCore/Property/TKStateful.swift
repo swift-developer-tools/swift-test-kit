@@ -37,6 +37,7 @@ package func TKStateful<C>(
         fileID:         fileID,
         file:           file,
         line:           line,
-        column:         column
+        column:         column,
+        options:        options
     )
 }

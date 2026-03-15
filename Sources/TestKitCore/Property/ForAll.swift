@@ -42,7 +42,8 @@ package func TKForAll<each T>(
         fileID:         fileID,
         file:           file,
         line:           line,
-        column:         column
+        column:         column,
+        options:        options
     )
 }
 
@@ -84,7 +85,8 @@ package func TKForAll<each T>(
         fileID:         fileID,
         file:           file,
         line:           line,
-        column:         column
+        column:         column,
+        options:        options
     )
 }
 
@@ -134,7 +136,8 @@ package func TKForAll<each T>(
         fileID:         fileID,
         file:           file,
         line:           line,
-        column:         column
+        column:         column,
+        options:        options
     )
 }
 
@@ -185,6 +188,7 @@ package func TKForAll<each T>(
         fileID:         fileID,
         file:           file,
         line:           line,
-        column:         column
+        column:         column,
+        options:        options
     )
 }
