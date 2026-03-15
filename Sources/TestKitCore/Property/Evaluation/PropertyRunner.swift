@@ -155,6 +155,8 @@ internal struct PropertyRunner
         let deadline: ContinuousClock.Instant?
             = opts.timeout.map { ContinuousClock.now.advanced(by: $0) }
         
+        let verbose: Bool = opts.diagnostics.contains(.verbose)
+        
 
         
         while succeeded < iterations
@@ -176,7 +178,8 @@ internal struct PropertyRunner
             
             
             
-            let value: T
+            let value       : T
+            let isMutated   : Bool
             
             if
                 targetedMode,
@@ -185,11 +188,26 @@ internal struct PropertyRunner
             {
                 let base: T = targetPool.select(using: context)
                 
-                value = mutate(base, context)
+                value       = mutate(base, context)
+                isMutated   = true
             }
             else
             {
-                value = generate(context)
+                value       = generate(context)
+                isMutated   = false
+            }
+            
+            
+            
+            if verbose
+            {
+                let message: String
+                    = "[\(iteration)/\(iterations)]"
+                    + " generation size = \(context.size),"
+                    + " \(isMutated ? "mutated" : "generated"):"
+                    + " \(String(describing: value))"
+                
+                logger.info("\(message)")
             }
             
             
@@ -199,6 +217,15 @@ internal struct PropertyRunner
                 !precondition(value)
             {
                 discarded += 1
+                
+                if verbose
+                {
+                    let message: String
+                        = "[\(iteration)/\(iterations)] discarded:"
+                        + " \(String(describing: value))"
+                    
+                    logger.info("\(message)")
+                }
                 
                 if discarded > maxDiscardRatio * iterations
                 {
@@ -230,6 +257,11 @@ internal struct PropertyRunner
                         if !targetedMode
                         {
                             targetedMode = true
+                            
+                            if verbose
+                            {
+                                logger.info("Entering targeted mode")
+                            }
                         }
                         
                         targetPool.insert(
@@ -264,6 +296,15 @@ internal struct PropertyRunner
                 case .discarded:
                     
                     discarded += 1
+                    
+                    if verbose
+                    {
+                        let message: String
+                            = "[\(iteration)/\(iterations)] discarded (assume):"
+                            + " \(String(describing: value))"
+                        
+                        logger.info("\(message)")
+                    }
                     
                     if discarded > maxDiscardRatio * iterations
                     {
@@ -439,6 +480,9 @@ internal struct PropertyRunner
         var current : T     = value
         var steps   : Int   = 0
         
+        let verbose: Bool = options.propertyOptions.diagnostics
+            .contains(.verbose)
+        
         while steps < options.propertyOptions.maxShrinkSteps
         {
             if
@@ -472,6 +516,15 @@ internal struct PropertyRunner
                     improved    = true
                     steps       += 1
                     
+                    if verbose
+                    {
+                        let message: String
+                            = "Shrink step \(steps):"
+                            + " \(String(describing: candidate))"
+                        
+                        logger.info("\(message)")
+                    }
+                    
                     /// Start again with a smaller value.
                     break
                 }
@@ -479,6 +532,13 @@ internal struct PropertyRunner
             
             if !improved
             {
+                if
+                    verbose,
+                    steps > 0
+                {
+                    logger.info("Shrinking complete at step \(steps)")
+                }
+                
                 break
             }
         }
