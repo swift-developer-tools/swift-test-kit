@@ -620,10 +620,8 @@ extension PropertyResult
         }
         else
         {
-            let valueTypeName
-                = String(describing: type(of: counterexample.value))
-            
-            let valueText = String(describing: counterexample.value)
+            let valueTypeName   = String(describing: type(of: value))
+            let valueText       = String(describing: value)
             
             lines.append("    \(valueTypeName) = \(valueText)")
         }
