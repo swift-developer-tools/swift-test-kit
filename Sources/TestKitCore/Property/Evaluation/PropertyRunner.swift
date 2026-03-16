@@ -171,7 +171,21 @@ internal struct PropertyRunner
         
         let verbose: Bool = opts.diagnostics.contains(.verbose)
         
-
+        
+        
+        let exampleResult: PropertyResult<T>? = await evaluateExamples(
+            examples,
+            with:   property,
+            using:  interceptor,
+            seed:   seed
+        )
+        
+        if let exampleResult
+        {
+            return exampleResult
+        }
+        
+        
         
         while succeeded < iterations
         {
@@ -412,6 +426,90 @@ internal struct PropertyRunner
     
     
     // MARK: - Evaluate
+    
+    /// Evaluates the given pinned examples with the using the property body
+    /// and interceptor.
+    /// - Parameters:
+    ///   - examples: The pinned examples to test.
+    ///   - property: The property body.
+    ///   - interceptor: The interceptor.
+    ///   - seed: The seed used to initialize the random number generator.
+    /// - Returns: The result of the property check, if an example failed.
+    /// Otherwise, `nil` if all examples passed or were discarded.
+    @Reasync
+    private static func evaluateExamples<T>(
+        _       examples    : [T],
+        with    property    : (T) async throws -> Void,
+        using   interceptor : PropertyInterceptor,
+        seed                : UInt64
+    ) async -> PropertyResult<T>?
+    {
+        for example in examples
+        {
+            let evaluationResult: EvaluationResult = await evaluateProperty(
+                property,
+                with:   example,
+                using:  interceptor
+            )
+            
+            switch evaluationResult
+            {
+                case
+                    .passed,
+                    .discarded:
+                    
+                    /// Pinned examples do not seed the target pool on success,
+                    /// since they are fixed values, not mutation candidates.
+                    ///
+                    /// Pinned examples cannot be discarded by the precondition,
+                    /// but the property body can throw a ``DiscardError``
+                    /// from a failed assumption. Still finalize the iteration
+                    /// in this case so it counts toward the distribution.
+                    
+                    interceptor.finalizeIteration()
+                    
+                case .failed:
+                    
+                    /// Run one more time to capture the assertion output.
+                    let finalInterceptor    : PropertyInterceptor   = .init()
+                    var thrownError         : Error?                = nil
+                    
+                    await FailureInterceptor.$current
+                        .withValue(finalInterceptor)
+                    {
+                        do
+                        {
+                            try await property(example)
+                        }
+                        catch
+                        {
+                            thrownError = error
+                        }
+                    }
+                    
+                    let counterexample = Counterexample(
+                        value:          example,
+                        originalValue:  example,
+                        seed:           seed,
+                        iteration:      0,
+                        shrinkSteps:    0,
+                        failures:       finalInterceptor.failures,
+                        failingStep:    nil,
+                        error:          thrownError
+                    )
+                    
+                    return .failed(
+                        counterexample:     counterexample,
+                        distribution:       interceptor.distribution,
+                        tableDistribution:  interceptor.tableDistribution
+                    )
+            }
+        }
+        
+        return nil
+    }
+    
+    
     
     /// Evaluates the given property with the given value.
     /// - Parameters:
