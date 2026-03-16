@@ -485,6 +485,37 @@ internal final class ForAllIntegrationTests: TestKitCase
     
     
     
+    // MARK: - Example pinning
+    
+    @Reasync
+    func testPinnedExampleSuccess() async
+    {
+        await TKForAll(examples: [0, 1, Int.max])
+        {
+            (n: Int) async in
+            
+            TKAssertEqual(n + 0, n)
+        }
+    }
+    
+    
+    
+    @Reasync
+    func testPinnedExampleFailure() async
+    {
+        await withOneExpectedFailure
+        {
+            await TKForAll(examples: [0])
+            {
+                (n: Int) async in
+                
+                TKAssertNotEqual(n, 0)
+            }
+        }
+    }
+    
+    
+    
     // MARK: - No assertion
     
     @Reasync
