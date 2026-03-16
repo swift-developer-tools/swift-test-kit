@@ -1,4 +1,4 @@
-# ``STKForAll(using:message:fileID:file:line:column:options:_:)-6h5i2``
+# ``STKForAll(using:examples:message:fileID:file:line:column:options:_:)-67ijz``
 
 Asserts that the given property holds for all values produced by the
 given generators.
@@ -13,6 +13,8 @@ Native Swift Testing assertions are not intercepted.
 
 - Parameters:
   - generators: The generators to use to produce values.
+  - examples: The pinned values to test first. These values are not shrunk
+  and are not mutated during targeted property-based testing.
   - message: An optional description of a failure.
   - fileID: The ID of the file where the failure occurs. The default value
   is the ID of the file of the test case in which this function was called.

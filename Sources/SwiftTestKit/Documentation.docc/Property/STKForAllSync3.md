@@ -1,4 +1,4 @@
-# ``STKForAll(where:message:fileID:file:line:column:options:_:)-4zfpt``
+# ``STKForAll(where:examples:message:fileID:file:line:column:options:_:)-5ikn6``
 
 Asserts that the given property holds for all generated values that satisfy
 the given precondition.
@@ -16,6 +16,9 @@ Native Swift Testing assertions are not intercepted.
 
 - Parameters:
   - precondition: The condition which generated values must satisfy.
+  - examples: The pinned values to test first. These values are not shrunk,
+  are not mutated during targeted property-based testing, and do not
+  respect the given precondition.
   - message: An optional description of a failure.
   - fileID: The ID of the file where the failure occurs. The default value
   is the ID of the file of the test case in which this function was called.

@@ -56,17 +56,17 @@ and argument shrinking reduces individual command parameters.
 
 ### Evaluating Properties Synchronously
 
-- ``STKForAll(_:fileID:file:line:column:options:_:)-9km1j``
-- ``STKForAll(using:message:fileID:file:line:column:options:_:)-6h5i2``
-- ``STKForAll(where:message:fileID:file:line:column:options:_:)-4zfpt``
-- ``STKForAll(using:where:message:fileID:file:line:column:options:_:)-3v160``
+- ``STKForAll(examples:message:fileID:file:line:column:options:_:)-762jj``
+- ``STKForAll(using:examples:message:fileID:file:line:column:options:_:)-67ijz``
+- ``STKForAll(where:examples:message:fileID:file:line:column:options:_:)-5ikn6``
+- ``STKForAll(using:where:examples:message:fileID:file:line:column:options:_:)-79unz``
 
 ### Evaluating Properties Asynchronously
 
-- ``STKForAll(_:fileID:file:line:column:options:_:)-7d8k8``
-- ``STKForAll(using:message:fileID:file:line:column:options:_:)-4hzb4``
-- ``STKForAll(where:message:fileID:file:line:column:options:_:)-7oehd``
-- ``STKForAll(using:where:message:fileID:file:line:column:options:_:)-5uhb2``
+- ``STKForAll(examples:message:fileID:file:line:column:options:_:)-2nbme``
+- ``STKForAll(using:examples:message:fileID:file:line:column:options:_:)-9vgyj``
+- ``STKForAll(where:examples:message:fileID:file:line:column:options:_:)-7b0ba``
+- ``STKForAll(using:where:examples:message:fileID:file:line:column:options:_:)-5es8k``
 
 ### Evaluating Properties Statefully
 
