@@ -21,6 +21,10 @@ import TestKitCore
 /// - Important: Use only XCTestKit assertions inside temporal bodies.
 /// Native XCTest assertions are not intercepted.
 ///
+/// - Note: Polling is performed using `ContinuousClock`. On heavily-loaded
+/// systems, scheduling delays may reduce the number of polls or cause the
+/// elapsed time to overshoot the timeout duration.
+///
 /// - Parameters:
 ///   - timeout: The timeout duration. The default value is `nil`, which falls
 ///   back to using global options.
@@ -73,6 +77,10 @@ public func XCTKAlways(
 ///
 /// - Important: Use only XCTestKit assertions inside temporal bodies.
 /// Native XCTest assertions are not intercepted.
+///
+/// - Note: Polling is performed using `ContinuousClock`. On heavily-loaded
+/// systems, scheduling delays may reduce the number of polls or cause the
+/// elapsed time to overshoot the timeout duration.
 ///
 /// - Parameters:
 ///   - timeout: The timeout duration. The default value is `nil`, which falls
