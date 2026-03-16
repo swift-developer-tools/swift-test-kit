@@ -197,8 +197,8 @@ internal final class ForAllOutputTests: TestKitCase
         let actual: String? = await withOneExpectedFailure
         {
             await TKForAll(
-                "hello world",
-                options: options
+                message:    "hello world",
+                options:    options
             )
             {
                 (_: Int) async throws in
@@ -237,8 +237,8 @@ internal final class ForAllOutputTests: TestKitCase
         let actual: String? = await withOneExpectedFailure
         {
             await TKForAll(
-                "hello world",
-                options: options
+                message:    "hello world",
+                options:    options
             )
             {
                 (_: Int) async in
@@ -1153,7 +1153,7 @@ internal final class ForAllOutputTests: TestKitCase
     
     
     
-    // MARK: - Show original
+    // MARK: - Diagnostics
     
     @Reasync
     func testShowOriginalWithShrinking() async
@@ -1385,6 +1385,92 @@ internal final class ForAllOutputTests: TestKitCase
             Int = 12
         
         Threw error: TestError()
+        
+        \(Self.seedMessage)
+        """
+        
+        XCTAssertEqual(expected, actual)
+    }
+    
+    
+    
+    // MARK: - Example pinning
+    
+    @Reasync
+    func testPinnedExampleCounterexample() async
+    {
+        let options: TestOptions = .propertyOptions(
+            iterations:     1,
+            seed:           Self.seed
+        )
+        
+        let actual: String? = await withOneExpectedFailure
+        {
+            await TKForAll(
+                examples:   [0],
+                message:    "hello world",
+                options:    options
+            )
+            {
+                (_: Int) async in
+                
+                TKAssertTrue(false)
+            }
+        }
+        
+        let expected: String =
+        """
+        XCTKForAll failed after 0 iterations
+        
+        Counterexample:
+            Int = 0
+        
+        XCTKAssertTrue failed
+        
+        \(Self.seedMessage)
+        
+        hello world
+        """
+        
+        XCTAssertEqual(expected, actual)
+    }
+    
+    
+    
+    @Reasync
+    func testTwoParameterPinnedExampleCounterexample() async
+    {
+        let options: TestOptions = .propertyOptions(
+            iterations:     1,
+            seed:           Self.seed
+        )
+        
+        let gen1    = Generator<Int>.constant(50)
+        let gen2    = Generator<String>.constant("abc")
+        
+        let actual: String? = await withOneExpectedFailure
+        {
+            await TKForAll(
+                using:      gen1, gen2,
+                examples:   [(99, "xyz")],
+                options:    options
+            )
+            {
+                (_: Int, _: String) async in
+                
+                TKAssertTrue(false)
+            }
+        }
+        
+        let expected: String =
+        """
+        XCTKForAll failed after 0 iterations
+        
+        Counterexample:
+            Int = 99
+            String = xyz
+        
+        XCTKAssertTrue failed
         
         \(Self.seedMessage)
         """

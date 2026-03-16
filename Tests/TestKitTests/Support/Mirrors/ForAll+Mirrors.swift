@@ -18,7 +18,8 @@ import TestKitCore
 
 @Reasync
 internal func TKForAll<each T>(
-    _ message   : @autoclosure () -> String             = "",
+    examples    : @autoclosure () -> [(repeat each T)]  = [],
+    message     : @autoclosure () -> String             = "",
     fileID      : StaticString                          = #fileID,
     file        : StaticString                          = #filePath,
     line        : UInt                                  = #line,
@@ -29,7 +30,8 @@ internal func TKForAll<each T>(
 ) async where repeat each T : Arbitrary
 {
     await TestKitCore.TKForAll(
-        message,
+        examples:   examples,
+        message:    message,
         fileID:     fileID,
         file:       file,
         line:       line,
@@ -45,6 +47,7 @@ internal func TKForAll<each T>(
 @Reasync
 internal func TKForAll<each T>(
     using generators    : repeat Generator<each T>,
+    examples            : @autoclosure () -> [(repeat each T)]  = [],
     message             : @autoclosure () -> String             = "",
     fileID              : StaticString                          = #fileID,
     file                : StaticString                          = #filePath,
@@ -57,6 +60,7 @@ internal func TKForAll<each T>(
 {
     await TestKitCore.TKForAll(
         using:      repeat each generators,
+        examples:   examples,
         message:    message,
         fileID:     fileID,
         file:       file,
@@ -73,6 +77,7 @@ internal func TKForAll<each T>(
 @Reasync
 internal func TKForAll<each T>(
     where precondition  : @escaping (repeat each T) -> Bool,
+    examples            : @autoclosure () -> [(repeat each T)]  = [],
     message             : @autoclosure () -> String             = "",
     fileID              : StaticString                          = #fileID,
     file                : StaticString                          = #filePath,
@@ -85,6 +90,7 @@ internal func TKForAll<each T>(
 {
     await TestKitCore.TKForAll(
         where:      precondition,
+        examples:   examples,
         message:    message,
         fileID:     fileID,
         file:       file,
@@ -102,6 +108,7 @@ internal func TKForAll<each T>(
 internal func TKForAll<each T>(
     using generators    : repeat Generator<each T>,
     where precondition  : @escaping (repeat each T) -> Bool,
+    examples            : @autoclosure () -> [(repeat each T)]  = [],
     message             : @autoclosure () -> String             = "",
     fileID              : StaticString                          = #fileID,
     file                : StaticString                          = #filePath,
@@ -115,6 +122,7 @@ internal func TKForAll<each T>(
     await TestKitCore.TKForAll(
         using:      repeat each generators,
         where:      precondition,
+        examples:   examples,
         message:    message,
         fileID:     fileID,
         file:       file,

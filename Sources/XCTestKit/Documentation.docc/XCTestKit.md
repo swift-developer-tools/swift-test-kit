@@ -496,7 +496,8 @@ so counterexamples include the same diff output, expression capture, and
 formatting used by standalone assertions.
 
 The counterexample is reported along with the seed used for generation, which 
-may be used to deterministically reproduce the failure.
+can be used to deterministically reproduce the failure. The failing values can 
+be pinned as examples to prevent regressions.
 
 ```swift
 func customSort(_ array: [Int]) -> [Int] { /* ... */ }

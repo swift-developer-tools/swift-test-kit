@@ -56,17 +56,17 @@ and argument shrinking reduces individual command parameters.
 
 ### Evaluating Properties Synchronously
 
-- ``XCTKForAll(_:fileID:file:line:column:options:_:)-8p99k``
-- ``XCTKForAll(using:message:fileID:file:line:column:options:_:)-1n6rn``
-- ``XCTKForAll(where:message:fileID:file:line:column:options:_:)-4xj6q``
-- ``XCTKForAll(using:where:message:fileID:file:line:column:options:_:)-3lyy4``
+- ``XCTKForAll(examples:message:fileID:file:line:column:options:_:)-7wpbg``
+- ``XCTKForAll(using:examples:message:fileID:file:line:column:options:_:)-58b``
+- ``XCTKForAll(where:examples:message:fileID:file:line:column:options:_:)-6zkzo``
+- ``XCTKForAll(using:where:examples:message:fileID:file:line:column:options:_:)-4ef8a``
 
 ### Evaluating Properties Asynchronously
 
-- ``XCTKForAll(_:fileID:file:line:column:options:_:)-80308``
-- ``XCTKForAll(using:message:fileID:file:line:column:options:_:)-75slc``
-- ``XCTKForAll(where:message:fileID:file:line:column:options:_:)-7u936``
-- ``XCTKForAll(using:where:message:fileID:file:line:column:options:_:)-39qo7``
+- ``XCTKForAll(examples:message:fileID:file:line:column:options:_:)-8pmfo``
+- ``XCTKForAll(using:examples:message:fileID:file:line:column:options:_:)-2ig2c``
+- ``XCTKForAll(where:examples:message:fileID:file:line:column:options:_:)-4n2q8``
+- ``XCTKForAll(using:where:examples:message:fileID:file:line:column:options:_:)-2q3hf``
 
 ### Evaluating Properties Statefully
 

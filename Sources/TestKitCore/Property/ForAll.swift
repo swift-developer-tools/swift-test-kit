@@ -9,7 +9,8 @@
 
 @Reasync
 package func TKForAll<each T>(
-    _ message   : () -> String,
+    examples    : () -> [(repeat each T)],
+    message     : () -> String,
     fileID      : StaticString,
     file        : StaticString,
     line        : UInt,
@@ -31,6 +32,7 @@ package func TKForAll<each T>(
     
     let result: PropertyResult<(repeat each T)> = await PropertyRunner.run(
         using:      generator,
+        examples:   examples(),
         property:   wrappedProperty,
         options:    options
     )
@@ -52,6 +54,7 @@ package func TKForAll<each T>(
 @Reasync
 package func TKForAll<each T>(
     using generators    : repeat Generator<each T>,
+    examples            : () -> [(repeat each T)],
     message             : () -> String,
     fileID              : StaticString,
     file                : StaticString,
@@ -74,6 +77,7 @@ package func TKForAll<each T>(
     
     let result: PropertyResult<(repeat each T)> = await PropertyRunner.run(
         using:      generator,
+        examples:   examples(),
         property:   wrappedProperty,
         options:    options
     )
@@ -95,6 +99,7 @@ package func TKForAll<each T>(
 @Reasync
 package func TKForAll<each T>(
     where precondition  : @escaping (repeat each T) -> Bool,
+    examples            : () -> [(repeat each T)],
     message             : () -> String,
     fileID              : StaticString,
     file                : StaticString,
@@ -125,6 +130,7 @@ package func TKForAll<each T>(
     let result: PropertyResult<(repeat each T)> = await PropertyRunner.run(
         using:      generator,
         where:      wrappedPrecondition,
+        examples:   examples(),
         property:   wrappedProperty,
         options:    options
     )
@@ -147,6 +153,7 @@ package func TKForAll<each T>(
 package func TKForAll<each T>(
     using generators    : repeat Generator<each T>,
     where precondition  : @escaping (repeat each T) -> Bool,
+    examples            : () -> [(repeat each T)],
     message             : () -> String,
     fileID              : StaticString,
     file                : StaticString,
@@ -177,6 +184,7 @@ package func TKForAll<each T>(
     let result: PropertyResult<(repeat each T)> = await PropertyRunner.run(
         using:      generator,
         where:      wrappedPrecondition,
+        examples:   examples(),
         property:   wrappedProperty,
         options:    options
     )
