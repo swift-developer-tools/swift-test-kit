@@ -1,7 +1,7 @@
 # ``XCTestKit``
 
-Property-based, stateful, performance, temporal, and atomic testing, with 
-structural diffs and advanced assertions for the XCTest framework.
+Composable property-based, stateful, performance, temporal, and atomic testing, 
+with structural diffs and advanced assertions for the XCTest framework.
 
 
 

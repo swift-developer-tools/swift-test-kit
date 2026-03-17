@@ -1,7 +1,7 @@
 # swift-test-kit
 
-Property-based, stateful, performance, temporal, and atomic testing, with 
-structural diffs and advanced assertions for the Swift Testing and XCTest 
+Composable property-based, stateful, performance, temporal, and atomic testing, 
+with structural diffs and advanced assertions for the Swift Testing and XCTest 
 frameworks.
 
 
