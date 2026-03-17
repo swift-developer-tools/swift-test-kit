@@ -674,6 +674,11 @@ internal struct StatefulRunner<C> where C : Stateful
             deadline:   deadline
         )
         
+        if options.propertyOptions.diagnostics.contains(.shrinking)
+        {
+            reportShrinkEffectiveness(shrunken)
+        }
+        
         /// Run one more time to capture the assertion output.
         let interceptor: PropertyInterceptor = .init()
         
@@ -739,9 +744,19 @@ internal struct StatefulRunner<C> where C : Stateful
     {
         let maxSteps: Int = options.propertyOptions.maxShrinkSteps
         
-        let interceptor : PropertyInterceptor   = .init()
-        var current     : [C]                   = commands
-        var steps       : Int                   = 0
+        let interceptor         : PropertyInterceptor   = .init()
+        var current             : [C]                   = commands
+        var steps               : Int                   = 0
+        var removalSteps        : Int                   = 0
+        var argSteps            : Int                   = 0
+        var removalEvaluated    : Int                   = 0
+        var removalFiltered     : Int                   = 0
+        var removalPassed       : Int                   = 0
+        var argEvaluated        : Int                   = 0
+        var argFiltered         : Int                   = 0
+        var argPassed           : Int                   = 0
+        
+        
         
         let pastDeadline: () -> Bool =
         {
@@ -768,7 +783,7 @@ internal struct StatefulRunner<C> where C : Stateful
             var offset      : Int   = 0
             var improved    : Bool  = false
             
-            while
+            removalLoop: while
                 offset + chunkSize <= current.count,
                 steps < maxSteps,
                 !pastDeadline()
@@ -786,25 +801,41 @@ internal struct StatefulRunner<C> where C : Stateful
                     checkPreconditions:     true
                 )
                 
-                if case .failed = replayResult
+                switch replayResult
                 {
-                    current     = candidate
-                    steps       += 1
-                    improved    = true
-                    
-                    if verbose
-                    {
-                        let message: String
-                            = "Removal shrink step \(steps): \(current.count)"
-                            + " command\(current.count == 1 ? "" : "s"),"
-                            + " chunk size = \(chunkSize)"
+                    case .failed:
                         
-                        logger.info("\(message)")
-                    }
-                    
-                    /// Restart with a new chunk size based on the shorter
-                    /// sequence.
-                    break
+                        improved            = true
+                        current             = candidate
+                        steps               += 1
+                        removalSteps        += 1
+                        removalEvaluated    += 1
+                        
+                        if verbose
+                        {
+                            let message: String
+                                = "Removal shrink step \(steps):"
+                                + " \(current.count)"
+                                + " command\(current.count == 1 ? "" : "s"),"
+                                + " chunk size = \(chunkSize)"
+                            
+                            logger.info("\(message)")
+                        }
+                        
+                        /// Restart with a new chunk size based on the shorter
+                        /// sequence.
+                        break removalLoop
+                        
+                    case
+                        .passed,
+                        .discarded:
+                        
+                        removalEvaluated    += 1
+                        removalPassed       += 1
+                        
+                    case .invalid:
+                        
+                        removalFiltered += 1
                 }
                 
                 offset += chunkSize
@@ -845,11 +876,11 @@ internal struct StatefulRunner<C> where C : Stateful
             let candidates  : [C]   = current[index].shrink(model: modelAtIndex)
             var improved    : Bool  = false
             
-            for candidate in candidates
+            candidateLoop: for candidate in candidates
             {
                 if steps >= maxSteps
                 {
-                    break
+                    break candidateLoop
                 }
                 
                 var sequence: [C] = current
@@ -865,24 +896,39 @@ internal struct StatefulRunner<C> where C : Stateful
                     checkPreconditions:     true
                 )
                 
-                if case .failed = replayResult
+                switch replayResult
                 {
-                    current     = sequence
-                    steps       += 1
-                    improved    = true
-                    
-                    if verbose
-                    {
-                        let message: String
-                            = "Argument shrink step \(steps):"
-                            + " replaced command at index \(index)"
-                            + " with \(String(describing: candidate))"
+                    case .failed:
                         
-                        logger.info("\(message)")
-                    }
-                    
-                    /// Restart from the start of the sequence.
-                    break
+                        improved        = true
+                        current         = sequence
+                        steps           += 1
+                        argSteps        += 1
+                        argEvaluated    += 1
+                        
+                        if verbose
+                        {
+                            let message: String
+                                = "Argument shrink step \(steps):"
+                                + " replaced command at index \(index)"
+                                + " with \(String(describing: candidate))"
+                            
+                            logger.info("\(message)")
+                        }
+                        
+                        /// Restart from the start of the sequence.
+                        break candidateLoop
+                        
+                    case
+                        .passed,
+                        .discarded:
+                        
+                        argEvaluated    += 1
+                        argPassed       += 1
+                        
+                    case .invalid:
+                        
+                        argFiltered += 1
                 }
             }
             
@@ -910,8 +956,15 @@ internal struct StatefulRunner<C> where C : Stateful
         }
         
         return ShrunkenSequence(
-            commands:       current,
-            shrinkSteps:    steps
+            commands:           current,
+            removalSteps:       removalSteps,
+            argSteps:           argSteps,
+            removalEvaluated:   removalEvaluated,
+            removalFiltered:    removalFiltered,
+            removalPassed:      removalPassed,
+            argEvaluated:       argEvaluated,
+            argFiltered:        argFiltered,
+            argPassed:          argPassed
         )
     }
     
@@ -1164,9 +1217,65 @@ internal struct StatefulRunner<C> where C : Stateful
     private struct ShrunkenSequence: Sendable
     {
         /// The shrunken command sequence.
-        let commands    : [C]
+        let commands            : [C]
         
-        /// The number of shrink steps performed.
-        let shrinkSteps : Int
+        /// The number of removal shrink steps performed.
+        let removalSteps        : Int
+        
+        /// The number of argument shrink steps performed.
+        let argSteps            : Int
+        
+        /// The number of evaluated removal shrink candidates.
+        let removalEvaluated    : Int
+        
+        /// The number of filtered removal shrink candidates.
+        let removalFiltered     : Int
+        
+        /// The number of passed removal shrink candidates.
+        let removalPassed       : Int
+        
+        /// The number of evaluated argument shrink candidates.
+        let argEvaluated        : Int
+        
+        /// The number of filtered argument shrink candidates.
+        let argFiltered         : Int
+        
+        /// The number of passed argument shrink candidates.
+        let argPassed           : Int
+        
+        
+        
+        /// The total number of shrink steps performed.
+        var shrinkSteps: Int
+        {
+            return removalSteps + argSteps
+        }
+    }
+    
+    
+    
+    /// Reports ineffective shrinking.
+    /// - Parameter sequence: The shrunken command sequence.
+    private static func reportShrinkEffectiveness(
+        _ sequence: ShrunkenSequence
+    )
+    {
+        PropertyRunner.reportShrinkEffectiveness(
+            phase:              "Removal",
+            steps:              sequence.removalSteps,
+            evaluated:          sequence.removalEvaluated,
+            filtered:           sequence.removalFiltered,
+            passed:             sequence.removalPassed,
+            hasPrecondition:    true
+        )
+        
+        PropertyRunner.reportShrinkEffectiveness(
+            phase:              "Argument",
+            steps:              sequence.argSteps,
+            evaluated:          sequence.argEvaluated,
+            filtered:           sequence.argFiltered,
+            passed:             sequence.argPassed,
+            hasPrecondition:    true
+        )
     }
 }

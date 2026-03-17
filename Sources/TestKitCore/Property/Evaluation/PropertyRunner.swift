@@ -810,12 +810,14 @@ internal struct PropertyRunner
     
     /// Reports ineffective shrinking.
     /// - Parameters:
+    ///   - phase: The shrinking phase to report. Pass `nil` for generic.
     ///   - steps: The number of shrink steps.
     ///   - evaluated: The evaluated shrink candidates.
     ///   - filtered: The filtered shrink candidates.
     ///   - passed: The passed shrink caididates.
     ///   - hasPrecondition: Whether there was a precondition.
-    private static func reportShrinkEffectiveness(
+    internal static func reportShrinkEffectiveness(
+        phase           : String?   = nil,
         steps           : Int,
         evaluated       : Int,
         filtered        : Int,
@@ -835,8 +837,12 @@ internal struct PropertyRunner
         
         if steps == 0
         {
+            let label: String = phase == nil
+                ? "Shrinking"
+                : "\(phase!) shrinking"
+            
             lines.append(
-                "Shrinking produced no improvements"
+                "\(label) produced no improvements"
                 + " (\(evaluated) candidate\(evaluated == 1 ? "" : "s")"
                 + " evaluated, none reproduced the failure)"
             )
