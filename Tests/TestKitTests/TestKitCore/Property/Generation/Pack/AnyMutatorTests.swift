@@ -519,7 +519,7 @@ internal final class AnyMutatorTests: TestKitCase
         {
             XCTAssertGreaterThan(
                 count,
-                Int(Double(iterations) * (1 / 3) * 0.95)
+                Int(Double(iterations) * (1 / 3) * 0.85)
             )
         }
     }

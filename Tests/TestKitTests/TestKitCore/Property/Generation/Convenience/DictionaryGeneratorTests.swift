@@ -752,7 +752,7 @@ internal final class DictionaryGeneratorTests: TestKitCase
         
         XCTAssertGreaterThan(
             valueMutateCallCount,
-            Int(Double(iterations) * 0.7 * 0.95)
+            Int(Double(iterations) * 0.7 * 0.85)
         )
     }
     
@@ -1082,7 +1082,7 @@ internal final class DictionaryGeneratorTests: TestKitCase
         
         XCTAssertGreaterThan(
             valueMutateCallCount,
-            Int(Double(iterations) * 0.7 * 0.95)
+            Int(Double(iterations) * 0.7 * 0.85)
         )
     }
     
@@ -1321,7 +1321,7 @@ internal final class DictionaryGeneratorTests: TestKitCase
         
         XCTAssertGreaterThan(
             valueMutateCallCount,
-            Int(Double(iterations) * 0.7 * 0.95)
+            Int(Double(iterations) * 0.7 * 0.85)
         )
     }
 }

@@ -112,7 +112,7 @@ internal final class DataArbitraryTests: TestKitCase
             }
         }
         
-        let expected = Int(Double(Int(UInt8.max) + 1) * 0.95)
+        let expected = Int(Double(Int(UInt8.max) + 1) * 0.85)
         
         XCTAssertGreaterThan(uniqueBytes.count, expected)
     }

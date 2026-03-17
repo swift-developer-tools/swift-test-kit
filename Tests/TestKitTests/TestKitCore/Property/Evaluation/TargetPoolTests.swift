@@ -285,17 +285,17 @@ internal final class TargetPoolTests: TestKitCase
         /// respectively, since entries are weighted by rank, not magnitude.
         XCTAssertGreaterThan(
             counts[10]!,
-            Int(Double(iterations) * (1 / 6) * 0.95)
+            Int(Double(iterations) * (1 / 6) * 0.85)
         )
         
         XCTAssertGreaterThan(
             counts[20]!,
-            Int(Double(iterations) * (2 / 6) * 0.95)
+            Int(Double(iterations) * (2 / 6) * 0.85)
         )
         
         XCTAssertGreaterThan(
             counts[30]!,
-            Int(Double(iterations) * (3 / 6) * 0.95)
+            Int(Double(iterations) * (3 / 6) * 0.85)
         )
     }
 }

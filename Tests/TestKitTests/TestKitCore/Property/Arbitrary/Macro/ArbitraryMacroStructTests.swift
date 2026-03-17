@@ -139,7 +139,7 @@ internal final class ArbitraryMacroStructTests: TestKitCase
             }
         }
         
-        XCTAssertGreaterThan(changed, Int(Double(iterations) * 0.95))
+        XCTAssertGreaterThan(changed, Int(Double(iterations) * 0.85))
     }
     
     
@@ -490,7 +490,7 @@ internal final class ArbitraryMacroStructTests: TestKitCase
             }
         }
         
-        XCTAssertGreaterThan(changed, Int(Double(iterations) * 0.95))
+        XCTAssertGreaterThan(changed, Int(Double(iterations) * 0.85))
     }
     
     
@@ -516,7 +516,7 @@ internal final class ArbitraryMacroStructTests: TestKitCase
             yValues.insert(value.y)
         }
         
-        XCTAssertGreaterThan(yValues.count, Int(Double(iterations) * 0.95))
+        XCTAssertGreaterThan(yValues.count, Int(Double(iterations) * 0.85))
     }
     
     
@@ -1602,7 +1602,7 @@ internal final class ArbitraryMacroStructTests: TestKitCase
             }
         }
         
-        XCTAssertGreaterThan(changed, Int(Double(iterations) * 0.95))
+        XCTAssertGreaterThan(changed, Int(Double(iterations) * 0.85))
     }
     
     

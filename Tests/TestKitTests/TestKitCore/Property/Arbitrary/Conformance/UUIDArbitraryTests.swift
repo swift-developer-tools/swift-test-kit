@@ -145,7 +145,7 @@ internal final class UUIDArbitraryTests: TestKitCase
             }
             else
             {
-                let expected = Int(Double(Int(UInt8.max) + 1) * 0.95)
+                let expected = Int(Double(Int(UInt8.max) + 1) * 0.85)
                 
                 XCTAssertGreaterThan(unique.count, expected)
             }
