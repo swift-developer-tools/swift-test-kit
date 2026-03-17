@@ -200,12 +200,23 @@ public struct PropertyDiagnostics: OptionSet, Equatable, Sendable
     /// - Note: This is logged using `OSLog`.
     public static let slowness       = PropertyDiagnostics(rawValue: 1 << 2)
     
+    /// Reports ineffective shrinking that produces no improvements.
+    ///
+    /// This can help identify shrink implementations that shrink on the
+    /// incorrect axis (and therefore do not reproduce the failure), produce
+    /// candidates that are mostly filtered by a precondition, or produce the
+    /// same values repeatedly.
+    ///
+    /// - Note: This is logged using `OSLog`.
+    public static let shrinking     = PropertyDiagnostics(rawValue: 1 << 3)
+    
     /// Report all diagnostics.
     public static let all: PropertyDiagnostics =
     [
         .original,
         .verbose,
-        .slowness
+        .slowness,
+        .shrinking
     ]
     
     
