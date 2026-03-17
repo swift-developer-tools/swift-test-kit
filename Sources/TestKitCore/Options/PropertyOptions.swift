@@ -183,7 +183,7 @@ public struct PropertyDiagnostics: OptionSet, Equatable, Sendable
     
     /// Report all generated values and shrink candidates.
     ///
-    /// - Note: This is logged using `OSLog`.
+    /// - Note: This is reported using `OSLog`.
     public static let verbose       = PropertyDiagnostics(rawValue: 1 << 1)
     
     /// Report individual iterations that are slower than the median iteration
@@ -197,7 +197,7 @@ public struct PropertyDiagnostics: OptionSet, Equatable, Sendable
     /// performance, accidentally-expensive generators, and tests which have
     /// inherent performance issues but do not exceed the overall time limit.
     ///
-    /// - Note: This is logged using `OSLog`.
+    /// - Note: This is reported using `OSLog`.
     public static let slowness       = PropertyDiagnostics(rawValue: 1 << 2)
     
     /// Reports ineffective shrinking that produces no improvements.
@@ -207,7 +207,7 @@ public struct PropertyDiagnostics: OptionSet, Equatable, Sendable
     /// candidates that are mostly filtered by a precondition, or produce the
     /// same values repeatedly.
     ///
-    /// - Note: This is logged using `OSLog`.
+    /// - Note: This is reported using `OSLog`.
     public static let shrinking     = PropertyDiagnostics(rawValue: 1 << 3)
     
     /// Report all diagnostics.
