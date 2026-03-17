@@ -183,14 +183,29 @@ public struct PropertyDiagnostics: OptionSet, Equatable, Sendable
     
     /// Report all generated values and shrink candidates.
     ///
-    /// - Note: Verbose diagnostics are logged using `OSLog` without formatting.
+    /// - Note: This is logged using `OSLog`.
     public static let verbose       = PropertyDiagnostics(rawValue: 1 << 1)
+    
+    /// Report individual iterations that are slower than the median iteration
+    /// duration.
+    ///
+    /// An iteration is considered slow if it exceeds 10 times the median
+    /// iteration duration. The slowness check is skipped when the total number
+    /// of iterations is fewer than 10, or when the median duration is zero.
+    ///
+    /// This can help identify pathological values, non-deterministic
+    /// performance, accidentally-expensive generators, and tests which have
+    /// inherent performance issues but do not exceed the overall time limit.
+    ///
+    /// - Note: This is logged using `OSLog`.
+    public static let slowness       = PropertyDiagnostics(rawValue: 1 << 2)
     
     /// Report all diagnostics.
     public static let all: PropertyDiagnostics =
     [
         .original,
-        .verbose
+        .verbose,
+        .slowness
     ]
     
     
