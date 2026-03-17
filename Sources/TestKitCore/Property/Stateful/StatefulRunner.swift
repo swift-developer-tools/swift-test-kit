@@ -61,7 +61,10 @@ internal struct StatefulRunner<C> where C : Stateful
         let deadline: ContinuousClock.Instant?
             = opts.timeout.map { ContinuousClock.now.advanced(by: $0) }
         
-        let verbose: Bool = opts.diagnostics.contains(.verbose)
+        let verbose     : Bool  = opts.diagnostics.contains(.verbose)
+        let slowness    : Bool  = opts.diagnostics.contains(.slowness)
+        
+        var iterationDurations: [(iteration: Int, duration: Duration)] = []
         
         
         
@@ -86,6 +89,10 @@ internal struct StatefulRunner<C> where C : Stateful
             /// usable (minimal) value.
             let sequenceCount: Int
                 = max(1, succeeded * maxCommandCount / iterations)
+            
+            let iterationStart: ContinuousClock.Instant? = slowness
+                ? .now
+                : nil
             
             let commands: [C] = generateSequence(
                 count:      sequenceCount,
@@ -121,6 +128,13 @@ internal struct StatefulRunner<C> where C : Stateful
             switch result
             {
                 case .passed:
+                    
+                    if let iterationStart
+                    {
+                        iterationDurations.append(
+                            (iteration, iterationStart.elapsed)
+                        )
+                    }
                     
                     interceptor.finalizeIteration()
                     
@@ -251,6 +265,11 @@ internal struct StatefulRunner<C> where C : Stateful
         /// the test timed out, subsequent logic reflects the actual number
         /// of completed iterations.
         iterations = succeeded
+        
+        PropertyRunner.reportSlowIterations(
+            iterationDurations,
+            totalIterations: iterations
+        )
         
         
         

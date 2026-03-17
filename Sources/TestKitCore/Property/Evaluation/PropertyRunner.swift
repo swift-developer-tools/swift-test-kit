@@ -202,12 +202,8 @@ internal struct PropertyRunner
                 break
             }
             
-            
-            
             iteration       += 1
             context.size    = succeeded * maxSize / iterations
-            
-            
             
             let iterationStart: ContinuousClock.Instant? = slowness
                 ? .now
