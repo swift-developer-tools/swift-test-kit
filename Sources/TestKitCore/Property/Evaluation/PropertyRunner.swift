@@ -169,7 +169,10 @@ internal struct PropertyRunner
         let deadline: ContinuousClock.Instant?
             = opts.timeout.map { ContinuousClock.now.advanced(by: $0) }
         
-        let verbose: Bool = opts.diagnostics.contains(.verbose)
+        let verbose     : Bool  = opts.diagnostics.contains(.verbose)
+        let slowness    : Bool  = opts.diagnostics.contains(.slowness)
+        
+        var iterationDurations: [(iteration: Int, duration: Duration)] = []
         
         
         
@@ -205,6 +208,10 @@ internal struct PropertyRunner
             context.size    = succeeded * maxSize / iterations
             
             
+            
+            let iterationStart: ContinuousClock.Instant? = slowness
+                ? .now
+                : nil
             
             let value       : T
             let isMutated   : Bool
@@ -279,6 +286,13 @@ internal struct PropertyRunner
             switch evaluationResult
             {
                 case .passed:
+                    
+                    if let iterationStart
+                    {
+                        iterationDurations.append(
+                            (iteration, iterationStart.elapsed)
+                        )
+                    }
                     
                     if let target: Double = interceptor.target
                     {
@@ -355,6 +369,11 @@ internal struct PropertyRunner
         /// the test timed out, subsequent logic reflects the actual number
         /// of completed iterations.
         iterations = succeeded
+        
+        reportSlowIterations(
+            iterationDurations,
+            totalIterations: iterations
+        )
         
         
         
@@ -707,5 +726,66 @@ internal struct PropertyRunner
         
         /// The iteration was discarded.
         case discarded
+    }
+    
+    
+    
+    /// Checks for slow iterations and logs a warning for each outlier.
+    /// - Parameters:
+    ///   - durations: The iteration durations to check.
+    ///   - totalIterations: The total number of iterations.
+    private static func reportSlowIterations(
+        _ durations     : [(iteration: Int, duration: Duration)],
+        totalIterations : Int
+    )
+    {
+        guard durations.count >= 10
+        else
+        {
+            return
+        }
+        
+        let sorted  : [Duration]    = durations.map { $0.duration }.sorted()
+        let median  : Duration      = sorted[sorted.count / 2 ]
+        
+        guard median > .zero
+        else
+        {
+            return
+        }
+        
+        let threshold   : Duration  = median * 10
+        var lines       : [String]  = []
+        
+        for entry in durations
+        {
+            guard entry.duration > threshold
+            else
+            {
+                continue
+            }
+            
+            let ratio = Int(entry.duration.nanoseconds / median.nanoseconds)
+            
+            lines.append(
+                "[\(entry.iteration)/\(totalIterations)]:"
+                + "  \(entry.duration.readable) (ratio: \(ratio)x)"
+            )
+        }
+        
+        guard !lines.isEmpty
+        else
+        {
+            return
+        }
+        
+        let header: String
+            = "Slow iteration\(lines.count == 1 ? "" : "s") detected"
+            + " (median: \(median.readable)):"
+        
+        let message: String
+            = ([header] + lines.map { "    " + $0 }).joined(separator: "\n")
+        
+        logger.warning("\(message)")
     }
 }
