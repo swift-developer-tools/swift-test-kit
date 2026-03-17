@@ -608,8 +608,11 @@ internal struct PropertyRunner
         deadline        : ContinuousClock.Instant?
     ) async -> Counterexample<T>
     {
-        var current : T     = value
-        var steps   : Int   = 0
+        var current             : T     = value
+        var steps               : Int   = 0
+        var candidatesEvaluated : Int   = 0
+        var candidatesFiltered  : Int   = 0
+        var candidatesPassed    : Int   = 0
         
         let verbose: Bool = options.propertyOptions.diagnostics
             .contains(.verbose)
@@ -632,6 +635,7 @@ internal struct PropertyRunner
                     let precondition,
                     !precondition(candidate)
                 {
+                    candidatesFiltered += 1
                     continue
                 }
                 
@@ -640,6 +644,8 @@ internal struct PropertyRunner
                         property,
                         with: candidate
                     )
+                
+                candidatesEvaluated += 1
                 
                 if evaluationResult == .failed
                 {
@@ -659,6 +665,8 @@ internal struct PropertyRunner
                     /// Start again with a smaller value.
                     break
                 }
+                
+                candidatesPassed += 1
             }
             
             if !improved
@@ -672,6 +680,19 @@ internal struct PropertyRunner
                 
                 break
             }
+        }
+        
+        
+        
+        if options.propertyOptions.diagnostics.contains(.shrinking)
+        {
+            reportShrinkEffectiveness(
+                steps:              steps,
+                evaluated:          candidatesEvaluated,
+                filtered:           candidatesFiltered,
+                passed:             candidatesPassed,
+                hasPrecondition:    precondition != nil
+            )
         }
         
         
@@ -730,7 +751,7 @@ internal struct PropertyRunner
     
     
     
-    /// Checks for slow iterations and logs a warning for each outlier.
+    /// Reports slow iterations.
     /// - Parameters:
     ///   - durations: The iteration durations to check.
     ///   - totalIterations: The total number of iterations.
@@ -787,5 +808,71 @@ internal struct PropertyRunner
             = ([header] + lines.map { "    " + $0 }).joined(separator: "\n")
         
         logger.warning("\(message)")
+    }
+    
+    
+    
+    /// Reports ineffective shrinking.
+    /// - Parameters:
+    ///   - steps: The number of shrink steps.
+    ///   - evaluated: The evaluated shrink candidates.
+    ///   - filtered: The filtered shrink candidates.
+    ///   - passed: The passed shrink caididates.
+    ///   - hasPrecondition: Whether there was a precondition.
+    private static func reportShrinkEffectiveness(
+        steps           : Int,
+        evaluated       : Int,
+        filtered        : Int,
+        passed          : Int,
+        hasPrecondition : Bool
+    )
+    {
+        guard
+            evaluated > 0
+            || filtered > 0
+        else
+        {
+            return
+        }
+        
+        var lines: [String] = []
+        
+        if steps == 0
+        {
+            lines.append(
+                "Shrinking produced no improvements"
+                + " (\(evaluated) candidate\(evaluated == 1 ? "" : "s")"
+                + " evaluated, none reproduced the failure)"
+            )
+        }
+        
+        if
+            hasPrecondition,
+            filtered > 0
+        {
+            let total: Int = evaluated + filtered
+            
+            let percentage = Int(Double(filtered) / Double(total) * 100)
+            
+            if percentage >= 50
+            {
+                lines.append(
+                    "\(filtered)/\(total) shrink"
+                    + " candidate\(total == 1 ? "" : "s")"
+                    + " (\(percentage)%) filtered by precondition"
+                )
+            }
+        }
+        
+        guard !lines.isEmpty
+        else
+        {
+            return
+        }
+        
+        for message in lines
+        {
+            logger.warning("\(message)")
+        }
     }
 }
