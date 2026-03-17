@@ -625,14 +625,14 @@ internal struct PropertyRunner
             let candidates  : [T]   = shrink(current)
             var improved    : Bool  = false
             
-            for candidate in candidates
+            candidateLoop: for candidate in candidates
             {
                 if
                     let precondition,
                     !precondition(candidate)
                 {
                     candidatesFiltered += 1
-                    continue
+                    continue candidateLoop
                 }
                 
                 let evaluationResult: EvaluationResult
@@ -643,26 +643,32 @@ internal struct PropertyRunner
                 
                 candidatesEvaluated += 1
                 
-                if evaluationResult == .failed
+                switch evaluationResult
                 {
-                    current     = candidate
-                    improved    = true
-                    steps       += 1
-                    
-                    if verbose
-                    {
-                        let message: String
-                            = "Shrink step \(steps):"
-                            + " \(String(describing: candidate))"
+                    case .failed:
                         
-                        logger.info("\(message)")
-                    }
-                    
-                    /// Start again with a smaller value.
-                    break
+                        improved    = true
+                        current     = candidate
+                        steps       += 1
+                        
+                        if verbose
+                        {
+                            let message: String
+                                = "Shrink step \(steps):"
+                                + " \(String(describing: candidate))"
+                            
+                            logger.info("\(message)")
+                        }
+                        
+                        /// Start again with a smaller value.
+                        break candidateLoop
+                        
+                    case
+                        .passed,
+                        .discarded:
+                        
+                        candidatesPassed += 1
                 }
-                
-                candidatesPassed += 1
             }
             
             if !improved
