@@ -755,7 +755,7 @@ internal struct PropertyRunner
     /// - Parameters:
     ///   - durations: The iteration durations to check.
     ///   - totalIterations: The total number of iterations.
-    private static func reportSlowIterations(
+    internal static func reportSlowIterations(
         _ durations     : [(iteration: Int, duration: Duration)],
         totalIterations : Int
     )
