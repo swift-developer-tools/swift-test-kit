@@ -58,7 +58,7 @@ public enum TestConfiguration: Sendable
     ///
     /// - Parameters:
     ///   - options: The options for testing.
-    ///   - body: The test closure to call.
+    ///   - body: The body closure to call.
     @Reasync
     public static func withOptions(
         _ options   : @autoclosure () -> TestOptions,
@@ -77,11 +77,14 @@ public enum TestConfiguration: Sendable
     ///
     /// The modification closure receives the currently-resolved options from
     /// an enclosing scope or the ``global`` options. All tests executed within
-    /// the `body` closure use the modified options.
+    /// the body closure use the modified options.
+    ///
+    /// - Note: Scopes may be nested. An inner scope's options take precedence
+    /// over an outer scope's options.
     ///
     /// - Parameters:
     ///   - modify: The closure that modifies the options.
-    ///   - body: The test closure to call.
+    ///   - body: The body closure to call.
     @Reasync
     public static func withOptions(
         _ modify   : (inout TestOptions) -> Void,
