@@ -31,7 +31,7 @@ import TestKitCore
 ///   - column: The column where the failure occurs. The default value is the
 ///   column number where this function was called.
 ///   - options: The options for testing. The default value is `nil`, which
-///   falls back to using global options.
+///   falls back to the resolved options.
 ///   - invariant: An optional closure that checks invariants after each
 ///   command.
 public func XCTKStateful<C>(
@@ -56,7 +56,7 @@ public func XCTKStateful<C>(
         file:       file,
         line:       line,
         column:     column,
-        options:    options ?? TestConfiguration.global,
+        options:    options ?? TestConfiguration.current,
         invariant:  invariant,
         context:    failureContext
     )

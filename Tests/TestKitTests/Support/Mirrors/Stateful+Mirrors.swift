@@ -38,7 +38,7 @@ internal func TKStateful<C>(
         file:       file,
         line:       line,
         column:     column,
-        options:    options ?? TestConfiguration.global,
+        options:    options ?? TestConfiguration.current,
         invariant:  invariant,
         context:    context
     )

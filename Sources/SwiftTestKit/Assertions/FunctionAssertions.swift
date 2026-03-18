@@ -26,7 +26,7 @@ import TestKitCore
 ///   - column: The column where the failure occurs. The default value is the
 ///   column number where this function was called.
 ///   - options: The options for testing. The default value is `nil`, which
-///   falls back to using global options.
+///   falls back to the resolved options.
 public func STKAssert(
     _ expression    : @autoclosure () throws -> Bool,
     _ message       : @autoclosure () -> String         = "",
@@ -44,7 +44,7 @@ public func STKAssert(
         file:       file,
         line:       line,
         column:     column,
-        options:    options ?? TestConfiguration.global,
+        options:    options ?? TestConfiguration.current,
         context:    failureContext
     )
 }
@@ -64,7 +64,7 @@ public func STKAssert(
 ///   - column: The column where the failure occurs. The default value is the
 ///   column number where this function was called.
 ///   - options: The options for testing. The default value is `nil`, which
-///   falls back to using global options.
+///   falls back to the resolved options.
 public func STKAssertTrue(
     _ expression    : @autoclosure () throws -> Bool,
     _ message       : @autoclosure () -> String         = "",
@@ -82,7 +82,7 @@ public func STKAssertTrue(
         file:       file,
         line:       line,
         column:     column,
-        options:    options ?? TestConfiguration.global,
+        options:    options ?? TestConfiguration.current,
         context:    failureContext
     )
 }
@@ -102,7 +102,7 @@ public func STKAssertTrue(
 ///   - column: The column where the failure occurs. The default value is the
 ///   column number where this function was called.
 ///   - options: The options for testing. The default value is `nil`, which
-///   falls back to using global options.
+///   falls back to the resolved options.
 public func STKAssertFalse(
     _ expression    : @autoclosure () throws -> Bool,
     _ message       : @autoclosure () -> String         = "",
@@ -120,7 +120,7 @@ public func STKAssertFalse(
         file:       file,
         line:       line,
         column:     column,
-        options:    options ?? TestConfiguration.global,
+        options:    options ?? TestConfiguration.current,
         context:    failureContext
     )
 }
@@ -142,7 +142,7 @@ public func STKAssertFalse(
 ///   - column: The column where the failure occurs. The default value is the
 ///   column number where this function was called.
 ///   - options: The options for testing. The default value is `nil`, which
-///   falls back to using global options.
+///   falls back to the resolved options.
 public func STKAssertNil(
     _ expression    : @autoclosure () throws -> Any?,
     _ message       : @autoclosure () -> String         = "",
@@ -160,7 +160,7 @@ public func STKAssertNil(
         file:       file,
         line:       line,
         column:     column,
-        options:    options ?? TestConfiguration.global,
+        options:    options ?? TestConfiguration.current,
         context:    failureContext
     )
 }
@@ -180,7 +180,7 @@ public func STKAssertNil(
 ///   - column: The column where the failure occurs. The default value is the
 ///   column number where this function was called.
 ///   - options: The options for testing. The default value is `nil`, which
-///   falls back to using global options.
+///   falls back to the resolved options.
 public func STKAssertNotNil(
     _ expression    : @autoclosure () throws -> Any?,
     _ message       : @autoclosure () -> String         = "",
@@ -198,7 +198,7 @@ public func STKAssertNotNil(
         file:       file,
         line:       line,
         column:     column,
-        options:    options ?? TestConfiguration.global,
+        options:    options ?? TestConfiguration.current,
         context:    failureContext
     )
 }
@@ -219,7 +219,7 @@ public func STKAssertNotNil(
 ///   - column: The column where the failure occurs. The default value is the
 ///   column number where this function was called.
 ///   - options: The options for testing. The default value is `nil`, which
-///   falls back to using global options.
+///   falls back to the resolved options.
 /// - Returns: The result of evaluating and unwrapped the given expression.
 /// This only returns a value if the unwrapped value is not `nil`.
 /// - Throws: An ``UnwrapError`` if the unwrapped value is `nil`, or an error
@@ -241,7 +241,7 @@ public func STKUnwrap<T>(
         file:       file,
         line:       line,
         column:     column,
-        options:    options ?? TestConfiguration.global,
+        options:    options ?? TestConfiguration.current,
         context:    failureContext
     )
 }
@@ -264,7 +264,7 @@ public func STKUnwrap<T>(
 ///   - column: The column where the failure occurs. The default value is the
 ///   column number where this function was called.
 ///   - options: The options for testing. The default value is `nil`, which
-///   falls back to using global options.
+///   falls back to the resolved options.
 public func STKAssertEqual<T>(
     _ expected  : @autoclosure () throws -> T,
     _ actual    : @autoclosure () throws -> T,
@@ -284,7 +284,7 @@ public func STKAssertEqual<T>(
         file:       file,
         line:       line,
         column:     column,
-        options:    options ?? TestConfiguration.global,
+        options:    options ?? TestConfiguration.current,
         context:    failureContext
     )
 }
@@ -305,7 +305,7 @@ public func STKAssertEqual<T>(
 ///   - column: The column where the failure occurs. The default value is the
 ///   column number where this function was called.
 ///   - options: The options for testing. The default value is `nil`, which
-///   falls back to using global options.
+///   falls back to the resolved options.
 public func STKAssertNotEqual<T>(
     _ expression1   : @autoclosure () throws -> T,
     _ expression2   : @autoclosure () throws -> T,
@@ -325,7 +325,7 @@ public func STKAssertNotEqual<T>(
         file:       file,
         line:       line,
         column:     column,
-        options:    options ?? TestConfiguration.global,
+        options:    options ?? TestConfiguration.current,
         context:    failureContext
     )
 }
@@ -349,7 +349,7 @@ public func STKAssertNotEqual<T>(
 ///   - column: The column where the failure occurs. The default value is the
 ///   column number where this function was called.
 ///   - options: The options for testing. The default value is `nil`, which
-///   falls back to using global options.
+///   falls back to the resolved options.
 public func STKAssertIdentical(
     _ expression1   : @autoclosure () throws -> AnyObject?,
     _ expression2   : @autoclosure () throws -> AnyObject?,
@@ -369,7 +369,7 @@ public func STKAssertIdentical(
         file:       file,
         line:       line,
         column:     column,
-        options:    options ?? TestConfiguration.global,
+        options:    options ?? TestConfiguration.current,
         context:    failureContext
     )
 }
@@ -393,7 +393,7 @@ public func STKAssertIdentical(
 ///   - column: The column where the failure occurs. The default value is the
 ///   column number where this function was called.
 ///   - options: The options for testing. The default value is `nil`, which
-///   falls back to using global options.
+///   falls back to the resolved options.
 public func STKAssertNotIdentical(
     _ expression1   : @autoclosure () throws -> AnyObject?,
     _ expression2   : @autoclosure () throws -> AnyObject?,
@@ -413,7 +413,7 @@ public func STKAssertNotIdentical(
         file:       file,
         line:       line,
         column:     column,
-        options:    options ?? TestConfiguration.global,
+        options:    options ?? TestConfiguration.current,
         context:    failureContext
     )
 }
@@ -437,7 +437,7 @@ public func STKAssertNotIdentical(
 ///   - column: The column where the failure occurs. The default value is the
 ///   column number where this function was called.
 ///   - options: The options for testing. The default value is `nil`, which
-///   falls back to using global options.
+///   falls back to the resolved options.
 public func STKAssertEqual<T>(
     _ expression1   : @autoclosure () throws -> T,
     _ expression2   : @autoclosure () throws -> T,
@@ -459,7 +459,7 @@ public func STKAssertEqual<T>(
         file:       file,
         line:       line,
         column:     column,
-        options:    options ?? TestConfiguration.global,
+        options:    options ?? TestConfiguration.current,
         context:    failureContext
     )
 }
@@ -482,7 +482,7 @@ public func STKAssertEqual<T>(
 ///   - column: The column where the failure occurs. The default value is the
 ///   column number where this function was called.
 ///   - options: The options for testing. The default value is `nil`, which
-///   falls back to using global options.
+///   falls back to the resolved options.
 public func STKAssertEqual<T>(
     _ expression1   : @autoclosure () throws -> T,
     _ expression2   : @autoclosure () throws -> T,
@@ -504,7 +504,7 @@ public func STKAssertEqual<T>(
         file:       file,
         line:       line,
         column:     column,
-        options:    options ?? TestConfiguration.global,
+        options:    options ?? TestConfiguration.current,
         context:    failureContext
     )
 }
@@ -528,7 +528,7 @@ public func STKAssertEqual<T>(
 ///   - column: The column where the failure occurs. The default value is the
 ///   column number where this function was called.
 ///   - options: The options for testing. The default value is `nil`, which
-///   falls back to using global options.
+///   falls back to the resolved options.
 public func STKAssertNotEqual<T>(
     _ expression1   : @autoclosure () throws -> T,
     _ expression2   : @autoclosure () throws -> T,
@@ -550,7 +550,7 @@ public func STKAssertNotEqual<T>(
         file:       file,
         line:       line,
         column:     column,
-        options:    options ?? TestConfiguration.global,
+        options:    options ?? TestConfiguration.current,
         context:    failureContext
     )
 }
@@ -574,7 +574,7 @@ public func STKAssertNotEqual<T>(
 ///   - column: The column where the failure occurs. The default value is the
 ///   column number where this function was called.
 ///   - options: The options for testing. The default value is `nil`, which
-///   falls back to using global options.
+///   falls back to the resolved options.
 public func STKAssertNotEqual<T>(
     _ expression1   : @autoclosure () throws -> T,
     _ expression2   : @autoclosure () throws -> T,
@@ -596,7 +596,7 @@ public func STKAssertNotEqual<T>(
         file:       file,
         line:       line,
         column:     column,
-        options:    options ?? TestConfiguration.global,
+        options:    options ?? TestConfiguration.current,
         context:    failureContext
     )
 }
@@ -620,7 +620,7 @@ public func STKAssertNotEqual<T>(
 ///   - column: The column where the failure occurs. The default value is the
 ///   column number where this function was called.
 ///   - options: The options for testing. The default value is `nil`, which
-///   falls back to using global options.
+///   falls back to the resolved options.
 public func STKAssertGreaterThan<T>(
     _ expression1   : @autoclosure () throws -> T,
     _ expression2   : @autoclosure () throws -> T,
@@ -640,7 +640,7 @@ public func STKAssertGreaterThan<T>(
         file:       file,
         line:       line,
         column:     column,
-        options:    options ?? TestConfiguration.global,
+        options:    options ?? TestConfiguration.current,
         context:    failureContext
     )
 }
@@ -662,7 +662,7 @@ public func STKAssertGreaterThan<T>(
 ///   - column: The column where the failure occurs. The default value is the
 ///   column number where this function was called.
 ///   - options: The options for testing. The default value is `nil`, which
-///   falls back to using global options.
+///   falls back to the resolved options.
 public func STKAssertGreaterThanOrEqual<T>(
     _ expression1   : @autoclosure () throws -> T,
     _ expression2   : @autoclosure () throws -> T,
@@ -682,7 +682,7 @@ public func STKAssertGreaterThanOrEqual<T>(
         file:       file,
         line:       line,
         column:     column,
-        options:    options ?? TestConfiguration.global,
+        options:    options ?? TestConfiguration.current,
         context:    failureContext
     )
 }
@@ -704,7 +704,7 @@ public func STKAssertGreaterThanOrEqual<T>(
 ///   - column: The column where the failure occurs. The default value is the
 ///   column number where this function was called.
 ///   - options: The options for testing. The default value is `nil`, which
-///   falls back to using global options.
+///   falls back to the resolved options.
 public func STKAssertLessThanOrEqual<T>(
     _ expression1   : @autoclosure () throws -> T,
     _ expression2   : @autoclosure () throws -> T,
@@ -724,7 +724,7 @@ public func STKAssertLessThanOrEqual<T>(
         file:       file,
         line:       line,
         column:     column,
-        options:    options ?? TestConfiguration.global,
+        options:    options ?? TestConfiguration.current,
         context:    failureContext
     )
 }
@@ -746,7 +746,7 @@ public func STKAssertLessThanOrEqual<T>(
 ///   - column: The column where the failure occurs. The default value is the
 ///   column number where this function was called.
 ///   - options: The options for testing. The default value is `nil`, which
-///   falls back to using global options.
+///   falls back to the resolved options.
 public func STKAssertLessThan<T>(
     _ expression1   : @autoclosure () throws -> T,
     _ expression2   : @autoclosure () throws -> T,
@@ -766,7 +766,7 @@ public func STKAssertLessThan<T>(
         file:       file,
         line:       line,
         column:     column,
-        options:    options ?? TestConfiguration.global,
+        options:    options ?? TestConfiguration.current,
         context:    failureContext
     )
 }
@@ -788,7 +788,7 @@ public func STKAssertLessThan<T>(
 ///   - column: The column where the failure occurs. The default value is the
 ///   column number where this function was called.
 ///   - options: The options for testing. The default value is `nil`, which
-///   falls back to using global options.
+///   falls back to the resolved options.
 ///   - errorHandler: An optional handler for errors thrown by `expression`.
 public func STKAssertThrowsError<T>(
     _ expression    : @autoclosure () throws -> T,
@@ -808,7 +808,7 @@ public func STKAssertThrowsError<T>(
         file:       file,
         line:       line,
         column:     column,
-        options:    options ?? TestConfiguration.global,
+        options:    options ?? TestConfiguration.current,
         errorHandler,
         context:    failureContext
     )
@@ -829,7 +829,7 @@ public func STKAssertThrowsError<T>(
 ///   - column: The column where the failure occurs. The default value is the
 ///   column number where this function was called.
 ///   - options: The options for testing. The default value is `nil`, which
-///   falls back to using global options.
+///   falls back to the resolved options.
 public func STKAssertNoThrow<T>(
     _ expression    : @autoclosure () throws -> T,
     _ message       : @autoclosure () -> String     = "",
@@ -847,7 +847,7 @@ public func STKAssertNoThrow<T>(
         file:       file,
         line:       line,
         column:     column,
-        options:    options ?? TestConfiguration.global,
+        options:    options ?? TestConfiguration.current,
         context:    failureContext
     )
 }
@@ -905,7 +905,7 @@ public func STKFail(
 ///   - column: The column where the failure occurs. The default value is the
 ///   column number where this function was called.
 ///   - options: The options for testing. The default value is `nil`, which
-///   falls back to using global options.
+///   falls back to the resolved options.
 public func STKAssertAllSatisfy<C>(
     _ collection    : @autoclosure () throws -> C,
     _ predicate     : (C.Element) throws -> Bool,
@@ -925,7 +925,7 @@ public func STKAssertAllSatisfy<C>(
         file:       file,
         line:       line,
         column:     column,
-        options:    options ?? TestConfiguration.global,
+        options:    options ?? TestConfiguration.current,
         context:    failureContext
     )
 }
@@ -948,7 +948,7 @@ public func STKAssertAllSatisfy<C>(
 ///   - column: The column where the failure occurs. The default value is the
 ///   column number where this function was called.
 ///   - options: The options for testing. The default value is `nil`, which
-///   falls back to using global options.
+///   falls back to the resolved options.
 public func STKAssertAnySatisfy<C>(
     _ collection    : @autoclosure () throws -> C,
     _ predicate     : (C.Element) throws -> Bool,
@@ -968,7 +968,7 @@ public func STKAssertAnySatisfy<C>(
         file:       file,
         line:       line,
         column:     column,
-        options:    options ?? TestConfiguration.global,
+        options:    options ?? TestConfiguration.current,
         context:    failureContext
     )
 }
@@ -991,7 +991,7 @@ public func STKAssertAnySatisfy<C>(
 ///   - column: The column where the failure occurs. The default value is the
 ///   column number where this function was called.
 ///   - options: The options for testing. The default value is `nil`, which
-///   falls back to using global options.
+///   falls back to the resolved options.
 public func STKAssertNoneSatisfy<C>(
     _ collection    : @autoclosure () throws -> C,
     _ predicate     : (C.Element) throws -> Bool,
@@ -1011,7 +1011,7 @@ public func STKAssertNoneSatisfy<C>(
         file:       file,
         line:       line,
         column:     column,
-        options:    options ?? TestConfiguration.global,
+        options:    options ?? TestConfiguration.current,
         context:    failureContext
     )
 }
@@ -1039,7 +1039,7 @@ public func STKAssertNoneSatisfy<C>(
 ///   - column: The column where the failure occurs. The default value is the
 ///   column number where this function was called.
 ///   - options: The options for testing. The default value is `nil`, which
-///   falls back to using global options.
+///   falls back to the resolved options.
 public func STKAssertSatisfy<C>(
     _ collection    : @autoclosure () throws -> C,
     atLeast         : Int,
@@ -1061,7 +1061,7 @@ public func STKAssertSatisfy<C>(
         file:       file,
         line:       line,
         column:     column,
-        options:    options ?? TestConfiguration.global,
+        options:    options ?? TestConfiguration.current,
         context:    failureContext
     )
 }
@@ -1089,7 +1089,7 @@ public func STKAssertSatisfy<C>(
 ///   - column: The column where the failure occurs. The default value is the
 ///   column number where this function was called.
 ///   - options: The options for testing. The default value is `nil`, which
-///   falls back to using global options.
+///   falls back to the resolved options.
 public func STKAssertSatisfy<C>(
     _ collection    : @autoclosure () throws -> C,
     atMost          : Int,
@@ -1111,7 +1111,7 @@ public func STKAssertSatisfy<C>(
         file:       file,
         line:       line,
         column:     column,
-        options:    options ?? TestConfiguration.global,
+        options:    options ?? TestConfiguration.current,
         context:    failureContext
     )
 }
@@ -1139,7 +1139,7 @@ public func STKAssertSatisfy<C>(
 ///   - column: The column where the failure occurs. The default value is the
 ///   column number where this function was called.
 ///   - options: The options for testing. The default value is `nil`, which
-///   falls back to using global options.
+///   falls back to the resolved options.
 public func STKAssertSatisfy<C>(
     _ collection    : @autoclosure () throws -> C,
     range           : ClosedRange<Int>,
@@ -1161,7 +1161,7 @@ public func STKAssertSatisfy<C>(
         file:       file,
         line:       line,
         column:     column,
-        options:    options ?? TestConfiguration.global,
+        options:    options ?? TestConfiguration.current,
         context:    failureContext
     )
 }
@@ -1189,7 +1189,7 @@ public func STKAssertSatisfy<C>(
 ///   - column: The column where the failure occurs. The default value is the
 ///   column number where this function was called.
 ///   - options: The options for testing. The default value is `nil`, which
-///   falls back to using global options.
+///   falls back to the resolved options.
 public func STKAssertExactly<C>(
     _ collection    : @autoclosure () throws -> C,
     count           : Int,
@@ -1211,7 +1211,7 @@ public func STKAssertExactly<C>(
         file:       file,
         line:       line,
         column:     column,
-        options:    options ?? TestConfiguration.global,
+        options:    options ?? TestConfiguration.current,
         context:    failureContext
     )
 }
@@ -1234,7 +1234,7 @@ public func STKAssertExactly<C>(
 ///   - column: The column where the failure occurs. The default value is the
 ///   column number where this function was called.
 ///   - options: The options for testing. The default value is `nil`, which
-///   falls back to using global options.
+///   falls back to the resolved options.
 public func STKAssertExactlyOne<C>(
     _ collection    : @autoclosure () throws -> C,
     _ predicate     : (C.Element) throws -> Bool,
@@ -1254,7 +1254,7 @@ public func STKAssertExactlyOne<C>(
         file:       file,
         line:       line,
         column:     column,
-        options:    options ?? TestConfiguration.global,
+        options:    options ?? TestConfiguration.current,
         context:    failureContext
     )
 }
@@ -1277,7 +1277,7 @@ public func STKAssertExactlyOne<C>(
 ///   - column: The column where the failure occurs. The default value is the
 ///   column number where this function was called.
 ///   - options: The options for testing. The default value is `nil`, which
-///   falls back to using global options.
+///   falls back to the resolved options.
 public func STKAssertSorted<C>(
     _ collection    : @autoclosure () throws -> C,
     by predicate    : (C.Element, C.Element) throws -> Bool,
@@ -1297,7 +1297,7 @@ public func STKAssertSorted<C>(
         file:       file,
         line:       line,
         column:     column,
-        options:    options ?? TestConfiguration.global,
+        options:    options ?? TestConfiguration.current,
         context:    failureContext
     )
 }
@@ -1317,7 +1317,7 @@ public func STKAssertSorted<C>(
 ///   - column: The column where the failure occurs. The default value is the
 ///   column number where this function was called.
 ///   - options: The options for testing. The default value is `nil`, which
-///   falls back to using global options.
+///   falls back to the resolved options.
 public func STKAssertUnique<C>(
     _ collection    : @autoclosure () throws -> C,
     _ message       : @autoclosure () -> String     = "",
@@ -1335,7 +1335,7 @@ public func STKAssertUnique<C>(
         file:       file,
         line:       line,
         column:     column,
-        options:    options ?? TestConfiguration.global,
+        options:    options ?? TestConfiguration.current,
         context:    failureContext
     )
 }
@@ -1358,7 +1358,7 @@ public func STKAssertUnique<C>(
 ///   - column: The column where the failure occurs. The default value is the
 ///   column number where this function was called.
 ///   - options: The options for testing. The default value is `nil`, which
-///   falls back to using global options.
+///   falls back to the resolved options.
 public func STKAssertUnique<C, K>(
     _ collection    : @autoclosure () throws -> C,
     by predicate    : (C.Element) throws -> K,
@@ -1378,7 +1378,7 @@ public func STKAssertUnique<C, K>(
         file:       file,
         line:       line,
         column:     column,
-        options:    options ?? TestConfiguration.global,
+        options:    options ?? TestConfiguration.current,
         context:    failureContext
     )
 }

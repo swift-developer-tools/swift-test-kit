@@ -37,7 +37,7 @@ public func _XCTKAssertMacro(
         file:           file,
         line:           line,
         column:         column,
-        options:        options ?? TestConfiguration.global,
+        options:        options ?? TestConfiguration.current,
         context:        failureContext
     )
 }
@@ -68,7 +68,7 @@ public func _XCTKAssertTrueMacro(
         file:           file,
         line:           line,
         column:         column,
-        options:        options ?? TestConfiguration.global,
+        options:        options ?? TestConfiguration.current,
         context:        failureContext
     )
 }
@@ -99,7 +99,7 @@ public func _XCTKAssertFalseMacro(
         file:           file,
         line:           line,
         column:         column,
-        options:        options ?? TestConfiguration.global,
+        options:        options ?? TestConfiguration.current,
         context:        failureContext
     )
 }
@@ -128,7 +128,7 @@ public func _XCTKAssertNilMacro(
         file:       file,
         line:       line,
         column:     column,
-        options:    options ?? TestConfiguration.global,
+        options:    options ?? TestConfiguration.current,
         context:    failureContext
     )
 }
@@ -155,7 +155,7 @@ public func _XCTKAssertNotNilMacro(
         file:       file,
         line:       line,
         column:     column,
-        options:    options ?? TestConfiguration.global,
+        options:    options ?? TestConfiguration.current,
         context:    failureContext
     )
 }
@@ -182,7 +182,7 @@ public func _XCTKUnwrapMacro<T>(
         file:       file,
         line:       line,
         column:     column,
-        options:    options ?? TestConfiguration.global,
+        options:    options ?? TestConfiguration.current,
         context:    failureContext
     )
 }
@@ -215,7 +215,7 @@ public func _XCTKAssertEqualMacro<T>(
         file:           file,
         line:           line,
         column:         column,
-        options:        options ?? TestConfiguration.global,
+        options:        options ?? TestConfiguration.current,
         context:        failureContext
     )
 }
@@ -246,7 +246,7 @@ public func _XCTKAssertNotEqualMacro<T>(
         file:       file,
         line:       line,
         column:     column,
-        options:    options ?? TestConfiguration.global,
+        options:    options ?? TestConfiguration.current,
         context:    failureContext
     )
 }
@@ -277,7 +277,7 @@ public func _XCTKAssertIdenticalMacro(
         file:       file,
         line:       line,
         column:     column,
-        options:    options ?? TestConfiguration.global,
+        options:    options ?? TestConfiguration.current,
         context:    failureContext
     )
 }
@@ -308,7 +308,7 @@ public func _XCTKAssertNotIdenticalMacro(
         file:       file,
         line:       line,
         column:     column,
-        options:    options ?? TestConfiguration.global,
+        options:    options ?? TestConfiguration.current,
         context:    failureContext
     )
 }
@@ -341,7 +341,7 @@ public func _XCTKAssertEqualMacro<T>(
         file:       file,
         line:       line,
         column:     column,
-        options:    options ?? TestConfiguration.global,
+        options:    options ?? TestConfiguration.current,
         context:    failureContext
     )
 }
@@ -374,7 +374,7 @@ public func _XCTKAssertEqualMacro<T>(
         file:       file,
         line:       line,
         column:     column,
-        options:    options ?? TestConfiguration.global,
+        options:    options ?? TestConfiguration.current,
         context:    failureContext
     )
 }
@@ -407,7 +407,7 @@ public func _XCTKAssertNotEqualMacro<T>(
         file:       file,
         line:       line,
         column:     column,
-        options:    options ?? TestConfiguration.global,
+        options:    options ?? TestConfiguration.current,
         context:    failureContext
     )
 }
@@ -440,7 +440,7 @@ public func _XCTKAssertNotEqualMacro<T>(
         file:       file,
         line:       line,
         column:     column,
-        options:    options ?? TestConfiguration.global,
+        options:    options ?? TestConfiguration.current,
         context:    failureContext
     )
 }
@@ -473,7 +473,7 @@ public func _XCTKAssertGreaterThanMacro<T>(
         file:       file,
         line:       line,
         column:     column,
-        options:    options ?? TestConfiguration.global,
+        options:    options ?? TestConfiguration.current,
         context:    failureContext
     )
 }
@@ -504,7 +504,7 @@ public func _XCTKAssertGreaterThanOrEqualMacro<T>(
         file:       file,
         line:       line,
         column:     column,
-        options:    options ?? TestConfiguration.global,
+        options:    options ?? TestConfiguration.current,
         context:    failureContext
     )
 }
@@ -535,7 +535,7 @@ public func _XCTKAssertLessThanOrEqualMacro<T>(
         file:       file,
         line:       line,
         column:     column,
-        options:    options ?? TestConfiguration.global,
+        options:    options ?? TestConfiguration.current,
         context:    failureContext
     )
 }
@@ -566,7 +566,7 @@ public func _XCTKAssertLessThanMacro<T>(
         file:       file,
         line:       line,
         column:     column,
-        options:    options ?? TestConfiguration.global,
+        options:    options ?? TestConfiguration.current,
         context:    failureContext
     )
 }
@@ -596,7 +596,7 @@ public func _XCTKAssertThrowsErrorMacro<T>(
         file:           file,
         line:           line,
         column:         column,
-        options:        options ?? TestConfiguration.global,
+        options:        options ?? TestConfiguration.current,
         errorHandler:   errorHandler,
         context:        failureContext
     )
@@ -624,7 +624,7 @@ public func _XCTKAssertNoThrowMacro<T>(
         file:       file,
         line:       line,
         column:     column,
-        options:    options ?? TestConfiguration.global,
+        options:    options ?? TestConfiguration.current,
         context:    failureContext
     )
 }
@@ -680,7 +680,7 @@ public func _XCTKAssertAllSatisfyMacro<C>(
         file:               file,
         line:               line,
         column:             column,
-        options:            options ?? TestConfiguration.global,
+        options:            options ?? TestConfiguration.current,
         context:            failureContext
     )
 }
@@ -711,7 +711,7 @@ public func _XCTKAssertAnySatisfyMacro<C>(
         file:               file,
         line:               line,
         column:             column,
-        options:            options ?? TestConfiguration.global,
+        options:            options ?? TestConfiguration.current,
         context:            failureContext
     )
 }
@@ -742,7 +742,7 @@ public func _XCTKAssertNoneSatisfyMacro<C>(
         file:               file,
         line:               line,
         column:             column,
-        options:            options ?? TestConfiguration.global,
+        options:            options ?? TestConfiguration.current,
         context:            failureContext
     )
 }
@@ -775,7 +775,7 @@ public func _XCTKAssertSatisfyMacro<C>(
         file:               file,
         line:               line,
         column:             column,
-        options:            options ?? TestConfiguration.global,
+        options:            options ?? TestConfiguration.current,
         context:            failureContext
     )
 }
@@ -808,7 +808,7 @@ public func _XCTKAssertSatisfyMacro<C>(
         file:               file,
         line:               line,
         column:             column,
-        options:            options ?? TestConfiguration.global,
+        options:            options ?? TestConfiguration.current,
         context:            failureContext
     )
 }
@@ -841,7 +841,7 @@ public func _XCTKAssertSatisfyMacro<C>(
         file:               file,
         line:               line,
         column:             column,
-        options:            options ?? TestConfiguration.global,
+        options:            options ?? TestConfiguration.current,
         context:            failureContext
     )
 }
@@ -874,7 +874,7 @@ public func _XCTKAssertExactlyMacro<C>(
         file:               file,
         line:               line,
         column:             column,
-        options:            options ?? TestConfiguration.global,
+        options:            options ?? TestConfiguration.current,
         context:            failureContext
     )
 }
@@ -905,7 +905,7 @@ public func _XCTKAssertExactlyOneMacro<C>(
         file:               file,
         line:               line,
         column:             column,
-        options:            options ?? TestConfiguration.global,
+        options:            options ?? TestConfiguration.current,
         context:            failureContext
     )
 }
@@ -936,7 +936,7 @@ public func _XCTKAssertSortedMacro<C>(
         file:               file,
         line:               line,
         column:             column,
-        options:            options ?? TestConfiguration.global,
+        options:            options ?? TestConfiguration.current,
         context:            failureContext
     )
 }
@@ -963,7 +963,7 @@ public func _XCTKAssertUniqueMacro<C>(
         file:               file,
         line:               line,
         column:             column,
-        options:            options ?? TestConfiguration.global,
+        options:            options ?? TestConfiguration.current,
         context:            failureContext
     )
 }
@@ -994,7 +994,7 @@ public func _XCTKAssertUniqueMacro<C, K>(
         file:               file,
         line:               line,
         column:             column,
-        options:            options ?? TestConfiguration.global,
+        options:            options ?? TestConfiguration.current,
         context:            failureContext
     )
 }

@@ -40,7 +40,7 @@ internal func TKPerformance(
         file:           file,
         line:           line,
         column:         column,
-        options:        options ?? TestConfiguration.global,
+        options:        options ?? TestConfiguration.current,
         body,
         context:        context
     )

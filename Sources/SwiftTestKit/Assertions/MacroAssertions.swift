@@ -37,7 +37,7 @@ public func _STKAssertMacro(
         file:           file,
         line:           line,
         column:         column,
-        options:        options ?? TestConfiguration.global,
+        options:        options ?? TestConfiguration.current,
         context:        failureContext
     )
 }
@@ -68,7 +68,7 @@ public func _STKAssertTrueMacro(
         file:           file,
         line:           line,
         column:         column,
-        options:        options ?? TestConfiguration.global,
+        options:        options ?? TestConfiguration.current,
         context:        failureContext
     )
 }
@@ -99,7 +99,7 @@ public func _STKAssertFalseMacro(
         file:           file,
         line:           line,
         column:         column,
-        options:        options ?? TestConfiguration.global,
+        options:        options ?? TestConfiguration.current,
         context:        failureContext
     )
 }
@@ -128,7 +128,7 @@ public func _STKAssertNilMacro(
         file:       file,
         line:       line,
         column:     column,
-        options:    options ?? TestConfiguration.global,
+        options:    options ?? TestConfiguration.current,
         context:    failureContext
     )
 }
@@ -155,7 +155,7 @@ public func _STKAssertNotNilMacro(
         file:       file,
         line:       line,
         column:     column,
-        options:    options ?? TestConfiguration.global,
+        options:    options ?? TestConfiguration.current,
         context:    failureContext
     )
 }
@@ -182,7 +182,7 @@ public func _STKUnwrapMacro<T>(
         file:       file,
         line:       line,
         column:     column,
-        options:    options ?? TestConfiguration.global,
+        options:    options ?? TestConfiguration.current,
         context:    failureContext
     )
 }
@@ -215,7 +215,7 @@ public func _STKAssertEqualMacro<T>(
         file:           file,
         line:           line,
         column:         column,
-        options:        options ?? TestConfiguration.global,
+        options:        options ?? TestConfiguration.current,
         context:        failureContext
     )
 }
@@ -246,7 +246,7 @@ public func _STKAssertNotEqualMacro<T>(
         file:       file,
         line:       line,
         column:     column,
-        options:    options ?? TestConfiguration.global,
+        options:    options ?? TestConfiguration.current,
         context:    failureContext
     )
 }
@@ -277,7 +277,7 @@ public func _STKAssertIdenticalMacro(
         file:       file,
         line:       line,
         column:     column,
-        options:    options ?? TestConfiguration.global,
+        options:    options ?? TestConfiguration.current,
         context:    failureContext
     )
 }
@@ -308,7 +308,7 @@ public func _STKAssertNotIdenticalMacro(
         file:       file,
         line:       line,
         column:     column,
-        options:    options ?? TestConfiguration.global,
+        options:    options ?? TestConfiguration.current,
         context:    failureContext
     )
 }
@@ -341,7 +341,7 @@ public func _STKAssertEqualMacro<T>(
         file:       file,
         line:       line,
         column:     column,
-        options:    options ?? TestConfiguration.global,
+        options:    options ?? TestConfiguration.current,
         context:    failureContext
     )
 }
@@ -374,7 +374,7 @@ public func _STKAssertEqualMacro<T>(
         file:       file,
         line:       line,
         column:     column,
-        options:    options ?? TestConfiguration.global,
+        options:    options ?? TestConfiguration.current,
         context:    failureContext
     )
 }
@@ -407,7 +407,7 @@ public func _STKAssertNotEqualMacro<T>(
         file:       file,
         line:       line,
         column:     column,
-        options:    options ?? TestConfiguration.global,
+        options:    options ?? TestConfiguration.current,
         context:    failureContext
     )
 }
@@ -440,7 +440,7 @@ public func _STKAssertNotEqualMacro<T>(
         file:       file,
         line:       line,
         column:     column,
-        options:    options ?? TestConfiguration.global,
+        options:    options ?? TestConfiguration.current,
         context:    failureContext
     )
 }
@@ -473,7 +473,7 @@ public func _STKAssertGreaterThanMacro<T>(
         file:       file,
         line:       line,
         column:     column,
-        options:    options ?? TestConfiguration.global,
+        options:    options ?? TestConfiguration.current,
         context:    failureContext
     )
 }
@@ -504,7 +504,7 @@ public func _STKAssertGreaterThanOrEqualMacro<T>(
         file:       file,
         line:       line,
         column:     column,
-        options:    options ?? TestConfiguration.global,
+        options:    options ?? TestConfiguration.current,
         context:    failureContext
     )
 }
@@ -535,7 +535,7 @@ public func _STKAssertLessThanOrEqualMacro<T>(
         file:       file,
         line:       line,
         column:     column,
-        options:    options ?? TestConfiguration.global,
+        options:    options ?? TestConfiguration.current,
         context:    failureContext
     )
 }
@@ -566,7 +566,7 @@ public func _STKAssertLessThanMacro<T>(
         file:       file,
         line:       line,
         column:     column,
-        options:    options ?? TestConfiguration.global,
+        options:    options ?? TestConfiguration.current,
         context:    failureContext
     )
 }
@@ -596,7 +596,7 @@ public func _STKAssertThrowsErrorMacro<T>(
         file:           file,
         line:           line,
         column:         column,
-        options:        options ?? TestConfiguration.global,
+        options:        options ?? TestConfiguration.current,
         errorHandler:   errorHandler,
         context:        failureContext
     )
@@ -624,7 +624,7 @@ public func _STKAssertNoThrowMacro<T>(
         file:       file,
         line:       line,
         column:     column,
-        options:    options ?? TestConfiguration.global,
+        options:    options ?? TestConfiguration.current,
         context:    failureContext
     )
 }
@@ -680,7 +680,7 @@ public func _STKAssertAllSatisfyMacro<C>(
         file:               file,
         line:               line,
         column:             column,
-        options:            options ?? TestConfiguration.global,
+        options:            options ?? TestConfiguration.current,
         context:            failureContext
     )
 }
@@ -711,7 +711,7 @@ public func _STKAssertAnySatisfyMacro<C>(
         file:               file,
         line:               line,
         column:             column,
-        options:            options ?? TestConfiguration.global,
+        options:            options ?? TestConfiguration.current,
         context:            failureContext
     )
 }
@@ -742,7 +742,7 @@ public func _STKAssertNoneSatisfyMacro<C>(
         file:               file,
         line:               line,
         column:             column,
-        options:            options ?? TestConfiguration.global,
+        options:            options ?? TestConfiguration.current,
         context:            failureContext
     )
 }
@@ -775,7 +775,7 @@ public func _STKAssertSatisfyMacro<C>(
         file:               file,
         line:               line,
         column:             column,
-        options:            options ?? TestConfiguration.global,
+        options:            options ?? TestConfiguration.current,
         context:            failureContext
     )
 }
@@ -808,7 +808,7 @@ public func _STKAssertSatisfyMacro<C>(
         file:               file,
         line:               line,
         column:             column,
-        options:            options ?? TestConfiguration.global,
+        options:            options ?? TestConfiguration.current,
         context:            failureContext
     )
 }
@@ -841,7 +841,7 @@ public func _STKAssertSatisfyMacro<C>(
         file:               file,
         line:               line,
         column:             column,
-        options:            options ?? TestConfiguration.global,
+        options:            options ?? TestConfiguration.current,
         context:            failureContext
     )
 }
@@ -874,7 +874,7 @@ public func _STKAssertExactlyMacro<C>(
         file:               file,
         line:               line,
         column:             column,
-        options:            options ?? TestConfiguration.global,
+        options:            options ?? TestConfiguration.current,
         context:            failureContext
     )
 }
@@ -905,7 +905,7 @@ public func _STKAssertExactlyOneMacro<C>(
         file:               file,
         line:               line,
         column:             column,
-        options:            options ?? TestConfiguration.global,
+        options:            options ?? TestConfiguration.current,
         context:            failureContext
     )
 }
@@ -936,7 +936,7 @@ public func _STKAssertSortedMacro<C>(
         file:               file,
         line:               line,
         column:             column,
-        options:            options ?? TestConfiguration.global,
+        options:            options ?? TestConfiguration.current,
         context:            failureContext
     )
 }
@@ -963,7 +963,7 @@ public func _STKAssertUniqueMacro<C>(
         file:               file,
         line:               line,
         column:             column,
-        options:            options ?? TestConfiguration.global,
+        options:            options ?? TestConfiguration.current,
         context:            failureContext
     )
 }
@@ -994,7 +994,7 @@ public func _STKAssertUniqueMacro<C, K>(
         file:               file,
         line:               line,
         column:             column,
-        options:            options ?? TestConfiguration.global,
+        options:            options ?? TestConfiguration.current,
         context:            failureContext
     )
 }

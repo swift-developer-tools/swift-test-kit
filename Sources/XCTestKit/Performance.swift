@@ -24,14 +24,14 @@ import TestKitCore
 ///
 /// - Parameters:
 ///   - runs: The number of measurement runs. The default value is `nil`,
-///   which falls back to using global options.
+///   which falls back to the resolved options.
 ///   - warmupRuns: The number of warmup runs before measurement begins.
-///   The default value is `nil`, which falls back to using global options.
+///   The default value is `nil`, which falls back to the resolved options.
 ///   - timeLimit: The time limit.
 ///   - memoryLimit: The physical memory footprint limit. The default value
-///   is `nil`, which falls back to using global options.
+///   is `nil`, which falls back to the resolved options.
 ///   - message: An optional description of a failure. The default value is
-///   `nil`, which falls back to using global options.
+///   `nil`, which falls back to the resolved options.
 ///   - fileID: The ID of the file where the failure occurs. The default value
 ///   is the ID of the file of the test case in which this function was called.
 ///   - file: The file where the failure occurs. The default value is the
@@ -41,7 +41,7 @@ import TestKitCore
 ///   - column: The column where the failure occurs. The default value is the
 ///   column number where this function was called.
 ///   - options: The options for testing. The default value is `nil`, which
-///   falls back to using global options.
+///   falls back to the resolved options.
 ///   - body: The performance body.
 public func XCTKPerformance(
     runs        : @autoclosure () -> Int?           = nil,
@@ -67,7 +67,7 @@ public func XCTKPerformance(
         file:           file,
         line:           line,
         column:         column,
-        options:        options ?? TestConfiguration.global,
+        options:        options ?? TestConfiguration.current,
         body,
         context:        failureContext
     )

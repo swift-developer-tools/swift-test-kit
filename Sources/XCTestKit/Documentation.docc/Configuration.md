@@ -4,60 +4,66 @@ Configurable testing options.
 
 ## Overview
 
-XCTestKit may be configured at the global or assertion level. Options passed 
-to individual assertions take precedence over global options.
+Options may be configured at three precedence levels:
+
+1. The global level: Applies everywhere by default.
+2. The closure level: Applies within a closure.
+3. The API level: Applies to a single API.
 
 ### Global Configuration
 
-Use ``TestConfiguration`` to set options that apply to all assertions by 
-default.
+Use ``TestConfiguration`` to set options that apply everywhere by default.
 
 ```swift
 TestConfiguration.global.diffOptions.maxRecursionDepth  = 20
 TestConfiguration.global.formatOptions.maxDiffs         = 5
 ```
 
-### Assertion Configuration
+- Important: ``TestConfiguration`` is thread-safe, but modifying global
+options during parallel test executions may cause logical races. Use
+scoped configuration, or set global options once before tests begin.
 
-Pass options directly to any assertion to override global options for that 
-function call, or subclass ``XCTKCase`` to define reusable options for a test 
-class.
+### Scoped Configuration
+
+Use ``TestConfiguration`` scoping methods to apply options to a closure. All 
+tests executed within the given closure use the scoped options instead of the 
+``TestConfiguration/global`` options, unless those tests explicitly specify 
+options.
 
 ```swift
-final class TestClass: XCTKCase
-{
-    override var options: TestOptions
-    {
-        var opts = super.options
-        opts.formatOptions.maxDiffs = 5
-        return opts
-    }
-    
-    func testWithGlobalOptions()
-    {
-        /// Pass no options to use the global options.
-        XCTKAssertEqual(expected, actual)
-    }
-    
-    func testWithClassOptions()
-    {
-        /// Pass class-level options to override the global options.
-        XCTKAssertEqual(expected, actual, options: self.options)
-    }
-    
-    func testWithCustomOptions()
-    {
-        let options = TestOptions(formatOptions: .init(maxDiffs: 10))
+let options = TestOptions(formatOptions: .init(maxDiffs: 10))
 
-        /// Pass assertion-level options to override the global options.
-        XCTKAssertEqual(expected, actual, options: options)
-    }
+TestConfiguration.withOptions(options)
+{
+    // Test with scoped options.
+    XCTKAssertEqual(expected, actual)
 }
+```
+
+Provide a modification closure to modify individual properties without 
+replacing the entire options:
+
+```swift
+TestConfiguration.withOptions({ $0.formatOptions.maxDiffs = 10 })
+{
+    // Test with scoped options.
+    XCTKAssertEqual(expected, actual)
+}
+```
+
+### API-Level Configuration
+
+Pass options directly to any API to override all other configurations for 
+that call.
+
+```swift
+let options = TestOptions(formatOptions: .init(maxDiffs: 10))
+
+XCTKAssertEqual(expected, actual, options: options)
 ```
 
 ## Topics
 
-- ``XCTKCase``
 - ``TestConfiguration``
 - ``TestOptions``
 - ``DiffOptions``

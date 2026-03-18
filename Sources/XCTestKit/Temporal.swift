@@ -27,9 +27,9 @@ import TestKitCore
 ///
 /// - Parameters:
 ///   - timeout: The timeout duration. The default value is `nil`, which falls
-///   back to using global options.
+///   back to the resolved options.
 ///   - interval: The polling interval. The default value is `nil`, which falls
-///   back to using global options.
+///   back to the resolved options.
 ///   - message: An optional description of a failure.
 ///   - fileID: The ID of the file where the failure occurs. The default value
 ///   is the ID of the file of the test case in which this function was called.
@@ -40,7 +40,7 @@ import TestKitCore
 ///   - column: The column where the failure occurs. The default value is the
 ///   column number where this function was called.
 ///   - options: The options for testing. The default value is `nil`, which
-///   falls back to using global options.
+///   falls back to the resolved options.
 ///   - body: The temporal body.
 public func XCTKAlways(
     timeout     : @autoclosure () -> Duration?  = nil,
@@ -62,7 +62,7 @@ public func XCTKAlways(
         file:       file,
         line:       line,
         column:     column,
-        options:    options ?? TestConfiguration.global,
+        options:    options ?? TestConfiguration.current,
         body,
         context:    failureContext
     )
@@ -84,9 +84,9 @@ public func XCTKAlways(
 ///
 /// - Parameters:
 ///   - timeout: The timeout duration. The default value is `nil`, which falls
-///   back to using global options.
+///   back to the resolved options.
 ///   - interval: The polling interval. The default value is `nil`, which falls
-///   back to using global options.
+///   back to the resolved options.
 ///   - message: An optional description of a failure.
 ///   - fileID: The ID of the file where the failure occurs. The default value
 ///   is the ID of the file of the test case in which this function was called.
@@ -97,7 +97,7 @@ public func XCTKAlways(
 ///   - column: The column where the failure occurs. The default value is the
 ///   column number where this function was called.
 ///   - options: The options for testing. The default value is `nil`, which
-///   falls back to using global options.
+///   falls back to the resolved options.
 ///   - body: The temporal body.
 public func XCTKEventually(
     timeout     : @autoclosure () -> Duration?  = nil,
@@ -119,7 +119,7 @@ public func XCTKEventually(
         file:       file,
         line:       line,
         column:     column,
-        options:    options ?? TestConfiguration.global,
+        options:    options ?? TestConfiguration.current,
         body,
         context:    failureContext
     )

@@ -26,7 +26,7 @@ import TestKitCore
 ///   - column: The column where the failure occurs. The default value is the
 ///   column number where this function was called.
 ///   - options: The options for testing. The default value is `nil`, which
-///   falls back to using global options.
+///   falls back to the resolved options.
 public func XCTKAssert(
     _ expression    : @autoclosure () throws -> Bool,
     _ message       : @autoclosure () -> String         = "",
@@ -44,7 +44,7 @@ public func XCTKAssert(
         file:       file,
         line:       line,
         column:     column,
-        options:    options ?? TestConfiguration.global,
+        options:    options ?? TestConfiguration.current,
         context:    failureContext
     )
 }
@@ -64,7 +64,7 @@ public func XCTKAssert(
 ///   - column: The column where the failure occurs. The default value is the
 ///   column number where this function was called.
 ///   - options: The options for testing. The default value is `nil`, which
-///   falls back to using global options.
+///   falls back to the resolved options.
 public func XCTKAssertTrue(
     _ expression    : @autoclosure () throws -> Bool,
     _ message       : @autoclosure () -> String         = "",
@@ -82,7 +82,7 @@ public func XCTKAssertTrue(
         file:       file,
         line:       line,
         column:     column,
-        options:    options ?? TestConfiguration.global,
+        options:    options ?? TestConfiguration.current,
         context:    failureContext
     )
 }
@@ -102,7 +102,7 @@ public func XCTKAssertTrue(
 ///   - column: The column where the failure occurs. The default value is the
 ///   column number where this function was called.
 ///   - options: The options for testing. The default value is `nil`, which
-///   falls back to using global options.
+///   falls back to the resolved options.
 public func XCTKAssertFalse(
     _ expression    : @autoclosure () throws -> Bool,
     _ message       : @autoclosure () -> String         = "",
@@ -120,7 +120,7 @@ public func XCTKAssertFalse(
         file:       file,
         line:       line,
         column:     column,
-        options:    options ?? TestConfiguration.global,
+        options:    options ?? TestConfiguration.current,
         context:    failureContext
     )
 }
@@ -142,7 +142,7 @@ public func XCTKAssertFalse(
 ///   - column: The column where the failure occurs. The default value is the
 ///   column number where this function was called.
 ///   - options: The options for testing. The default value is `nil`, which
-///   falls back to using global options.
+///   falls back to the resolved options.
 public func XCTKAssertNil(
     _ expression    : @autoclosure () throws -> Any?,
     _ message       : @autoclosure () -> String         = "",
@@ -160,7 +160,7 @@ public func XCTKAssertNil(
         file:       file,
         line:       line,
         column:     column,
-        options:    options ?? TestConfiguration.global,
+        options:    options ?? TestConfiguration.current,
         context:    failureContext
     )
 }
@@ -180,7 +180,7 @@ public func XCTKAssertNil(
 ///   - column: The column where the failure occurs. The default value is the
 ///   column number where this function was called.
 ///   - options: The options for testing. The default value is `nil`, which
-///   falls back to using global options.
+///   falls back to the resolved options.
 public func XCTKAssertNotNil(
     _ expression    : @autoclosure () throws -> Any?,
     _ message       : @autoclosure () -> String         = "",
@@ -198,7 +198,7 @@ public func XCTKAssertNotNil(
         file:       file,
         line:       line,
         column:     column,
-        options:    options ?? TestConfiguration.global,
+        options:    options ?? TestConfiguration.current,
         context:    failureContext
     )
 }
@@ -219,7 +219,7 @@ public func XCTKAssertNotNil(
 ///   - column: The column where the failure occurs. The default value is the
 ///   column number where this function was called.
 ///   - options: The options for testing. The default value is `nil`, which
-///   falls back to using global options.
+///   falls back to the resolved options.
 /// - Returns: The result of evaluating and unwrapped the given expression.
 /// This only returns a value if the unwrapped value is not `nil`.
 /// - Throws: An ``UnwrapError`` if the unwrapped value is `nil`, or an error
@@ -241,7 +241,7 @@ public func XCTKUnwrap<T>(
         file:       file,
         line:       line,
         column:     column,
-        options:    options ?? TestConfiguration.global,
+        options:    options ?? TestConfiguration.current,
         context:    failureContext
     )
 }
@@ -264,7 +264,7 @@ public func XCTKUnwrap<T>(
 ///   - column: The column where the failure occurs. The default value is the
 ///   column number where this function was called.
 ///   - options: The options for testing. The default value is `nil`, which
-///   falls back to using global options.
+///   falls back to the resolved options.
 public func XCTKAssertEqual<T>(
     _ expected  : @autoclosure () throws -> T,
     _ actual    : @autoclosure () throws -> T,
@@ -284,7 +284,7 @@ public func XCTKAssertEqual<T>(
         file:       file,
         line:       line,
         column:     column,
-        options:    options ?? TestConfiguration.global,
+        options:    options ?? TestConfiguration.current,
         context:    failureContext
     )
 }
@@ -305,7 +305,7 @@ public func XCTKAssertEqual<T>(
 ///   - column: The column where the failure occurs. The default value is the
 ///   column number where this function was called.
 ///   - options: The options for testing. The default value is `nil`, which
-///   falls back to using global options.
+///   falls back to the resolved options.
 public func XCTKAssertNotEqual<T>(
     _ expression1   : @autoclosure () throws -> T,
     _ expression2   : @autoclosure () throws -> T,
@@ -325,7 +325,7 @@ public func XCTKAssertNotEqual<T>(
         file:       file,
         line:       line,
         column:     column,
-        options:    options ?? TestConfiguration.global,
+        options:    options ?? TestConfiguration.current,
         context:    failureContext
     )
 }
@@ -349,7 +349,7 @@ public func XCTKAssertNotEqual<T>(
 ///   - column: The column where the failure occurs. The default value is the
 ///   column number where this function was called.
 ///   - options: The options for testing. The default value is `nil`, which
-///   falls back to using global options.
+///   falls back to the resolved options.
 public func XCTKAssertIdentical(
     _ expression1   : @autoclosure () throws -> AnyObject?,
     _ expression2   : @autoclosure () throws -> AnyObject?,
@@ -369,7 +369,7 @@ public func XCTKAssertIdentical(
         file:       file,
         line:       line,
         column:     column,
-        options:    options ?? TestConfiguration.global,
+        options:    options ?? TestConfiguration.current,
         context:    failureContext
     )
 }
@@ -393,7 +393,7 @@ public func XCTKAssertIdentical(
 ///   - column: The column where the failure occurs. The default value is the
 ///   column number where this function was called.
 ///   - options: The options for testing. The default value is `nil`, which
-///   falls back to using global options.
+///   falls back to the resolved options.
 public func XCTKAssertNotIdentical(
     _ expression1   : @autoclosure () throws -> AnyObject?,
     _ expression2   : @autoclosure () throws -> AnyObject?,
@@ -413,7 +413,7 @@ public func XCTKAssertNotIdentical(
         file:       file,
         line:       line,
         column:     column,
-        options:    options ?? TestConfiguration.global,
+        options:    options ?? TestConfiguration.current,
         context:    failureContext
     )
 }
@@ -437,7 +437,7 @@ public func XCTKAssertNotIdentical(
 ///   - column: The column where the failure occurs. The default value is the
 ///   column number where this function was called.
 ///   - options: The options for testing. The default value is `nil`, which
-///   falls back to using global options.
+///   falls back to the resolved options.
 public func XCTKAssertEqual<T>(
     _ expression1   : @autoclosure () throws -> T,
     _ expression2   : @autoclosure () throws -> T,
@@ -459,7 +459,7 @@ public func XCTKAssertEqual<T>(
         file:       file,
         line:       line,
         column:     column,
-        options:    options ?? TestConfiguration.global,
+        options:    options ?? TestConfiguration.current,
         context:    failureContext
     )
 }
@@ -482,7 +482,7 @@ public func XCTKAssertEqual<T>(
 ///   - column: The column where the failure occurs. The default value is the
 ///   column number where this function was called.
 ///   - options: The options for testing. The default value is `nil`, which
-///   falls back to using global options.
+///   falls back to the resolved options.
 public func XCTKAssertEqual<T>(
     _ expression1   : @autoclosure () throws -> T,
     _ expression2   : @autoclosure () throws -> T,
@@ -504,7 +504,7 @@ public func XCTKAssertEqual<T>(
         file:       file,
         line:       line,
         column:     column,
-        options:    options ?? TestConfiguration.global,
+        options:    options ?? TestConfiguration.current,
         context:    failureContext
     )
 }
@@ -528,7 +528,7 @@ public func XCTKAssertEqual<T>(
 ///   - column: The column where the failure occurs. The default value is the
 ///   column number where this function was called.
 ///   - options: The options for testing. The default value is `nil`, which
-///   falls back to using global options.
+///   falls back to the resolved options.
 public func XCTKAssertNotEqual<T>(
     _ expression1   : @autoclosure () throws -> T,
     _ expression2   : @autoclosure () throws -> T,
@@ -550,7 +550,7 @@ public func XCTKAssertNotEqual<T>(
         file:       file,
         line:       line,
         column:     column,
-        options:    options ?? TestConfiguration.global,
+        options:    options ?? TestConfiguration.current,
         context:    failureContext
     )
 }
@@ -574,7 +574,7 @@ public func XCTKAssertNotEqual<T>(
 ///   - column: The column where the failure occurs. The default value is the
 ///   column number where this function was called.
 ///   - options: The options for testing. The default value is `nil`, which
-///   falls back to using global options.
+///   falls back to the resolved options.
 public func XCTKAssertNotEqual<T>(
     _ expression1   : @autoclosure () throws -> T,
     _ expression2   : @autoclosure () throws -> T,
@@ -596,7 +596,7 @@ public func XCTKAssertNotEqual<T>(
         file:       file,
         line:       line,
         column:     column,
-        options:    options ?? TestConfiguration.global,
+        options:    options ?? TestConfiguration.current,
         context:    failureContext
     )
 }
@@ -620,7 +620,7 @@ public func XCTKAssertNotEqual<T>(
 ///   - column: The column where the failure occurs. The default value is the
 ///   column number where this function was called.
 ///   - options: The options for testing. The default value is `nil`, which
-///   falls back to using global options.
+///   falls back to the resolved options.
 public func XCTKAssertGreaterThan<T>(
     _ expression1   : @autoclosure () throws -> T,
     _ expression2   : @autoclosure () throws -> T,
@@ -640,7 +640,7 @@ public func XCTKAssertGreaterThan<T>(
         file:       file,
         line:       line,
         column:     column,
-        options:    options ?? TestConfiguration.global,
+        options:    options ?? TestConfiguration.current,
         context:    failureContext
     )
 }
@@ -662,7 +662,7 @@ public func XCTKAssertGreaterThan<T>(
 ///   - column: The column where the failure occurs. The default value is the
 ///   column number where this function was called.
 ///   - options: The options for testing. The default value is `nil`, which
-///   falls back to using global options.
+///   falls back to the resolved options.
 public func XCTKAssertGreaterThanOrEqual<T>(
     _ expression1   : @autoclosure () throws -> T,
     _ expression2   : @autoclosure () throws -> T,
@@ -682,7 +682,7 @@ public func XCTKAssertGreaterThanOrEqual<T>(
         file:       file,
         line:       line,
         column:     column,
-        options:    options ?? TestConfiguration.global,
+        options:    options ?? TestConfiguration.current,
         context:    failureContext
     )
 }
@@ -704,7 +704,7 @@ public func XCTKAssertGreaterThanOrEqual<T>(
 ///   - column: The column where the failure occurs. The default value is the
 ///   column number where this function was called.
 ///   - options: The options for testing. The default value is `nil`, which
-///   falls back to using global options.
+///   falls back to the resolved options.
 public func XCTKAssertLessThanOrEqual<T>(
     _ expression1   : @autoclosure () throws -> T,
     _ expression2   : @autoclosure () throws -> T,
@@ -724,7 +724,7 @@ public func XCTKAssertLessThanOrEqual<T>(
         file:       file,
         line:       line,
         column:     column,
-        options:    options ?? TestConfiguration.global,
+        options:    options ?? TestConfiguration.current,
         context:    failureContext
     )
 }
@@ -746,7 +746,7 @@ public func XCTKAssertLessThanOrEqual<T>(
 ///   - column: The column where the failure occurs. The default value is the
 ///   column number where this function was called.
 ///   - options: The options for testing. The default value is `nil`, which
-///   falls back to using global options.
+///   falls back to the resolved options.
 public func XCTKAssertLessThan<T>(
     _ expression1   : @autoclosure () throws -> T,
     _ expression2   : @autoclosure () throws -> T,
@@ -766,7 +766,7 @@ public func XCTKAssertLessThan<T>(
         file:       file,
         line:       line,
         column:     column,
-        options:    options ?? TestConfiguration.global,
+        options:    options ?? TestConfiguration.current,
         context:    failureContext
     )
 }
@@ -788,7 +788,7 @@ public func XCTKAssertLessThan<T>(
 ///   - column: The column where the failure occurs. The default value is the
 ///   column number where this function was called.
 ///   - options: The options for testing. The default value is `nil`, which
-///   falls back to using global options.
+///   falls back to the resolved options.
 ///   - errorHandler: An optional handler for errors thrown by `expression`.
 public func XCTKAssertThrowsError<T>(
     _ expression    : @autoclosure () throws -> T,
@@ -808,7 +808,7 @@ public func XCTKAssertThrowsError<T>(
         file:       file,
         line:       line,
         column:     column,
-        options:    options ?? TestConfiguration.global,
+        options:    options ?? TestConfiguration.current,
         errorHandler,
         context:    failureContext
     )
@@ -829,7 +829,7 @@ public func XCTKAssertThrowsError<T>(
 ///   - column: The column where the failure occurs. The default value is the
 ///   column number where this function was called.
 ///   - options: The options for testing. The default value is `nil`, which
-///   falls back to using global options.
+///   falls back to the resolved options.
 public func XCTKAssertNoThrow<T>(
     _ expression    : @autoclosure () throws -> T,
     _ message       : @autoclosure () -> String     = "",
@@ -847,7 +847,7 @@ public func XCTKAssertNoThrow<T>(
         file:       file,
         line:       line,
         column:     column,
-        options:    options ?? TestConfiguration.global,
+        options:    options ?? TestConfiguration.current,
         context:    failureContext
     )
 }
@@ -905,7 +905,7 @@ public func XCTKFail(
 ///   - column: The column where the failure occurs. The default value is the
 ///   column number where this function was called.
 ///   - options: The options for testing. The default value is `nil`, which
-///   falls back to using global options.
+///   falls back to the resolved options.
 public func XCTKAssertAllSatisfy<C>(
     _ collection    : @autoclosure () throws -> C,
     _ predicate     : (C.Element) throws -> Bool,
@@ -925,7 +925,7 @@ public func XCTKAssertAllSatisfy<C>(
         file:       file,
         line:       line,
         column:     column,
-        options:    options ?? TestConfiguration.global,
+        options:    options ?? TestConfiguration.current,
         context:    failureContext
     )
 }
@@ -948,7 +948,7 @@ public func XCTKAssertAllSatisfy<C>(
 ///   - column: The column where the failure occurs. The default value is the
 ///   column number where this function was called.
 ///   - options: The options for testing. The default value is `nil`, which
-///   falls back to using global options.
+///   falls back to the resolved options.
 public func XCTKAssertAnySatisfy<C>(
     _ collection    : @autoclosure () throws -> C,
     _ predicate     : (C.Element) throws -> Bool,
@@ -968,7 +968,7 @@ public func XCTKAssertAnySatisfy<C>(
         file:       file,
         line:       line,
         column:     column,
-        options:    options ?? TestConfiguration.global,
+        options:    options ?? TestConfiguration.current,
         context:    failureContext
     )
 }
@@ -991,7 +991,7 @@ public func XCTKAssertAnySatisfy<C>(
 ///   - column: The column where the failure occurs. The default value is the
 ///   column number where this function was called.
 ///   - options: The options for testing. The default value is `nil`, which
-///   falls back to using global options.
+///   falls back to the resolved options.
 public func XCTKAssertNoneSatisfy<C>(
     _ collection    : @autoclosure () throws -> C,
     _ predicate     : (C.Element) throws -> Bool,
@@ -1011,7 +1011,7 @@ public func XCTKAssertNoneSatisfy<C>(
         file:       file,
         line:       line,
         column:     column,
-        options:    options ?? TestConfiguration.global,
+        options:    options ?? TestConfiguration.current,
         context:    failureContext
     )
 }
@@ -1039,7 +1039,7 @@ public func XCTKAssertNoneSatisfy<C>(
 ///   - column: The column where the failure occurs. The default value is the
 ///   column number where this function was called.
 ///   - options: The options for testing. The default value is `nil`, which
-///   falls back to using global options.
+///   falls back to the resolved options.
 public func XCTKAssertSatisfy<C>(
     _ collection    : @autoclosure () throws -> C,
     atLeast         : Int,
@@ -1061,7 +1061,7 @@ public func XCTKAssertSatisfy<C>(
         file:       file,
         line:       line,
         column:     column,
-        options:    options ?? TestConfiguration.global,
+        options:    options ?? TestConfiguration.current,
         context:    failureContext
     )
 }
@@ -1089,7 +1089,7 @@ public func XCTKAssertSatisfy<C>(
 ///   - column: The column where the failure occurs. The default value is the
 ///   column number where this function was called.
 ///   - options: The options for testing. The default value is `nil`, which
-///   falls back to using global options.
+///   falls back to the resolved options.
 public func XCTKAssertSatisfy<C>(
     _ collection    : @autoclosure () throws -> C,
     atMost          : Int,
@@ -1111,7 +1111,7 @@ public func XCTKAssertSatisfy<C>(
         file:       file,
         line:       line,
         column:     column,
-        options:    options ?? TestConfiguration.global,
+        options:    options ?? TestConfiguration.current,
         context:    failureContext
     )
 }
@@ -1139,7 +1139,7 @@ public func XCTKAssertSatisfy<C>(
 ///   - column: The column where the failure occurs. The default value is the
 ///   column number where this function was called.
 ///   - options: The options for testing. The default value is `nil`, which
-///   falls back to using global options.
+///   falls back to the resolved options.
 public func XCTKAssertSatisfy<C>(
     _ collection    : @autoclosure () throws -> C,
     range           : ClosedRange<Int>,
@@ -1161,7 +1161,7 @@ public func XCTKAssertSatisfy<C>(
         file:       file,
         line:       line,
         column:     column,
-        options:    options ?? TestConfiguration.global,
+        options:    options ?? TestConfiguration.current,
         context:    failureContext
     )
 }
@@ -1189,7 +1189,7 @@ public func XCTKAssertSatisfy<C>(
 ///   - column: The column where the failure occurs. The default value is the
 ///   column number where this function was called.
 ///   - options: The options for testing. The default value is `nil`, which
-///   falls back to using global options.
+///   falls back to the resolved options.
 public func XCTKAssertExactly<C>(
     _ collection    : @autoclosure () throws -> C,
     count           : Int,
@@ -1211,7 +1211,7 @@ public func XCTKAssertExactly<C>(
         file:       file,
         line:       line,
         column:     column,
-        options:    options ?? TestConfiguration.global,
+        options:    options ?? TestConfiguration.current,
         context:    failureContext
     )
 }
@@ -1234,7 +1234,7 @@ public func XCTKAssertExactly<C>(
 ///   - column: The column where the failure occurs. The default value is the
 ///   column number where this function was called.
 ///   - options: The options for testing. The default value is `nil`, which
-///   falls back to using global options.
+///   falls back to the resolved options.
 public func XCTKAssertExactlyOne<C>(
     _ collection    : @autoclosure () throws -> C,
     _ predicate     : (C.Element) throws -> Bool,
@@ -1254,7 +1254,7 @@ public func XCTKAssertExactlyOne<C>(
         file:       file,
         line:       line,
         column:     column,
-        options:    options ?? TestConfiguration.global,
+        options:    options ?? TestConfiguration.current,
         context:    failureContext
     )
 }
@@ -1277,7 +1277,7 @@ public func XCTKAssertExactlyOne<C>(
 ///   - column: The column where the failure occurs. The default value is the
 ///   column number where this function was called.
 ///   - options: The options for testing. The default value is `nil`, which
-///   falls back to using global options.
+///   falls back to the resolved options.
 public func XCTKAssertSorted<C>(
     _ collection    : @autoclosure () throws -> C,
     by predicate    : (C.Element, C.Element) throws -> Bool,
@@ -1297,7 +1297,7 @@ public func XCTKAssertSorted<C>(
         file:       file,
         line:       line,
         column:     column,
-        options:    options ?? TestConfiguration.global,
+        options:    options ?? TestConfiguration.current,
         context:    failureContext
     )
 }
@@ -1317,7 +1317,7 @@ public func XCTKAssertSorted<C>(
 ///   - column: The column where the failure occurs. The default value is the
 ///   column number where this function was called.
 ///   - options: The options for testing. The default value is `nil`, which
-///   falls back to using global options.
+///   falls back to the resolved options.
 public func XCTKAssertUnique<C>(
     _ collection    : @autoclosure () throws -> C,
     _ message       : @autoclosure () -> String     = "",
@@ -1335,7 +1335,7 @@ public func XCTKAssertUnique<C>(
         file:       file,
         line:       line,
         column:     column,
-        options:    options ?? TestConfiguration.global,
+        options:    options ?? TestConfiguration.current,
         context:    failureContext
     )
 }
@@ -1358,7 +1358,7 @@ public func XCTKAssertUnique<C>(
 ///   - column: The column where the failure occurs. The default value is the
 ///   column number where this function was called.
 ///   - options: The options for testing. The default value is `nil`, which
-///   falls back to using global options.
+///   falls back to the resolved options.
 public func XCTKAssertUnique<C, K>(
     _ collection    : @autoclosure () throws -> C,
     by predicate    : (C.Element) throws -> K,
@@ -1378,7 +1378,7 @@ public func XCTKAssertUnique<C, K>(
         file:       file,
         line:       line,
         column:     column,
-        options:    options ?? TestConfiguration.global,
+        options:    options ?? TestConfiguration.current,
         context:    failureContext
     )
 }

@@ -26,7 +26,7 @@ import TestKitCore
 ///   - column: The column where the failure occurs. The default value is the
 ///   column number where this macro was called.
 ///   - options: The options for testing. The default value is `nil`, which
-///   falls back to using global options.
+///   falls back to the resolved options.
 @freestanding(expression)
 public macro XCTKAssert(
     _ expression    : @autoclosure () throws -> Bool,
@@ -56,7 +56,7 @@ public macro XCTKAssert(
 ///   - column: The column where the failure occurs. The default value is the
 ///   column number where this macro was called.
 ///   - options: The options for testing. The default value is `nil`, which
-///   falls back to using global options.
+///   falls back to the resolved options.
 @freestanding(expression)
 public macro XCTKAssertTrue(
     _ expression    : @autoclosure () throws -> Bool,
@@ -86,7 +86,7 @@ public macro XCTKAssertTrue(
 ///   - column: The column where the failure occurs. The default value is the
 ///   column number where this macro was called.
 ///   - options: The options for testing. The default value is `nil`, which
-///   falls back to using global options.
+///   falls back to the resolved options.
 @freestanding(expression)
 public macro XCTKAssertFalse(
     _ expression    : @autoclosure () throws -> Bool,
@@ -118,7 +118,7 @@ public macro XCTKAssertFalse(
 ///   - column: The column where the failure occurs. The default value is the
 ///   column number where this macro was called.
 ///   - options: The options for testing. The default value is `nil`, which
-///   falls back to using global options.
+///   falls back to the resolved options.
 @freestanding(expression)
 public macro XCTKAssertNil(
     _ expression    : @autoclosure () throws -> Any?,
@@ -148,7 +148,7 @@ public macro XCTKAssertNil(
 ///   - column: The column where the failure occurs. The default value is the
 ///   column number where this macro was called.
 ///   - options: The options for testing. The default value is `nil`, which
-///   falls back to using global options.
+///   falls back to the resolved options.
 @freestanding(expression)
 public macro XCTKAssertNotNil(
     _ expression    : @autoclosure () throws -> Any?,
@@ -179,7 +179,7 @@ public macro XCTKAssertNotNil(
 ///   - column: The column where the failure occurs. The default value is the
 ///   column number where this macro was called.
 ///   - options: The options for testing. The default value is `nil`, which
-///   falls back to using global options.
+///   falls back to the resolved options.
 /// - Returns: The result of evaluating and unwrapped the given expression.
 /// This only returns a value if the unwrapped value is not `nil`.
 /// - Throws: An ``UnwrapError`` if the unwrapped value is `nil`, or an error
@@ -216,7 +216,7 @@ public macro XCTKUnwrap<T>(
 ///   - column: The column where the failure occurs. The default value is the
 ///   column number where this macro was called.
 ///   - options: The options for testing. The default value is `nil`, which
-///   falls back to using global options.
+///   falls back to the resolved options.
 @freestanding(expression)
 public macro XCTKAssertEqual<T>(
     _ expected  : @autoclosure () throws -> T,
@@ -248,7 +248,7 @@ public macro XCTKAssertEqual<T>(
 ///   - column: The column where the failure occurs. The default value is the
 ///   column number where this macro was called.
 ///   - options: The options for testing. The default value is `nil`, which
-///   falls back to using global options.
+///   falls back to the resolved options.
 @freestanding(expression)
 public macro XCTKAssertNotEqual<T>(
     _ expression1   : @autoclosure () throws -> T,
@@ -283,7 +283,7 @@ public macro XCTKAssertNotEqual<T>(
 ///   - column: The column where the failure occurs. The default value is the
 ///   column number where this macro was called.
 ///   - options: The options for testing. The default value is `nil`, which
-///   falls back to using global options.
+///   falls back to the resolved options.
 @freestanding(expression)
 public macro XCTKAssertIdentical(
     _ expression1   : @autoclosure () throws -> AnyObject?,
@@ -318,7 +318,7 @@ public macro XCTKAssertIdentical(
 ///   - column: The column where the failure occurs. The default value is the
 ///   column number where this macro was called.
 ///   - options: The options for testing. The default value is `nil`, which
-///   falls back to using global options.
+///   falls back to the resolved options.
 @freestanding(expression)
 public macro XCTKAssertNotIdentical(
     _ expression1   : @autoclosure () throws -> AnyObject?,
@@ -353,7 +353,7 @@ public macro XCTKAssertNotIdentical(
 ///   - column: The column where the failure occurs. The default value is the
 ///   column number where this macro was called.
 ///   - options: The options for testing. The default value is `nil`, which
-///   falls back to using global options.
+///   falls back to the resolved options.
 @freestanding(expression)
 public macro XCTKAssertEqual<T>(
     _ expression1   : @autoclosure () throws -> T,
@@ -388,7 +388,7 @@ public macro XCTKAssertEqual<T>(
 ///   - column: The column where the failure occurs. The default value is the
 ///   column number where this macro was called.
 ///   - options: The options for testing. The default value is `nil`, which
-///   falls back to using global options.
+///   falls back to the resolved options.
 @freestanding(expression)
 public macro XCTKAssertEqual<T>(
     _ expression1   : @autoclosure () throws -> T,
@@ -424,7 +424,7 @@ public macro XCTKAssertEqual<T>(
 ///   - column: The column where the failure occurs. The default value is the
 ///   column number where this macro was called.
 ///   - options: The options for testing. The default value is `nil`, which
-///   falls back to using global options.
+///   falls back to the resolved options.
 @freestanding(expression)
 public macro XCTKAssertNotEqual<T>(
     _ expression1   : @autoclosure () throws -> T,
@@ -460,7 +460,7 @@ public macro XCTKAssertNotEqual<T>(
 ///   - column: The column where the failure occurs. The default value is the
 ///   column number where this macro was called.
 ///   - options: The options for testing. The default value is `nil`, which
-///   falls back to using global options.
+///   falls back to the resolved options.
 @freestanding(expression)
 public macro XCTKAssertNotEqual<T>(
     _ expression1   : @autoclosure () throws -> T,
@@ -496,7 +496,7 @@ public macro XCTKAssertNotEqual<T>(
 ///   - column: The column where the failure occurs. The default value is the
 ///   column number where this macro was called.
 ///   - options: The options for testing. The default value is `nil`, which
-///   falls back to using global options.
+///   falls back to the resolved options.
 @freestanding(expression)
 public macro XCTKAssertGreaterThan<T>(
     _ expression1   : @autoclosure () throws -> T,
@@ -529,7 +529,7 @@ public macro XCTKAssertGreaterThan<T>(
 ///   - column: The column where the failure occurs. The default value is the
 ///   column number where this macro was called.
 ///   - options: The options for testing. The default value is `nil`, which
-///   falls back to using global options.
+///   falls back to the resolved options.
 @freestanding(expression)
 public macro XCTKAssertGreaterThanOrEqual<T>(
     _ expression1   : @autoclosure () throws -> T,
@@ -562,7 +562,7 @@ public macro XCTKAssertGreaterThanOrEqual<T>(
 ///   - column: The column where the failure occurs. The default value is the
 ///   column number where this macro was called.
 ///   - options: The options for testing. The default value is `nil`, which
-///   falls back to using global options.
+///   falls back to the resolved options.
 @freestanding(expression)
 public macro XCTKAssertLessThanOrEqual<T>(
     _ expression1   : @autoclosure () throws -> T,
@@ -595,7 +595,7 @@ public macro XCTKAssertLessThanOrEqual<T>(
 ///   - column: The column where the failure occurs. The default value is the
 ///   column number where this macro was called.
 ///   - options: The options for testing. The default value is `nil`, which
-///   falls back to using global options.
+///   falls back to the resolved options.
 @freestanding(expression)
 public macro XCTKAssertLessThan<T>(
     _ expression1   : @autoclosure () throws -> T,
@@ -628,7 +628,7 @@ public macro XCTKAssertLessThan<T>(
 ///   - column: The column where the failure occurs. The default value is the
 ///   column number where this macro was called.
 ///   - options: The options for testing. The default value is `nil`, which
-///   falls back to using global options.
+///   falls back to the resolved options.
 ///   - errorHandler: An optional handler for errors thrown by `expression`.
 @freestanding(expression)
 public macro XCTKAssertThrowsError<T>(
@@ -660,7 +660,7 @@ public macro XCTKAssertThrowsError<T>(
 ///   - column: The column where the failure occurs. The default value is the
 ///   column number where this macro was called.
 ///   - options: The options for testing. The default value is `nil`, which
-///   falls back to using global options.
+///   falls back to the resolved options.
 @freestanding(expression)
 public macro XCTKAssertNoThrow<T>(
     _ expression    : @autoclosure () throws -> T,
@@ -722,7 +722,7 @@ public macro XCTKFail(
 ///   - column: The column where the failure occurs. The default value is the
 ///   column number where this macro was called.
 ///   - options: The options for testing. The default value is `nil`, which
-///   falls back to using global options.
+///   falls back to the resolved options.
 @freestanding(expression)
 public macro XCTKAssertAllSatisfy<C>(
     _ collection    : @autoclosure () throws -> C,
@@ -756,7 +756,7 @@ public macro XCTKAssertAllSatisfy<C>(
 ///   - column: The column where the failure occurs. The default value is the
 ///   column number where this macro was called.
 ///   - options: The options for testing. The default value is `nil`, which
-///   falls back to using global options.
+///   falls back to the resolved options.
 @freestanding(expression)
 public macro XCTKAssertAnySatisfy<C>(
     _ collection    : @autoclosure () throws -> C,
@@ -790,7 +790,7 @@ public macro XCTKAssertAnySatisfy<C>(
 ///   - column: The column where the failure occurs. The default value is the
 ///   column number where this macro was called.
 ///   - options: The options for testing. The default value is `nil`, which
-///   falls back to using global options.
+///   falls back to the resolved options.
 @freestanding(expression)
 public macro XCTKAssertNoneSatisfy<C>(
     _ collection    : @autoclosure () throws -> C,
@@ -829,7 +829,7 @@ public macro XCTKAssertNoneSatisfy<C>(
 ///   - column: The column where the failure occurs. The default value is the
 ///   column number where this macro was called.
 ///   - options: The options for testing. The default value is `nil`, which
-///   falls back to using global options.
+///   falls back to the resolved options.
 @freestanding(expression)
 public macro XCTKAssertSatisfy<C>(
     _ collection    : @autoclosure () throws -> C,
@@ -869,7 +869,7 @@ public macro XCTKAssertSatisfy<C>(
 ///   - column: The column where the failure occurs. The default value is the
 ///   column number where this macro was called.
 ///   - options: The options for testing. The default value is `nil`, which
-///   falls back to using global options.
+///   falls back to the resolved options.
 @freestanding(expression)
 public macro XCTKAssertSatisfy<C>(
     _ collection    : @autoclosure () throws -> C,
@@ -909,7 +909,7 @@ public macro XCTKAssertSatisfy<C>(
 ///   - column: The column where the failure occurs. The default value is the
 ///   column number where this macro was called.
 ///   - options: The options for testing. The default value is `nil`, which
-///   falls back to using global options.
+///   falls back to the resolved options.
 @freestanding(expression)
 public macro XCTKAssertSatisfy<C>(
     _ collection    : @autoclosure () throws -> C,
@@ -949,7 +949,7 @@ public macro XCTKAssertSatisfy<C>(
 ///   - column: The column where the failure occurs. The default value is the
 ///   column number where this macro was called.
 ///   - options: The options for testing. The default value is `nil`, which
-///   falls back to using global options.
+///   falls back to the resolved options.
 @freestanding(expression)
 public macro XCTKAssertExactly<C>(
     _ collection    : @autoclosure () throws -> C,
@@ -984,7 +984,7 @@ public macro XCTKAssertExactly<C>(
 ///   - column: The column where the failure occurs. The default value is the
 ///   column number where this macro was called.
 ///   - options: The options for testing. The default value is `nil`, which
-///   falls back to using global options.
+///   falls back to the resolved options.
 @freestanding(expression)
 public macro XCTKAssertExactlyOne<C>(
     _ collection    : @autoclosure () throws -> C,
@@ -1018,7 +1018,7 @@ public macro XCTKAssertExactlyOne<C>(
 ///   - column: The column where the failure occurs. The default value is the
 ///   column number where this macro was called.
 ///   - options: The options for testing. The default value is `nil`, which
-///   falls back to using global options.
+///   falls back to the resolved options.
 @freestanding(expression)
 public macro XCTKAssertSorted<C>(
     _ collection    : @autoclosure () throws -> C,
@@ -1049,7 +1049,7 @@ public macro XCTKAssertSorted<C>(
 ///   - column: The column where the failure occurs. The default value is the
 ///   column number where this macro was called.
 ///   - options: The options for testing. The default value is `nil`, which
-///   falls back to using global options.
+///   falls back to the resolved options.
 @freestanding(expression)
 public macro XCTKAssertUnique<C>(
     _ collection    : @autoclosure () throws -> C,
@@ -1082,7 +1082,7 @@ public macro XCTKAssertUnique<C>(
 ///   - column: The column where the failure occurs. The default value is the
 ///   column number where this macro was called.
 ///   - options: The options for testing. The default value is `nil`, which
-///   falls back to using global options.
+///   falls back to the resolved options.
 @freestanding(expression)
 public macro XCTKAssertUnique<C, K>(
     _ collection    : @autoclosure () throws -> C,

@@ -29,7 +29,7 @@ import TestKitCore
 ///   - column: The column where the failure occurs. The default value is the
 ///   column number where this function was called.
 ///   - options: The options for testing. The default value is `nil`, which
-///   falls back to using global options.
+///   falls back to the resolved options.
 ///   - property: The property to evaluate.
 @Reasync
 public func XCTKForAll<each T>(
@@ -50,7 +50,7 @@ public func XCTKForAll<each T>(
         file:       file,
         line:       line,
         column:     column,
-        options:    options ?? TestConfiguration.global,
+        options:    options ?? TestConfiguration.current,
         property,
         context:    failureContext
     )
@@ -83,7 +83,7 @@ public func XCTKForAll<each T>(
 ///   - column: The column where the failure occurs. The default value is the
 ///   column number where this function was called.
 ///   - options: The options for testing. The default value is `nil`, which
-///   falls back to using global options.
+///   falls back to the resolved options.
 ///   - property: The property to evaluate.
 @Reasync
 public func XCTKForAll<each T>(
@@ -106,7 +106,7 @@ public func XCTKForAll<each T>(
         file:       file,
         line:       line,
         column:     column,
-        options:    options ?? TestConfiguration.global,
+        options:    options ?? TestConfiguration.current,
         property,
         context:    failureContext
     )
@@ -143,7 +143,7 @@ public func XCTKForAll<each T>(
 ///   - column: The column where the failure occurs. The default value is the
 ///   column number where this function was called.
 ///   - options: The options for testing. The default value is `nil`, which
-///   falls back to using global options.
+///   falls back to the resolved options.
 ///   - property: The property to evaluate.
 @Reasync
 public func XCTKForAll<each T>(
@@ -166,7 +166,7 @@ public func XCTKForAll<each T>(
         file:       file,
         line:       line,
         column:     column,
-        options:    options ?? TestConfiguration.global,
+        options:    options ?? TestConfiguration.current,
         property,
         context:    failureContext
     )
@@ -205,7 +205,7 @@ public func XCTKForAll<each T>(
 ///   - column: The column where the failure occurs. The default value is the
 ///   column number where this function was called.
 ///   - options: The options for testing. The default value is `nil`, which
-///   falls back to using global options.
+///   falls back to the resolved options.
 ///   - property: The property to evaluate.
 @Reasync
 public func XCTKForAll<each T>(
@@ -230,7 +230,7 @@ public func XCTKForAll<each T>(
         file:       file,
         line:       line,
         column:     column,
-        options:    options ?? TestConfiguration.global,
+        options:    options ?? TestConfiguration.current,
         property,
         context:    failureContext
     )

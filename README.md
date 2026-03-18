@@ -60,9 +60,7 @@ verifying the system against a simplified model.
 Assertion failures produce path-based diff output providing clear insight into 
 where values differ within complex data structures.
 
-Below are examples of diff output for several common data types. The number 
-of diffs shown, truncation behavior, and other formatting options may be 
-configured at the global or assertion level.
+Below are examples of diff output for several common data types.
 
 ### Nested Structs
 
@@ -179,9 +177,7 @@ which caused the assertion failure, respecting short-circuit evaluation so only
 evaluated operands appear in the output. Other macro assertions capture the 
 expression text without decomposition.
 
-Below are examples of expression capture output for several common scenarios. 
-The expression evaluation, short-circuiting behavior, and other formatting 
-options may be configured at the global or assertion level.
+Below are examples of expression capture output for several common scenarios.
 
 ### Boolean Decomposition
 
@@ -244,9 +240,7 @@ Predicate assertions verify conditions across collection elements and produce
 element-level failure output, identifying which elements failed, which were 
 matched unexpectedly, and which threw errors.
 
-Below are examples of predicate assertion output for several common scenarios. 
-The number of elements shown, truncation behavior, and other formatting options 
-may be configured at the global or assertion level.
+Below are examples of predicate assertion output for several common scenarios.
 
 ### All Satisfy
 

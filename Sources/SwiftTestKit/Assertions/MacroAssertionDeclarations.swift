@@ -26,7 +26,7 @@ import TestKitCore
 ///   - column: The column where the failure occurs. The default value is the
 ///   column number where this macro was called.
 ///   - options: The options for testing. The default value is `nil`, which
-///   falls back to using global options.
+///   falls back to the resolved options.
 @freestanding(expression)
 public macro STKAssert(
     _ expression    : @autoclosure () throws -> Bool,
@@ -56,7 +56,7 @@ public macro STKAssert(
 ///   - column: The column where the failure occurs. The default value is the
 ///   column number where this macro was called.
 ///   - options: The options for testing. The default value is `nil`, which
-///   falls back to using global options.
+///   falls back to the resolved options.
 @freestanding(expression)
 public macro STKAssertTrue(
     _ expression    : @autoclosure () throws -> Bool,
@@ -86,7 +86,7 @@ public macro STKAssertTrue(
 ///   - column: The column where the failure occurs. The default value is the
 ///   column number where this macro was called.
 ///   - options: The options for testing. The default value is `nil`, which
-///   falls back to using global options.
+///   falls back to the resolved options.
 @freestanding(expression)
 public macro STKAssertFalse(
     _ expression    : @autoclosure () throws -> Bool,
@@ -118,7 +118,7 @@ public macro STKAssertFalse(
 ///   - column: The column where the failure occurs. The default value is the
 ///   column number where this macro was called.
 ///   - options: The options for testing. The default value is `nil`, which
-///   falls back to using global options.
+///   falls back to the resolved options.
 @freestanding(expression)
 public macro STKAssertNil(
     _ expression    : @autoclosure () throws -> Any?,
@@ -148,7 +148,7 @@ public macro STKAssertNil(
 ///   - column: The column where the failure occurs. The default value is the
 ///   column number where this macro was called.
 ///   - options: The options for testing. The default value is `nil`, which
-///   falls back to using global options.
+///   falls back to the resolved options.
 @freestanding(expression)
 public macro STKAssertNotNil(
     _ expression    : @autoclosure () throws -> Any?,
@@ -179,7 +179,7 @@ public macro STKAssertNotNil(
 ///   - column: The column where the failure occurs. The default value is the
 ///   column number where this macro was called.
 ///   - options: The options for testing. The default value is `nil`, which
-///   falls back to using global options.
+///   falls back to the resolved options.
 /// - Returns: The result of evaluating and unwrapped the given expression.
 /// This only returns a value if the unwrapped value is not `nil`.
 /// - Throws: An ``UnwrapError`` if the unwrapped value is `nil`, or an error
@@ -216,7 +216,7 @@ public macro STKUnwrap<T>(
 ///   - column: The column where the failure occurs. The default value is the
 ///   column number where this macro was called.
 ///   - options: The options for testing. The default value is `nil`, which
-///   falls back to using global options.
+///   falls back to the resolved options.
 @freestanding(expression)
 public macro STKAssertEqual<T>(
     _ expected  : @autoclosure () throws -> T,
@@ -248,7 +248,7 @@ public macro STKAssertEqual<T>(
 ///   - column: The column where the failure occurs. The default value is the
 ///   column number where this macro was called.
 ///   - options: The options for testing. The default value is `nil`, which
-///   falls back to using global options.
+///   falls back to the resolved options.
 @freestanding(expression)
 public macro STKAssertNotEqual<T>(
     _ expression1   : @autoclosure () throws -> T,
@@ -283,7 +283,7 @@ public macro STKAssertNotEqual<T>(
 ///   - column: The column where the failure occurs. The default value is the
 ///   column number where this macro was called.
 ///   - options: The options for testing. The default value is `nil`, which
-///   falls back to using global options.
+///   falls back to the resolved options.
 @freestanding(expression)
 public macro STKAssertIdentical(
     _ expression1   : @autoclosure () throws -> AnyObject?,
@@ -318,7 +318,7 @@ public macro STKAssertIdentical(
 ///   - column: The column where the failure occurs. The default value is the
 ///   column number where this macro was called.
 ///   - options: The options for testing. The default value is `nil`, which
-///   falls back to using global options.
+///   falls back to the resolved options.
 @freestanding(expression)
 public macro STKAssertNotIdentical(
     _ expression1   : @autoclosure () throws -> AnyObject?,
@@ -353,7 +353,7 @@ public macro STKAssertNotIdentical(
 ///   - column: The column where the failure occurs. The default value is the
 ///   column number where this macro was called.
 ///   - options: The options for testing. The default value is `nil`, which
-///   falls back to using global options.
+///   falls back to the resolved options.
 @freestanding(expression)
 public macro STKAssertEqual<T>(
     _ expression1   : @autoclosure () throws -> T,
@@ -388,7 +388,7 @@ public macro STKAssertEqual<T>(
 ///   - column: The column where the failure occurs. The default value is the
 ///   column number where this macro was called.
 ///   - options: The options for testing. The default value is `nil`, which
-///   falls back to using global options.
+///   falls back to the resolved options.
 @freestanding(expression)
 public macro STKAssertEqual<T>(
     _ expression1   : @autoclosure () throws -> T,
@@ -424,7 +424,7 @@ public macro STKAssertEqual<T>(
 ///   - column: The column where the failure occurs. The default value is the
 ///   column number where this macro was called.
 ///   - options: The options for testing. The default value is `nil`, which
-///   falls back to using global options.
+///   falls back to the resolved options.
 @freestanding(expression)
 public macro STKAssertNotEqual<T>(
     _ expression1   : @autoclosure () throws -> T,
@@ -460,7 +460,7 @@ public macro STKAssertNotEqual<T>(
 ///   - column: The column where the failure occurs. The default value is the
 ///   column number where this macro was called.
 ///   - options: The options for testing. The default value is `nil`, which
-///   falls back to using global options.
+///   falls back to the resolved options.
 @freestanding(expression)
 public macro STKAssertNotEqual<T>(
     _ expression1   : @autoclosure () throws -> T,
@@ -496,7 +496,7 @@ public macro STKAssertNotEqual<T>(
 ///   - column: The column where the failure occurs. The default value is the
 ///   column number where this macro was called.
 ///   - options: The options for testing. The default value is `nil`, which
-///   falls back to using global options.
+///   falls back to the resolved options.
 @freestanding(expression)
 public macro STKAssertGreaterThan<T>(
     _ expression1   : @autoclosure () throws -> T,
@@ -529,7 +529,7 @@ public macro STKAssertGreaterThan<T>(
 ///   - column: The column where the failure occurs. The default value is the
 ///   column number where this macro was called.
 ///   - options: The options for testing. The default value is `nil`, which
-///   falls back to using global options.
+///   falls back to the resolved options.
 @freestanding(expression)
 public macro STKAssertGreaterThanOrEqual<T>(
     _ expression1   : @autoclosure () throws -> T,
@@ -562,7 +562,7 @@ public macro STKAssertGreaterThanOrEqual<T>(
 ///   - column: The column where the failure occurs. The default value is the
 ///   column number where this macro was called.
 ///   - options: The options for testing. The default value is `nil`, which
-///   falls back to using global options.
+///   falls back to the resolved options.
 @freestanding(expression)
 public macro STKAssertLessThanOrEqual<T>(
     _ expression1   : @autoclosure () throws -> T,
@@ -595,7 +595,7 @@ public macro STKAssertLessThanOrEqual<T>(
 ///   - column: The column where the failure occurs. The default value is the
 ///   column number where this macro was called.
 ///   - options: The options for testing. The default value is `nil`, which
-///   falls back to using global options.
+///   falls back to the resolved options.
 @freestanding(expression)
 public macro STKAssertLessThan<T>(
     _ expression1   : @autoclosure () throws -> T,
@@ -628,7 +628,7 @@ public macro STKAssertLessThan<T>(
 ///   - column: The column where the failure occurs. The default value is the
 ///   column number where this macro was called.
 ///   - options: The options for testing. The default value is `nil`, which
-///   falls back to using global options.
+///   falls back to the resolved options.
 ///   - errorHandler: An optional handler for errors thrown by `expression`.
 @freestanding(expression)
 public macro STKAssertThrowsError<T>(
@@ -660,7 +660,7 @@ public macro STKAssertThrowsError<T>(
 ///   - column: The column where the failure occurs. The default value is the
 ///   column number where this macro was called.
 ///   - options: The options for testing. The default value is `nil`, which
-///   falls back to using global options.
+///   falls back to the resolved options.
 @freestanding(expression)
 public macro STKAssertNoThrow<T>(
     _ expression    : @autoclosure () throws -> T,
@@ -722,7 +722,7 @@ public macro STKFail(
 ///   - column: The column where the failure occurs. The default value is the
 ///   column number where this macro was called.
 ///   - options: The options for testing. The default value is `nil`, which
-///   falls back to using global options.
+///   falls back to the resolved options.
 @freestanding(expression)
 public macro STKAssertAllSatisfy<C>(
     _ collection    : @autoclosure () throws -> C,
@@ -756,7 +756,7 @@ public macro STKAssertAllSatisfy<C>(
 ///   - column: The column where the failure occurs. The default value is the
 ///   column number where this macro was called.
 ///   - options: The options for testing. The default value is `nil`, which
-///   falls back to using global options.
+///   falls back to the resolved options.
 @freestanding(expression)
 public macro STKAssertAnySatisfy<C>(
     _ collection    : @autoclosure () throws -> C,
@@ -790,7 +790,7 @@ public macro STKAssertAnySatisfy<C>(
 ///   - column: The column where the failure occurs. The default value is the
 ///   column number where this macro was called.
 ///   - options: The options for testing. The default value is `nil`, which
-///   falls back to using global options.
+///   falls back to the resolved options.
 @freestanding(expression)
 public macro STKAssertNoneSatisfy<C>(
     _ collection    : @autoclosure () throws -> C,
@@ -829,7 +829,7 @@ public macro STKAssertNoneSatisfy<C>(
 ///   - column: The column where the failure occurs. The default value is the
 ///   column number where this macro was called.
 ///   - options: The options for testing. The default value is `nil`, which
-///   falls back to using global options.
+///   falls back to the resolved options.
 @freestanding(expression)
 public macro STKAssertSatisfy<C>(
     _ collection    : @autoclosure () throws -> C,
@@ -869,7 +869,7 @@ public macro STKAssertSatisfy<C>(
 ///   - column: The column where the failure occurs. The default value is the
 ///   column number where this macro was called.
 ///   - options: The options for testing. The default value is `nil`, which
-///   falls back to using global options.
+///   falls back to the resolved options.
 @freestanding(expression)
 public macro STKAssertSatisfy<C>(
     _ collection    : @autoclosure () throws -> C,
@@ -909,7 +909,7 @@ public macro STKAssertSatisfy<C>(
 ///   - column: The column where the failure occurs. The default value is the
 ///   column number where this macro was called.
 ///   - options: The options for testing. The default value is `nil`, which
-///   falls back to using global options.
+///   falls back to the resolved options.
 @freestanding(expression)
 public macro STKAssertSatisfy<C>(
     _ collection    : @autoclosure () throws -> C,
@@ -949,7 +949,7 @@ public macro STKAssertSatisfy<C>(
 ///   - column: The column where the failure occurs. The default value is the
 ///   column number where this macro was called.
 ///   - options: The options for testing. The default value is `nil`, which
-///   falls back to using global options.
+///   falls back to the resolved options.
 @freestanding(expression)
 public macro STKAssertExactly<C>(
     _ collection    : @autoclosure () throws -> C,
@@ -984,7 +984,7 @@ public macro STKAssertExactly<C>(
 ///   - column: The column where the failure occurs. The default value is the
 ///   column number where this macro was called.
 ///   - options: The options for testing. The default value is `nil`, which
-///   falls back to using global options.
+///   falls back to the resolved options.
 @freestanding(expression)
 public macro STKAssertExactlyOne<C>(
     _ collection    : @autoclosure () throws -> C,
@@ -1018,7 +1018,7 @@ public macro STKAssertExactlyOne<C>(
 ///   - column: The column where the failure occurs. The default value is the
 ///   column number where this macro was called.
 ///   - options: The options for testing. The default value is `nil`, which
-///   falls back to using global options.
+///   falls back to the resolved options.
 @freestanding(expression)
 public macro STKAssertSorted<C>(
     _ collection    : @autoclosure () throws -> C,
@@ -1049,7 +1049,7 @@ public macro STKAssertSorted<C>(
 ///   - column: The column where the failure occurs. The default value is the
 ///   column number where this macro was called.
 ///   - options: The options for testing. The default value is `nil`, which
-///   falls back to using global options.
+///   falls back to the resolved options.
 @freestanding(expression)
 public macro STKAssertUnique<C>(
     _ collection    : @autoclosure () throws -> C,
@@ -1082,7 +1082,7 @@ public macro STKAssertUnique<C>(
 ///   - column: The column where the failure occurs. The default value is the
 ///   column number where this macro was called.
 ///   - options: The options for testing. The default value is `nil`, which
-///   falls back to using global options.
+///   falls back to the resolved options.
 @freestanding(expression)
 public macro STKAssertUnique<C, K>(
     _ collection    : @autoclosure () throws -> C,
