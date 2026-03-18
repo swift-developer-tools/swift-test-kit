@@ -23,7 +23,7 @@ public enum TestConfiguration: Sendable
     ///
     /// - Important: ``TestConfiguration`` is thread-safe, but modifying global
     /// options during parallel test executions may cause logical races. Use
-    /// scoped configuration, or set global options once before tests begin.
+    /// scoped configuration or set global options once before tests begin.
     public static var global: TestOptions
     {
         get { _global.withLock { $0 } }

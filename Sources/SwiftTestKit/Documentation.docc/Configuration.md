@@ -4,23 +4,57 @@ Configurable testing options.
 
 ## Overview
 
-SwiftTestKit may be configured at the global or assertion level. Options passed 
-to individual assertions take precedence over global options.
+Options may be configured at three precedence levels:
+
+1. The global level: Applies everywhere by default.
+2. The closure level: Applies within a closure.
+3. The API level: Applies to a single API.
 
 ### Global Configuration
 
-Use ``TestConfiguration`` to set options that apply to all assertions by 
-default.
+Use ``TestConfiguration`` to set options that apply everywhere by default.
 
 ```swift
-TestConfiguration.current.diffOptions.maxRecursionDepth  = 20
-TestConfiguration.current.formatOptions.maxDiffs         = 5
+TestConfiguration.global.diffOptions.maxRecursionDepth  = 20
+TestConfiguration.global.formatOptions.maxDiffs         = 5
 ```
 
-### Assertion Configuration
+- Important: ``TestConfiguration`` is thread-safe, but modifying global
+options during parallel test executions may cause logical races. Use
+scoped configuration, or set global options once before tests begin.
 
-Pass options directly to any assertion to override global options for that 
-function call.
+### Scoped Configuration
+
+Use ``TestConfiguration`` scoping methods to apply options to a closure. All 
+tests executed within the given closure use the scoped options instead of the 
+``TestConfiguration/global`` options, unless those tests explicitly specify 
+options.
+
+```swift
+let options = TestOptions(formatOptions: .init(maxDiffs: 10))
+
+TestConfiguration.withOptions(options)
+{
+    // Test with scoped options.
+    STKAssertEqual(expected, actual)
+}
+```
+
+Provide a modification closure to modify individual properties without 
+replacing the entire options:
+
+```swift
+TestConfiguration.withOptions({ $0.formatOptions.maxDiffs = 10 })
+{
+    // Test with scoped options.
+    STKAssertEqual(expected, actual)
+}
+```
+
+### API-Level Configuration
+
+Pass options directly to any API to override all other configurations for 
+that call.
 
 ```swift
 let options = TestOptions(formatOptions: .init(maxDiffs: 10))
