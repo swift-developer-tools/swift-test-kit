@@ -131,8 +131,7 @@ extension PerformanceResult
         
         lines = Formatter.addInterceptedFailures(
             to:         lines,
-            failures:   failures,
-            showAll:    true
+            failures:   failures
         )
         
         lines = Formatter.addErrorLines(
