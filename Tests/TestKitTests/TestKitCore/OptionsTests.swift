@@ -37,6 +37,8 @@ internal final class OptionsTests: TestKitCase
     
     
     
+    // MARK: - Structs
+    
     func testTestOptions()
     {
         let options = TestOptions()
@@ -118,6 +120,8 @@ internal final class OptionsTests: TestKitCase
     
     
     
+    // MARK: - Direct assignment
+    
     func testGlobalConfigAssignment()
     {
         var options = TC.global
@@ -190,5 +194,165 @@ internal final class OptionsTests: TestKitCase
         }
         
         XCTAssertNotNil(output)
+    }
+    
+    
+    
+    // MARK: - Scoped assignment
+    
+    @Reasync
+    func testWithOptionsDirectValue() async
+    {
+        TC.global.propertyOptions.iterations = 100
+        
+        let options: TestOptions = .propertyOptions(
+            iterations:     0,
+            seed:           50
+        )
+        
+        await TC.withOptions(options)
+        {
+            await TKForAll(options: TC.current)
+            {
+                (_: Int) async in
+                
+                TKAssertTrue(false)
+            }
+        }
+    }
+    
+    
+    
+    @Reasync
+    func testWithOptionsMutation() async
+    {
+        TC.global.propertyOptions.iterations    = 100
+        TC.global.propertyOptions.seed          = 50
+        
+        /// With `iterations` set to zero, the property vacuously passes.
+        await TC.withOptions({ $0.propertyOptions.iterations = 0 })
+        {
+            await TKForAll(options: TC.current)
+            {
+                (_: Int) async in
+                
+                TKAssertTrue(false)
+            }
+            
+            TKAssertEqual(TC.current.propertyOptions.seed, 50)
+        }
+    }
+    
+    
+    
+    @Reasync
+    func testWithOptionsNesting() async
+    {
+        TC.global.propertyOptions.iterations = 100
+        
+        let options: TestOptions = .propertyOptions(
+            iterations:     5,
+            seed:           50
+        )
+        
+        await TC.withOptions(options)
+        {
+            TKAssertEqual(TC.current.propertyOptions.iterations, 5)
+            
+            await TC.withOptions({ $0.propertyOptions.iterations = 0 })
+            {
+                await TKForAll
+                {
+                    (_: Int) async in
+                    
+                    TKAssertEqual(TC.current.propertyOptions.iterations, 0)
+                    TKAssertEqual(TC.current.propertyOptions.seed, 50)
+                }
+            }
+            
+            TKAssertEqual(TC.current.propertyOptions.iterations, 5)
+        }
+        
+        TKAssertEqual(TC.current.propertyOptions.iterations, 100)
+    }
+    
+    
+    
+    @Reasync
+    func testWithOptionsRevertsOnExit() async
+    {
+        TC.global.diffOptions.enabled = true
+        
+        let options = TestOptions(diffOptions: .init(enabled: false))
+        
+        await TC.withOptions(options)
+        {
+            await TKForAll
+            {
+                (_: Int) async in
+                
+                TKAssertFalse(TC.current.diffOptions.enabled)
+            }
+        }
+        
+        TKAssertTrue(TC.current.diffOptions.enabled)
+    }
+    
+    
+    
+    @Reasync
+    func testWithOptionsRevertsOnThrow() async
+    {
+        TC.global.diffOptions.enabled = true
+        
+        let options = TestOptions(diffOptions: .init(enabled: false))
+        
+        try? await TC.withOptions(options)
+        {
+            await TKForAll
+            {
+                (_: Int) async throws in
+                
+                TKAssertFalse(TC.current.diffOptions.enabled)
+            }
+            
+            throw TestError()
+        }
+        
+        TKAssertTrue(TC.current.diffOptions.enabled)
+    }
+    
+    
+    
+    @Reasync
+    func testWithOptionsOverrideWithOptions() async
+    {
+        TC.global.propertyOptions.iterations = 100
+        
+        let outerOptions: TestOptions = .propertyOptions(
+            iterations:     0,
+            seed:           50
+        )
+        
+        await TC.withOptions(outerOptions)
+        {
+            let innerOptions: TestOptions = .propertyOptions(
+                iterations:     1,
+                seed:           50
+            )
+            
+            /// The outer options set `iterations` to zero, so the property
+            /// would vacuously pass. In this case, it must fail since the
+            /// inner options are used to override that behavior.
+            await withOneExpectedFailure
+            {
+                await TKForAll(options: innerOptions)
+                {
+                    (_: Int) async in
+                    
+                    TKAssertTrue(false)
+                }
+            }
+        }
     }
 }
