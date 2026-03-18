@@ -125,8 +125,7 @@ extension TemporalResult
         
         lines = Formatter.addInterceptedFailures(
             to:         lines,
-            failures:   failures,
-            showAll:    options.temporalOptions.showAllFailures
+            failures:   failures
         )
         
         lines = Formatter.addErrorLines(

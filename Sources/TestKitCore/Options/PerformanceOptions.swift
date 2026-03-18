@@ -13,7 +13,7 @@ public struct PerformanceOptions: Equatable, Sendable
     /// The number of measurement runs.
     ///
     /// The default value is `10`.
-    public var runs             : Int
+    public var runs         : Int
     
     /// The number of warmup runs before measurement begins.
     ///
@@ -22,14 +22,14 @@ public struct PerformanceOptions: Equatable, Sendable
     /// Warmup runs execute the body without recording measurements. Use this
     /// to prime caches and other system state to reduce noise in the
     /// measured runs.
-    public var warmupRuns       : Int
+    public var warmupRuns   : Int
     
     /// The time limit.
     ///
     /// The default value is `nil` (time measurement disabled). When non-`nil`,
     /// the test fails if the median time across measurement runs exceeds this
     /// limit.
-    public var timeLimit        : Duration?
+    public var timeLimit    : Duration?
     
     /// The physical memory footprint limit.
     ///
@@ -40,13 +40,7 @@ public struct PerformanceOptions: Equatable, Sendable
     /// - Note: This measures the physical memory footprint of the entire
     /// process, not memory scoped to the measured block. Measurements may
     /// vary between runs due to system-level allocations.
-    public var memoryLimit      : ByteCount?
-    
-    /// Whether to show all assertion failures from the failing run.
-    ///
-    /// The default value is `false`. When `false`, only the first assertion
-    /// failure is shown.
-    public var showAllFailures  : Bool
+    public var memoryLimit  : ByteCount?
     
     
     
@@ -58,11 +52,10 @@ public struct PerformanceOptions: Equatable, Sendable
     /// - Precondition: `timeLimit` and `memoryLimit` must be positive
     /// or `nil`.
     public init(
-        runs            : Int           = 10,
-        warmupRuns      : Int           = 1,
-        timeLimit       : Duration?     = nil,
-        memoryLimit     : ByteCount?    = nil,
-        showAllFailures : Bool          = false
+        runs        : Int           = 10,
+        warmupRuns  : Int           = 1,
+        timeLimit   : Duration?     = nil,
+        memoryLimit : ByteCount?    = nil
     )
     {
         precondition(
@@ -91,10 +84,9 @@ public struct PerformanceOptions: Equatable, Sendable
             )
         }
         
-        self.runs               = runs
-        self.warmupRuns         = warmupRuns
-        self.timeLimit          = timeLimit
-        self.memoryLimit        = memoryLimit
-        self.showAllFailures    = showAllFailures
+        self.runs           = runs
+        self.warmupRuns     = warmupRuns
+        self.timeLimit      = timeLimit
+        self.memoryLimit    = memoryLimit
     }
 }

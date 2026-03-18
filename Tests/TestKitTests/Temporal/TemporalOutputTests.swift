@@ -144,38 +144,11 @@ internal final class TemporalOutputTests: TestKitCase
     
     
     
-    func testAlwaysMultipleFailuresShowsOnlyFirst() async
+    func testAlwaysMultipleFailures() async
     {
-        let options: TestOptions = .temporalOptions(showAllFailures: false)
-        
         let actual: String? = await withOneExpectedFailure
         {
-            await TKAlways(options: options)
-            {
-                TKAssertTrue(false)
-                TKAssertFalse(true)
-            }
-        }
-        
-        let expected: String =
-        """
-        XCTKAlways failed after <T>
-        
-        XCTKAssertTrue failed
-        """
-        
-        XCTAssertEqual(expected, actual?.timeless)
-    }
-    
-    
-    
-    func testAlwaysMultipleFailuresShowsAll() async
-    {
-        let options: TestOptions = .temporalOptions(showAllFailures: true)
-        
-        let actual: String? = await withOneExpectedFailure
-        {
-            await TKAlways(options: options)
+            await TKAlways
             {
                 TKAssertTrue(false)
                 TKAssertFalse(true)
@@ -234,18 +207,16 @@ internal final class TemporalOutputTests: TestKitCase
     
     
     
-    func testShowAllIndentsMultilineFailure() async
+    func testIndentsMultilineFailure() async
     {
         struct User: Equatable
         {
             let name: String
         }
         
-        let options: TestOptions = .temporalOptions(showAllFailures: true)
-        
         let actual: String? = await withOneExpectedFailure
         {
-            await TKAlways(options: options)
+            await TKAlways
             {
                 TKAssertEqual(User(name: "a"), User(name: "b"))
                 TKAssertTrue(false)
@@ -445,46 +416,11 @@ internal final class TemporalOutputTests: TestKitCase
     
     
     
-    func testEventuallyMultipleFailuresShowsOnlyFirst() async
+    func testEventuallyMultipleFailures() async
     {
         let options: TestOptions = .temporalOptions(
-            timeout:            .milliseconds(50),
-            interval:           .milliseconds(10),
-            showAllFailures:    false
-        )
-        
-        let actual: String? = await withCapturedFailure
-        {
-            context in
-            
-            await TKEventually(
-                options:    options,
-                context:    context
-            )
-            {
-                TKAssertTrue(false)
-                TKAssertFalse(true)
-            }
-        }
-        
-        let expected: String =
-        """
-        XCTKEventually failed after 50 ms
-        
-        XCTKAssertTrue failed
-        """
-        
-        XCTAssertEqual(expected, actual)
-    }
-    
-    
-    
-    func testEventuallyMultipleFailuresShowsAll() async
-    {
-        let options: TestOptions = .temporalOptions(
-            timeout:            .milliseconds(50),
-            interval:           .milliseconds(10),
-            showAllFailures:    true
+            timeout:    .milliseconds(50),
+            interval:   .milliseconds(10)
         )
         
         let actual: String? = await withCapturedFailure

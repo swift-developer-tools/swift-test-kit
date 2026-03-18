@@ -67,12 +67,10 @@ extension Formatter
     /// - Parameters:
     ///   - originalLines: The lines to update.
     ///   - failures: The intercepted failures.
-    ///   - showAll: Whether to show all the intercepted failures.
     /// - Returns: The updated lines.
     internal static func addInterceptedFailures(
         to originalLines    : [String],
-        failures            : [InterceptedFailure],
-        showAll             : Bool
+        failures            : [InterceptedFailure]
     ) -> [String]
     {
         guard !failures.isEmpty
@@ -83,17 +81,11 @@ extension Formatter
         
         var lines: [String] = originalLines
         
-        let visibleFailures: [InterceptedFailure] = showAll
-            ? failures
-            : Array(failures.prefix(1))
-        
-        for (index, failure) in visibleFailures.enumerated()
+        for (index, failure) in failures.enumerated()
         {
             lines.append("")
             
-            if
-                showAll,
-                visibleFailures.count > 1
+            if failures.count > 1
             {
                 lines.append("Failure \(index + 1):")
                 
@@ -111,19 +103,6 @@ extension Formatter
             {
                 lines.append(failure.message)
             }
-        }
-        
-        if
-            showAll,
-            failures.count > visibleFailures.count
-        {
-            let remaining: Int = failures.count - visibleFailures.count
-            
-            lines.append("")
-            
-            lines.append(
-                "... and \(remaining) more failure\(remaining == 1 ? "" : "s")"
-            )
         }
         
         return lines

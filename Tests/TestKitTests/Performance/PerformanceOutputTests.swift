@@ -542,15 +542,14 @@ internal final class PerformanceOutputTests: TestKitCase
     
     
     
-    // MARK: - Show all failures
+    // MARK: - Multiple failures
     
-    func testShowAllFailures() async
+    func testMultipleFailures() async
     {
         let options: TestOptions = .performanceOptions(
-            runs:               3,
-            warmupRuns:         0,
-            timeLimit:          .seconds(10),
-            showAllFailures:    true
+            runs:           3,
+            warmupRuns:     0,
+            timeLimit:      .seconds(10)
         )
         
         let actual: String? = await withOneExpectedFailure
@@ -578,13 +577,12 @@ internal final class PerformanceOutputTests: TestKitCase
     
     
     
-    func testShowAllFailuresDuringWarmup() async
+    func testMultipleFailuresDuringWarmup() async
     {
         let options: TestOptions = .performanceOptions(
-            runs:               3,
-            warmupRuns:         1,
-            timeLimit:          .seconds(10),
-            showAllFailures:    true
+            runs:           3,
+            warmupRuns:     1,
+            timeLimit:      .seconds(10)
         )
         
         let actual: String? = await withOneExpectedFailure
@@ -612,7 +610,7 @@ internal final class PerformanceOutputTests: TestKitCase
     
     
     
-    func testShowAllFailuresIndentedMulipleLines() async
+    func testMultipleFailuresIndentedMulipleLines() async
     {
         struct User: Equatable
         {
@@ -620,10 +618,9 @@ internal final class PerformanceOutputTests: TestKitCase
         }
         
         let options: TestOptions = .performanceOptions(
-            runs:               3,
-            warmupRuns:         0,
-            timeLimit:          .seconds(10),
-            showAllFailures:    true
+            runs:           3,
+            warmupRuns:     0,
+            timeLimit:      .seconds(10)
         )
         
         let actual: String? = await withOneExpectedFailure
