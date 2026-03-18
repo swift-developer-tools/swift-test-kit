@@ -7,8 +7,10 @@
 //
 //===----------------------------------------------------------------------===//
 
+import SwiftTestKit
 import TestKitCore
 import XCTest
+import XCTestKit
 
 
 
@@ -198,6 +200,29 @@ internal final class OptionsTests: TestKitCase
     
     
     
+    func testAssertionOptionsOverridePrecedence()
+    {
+        TC.global.diffOptions.enabled = true
+        
+        let output1: String? = withOneExpectedFailure
+        {
+            TKAssertEqual(1, 2)
+        }
+        
+        let output2: String? = withOneExpectedFailure
+        {
+            let options = TestOptions(diffOptions: .init(enabled: false))
+            
+            TKAssertEqual(1, 2, options: options)
+        }
+        
+        XCTAssertNotNil(output1)
+        XCTAssertNotNil(output2)
+        XCTAssertNotEqual(output1, output2)
+    }
+    
+    
+    
     // MARK: - Scoped assignment
     
     @Reasync
@@ -354,5 +379,69 @@ internal final class OptionsTests: TestKitCase
                 }
             }
         }
+    }
+    
+    
+    
+    // MARK: - Frameworks
+    
+    @Reasync
+    func testXCTKNilOptionsFallsBackToGlobal() async
+    {
+        /// With `iterations` set to zero, the property vacuously passes.
+        TC.global.propertyOptions.iterations    = 0
+        TC.global.propertyOptions.seed          = 50
+        
+        await XCTKForAll(options: nil)
+        {
+            (_: Int) async in
+            
+            XCTKAssertTrue(false)
+        }
+        
+        TC.global.propertyOptions.iterations = 1
+        
+        let output: String? = await withOneExpectedFailure
+        {
+            await XCTKForAll(options: nil)
+            {
+                (_: Int) async in
+                
+                XCTKAssertTrue(false)
+            }
+        }
+        
+        XCTAssertNotNil(output)
+    }
+    
+    
+    
+    @Reasync
+    func testSTKNilOptionsFallsBackToGlobal() async
+    {
+        /// With `iterations` set to zero, the property vacuously passes.
+        TC.global.propertyOptions.iterations    = 0
+        TC.global.propertyOptions.seed          = 50
+        
+        await STKForAll(options: nil)
+        {
+            (_: Int) async in
+            
+            STKAssertTrue(false)
+        }
+        
+        TC.global.propertyOptions.iterations = 1
+        
+        let output: String? = await withOneExpectedFailure
+        {
+            await STKForAll(options: nil)
+            {
+                (_: Int) async in
+                
+                STKAssertTrue(false)
+            }
+        }
+        
+        XCTAssertNotNil(output)
     }
 }
