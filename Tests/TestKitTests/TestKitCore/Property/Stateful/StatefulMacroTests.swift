@@ -16,12 +16,6 @@ import XCTest
 /// The ``Stateful()`` macro shares generation and shrinking logic with the
 /// ``Arbitrary()`` macro. Most of that logic is already tested in the latter's
 /// test suite.
-///
-/// Distribution tests in this class use an 85% threshold rather than the
-/// standard 95%. At size zero, enums with base cases generate only base cases
-/// as part of infinite recursion prevention. This skews the distribution for
-/// enums with few base cases relative to total cases, making a 95% threshold
-/// unreliable even over 10,000 iterations.
 internal final class StatefulMacroTests: TestKitCase
 {
     override func setUp()

@@ -1,7 +1,7 @@
 # ``SwiftTestKit``
 
-Property-based, stateful, performance, temporal, and atomic testing, with 
-structural diffs and advanced assertions for the Swift Testing framework.
+Composable property-based, stateful, performance, temporal, and atomic testing, 
+with structural diffs and advanced assertions for the Swift Testing framework.
 
 
 

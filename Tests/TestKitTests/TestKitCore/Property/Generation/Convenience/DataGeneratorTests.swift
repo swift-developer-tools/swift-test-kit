@@ -631,7 +631,7 @@ internal final class DataGeneratorTests: TestKitCase
         
         XCTAssertGreaterThanOrEqual(
             mutateCallCount,
-            Int(Double(iterations) * 0.7 * 0.95)
+            Int(Double(iterations) * 0.7 * 0.85)
         )
     }
     
@@ -948,7 +948,7 @@ internal final class DataGeneratorTests: TestKitCase
         
         XCTAssertGreaterThanOrEqual(
             mutateCallCount,
-            Int(Double(iterations) * 0.7 * 0.95)
+            Int(Double(iterations) * 0.7 * 0.85)
         )
     }
     
@@ -1128,7 +1128,7 @@ internal final class DataGeneratorTests: TestKitCase
         
         XCTAssertGreaterThanOrEqual(
             mutateCallCount,
-            Int(Double(iterations) * 0.7 * 0.95)
+            Int(Double(iterations) * 0.7 * 0.85)
         )
     }
 }

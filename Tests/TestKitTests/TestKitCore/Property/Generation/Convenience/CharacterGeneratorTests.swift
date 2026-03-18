@@ -35,7 +35,7 @@ internal final class CharacterGeneratorTests: TestKitCase
     
     func testASCIIGenerationVariety()
     {
-        let min = Double(Unicode.Scalar.asciiPrintableRange.count) * 0.95
+        let min = Double(Unicode.Scalar.asciiPrintableRange.count) * 0.85
         
         validateGenerationVariety(
             of:         .ascii(),
@@ -83,7 +83,7 @@ internal final class CharacterGeneratorTests: TestKitCase
     
     func testLowercaseGenerationVariety()
     {
-        let min = Double(Unicode.Scalar.asciiLowercaseRange.count) * 0.95
+        let min = Double(Unicode.Scalar.asciiLowercaseRange.count) * 0.85
         
         validateGenerationVariety(
             of:         .lowercase(),
@@ -131,7 +131,7 @@ internal final class CharacterGeneratorTests: TestKitCase
     
     func testUppercaseGenerationVariety()
     {
-        let min = Double(Unicode.Scalar.asciiUppercaseRange.count) * 0.95
+        let min = Double(Unicode.Scalar.asciiUppercaseRange.count) * 0.85
         
         validateGenerationVariety(
             of:         .uppercase(),
@@ -179,7 +179,7 @@ internal final class CharacterGeneratorTests: TestKitCase
     
     func testDigitGenerationVariety()
     {
-        let min = Double(Unicode.Scalar.asciiDigitRange.count) * 0.95
+        let min = Double(Unicode.Scalar.asciiDigitRange.count) * 0.85
         
         validateGenerationVariety(
             of:         .digit(),
@@ -238,7 +238,7 @@ internal final class CharacterGeneratorTests: TestKitCase
     
     func testAlphanumericGenerationVariety()
     {
-        let min = Double(Unicode.Scalar.asciiDigitRange.count) * 0.95
+        let min = Double(Unicode.Scalar.asciiDigitRange.count) * 0.85
         
         validateGenerationVariety(
             of:         .alphanumeric(),

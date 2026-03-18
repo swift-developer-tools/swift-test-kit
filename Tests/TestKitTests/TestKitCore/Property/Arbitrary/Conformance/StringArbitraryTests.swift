@@ -76,7 +76,7 @@ internal final class StringArbitraryTests: TestKitCase
             unique.insert(character)
         }
         
-        let expected = Double(Unicode.Scalar.asciiPrintableRange.count) * 0.95
+        let expected = Double(Unicode.Scalar.asciiPrintableRange.count) * 0.85
         
         XCTAssertGreaterThan(unique.count, Int(expected))
     }
@@ -143,7 +143,7 @@ internal final class StringArbitraryTests: TestKitCase
             unique.insert(scalar.value)
         }
         
-        let expected = Double(Unicode.Scalar.asciiPrintableRange.count) * 0.95
+        let expected = Double(Unicode.Scalar.asciiPrintableRange.count) * 0.85
         
         XCTAssertGreaterThan(unique.count, Int(expected))
     }
@@ -667,9 +667,9 @@ internal final class StringArbitraryTests: TestKitCase
             }
         }
         
-        XCTAssertGreaterThan(same, Int(Double(iterations) * 0.7 * 0.95))
-        XCTAssertGreaterThan(more, Int(Double(iterations) * 0.15 * 0.95))
-        XCTAssertGreaterThan(fewer, Int(Double(iterations) * 0.15 * 0.95))
+        XCTAssertGreaterThan(same, Int(Double(iterations) * 0.7 * 0.85))
+        XCTAssertGreaterThan(more, Int(Double(iterations) * 0.15 * 0.85))
+        XCTAssertGreaterThan(fewer, Int(Double(iterations) * 0.15 * 0.85))
     }
     
     

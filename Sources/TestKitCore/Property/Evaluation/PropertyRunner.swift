@@ -169,7 +169,10 @@ internal struct PropertyRunner
         let deadline: ContinuousClock.Instant?
             = opts.timeout.map { ContinuousClock.now.advanced(by: $0) }
         
-        let verbose: Bool = opts.diagnostics.contains(.verbose)
+        let verbose     : Bool  = opts.diagnostics.contains(.verbose)
+        let slowness    : Bool  = opts.diagnostics.contains(.slowness)
+        
+        var iterationDurations: [(iteration: Int, duration: Duration)] = []
         
         
         
@@ -199,12 +202,12 @@ internal struct PropertyRunner
                 break
             }
             
-            
-            
             iteration       += 1
             context.size    = succeeded * maxSize / iterations
             
-            
+            let iterationStart: ContinuousClock.Instant? = slowness
+                ? .now
+                : nil
             
             let value       : T
             let isMutated   : Bool
@@ -279,6 +282,13 @@ internal struct PropertyRunner
             switch evaluationResult
             {
                 case .passed:
+                    
+                    if let iterationStart
+                    {
+                        iterationDurations.append(
+                            (iteration, iterationStart.elapsed)
+                        )
+                    }
                     
                     if let target: Double = interceptor.target
                     {
@@ -355,6 +365,11 @@ internal struct PropertyRunner
         /// the test timed out, subsequent logic reflects the actual number
         /// of completed iterations.
         iterations = succeeded
+        
+        reportSlowIterations(
+            iterationDurations,
+            totalIterations: iterations
+        )
         
         
         
@@ -589,8 +604,11 @@ internal struct PropertyRunner
         deadline        : ContinuousClock.Instant?
     ) async -> Counterexample<T>
     {
-        var current : T     = value
-        var steps   : Int   = 0
+        var current             : T     = value
+        var steps               : Int   = 0
+        var candidatesEvaluated : Int   = 0
+        var candidatesFiltered  : Int   = 0
+        var candidatesPassed    : Int   = 0
         
         let verbose: Bool = options.propertyOptions.diagnostics
             .contains(.verbose)
@@ -607,13 +625,14 @@ internal struct PropertyRunner
             let candidates  : [T]   = shrink(current)
             var improved    : Bool  = false
             
-            for candidate in candidates
+            candidateLoop: for candidate in candidates
             {
                 if
                     let precondition,
                     !precondition(candidate)
                 {
-                    continue
+                    candidatesFiltered += 1
+                    continue candidateLoop
                 }
                 
                 let evaluationResult: EvaluationResult
@@ -622,23 +641,33 @@ internal struct PropertyRunner
                         with: candidate
                     )
                 
-                if evaluationResult == .failed
+                candidatesEvaluated += 1
+                
+                switch evaluationResult
                 {
-                    current     = candidate
-                    improved    = true
-                    steps       += 1
-                    
-                    if verbose
-                    {
-                        let message: String
-                            = "Shrink step \(steps):"
-                            + " \(String(describing: candidate))"
+                    case .failed:
                         
-                        logger.info("\(message)")
-                    }
-                    
-                    /// Start again with a smaller value.
-                    break
+                        improved    = true
+                        current     = candidate
+                        steps       += 1
+                        
+                        if verbose
+                        {
+                            let message: String
+                                = "Shrink step \(steps):"
+                                + " \(String(describing: candidate))"
+                            
+                            logger.info("\(message)")
+                        }
+                        
+                        /// Start again with a smaller value.
+                        break candidateLoop
+                        
+                    case
+                        .passed,
+                        .discarded:
+                        
+                        candidatesPassed += 1
                 }
             }
             
@@ -653,6 +682,19 @@ internal struct PropertyRunner
                 
                 break
             }
+        }
+        
+        
+        
+        if options.propertyOptions.diagnostics.contains(.shrinking)
+        {
+            reportShrinkEffectiveness(
+                steps:              steps,
+                evaluated:          candidatesEvaluated,
+                filtered:           candidatesFiltered,
+                passed:             candidatesPassed,
+                hasPrecondition:    precondition != nil
+            )
         }
         
         
@@ -707,5 +749,138 @@ internal struct PropertyRunner
         
         /// The iteration was discarded.
         case discarded
+    }
+    
+    
+    
+    /// Reports slow iterations.
+    /// - Parameters:
+    ///   - durations: The iteration durations to check.
+    ///   - totalIterations: The total number of iterations.
+    internal static func reportSlowIterations(
+        _ durations     : [(iteration: Int, duration: Duration)],
+        totalIterations : Int
+    )
+    {
+        guard durations.count >= 10
+        else
+        {
+            return
+        }
+        
+        let sorted  : [Duration]    = durations.map { $0.duration }.sorted()
+        let median  : Duration      = sorted[sorted.count / 2 ]
+        
+        guard median > .zero
+        else
+        {
+            return
+        }
+        
+        let threshold   : Duration  = median * 10
+        var lines       : [String]  = []
+        
+        for entry in durations
+        {
+            guard entry.duration > threshold
+            else
+            {
+                continue
+            }
+            
+            let ratio = Int(entry.duration.nanoseconds / median.nanoseconds)
+            
+            lines.append(
+                "[\(entry.iteration)/\(totalIterations)]:"
+                + "  \(entry.duration.readable) (ratio: \(ratio)x)"
+            )
+        }
+        
+        guard !lines.isEmpty
+        else
+        {
+            return
+        }
+        
+        let header: String
+            = "Slow iteration\(lines.count == 1 ? "" : "s") detected"
+            + " (median: \(median.readable)):"
+        
+        let message: String
+            = ([header] + lines.map { "    " + $0 }).joined(separator: "\n")
+        
+        logger.warning("\(message)")
+    }
+    
+    
+    
+    /// Reports ineffective shrinking.
+    /// - Parameters:
+    ///   - phase: The shrinking phase to report. Pass `nil` for generic.
+    ///   - steps: The number of shrink steps.
+    ///   - evaluated: The evaluated shrink candidates.
+    ///   - filtered: The filtered shrink candidates.
+    ///   - passed: The passed shrink caididates.
+    ///   - hasPrecondition: Whether there was a precondition.
+    internal static func reportShrinkEffectiveness(
+        phase           : String?   = nil,
+        steps           : Int,
+        evaluated       : Int,
+        filtered        : Int,
+        passed          : Int,
+        hasPrecondition : Bool
+    )
+    {
+        guard
+            evaluated > 0
+            || filtered > 0
+        else
+        {
+            return
+        }
+        
+        var lines: [String] = []
+        
+        if steps == 0
+        {
+            let label: String = phase == nil
+                ? "Shrinking"
+                : "\(phase!) shrinking"
+            
+            lines.append(
+                "\(label) produced no improvements"
+                + " (\(evaluated) candidate\(evaluated == 1 ? "" : "s")"
+                + " evaluated, none reproduced the failure)"
+            )
+        }
+        
+        if
+            hasPrecondition,
+            filtered > 0
+        {
+            let total: Int = evaluated + filtered
+            
+            let percentage = Int(Double(filtered) / Double(total) * 100)
+            
+            if percentage >= 50
+            {
+                lines.append(
+                    "\(filtered)/\(total) shrink"
+                    + " candidate\(total == 1 ? "" : "s")"
+                    + " (\(percentage)%) filtered by precondition"
+                )
+            }
+        }
+        
+        guard !lines.isEmpty
+        else
+        {
+            return
+        }
+        
+        for message in lines
+        {
+            logger.warning("\(message)")
+        }
     }
 }

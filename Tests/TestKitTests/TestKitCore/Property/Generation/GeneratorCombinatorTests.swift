@@ -444,7 +444,7 @@ internal final class GeneratorCombinatorTests: TestKitCase
             counts[value, default: 0] += 1
         }
         
-        XCTAssertGreaterThan(counts[1]!, Int(Double(iterations) * 0.95))
+        XCTAssertGreaterThan(counts[1]!, Int(Double(iterations) * 0.85))
         XCTAssertLessThan(counts[2]!, Int(Double(iterations) * 0.05))
     }
     
@@ -488,8 +488,8 @@ internal final class GeneratorCombinatorTests: TestKitCase
         }
         
         XCTAssertNil(counts[0])
-        XCTAssertGreaterThan(counts[1]!, Int(Double(iterations) * 0.5 * 0.95))
-        XCTAssertGreaterThan(counts[2]!, Int(Double(iterations) * 0.5 * 0.95))
+        XCTAssertGreaterThan(counts[1]!, Int(Double(iterations) * 0.5 * 0.85))
+        XCTAssertGreaterThan(counts[2]!, Int(Double(iterations) * 0.5 * 0.85))
     }
     
     

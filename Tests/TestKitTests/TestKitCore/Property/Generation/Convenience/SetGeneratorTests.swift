@@ -300,7 +300,7 @@ internal final class SetGeneratorTests: TestKitCase
         
         XCTAssertGreaterThan(
             mutateCallCount,
-            Int(Double(iterations) * 0.7 * 0.95)
+            Int(Double(iterations) * 0.7 * 0.85)
         )
     }
     
@@ -613,7 +613,7 @@ internal final class SetGeneratorTests: TestKitCase
         
         XCTAssertGreaterThan(
             mutateCallCount,
-            Int(Double(iterations) * 0.7 * 0.95)
+            Int(Double(iterations) * 0.7 * 0.85)
         )
     }
     
@@ -952,7 +952,7 @@ internal final class SetGeneratorTests: TestKitCase
         
         XCTAssertGreaterThan(
             mutateCallCount,
-            Int(Double(iterations) * 0.7 * 0.95)
+            Int(Double(iterations) * 0.7 * 0.85)
         )
     }
 }

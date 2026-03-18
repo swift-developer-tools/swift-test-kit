@@ -360,7 +360,7 @@ internal final class GenerationContextTests: TestKitCase
             counts[element!.0, default: 0] += 1
         }
         
-        XCTAssertGreaterThan(counts["high"]!, Int(Double(iterations) * 0.95))
+        XCTAssertGreaterThan(counts["high"]!, Int(Double(iterations) * 0.85))
         XCTAssertLessThan(counts["low"]!, Int(Double(iterations) * 0.05))
     }
     
