@@ -44,7 +44,7 @@ public func XCTKAssert(
         file:       file,
         line:       line,
         column:     column,
-        options:    options ?? TestConfiguration.global,
+        options:    options ?? TestConfiguration.current,
         context:    failureContext
     )
 }
@@ -82,7 +82,7 @@ public func XCTKAssertTrue(
         file:       file,
         line:       line,
         column:     column,
-        options:    options ?? TestConfiguration.global,
+        options:    options ?? TestConfiguration.current,
         context:    failureContext
     )
 }
@@ -120,7 +120,7 @@ public func XCTKAssertFalse(
         file:       file,
         line:       line,
         column:     column,
-        options:    options ?? TestConfiguration.global,
+        options:    options ?? TestConfiguration.current,
         context:    failureContext
     )
 }
@@ -160,7 +160,7 @@ public func XCTKAssertNil(
         file:       file,
         line:       line,
         column:     column,
-        options:    options ?? TestConfiguration.global,
+        options:    options ?? TestConfiguration.current,
         context:    failureContext
     )
 }
@@ -198,7 +198,7 @@ public func XCTKAssertNotNil(
         file:       file,
         line:       line,
         column:     column,
-        options:    options ?? TestConfiguration.global,
+        options:    options ?? TestConfiguration.current,
         context:    failureContext
     )
 }
@@ -241,7 +241,7 @@ public func XCTKUnwrap<T>(
         file:       file,
         line:       line,
         column:     column,
-        options:    options ?? TestConfiguration.global,
+        options:    options ?? TestConfiguration.current,
         context:    failureContext
     )
 }
@@ -284,7 +284,7 @@ public func XCTKAssertEqual<T>(
         file:       file,
         line:       line,
         column:     column,
-        options:    options ?? TestConfiguration.global,
+        options:    options ?? TestConfiguration.current,
         context:    failureContext
     )
 }
@@ -325,7 +325,7 @@ public func XCTKAssertNotEqual<T>(
         file:       file,
         line:       line,
         column:     column,
-        options:    options ?? TestConfiguration.global,
+        options:    options ?? TestConfiguration.current,
         context:    failureContext
     )
 }
@@ -369,7 +369,7 @@ public func XCTKAssertIdentical(
         file:       file,
         line:       line,
         column:     column,
-        options:    options ?? TestConfiguration.global,
+        options:    options ?? TestConfiguration.current,
         context:    failureContext
     )
 }
@@ -413,7 +413,7 @@ public func XCTKAssertNotIdentical(
         file:       file,
         line:       line,
         column:     column,
-        options:    options ?? TestConfiguration.global,
+        options:    options ?? TestConfiguration.current,
         context:    failureContext
     )
 }
@@ -459,7 +459,7 @@ public func XCTKAssertEqual<T>(
         file:       file,
         line:       line,
         column:     column,
-        options:    options ?? TestConfiguration.global,
+        options:    options ?? TestConfiguration.current,
         context:    failureContext
     )
 }
@@ -504,7 +504,7 @@ public func XCTKAssertEqual<T>(
         file:       file,
         line:       line,
         column:     column,
-        options:    options ?? TestConfiguration.global,
+        options:    options ?? TestConfiguration.current,
         context:    failureContext
     )
 }
@@ -550,7 +550,7 @@ public func XCTKAssertNotEqual<T>(
         file:       file,
         line:       line,
         column:     column,
-        options:    options ?? TestConfiguration.global,
+        options:    options ?? TestConfiguration.current,
         context:    failureContext
     )
 }
@@ -596,7 +596,7 @@ public func XCTKAssertNotEqual<T>(
         file:       file,
         line:       line,
         column:     column,
-        options:    options ?? TestConfiguration.global,
+        options:    options ?? TestConfiguration.current,
         context:    failureContext
     )
 }
@@ -640,7 +640,7 @@ public func XCTKAssertGreaterThan<T>(
         file:       file,
         line:       line,
         column:     column,
-        options:    options ?? TestConfiguration.global,
+        options:    options ?? TestConfiguration.current,
         context:    failureContext
     )
 }
@@ -682,7 +682,7 @@ public func XCTKAssertGreaterThanOrEqual<T>(
         file:       file,
         line:       line,
         column:     column,
-        options:    options ?? TestConfiguration.global,
+        options:    options ?? TestConfiguration.current,
         context:    failureContext
     )
 }
@@ -724,7 +724,7 @@ public func XCTKAssertLessThanOrEqual<T>(
         file:       file,
         line:       line,
         column:     column,
-        options:    options ?? TestConfiguration.global,
+        options:    options ?? TestConfiguration.current,
         context:    failureContext
     )
 }
@@ -766,7 +766,7 @@ public func XCTKAssertLessThan<T>(
         file:       file,
         line:       line,
         column:     column,
-        options:    options ?? TestConfiguration.global,
+        options:    options ?? TestConfiguration.current,
         context:    failureContext
     )
 }
@@ -808,7 +808,7 @@ public func XCTKAssertThrowsError<T>(
         file:       file,
         line:       line,
         column:     column,
-        options:    options ?? TestConfiguration.global,
+        options:    options ?? TestConfiguration.current,
         errorHandler,
         context:    failureContext
     )
@@ -847,7 +847,7 @@ public func XCTKAssertNoThrow<T>(
         file:       file,
         line:       line,
         column:     column,
-        options:    options ?? TestConfiguration.global,
+        options:    options ?? TestConfiguration.current,
         context:    failureContext
     )
 }
@@ -925,7 +925,7 @@ public func XCTKAssertAllSatisfy<C>(
         file:       file,
         line:       line,
         column:     column,
-        options:    options ?? TestConfiguration.global,
+        options:    options ?? TestConfiguration.current,
         context:    failureContext
     )
 }
@@ -968,7 +968,7 @@ public func XCTKAssertAnySatisfy<C>(
         file:       file,
         line:       line,
         column:     column,
-        options:    options ?? TestConfiguration.global,
+        options:    options ?? TestConfiguration.current,
         context:    failureContext
     )
 }
@@ -1011,7 +1011,7 @@ public func XCTKAssertNoneSatisfy<C>(
         file:       file,
         line:       line,
         column:     column,
-        options:    options ?? TestConfiguration.global,
+        options:    options ?? TestConfiguration.current,
         context:    failureContext
     )
 }
@@ -1061,7 +1061,7 @@ public func XCTKAssertSatisfy<C>(
         file:       file,
         line:       line,
         column:     column,
-        options:    options ?? TestConfiguration.global,
+        options:    options ?? TestConfiguration.current,
         context:    failureContext
     )
 }
@@ -1111,7 +1111,7 @@ public func XCTKAssertSatisfy<C>(
         file:       file,
         line:       line,
         column:     column,
-        options:    options ?? TestConfiguration.global,
+        options:    options ?? TestConfiguration.current,
         context:    failureContext
     )
 }
@@ -1161,7 +1161,7 @@ public func XCTKAssertSatisfy<C>(
         file:       file,
         line:       line,
         column:     column,
-        options:    options ?? TestConfiguration.global,
+        options:    options ?? TestConfiguration.current,
         context:    failureContext
     )
 }
@@ -1211,7 +1211,7 @@ public func XCTKAssertExactly<C>(
         file:       file,
         line:       line,
         column:     column,
-        options:    options ?? TestConfiguration.global,
+        options:    options ?? TestConfiguration.current,
         context:    failureContext
     )
 }
@@ -1254,7 +1254,7 @@ public func XCTKAssertExactlyOne<C>(
         file:       file,
         line:       line,
         column:     column,
-        options:    options ?? TestConfiguration.global,
+        options:    options ?? TestConfiguration.current,
         context:    failureContext
     )
 }
@@ -1297,7 +1297,7 @@ public func XCTKAssertSorted<C>(
         file:       file,
         line:       line,
         column:     column,
-        options:    options ?? TestConfiguration.global,
+        options:    options ?? TestConfiguration.current,
         context:    failureContext
     )
 }
@@ -1335,7 +1335,7 @@ public func XCTKAssertUnique<C>(
         file:       file,
         line:       line,
         column:     column,
-        options:    options ?? TestConfiguration.global,
+        options:    options ?? TestConfiguration.current,
         context:    failureContext
     )
 }
@@ -1378,7 +1378,7 @@ public func XCTKAssertUnique<C, K>(
         file:       file,
         line:       line,
         column:     column,
-        options:    options ?? TestConfiguration.global,
+        options:    options ?? TestConfiguration.current,
         context:    failureContext
     )
 }

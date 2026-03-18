@@ -44,7 +44,7 @@ public func STKAssert(
         file:       file,
         line:       line,
         column:     column,
-        options:    options ?? TestConfiguration.global,
+        options:    options ?? TestConfiguration.current,
         context:    failureContext
     )
 }
@@ -82,7 +82,7 @@ public func STKAssertTrue(
         file:       file,
         line:       line,
         column:     column,
-        options:    options ?? TestConfiguration.global,
+        options:    options ?? TestConfiguration.current,
         context:    failureContext
     )
 }
@@ -120,7 +120,7 @@ public func STKAssertFalse(
         file:       file,
         line:       line,
         column:     column,
-        options:    options ?? TestConfiguration.global,
+        options:    options ?? TestConfiguration.current,
         context:    failureContext
     )
 }
@@ -160,7 +160,7 @@ public func STKAssertNil(
         file:       file,
         line:       line,
         column:     column,
-        options:    options ?? TestConfiguration.global,
+        options:    options ?? TestConfiguration.current,
         context:    failureContext
     )
 }
@@ -198,7 +198,7 @@ public func STKAssertNotNil(
         file:       file,
         line:       line,
         column:     column,
-        options:    options ?? TestConfiguration.global,
+        options:    options ?? TestConfiguration.current,
         context:    failureContext
     )
 }
@@ -241,7 +241,7 @@ public func STKUnwrap<T>(
         file:       file,
         line:       line,
         column:     column,
-        options:    options ?? TestConfiguration.global,
+        options:    options ?? TestConfiguration.current,
         context:    failureContext
     )
 }
@@ -284,7 +284,7 @@ public func STKAssertEqual<T>(
         file:       file,
         line:       line,
         column:     column,
-        options:    options ?? TestConfiguration.global,
+        options:    options ?? TestConfiguration.current,
         context:    failureContext
     )
 }
@@ -325,7 +325,7 @@ public func STKAssertNotEqual<T>(
         file:       file,
         line:       line,
         column:     column,
-        options:    options ?? TestConfiguration.global,
+        options:    options ?? TestConfiguration.current,
         context:    failureContext
     )
 }
@@ -369,7 +369,7 @@ public func STKAssertIdentical(
         file:       file,
         line:       line,
         column:     column,
-        options:    options ?? TestConfiguration.global,
+        options:    options ?? TestConfiguration.current,
         context:    failureContext
     )
 }
@@ -413,7 +413,7 @@ public func STKAssertNotIdentical(
         file:       file,
         line:       line,
         column:     column,
-        options:    options ?? TestConfiguration.global,
+        options:    options ?? TestConfiguration.current,
         context:    failureContext
     )
 }
@@ -459,7 +459,7 @@ public func STKAssertEqual<T>(
         file:       file,
         line:       line,
         column:     column,
-        options:    options ?? TestConfiguration.global,
+        options:    options ?? TestConfiguration.current,
         context:    failureContext
     )
 }
@@ -504,7 +504,7 @@ public func STKAssertEqual<T>(
         file:       file,
         line:       line,
         column:     column,
-        options:    options ?? TestConfiguration.global,
+        options:    options ?? TestConfiguration.current,
         context:    failureContext
     )
 }
@@ -550,7 +550,7 @@ public func STKAssertNotEqual<T>(
         file:       file,
         line:       line,
         column:     column,
-        options:    options ?? TestConfiguration.global,
+        options:    options ?? TestConfiguration.current,
         context:    failureContext
     )
 }
@@ -596,7 +596,7 @@ public func STKAssertNotEqual<T>(
         file:       file,
         line:       line,
         column:     column,
-        options:    options ?? TestConfiguration.global,
+        options:    options ?? TestConfiguration.current,
         context:    failureContext
     )
 }
@@ -640,7 +640,7 @@ public func STKAssertGreaterThan<T>(
         file:       file,
         line:       line,
         column:     column,
-        options:    options ?? TestConfiguration.global,
+        options:    options ?? TestConfiguration.current,
         context:    failureContext
     )
 }
@@ -682,7 +682,7 @@ public func STKAssertGreaterThanOrEqual<T>(
         file:       file,
         line:       line,
         column:     column,
-        options:    options ?? TestConfiguration.global,
+        options:    options ?? TestConfiguration.current,
         context:    failureContext
     )
 }
@@ -724,7 +724,7 @@ public func STKAssertLessThanOrEqual<T>(
         file:       file,
         line:       line,
         column:     column,
-        options:    options ?? TestConfiguration.global,
+        options:    options ?? TestConfiguration.current,
         context:    failureContext
     )
 }
@@ -766,7 +766,7 @@ public func STKAssertLessThan<T>(
         file:       file,
         line:       line,
         column:     column,
-        options:    options ?? TestConfiguration.global,
+        options:    options ?? TestConfiguration.current,
         context:    failureContext
     )
 }
@@ -808,7 +808,7 @@ public func STKAssertThrowsError<T>(
         file:       file,
         line:       line,
         column:     column,
-        options:    options ?? TestConfiguration.global,
+        options:    options ?? TestConfiguration.current,
         errorHandler,
         context:    failureContext
     )
@@ -847,7 +847,7 @@ public func STKAssertNoThrow<T>(
         file:       file,
         line:       line,
         column:     column,
-        options:    options ?? TestConfiguration.global,
+        options:    options ?? TestConfiguration.current,
         context:    failureContext
     )
 }
@@ -925,7 +925,7 @@ public func STKAssertAllSatisfy<C>(
         file:       file,
         line:       line,
         column:     column,
-        options:    options ?? TestConfiguration.global,
+        options:    options ?? TestConfiguration.current,
         context:    failureContext
     )
 }
@@ -968,7 +968,7 @@ public func STKAssertAnySatisfy<C>(
         file:       file,
         line:       line,
         column:     column,
-        options:    options ?? TestConfiguration.global,
+        options:    options ?? TestConfiguration.current,
         context:    failureContext
     )
 }
@@ -1011,7 +1011,7 @@ public func STKAssertNoneSatisfy<C>(
         file:       file,
         line:       line,
         column:     column,
-        options:    options ?? TestConfiguration.global,
+        options:    options ?? TestConfiguration.current,
         context:    failureContext
     )
 }
@@ -1061,7 +1061,7 @@ public func STKAssertSatisfy<C>(
         file:       file,
         line:       line,
         column:     column,
-        options:    options ?? TestConfiguration.global,
+        options:    options ?? TestConfiguration.current,
         context:    failureContext
     )
 }
@@ -1111,7 +1111,7 @@ public func STKAssertSatisfy<C>(
         file:       file,
         line:       line,
         column:     column,
-        options:    options ?? TestConfiguration.global,
+        options:    options ?? TestConfiguration.current,
         context:    failureContext
     )
 }
@@ -1161,7 +1161,7 @@ public func STKAssertSatisfy<C>(
         file:       file,
         line:       line,
         column:     column,
-        options:    options ?? TestConfiguration.global,
+        options:    options ?? TestConfiguration.current,
         context:    failureContext
     )
 }
@@ -1211,7 +1211,7 @@ public func STKAssertExactly<C>(
         file:       file,
         line:       line,
         column:     column,
-        options:    options ?? TestConfiguration.global,
+        options:    options ?? TestConfiguration.current,
         context:    failureContext
     )
 }
@@ -1254,7 +1254,7 @@ public func STKAssertExactlyOne<C>(
         file:       file,
         line:       line,
         column:     column,
-        options:    options ?? TestConfiguration.global,
+        options:    options ?? TestConfiguration.current,
         context:    failureContext
     )
 }
@@ -1297,7 +1297,7 @@ public func STKAssertSorted<C>(
         file:       file,
         line:       line,
         column:     column,
-        options:    options ?? TestConfiguration.global,
+        options:    options ?? TestConfiguration.current,
         context:    failureContext
     )
 }
@@ -1335,7 +1335,7 @@ public func STKAssertUnique<C>(
         file:       file,
         line:       line,
         column:     column,
-        options:    options ?? TestConfiguration.global,
+        options:    options ?? TestConfiguration.current,
         context:    failureContext
     )
 }
@@ -1378,7 +1378,7 @@ public func STKAssertUnique<C, K>(
         file:       file,
         line:       line,
         column:     column,
-        options:    options ?? TestConfiguration.global,
+        options:    options ?? TestConfiguration.current,
         context:    failureContext
     )
 }

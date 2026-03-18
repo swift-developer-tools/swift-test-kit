@@ -62,7 +62,7 @@ public func XCTKAlways(
         file:       file,
         line:       line,
         column:     column,
-        options:    options ?? TestConfiguration.global,
+        options:    options ?? TestConfiguration.current,
         body,
         context:    failureContext
     )
@@ -119,7 +119,7 @@ public func XCTKEventually(
         file:       file,
         line:       line,
         column:     column,
-        options:    options ?? TestConfiguration.global,
+        options:    options ?? TestConfiguration.current,
         body,
         context:    failureContext
     )

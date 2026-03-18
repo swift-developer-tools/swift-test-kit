@@ -62,7 +62,7 @@ public func STKAlways(
         file:       file,
         line:       line,
         column:     column,
-        options:    options ?? TestConfiguration.global,
+        options:    options ?? TestConfiguration.current,
         body,
         context:    failureContext
     )
@@ -119,7 +119,7 @@ public func STKEventually(
         file:       file,
         line:       line,
         column:     column,
-        options:    options ?? TestConfiguration.global,
+        options:    options ?? TestConfiguration.current,
         body,
         context:    failureContext
     )
