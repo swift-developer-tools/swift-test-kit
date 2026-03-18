@@ -31,5 +31,5 @@ Native Swift Testing assertions are not intercepted.
   - column: The column where the failure occurs. The default value is the
   column number where this function was called.
   - options: The options for testing. The default value is `nil`, which
-  falls back to using global options.
+  falls back to the resolved options.
   - property: The property to evaluate.
