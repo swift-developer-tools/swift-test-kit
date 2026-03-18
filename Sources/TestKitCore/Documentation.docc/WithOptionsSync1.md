@@ -2,7 +2,7 @@
 
 Calls the given closure with the given options.
 
-All tests executed within the given closure use the given options
+All tests executed within the given closure use the scoped options
 instead of the ``global`` options, unless those tests explicitly
 specify options.
 

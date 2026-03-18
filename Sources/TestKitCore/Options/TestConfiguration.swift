@@ -19,12 +19,11 @@ public enum TestConfiguration: Sendable
     /// The global options.
     ///
     /// These options apply to all tests that do not specify explicit options,
-    /// and are not called within a with-options method scope.
+    /// and are not called within a scoped configuration.
     ///
     /// - Important: ``TestConfiguration`` is thread-safe, but modifying global
     /// options during parallel test executions may cause logical races. Use
-    /// a with-options method to scope options to a specific test, or set
-    /// global options once before tests begin.
+    /// scoped configuration, or set global options once before tests begin.
     public static var global: TestOptions
     {
         get { _global.withLock { $0 } }
@@ -49,7 +48,7 @@ public enum TestConfiguration: Sendable
     
     /// Calls the given closure with the given options.
     ///
-    /// All tests executed within the given closure use the given options
+    /// All tests executed within the given closure use the scoped options
     /// instead of the ``global`` options, unless those tests explicitly
     /// specify options.
     ///
@@ -75,8 +74,8 @@ public enum TestConfiguration: Sendable
     
     /// Calls the given closure with modified options.
     ///
-    /// The modification closure receives the currently-resolved options from
-    /// an enclosing scope or the ``global`` options. All tests executed within
+    /// The modification closure receives the resolved options from an
+    /// enclosing scope or the ``global`` options. All tests executed within
     /// the body closure use the modified options.
     ///
     /// - Note: Scopes may be nested. An inner scope's options take precedence
