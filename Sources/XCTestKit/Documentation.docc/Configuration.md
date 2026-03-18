@@ -20,44 +20,16 @@ TestConfiguration.global.formatOptions.maxDiffs         = 5
 ### Assertion Configuration
 
 Pass options directly to any assertion to override global options for that 
-function call, or subclass ``XCTKCase`` to define reusable options for a test 
-class.
+function call.
 
 ```swift
-final class TestClass: XCTKCase
-{
-    override var options: TestOptions
-    {
-        var opts = super.options
-        opts.formatOptions.maxDiffs = 5
-        return opts
-    }
-    
-    func testWithGlobalOptions()
-    {
-        /// Pass no options to use the global options.
-        XCTKAssertEqual(expected, actual)
-    }
-    
-    func testWithClassOptions()
-    {
-        /// Pass class-level options to override the global options.
-        XCTKAssertEqual(expected, actual, options: self.options)
-    }
-    
-    func testWithCustomOptions()
-    {
-        let options = TestOptions(formatOptions: .init(maxDiffs: 10))
+let options = TestOptions(formatOptions: .init(maxDiffs: 10))
 
-        /// Pass assertion-level options to override the global options.
-        XCTKAssertEqual(expected, actual, options: options)
-    }
-}
+XCTKAssertEqual(expected, actual, options: options)
 ```
 
 ## Topics
 
-- ``XCTKCase``
 - ``TestConfiguration``
 - ``TestOptions``
 - ``DiffOptions``
