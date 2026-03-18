@@ -547,10 +547,9 @@ internal final class PerformanceOutputTests: TestKitCase
     func testShowAllFailures() async
     {
         let options: TestOptions = .performanceOptions(
-            runs:               3,
-            warmupRuns:         0,
-            timeLimit:          .seconds(10),
-            showAllFailures:    true
+            runs:           3,
+            warmupRuns:     0,
+            timeLimit:      .seconds(10)
         )
         
         let actual: String? = await withOneExpectedFailure
@@ -581,10 +580,9 @@ internal final class PerformanceOutputTests: TestKitCase
     func testShowAllFailuresDuringWarmup() async
     {
         let options: TestOptions = .performanceOptions(
-            runs:               3,
-            warmupRuns:         1,
-            timeLimit:          .seconds(10),
-            showAllFailures:    true
+            runs:           3,
+            warmupRuns:     1,
+            timeLimit:      .seconds(10)
         )
         
         let actual: String? = await withOneExpectedFailure
@@ -620,10 +618,9 @@ internal final class PerformanceOutputTests: TestKitCase
         }
         
         let options: TestOptions = .performanceOptions(
-            runs:               3,
-            warmupRuns:         0,
-            timeLimit:          .seconds(10),
-            showAllFailures:    true
+            runs:           3,
+            warmupRuns:     0,
+            timeLimit:      .seconds(10)
         )
         
         let actual: String? = await withOneExpectedFailure

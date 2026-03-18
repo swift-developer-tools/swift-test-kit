@@ -13,18 +13,12 @@ public struct TemporalOptions: Equatable, Sendable
     /// The timeout duration.
     ///
     /// The default value is 2 seconds.
-    public var timeout          : Duration
+    public var timeout  : Duration
     
     /// The polling interval.
     ///
     /// The default value is 50 milliseconds.
-    public var interval         : Duration
-    
-    /// Whether to show all assertion failures from the failing poll iteration.
-    ///
-    /// The default value is `false`. When `false`, only the first assertion
-    /// failure is shown.
-    public var showAllFailures  : Bool
+    public var interval : Duration
     
     
     
@@ -34,9 +28,8 @@ public struct TemporalOptions: Equatable, Sendable
     /// - Precondition: `timeout` and `interval` must both be positive.
     /// - Precondition: `timeout` must be greater than or equal to `interval`
     public init(
-        timeout         : Duration  = .seconds(2),
-        interval        : Duration  = .milliseconds(50),
-        showAllFailures : Bool      = false
+        timeout     : Duration  = .seconds(2),
+        interval    : Duration  = .milliseconds(50)
     )
     {
         precondition(
@@ -54,8 +47,7 @@ public struct TemporalOptions: Equatable, Sendable
             "timeout must be greater than or equal to interval"
         )
         
-        self.timeout            = timeout
-        self.interval           = interval
-        self.showAllFailures    = showAllFailures
+        self.timeout    = timeout
+        self.interval   = interval
     }
 }

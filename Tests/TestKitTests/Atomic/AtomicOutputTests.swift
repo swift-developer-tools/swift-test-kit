@@ -685,7 +685,11 @@ internal final class AtomicOutputTests: TestKitCase
         
         XCTKAlways failed after <T>
         
-        XCTKAssertTrue failed
+        Failure 1:
+            XCTKAssertTrue failed
+        
+        Failure 2:
+            XCTKAssertFalse failed
         """
         
         XCTAssertEqual(expected, actual?.timeless)
@@ -720,7 +724,11 @@ internal final class AtomicOutputTests: TestKitCase
         
         XCTKEventually failed after 50 ms
         
-        XCTKAssertTrue failed
+        Failure 1:
+            XCTKAssertTrue failed
+        
+        Failure 2:
+            XCTKAssertFalse failed
         """
         
         XCTAssertEqual(expected, actual)
@@ -754,7 +762,11 @@ internal final class AtomicOutputTests: TestKitCase
         
         XCTKPerformance failed (run 1 of 3)
         
-        XCTKAssertTrue failed
+        Failure 1:
+            XCTKAssertTrue failed
+        
+        Failure 2:
+            XCTKAssertFalse failed
         """
         
         XCTAssertEqual(expected, actual)

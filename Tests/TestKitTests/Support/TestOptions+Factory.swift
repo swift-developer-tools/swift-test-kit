@@ -51,15 +51,13 @@ internal extension TestOptions
     /// Initializes a ``TestOptions`` instance, optionally specifying values
     /// for its temporal testing options property.
     static func temporalOptions(
-        timeout         : Duration  = .seconds(2),
-        interval        : Duration  = .milliseconds(50),
-        showAllFailures : Bool      = false
+        timeout     : Duration  = .seconds(2),
+        interval    : Duration  = .milliseconds(50)
     ) -> TestOptions
     {
         let temporalOptions = TemporalOptions(
-            timeout:            timeout,
-            interval:           interval,
-            showAllFailures:    showAllFailures
+            timeout:    timeout,
+            interval:   interval
         )
         
         return TestOptions(temporalOptions: temporalOptions)
@@ -70,19 +68,17 @@ internal extension TestOptions
     /// Initializes a ``TestOptions`` instance, optionally specifying values
     /// for its performance testing options property.
     static func performanceOptions(
-        runs            : Int           = 10,
-        warmupRuns      : Int           = 1,
-        timeLimit       : Duration?     = nil,
-        memoryLimit     : ByteCount?    = nil,
-        showAllFailures : Bool          = false
+        runs        : Int           = 10,
+        warmupRuns  : Int           = 1,
+        timeLimit   : Duration?     = nil,
+        memoryLimit : ByteCount?    = nil
     ) -> TestOptions
     {
         let performanceOptions = PerformanceOptions(
-            runs:               runs,
-            warmupRuns:         warmupRuns,
-            timeLimit:          timeLimit,
-            memoryLimit:        memoryLimit,
-            showAllFailures:    showAllFailures
+            runs:           runs,
+            warmupRuns:     warmupRuns,
+            timeLimit:      timeLimit,
+            memoryLimit:    memoryLimit
         )
         
         return TestOptions(performanceOptions: performanceOptions)

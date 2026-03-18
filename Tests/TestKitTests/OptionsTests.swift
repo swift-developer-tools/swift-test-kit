@@ -104,7 +104,6 @@ internal final class OptionsTests: TestKitCase
         
         XCTAssertEqual(options.timeout, .seconds(2))
         XCTAssertEqual(options.interval, .milliseconds(50))
-        XCTAssertFalse(options.showAllFailures)
     }
     
     
@@ -117,7 +116,6 @@ internal final class OptionsTests: TestKitCase
         XCTAssertEqual(options.warmupRuns, 1)
         XCTAssertNil(options.timeLimit)
         XCTAssertNil(options.memoryLimit)
-        XCTAssertFalse(options.showAllFailures)
     }
     
     
