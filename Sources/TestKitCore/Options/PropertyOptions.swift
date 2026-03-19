@@ -7,6 +7,11 @@
 //
 //===----------------------------------------------------------------------===//
 
+import Foundation
+import OSLog
+
+
+
 // MARK: - PropertyOptions
 
 /// The options for property-based testing.
@@ -85,9 +90,10 @@ public struct PropertyOptions: Equatable, Sendable
     
     /// The seed used to initialize the random number generator.
     ///
-    /// The default value is `nil`. When `nil`, a random seed is generated
-    /// from the system random number generator. Set this to a specific value
-    /// to reproduce a previous failure.
+    /// The default value is `nil`. When `nil`, the seed is resolved from the
+    /// `TEST_KIT_SEED` environment variable if set, or from the system random
+    /// number generator otherwise. Set this property to a specific value to
+    /// deterministically reproduce a failure.
     public var seed             : UInt64?
     
     
@@ -164,6 +170,45 @@ public struct PropertyOptions: Equatable, Sendable
         self.statistics         = statistics
         self.seed               = seed
     }
+    
+    
+    
+    /// The resolved seed used to initialize the random number generator.
+    ///
+    /// In descending order of priority, the seed is resolved from:
+    ///
+    /// 1. The explicit seed set on the options instance.
+    /// 2. The environment variable (`TEST_KIT_SEED`), if set and not malformed.
+    /// 3. A random value.
+    internal var resolvedSeed: UInt64
+    {
+        if let explicitSeed: UInt64 = seed
+        {
+            return explicitSeed
+        }
+        
+        if let string: String
+            = ProcessInfo.processInfo.environment["TEST_KIT_SEED"]
+        {
+            if let environmentSeed = UInt64(string)
+            {
+                return environmentSeed
+            }
+            
+            Self.logger.warning(
+                "Malformed environment seed (\(string)); using random seed"
+            )
+        }
+        
+        return .random(in: UInt64.min...UInt64.max)
+    }
+    
+    
+    
+    private static let logger = Logger(
+        subsystem:  "swift-test-kit",
+        category:   "PropertyOptions"
+    )
 }
 
 
