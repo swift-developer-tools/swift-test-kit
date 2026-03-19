@@ -27,8 +27,7 @@ scoped configuration, or set global options once before tests begin.
 
 Use ``TestConfiguration`` scoping methods to apply options to a closure. All 
 tests executed within the given closure use the scoped options instead of the 
-``TestConfiguration/global`` options, unless those tests explicitly specify 
-options.
+global options, unless those tests explicitly specify options.
 
 ```swift
 let options = TestOptions(formatOptions: .init(maxDiffs: 10))

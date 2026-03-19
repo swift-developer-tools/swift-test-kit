@@ -7,8 +7,8 @@
 //
 //===----------------------------------------------------------------------===//
 
+@testable import TestKitCore
 import SwiftTestKit
-import TestKitCore
 import XCTest
 import XCTestKit
 
@@ -94,6 +94,23 @@ internal final class OptionsTests: TestKitCase
         XCTAssertEqual(options.diagnostics, [])
         XCTAssertEqual(options.statistics, [])
         XCTAssertNil(options.seed)
+        XCTAssertNotNil(options.resolvedSeed)
+    }
+    
+    
+    
+    func testPropertyOptionsResolvedSeedEqualsExplicitSeed()
+    {
+        var options : PropertyOptions   = .init()
+        let seed    : UInt64            = GenerationContext.randomSeed
+        
+        XCTAssertNil(options.seed)
+        XCTAssertNotNil(options.resolvedSeed)
+        
+        options.seed = seed
+        
+        XCTAssertEqual(options.seed, seed)
+        XCTAssertEqual(options.resolvedSeed, seed)
     }
     
     

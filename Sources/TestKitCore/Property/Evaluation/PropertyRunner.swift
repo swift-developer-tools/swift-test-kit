@@ -149,11 +149,8 @@ internal struct PropertyRunner
         options             : TestOptions
     ) async -> PropertyResult<T>
     {
-        let opts: PropertyOptions = options.propertyOptions
-        
-        let seed: UInt64 = opts.seed
-            ?? .random(in: UInt64.min...UInt64.max)
-        
+        let opts            : PropertyOptions       = options.propertyOptions
+        let seed            : UInt64                = opts.resolvedSeed
         let interceptor     : PropertyInterceptor   = .init()
         let context         : GenerationContext     = .init(seed: seed)
         let maxSize         : Int                   = opts.maxSize
