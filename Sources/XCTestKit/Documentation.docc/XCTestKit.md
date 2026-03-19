@@ -489,9 +489,10 @@ XCTestKit assertions are automatically intercepted inside property bodies,
 so counterexamples include the same diff output, expression capture, and 
 formatting used by standalone assertions.
 
-The counterexample is reported along with the seed used for generation, which 
-can be used to deterministically reproduce the failure. The failing values can 
-be pinned as examples to prevent regressions.
+The counterexample is reported along with the seed used for generation. To  
+deterministically reproduce the failure, set `PropertyOptions.seed` or the 
+`TEST_KIT_SEED` environment variable. The failing values can also be pinned as 
+examples to prevent regressions.
 
 ```swift
 func customSort(_ array: [Int]) -> [Int] { /* ... */ }
