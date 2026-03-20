@@ -13,8 +13,7 @@ extension Generator
     
     /// Transforms generated values using the given function.
     ///
-    /// - Note: The returned generator does not shrink. To enable shrinking
-    /// after transformation, create a generator with a custom shrink function.
+    /// - Note: The returned generator does not shrink.
     ///
     /// - Parameter transform: The transform function.
     /// - Returns: A generator that applies the given transform function to
@@ -43,8 +42,7 @@ extension Generator
     
     /// Generates a value, then uses it to select another generator.
     ///
-    /// - Note: The returned generator does not shrink. To enable shrinking
-    /// after transformation, create a generator with a custom shrink function.
+    /// - Note: The returned generator does not shrink.
     ///
     /// - Parameter transform: The transform function.
     /// - Returns: A generator that uses each generated value to select and
