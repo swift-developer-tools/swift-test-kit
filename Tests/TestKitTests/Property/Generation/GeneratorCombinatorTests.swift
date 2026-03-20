@@ -637,6 +637,107 @@ internal final class GeneratorCombinatorTests: TestKitCase
     
     
     
+    // MARK: - recursive
+    
+    func testRecursiveDeterminism()
+    {
+        let generator: Generator<Tree> = Tree.makeGenerator()
+        
+        generator.assertDeterministic()
+    }
+    
+    
+    
+    func testRecursiveDoesNotShrink()
+    {
+        let generator   : Generator<Tree>   = Tree.makeGenerator()
+        let value       : Tree              = .node(.leaf(1), .leaf(2))
+        
+        XCTAssertTrue(generator.shrink(value).isEmpty)
+    }
+    
+    
+    
+    func testRecursiveAtSizeZeroProducesOnlyBaseCases()
+    {
+        let generator: Generator<Tree> = Tree.makeGenerator()
+        
+        for _ in 0..<1000
+        {
+            let value: Tree = generator.generate(.randomSeed(size: 0))
+            
+            XCTAssertTrue(value.isLeaf)
+        }
+    }
+    
+    
+    
+    func testRecursiveAtSizeOneProducesShallowTrees()
+    {
+        let generator: Generator<Tree> = Tree.makeGenerator()
+        
+        for _ in 0..<1000
+        {
+            let value: Tree = generator.generate(.randomSeed(size: 1))
+            
+            XCTAssertLessThanOrEqual(value.depth, 1)
+        }
+    }
+    
+    
+    
+    func testRecursiveProducesRecursiveCasesAtLargeSizes()
+    {
+        let generator       : Generator<Tree>   = Tree.makeGenerator()
+        var producedNode    : Bool              = false
+        
+        for _ in 0..<1000
+        {
+            let value: Tree = generator.generate(.randomSeed(size: 100))
+            
+            if !value.isLeaf
+            {
+                producedNode = true
+                break
+            }
+        }
+        
+        XCTAssertTrue(producedNode)
+    }
+    
+    
+    
+    func testRecursiveTerminatesAtLargeSizes()
+    {
+        let generator: Generator<Tree> = Tree.makeGenerator()
+        
+        for _ in 0..<1000
+        {
+            let value: Tree = generator.generate(.randomSeed(size: 100))
+            
+            XCTAssertGreaterThanOrEqual(value.depth, 0)
+        }
+    }
+    
+    
+    
+    func testRecursiveMutationProducesValidValues()
+    {
+        let generator: Generator<Tree> = Tree.makeGenerator()
+        
+        for _ in 0..<1000
+        {
+            let mutated: Tree = generator.mutate(
+                .leaf(50),
+                .random
+            )
+            
+            XCTAssertGreaterThanOrEqual(mutated.depth, 0)
+        }
+    }
+    
+    
+    
     // MARK: - zip
     
     func testZipOneDeterminism()
@@ -1319,5 +1420,41 @@ internal final class GeneratorCombinatorTests: TestKitCase
             
             XCTAssertTrue(firstMutated || secondMutated)
         }
+    }
+}
+
+
+
+// MARK: - Support
+
+private indirect enum Tree: Equatable
+{
+    case leaf(Int)
+    case node(Tree, Tree)
+    
+    var depth: Int
+    {
+        switch self
+        {
+            case .leaf                  : return 0
+            case let .node(lhs, rhs)    : return 1 + max(lhs.depth, rhs.depth)
+        }
+    }
+    
+    var isLeaf: Bool
+    {
+        switch self
+        {
+            case .leaf  : return true
+            default     : return false
+        }
+    }
+    
+    static func makeGenerator() -> Generator<Tree>
+    {
+        return .recursive(
+            base:       Generator<Int>.integer(in: 0...100).map { .leaf($0) },
+            recurse:    { Generator.zip($0, $0).map { .node($0.0, $0.1) } }
+        )
     }
 }
