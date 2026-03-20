@@ -20,7 +20,7 @@ public struct TestOptions: Equatable, Sendable
     /// The default value is a default-initialized ``FormatOptions`` instance.
     public var formatOptions        : FormatOptions
     
-    /// The options for property-based testing.
+    /// The options for property-based testing and stateful testing.
     ///
     /// The default value is a default-initialized ``PropertyOptions``
     /// instance.

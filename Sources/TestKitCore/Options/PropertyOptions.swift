@@ -14,7 +14,7 @@ import OSLog
 
 // MARK: - PropertyOptions
 
-/// The options for property-based testing.
+/// The options for property-based testing and stateful testing.
 public struct PropertyOptions: Equatable, Sendable
 {
     /// The number of test iterations.

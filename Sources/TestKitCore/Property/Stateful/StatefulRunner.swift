@@ -34,8 +34,8 @@ internal struct StatefulRunner<C> where C : Stateful
     /// - Returns: The result of the stateful property check.
     internal static func run(
         command     : C.Type,
-        model       : () -> C.Model,
-        system      : () -> C.System,
+        model       : () async -> C.Model,
+        system      : () async -> C.System,
         invariant   : ((C.Model, C.System) async throws -> Void)?,
         options     : TestOptions
     ) async -> StatefulResult<C>
@@ -91,7 +91,7 @@ internal struct StatefulRunner<C> where C : Stateful
                 ? .now
                 : nil
             
-            let commands: [C] = generateSequence(
+            let commands: [C] = await generateSequence(
                 count:      sequenceCount,
                 model:      model,
                 context:    context
@@ -401,11 +401,11 @@ internal struct StatefulRunner<C> where C : Stateful
     /// - Returns: The generated command sequence.
     private static func generateSequence(
         count   : Int,
-        model   : () -> C.Model,
+        model   : () async -> C.Model,
         context : GenerationContext
-    ) -> [C]
+    ) async -> [C]
     {
-        var currentModel    : C.Model   = model()
+        var currentModel    : C.Model   = await model()
         var commands        : [C]       = []
         
         commands.reserveCapacity(count)
@@ -465,8 +465,8 @@ internal struct StatefulRunner<C> where C : Stateful
     /// - Returns: The replay result.
     private static func replaySequence(
         commands            : [C],
-        model               : () -> C.Model,
-        system              : () -> C.System,
+        model               : () async -> C.Model,
+        system              : () async -> C.System,
         invariant           : ((C.Model, C.System) async throws -> Void)?,
         interceptor         : PropertyInterceptor,
         checkPreconditions  : Bool
@@ -474,8 +474,8 @@ internal struct StatefulRunner<C> where C : Stateful
     {
         interceptor.reset()
         
-        var currentModel    : C.Model   = model()
-        var currentSystem   : C.System  = system()
+        var currentModel    : C.Model   = await model()
+        var currentSystem   : C.System  = await system()
         
         for (index, command) in commands.enumerated()
         {
@@ -613,11 +613,11 @@ internal struct StatefulRunner<C> where C : Stateful
     ///   - commands: The commands to use.
     /// - Returns: The replayed model.
     private static func replayModel(
-        _ model             : () -> C.Model,
+        _ model             : () async -> C.Model,
         through commands    : ArraySlice<C>
-    ) -> C.Model?
+    ) async -> C.Model?
     {
-        var currentModel: C.Model = model()
+        var currentModel: C.Model = await model()
         
         for command in commands
         {
@@ -653,8 +653,8 @@ internal struct StatefulRunner<C> where C : Stateful
     /// - Returns: The counterexample for the given failing command sequence.
     private static func makeCounterexample(
         commands    : [C],
-        model       : () -> C.Model,
-        system      : () -> C.System,
+        model       : () async -> C.Model,
+        system      : () async -> C.System,
         invariant   : ((C.Model, C.System) async throws -> Void)?,
         seed        : UInt64,
         iteration   : Int,
@@ -732,8 +732,8 @@ internal struct StatefulRunner<C> where C : Stateful
     /// - Returns: The shrunken command sequence.
     private static func shrinkSequence(
         commands    : [C],
-        model       : () -> C.Model,
-        system      : () -> C.System,
+        model       : () async -> C.Model,
+        system      : () async -> C.System,
         invariant   : ((C.Model, C.System) async throws -> Void)?,
         options     : TestOptions,
         deadline    : ContinuousClock.Instant?
@@ -858,7 +858,7 @@ internal struct StatefulRunner<C> where C : Stateful
             steps < maxSteps,
             !pastDeadline()
         {
-            let modelAtIndex: C.Model? = replayModel(
+            let modelAtIndex: C.Model? = await replayModel(
                 model,
                 through: current[..<index]
             )
