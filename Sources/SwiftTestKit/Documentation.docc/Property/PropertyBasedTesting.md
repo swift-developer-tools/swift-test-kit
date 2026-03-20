@@ -25,7 +25,7 @@ which defines how to generate random values and optionally how to shrink them.
 
 ### Reproducing Failures
 
-The counterexample is reported along with the seed used for generation. To  
+The counterexample is reported along with the seed used for generation. To 
 deterministically reproduce the failure, set `PropertyOptions.seed` or the 
 `TEST_KIT_SEED` environment variable. The failing values can also be pinned as 
 examples to prevent regressions.
