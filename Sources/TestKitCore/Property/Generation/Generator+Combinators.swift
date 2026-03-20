@@ -406,6 +406,100 @@ extension Generator
     
     
     
+    // MARK: - recursive
+    
+    /// A class that allows a self-referencing generator to capture the full
+    /// generator before it is constructed.
+    private final class Ref
+    {
+        var generator: Generator<G>?
+    }
+    
+    
+    
+    /// Creates a generator for a recursive type.
+    ///
+    /// Use this to ensure that recursive generation terminates. At size zero,
+    /// only the given `base` generator is used. At sizes greater than zero,
+    /// the recursive generator is used with a reduced size, ensuring that each
+    /// level of recursion decreases the size until the base case is reached.
+    ///
+    /// ```swift
+    /// indirect enum Tree
+    /// {
+    ///     case leaf(Int)
+    ///     case node(Tree, Tree)
+    /// }
+    ///
+    /// let treeGenerator: Generator<Tree> = .recursive(
+    ///     base:       Generator<Int>.integer(in: 0...100).map { .leaf($0) },
+    ///     recurse:    { Generator.zip($0, $0).map { .node($0.0, $0.1) } }
+    /// )
+    /// ```
+    ///
+    /// - Note: The returned generator does not shrink.
+    ///
+    /// - Parameters:
+    ///   - base: The generator for base cases to use at size zero.
+    ///   - recurse: A closure that receives a self-referencing generator
+    ///   and returns the generator for recursive cases.
+    /// - Returns: A generator for a recursive type.
+    public static func recursive(
+        base    : Generator<G>,
+        recurse : @escaping (Generator<G>) -> Generator<G>
+    ) -> Generator<G>
+    {
+        let ref = Ref()
+        
+        let generateSelf: (GenerationContext) -> G =
+        {
+            context in
+            
+            return context.withReducedSize
+            {
+                /// Assignment happens before any generation can occur,
+                /// so the force-unwrap is safe.
+                return ref.generator!.generate(context)
+            }
+        }
+        
+        /// The generator passed into the `recurse` closure. Each invocation
+        /// delegates to the full generator with a reduced size.
+        let selfGenerator = Generator<G>(
+            generate:   generateSelf,
+            shrink:     { _ in return [] },
+            mutate:     { _, context in return generateSelf(context) }
+        )
+        
+        let recursiveGenerator: Generator<G> = recurse(selfGenerator)
+        
+        let generateFull: (GenerationContext) -> G =
+        {
+            context in
+            
+            if
+                context.size <= 0
+                || context.randomBool()
+            {
+                return base.generate(context)
+            }
+            
+            return recursiveGenerator.generate(context)
+        }
+        
+        let fullGenerator = Generator<G>(
+            generate:   generateFull,
+            shrink:     { _ in return [] },
+            mutate:     { _, context in return generateFull(context) }
+        )
+        
+        ref.generator = fullGenerator
+        
+        return fullGenerator
+    }
+    
+    
+    
     // MARK: - zip
     
     /// Combines the given generators into a generator of tuples.
