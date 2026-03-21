@@ -553,7 +553,8 @@ extension FixedWidthInteger
         {
             let amount = Self(clamping: delta)
             
-            let (result, overflow) = self.addingReportingOverflow(amount)
+            let (result, overflow): (Self, Bool)
+                = self.addingReportingOverflow(amount)
             
             return overflow
                 ? .max
@@ -563,7 +564,8 @@ extension FixedWidthInteger
         {
             let amount = Self(clamping: -delta)
             
-            let (result, overflow) = self.subtractingReportingOverflow(amount)
+            let (result, overflow): (Self, Bool)
+                = self.subtractingReportingOverflow(amount)
             
             return overflow
                 ? .min
