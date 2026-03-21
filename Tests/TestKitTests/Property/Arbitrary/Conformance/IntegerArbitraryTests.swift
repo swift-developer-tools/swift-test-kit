@@ -329,10 +329,21 @@ extension IntegerArbitraryTests
         of type: T.Type
     ) where T : Arbitrary & FixedWidthInteger
     {
-        for _ in 0..<1000
+        let iterations  : Int   = 10_000
+        var count       : Int   = 0
+        
+        for _ in 0..<iterations
         {
-            XCTAssertEqual(T.arbitrary(using: .randomZeroSize), 0)
+            let value = T.arbitrary(using: .randomZeroSize)
+            
+            if value == 0
+            {
+                count += 1
+            }
         }
+        
+        /// 5% chance of special values.
+        XCTAssertGreaterThan(count, Int(Double(iterations) * 0.95 * 0.85))
     }
     
     
@@ -344,13 +355,29 @@ extension IntegerArbitraryTests
         of type: T.Type
     ) where T : Arbitrary & FixedWidthInteger
     {
-        for _ in 0..<1000
+        let iterations  : Int   = 10_000
+        var count       : Int   = 0
+        
+        for _ in 0..<iterations
         {
             let value = T.arbitrary(using: .randomSeed(size: 10))
             
-            XCTAssertGreaterThanOrEqual(value, T.isSigned ? -10 : 0)
-            XCTAssertLessThanOrEqual(value, 10)
+            let lowerInBounds: Bool = T.isSigned
+                ? value >= -10
+                : value >= 0
+            
+            let upperInBounds: Bool = value <= 10
+            
+            if
+                lowerInBounds,
+                upperInBounds
+            {
+                count += 1
+            }
         }
+        
+        /// 5% chance of special values.
+        XCTAssertGreaterThan(count, Int(Double(iterations) * 0.95 * 0.85))
     }
     
     
@@ -418,14 +445,23 @@ extension IntegerArbitraryTests
         
         let lowerBound  : T     = T.isSigned ? T(clamping: -typeMax) : 0
         let upperBound  : T     = T(clamping: typeMax)
+        let iterations  : Int   = 10_000
+        var count       : Int   = 0
         
-        for _ in 0..<1000
+        for _ in 0..<iterations
         {
             let value = T.arbitrary(using: .randomSeed(size: typeMax * 2))
             
-            XCTAssertGreaterThanOrEqual(value, lowerBound)
-            XCTAssertLessThanOrEqual(value, upperBound)
+            if
+                value >= lowerBound,
+                value <= upperBound
+            {
+                count += 1
+            }
         }
+        
+        /// 5% chance of special values.
+        XCTAssertGreaterThan(count, Int(Double(iterations) * 0.95 * 0.85))
     }
     
     

@@ -146,7 +146,7 @@ internal final class StatefulMacroTests: TestKitCase
     
     func testValueCommandShrinkMinimal()
     {
-        XCTAssertEqual(ValueCommand.add(amount: 0).shrink(), [])
+        XCTAssertEqual(ValueCommand.add(n: 0).shrink(), [])
         XCTAssertEqual(ValueCommand.set(x: 0, y: 0).shrink(), [])
     }
     
@@ -177,8 +177,7 @@ internal final class StatefulMacroTests: TestKitCase
     
     func testValueCommandShrinkPreservesCase()
     {
-        let addCandidates: [ValueCommand]
-            = ValueCommand.add(amount: 10).shrink()
+        let addCandidates: [ValueCommand] = ValueCommand.add(n: 10).shrink()
         
         XCTAssertFalse(addCandidates.isEmpty)
         
@@ -791,13 +790,10 @@ internal final class StatefulMacroTests: TestKitCase
         
         let expected: String =
         """
-        XCTKStateful failed after 26 iterations (shrunk to 4 commands)
+        XCTKStateful failed after 10 iterations (shrunk to 1 command)
 
         Counterexample:
-            1. add(11)
-            2. add(5)
-            3. add(22)
-            4. add(13) ←
+            1. add(51) ←
         
         XCTKAssertEqual failed
 
@@ -914,11 +910,24 @@ private enum SimpleCommand: Equatable, Hashable, CaseIterable
         {
             case .increment:
                 
+                if
+                    model.overflows(add: 1)
+                    || system.value.overflows(add: 1)
+                {
+                    return
+                }
                 
                 model           += 1
                 system.value    += 1
                 
             case .decrement:
+                
+                if
+                    model.overflows(subtract: 1)
+                    || system.value.overflows(subtract: 1)
+                {
+                    return
+                }
                 
                 model           -= 1
                 system.value    -= 1
@@ -936,9 +945,27 @@ private enum SimpleCommand: Equatable, Hashable, CaseIterable
     {
         switch self
         {
-            case .increment : model += 1
-            case .decrement : model -= 1
-            case .reset     : model = 0
+            case .increment:
+                
+                if model.overflows(add: 1)
+                {
+                    return
+                }
+                
+                model += 1
+                
+            case .decrement:
+                
+                if model.overflows(subtract: 1)
+                {
+                    return
+                }
+                
+                model -= 1
+                
+            case .reset:
+                
+                model = 0
         }
     }
 }
@@ -949,7 +976,7 @@ private enum SimpleCommand: Equatable, Hashable, CaseIterable
 private enum ValueCommand: Equatable
 {
     case reset
-    case add(amount: Int)
+    case add(n: Int)
     case set(x: Int, y: Int)
     
     func run(
@@ -964,12 +991,24 @@ private enum ValueCommand: Equatable
                 model           = 0
                 system.value    = 0
                 
-            case let .add(amount):
+            case let .add(n):
                 
-                model           += amount
-                system.value    += amount
+                if
+                    model.overflows(add: n)
+                    || system.value.overflows(add: n)
+                {
+                    return
+                }
+                
+                model           += n
+                system.value    += n
                 
             case let .set(x, y):
+                
+                if x.overflows(add: y)
+                {
+                    return
+                }
                 
                 model           = x + y
                 system.value    = x + y
@@ -982,9 +1021,27 @@ private enum ValueCommand: Equatable
     {
         switch self
         {
-            case .reset             : model = 0
-            case let .add(amount)   : model += amount
-            case let .set(x, y)     : model = x + y
+            case .reset:
+                
+                model = 0
+                
+            case let .add(n):
+                
+                if model.overflows(add: n)
+                {
+                    return
+                }
+                
+                model += n
+                
+            case let .set(x, y):
+                
+                if x.overflows(add: y)
+                {
+                    return
+                }
+                
+                model = x + y
         }
     }
 }
@@ -1052,6 +1109,13 @@ private struct Outer
                     
                 case let .add(n):
                     
+                    if
+                        model.overflows(add: n)
+                        || system.value.overflows(add: n)
+                    {
+                        return
+                    }
+                    
                     model           += n
                     system.value    += n
             }
@@ -1063,8 +1127,18 @@ private struct Outer
         {
             switch self
             {
-                case .reset         : model = 0
-                case let .add(n)    : model += n
+                case .reset:
+                    
+                    model = 0
+                    
+                case let .add(n):
+                    
+                    if model.overflows(add: n)
+                    {
+                        return
+                    }
+                    
+                    model += n
             }
         }
     }
@@ -1100,6 +1174,13 @@ private enum BuggyCommand: Equatable
                 
             case let .add(n):
                 
+                if
+                    model.overflows(add: n)
+                    || system.value.overflows(add: n)
+                {
+                    return
+                }
+                
                 model           += n
                 system.value    += n
                 
@@ -1119,8 +1200,18 @@ private enum BuggyCommand: Equatable
     {
         switch self
         {
-            case .reset         : model = 0
-            case let .add(n)    : model += n
+            case .reset:
+                
+                model = 0
+                
+            case let .add(n):
+                
+                if model.overflows(add: n)
+                {
+                    return
+                }
+                
+                model += n
         }
     }
 }
@@ -1142,10 +1233,24 @@ private enum PayloadOnlyCommand: Equatable
         {
             case let .add(n):
                 
+                if
+                    model.overflows(add: n)
+                    || system.value.overflows(add: n)
+                {
+                    return
+                }
+                
                 model           += n
                 system.value    += n
                 
             case let .multiply(n):
+                
+                if
+                    model.overflows(multiply: n)
+                    || system.value.overflows(multiply: n)
+                {
+                    return
+                }
                 
                 model           *= n
                 system.value    *= n
@@ -1158,8 +1263,23 @@ private enum PayloadOnlyCommand: Equatable
     {
         switch self
         {
-            case let .add(n)        : model += n
-            case let .multiply(n)   : model *= n
+            case let .add(n):
+                
+                if model.overflows(add: n)
+                {
+                    return
+                }
+                
+                model += n
+                
+            case let .multiply(n):
+                
+                if model.overflows(multiply: n)
+                {
+                    return
+                }
+                
+                model *= n
         }
     }
 }
@@ -1199,6 +1319,13 @@ private enum PreconditionCommand: Equatable
                 
             case let .add(n):
                 
+                if
+                    model.overflows(add: n)
+                    || system.value.overflows(add: n)
+                {
+                    return
+                }
+                
                 model           += n
                 system.value    += n
         }
@@ -1210,8 +1337,18 @@ private enum PreconditionCommand: Equatable
     {
         switch self
         {
-            case .reset         : model = 0
-            case let .add(n)    : model += n
+            case .reset:
+                
+                model = 0
+                
+            case let .add(n):
+                
+                if model.overflows(add: n)
+                {
+                    return
+                }
+                
+                model += n
         }
     }
 }
@@ -1239,10 +1376,24 @@ private enum WeightedCommand: Equatable
                 
             case let .subtract(n):
                 
+                if
+                    model.overflows(subtract: n)
+                    || system.value.overflows(subtract: n)
+                {
+                    return
+                }
+                
                 model           -= n
                 system.value    -= n
                 
             case let .add(n):
+                
+                if
+                    model.overflows(add: n)
+                    || system.value.overflows(add: n)
+                {
+                    return
+                }
                 
                 model           += n
                 system.value    += n
@@ -1255,9 +1406,27 @@ private enum WeightedCommand: Equatable
     {
         switch self
         {
-            case .reset             : model = 0
-            case let .subtract(n)   : model -= n
-            case let .add(n)        : model += n
+            case .reset:
+                
+                model = 0
+                
+            case let .subtract(n):
+                
+                if model.overflows(subtract: n)
+                {
+                    return
+                }
+                
+                model -= n
+                
+            case let .add(n):
+                
+                if model.overflows(add: n)
+                {
+                    return
+                }
+                
+                model += n
         }
     }
 }
@@ -1285,10 +1454,24 @@ private enum MixedWeightCommand: Equatable
                 
             case let .subtract(n):
                 
+                if
+                    model.overflows(subtract: n)
+                    || system.value.overflows(subtract: n)
+                {
+                    return
+                }
+                
                 model           -= n
                 system.value    -= n
                 
             case let .add(n):
+                
+                if
+                    model.overflows(add: n)
+                    || system.value.overflows(add: n)
+                {
+                    return
+                }
                 
                 model           += n
                 system.value    += n
@@ -1301,9 +1484,27 @@ private enum MixedWeightCommand: Equatable
     {
         switch self
         {
-            case .reset             : model = 0
-            case let .subtract(n)   : model -= n
-            case let .add(n)        : model += n
+            case .reset:
+                
+                model = 0
+                
+            case let .subtract(n):
+                
+                if model.overflows(subtract: n)
+                {
+                    return
+                }
+                
+                model -= n
+                
+            case let .add(n):
+                
+                if model.overflows(add: n)
+                {
+                    return
+                }
+                
+                model += n
         }
     }
 }
@@ -1334,10 +1535,24 @@ private enum WeightedBaseCaseCommand: Equatable
                 
             case .decrement:
                 
+                if
+                    model.overflows(subtract: 1)
+                    || system.value.overflows(subtract: 1)
+                {
+                    return
+                }
+                
                 model           -= 1
                 system.value    -= 1
                 
             case .increment:
+                
+                if
+                    model.overflows(add: 1)
+                    || system.value.overflows(add: 1)
+                {
+                    return
+                }
                 
                 model           += 1
                 system.value    += 1

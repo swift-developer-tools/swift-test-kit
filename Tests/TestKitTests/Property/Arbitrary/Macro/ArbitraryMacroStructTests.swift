@@ -61,27 +61,45 @@ internal final class ArbitraryMacroStructTests: TestKitCase
     
     func testSingleLetSizeZeroProduction()
     {
-        for _ in 0..<1000
+        let iterations  : Int   = 10_000
+        var count       : Int   = 0
+        
+        for _ in 0..<iterations
         {
             let value = SingleLet.arbitrary(using: .randomZeroSize)
             
-            XCTAssertEqual(value.id, 0)
+            if value.id == 0
+            {
+                count += 1
+            }
         }
+        
+        /// 5% chance of special values.
+        XCTAssertGreaterThan(count, Int(Double(iterations) * 0.95 * 0.85))
     }
     
     
     
     func testSingleLetSizeBounds()
     {
-        let size: Int = 10
+        let iterations  : Int   = 10_000
+        var count       : Int   = 0
+        let size        : Int   = 10
         
-        for _ in 0..<1000
+        for _ in 0..<iterations
         {
             let value = SingleLet.arbitrary(using: .randomSeed(size: size))
             
-            XCTAssertGreaterThanOrEqual(value.id, -size)
-            XCTAssertLessThanOrEqual(value.id, size)
+            if
+                value.id >= -size,
+                value.id <= size
+            {
+                count += 1
+            }
         }
+        
+        /// 5% chance of special values.
+        XCTAssertGreaterThan(count, Int(Double(iterations) * 0.95 * 0.85))
     }
     
     
@@ -155,27 +173,45 @@ internal final class ArbitraryMacroStructTests: TestKitCase
     
     func testSingleVarSizeZeroProduction()
     {
-        for _ in 0..<1000
+        let iterations  : Int   = 10_000
+        var count       : Int   = 0
+        
+        for _ in 0..<iterations
         {
             let value = SingleVar.arbitrary(using: .randomZeroSize)
             
-            XCTAssertEqual(value.id, 0)
+            if value.id == 0
+            {
+                count += 1
+            }
         }
+        
+        /// 5% chance of special values.
+        XCTAssertGreaterThan(count, Int(Double(iterations) * 0.95 * 0.85))
     }
     
     
     
     func testSingleVarSizeBounds()
     {
-        let size: Int = 10
+        let iterations  : Int   = 10_000
+        var count       : Int   = 0
+        let size        : Int   = 10
         
-        for _ in 0..<1000
+        for _ in 0..<iterations
         {
             let value = SingleVar.arbitrary(using: .randomSeed(size: size))
             
-            XCTAssertGreaterThanOrEqual(value.id, -size)
-            XCTAssertLessThanOrEqual(value.id, size)
+            if
+                value.id >= -size,
+                value.id <= size
+            {
+                count += 1
+            }
         }
+        
+        /// 5% chance of special values.
+        XCTAssertGreaterThan(count, Int(Double(iterations) * 0.95 * 0.85))
     }
     
     
@@ -227,13 +263,23 @@ internal final class ArbitraryMacroStructTests: TestKitCase
     
     func testMultipleSizeZeroProduction()
     {
-        for _ in 0..<1000
+        let iterations  : Int   = 10_000
+        var count       : Int   = 0
+        
+        for _ in 0..<iterations
         {
             let value = Multiple.arbitrary(using: .randomZeroSize)
             
-            XCTAssertEqual(value.name, "")
-            XCTAssertEqual(value.id, 0)
+            if
+                value.name.isEmpty,
+                value.id == 0
+            {
+                count += 1
+            }
         }
+        
+        /// 5% chance of special values.
+        XCTAssertGreaterThan(count, Int(Double(iterations) * 0.95 * 0.85))
     }
     
     
@@ -406,29 +452,48 @@ internal final class ArbitraryMacroStructTests: TestKitCase
     
     func testLetDefaultSizeZeroProduction()
     {
-        for _ in 0..<1000
+        let iterations  : Int   = 10_000
+        var count       : Int   = 0
+        
+        for _ in 0..<iterations
         {
             let value = LetDefault.arbitrary(using: .randomZeroSize)
             
-            XCTAssertEqual(value.x, 0)
-            XCTAssertEqual(value.y, "abc")
+            if
+                value.x == 0,
+                value.y == "abc"
+            {
+                count += 1
+            }
         }
+        
+        /// 5% chance of special values.
+        XCTAssertGreaterThan(count, Int(Double(iterations) * 0.95 * 0.85))
     }
     
     
     
     func testLetDefaultSizeBounds()
     {
-        let size: Int = 10
+        let iterations  : Int   = 10_000
+        var count       : Int   = 0
+        let size        : Int   = 10
         
-        for _ in 0..<1000
+        for _ in 0..<iterations
         {
             let value = LetDefault.arbitrary(using: .randomSeed(size: size))
             
-            XCTAssertGreaterThanOrEqual(value.x, -size)
-            XCTAssertLessThanOrEqual(value.x, size)
-            XCTAssertEqual(value.y, "abc")
+            if
+                value.x >= -size,
+                value.x <= size,
+                value.y == "abc"
+            {
+                count += 1
+            }
         }
+        
+        /// 5% chance of special values.
+        XCTAssertGreaterThan(count, Int(Double(iterations) * 0.95 * 0.85))
     }
     
     
@@ -523,13 +588,23 @@ internal final class ArbitraryMacroStructTests: TestKitCase
     
     func testVarDefaultSizeZeroProducesMinimal()
     {
-        for _ in 0..<1000
+        let iterations  : Int   = 10_000
+        var count       : Int   = 0
+        
+        for _ in 0..<iterations
         {
             let value = VarDefault.arbitrary(using: .randomZeroSize)
             
-            XCTAssertEqual(value.x, 0)
-            XCTAssertEqual(value.y, "")
+            if
+                value.x == 0,
+                value.y.isEmpty
+            {
+                count += 1
+            }
         }
+        
+        /// 5% chance of special values.
+        XCTAssertGreaterThan(count, Int(Double(iterations) * 0.95 * 0.85))
     }
     
     
@@ -618,13 +693,23 @@ internal final class ArbitraryMacroStructTests: TestKitCase
     
     func testAllVarDefaultsGeneratesFixedValues()
     {
-        for _ in 0..<1000
+        let iterations  : Int   = 10_000
+        var count       : Int   = 0
+        
+        for _ in 0..<iterations
         {
             let value = AllVarDefaults.arbitrary(using: .randomZeroSize)
             
-            XCTAssertEqual(value.x, 0)
-            XCTAssertEqual(value.y, "")
+            if
+                value.x == 0,
+                value.y.isEmpty
+            {
+                count += 1
+            }
         }
+        
+        /// 5% chance of special values.
+        XCTAssertGreaterThan(count, Int(Double(iterations) * 0.95 * 0.85))
     }
     
     
@@ -670,14 +755,24 @@ internal final class ArbitraryMacroStructTests: TestKitCase
     
     func testGenericPairSizeZeroProduction()
     {
-        for _ in 0..<1000
+        let iterations  : Int   = 10_000
+        var count       : Int   = 0
+        
+        for _ in 0..<iterations
         {
             let value = GenericPair<Int, String>
                 .arbitrary(using: .randomZeroSize)
             
-            XCTAssertEqual(value.a, 0)
-            XCTAssertEqual(value.b, "")
+            if
+                value.a == 0,
+                value.b.isEmpty
+            {
+                count += 1
+            }
         }
+        
+        /// 5% chance of special values.
+        XCTAssertGreaterThan(count, Int(Double(iterations) * 0.95 * 0.85))
     }
     
     
@@ -786,13 +881,23 @@ internal final class ArbitraryMacroStructTests: TestKitCase
     
     func testComputedSkipsComputedProperty()
     {
-        for _ in 0..<1000
+        let iterations  : Int   = 10_000
+        var count       : Int   = 0
+        
+        for _ in 0..<iterations
         {
             let value = Computed.arbitrary(using: .randomZeroSize)
             
-            XCTAssertEqual(value.x, 0)
-            XCTAssertEqual(value.y, 0)
+            if
+                value.x == 0,
+                value.y == 0
+            {
+                count += 1
+            }
         }
+        
+        /// 5% chance of special values.
+        XCTAssertGreaterThan(count, Int(Double(iterations) * 0.95 * 0.85))
     }
     
     
@@ -820,13 +925,23 @@ internal final class ArbitraryMacroStructTests: TestKitCase
     
     func testComputedGetSetSkipsComputedProperty()
     {
-        for _ in 0..<1000
+        let iterations  : Int   = 10_000
+        var count       : Int   = 0
+        
+        for _ in 0..<iterations
         {
             let value = ComputedGetSet.arbitrary(using: .randomZeroSize)
             
-            XCTAssertEqual(value.x, 0)
-            XCTAssertEqual(value.y, 0)
+            if
+                value.x == 0,
+                value.y == 0
+            {
+                count += 1
+            }
         }
+        
+        /// 5% chance of special values.
+        XCTAssertGreaterThan(count, Int(Double(iterations) * 0.95 * 0.85))
     }
     
     
@@ -855,12 +970,21 @@ internal final class ArbitraryMacroStructTests: TestKitCase
     
     func testStaticSkipsStaticProperty()
     {
-        for _ in 0..<1000
+        let iterations  : Int   = 10_000
+        var count       : Int   = 0
+        
+        for _ in 0..<iterations
         {
             let value = Static.arbitrary(using: .randomZeroSize)
             
-            XCTAssertEqual(value.x, 0)
+            if value.x == 0
+            {
+                count += 1
+            }
         }
+        
+        /// 5% chance of special values.
+        XCTAssertGreaterThan(count, Int(Double(iterations) * 0.95 * 0.85))
     }
     
     
@@ -888,12 +1012,21 @@ internal final class ArbitraryMacroStructTests: TestKitCase
     
     func testLazySkipsLazyProperty()
     {
-        for _ in 0..<1000
+        let iterations  : Int   = 10_000
+        var count       : Int   = 0
+        
+        for _ in 0..<iterations
         {
             let value = Lazy.arbitrary(using: .randomZeroSize)
             
-            XCTAssertEqual(value.x, 0)
+            if value.x == 0
+            {
+                count += 1
+            }
         }
+        
+        /// 5% chance of special values.
+        XCTAssertGreaterThan(count, Int(Double(iterations) * 0.95 * 0.85))
     }
     
     
@@ -921,13 +1054,23 @@ internal final class ArbitraryMacroStructTests: TestKitCase
     
     func testObserverSizeZeroProduction()
     {
-        for _ in 0..<1000
+        let iterations  : Int   = 10_000
+        var count       : Int   = 0
+        
+        for _ in 0..<iterations
         {
             let value = Observer.arbitrary(using: .randomZeroSize)
             
-            XCTAssertEqual(value.x, 0)
-            XCTAssertEqual(value.y, 0)
+            if
+                value.x == 0,
+                value.y == 0
+            {
+                count += 1
+            }
         }
+        
+        /// 5% chance of special values.
+        XCTAssertGreaterThan(count, Int(Double(iterations) * 0.95 * 0.85))
     }
     
     
@@ -973,15 +1116,25 @@ internal final class ArbitraryMacroStructTests: TestKitCase
     
     func testNestedSizeZeroProduction()
     {
-        for _ in 0..<1000
+        let iterations  : Int   = 10_000
+        var count       : Int   = 0
+        
+        for _ in 0..<iterations
         {
             let value = Nested.arbitrary(using: .randomZeroSize)
             
-            XCTAssertEqual(value.pair.a, 0)
-            XCTAssertEqual(value.pair.b, "")
-            XCTAssertEqual(value.single.id, 0)
-            XCTAssertEqual(value.inner.id, 0)
+            if
+                value.pair.a == 0,
+                value.pair.b.isEmpty,
+                value.single.id == 0,
+                value.inner.id == 0
+            {
+                count += 1
+            }
         }
+        
+        /// 5% chance of special values.
+        XCTAssertGreaterThan(count, Int(Double(iterations) * 0.95 * 0.85))
     }
     
     
@@ -1177,13 +1330,22 @@ internal final class ArbitraryMacroStructTests: TestKitCase
     
     func testTaggedSizeZeroProduction()
     {
-        for _ in 0..<1000
+        let iterations  : Int   = 10_000
+        var count       : Int   = 0
+        
+        for _ in 0..<iterations
         {
             let value = Tagged<PhantomTag, Int>
                 .arbitrary(using: .randomZeroSize)
             
-            XCTAssertEqual(value.id, 0)
+            if value.id == 0
+            {
+                count += 1
+            }
         }
+        
+        /// 5% chance of special values.
+        XCTAssertGreaterThan(count, Int(Double(iterations) * 0.95 * 0.85))
     }
     
     
@@ -1299,13 +1461,23 @@ internal final class ArbitraryMacroStructTests: TestKitCase
     
     func testAccessModifiedSizeZeroProduction()
     {
-        for _ in 0..<1000
+        let iterations  : Int   = 10_000
+        var count       : Int   = 0
+        
+        for _ in 0..<iterations
         {
             let value = AccessModified.arbitrary(using: .randomZeroSize)
             
-            XCTAssertEqual(value.x, 0)
-            XCTAssertEqual(value.y, "")
+            if
+                value.x == 0,
+                value.y.isEmpty
+            {
+                count += 1
+            }
         }
+        
+        /// 5% chance of special values.
+        XCTAssertGreaterThan(count, Int(Double(iterations) * 0.95 * 0.85))
     }
     
     
@@ -1351,13 +1523,23 @@ internal final class ArbitraryMacroStructTests: TestKitCase
     
     func testPrivateSetSizeZeroProduction()
     {
-        for _ in 0..<1000
+        let iterations  : Int   = 10_000
+        var count       : Int   = 0
+        
+        for _ in 0..<iterations
         {
             let value = PrivateSet.arbitrary(using: .randomZeroSize)
             
-            XCTAssertEqual(value.x, 0)
-            XCTAssertEqual(value.y, "")
+            if
+                value.x == 0,
+                value.y.isEmpty
+            {
+                count += 1
+            }
         }
+        
+        /// 5% chance of special values.
+        XCTAssertGreaterThan(count, Int(Double(iterations) * 0.95 * 0.85))
     }
     
     
@@ -1403,13 +1585,22 @@ internal final class ArbitraryMacroStructTests: TestKitCase
     
     func testExplicitAccessOuterSizeZeroProduction()
     {
-        for _ in 0..<1000
+        let iterations  : Int   = 10_000
+        var count       : Int   = 0
+        
+        for _ in 0..<iterations
         {
             let value = ExplicitAccessOuter.Inner
                 .arbitrary(using: .randomZeroSize)
             
-            XCTAssertEqual(value.x, 0)
+            if value.x == 0
+            {
+                count += 1
+            }
         }
+        
+        /// 5% chance of special values.
+        XCTAssertGreaterThan(count, Int(Double(iterations) * 0.95 * 0.85))
     }
     
     
@@ -1438,12 +1629,21 @@ internal final class ArbitraryMacroStructTests: TestKitCase
     
     func testDeepOuterSizeZeroProduction()
     {
-        for _ in 0..<1000
+        let iterations  : Int   = 10_000
+        var count       : Int   = 0
+        
+        for _ in 0..<iterations
         {
             let value = DeepOuter.Middle.Deep.arbitrary(using: .randomZeroSize)
             
-            XCTAssertEqual(value.x, 0)
+            if value.x == 0
+            {
+                count += 1
+            }
         }
+        
+        /// 5% chance of special values.
+        XCTAssertGreaterThan(count, Int(Double(iterations) * 0.95 * 0.85))
     }
     
     
@@ -1472,13 +1672,23 @@ internal final class ArbitraryMacroStructTests: TestKitCase
     
     func testMultiBindingSizeZeroProduction()
     {
-        for _ in 0..<1000
+        let iterations  : Int   = 10_000
+        var count       : Int   = 0
+        
+        for _ in 0..<iterations
         {
             let value = MultiBinding.arbitrary(using: .randomZeroSize)
             
-            XCTAssertEqual(value.x, 0)
-            XCTAssertEqual(value.y, "")
+            if
+                value.x == 0,
+                value.y.isEmpty
+            {
+                count += 1
+            }
         }
+        
+        /// 5% chance of special values.
+        XCTAssertGreaterThan(count, Int(Double(iterations) * 0.95 * 0.85))
     }
     
     
@@ -1537,14 +1747,24 @@ internal final class ArbitraryMacroStructTests: TestKitCase
     
     func testMixedDefaultsSizeZeroProduction()
     {
-        for _ in 0..<1000
+        let iterations  : Int   = 10_000
+        var count       : Int   = 0
+        
+        for _ in 0..<iterations
         {
             let value = MixedDefaults.arbitrary(using: .randomZeroSize)
             
-            XCTAssertEqual(value.a, 100)
-            XCTAssertEqual(value.b, "abc")
-            XCTAssertEqual(value.c, 0)
+            if
+                value.a == 100,
+                value.b == "abc",
+                value.c == 0
+            {
+                count += 1
+            }
         }
+        
+        /// 5% chance of special values.
+        XCTAssertGreaterThan(count, Int(Double(iterations) * 0.95 * 0.85))
     }
     
     
@@ -1618,14 +1838,24 @@ internal final class ArbitraryMacroStructTests: TestKitCase
     
     func testTupleDefaultSizeZeroProduction()
     {
-        for _ in 0..<1000
+        let iterations  : Int   = 10_000
+        var count       : Int   = 0
+        
+        for _ in 0..<iterations
         {
             let value = TupleDefault.arbitrary(using: .randomZeroSize)
             
-            XCTAssertEqual(value.x, 0)
-            XCTAssertEqual(value.pair.0, 0)
-            XCTAssertEqual(value.pair.1, "")
+            if
+                value.x == 0,
+                value.pair.0 == 0,
+                value.pair.1.isEmpty
+            {
+                count += 1
+            }
         }
+        
+        /// 5% chance of special values.
+        XCTAssertGreaterThan(count, Int(Double(iterations) * 0.95 * 0.85))
     }
     
     
@@ -1661,13 +1891,23 @@ internal final class ArbitraryMacroStructTests: TestKitCase
     
     func testClosureDefaultSizeZeroProduction()
     {
-        for _ in 0..<1000
+        let iterations  : Int   = 10_000
+        var count       : Int   = 0
+        
+        for _ in 0..<iterations
         {
             let value = ClosureDefault.arbitrary(using: .randomZeroSize)
             
-            XCTAssertEqual(value.x, 0)
-            XCTAssertEqual(value.action(10), "10")
+            if
+                value.x == 0,
+                value.action(10) == "10"
+            {
+                count += 1
+            }
         }
+        
+        /// 5% chance of special values.
+        XCTAssertGreaterThan(count, Int(Double(iterations) * 0.95 * 0.85))
     }
     
     

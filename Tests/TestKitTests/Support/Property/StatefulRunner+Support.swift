@@ -30,6 +30,13 @@ internal enum IncrementCommand: Stateful, Equatable, Sendable
         system  : inout Int
     ) async
     {
+        if
+            model.overflows(add: 1)
+            || system.overflows(add: 1)
+        {
+            return
+        }
+        
         model   += 1
         system  += 1
     }
@@ -38,6 +45,11 @@ internal enum IncrementCommand: Stateful, Equatable, Sendable
         model: inout Int
     )
     {
+        if model.overflows(add: 1)
+        {
+            return
+        }
+        
         model += 1
     }
 }
@@ -63,6 +75,13 @@ internal enum SlowIncrementCommand: Stateful, Equatable, Sendable
         system  : inout Int
     ) async
     {
+        if
+            model.overflows(add: 1)
+            || system.overflows(add: 1)
+        {
+            return
+        }
+        
         model   += 1
         system  += 1
         
@@ -73,6 +92,11 @@ internal enum SlowIncrementCommand: Stateful, Equatable, Sendable
         model: inout Int
     )
     {
+        if model.overflows(add: 1)
+        {
+            return
+        }
+        
         model += 1
     }
 }
@@ -103,6 +127,13 @@ internal enum ShrinkableIncrementCommand: Stateful, Equatable, Sendable
         {
             case .increment:
                 
+                if
+                    model.overflows(add: 1)
+                    || system.overflows(add: 1)
+                {
+                    return
+                }
+                
                 model   += 1
                 system  += 1
                 
@@ -118,8 +149,18 @@ internal enum ShrinkableIncrementCommand: Stateful, Equatable, Sendable
     {
         switch self
         {
-            case .increment : model += 1
-            case .noOp      : break
+            case .increment:
+                
+                if model.overflows(add: 1)
+                {
+                    return
+                }
+                
+                model += 1
+                
+            case .noOp:
+                
+                break
         }
     }
     
@@ -160,6 +201,13 @@ internal enum ModelAwareShrinkCommand: Stateful, Equatable, Sendable
         {
             case let .add(n):
                 
+                if
+                    model.overflows(add: n)
+                    || system.overflows(add: n)
+                {
+                    return
+                }
+                
                 model   += n
                 system  += n
         }
@@ -176,7 +224,14 @@ internal enum ModelAwareShrinkCommand: Stateful, Equatable, Sendable
     {
         switch self
         {
-            case let .add(n): model += n
+            case let .add(n):
+                
+                if model.overflows(add: n)
+                {
+                    return
+                }
+                
+                model += n
         }
     }
     
@@ -192,6 +247,11 @@ internal enum ModelAwareShrinkCommand: Stateful, Equatable, Sendable
         switch self
         {
             case let .add(n):
+                
+                if Self.threshold.overflows(subtract: model)
+                {
+                    return []
+                }
                 
                 let needed: Int = max(1, Self.threshold - model)
                 
@@ -230,6 +290,13 @@ internal enum AmountCommand: Stateful, Equatable, Sendable
         {
             case let .add(n):
                 
+                if
+                    model.overflows(add: n)
+                    || system.overflows(add: n)
+                {
+                    return
+                }
+                
                 model   += n
                 system  += n
         }
@@ -241,7 +308,14 @@ internal enum AmountCommand: Stateful, Equatable, Sendable
     {
         switch self
         {
-            case let .add(n): model += n
+            case let .add(n):
+                
+                if model.overflows(add: n)
+                {
+                    return
+                }
+                
+                model += n
         }
     }
     
@@ -283,6 +357,13 @@ internal enum ScaledStepCommand: Stateful, Equatable, Sendable
         {
             case let .add(n):
                 
+                if
+                    model.overflows(add: n)
+                    || system.overflows(add: n)
+                {
+                    return
+                }
+                
                 model   += n
                 system  += n
         }
@@ -294,7 +375,14 @@ internal enum ScaledStepCommand: Stateful, Equatable, Sendable
     {
         switch self
         {
-            case let .add(n): model += n
+            case let .add(n):
+                
+                if model.overflows(add: n)
+                {
+                    return
+                }
+                
+                model += n
         }
     }
 }
@@ -343,6 +431,13 @@ internal enum BoundCommand: Stateful, Equatable, Sendable
         {
             case .increment:
                 
+                if
+                    model.overflows(add: 1)
+                    || system.overflows(add: 1)
+                {
+                    return
+                }
+                
                 model   += 1
                 system  += 1
                 
@@ -358,8 +453,18 @@ internal enum BoundCommand: Stateful, Equatable, Sendable
     {
         switch self
         {
-            case .increment : model += 1
-            case .noOp      : break
+            case .increment:
+                
+                if model.overflows(add: 1)
+                {
+                    return
+                }
+                
+                model += 1
+                
+            case .noOp:
+                
+                break
         }
     }
 }
@@ -406,10 +511,24 @@ internal enum StackCommand: Stateful, Equatable, Sendable
         {
             case .push:
                 
+                if
+                    model.overflows(add: 1)
+                    || system.overflows(add: 1)
+                {
+                    return
+                }
+                
                 model   += 1
                 system  += 1
                 
             case .pop:
+                
+                if
+                    model.overflows(subtract: 1)
+                    || system.overflows(subtract: 1)
+                {
+                    return
+                }
                 
                 model   -= 1
                 system  -= 1
@@ -422,8 +541,23 @@ internal enum StackCommand: Stateful, Equatable, Sendable
     {
         switch self
         {
-            case .push  : model += 1
-            case .pop   : model -= 1
+            case .push:
+                
+                if model.overflows(add: 1)
+                {
+                    return
+                }
+                
+                model += 1
+                
+            case .pop:
+                
+                if model.overflows(subtract: 1)
+                {
+                    return
+                }
+                
+                model -= 1
         }
     }
 }
@@ -451,6 +585,13 @@ internal enum LabelCommand: Stateful, Equatable, Sendable
         system  : inout Int
     ) async
     {
+        if
+            model.overflows(add: 1)
+            || system.overflows(add: 1)
+        {
+            return
+        }
+        
         model   += 1
         system  += 1
         
@@ -462,6 +603,11 @@ internal enum LabelCommand: Stateful, Equatable, Sendable
         model: inout Int
     )
     {
+        if model.overflows(add: 1)
+        {
+            return
+        }
+        
         model += 1
     }
 }
@@ -490,6 +636,13 @@ internal enum ClassifyCommand: Stateful, Equatable, Sendable
         system  : inout Int
     ) async
     {
+        if
+            model.overflows(add: 1)
+            || system.overflows(add: 1)
+        {
+            return
+        }
+        
         model   += 1
         system  += 1
         
@@ -501,6 +654,11 @@ internal enum ClassifyCommand: Stateful, Equatable, Sendable
         model: inout Int
     )
     {
+        if model.overflows(add: 1)
+        {
+            return
+        }
+        
         model += 1
     }
 }
@@ -576,6 +734,13 @@ internal enum DivergentCommand: Stateful, Equatable, Sendable
         system  : inout Int
     ) async
     {
+        if
+            model.overflows(add: 2)
+            || system.overflows(add: 2)
+        {
+            return
+        }
+        
         model   += 2
         system  += 2
     }
@@ -584,6 +749,11 @@ internal enum DivergentCommand: Stateful, Equatable, Sendable
         model: inout Int
     )
     {
+        if model.overflows(add: 1)
+        {
+            return
+        }
+        
         model += 1
     }
 }
@@ -609,6 +779,13 @@ internal enum CoverNeverCommand: Stateful, Equatable, Sendable
         system  : inout Int
     ) async
     {
+        if
+            model.overflows(add: 1)
+            || system.overflows(add: 1)
+        {
+            return
+        }
+        
         model   += 1
         system  += 1
         
@@ -619,6 +796,11 @@ internal enum CoverNeverCommand: Stateful, Equatable, Sendable
         model: inout Int
     )
     {
+        if model.overflows(add: 1)
+        {
+            return
+        }
+        
         model += 1
     }
 }
@@ -644,6 +826,13 @@ internal enum AssumeCommand: Stateful, Equatable, Sendable
         system  : inout Int
     ) async throws
     {
+        if
+            model.overflows(add: 1)
+            || system.overflows(add: 1)
+        {
+            return
+        }
+        
         model   += 1
         system  += 1
         
@@ -654,6 +843,11 @@ internal enum AssumeCommand: Stateful, Equatable, Sendable
         model: inout Int
     )
     {
+        if model.overflows(add: 1)
+        {
+            return
+        }
+        
         model += 1
     }
 }
@@ -679,6 +873,13 @@ internal enum CollectCommand: Stateful, Equatable, Sendable
         system  : inout Int
     ) async
     {
+        if
+            model.overflows(add: 1)
+            || system.overflows(add: 1)
+        {
+            return
+        }
+        
         model   += 1
         system  += 1
         
@@ -689,6 +890,11 @@ internal enum CollectCommand: Stateful, Equatable, Sendable
         model: inout Int
     )
     {
+        if model.overflows(add: 1)
+        {
+            return
+        }
+        
         model += 1
     }
 }
@@ -716,6 +922,13 @@ internal enum RunFailCommand: Stateful, Equatable, Sendable
         system  : inout Int
     ) async
     {
+        if
+            model.overflows(add: 1)
+            || system.overflows(add: 1)
+        {
+            return
+        }
+        
         model   += 1
         system  += 1
         
@@ -729,6 +942,11 @@ internal enum RunFailCommand: Stateful, Equatable, Sendable
         model: inout Int
     )
     {
+        if model.overflows(add: 1)
+        {
+            return
+        }
+        
         model += 1
     }
 }
@@ -754,6 +972,13 @@ internal enum RunDiscardCommand: Stateful, Equatable, Sendable
         system  : inout Int
     ) async throws
     {
+        if
+            model.overflows(add: 1)
+            || system.overflows(add: 1)
+        {
+            return
+        }
+        
         model   += 1
         system  += 1
         
@@ -764,6 +989,11 @@ internal enum RunDiscardCommand: Stateful, Equatable, Sendable
         model: inout Int
     )
     {
+        if model.overflows(add: 1)
+        {
+            return
+        }
+        
         model += 1
     }
 }
@@ -791,6 +1021,13 @@ internal enum RunThrowCommand: Stateful, Equatable, Sendable
         system  : inout Int
     ) async throws
     {
+        if
+            model.overflows(add: 1)
+            || system.overflows(add: 1)
+        {
+            return
+        }
+        
         model   += 1
         system  += 1
         
@@ -804,6 +1041,11 @@ internal enum RunThrowCommand: Stateful, Equatable, Sendable
         model: inout Int
     )
     {
+        if model.overflows(add: 1)
+        {
+            return
+        }
+        
         model += 1
     }
 }
@@ -829,6 +1071,13 @@ internal enum RunFailThrowCommand: Stateful, Equatable, Sendable
         system  : inout Int
     ) async throws
     {
+        if
+            model.overflows(add: 1)
+            || system.overflows(add: 1)
+        {
+            return
+        }
+        
         model   += 1
         system  += 1
         
@@ -841,6 +1090,11 @@ internal enum RunFailThrowCommand: Stateful, Equatable, Sendable
         model: inout Int
     )
     {
+        if model.overflows(add: 1)
+        {
+            return
+        }
+        
         model += 1
     }
 }
@@ -868,6 +1122,13 @@ internal enum PostCFailCommand: Stateful, Equatable, Sendable
         system  : inout Int
     ) async
     {
+        if
+            model.overflows(add: 1)
+            || system.overflows(add: 1)
+        {
+            return
+        }
+        
         model   += 1
         system  += 1
     }
@@ -876,6 +1137,11 @@ internal enum PostCFailCommand: Stateful, Equatable, Sendable
         model: inout Int
     )
     {
+        if model.overflows(add: 1)
+        {
+            return
+        }
+        
         model += 1
     }
     
@@ -909,6 +1175,13 @@ internal enum PostCStateCommand: Stateful, Equatable, Sendable
         system  : inout Int
     ) async
     {
+        if
+            model.overflows(add: 10)
+            || system.overflows(add: 10)
+        {
+            return
+        }
+        
         model   += 10
         system  += 10
     }
@@ -917,6 +1190,11 @@ internal enum PostCStateCommand: Stateful, Equatable, Sendable
         model: inout Int
     )
     {
+        if model.overflows(add: 10)
+        {
+            return
+        }
+        
         model += 10
     }
     
@@ -958,6 +1236,13 @@ internal enum PostCAfterRunFailCommand: Stateful, Equatable, Sendable
         system  : inout Int
     ) async
     {
+        if
+            model.overflows(add: 1)
+            || system.overflows(add: 1)
+        {
+            return
+        }
+        
         model   += 1
         system  += 1
         
@@ -974,6 +1259,11 @@ internal enum PostCAfterRunFailCommand: Stateful, Equatable, Sendable
         model: inout Int
     )
     {
+        if model.overflows(add: 1)
+        {
+            return
+        }
+        
         model += 1
     }
     
@@ -1009,6 +1299,13 @@ internal enum PostCSkipsInvariantCommand: Stateful, Equatable, Sendable
         system  : inout Int
     ) async
     {
+        if
+            model.overflows(add: 1)
+            || system.overflows(add: 1)
+        {
+            return
+        }
+        
         model   += 1
         system  += 1
     }
@@ -1017,6 +1314,11 @@ internal enum PostCSkipsInvariantCommand: Stateful, Equatable, Sendable
         model: inout Int
     )
     {
+        if model.overflows(add: 1)
+        {
+            return
+        }
+        
         model += 1
     }
     
@@ -1060,6 +1362,13 @@ internal enum CycleCommand: Stateful, Equatable, Sendable
         system  : inout Int
     ) async throws
     {
+        if
+            model.overflows(add: 1)
+            || system.overflows(add: 1)
+        {
+            return
+        }
+        
         model   += 1
         system  += 1
     }
@@ -1068,6 +1377,11 @@ internal enum CycleCommand: Stateful, Equatable, Sendable
         model: inout Int
     )
     {
+        if model.overflows(add: 1)
+        {
+            return
+        }
+        
         model += 1
     }
 }
@@ -1098,6 +1412,13 @@ internal enum ForAllPassCommand: Stateful, Equatable, Sendable
         system  : inout Int
     ) async throws
     {
+        if
+            model.overflows(add: 1)
+            || system.overflows(add: 1)
+        {
+            return
+        }
+        
         model   += 1
         system  += 1
         
@@ -1113,6 +1434,11 @@ internal enum ForAllPassCommand: Stateful, Equatable, Sendable
         model: inout Int
     )
     {
+        if model.overflows(add: 1)
+        {
+            return
+        }
+        
         model += 1
     }
 }
@@ -1146,6 +1472,13 @@ internal enum ForAllFailCommand: Stateful, Equatable, Sendable
         system  : inout Int
     ) async throws
     {
+        if
+            model.overflows(add: 1)
+            || system.overflows(add: 1)
+        {
+            return
+        }
+        
         model   += 1
         system  += 1
         
@@ -1161,6 +1494,11 @@ internal enum ForAllFailCommand: Stateful, Equatable, Sendable
         model: inout Int
     )
     {
+        if model.overflows(add: 1)
+        {
+            return
+        }
+        
         model += 1
     }
 }

@@ -307,12 +307,7 @@ extension BinaryFloatingPoint
     /// Special values to occasionally generate.
     internal static var specialValues: [Self]
     {
-        return [
-            -0.0,
-            .infinity,
-            -.infinity,
-            .nan
-        ]
+        return [-0.0, .infinity, -.infinity, .nan]
     }
     
     

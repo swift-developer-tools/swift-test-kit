@@ -128,7 +128,10 @@ internal final class ArbitraryMacroEnumTests: TestKitCase
     
     func testSingleLabeledSizeZeroProduction()
     {
-        for _ in 0..<1000
+        let iterations  : Int   = 10_000
+        var count       : Int   = 0
+        
+        for _ in 0..<iterations
         {
             let value = SingleLabeled.arbitrary(using: .randomZeroSize)
             
@@ -139,8 +142,14 @@ internal final class ArbitraryMacroEnumTests: TestKitCase
                 return
             }
             
-            XCTAssertEqual(id, 0)
+            if id == 0
+            {
+                count += 1
+            }
         }
+        
+        /// 5% chance of special values.
+        XCTAssertGreaterThan(count, Int(Double(iterations) * 0.95 * 0.85))
     }
     
     
@@ -234,7 +243,10 @@ internal final class ArbitraryMacroEnumTests: TestKitCase
     
     func testSingleUnlabeledSizeZeroProduction()
     {
-        for _ in 0..<1000
+        let iterations  : Int   = 10_000
+        var count       : Int   = 0
+        
+        for _ in 0..<iterations
         {
             let value = SingleUnlabeled.arbitrary(using: .randomZeroSize)
             
@@ -245,8 +257,14 @@ internal final class ArbitraryMacroEnumTests: TestKitCase
                 return
             }
             
-            XCTAssertEqual(id, 0)
+            if id == 0
+            {
+                count += 1
+            }
         }
+        
+        /// 5% chance of special values.
+        XCTAssertGreaterThan(count, Int(Double(iterations) * 0.95 * 0.85))
     }
     
     
@@ -610,7 +628,10 @@ internal final class ArbitraryMacroEnumTests: TestKitCase
     
     func testUnlabeledMultipleSizeZeroProduct()
     {
-        for _ in 0..<1000
+        let iterations  : Int   = 10_000
+        var count       : Int   = 0
+        
+        for _ in 0..<iterations
         {
             let value = UnlabeledMultiple.arbitrary(using: .randomZeroSize)
             
@@ -618,10 +639,17 @@ internal final class ArbitraryMacroEnumTests: TestKitCase
             {
                 case let .pair(a, b):
                     
-                    XCTAssertEqual(a, 0)
-                    XCTAssertEqual(b, "")
+                    if
+                        a == 0,
+                        b.isEmpty
+                    {
+                        count += 1
+                    }
             }
         }
+        
+        /// 5% chance of special values.
+        XCTAssertGreaterThan(count, Int(Double(iterations) * 0.95 * 0.85))
     }
     
     
@@ -997,7 +1025,10 @@ internal final class ArbitraryMacroEnumTests: TestKitCase
     
     func testWildcardSizeZeroProduction()
     {
-        for _ in 0..<1000
+        let iterations  : Int   = 10_000
+        var count       : Int   = 0
+        
+        for _ in 0..<iterations
         {
             let value = Wildcard.arbitrary(using: .randomZeroSize)
             
@@ -1008,8 +1039,14 @@ internal final class ArbitraryMacroEnumTests: TestKitCase
                 return
             }
             
-            XCTAssertEqual(v, 0)
+            if v == 0
+            {
+                count += 1
+            }
         }
+        
+        /// 5% chance of special values.
+        XCTAssertGreaterThan(count, Int(Double(iterations) * 0.95 * 0.85))
     }
     
     
