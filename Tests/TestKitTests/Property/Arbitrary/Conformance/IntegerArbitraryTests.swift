@@ -7,7 +7,7 @@
 //
 //===----------------------------------------------------------------------===//
 
-import TestKitCore
+@testable import TestKitCore
 import XCTest
 
 
@@ -319,6 +319,7 @@ extension IntegerArbitraryTests
         validateSizeBounds(of: type)
         validateSignedValueProduction(of: type)
         validateValueBounds(of: type)
+        validateSpecialValueProduction(of: type)
     }
     
     
@@ -466,6 +467,59 @@ extension IntegerArbitraryTests
     
     
     
+    /// Validates that special values are generated over many iterations.
+    /// - Parameter type: The type to evaluate.
+    private func validateSpecialValueProduction<T>(
+        of type: T.Type
+    ) where T : Arbitrary & FixedWidthInteger
+    {
+        var hasZero : Bool = false
+        var hasOne  : Bool  = false
+        var hasMin  : Bool  = false
+        var hasMax  : Bool  = false
+        
+        for _ in 0..<1000
+        {
+            let value = T.arbitrary(using: .random)
+            
+            if value == 0
+            {
+                hasZero = true
+            }
+            
+            if value == 1
+            {
+                hasOne = true
+            }
+            
+            if value == .min
+            {
+                hasMin = true
+            }
+            
+            if value == .max
+            {
+                hasMax = true
+            }
+            
+            if
+                hasZero,
+                hasOne,
+                hasMin,
+                hasMax
+            {
+                break
+            }
+        }
+        
+        XCTAssertTrue(hasZero)
+        XCTAssertTrue(hasOne)
+        XCTAssertTrue(hasMin)
+        XCTAssertTrue(hasMax)
+    }
+    
+    
+    
     // MARK: Shrinking support
     
     /// Validates the shrink candidates of the given type.
@@ -477,7 +531,7 @@ extension IntegerArbitraryTests
         validateZeroOneShrinking(of: type)
         validateMinValueShrinking(of: type)
         validateMaxValueShrinking(of: type)
-        
+        validateSpecialValueShrinking(of: type)
         validateShrinkCandidates(of: T(1))
         validateShrinkCandidates(of: T(50))
         
@@ -555,6 +609,29 @@ extension IntegerArbitraryTests
         XCTAssertTrue(candidates.count > 1)
         XCTAssertEqual(candidates.first, 0)
         XCTAssertEqual(candidates.last, T.max - 1)
+    }
+    
+    
+    
+    /// Validates that special values shrink correctly.
+    /// - Parameter type: The type to evaluate.
+    private func validateSpecialValueShrinking<T>(
+        of type: T.Type
+    ) where T : Arbitrary & FixedWidthInteger
+    {
+        for special in T.specialValues
+        {
+            let candidates: [T] = special.shrink()
+            
+            if special == 0
+            {
+                XCTAssertEqual(candidates, [])
+            }
+            else
+            {
+                XCTAssertEqual(candidates.first, 0)
+            }
+        }
     }
     
     
