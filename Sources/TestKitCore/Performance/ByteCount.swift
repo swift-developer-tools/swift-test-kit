@@ -9,13 +9,11 @@
 
 /// A representation of memory, in bytes.
 public struct ByteCount:
-    Comparable, CustomStringConvertible, Equatable, Hashable, Sendable
+    AdditiveArithmetic, Comparable, CustomStringConvertible,
+    Equatable, Hashable, Sendable
 {
     /// The byte count.
     public let rawValue: UInt64
-    
-    /// Zero bytes.
-    public static let zero = ByteCount(rawValue: 0)
     
     
     
@@ -269,5 +267,64 @@ public struct ByteCount:
     public var description: String
     {
         return rawValue.readableBytes
+    }
+    
+    
+    
+    /// Zero bytes.
+    public static var zero: ByteCount
+    {
+        return ByteCount(rawValue: 0)
+    }
+    
+    
+    
+    /// Computes the sum of the given values.
+    ///
+    /// - Precondition: The sum of the given values must not overflow.
+    ///
+    /// - Parameters:
+    ///   - lhs: The first value.
+    ///   - rhs: The second value.
+    /// - Returns: The sum of the given values.
+    public static func +
+    (
+        lhs : ByteCount,
+        rhs : ByteCount
+    ) -> ByteCount
+    {
+        let (result, overflow): (UInt64, Bool)
+            = lhs.rawValue.addingReportingOverflow(rhs.rawValue)
+        
+        precondition(
+            !overflow,
+            "ByteCount overflow"
+        )
+        
+        return ByteCount(rawValue: result)
+    }
+    
+    
+    
+    /// Computes the difference of the given values.
+    ///
+    /// - Precondition: `lhs` must be greater than or equal to `rhs`.
+    ///
+    /// - Parameters:
+    ///   - lhs: The first value.
+    ///   - rhs: The second value.
+    /// - Returns: The difference of the given values.
+    public static func -
+    (
+        lhs : ByteCount,
+        rhs : ByteCount
+    ) -> ByteCount
+    {
+        precondition(
+            lhs.rawValue >= rhs.rawValue,
+            "ByteCount underflow"
+        )
+        
+        return ByteCount(rawValue: lhs.rawValue - rhs.rawValue)
     }
 }
