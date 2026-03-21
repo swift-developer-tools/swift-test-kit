@@ -42,7 +42,7 @@ extension Generator where G : FixedWidthInteger
                 
                 if context.randomBool()
                 {
-                    let (result, overflow)
+                    let (result, overflow): (G, Bool)
                         = value.addingReportingOverflow(delta)
                     
                     return overflow
@@ -51,7 +51,7 @@ extension Generator where G : FixedWidthInteger
                 }
                 else
                 {
-                    let (result, overflow)
+                    let (result, overflow): (G, Bool)
                         = value.subtractingReportingOverflow(delta)
                     
                     return overflow

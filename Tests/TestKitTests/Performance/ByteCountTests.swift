@@ -253,4 +253,118 @@ internal final class ByteCountTests: TestKitCase
     {
         XCTAssertEqual("1.5 MB", ByteCount.megabytes(1.5).description)
     }
+    
+    
+    
+    // MARK: - Arithmetic
+    
+    func testAddition()
+    {
+        let result: ByteCount = .bytes(100) + .bytes(200)
+        
+        XCTAssertEqual(300, result.rawValue)
+    }
+    
+    
+    
+    func testAdditionZeroLHS()
+    {
+        let result: ByteCount = .zero + .kilobytes(1)
+        
+        XCTAssertEqual(1024, result.rawValue)
+    }
+    
+    
+    
+    func testAdditionZeroRHS()
+    {
+        let result: ByteCount = .kilobytes(1) + .zero
+        
+        XCTAssertEqual(1024, result.rawValue)
+    }
+    
+    
+    
+    func testAdditionCrossScale()
+    {
+        let result: ByteCount = .bytes(512) + .kilobytes(1)
+        
+        XCTAssertEqual(1536, result.rawValue)
+    }
+    
+    
+    
+    func testAdditionMaximumBoundary()
+    {
+        let result: ByteCount = .bytes(UInt64.max) + .zero
+        
+        XCTAssertEqual(UInt64.max, result.rawValue)
+    }
+    
+    
+    
+    func testSubtraction()
+    {
+        let result: ByteCount = .bytes(300) - .bytes(100)
+        
+        XCTAssertEqual(200, result.rawValue)
+    }
+    
+    
+    
+    func testSubtractionToZero()
+    {
+        let result: ByteCount = .kilobytes(1) - .kilobytes(1)
+        
+        XCTAssertEqual(0, result.rawValue)
+    }
+    
+    
+    
+    func testSubtractionZeroRHS()
+    {
+        let result: ByteCount = .megabytes(1) - .zero
+        
+        XCTAssertEqual(1_048_576, result.rawValue)
+    }
+    
+    
+    
+    func testSubtractionCrossScale()
+    {
+        let result: ByteCount = .kilobytes(1) - .bytes(512)
+        
+        XCTAssertEqual(512, result.rawValue)
+    }
+    
+    
+    
+    func testAdditionCompoundAssignment()
+    {
+        var result: ByteCount = .bytes(100)
+        
+        result += .bytes(50)
+        
+        XCTAssertEqual(150, result.rawValue)
+    }
+    
+    
+    
+    func testSubtractionCompoundAssignment()
+    {
+        var result: ByteCount = .bytes(100)
+        
+        result -= .bytes(30)
+        
+        XCTAssertEqual(70, result.rawValue)
+    }
+    
+    
+    
+    func testUnaryPlus()
+    {
+        let result: ByteCount = .bytes(50)
+        
+        XCTAssertEqual(50, (+result).rawValue)
+    }
 }
