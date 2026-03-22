@@ -17,8 +17,8 @@ import TestKitCore
 /// The XCTestKit failure context is used since tests are run with XCTest.
 internal func TKStateful<C>(
     _ message   : @autoclosure () -> String                     = "",
-    model       : () -> C.Model,
-    system      : () -> C.System,
+    model       : () async -> C.Model,
+    system      : () async -> C.System,
     command     : C.Type,
     fileID      : StaticString                                  = #fileID,
     file        : StaticString                                  = #filePath,

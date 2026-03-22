@@ -36,8 +36,8 @@ import TestKitCore
 ///   command.
 public func STKStateful<C>(
     _ message   : @autoclosure () -> String                     = "",
-    model       : () -> C.Model,
-    system      : () -> C.System,
+    model       : () async -> C.Model,
+    system      : () async -> C.System,
     command     : C.Type,
     fileID      : StaticString                                  = #fileID,
     file        : StaticString                                  = #filePath,
