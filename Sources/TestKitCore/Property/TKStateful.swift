@@ -9,8 +9,8 @@
 
 package func TKStateful<C>(
     _ message   : () -> String,
-    model       : () -> C.Model,
-    system      : () -> C.System,
+    model       : () async -> C.Model,
+    system      : () async -> C.System,
     command     : C.Type,
     fileID      : StaticString,
     file        : StaticString,
