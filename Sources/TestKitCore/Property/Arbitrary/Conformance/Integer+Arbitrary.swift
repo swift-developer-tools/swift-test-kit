@@ -515,7 +515,7 @@ extension FixedWidthInteger
     /// Shrinks the value toward zero or the nearest bound by repeatedly
     /// halving the distance.
     ///
-    /// Shrink candidates converage toward zero if zero is within the range,
+    /// Shrink candidates converge toward zero if zero is within the range,
     /// otherwise toward the nearest bound.
     ///
     /// - Parameter range: The range in which to generate integers.

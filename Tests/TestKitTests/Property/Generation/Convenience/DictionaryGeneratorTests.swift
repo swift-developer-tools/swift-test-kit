@@ -144,7 +144,7 @@ internal final class DictionaryGeneratorTests: TestKitCase
     
     
     
-    func testExactCountShrinkElementsConverageTowardZero()
+    func testExactCountShrinkElementsConvergeTowardZero()
     {
         let generator: Generator<[Int : Int]> = .dictionary(
             keys:       .integer(in: 0...1000),
