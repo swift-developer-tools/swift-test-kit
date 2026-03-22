@@ -14,7 +14,8 @@ extension Int: Arbitrary
     /// Generates an arbitrary value using the given generation context.
     /// - Parameter context: The generation context.
     /// - Returns: An arbitrary integer in the range
-    /// `-context.size...context.size`.
+    /// `-context.size...context.size`. Occasionally generates special values
+    /// (`0`, `±1`, `.min`, `.max`).
     public static func arbitrary(
         using context: GenerationContext
     ) -> Int
@@ -62,7 +63,8 @@ extension Int8: Arbitrary
     /// Generates an arbitrary value using the given generation context.
     /// - Parameter context: The generation context.
     /// - Returns: An arbitrary integer in the range `-bound...bound`, where
-    /// `bound` is the lesser of `context.size` and `Int8.max`.
+    /// `bound` is the lesser of `context.size` and `Int8.max`.  Occasionally
+    /// generates special values (`0`, `±1`, `.min`, `.max`).
     public static func arbitrary(
         using context: GenerationContext
     ) -> Int8
@@ -112,7 +114,8 @@ extension Int16: Arbitrary
     /// Generates an arbitrary value using the given generation context.
     /// - Parameter context: The generation context.
     /// - Returns: An arbitrary integer in the range `-bound...bound`, where
-    /// `bound` is the lesser of `context.size` and `Int16.max`.
+    /// `bound` is the lesser of `context.size` and `Int16.max`. Occasionally
+    /// generates special values (`0`, `±1`, `.min`, `.max`).
     public static func arbitrary(
         using context: GenerationContext
     ) -> Int16
@@ -162,7 +165,8 @@ extension Int32: Arbitrary
     /// Generates an arbitrary value using the given generation context.
     /// - Parameter context: The generation context.
     /// - Returns: An arbitrary integer in the range `-bound...bound`, where
-    /// `bound` is the lesser of `context.size` and `Int32.max`.
+    /// `bound` is the lesser of `context.size` and `Int32.max`. Occasionally
+    /// generates special values (`0`, `±1`, `.min`, `.max`).
     public static func arbitrary(
         using context: GenerationContext
     ) -> Int32
@@ -212,7 +216,8 @@ extension Int64: Arbitrary
     /// Generates an arbitrary value using the given generation context.
     /// - Parameter context: The generation context.
     /// - Returns: An arbitrary integer in the range
-    /// `-context.size...context.size`.
+    /// `-context.size...context.size`. Occasionally generates special values
+    /// (`0`, `±1`, `.min`, `.max`).
     public static func arbitrary(
         using context: GenerationContext
     ) -> Int64
@@ -260,6 +265,7 @@ extension UInt: Arbitrary
     /// Generates an arbitrary value using the given generation context.
     /// - Parameter context: The generation context.
     /// - Returns: An arbitrary integer in the range `0...context.size`.
+    /// Occasionally generates special values (`0`, `1`, `.max`).
     public static func arbitrary(
         using context: GenerationContext
     ) -> UInt
@@ -307,7 +313,8 @@ extension UInt8: Arbitrary
     /// Generates an arbitrary value using the given generation context.
     /// - Parameter context: The generation context.
     /// - Returns: An arbitrary integer in the range `0...bound`, where
-    /// `bound` is the lesser of `context.size` and `UInt8.max`.
+    /// `bound` is the lesser of `context.size` and `UInt8.max`. Occasionally
+    /// generates special values (`0`, `1`, `.max`).
     public static func arbitrary(
         using context: GenerationContext
     ) -> UInt8
@@ -357,7 +364,8 @@ extension UInt16: Arbitrary
     /// Generates an arbitrary value using the given generation context.
     /// - Parameter context: The generation context.
     /// - Returns: An arbitrary integer in the range `0...bound`, where
-    /// `bound` is the lesser of `context.size` and `UInt16.max`.
+    /// `bound` is the lesser of `context.size` and `UInt16.max`. Occasionally
+    /// generates special values (`0`, `1`, `.max`).
     public static func arbitrary(
         using context: GenerationContext
     ) -> UInt16
@@ -407,7 +415,8 @@ extension UInt32: Arbitrary
     /// Generates an arbitrary value using the given generation context.
     /// - Parameter context: The generation context.
     /// - Returns: An arbitrary integer in the range `0...bound`, where
-    /// `bound` is the lesser of `context.size` and `UInt32.max`.
+    /// `bound` is the lesser of `context.size` and `UInt32.max`. Occasionally
+    /// generates special values (`0`, `1`, `.max`).
     public static func arbitrary(
         using context: GenerationContext
     ) -> UInt32
@@ -457,7 +466,8 @@ extension UInt64: Arbitrary
     /// Generates an arbitrary value using the given generation context.
     /// - Parameter context: The generation context.
     /// - Returns: An arbitrary integer in the range
-    /// `-context.size...context.size`.
+    /// `-context.size...context.size`. Occasionally generates special values
+    /// (`0`, `1`, `.max`).
     public static func arbitrary(
         using context: GenerationContext
     ) -> UInt64
