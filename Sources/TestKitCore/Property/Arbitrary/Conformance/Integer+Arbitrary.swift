@@ -14,11 +14,17 @@ extension Int: Arbitrary
     /// Generates an arbitrary value using the given generation context.
     /// - Parameter context: The generation context.
     /// - Returns: An arbitrary integer in the range
-    /// `-context.size...context.size`.
+    /// `-context.size...context.size`. Occasionally generates special values
+    /// (`0`, `±1`, `.min`, `.max`).
     public static func arbitrary(
         using context: GenerationContext
     ) -> Int
     {
+        if let special: Int = specialValue(using: context)
+        {
+            return special
+        }
+        
         return context.random(in: -context.size...context.size)
     }
     
@@ -57,11 +63,17 @@ extension Int8: Arbitrary
     /// Generates an arbitrary value using the given generation context.
     /// - Parameter context: The generation context.
     /// - Returns: An arbitrary integer in the range `-bound...bound`, where
-    /// `bound` is the lesser of `context.size` and `Int8.max`.
+    /// `bound` is the lesser of `context.size` and `Int8.max`.  Occasionally
+    /// generates special values (`0`, `±1`, `.min`, `.max`).
     public static func arbitrary(
         using context: GenerationContext
     ) -> Int8
     {
+        if let special: Int8 = specialValue(using: context)
+        {
+            return special
+        }
+        
         let bound: Int = Swift.min(context.size, Int(Int8.max))
         
         return Int8(context.random(in: -bound...bound))
@@ -102,11 +114,17 @@ extension Int16: Arbitrary
     /// Generates an arbitrary value using the given generation context.
     /// - Parameter context: The generation context.
     /// - Returns: An arbitrary integer in the range `-bound...bound`, where
-    /// `bound` is the lesser of `context.size` and `Int16.max`.
+    /// `bound` is the lesser of `context.size` and `Int16.max`. Occasionally
+    /// generates special values (`0`, `±1`, `.min`, `.max`).
     public static func arbitrary(
         using context: GenerationContext
     ) -> Int16
     {
+        if let special: Int16 = specialValue(using: context)
+        {
+            return special
+        }
+        
         let bound: Int = Swift.min(context.size, Int(Int16.max))
         
         return Int16(context.random(in: -bound...bound))
@@ -147,11 +165,17 @@ extension Int32: Arbitrary
     /// Generates an arbitrary value using the given generation context.
     /// - Parameter context: The generation context.
     /// - Returns: An arbitrary integer in the range `-bound...bound`, where
-    /// `bound` is the lesser of `context.size` and `Int32.max`.
+    /// `bound` is the lesser of `context.size` and `Int32.max`. Occasionally
+    /// generates special values (`0`, `±1`, `.min`, `.max`).
     public static func arbitrary(
         using context: GenerationContext
     ) -> Int32
     {
+        if let special: Int32 = specialValue(using: context)
+        {
+            return special
+        }
+        
         let bound: Int = Swift.min(context.size, Int(Int32.max))
         
         return Int32(context.random(in: -bound...bound))
@@ -192,11 +216,17 @@ extension Int64: Arbitrary
     /// Generates an arbitrary value using the given generation context.
     /// - Parameter context: The generation context.
     /// - Returns: An arbitrary integer in the range
-    /// `-context.size...context.size`.
+    /// `-context.size...context.size`. Occasionally generates special values
+    /// (`0`, `±1`, `.min`, `.max`).
     public static func arbitrary(
         using context: GenerationContext
     ) -> Int64
     {
+        if let special: Int64 = specialValue(using: context)
+        {
+            return special
+        }
+        
         return Int64(context.random(in: -context.size...context.size))
     }
     
@@ -235,10 +265,16 @@ extension UInt: Arbitrary
     /// Generates an arbitrary value using the given generation context.
     /// - Parameter context: The generation context.
     /// - Returns: An arbitrary integer in the range `0...context.size`.
+    /// Occasionally generates special values (`0`, `1`, `.max`).
     public static func arbitrary(
         using context: GenerationContext
     ) -> UInt
     {
+        if let special: UInt = specialValue(using: context)
+        {
+            return special
+        }
+        
         return UInt(context.random(in: 0...context.size))
     }
     
@@ -277,11 +313,17 @@ extension UInt8: Arbitrary
     /// Generates an arbitrary value using the given generation context.
     /// - Parameter context: The generation context.
     /// - Returns: An arbitrary integer in the range `0...bound`, where
-    /// `bound` is the lesser of `context.size` and `UInt8.max`.
+    /// `bound` is the lesser of `context.size` and `UInt8.max`. Occasionally
+    /// generates special values (`0`, `1`, `.max`).
     public static func arbitrary(
         using context: GenerationContext
     ) -> UInt8
     {
+        if let special: UInt8 = specialValue(using: context)
+        {
+            return special
+        }
+        
         let bound: Int = Swift.min(context.size, Int(UInt8.max))
         
         return UInt8(context.random(in: 0...bound))
@@ -322,11 +364,17 @@ extension UInt16: Arbitrary
     /// Generates an arbitrary value using the given generation context.
     /// - Parameter context: The generation context.
     /// - Returns: An arbitrary integer in the range `0...bound`, where
-    /// `bound` is the lesser of `context.size` and `UInt16.max`.
+    /// `bound` is the lesser of `context.size` and `UInt16.max`. Occasionally
+    /// generates special values (`0`, `1`, `.max`).
     public static func arbitrary(
         using context: GenerationContext
     ) -> UInt16
     {
+        if let special: UInt16 = specialValue(using: context)
+        {
+            return special
+        }
+        
         let bound: Int = Swift.min(context.size, Int(UInt16.max))
         
         return UInt16(context.random(in: 0...bound))
@@ -367,11 +415,17 @@ extension UInt32: Arbitrary
     /// Generates an arbitrary value using the given generation context.
     /// - Parameter context: The generation context.
     /// - Returns: An arbitrary integer in the range `0...bound`, where
-    /// `bound` is the lesser of `context.size` and `UInt32.max`.
+    /// `bound` is the lesser of `context.size` and `UInt32.max`. Occasionally
+    /// generates special values (`0`, `1`, `.max`).
     public static func arbitrary(
         using context: GenerationContext
     ) -> UInt32
     {
+        if let special: UInt32 = specialValue(using: context)
+        {
+            return special
+        }
+        
         let bound: Int = Swift.min(context.size, Int(UInt32.max))
         
         return UInt32(context.random(in: 0...bound))
@@ -412,11 +466,17 @@ extension UInt64: Arbitrary
     /// Generates an arbitrary value using the given generation context.
     /// - Parameter context: The generation context.
     /// - Returns: An arbitrary integer in the range
-    /// `-context.size...context.size`.
+    /// `-context.size...context.size`. Occasionally generates special values
+    /// (`0`, `1`, `.max`).
     public static func arbitrary(
         using context: GenerationContext
     ) -> UInt64
     {
+        if let special: UInt64 = specialValue(using: context)
+        {
+            return special
+        }
+        
         return UInt64(context.random(in: 0...context.size))
     }
     
@@ -455,7 +515,7 @@ extension FixedWidthInteger
     /// Shrinks the value toward zero or the nearest bound by repeatedly
     /// halving the distance.
     ///
-    /// Shrink candidates converage toward zero if zero is within the range,
+    /// Shrink candidates converge toward zero if zero is within the range,
     /// otherwise toward the nearest bound.
     ///
     /// - Parameter range: The range in which to generate integers.
@@ -526,6 +586,36 @@ extension FixedWidthInteger
         }
         
         return candidates
+    }
+    
+    
+    
+    /// Special values to occasionally generate.
+    internal static var specialValues: [Self]
+    {
+        if isSigned
+        {
+            return [0, 1, -1, .min, .max]
+        }
+        
+        return [0, 1, .max]
+    }
+    
+    
+    
+    /// Generates a special value 5% of the time.
+    /// - Parameter context: The generation context.
+    /// - Returns: A special value or `nil`.
+    internal static func specialValue(
+        using context: GenerationContext
+    ) -> Self?
+    {
+        if context.random(in: 1...20) == 1
+        {
+            return context.randomElement(of: specialValues) ?? 0
+        }
+        
+        return nil
     }
     
     

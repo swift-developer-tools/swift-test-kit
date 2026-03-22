@@ -81,9 +81,11 @@ internal final class OptionalArbitraryTests: TestKitCase
     
     func testArbitraryNonNilValuesRespectSizeBounds()
     {
-        let size: Int = 10
+        var base    : Int   = 0
+        var count   : Int   = 0
+        let size    : Int   = 10
         
-        for _ in 0..<1000
+        for _ in 0..<10_000
         {
             let value = Optional<Int>.arbitrary(using: .randomSeed(size: size))
             
@@ -93,24 +95,47 @@ internal final class OptionalArbitraryTests: TestKitCase
                 continue
             }
             
-            XCTAssertGreaterThanOrEqual(unwrapped, -size)
-            XCTAssertLessThanOrEqual(unwrapped, size)
+            base += 1
+            
+            if
+                unwrapped >= -size,
+                unwrapped <= size
+            {
+                count += 1
+            }
         }
+        
+        /// 5% chance of special values.
+        XCTAssertGreaterThan(count, Int(Double(base) * 0.95 * 0.85))
     }
     
     
     
     func testArbitrarySizeZeroProducesZeroOrNil()
     {
-        for _ in 0..<1000
+        var base    : Int   = 0
+        var count   : Int   = 0
+        
+        for _ in 0..<10_000
         {
             let value = Optional<Int>.arbitrary(using: .randomZeroSize)
             
-            if let unwrapped: Int = value
+            guard let unwrapped: Int = value
+            else
             {
-                XCTAssertEqual(unwrapped, 0)
+                continue
+            }
+            
+            base += 1
+            
+            if unwrapped == 0
+            {
+                count += 1
             }
         }
+        
+        /// 5% chance of special values.
+        XCTAssertGreaterThan(count, Int(Double(base) * 0.95 * 0.85))
     }
     
     

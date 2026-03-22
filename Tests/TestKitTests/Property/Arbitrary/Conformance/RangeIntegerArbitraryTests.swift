@@ -612,13 +612,23 @@ extension RangeIntegerArbitraryTests
     ) where R : Arbitrary & ArbitraryRange & Equatable,
             R.Bound : Arbitrary & FixedWidthInteger
     {
-        for _ in 0..<1000
+        let iterations  : Int   = 10_000
+        var count       : Int   = 0
+        
+        for _ in 0..<iterations
         {
             let range = R.arbitrary(using: .randomZeroSize)
             
-            XCTAssertEqual(range.lowerBound, 0)
-            XCTAssertEqual(range.upperBound, 0)
+            if
+                range.lowerBound == 0,
+                range.upperBound == 0
+            {
+                count += 1
+            }
         }
+        
+        /// 5% chance of special values for each bound.
+        XCTAssertGreaterThan(count, Int(Double(iterations) * 0.90 * 0.85))
     }
     
     
@@ -631,24 +641,31 @@ extension RangeIntegerArbitraryTests
     ) where R : Arbitrary & ArbitraryRange & Equatable,
             R.Bound : Arbitrary & FixedWidthInteger
     {
-        let size    : Int       = 10
-        let bound   : R.Bound   = R.Bound(clamping: size)
+        let iterations  : Int       = 10_000
+        var count       : Int       = 0
+        let size        : Int       = 10
+        let bound       : R.Bound   = R.Bound(clamping: size)
         
-        for _ in 0..<1000
+        for _ in 0..<iterations
         {
             let range = R.arbitrary(using: .randomSeed(size: size))
             
-            if R.Bound.isSigned
-            {
-                XCTAssertGreaterThanOrEqual(range.lowerBound, bound * -1)
-            }
-            else
-            {
-                XCTAssertGreaterThanOrEqual(range.lowerBound, 0)
-            }
+            let lowerInBounds: Bool = R.Bound.isSigned
+                ? range.lowerBound >= bound * -1
+                : range.lowerBound >= 0
             
-            XCTAssertLessThanOrEqual(range.upperBound, bound)
+            let upperInBounds: Bool = range.upperBound <= bound
+            
+            if
+                lowerInBounds,
+                upperInBounds
+            {
+                count += 1
+            }
         }
+        
+        /// 5% chance of special values for each bound.
+        XCTAssertGreaterThan(count, Int(Double(iterations) * 0.90 * 0.85))
     }
     
     
@@ -739,13 +756,23 @@ extension RangeIntegerArbitraryTests
         
         let upperBound: R.Bound = R.Bound(clamping: typeMax)
         
-        for _ in 0..<1000
+        let iterations  : Int   = 10_000
+        var count       : Int   = 0
+        
+        for _ in 0..<iterations
         {
             let range = R.arbitrary(using: .randomSeed(size: typeMax * 2))
             
-            XCTAssertGreaterThanOrEqual(range.lowerBound, lowerBound)
-            XCTAssertLessThanOrEqual(range.upperBound, upperBound)
+            if
+                range.lowerBound >= lowerBound,
+                range.upperBound <= upperBound
+            {
+                count += 1
+            }
         }
+        
+        /// 5% chance of special values for each bound.
+        XCTAssertGreaterThan(count, Int(Double(iterations) * 0.90 * 0.85))
     }
     
     

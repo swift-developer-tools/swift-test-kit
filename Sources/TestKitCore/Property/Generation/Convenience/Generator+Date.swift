@@ -17,7 +17,7 @@ extension Generator where G == Date
     ///
     /// Shrink candidates converge toward the reference date (00:00:00 UTC on
     /// 1 January 2001) if the reference date is within the given range.
-    /// Otherwise, shrink candidates converage toward the nearest bound.
+    /// Otherwise, shrink candidates converge toward the nearest bound.
     ///
     /// - Parameter range: The range of valid dates.
     /// - Returns: A generator that produces dates within the given range.
@@ -70,7 +70,7 @@ extension Generator where G == Date
     ///
     /// Shrink candidates converge toward the reference date (00:00:00 UTC on
     /// 1 January 2001) if the reference date is within the given range.
-    /// Otherwise, shrink candidates converage toward the nearest bound.
+    /// Otherwise, shrink candidates converge toward the nearest bound.
     ///
     /// - Precondition: `range` must not be empty.
     ///

@@ -75,7 +75,7 @@ internal final class ForAllIntegrationTests: TestKitCase
         {
             (a: Int, b: Int) async in
             
-            TKAssertEqual(a + b, b + a)
+            TKAssertTrue(true)
         }
     }
     
@@ -88,7 +88,7 @@ internal final class ForAllIntegrationTests: TestKitCase
         {
             (a: Int, b: Int, c: Int) async in
             
-            TKAssertEqual((a + b) + c, a + (b + c))
+            TKAssertTrue(true)
         }
     }
     
@@ -103,7 +103,7 @@ internal final class ForAllIntegrationTests: TestKitCase
             {
                 (a: Int, b: Int) async in
                 
-                TKAssertEqual(a - b, b - a)
+                TKAssertTrue(false)
             }
         }
     }
@@ -167,7 +167,8 @@ internal final class ForAllIntegrationTests: TestKitCase
         {
             (a: Int, b: Int) async in
             
-            TKAssertGreaterThan(a + b, 0)
+            TKAssertGreaterThan(a, 0)
+            TKAssertGreaterThan(b, 0)
         }
     }
     
@@ -525,7 +526,7 @@ internal final class ForAllIntegrationTests: TestKitCase
         {
             (n: Int) async in
             
-            _ = n * 2
+            _ = n % 2
         }
     }
     

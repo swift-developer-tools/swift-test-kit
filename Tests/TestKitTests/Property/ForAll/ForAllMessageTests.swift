@@ -41,7 +41,7 @@ internal final class ForAllMessageTests: TestKitCase
     
     
     @Reasync
-    func testArbitraryMessageEvalOnceOnConverageNotMet() async
+    func testArbitraryMessageEvalOnceOnConvergeNotMet() async
     {
         await assertMessageEvalOnceOnCoverageNotMet(.arbitrary)
     }
@@ -65,7 +65,7 @@ internal final class ForAllMessageTests: TestKitCase
     
     
     @Reasync
-    func testGeneratorMessageEvalOnceOnConverageNotMet() async
+    func testGeneratorMessageEvalOnceOnConvergeNotMet() async
     {
         await assertMessageEvalOnceOnCoverageNotMet(.generator)
     }
@@ -97,7 +97,7 @@ internal final class ForAllMessageTests: TestKitCase
     
     
     @Reasync
-    func testPreconditionMessageEvalOnceOnConverageNotMet() async
+    func testPreconditionMessageEvalOnceOnConvergeNotMet() async
     {
         await assertMessageEvalOnceOnCoverageNotMet(.precondition)
     }
@@ -129,7 +129,7 @@ internal final class ForAllMessageTests: TestKitCase
     
     
     @Reasync
-    func testPreconditionGeneratorMessageEvalOnceOnConverageNotMet() async
+    func testPreconditionGeneratorMessageEvalOnceOnConvergeNotMet() async
     {
         await assertMessageEvalOnceOnCoverageNotMet(.preconditionGenerator)
     }

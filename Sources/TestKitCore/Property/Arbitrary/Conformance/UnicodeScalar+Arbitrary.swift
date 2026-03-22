@@ -13,11 +13,17 @@ extension Unicode.Scalar: Arbitrary
     /// - Parameter context: The generation context.
     /// - Returns: A random ASCII printable scalar (`U+0020` - `U007E`), with
     /// increasing probability of Unicode scalars at higher values of
-    /// `context.size`.
+    /// `context.size`. Occasionally generates special values
+    /// (`\0`, `\n`, `\r`, `\t`).
     public static func arbitrary(
         using context: GenerationContext
     ) -> Unicode.Scalar
     {
+        if let special: Unicode.Scalar = specialValue(using: context)
+        {
+            return special
+        }
+        
         if let scalar: Unicode.Scalar = arbitraryScalar(using: context)
         {
             return scalar
@@ -138,6 +144,31 @@ extension Unicode.Scalar: Arbitrary
         asciiUppercaseRange,
         asciiDigitRange
     ]
+    
+    
+    
+    /// Special values to occasionally generate.
+    internal static var specialValues: [Self]
+    {
+        return ["\0", "\n", "\r", "\t"]
+    }
+    
+    
+    
+    /// Generates a special value 5% of the time.
+    /// - Parameter context: The generation context.
+    /// - Returns: A special value or `nil`.
+    internal static func specialValue(
+        using context: GenerationContext
+    ) -> Self?
+    {
+        if context.random(in: 1...20) == 1
+        {
+            return context.randomElement(of: specialValues) ?? "\0"
+        }
+        
+        return nil
+    }
     
     
     

@@ -7,7 +7,7 @@
 //
 //===----------------------------------------------------------------------===//
 
-import TestKitCore
+@testable import TestKitCore
 import XCTest
 
 
@@ -319,6 +319,7 @@ extension IntegerArbitraryTests
         validateSizeBounds(of: type)
         validateSignedValueProduction(of: type)
         validateValueBounds(of: type)
+        validateSpecialValueProduction(of: type)
     }
     
     
@@ -329,10 +330,21 @@ extension IntegerArbitraryTests
         of type: T.Type
     ) where T : Arbitrary & FixedWidthInteger
     {
-        for _ in 0..<1000
+        let iterations  : Int   = 10_000
+        var count       : Int   = 0
+        
+        for _ in 0..<iterations
         {
-            XCTAssertEqual(T.arbitrary(using: .randomZeroSize), 0)
+            let value = T.arbitrary(using: .randomZeroSize)
+            
+            if value == 0
+            {
+                count += 1
+            }
         }
+        
+        /// 5% chance of special values.
+        XCTAssertGreaterThan(count, Int(Double(iterations) * 0.95 * 0.85))
     }
     
     
@@ -344,13 +356,29 @@ extension IntegerArbitraryTests
         of type: T.Type
     ) where T : Arbitrary & FixedWidthInteger
     {
-        for _ in 0..<1000
+        let iterations  : Int   = 10_000
+        var count       : Int   = 0
+        
+        for _ in 0..<iterations
         {
             let value = T.arbitrary(using: .randomSeed(size: 10))
             
-            XCTAssertGreaterThanOrEqual(value, T.isSigned ? -10 : 0)
-            XCTAssertLessThanOrEqual(value, 10)
+            let lowerInBounds: Bool = T.isSigned
+                ? value >= -10
+                : value >= 0
+            
+            let upperInBounds: Bool = value <= 10
+            
+            if
+                lowerInBounds,
+                upperInBounds
+            {
+                count += 1
+            }
         }
+        
+        /// 5% chance of special values.
+        XCTAssertGreaterThan(count, Int(Double(iterations) * 0.95 * 0.85))
     }
     
     
@@ -418,14 +446,76 @@ extension IntegerArbitraryTests
         
         let lowerBound  : T     = T.isSigned ? T(clamping: -typeMax) : 0
         let upperBound  : T     = T(clamping: typeMax)
+        let iterations  : Int   = 10_000
+        var count       : Int   = 0
         
-        for _ in 0..<1000
+        for _ in 0..<iterations
         {
             let value = T.arbitrary(using: .randomSeed(size: typeMax * 2))
             
-            XCTAssertGreaterThanOrEqual(value, lowerBound)
-            XCTAssertLessThanOrEqual(value, upperBound)
+            if
+                value >= lowerBound,
+                value <= upperBound
+            {
+                count += 1
+            }
         }
+        
+        /// 5% chance of special values.
+        XCTAssertGreaterThan(count, Int(Double(iterations) * 0.95 * 0.85))
+    }
+    
+    
+    
+    /// Validates that special values are generated over many iterations.
+    /// - Parameter type: The type to evaluate.
+    private func validateSpecialValueProduction<T>(
+        of type: T.Type
+    ) where T : Arbitrary & FixedWidthInteger
+    {
+        var hasZero : Bool = false
+        var hasOne  : Bool  = false
+        var hasMin  : Bool  = false
+        var hasMax  : Bool  = false
+        
+        for _ in 0..<1000
+        {
+            let value = T.arbitrary(using: .random)
+            
+            if value == 0
+            {
+                hasZero = true
+            }
+            
+            if value == 1
+            {
+                hasOne = true
+            }
+            
+            if value == .min
+            {
+                hasMin = true
+            }
+            
+            if value == .max
+            {
+                hasMax = true
+            }
+            
+            if
+                hasZero,
+                hasOne,
+                hasMin,
+                hasMax
+            {
+                break
+            }
+        }
+        
+        XCTAssertTrue(hasZero)
+        XCTAssertTrue(hasOne)
+        XCTAssertTrue(hasMin)
+        XCTAssertTrue(hasMax)
     }
     
     
@@ -441,7 +531,7 @@ extension IntegerArbitraryTests
         validateZeroOneShrinking(of: type)
         validateMinValueShrinking(of: type)
         validateMaxValueShrinking(of: type)
-        
+        validateSpecialValueShrinking(of: type)
         validateShrinkCandidates(of: T(1))
         validateShrinkCandidates(of: T(50))
         
@@ -519,6 +609,29 @@ extension IntegerArbitraryTests
         XCTAssertTrue(candidates.count > 1)
         XCTAssertEqual(candidates.first, 0)
         XCTAssertEqual(candidates.last, T.max - 1)
+    }
+    
+    
+    
+    /// Validates that special values shrink correctly.
+    /// - Parameter type: The type to evaluate.
+    private func validateSpecialValueShrinking<T>(
+        of type: T.Type
+    ) where T : Arbitrary & FixedWidthInteger
+    {
+        for special in T.specialValues
+        {
+            let candidates: [T] = special.shrink()
+            
+            if special == 0
+            {
+                XCTAssertEqual(candidates, [])
+            }
+            else
+            {
+                XCTAssertEqual(candidates.first, 0)
+            }
+        }
     }
     
     

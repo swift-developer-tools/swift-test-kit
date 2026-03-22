@@ -48,19 +48,25 @@ internal final class StringArbitraryTests: TestKitCase
     
     func testCharacterGenerationSizeZeroProducesASCII()
     {
-        for _ in 0..<1000
+        let iterations  : Int   = 10_000
+        var count       : Int   = 0
+        
+        for _ in 0..<iterations
         {
             let character = Character.arbitrary(using: .randomZeroSize)
             
-            let lower   = UInt32(Unicode.Scalar.asciiPrintableRange.lowerBound)
-            let upper   = UInt32(Unicode.Scalar.asciiPrintableRange.upperBound)
-            
             let scalars: Character.UnicodeScalarView = character.unicodeScalars
             
-            XCTAssertEqual(scalars.count, 1)
-            XCTAssertGreaterThanOrEqual(scalars.first!.value, lower)
-            XCTAssertLessThanOrEqual(scalars.first!.value, upper)
+            if
+                scalars.count == 1,
+                isInExpectedRange(scalars.first!)
+            {
+                count += 1
+            }
         }
+        
+        /// 5% chance of special values.
+        XCTAssertGreaterThan(count, Int(Double(iterations) * 0.95 * 0.85))
     }
     
     
@@ -87,27 +93,42 @@ internal final class StringArbitraryTests: TestKitCase
     
     func testScalarGenerationSizeZeroProducesASCII()
     {
-        for _ in 0..<1000
+        let iterations  : Int   = 10_000
+        var count       : Int   = 0
+        
+        for _ in 0..<iterations
         {
-            let scalar  = Unicode.Scalar.arbitrary(using: .randomZeroSize)
-            let lower   = UInt32(Unicode.Scalar.asciiPrintableRange.lowerBound)
-            let upper   = UInt32(Unicode.Scalar.asciiPrintableRange.upperBound)
+            let scalar = Unicode.Scalar.arbitrary(using: .randomZeroSize)
             
-            XCTAssertGreaterThanOrEqual(scalar.value, lower)
-            XCTAssertLessThanOrEqual(scalar.value, upper)
+            if isInExpectedRange(scalar)
+            {
+                count += 1
+            }
         }
+        
+        /// 5% chance of special values.
+        XCTAssertGreaterThan(count, Int(Double(iterations) * 0.95 * 0.85))
     }
     
     
     
     func testScalarGenerationValuesInExpectedRange()
     {
-        for _ in 0..<1000
+        let iterations  : Int   = 10_000
+        var count       : Int   = 0
+        
+        for _ in 0..<iterations
         {
             let scalar = Unicode.Scalar.arbitrary(using: .random)
             
-            XCTAssertTrue(isInExpectedRange(scalar))
+            if isInExpectedRange(scalar)
+            {
+                count += 1
+            }
         }
+        
+        /// 5% chance of special values.
+        XCTAssertGreaterThan(count, Int(Double(iterations) * 0.95 * 0.85))
     }
     
     

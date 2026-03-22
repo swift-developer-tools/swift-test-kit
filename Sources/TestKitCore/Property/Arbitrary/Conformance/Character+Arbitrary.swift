@@ -24,7 +24,7 @@ extension Character: Arbitrary
     
     /// Generates candidate values that are smaller than the receiver value.
     ///
-    /// Candidates converage toward `"a"`. Multi-scalar characters (grapheme
+    /// Candidates converge toward `"a"`. Multi-scalar characters (grapheme
     /// clusters) shrink to `"a"` and the base scalar.
     ///
     /// - Returns: An array of smaller candidate values, or an empty array

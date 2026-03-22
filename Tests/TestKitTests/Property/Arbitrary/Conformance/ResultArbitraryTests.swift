@@ -78,9 +78,11 @@ internal final class ResultArbitraryTests: TestKitCase
     
     func testArbitrarySuccessValuesRespectSizeBounds()
     {
-        let size: Int = 10
+        var base    : Int   = 0
+        var count   : Int   = 0
+        let size    : Int   = 10
         
-        for _ in 0..<1000
+        for _ in 0..<10_000
         {
             let value = TestResult.arbitrary(using: .randomSeed(size: size))
             
@@ -90,18 +92,29 @@ internal final class ResultArbitraryTests: TestKitCase
                 continue
             }
             
-            XCTAssertGreaterThanOrEqual(n, -size)
-            XCTAssertLessThanOrEqual(n, size)
+            base += 1
+            
+            if
+                n >= -size,
+                n <= size
+            {
+                count += 1
+            }
         }
+        
+        /// 5% chance of special values.
+        XCTAssertGreaterThan(count, Int(Double(base) * 0.95 * 0.85))
     }
     
     
     
     func testArbitraryFailureValuesRespectSizeBounds()
     {
-        let size: Int = 10
+        var base    : Int   = 0
+        var count   : Int   = 0
+        let size    : Int   = 10
         
-        for _ in 0..<1000
+        for _ in 0..<10_000
         {
             let value = TestResult.arbitrary(using: .randomSeed(size: size))
             
@@ -111,16 +124,28 @@ internal final class ResultArbitraryTests: TestKitCase
                 continue
             }
             
-            XCTAssertGreaterThanOrEqual(error.code, -size)
-            XCTAssertLessThanOrEqual(error.code, size)
+            base += 1
+            
+            if
+                error.code >= -size,
+                error.code <= size
+            {
+                count += 1
+            }
         }
+        
+        /// 5% chance of special values.
+        XCTAssertGreaterThan(count, Int(Double(base) * 0.95 * 0.85))
     }
     
     
     
     func testArbitrarySizeZeroProducesZeroAssociatedValues()
     {
-        for _ in 0..<1000
+        let iterations  : Int   = 10_000
+        var count       : Int   = 0
+        
+        for _ in 0..<iterations
         {
             let value = TestResult.arbitrary(using: .randomZeroSize)
             
@@ -128,13 +153,22 @@ internal final class ResultArbitraryTests: TestKitCase
             {
                 case let .success(n):
                     
-                    XCTAssertEqual(n, 0)
+                    if n == 0
+                    {
+                        count += 1
+                    }
                     
                 case let .failure(error):
                     
-                    XCTAssertEqual(error.code, 0)
+                    if error.code == 0
+                    {
+                        count += 1
+                    }
             }
         }
+        
+        /// 5% chance of special values.
+        XCTAssertGreaterThan(count, Int(Double(iterations) * 0.95 * 0.85))
     }
     
     

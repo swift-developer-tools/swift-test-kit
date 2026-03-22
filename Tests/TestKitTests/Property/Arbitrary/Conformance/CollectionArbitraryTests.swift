@@ -77,12 +77,21 @@ internal final class CollectionArbitraryTests: TestKitCase
     
     func testCollectionOfOneGenerationSizeZeroProducesZeroElement()
     {
-        for _ in 0..<1000
+        let iterations  : Int   = 10_000
+        var count       : Int   = 0
+        
+        for _ in 0..<iterations
         {
             let value = CollectionOfOne<Int>.arbitrary(using: .randomZeroSize)
             
-            XCTAssertEqual(value[value.startIndex], 0)
+            if value[value.startIndex] == 0
+            {
+                count += 1
+            }
         }
+        
+        /// 5% chance of special values.
+        XCTAssertGreaterThan(count, Int(Double(iterations) * 0.95 * 0.85))
     }
     
     
