@@ -13,11 +13,16 @@ import SwiftSyntax
 
 extension ExprSyntax
 {
-    /// Whether the expression or any sub-expressions contain a `try`
-    /// expression.
-    internal var containsTry: Bool
+    /// Whether the expression or any sub-expressions contain the specified
+    /// kind of expression.
+    /// - Parameter exprKind: The kind of expression.
+    /// - Returns: Whether the expression or any sub-expressions contain the
+    /// specified kind of expression.
+    internal func contains<T>(
+        _ exprKind: T.Type
+    ) -> Bool where T : ExprSyntaxProtocol
     {
-        if self.is(TryExprSyntax.self)
+        if self.is(exprKind)
         {
             return true
         }
@@ -26,7 +31,7 @@ extension ExprSyntax
         {
             if
                 let expr = subExpr.as(ExprSyntax.self),
-                expr.containsTry
+                expr.contains(exprKind)
             {
                 return true
             }

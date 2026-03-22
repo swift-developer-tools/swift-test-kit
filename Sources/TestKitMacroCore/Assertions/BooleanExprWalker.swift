@@ -185,7 +185,7 @@ internal struct BooleanExprWalker
         message     : ExprSyntax
     ) -> ExprSyntax
     {
-        if expr.containsTry
+        if expr.contains(TryExprSyntax.self)
         {
             return """
             {
