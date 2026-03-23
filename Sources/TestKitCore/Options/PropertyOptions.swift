@@ -257,10 +257,10 @@ public struct PropertyDiagnostics: OptionSet, Equatable, Sendable
     
     /// Reports ineffective shrinking that produces no improvements.
     ///
-    /// This can help identify shrink implementations that shrink on the
-    /// incorrect axis (and therefore do not reproduce the failure), produce
-    /// candidates that are mostly filtered by a precondition, or produce the
-    /// same values repeatedly.
+    /// Ineffective shrinking may indicate shrink implementations that converge
+    /// on the incorrect axis (and therefore do not reproduce the failure),
+    /// produce candidates that are mostly filtered by a precondition, or
+    /// produce the same values repeatedly.
     ///
     /// - Note: This is reported using `OSLog`.
     public static let shrinkEffectiveness
