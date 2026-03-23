@@ -10,7 +10,7 @@
 /// A representation of memory, in bytes.
 public struct ByteCount:
     AdditiveArithmetic, Comparable, CustomStringConvertible,
-    Equatable, Hashable, Sendable
+    CustomDebugStringConvertible, Equatable, Hashable, Sendable
 {
     /// The byte count.
     public let rawValue: UInt64
@@ -267,6 +267,14 @@ public struct ByteCount:
     public var description: String
     {
         return rawValue.readableBytes
+    }
+    
+    
+    
+    /// A textual representation of this instance, suitable for debugging.
+    public var debugDescription: String
+    {
+        return "\(rawValue) (\(description))"
     }
     
     
