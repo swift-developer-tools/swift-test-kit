@@ -256,6 +256,25 @@ internal final class ByteCountTests: TestKitCase
     
     
     
+    // MARK: - Debug description
+    
+    func testDebugDescription()
+    {
+        XCTAssertEqual(
+            "1048576 (1 MB)",
+            ByteCount.megabytes(1).debugDescription
+        )
+    }
+    
+    
+    
+    func testDebugDescriptionZero()
+    {
+        XCTAssertEqual("0 (0 B)", ByteCount.zero.debugDescription)
+    }
+    
+    
+    
     // MARK: - Arithmetic
     
     func testAddition()
