@@ -9,7 +9,7 @@
 
 /// A representation of memory, in bytes.
 public struct ByteCount:
-    AdditiveArithmetic, Comparable, CustomStringConvertible,
+    AdditiveArithmetic, Codable, Comparable, CustomStringConvertible,
     CustomDebugStringConvertible, Equatable, Hashable, Sendable
 {
     /// The byte count.
