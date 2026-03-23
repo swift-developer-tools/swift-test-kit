@@ -1629,7 +1629,7 @@ internal func evaluateTKAssertAllSatisfy<C>(
     
     let failure = PredicateFailure(
         collectionCount:    elements.count,
-        kind:              .elementsFailed(iterationResult.allFailed),
+        kind:               .elementsFailed(iterationResult.allFailed),
         isOrdered:          elements.isOrdered
     )
     
@@ -2585,7 +2585,7 @@ internal func evaluateTKAssertUnique<C, K>(
 /// Evaluates the given expression.
 ///
 /// - Important: This fails the assertion if the given expression throws an
-/// error when called. This does not apply to ``AssertionKind/throwsErrow``.
+/// error when called. This does not apply to ``AssertionKind/throwsError``.
 /// In this single case, `.failure` indicates that the expresion threw an
 /// error as expected, and the assertion passed. For all other cases,
 /// `.failure`indicates that the expression unexpectedly threw an error, and
