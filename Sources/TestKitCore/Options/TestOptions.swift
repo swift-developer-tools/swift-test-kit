@@ -56,4 +56,20 @@ public struct TestOptions: Equatable, Sendable
         self.temporalOptions        = temporalOptions
         self.performanceOptions     = performanceOptions
     }
+    
+    
+    
+    /// Calls the given closure with a mutable copy of the receiver.
+    /// - Parameter modify: The closure to modify the options for testing.
+    /// - Returns: The modified options for testing.
+    public func with(
+        _ modify: (inout TestOptions) -> Void
+    ) -> TestOptions
+    {
+        var copy: TestOptions = self
+        
+        modify(&copy)
+        
+        return copy
+    }
 }
