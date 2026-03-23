@@ -43,6 +43,9 @@ inputs that maximize a numeric value. Stateful testing extends property-based
 testing to systems with mutable state, generating random command sequences and 
 verifying the system against a simplified model.
 
+All APIs accept options for configuring diffs, formatting, timeouts, and other 
+test behavior. Options can be configured globally, per-scope, or per-call.
+
 > [!TIP]
 > Property-based tests, stateful tests, temporal tests, performance tests, 
 > and atomic tests compose freely. Any evaluator may be nested inside any 
