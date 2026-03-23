@@ -256,6 +256,25 @@ internal final class ByteCountTests: TestKitCase
     
     
     
+    // MARK: - Debug description
+    
+    func testDebugDescription()
+    {
+        XCTAssertEqual(
+            "1048576 (1 MB)",
+            ByteCount.megabytes(1).debugDescription
+        )
+    }
+    
+    
+    
+    func testDebugDescriptionZero()
+    {
+        XCTAssertEqual("0 (0 B)", ByteCount.zero.debugDescription)
+    }
+    
+    
+    
     // MARK: - Arithmetic
     
     func testAddition()
@@ -366,5 +385,126 @@ internal final class ByteCountTests: TestKitCase
         let result: ByteCount = .bytes(50)
         
         XCTAssertEqual(50, (+result).rawValue)
+    }
+    
+    
+    
+    func testMultiplication()
+    {
+        let result: ByteCount = .kilobytes(3) * 4
+        
+        XCTAssertEqual(12_288, result.rawValue)
+    }
+    
+    
+    
+    func testMultiplicationCommutative()
+    {
+        let result: ByteCount = 4 * .kilobytes(3)
+        
+        XCTAssertEqual(12_288, result.rawValue)
+    }
+    
+    
+    
+    func testMultiplicationByOne()
+    {
+        let result: ByteCount = .megabytes(2) * 1
+        
+        XCTAssertEqual(.megabytes(2), result)
+    }
+    
+    
+    
+    func testMultiplicationByZero()
+    {
+        let result: ByteCount = .megabytes(2) * 0
+        
+        XCTAssertEqual(.zero, result)
+    }
+    
+    
+    
+    func testMultiplicationCompoundAssignment()
+    {
+        var result: ByteCount = .kilobytes(5)
+        
+        result *= 3
+        
+        XCTAssertEqual(15_360, result.rawValue)
+    }
+    
+    
+    
+    func testDivisionScalar()
+    {
+        let result: ByteCount = .kilobytes(4) / 2
+        
+        XCTAssertEqual(2048, result.rawValue)
+    }
+    
+    
+    
+    func testDivisionScalarByOne()
+    {
+        let result: ByteCount = .megabytes(1) / 1
+        
+        XCTAssertEqual(.megabytes(1), result)
+    }
+    
+    
+    
+    func testDivisionScalarTruncates()
+    {
+        let result: ByteCount = .bytes(7) / 2
+        
+        XCTAssertEqual(3, result.rawValue)
+    }
+    
+    
+    
+    func testDivisionScalarCompoundAssignment()
+    {
+        var result: ByteCount = .kilobytes(8)
+        
+        result /= 4
+        
+        XCTAssertEqual(2048, result.rawValue)
+    }
+    
+    
+    
+    func testDivisionRatioEqual()
+    {
+        let result: Double = ByteCount.megabytes(1) / ByteCount.megabytes(1)
+        
+        XCTAssertEqual(1, result)
+    }
+    
+    
+    
+    func testDivisionRatioWhole()
+    {
+        let result: Double = ByteCount.megabytes(4) / ByteCount.megabytes(2)
+        
+        XCTAssertEqual(2, result)
+    }
+    
+    
+    
+    func testDivisionRatioFractional()
+    {
+        let result: Double = ByteCount.kilobytes(1) / ByteCount.megabytes(1)
+        
+        XCTAssertEqual(1 / 1024, result)
+    }
+    
+    
+    
+    func testDivisionRatioZeroNumerator()
+    {
+        let result: Double = ByteCount.zero / ByteCount.megabytes(1)
+        
+        XCTAssertEqual(0, result)
     }
 }
