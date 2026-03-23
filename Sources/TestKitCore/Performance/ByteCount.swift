@@ -287,8 +287,7 @@ public struct ByteCount:
     ///   - lhs: The first value.
     ///   - rhs: The second value.
     /// - Returns: The sum of the given values.
-    public static func +
-    (
+    public static func + (
         lhs : ByteCount,
         rhs : ByteCount
     ) -> ByteCount
@@ -314,8 +313,7 @@ public struct ByteCount:
     ///   - lhs: The first value.
     ///   - rhs: The second value.
     /// - Returns: The difference of the given values.
-    public static func -
-    (
+    public static func - (
         lhs : ByteCount,
         rhs : ByteCount
     ) -> ByteCount
@@ -326,5 +324,144 @@ public struct ByteCount:
         )
         
         return ByteCount(rawValue: lhs.rawValue - rhs.rawValue)
+    }
+    
+    
+    
+    /// Computes the product of the given values.
+    ///
+    /// - Precondition: `rhs` must not be negative.
+    /// - Precondition: The product of the given values must not overflow.
+    ///
+    /// - Parameters:
+    ///   - lhs: The byte count.
+    ///   - rhs: The scalar.
+    /// - Returns: The product of the given values.
+    public static func * (
+        lhs : ByteCount,
+        rhs : Int
+    ) -> ByteCount
+    {
+        precondition(
+            rhs >= 0,
+            "rhs must not be negative"
+        )
+        
+        let (result, overflow): (UInt64, Bool)
+            = lhs.rawValue.multipliedReportingOverflow(by: UInt64(rhs))
+        
+        precondition(
+            !overflow,
+            "ByteCount overflow"
+        )
+        
+        return ByteCount(rawValue: result)
+    }
+    
+    
+    
+    /// Computes the product of the given values.
+    ///
+    /// - Precondition: `lhs` must not be negative.
+    /// - Precondition: The product of the given values must not overflow.
+    ///
+    /// - Parameters:
+    ///   - lhs: The scalar.
+    ///   - rhs: The byte count.
+    /// - Returns: The product of the given values.
+    public static func * (
+        lhs : Int,
+        rhs : ByteCount
+    ) -> ByteCount
+    {
+        precondition(
+            lhs >= 0,
+            "lhs must not be negative"
+        )
+        
+        return rhs * lhs
+    }
+    
+    
+    
+    /// Computes the product of the given values and assigns the result to
+    /// the given byte count.
+    ///
+    /// - Precondition: `rhs` must not be negative.
+    /// - Precondition: The product of the given values must not overflow.
+    ///
+    /// - Parameters:
+    ///   - lhs: The byte count.
+    ///   - rhs: The scalar.
+    public static func *= (
+        lhs : inout ByteCount,
+        rhs : Int
+    )
+    {
+        lhs = lhs * rhs
+    }
+    
+    
+    
+    /// Computes the quotient of the given values.
+    ///
+    /// - Precondition: `rhs` must be positive.
+    ///
+    /// - Parameters:
+    ///   - lhs: The numerator.
+    ///   - rhs: The denominator.
+    /// - Returns: The quotient of the given values.
+    public static func / (
+        lhs : ByteCount,
+        rhs : Int
+    ) -> ByteCount
+    {
+        precondition(
+            rhs > 0,
+            "ByteCount division by zero or negative value"
+        )
+        
+        return ByteCount(rawValue: lhs.rawValue / UInt64(rhs))
+    }
+    
+    
+    
+    /// Computes the quotient of the given values.
+    ///
+    /// - Precondition: `rhs` must be positive.
+    ///
+    /// - Parameters:
+    ///   - lhs: The numerator.
+    ///   - rhs: The denominator.
+    /// - Returns: The quotient of the given values.
+    public static func / (
+        lhs : ByteCount,
+        rhs : ByteCount
+    ) -> Double
+    {
+        precondition(
+            rhs.rawValue > 0,
+            "ByteCount division by zero"
+        )
+        
+        return Double(lhs.rawValue) / Double(rhs.rawValue)
+    }
+    
+    
+    
+    /// Computes the quotient of the given values and assigns the result to
+    /// the given byte count.
+    ///
+    /// - Precondition: `rhs` must be positive.
+    ///
+    /// - Parameters:
+    ///   - lhs: The byte count.
+    ///   - rhs: The scalar.
+    public static func /= (
+        lhs : inout ByteCount,
+        rhs : Int
+    )
+    {
+        lhs = lhs / rhs
     }
 }
