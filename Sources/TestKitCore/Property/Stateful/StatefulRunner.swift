@@ -58,7 +58,7 @@ internal struct StatefulRunner<C> where C : Stateful
         let deadline: ContinuousClock.Instant?
             = opts.timeout.map { ContinuousClock.now.advanced(by: $0) }
         
-        let verbose     : Bool  = opts.diagnostics.contains(.verbose)
+        let trace       : Bool  = opts.diagnostics.contains(.trace)
         let slowness    : Bool  = opts.diagnostics.contains(.slowness)
         
         var iterationDurations: [(iteration: Int, duration: Duration)] = []
@@ -97,7 +97,7 @@ internal struct StatefulRunner<C> where C : Stateful
                 context:    context
             )
             
-            if verbose
+            if trace
             {
                 let descriptions: String = commands
                     .map { String(describing: $0) }
@@ -182,7 +182,7 @@ internal struct StatefulRunner<C> where C : Stateful
                     
                     discarded += 1
                     
-                    if verbose
+                    if trace
                     {
                         logger.info("[\(iteration)/\(iterations)] discarded")
                     }
@@ -223,7 +223,7 @@ internal struct StatefulRunner<C> where C : Stateful
                     
                     discarded += 1
                     
-                    if verbose
+                    if trace
                     {
                         logger.info("[\(iteration)/\(iterations)] invalid")
                     }
@@ -671,7 +671,7 @@ internal struct StatefulRunner<C> where C : Stateful
             deadline:   deadline
         )
         
-        if options.propertyOptions.diagnostics.contains(.shrinking)
+        if options.propertyOptions.diagnostics.contains(.shrinkEffectiveness)
         {
             reportShrinkEffectiveness(shrunken)
         }
@@ -765,8 +765,11 @@ internal struct StatefulRunner<C> where C : Stateful
             return false
         }
         
-        let verbose: Bool = options.propertyOptions.diagnostics
-            .contains(.verbose)
+        let trace: Bool = options.propertyOptions.diagnostics
+            .contains(.trace)
+        
+        let shrinkPath: Bool = options.propertyOptions.diagnostics
+            .contains(.shrinkPath)
         
         
         
@@ -808,7 +811,9 @@ internal struct StatefulRunner<C> where C : Stateful
                         removalSteps        += 1
                         removalEvaluated    += 1
                         
-                        if verbose
+                        if
+                            trace
+                            || shrinkPath
                         {
                             let message: String
                                 = "Removal shrink step \(steps):"
@@ -903,7 +908,9 @@ internal struct StatefulRunner<C> where C : Stateful
                         argSteps        += 1
                         argEvaluated    += 1
                         
-                        if verbose
+                        if
+                            trace
+                            || shrinkPath
                         {
                             let message: String
                                 = "Argument shrink step \(steps):"
@@ -942,7 +949,7 @@ internal struct StatefulRunner<C> where C : Stateful
         
         
         if
-            verbose,
+            (trace || shrinkPath),
             steps > 0
         {
             let message: String 
