@@ -238,7 +238,7 @@ public struct PropertyDiagnostics: OptionSet, Equatable, Sendable
     /// iteration duration. The slowness check is skipped when the total number
     /// of iterations is fewer than 10, or when the median duration is zero.
     ///
-    /// This can help identify pathological values, non-deterministic
+    /// Slow iterations may indicate pathological values, non-deterministic
     /// performance, accidentally-expensive generators, and tests which have
     /// inherent performance issues but do not exceed the overall time limit.
     ///
