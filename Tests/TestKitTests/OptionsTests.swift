@@ -137,6 +137,44 @@ internal final class OptionsTests: TestKitCase
     
     
     
+    // MARK: - with
+    
+    func testWithTestOptionsModified()
+    {
+        let options = TestOptions()
+        
+        XCTAssertTrue(options.diffOptions.enabled)
+        XCTAssertNil(options.propertyOptions.seed)
+        XCTAssertEqual(options.performanceOptions.runs, 10)
+        
+        let modified: TestOptions = options.with
+        {
+            $0.diffOptions.enabled      = false
+            $0.propertyOptions.seed     = 12345
+            $0.performanceOptions.runs  = 100
+        }
+        
+        XCTAssertTrue(options.diffOptions.enabled)
+        XCTAssertNil(options.propertyOptions.seed)
+        XCTAssertEqual(options.performanceOptions.runs, 10)
+        
+        XCTAssertFalse(modified.diffOptions.enabled)
+        XCTAssertEqual(modified.propertyOptions.seed, 12345)
+        XCTAssertEqual(modified.performanceOptions.runs, 100)
+    }
+    
+    
+    
+    func testWithTestOptionsNotModified()
+    {
+        let options     : TestOptions   = .init()
+        let modified    : TestOptions   = options.with { _ in }
+        
+        XCTAssertEqual(options, modified)
+    }
+    
+    
+    
     // MARK: - Direct assignment
     
     func testGlobalConfigAssignment()

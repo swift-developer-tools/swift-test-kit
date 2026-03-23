@@ -102,6 +102,11 @@
 /// }
 /// ```
 ///
+/// - Important: ``run(model:system:)`` and ``advance(model:)`` must advance
+/// the model identically. If they diverge, shrinking may reject valid
+/// candidates or accept invalid candidates, producing counterexamples that
+/// do not reproduce the original failure.
+///
 /// ## Shrinking
 ///
 /// When a failing command sequence is found, it is automatically shrunk in
