@@ -224,12 +224,12 @@ public struct PropertyDiagnostics: OptionSet, Equatable, Sendable
     
     
     /// Report the original counterexample before shrinking.
-    public static let original      = PropertyDiagnostics(rawValue: 1 << 0)
+    public static let original  = PropertyDiagnostics(rawValue: 1 << 0)
     
     /// Report all generated values and shrink candidates.
     ///
     /// - Note: This is reported using `OSLog`.
-    public static let trace         = PropertyDiagnostics(rawValue: 1 << 1)
+    public static let trace     = PropertyDiagnostics(rawValue: 1 << 1)
     
     /// Report individual iterations that are slower than the median iteration
     /// duration.
@@ -243,7 +243,7 @@ public struct PropertyDiagnostics: OptionSet, Equatable, Sendable
     /// inherent performance issues but do not exceed the overall time limit.
     ///
     /// - Note: This is reported using `OSLog`.
-    public static let slowness       = PropertyDiagnostics(rawValue: 1 << 2)
+    public static let slowness  = PropertyDiagnostics(rawValue: 1 << 2)
     
     /// Reports ineffective shrinking that produces no improvements.
     ///
@@ -253,7 +253,8 @@ public struct PropertyDiagnostics: OptionSet, Equatable, Sendable
     /// same values repeatedly.
     ///
     /// - Note: This is reported using `OSLog`.
-    public static let shrinking     = PropertyDiagnostics(rawValue: 1 << 3)
+    public static let shrinkEffectiveness
+        = PropertyDiagnostics(rawValue: 1 << 3)
     
     /// Report all diagnostics.
     public static let all: PropertyDiagnostics =
@@ -261,7 +262,7 @@ public struct PropertyDiagnostics: OptionSet, Equatable, Sendable
         .original,
         .trace,
         .slowness,
-        .shrinking
+        .shrinkEffectiveness
     ]
     
     

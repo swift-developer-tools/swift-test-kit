@@ -671,7 +671,7 @@ internal struct StatefulRunner<C> where C : Stateful
             deadline:   deadline
         )
         
-        if options.propertyOptions.diagnostics.contains(.shrinking)
+        if options.propertyOptions.diagnostics.contains(.shrinkEffectiveness)
         {
             reportShrinkEffectiveness(shrunken)
         }
