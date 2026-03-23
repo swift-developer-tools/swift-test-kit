@@ -765,7 +765,11 @@ internal struct StatefulRunner<C> where C : Stateful
             return false
         }
         
-        let trace: Bool = options.propertyOptions.diagnostics.contains(.trace)
+        let trace: Bool = options.propertyOptions.diagnostics
+            .contains(.trace)
+        
+        let shrinkPath: Bool = options.propertyOptions.diagnostics
+            .contains(.shrinkPath)
         
         
         
@@ -807,7 +811,9 @@ internal struct StatefulRunner<C> where C : Stateful
                         removalSteps        += 1
                         removalEvaluated    += 1
                         
-                        if trace
+                        if
+                            trace
+                            || shrinkPath
                         {
                             let message: String
                                 = "Removal shrink step \(steps):"
@@ -902,7 +908,9 @@ internal struct StatefulRunner<C> where C : Stateful
                         argSteps        += 1
                         argEvaluated    += 1
                         
-                        if trace
+                        if
+                            trace
+                            || shrinkPath
                         {
                             let message: String
                                 = "Argument shrink step \(steps):"
@@ -941,7 +949,7 @@ internal struct StatefulRunner<C> where C : Stateful
         
         
         if
-            trace,
+            (trace || shrinkPath),
             steps > 0
         {
             let message: String 

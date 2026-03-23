@@ -607,7 +607,11 @@ internal struct PropertyRunner
         var candidatesFiltered  : Int   = 0
         var candidatesPassed    : Int   = 0
         
-        let trace: Bool = options.propertyOptions.diagnostics.contains(.trace)
+        let trace : Bool = options.propertyOptions.diagnostics
+            .contains(.trace)
+        
+        let shrinkPath: Bool = options.propertyOptions.diagnostics
+            .contains(.shrinkPath)
         
         while steps < options.propertyOptions.maxShrinkSteps
         {
@@ -647,7 +651,9 @@ internal struct PropertyRunner
                         current     = candidate
                         steps       += 1
                         
-                        if trace
+                        if
+                            trace
+                            || shrinkPath
                         {
                             let message: String
                                 = "Shrink step \(steps):"
@@ -670,7 +676,7 @@ internal struct PropertyRunner
             if !improved
             {
                 if
-                    trace,
+                    (trace || shrinkPath),
                     steps > 0
                 {
                     logger.info("Shrinking complete at step \(steps)")
