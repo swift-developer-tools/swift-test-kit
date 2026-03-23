@@ -166,7 +166,7 @@ internal struct PropertyRunner
         let deadline: ContinuousClock.Instant?
             = opts.timeout.map { ContinuousClock.now.advanced(by: $0) }
         
-        let verbose     : Bool  = opts.diagnostics.contains(.verbose)
+        let trace       : Bool  = opts.diagnostics.contains(.trace)
         let slowness    : Bool  = opts.diagnostics.contains(.slowness)
         
         var iterationDurations: [(iteration: Int, duration: Duration)] = []
@@ -227,7 +227,7 @@ internal struct PropertyRunner
             
             
             
-            if verbose
+            if trace
             {
                 let message: String
                     = "[\(iteration)/\(iterations)]"
@@ -246,7 +246,7 @@ internal struct PropertyRunner
             {
                 discarded += 1
                 
-                if verbose
+                if trace
                 {
                     let message: String
                         = "[\(iteration)/\(iterations)] discarded:"
@@ -293,7 +293,7 @@ internal struct PropertyRunner
                         {
                             targetedMode = true
                             
-                            if verbose
+                            if trace
                             {
                                 logger.info("Entering targeted mode")
                             }
@@ -332,7 +332,7 @@ internal struct PropertyRunner
                     
                     discarded += 1
                     
-                    if verbose
+                    if trace
                     {
                         let message: String
                             = "[\(iteration)/\(iterations)] discarded (assume):"
@@ -607,8 +607,7 @@ internal struct PropertyRunner
         var candidatesFiltered  : Int   = 0
         var candidatesPassed    : Int   = 0
         
-        let verbose: Bool = options.propertyOptions.diagnostics
-            .contains(.verbose)
+        let trace: Bool = options.propertyOptions.diagnostics.contains(.trace)
         
         while steps < options.propertyOptions.maxShrinkSteps
         {
@@ -648,7 +647,7 @@ internal struct PropertyRunner
                         current     = candidate
                         steps       += 1
                         
-                        if verbose
+                        if trace
                         {
                             let message: String
                                 = "Shrink step \(steps):"
@@ -671,7 +670,7 @@ internal struct PropertyRunner
             if !improved
             {
                 if
-                    verbose,
+                    trace,
                     steps > 0
                 {
                     logger.info("Shrinking complete at step \(steps)")

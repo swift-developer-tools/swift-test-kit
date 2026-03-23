@@ -229,7 +229,7 @@ public struct PropertyDiagnostics: OptionSet, Equatable, Sendable
     /// Report all generated values and shrink candidates.
     ///
     /// - Note: This is reported using `OSLog`.
-    public static let verbose       = PropertyDiagnostics(rawValue: 1 << 1)
+    public static let trace         = PropertyDiagnostics(rawValue: 1 << 1)
     
     /// Report individual iterations that are slower than the median iteration
     /// duration.
@@ -259,7 +259,7 @@ public struct PropertyDiagnostics: OptionSet, Equatable, Sendable
     public static let all: PropertyDiagnostics =
     [
         .original,
-        .verbose,
+        .trace,
         .slowness,
         .shrinking
     ]
