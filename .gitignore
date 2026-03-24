@@ -6,6 +6,7 @@ xcuserdata/
 *.xcuserstate
 DerivedData/
 .swiftpm/xcode/xcshareddata/
+!.swiftpm/xcode/xcshareddata/xcschemes/SwiftTestKit-Package.xcscheme
 .swiftpm/configuration/registries.json
 .swiftpm/xcode/package.xcworkspace/contents.xcworkspacedata
 .netrc
