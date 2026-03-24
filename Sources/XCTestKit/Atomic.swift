@@ -29,6 +29,8 @@ import TestKitCore
 ///   number where this function was called.
 ///   - column: The column where the failure occurs. The default value is the
 ///   column number where this function was called.
+///   - options: The options for testing. The default value is `nil`, which
+///   falls back to the resolved options.
 ///   - body: The atomic body.
 @Reasync
 public func XCTKAtomic(
@@ -37,6 +39,7 @@ public func XCTKAtomic(
     file        : StaticString                  = #filePath,
     line        : UInt                          = #line,
     column      : UInt                          = #column,
+    options     : TestOptions?                  = nil,
     _ body      : () async throws -> Void
 ) async
 {
@@ -46,6 +49,7 @@ public func XCTKAtomic(
         file:       file,
         line:       line,
         column:     column,
+        options:    options ?? TestConfiguration.current,
         body,
         context:    failureContext
     )

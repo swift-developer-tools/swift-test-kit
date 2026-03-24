@@ -11,8 +11,8 @@ within a single execution.
 
 ### Evaluating Atomic Assertions Synchronously
 
-- ``STKAtomic(_:fileID:file:line:column:_:)-1k58q``
+- ``STKAtomic(_:fileID:file:line:column:options:_:)-512s6``
 
 ### Evaluating Atomic Assertions Asynchronously
 
-- ``STKAtomic(_:fileID:file:line:column:_:)-2vr78``
+- ``STKAtomic(_:fileID:file:line:column:options:_:)-1nfb1``
