@@ -1,0 +1,47 @@
+{
+  "configurations" : [
+    {
+      "id" : "FEE6E896-3FDC-466C-AE70-401C8FA80A67",
+      "name" : "Address Sanitizer",
+      "options" : {
+        "addressSanitizer" : {
+          "detectStackUseAfterReturn" : true,
+          "enabled" : true
+        },
+        "mallocScribbleEnabled" : true
+      }
+    },
+    {
+      "id" : "78E2408A-6481-491B-A3BC-0FAE0A06FE76",
+      "name" : "Thread Sanitizer",
+      "options" : {
+        "threadSanitizerEnabled" : true
+      }
+    }
+  ],
+  "defaultOptions" : {
+    "mainThreadCheckerDetectionPolicy" : {
+      "severity" : "failure"
+    },
+    "nsZombieEnabled" : true,
+    "performanceAntipatternCheckerEnabled" : true,
+    "runtimeIssueDetection" : {
+      "severity" : "failure"
+    },
+    "testExecutionOrdering" : "random",
+    "threadPerformanceCheckerRuntimeIssueDetection" : {
+      "severity" : "failure"
+    },
+    "undefinedBehaviorSanitizerEnabled" : true
+  },
+  "testTargets" : [
+    {
+      "target" : {
+        "containerPath" : "container:",
+        "identifier" : "TestKitTests",
+        "name" : "TestKitTests"
+      }
+    }
+  ],
+  "version" : 1
+}
