@@ -1,4 +1,4 @@
-# ``XCTKAtomic(_:fileID:file:line:column:_:)-aham``
+# ``XCTKAtomic(_:fileID:file:line:column:options:_:)-1vd1i``
 
 Asserts that all assertions in the given body pass.
 
@@ -18,4 +18,6 @@ Native XCTest assertions are not intercepted.
   number where this function was called.
   - column: The column where the failure occurs. The default value is the
   column number where this function was called.
+  - options: The options for testing. The default value is `nil`, which
+  falls back to the resolved options.
   - body: The atomic body.

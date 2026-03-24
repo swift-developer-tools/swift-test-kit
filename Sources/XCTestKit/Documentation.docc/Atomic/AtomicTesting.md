@@ -11,8 +11,8 @@ within a single execution.
 
 ### Evaluating Atomic Assertions Synchronously
 
-- ``XCTKAtomic(_:fileID:file:line:column:_:)-aham``
+- ``XCTKAtomic(_:fileID:file:line:column:options:_:)-1vd1i``
 
 ### Evaluating Atomic Assertions Asynchronously
 
-- ``XCTKAtomic(_:fileID:file:line:column:_:)-47m1v``
+- ``XCTKAtomic(_:fileID:file:line:column:options:_:)-5akjh``

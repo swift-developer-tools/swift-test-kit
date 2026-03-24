@@ -14,6 +14,7 @@ package func TKAtomic(
     file        : StaticString,
     line        : UInt,
     column      : UInt,
+    options     : TestOptions,
     _ body      : () async throws -> Void,
     context     : FailureContext
 ) async
