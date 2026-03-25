@@ -101,12 +101,12 @@ internal final class ComparatorEnumTests: TestKitCase
                         .makeLeaf(
                             label:      .character(index: 0, count: 4),
                             expected:   "hell",
-                            actual:     "g"
+                            actual:     "go"
                         ),
                         
                         .makeUnexpected(
-                            label:      .character(index: 5, count: 5),
-                            actual:     "odbye"
+                            label:      .character(index: 5, count: 4),
+                            actual:     "dbye"
                         )
                     ]
                 )
@@ -513,12 +513,12 @@ internal final class ComparatorEnumTests: TestKitCase
                         .makeLeaf(
                             label:      .character(index: 0, count: 4),
                             expected:   "hell",
-                            actual:     "g"
+                            actual:     "go"
                         ),
                         
                         .makeUnexpected(
-                            label:      .character(index: 5, count: 5),
-                            actual:     "odbye"
+                            label:      .character(index: 5, count: 4),
+                            actual:     "dbye"
                         )
                     ]
                 )

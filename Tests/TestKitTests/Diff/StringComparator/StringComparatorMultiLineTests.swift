@@ -189,14 +189,9 @@ internal final class StringComparatorMultiLineTests: TestKitCase
                     tree:
                     [
                         .makeLeaf(
-                            label:      .character(index: 0, count: 1),
-                            expected:   "r",
+                            label:      .character(index: 0, count: 5),
+                            expected:   "remov",
                             actual:     "chang"
-                        ),
-                        
-                        .makeMissing(
-                            label:      .character(index: 2, count: 4),
-                            expected:   "move"
                         )
                     ]
                 ),
