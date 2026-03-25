@@ -38,10 +38,9 @@ internal let failureContext = FailureContext(
                 column:     Int(clamping: column)
             )
             
-            // TODO: Swift 6.3 uncomment severity.
             Issue.record(
                 Comment(rawValue: message),
-                //severity:           .error,
+                severity:           .error,
                 sourceLocation:     sourceLocation
             )
         }

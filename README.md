@@ -898,7 +898,7 @@ for instructions on how to add package dependencies.
 
 | Platform     | Minimum Version |
 |--------------|-----------------|
-| Swift        | 6.2             |
+| Swift        | 6.3             |
 | iOS          | 18.0            |
 | iPadOS       | 18.0            |
 | Mac Catalyst | 18.0            |

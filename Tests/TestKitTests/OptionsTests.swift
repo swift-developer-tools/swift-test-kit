@@ -11,6 +11,7 @@
 import SwiftTestKit
 import XCTest
 import XCTestKit
+import Synchronization
 
 
 
@@ -441,30 +442,20 @@ internal final class OptionsTests: TestKitCase
     @Reasync
     func testXCTKNilOptionsFallsBackToGlobal() async
     {
-        /// With `iterations` set to zero, the property vacuously passes.
-        TC.global.propertyOptions.iterations    = 0
+        TC.global.propertyOptions.iterations    = 3
         TC.global.propertyOptions.seed          = 50
+        
+        let count = Mutex<Int>(0)
         
         await XCTKForAll(options: nil)
         {
             (_: Int) async in
             
-            XCTKAssertTrue(false)
+            count.withLock { $0 += 1 }
         }
         
-        TC.global.propertyOptions.iterations = 1
-        
-        let output: String? = await withOneExpectedFailure
-        {
-            await XCTKForAll(options: nil)
-            {
-                (_: Int) async in
-                
-                XCTKAssertTrue(false)
-            }
-        }
-        
-        XCTAssertNotNil(output)
+        /// There would be `100` iterations if default local options were used.
+        XCTAssertEqual(count.withLock { $0 }, 3)
     }
     
     
@@ -472,29 +463,19 @@ internal final class OptionsTests: TestKitCase
     @Reasync
     func testSTKNilOptionsFallsBackToGlobal() async
     {
-        /// With `iterations` set to zero, the property vacuously passes.
-        TC.global.propertyOptions.iterations    = 0
+        TC.global.propertyOptions.iterations    = 3
         TC.global.propertyOptions.seed          = 50
+        
+        let count = Mutex<Int>(0)
         
         await STKForAll(options: nil)
         {
             (_: Int) async in
             
-            STKAssertTrue(false)
+            count.withLock { $0 += 1 }
         }
         
-        TC.global.propertyOptions.iterations = 1
-        
-        let output: String? = await withOneExpectedFailure
-        {
-            await STKForAll(options: nil)
-            {
-                (_: Int) async in
-                
-                STKAssertTrue(false)
-            }
-        }
-        
-        XCTAssertNotNil(output)
+        /// There would be `100` iterations if default local options were used.
+        XCTAssertEqual(count.withLock { $0 }, 3)
     }
 }
