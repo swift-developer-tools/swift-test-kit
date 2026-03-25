@@ -34,7 +34,13 @@
     "undefinedBehaviorSanitizerEnabled" : true
   },
   "testTargets" : [
-
+    {
+      "target" : {
+        "containerPath" : "container:",
+        "identifier" : "TestKitTests",
+        "name" : "TestKitTests"
+      }
+    }
   ],
   "version" : 1
 }
