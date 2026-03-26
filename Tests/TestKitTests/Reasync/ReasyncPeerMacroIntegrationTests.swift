@@ -12,7 +12,7 @@ import XCTest
 
 
 
-internal final class ReasyncPeerMacroTests: TestKitCase
+internal final class ReasyncPeerMacroIntegrationTests: TestKitCase
 {
     func testDoubleAsync() async
     {

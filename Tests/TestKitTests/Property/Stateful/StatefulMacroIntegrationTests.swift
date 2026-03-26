@@ -16,7 +16,7 @@ import XCTest
 /// The ``Stateful()`` macro shares generation and shrinking logic with the
 /// ``Arbitrary()`` macro. Most of that logic is already tested in the latter's
 /// test suite.
-internal final class StatefulMacroTests: TestKitCase
+internal final class StatefulMacroIntegrationTests: TestKitCase
 {
     override func setUp()
     {

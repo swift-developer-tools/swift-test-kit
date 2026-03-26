@@ -424,7 +424,7 @@ extension ArbitraryMacro
 // MARK: - ArbitraryDiagnosticKind
 
 /// Diagnostics for ``Arbitrary()`` macro expansion.
-private enum ArbitraryDiagnosticKind: DiagnosticMessage
+internal enum ArbitraryDiagnosticKind: DiagnosticMessage
 {
     /// Classes are not supported.
     case classNotSupported

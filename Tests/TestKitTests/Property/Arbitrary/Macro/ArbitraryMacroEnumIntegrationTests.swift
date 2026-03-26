@@ -13,7 +13,7 @@ import XCTest
 
 
 
-internal final class ArbitraryMacroEnumTests: TestKitCase
+internal final class ArbitraryMacroEnumIntegrationTests: TestKitCase
 {
     // MARK: - SingleNoValues
     
