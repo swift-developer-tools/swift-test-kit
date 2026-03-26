@@ -12,7 +12,7 @@ import XCTest
 
 
 
-internal final class ReasyncMemberMacroTests: TestKitCase
+internal final class ReasyncMemberMacroIntegrationTests: TestKitCase
 {
     // MARK: - Struct
     
