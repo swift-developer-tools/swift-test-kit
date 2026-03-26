@@ -91,7 +91,7 @@ extension WeightMacro
 // MARK: - WeightDiagnosticKind
 
 /// Diagnostics for ``Weight(_:)`` macro expansion.
-private enum WeightDiagnosticKind: DiagnosticMessage
+internal enum WeightDiagnosticKind: DiagnosticMessage
 {
     /// The macro is not attached to an enum case.
     case requiresEnumCase

@@ -150,7 +150,7 @@ extension StatefulMacro
 // MARK: - StatefulDiagnosticKind
 
 /// Diagnostics for ``Stateful()`` macro expansion.
-private enum StatefulDiagnosticKind: DiagnosticMessage
+internal enum StatefulDiagnosticKind: DiagnosticMessage
 {
     /// Classes are not supported.
     case classNotSupported
