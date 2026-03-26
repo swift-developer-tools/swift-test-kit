@@ -129,11 +129,23 @@ let package = Package(
             name: "TestKitTests",
             dependencies:
             [
+                "ReasyncMacro",
                 "ReasyncMacroCore",
                 "TestKitCore",
+                "TestKitMacros",
                 "TestKitMacroCore",
                 "SwiftTestKit",
-                "XCTestKit"
+                "XCTestKit",
+                
+                .product(
+                    name: "SwiftSyntaxMacroExpansion",
+                    package: "swift-syntax"
+                ),
+                
+                .product(
+                    name: "SwiftSyntaxMacrosTestSupport",
+                    package: "swift-syntax"
+                )
             ]
         )
     ]
