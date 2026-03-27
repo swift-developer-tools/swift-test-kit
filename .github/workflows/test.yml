@@ -16,4 +16,4 @@ jobs:
       with:
         xcode-version: '26.4'
     - name: Run tests
-      run: xcodebuild test -scheme SwiftTestKit-Package -destination 'platform=macOS'
+      run: xcodebuild test -scheme SwiftTestKit-Package -skipMacroValidation -destination 'platform=macOS'
