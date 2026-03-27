@@ -16,4 +16,4 @@ jobs:
       with:
         xcode-version: '26.4'
     - name: Run tests
-      run: xcodebuild test -scheme SwiftTestKit-Package -skipMacroValidation -destination 'platform=macOS'
+      run: swift test --disable-swift-testing
