@@ -519,7 +519,7 @@ internal struct Comparator
     ) -> [DiffNode]
     {
         let diff: CollectionDifference
-            = actualHashable.difference(from: expectedHashable)
+            = actualHashable.deterministicDifference(from: expectedHashable)
         
         /// Collect removals and insertions by offset.
         /// `removals` maps expected offsets to the element.
