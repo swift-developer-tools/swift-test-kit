@@ -7,6 +7,10 @@
 //
 //===----------------------------------------------------------------------===//
 
+import Reasync
+
+
+
 @Reasync
 package func TKAtomic(
     _ message   : () -> String,
