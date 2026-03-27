@@ -143,7 +143,7 @@ internal struct StringComparator
     ) -> [DiffNode]
     {
         let diff: CollectionDifference<String>
-            = actual.difference(from: expected)
+            = actual.deterministicDifference(from: expected)
         
         var removals    : [Int : String]    = [:]
         var insertions  : [Int : String]    = [:]
@@ -243,7 +243,7 @@ internal struct StringComparator
     ) -> [DiffNode]
     {
         let diff: CollectionDifference<Character>
-            = actual.difference(from: expected)
+            = actual.deterministicDifference(from: expected)
         
         guard !diff.isEmpty
         else
