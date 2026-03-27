@@ -103,7 +103,7 @@ let evenIntGenerator = Generator<Int>(
 - ``Generator/oneOf(_:)-([Generator<G>])``
 - ``Generator/oneOf(_:)-(Generator<G>...)``
 - ``Generator/frequency(_:)-1llzo``
-- ``Generator/frequency(_:)-((Int,Generator<G>)...)``
+- ``Generator/frequency(_:)-6i7rh``
 - ``Generator/recursive(base:recurse:)``
 - ``Generator/zip(_:)``
 
