@@ -8,6 +8,7 @@
 //===----------------------------------------------------------------------===//
 
 @testable import TestKitCore
+import Reasync
 import SwiftTestKit
 import XCTest
 import XCTestKit

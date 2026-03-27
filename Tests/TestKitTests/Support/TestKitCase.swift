@@ -7,6 +7,7 @@
 //
 //===----------------------------------------------------------------------===//
 
+import Reasync
 import TestKitCore
 import XCTestKit
 import Synchronization

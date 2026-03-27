@@ -31,49 +31,31 @@ let package = Package(
     dependencies:
     [
         .package(
+            url: "https://github.com/swift-developer-tools/swift-reasync",
+            branch: "main"
+        ),
+        
+        .package(
             url: "https://github.com/swiftlang/swift-docc-plugin",
             branch: "main"
         ),
         
         .package(
             url: "https://github.com/swiftlang/swift-syntax",
-            from: "602.0.0"
+            from: "603.0.0"
         )
     ],
     targets:
     [
         .target(
-            name: "ReasyncMacroCore",
-            dependencies:
-            [
-                .product(
-                    name: "SwiftSyntax",
-                    package: "swift-syntax"
-                ),
-                
-                .product(
-                    name: "SwiftSyntaxMacros",
-                    package: "swift-syntax"
-                )
-            ]
-        ),
-        
-        .macro(
-            name: "ReasyncMacro",
-            dependencies:
-            [
-                "ReasyncMacroCore",
-                
-                .product(
-                    name: "SwiftCompilerPlugin",
-                    package: "swift-syntax"
-                )
-            ]
-        ),
-        
-        .target(
             name: "TestKitCore",
-            dependencies: ["ReasyncMacro"]
+            dependencies:
+            [
+                .product(
+                    name: "Reasync",
+                    package: "swift-reasync"
+                )
+            ]
         ),
         
         .target(
@@ -112,7 +94,12 @@ let package = Package(
             dependencies:
             [
                 "TestKitCore",
-                "TestKitMacros"
+                "TestKitMacros",
+                
+                .product(
+                    name: "Reasync",
+                    package: "swift-reasync"
+                )
             ]
         ),
         
@@ -121,7 +108,12 @@ let package = Package(
             dependencies:
             [
                 "TestKitCore",
-                "TestKitMacros"
+                "TestKitMacros",
+                
+                .product(
+                    name: "Reasync",
+                    package: "swift-reasync"
+                )
             ]
         ),
         
@@ -129,13 +121,16 @@ let package = Package(
             name: "TestKitTests",
             dependencies:
             [
-                "ReasyncMacro",
-                "ReasyncMacroCore",
                 "TestKitCore",
                 "TestKitMacros",
                 "TestKitMacroCore",
                 "SwiftTestKit",
                 "XCTestKit",
+                
+                .product(
+                    name: "Reasync",
+                    package: "swift-reasync"
+                ),
                 
                 .product(
                     name: "SwiftSyntaxMacroExpansion",
@@ -148,5 +143,6 @@ let package = Package(
                 )
             ]
         )
-    ]
+    ],
+    swiftLanguageModes: [.v6]
 )

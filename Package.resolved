@@ -1,5 +1,5 @@
 {
-  "originHash" : "79abf73df4ce404870e20a61f5a5d9ffbf16e1482906f50974e6decda6e4e1d5",
+  "originHash" : "1a4735b0cd3546fc04c17147b09df4d8945bdbd267fe6a99635130c603bfee95",
   "pins" : [
     {
       "identity" : "swift-docc-plugin",
@@ -20,12 +20,21 @@
       }
     },
     {
+      "identity" : "swift-reasync",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/swift-developer-tools/swift-reasync",
+      "state" : {
+        "branch" : "main",
+        "revision" : "a2be44d8217cbbb3fff68c1f43ecbd09face31a3"
+      }
+    },
+    {
       "identity" : "swift-syntax",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/swiftlang/swift-syntax",
       "state" : {
-        "revision" : "4799286537280063c85a32f09884cfbca301b1a1",
-        "version" : "602.0.0"
+        "revision" : "2b59c0c741e9184ab057fd22950b491076d42e91",
+        "version" : "603.0.0"
       }
     }
   ],

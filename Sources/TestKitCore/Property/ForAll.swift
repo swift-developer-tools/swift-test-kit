@@ -7,6 +7,10 @@
 //
 //===----------------------------------------------------------------------===//
 
+import Reasync
+
+
+
 @Reasync
 package func TKForAll<each T>(
     examples    : () -> [(repeat each T)],

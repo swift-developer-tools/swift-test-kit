@@ -7,6 +7,10 @@
 //
 //===----------------------------------------------------------------------===//
 
+import Reasync
+
+
+
 /// Runs atomic tests.
 internal struct AtomicRunner
 {
