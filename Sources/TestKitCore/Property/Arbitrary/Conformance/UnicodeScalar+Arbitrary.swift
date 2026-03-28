@@ -1,0 +1,215 @@
+//===----------------------------------------------------------------------===//
+//
+// This source file is part of the swift-test-kit open source project.
+//
+// Copyright (c) Margins Technologies LLC.
+// Licensed under the Apache License, Version 2.0.
+//
+//===----------------------------------------------------------------------===//
+
+extension Unicode.Scalar: Arbitrary
+{
+    /// Generates an arbitrary value using the given generation context.
+    /// - Parameter context: The generation context.
+    /// - Returns: A random ASCII printable scalar (`U+0020` - `U007E`), with
+    /// increasing probability of Unicode scalars at higher values of
+    /// `context.size`. Occasionally generates special values
+    /// (`\0`, `\n`, `\r`, `\t`).
+    public static func arbitrary(
+        using context: GenerationContext
+    ) -> Unicode.Scalar
+    {
+        if let special: Unicode.Scalar = specialValue(using: context)
+        {
+            return special
+        }
+        
+        if let scalar: Unicode.Scalar = arbitraryScalar(using: context)
+        {
+            return scalar
+        }
+        
+        let value = UInt32(context.random(in: asciiPrintableRange))
+        
+        return Unicode.Scalar(value) ?? Unicode.Scalar("a")
+    }
+    
+    
+    
+    /// Generates candidate values that are smaller than the receiver value.
+    ///
+    /// Candidates converge toward `"a"` (`U+0061`) using the midpoint and
+    /// one step closer.
+    ///
+    /// - Returns: An array of smaller candidate values, or an empty array
+    /// to indicate that no shrinking should occur.
+    public func shrink() -> [Unicode.Scalar]
+    {
+        /// `a` (`97`) is used as the shrink target since it is readable and
+        /// recognizable as the "lowest" character.
+        ///
+        /// This does not always result in smaller candidates, like other
+        /// implementations, but rather candidates closer to `a`. For example,
+        /// both `A` (`65`) and `z`(`122`) shrink toward `a` (`97`).
+        let targetValue: UInt32 = 97
+        
+        guard
+            value != targetValue,
+            let targetScalar = Unicode.Scalar(targetValue)
+        else
+        {
+            return []
+        }
+        
+        
+        
+        var candidates: [Unicode.Scalar] = [targetScalar]
+        
+        let mid: UInt32 = (value + targetValue) / 2
+        
+        if
+            mid != targetValue,
+            mid != value,
+            let midScalar = Unicode.Scalar(mid)
+        {
+            candidates.append(midScalar)
+        }
+        
+        /// Step closer to the target.
+        let closer: UInt32 = value > targetValue
+            ? value - 1
+            : value + 1
+        
+        if
+            closer != targetValue,
+            closer != mid,
+            let closerScalar = Unicode.Scalar(closer)
+        {
+            candidates.append(closerScalar)
+        }
+        
+        return candidates
+    }
+    
+    
+    
+    /// Produces a value that is a small perturbation of the receiver value.
+    /// - Parameter context: The generation context.
+    /// - Returns: A mutated ASCII printable scalar.
+    public func mutate(
+        using context: GenerationContext
+    ) -> Unicode.Scalar
+    {
+        let maxDelta    : Int   = max(1, context.size / 10)
+        let delta       : Int   = context.random(in: -maxDelta...maxDelta)
+        
+        if delta == 0
+        {
+            return self
+        }
+        
+        let candidate: Int = Int(value) + delta
+        
+        guard
+            candidate >= 0,
+            let scalar = Unicode.Scalar(UInt32(candidate))
+        else
+        {
+            return Unicode.Scalar.arbitrary(using: context)
+        }
+        
+        return scalar
+    }
+    
+    
+    
+    // MARK: - Support
+    
+    /// The ASCII printable range.
+    internal static let asciiPrintableRange : ClosedRange<Int>  = 0x20...0x7E
+    
+    /// The ASCII printable lowercase range.
+    internal static let asciiLowercaseRange : ClosedRange<Int>  = 0x61...0x7A
+    
+    /// The ASCII printable uppercase range.
+    internal static let asciiUppercaseRange : ClosedRange<Int>  = 0x41...0x5A
+    
+    /// The ASCII digit range.
+    internal static let asciiDigitRange     : ClosedRange<Int>  = 0x30...0x39
+    
+    /// The ASCII alphanumeric range.
+    internal static let alphanumericRanges  : [ClosedRange<Int>] =
+    [
+        asciiLowercaseRange,
+        asciiUppercaseRange,
+        asciiDigitRange
+    ]
+    
+    
+    
+    /// Special values to occasionally generate.
+    internal static var specialValues: [Self]
+    {
+        return ["\0", "\n", "\r", "\t"]
+    }
+    
+    
+    
+    /// Generates a special value 5% of the time.
+    /// - Parameter context: The generation context.
+    /// - Returns: A special value or `nil`.
+    internal static func specialValue(
+        using context: GenerationContext
+    ) -> Self?
+    {
+        if context.random(in: 1...20) == 1
+        {
+            return context.randomElement(of: specialValues) ?? "\0"
+        }
+        
+        return nil
+    }
+    
+    
+    
+    /// The Unicode ranges generated by ``arbitraryScalar(using:)``.
+    internal static let arbitraryRanges: [(UInt32, UInt32)] =
+    [
+        (0x0100, 0x017F),   /// Latin Extended-A.
+        (0x0370, 0x03FF),   /// Greek and Coptic.
+        (0x0400, 0x04FF),   /// Cyrillic.
+        (0x4E00, 0x4E7F),   /// CJK (subset).
+        (0x1F600, 0x1F64F)  /// Emoticons.
+    ]
+    
+    
+    
+    /// Generates an arbitrary Unicode scalar from selected Unicode ranges with
+    /// probability scaling based on the size of the given context.
+    /// - Parameter context: The generation context.
+    /// - Returns: The generated Unicode scalar.
+    private static func arbitraryScalar(
+        using context: GenerationContext
+    ) -> Unicode.Scalar?
+    {
+        /// Unicode probability increases with size (0% at size 0, ~10% at
+        /// size 100, and so on).
+        let unicodeProbability: Double
+            = min(Double(context.size), 100.0) / 1000.0
+        
+        guard
+            unicodeProbability > 0,
+            context.random(in: 0.0..<1.0) < unicodeProbability
+        else
+        {
+            return nil
+        }
+        
+        let range: (UInt32, UInt32)
+            = context.randomElement(of: arbitraryRanges) ?? arbitraryRanges[0]
+        
+        let value = UInt32(context.random(in: Int(range.0)...Int(range.1)))
+        
+        return Unicode.Scalar(value)
+    }
+}

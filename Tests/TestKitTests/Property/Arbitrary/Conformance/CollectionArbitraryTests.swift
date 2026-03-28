@@ -1,0 +1,1303 @@
+//===----------------------------------------------------------------------===//
+//
+// This source file is part of the swift-test-kit open source project.
+//
+// Copyright (c) Margins Technologies LLC.
+// Licensed under the Apache License, Version 2.0.
+//
+//===----------------------------------------------------------------------===//
+
+import TestKitCore
+import XCTest
+
+
+
+internal final class CollectionArbitraryTests: TestKitCase
+{
+    // MARK: - Determinism
+    
+    func testArrayDeterminism()
+    {
+        assertArbitraryDeterminism(of: Array<Int>.self)
+    }
+    
+    
+    
+    func testDictionaryDeterminism()
+    {
+        assertArbitraryDeterminism(of: Dictionary<Int, Int>.self)
+    }
+    
+    
+    
+    func testSetDeterminism()
+    {
+        assertArbitraryDeterminism(of: Set<Int>.self)
+    }
+    
+    
+    
+    // MARK: - Generation
+    
+    func testArrayGeneration()
+    {
+        validateGeneration(of: Array<Int>.self)
+    }
+    
+    
+    
+    func testDictionaryGeneration()
+    {
+        validateGeneration(of: Dictionary<Int, Int>.self)
+    }
+    
+    
+    
+    func testSetGeneration()
+    {
+        validateGeneration(of: Set<Int>.self)
+    }
+    
+    
+    
+    func testCollectionOfOneGenerationDeterminism()
+    {
+        for _ in 0..<1000
+        {
+            let (context1, context2) = GenerationContext.sameRandomContexts
+            
+            let first   = CollectionOfOne<Int>.arbitrary(using: context1)
+            let second  = CollectionOfOne<Int>.arbitrary(using: context2)
+            
+            XCTAssertEqual(Array(first), Array(second))
+        }
+    }
+    
+    
+    
+    func testCollectionOfOneGenerationSizeZeroProducesZeroElement()
+    {
+        let iterations  : Int   = 10_000
+        var count       : Int   = 0
+        
+        for _ in 0..<iterations
+        {
+            let value = CollectionOfOne<Int>.arbitrary(using: .randomZeroSize)
+            
+            if value[value.startIndex] == 0
+            {
+                count += 1
+            }
+        }
+        
+        /// 5% chance of special values.
+        XCTAssertGreaterThan(count, Int(Double(iterations) * 0.95 * 0.85))
+    }
+    
+    
+    
+    // MARK: - Array shrinking
+    
+    func testArrayShrinkEmpty()
+    {
+        let value: [Int] = []
+        
+        XCTAssertEqual(value.shrink(), [])
+    }
+    
+    
+    
+    func testArrayShrinkSingleElementNoElementShrink()
+    {
+        let value: [Int] = [0]
+        
+        XCTAssertEqual(value.shrink(), [[]])
+    }
+    
+    
+    
+    func testArrayShrinkSingleElementWithElementShrink()
+    {
+        let value       : [Int]     = [50]
+        let candidates  : [[Int]]   = value.shrink()
+        var expected    : [[Int]]   = []
+        
+        /// Empty + no halves + removal of the single element (same as empty,
+        /// but de-duplicated).
+        expected.append([])
+        
+        /// Shrink individual elements.
+        for shrunk in value[0].shrink()
+        {
+            expected.append([shrunk])
+        }
+        
+        XCTAssertEqual(candidates, expected)
+    }
+    
+    
+    
+    func testArrayShrinkEvenCount()
+    {
+        let value       : [Int]     = [10, 20]
+        let candidates  : [[Int]]   = value.shrink()
+        var expected    : [[Int]]   = []
+        
+        /// Empty.
+        expected.append([])
+        
+        /// Halves.
+        expected.append([10])
+        expected.append([20])
+        
+        /// Remove individual elements.
+        expected.append([20])
+        expected.append([10])
+        
+        /// Shrink individual elements.
+        for shrunk in 10.shrink()
+        {
+            expected.append([shrunk, 20])
+        }
+        
+        for shrunk in 20.shrink()
+        {
+            expected.append([10, shrunk])
+        }
+        
+        XCTAssertEqual(candidates, expected)
+    }
+    
+    
+    
+    func testArrayShrinkOddCount()
+    {
+        let value       : [Int]     = [10, 20, 30]
+        let candidates  : [[Int]]   = value.shrink()
+        var expected    : [[Int]]   = []
+        
+        /// Empty.
+        expected.append([])
+        
+        /// Halves. With an odd count, the middle element is dropped here,
+        /// but still covered by individual removal.
+        expected.append([10])
+        expected.append([30])
+        
+        /// Remove individual elements.
+        expected.append([20, 30])
+        expected.append([10, 30])
+        expected.append([10, 20])
+        
+        /// Shrink individual elements.
+        for shrunk in 10.shrink()
+        {
+            expected.append([shrunk, 20, 30])
+        }
+        
+        for shrunk in 20.shrink()
+        {
+            expected.append([10, shrunk, 30])
+        }
+        
+        for shrunk in 30.shrink()
+        {
+            expected.append([10, 20, shrunk])
+        }
+        
+        XCTAssertEqual(candidates, expected)
+    }
+    
+    
+    
+    func testArrayShrinkCandidateCount()
+    {
+        let values: [[Int]] =
+        [
+            [],
+            [0],
+            [5],
+            [1, 2, 3],
+            [10, 0, 20, 0, 30]
+        ]
+        
+        for value in values
+        {
+            let candidates  : [[Int]]   = value.shrink()
+            let halves      : Int       = value.count > 1 ? 2 : 0
+            let removals    : Int       = value.count == 1 ? 0 : value.count
+            
+            let elementShrinks: Int
+                = value.reduce(0) { $0 + $1.shrink().count }
+            
+            let expectedCount: Int = value.isEmpty
+                ? 0
+                : 1 + halves + removals + elementShrinks
+            
+            XCTAssertEqual(candidates.count, expectedCount)
+        }
+    }
+    
+    
+    
+    func testArrayShrinkFirstCandidateEmpty()
+    {
+        let values: [[Int]] =
+        [
+            [0],
+            [1, 2],
+            [5, 10, 15, 20]
+        ]
+        
+        for value in values
+        {
+            let candidates: [[Int]] = value.shrink()
+            
+            XCTAssertEqual(candidates.first, [])
+        }
+    }
+    
+    
+    
+    func testArrayShrinkNoCandidateEqualsOriginal()
+    {
+        let values: [[Int]] =
+        [
+            [0],
+            [1, 2],
+            [5, 10, 15, 20]
+        ]
+        
+        for value in values
+        {
+            for candidate in value.shrink()
+            {
+                XCTAssertNotEqual(candidate, value)
+            }
+        }
+    }
+    
+    
+    
+    func testArrayShrinkElementShrinkHoldsOthersConstant()
+    {
+        let value       : [Int]     = [10, 20]
+        let candidates  : [[Int]]   = value.shrink()
+        
+        /// Empty (1) + halves (2) + removals (2) = 5.
+        XCTAssertGreaterThanOrEqual(candidates.count, 5)
+        
+        let elementShrinks = Array(candidates[candidates.count...])
+        
+        for candidate in elementShrinks
+        {
+            let differences: Int = zip(value, candidate)
+                .filter { $0 != $1 }
+                .count
+            
+            XCTAssertEqual(differences, 1)
+        }
+    }
+    
+    
+    
+    // MARK: - CollectionOfOne shrinking
+    
+    func testCollectionOfOneShrinkingZeroElement()
+    {
+        let candidates: [CollectionOfOne] = CollectionOfOne<Int>(0).shrink()
+        
+        XCTAssertEqual(candidates.map { Array($0) }, [])
+    }
+    
+    
+    
+    func testCollectionOfOneShrinkMatchesElementShrink()
+    {
+        let values: [Int] = [1, 5, 40, -7, -100]
+        
+        for value in values
+        {
+            let candidates: [CollectionOfOne] = CollectionOfOne(value).shrink()
+            
+            let expected: [CollectionOfOne]
+                = value.shrink().map { CollectionOfOne($0) }
+            
+            XCTAssertEqual(
+                candidates.map { Array($0) },
+                expected.map { Array($0) }
+            )
+        }
+    }
+    
+    
+    
+    // MARK: - Dictionary shrinking
+    
+    func testDictionaryShrinkEmpty()
+    {
+        let value: [Int : Int] = [:]
+        
+        XCTAssertEqual(value.shrink(), [])
+    }
+    
+    
+    
+    func testDictionaryShrinkSingleEntryWithValueShrink()
+    {
+        let value       : [Int : Int]       = [0: 50]
+        let candidates  : [[Int : Int]]     = value.shrink()
+        
+        let valueCandidates: [Int] = 50.shrink()
+        
+        for shrunk in valueCandidates
+        {
+            XCTAssertTrue(candidates.contains([0: shrunk]))
+        }
+    }
+    
+    
+    
+    func testDictionaryShrinkSingleEntryWithKeyShrink()
+    {
+        let value       : [Int : Int]       = [50: 0]
+        let candidates  : [[Int : Int]]     = value.shrink()
+        
+        XCTAssertFalse(candidates.isEmpty)
+        XCTAssertEqual(candidates.first, [:])
+        
+        let keyCandidates: [Int] = 50.shrink()
+        
+        for shrunk in keyCandidates
+        {
+            XCTAssertTrue(candidates.contains([shrunk: 0]))
+        }
+    }
+    
+    
+    
+    func testDictionaryShrinkFirstCandidateEmpty()
+    {
+        let values: [[Int : Int]] =
+        [
+            [0: 0],
+            [1: 2, 3: 4],
+            [10: 20, 30: 40, 50: 60]
+        ]
+        
+        for value in values
+        {
+            let candidates: [[Int : Int]] = value.shrink()
+            
+            XCTAssertEqual(candidates.first, [:])
+        }
+    }
+    
+    
+    
+    func testDictionaryShrinkNoCandidateEqualsOriginalAndAllSmaller()
+    {
+        let values: [[Int : Int]] =
+        [
+            [0: 0],
+            [1: 2, 3: 4],
+            [10: 20, 30: 40, 50: 60]
+        ]
+        
+        for value in values
+        {
+            for candidate in value.shrink()
+            {
+                XCTAssertLessThanOrEqual(candidate.count, value.count)
+                XCTAssertNotEqual(candidate, value)
+            }
+        }
+    }
+    
+    
+    
+    func testDictionaryShrinkKeyCollisionSkipped()
+    {
+        /// When a key shrinks to a value that already exists as a key in the
+        /// dictionary, that candidate is skipped.
+        let value       : [Int : String]    = [0: "a", 1: "b"]
+        let candidates  : [[Int : String]]  = value.shrink()
+        
+        for candidate in candidates
+        {
+            if candidate.count == value.count
+            {
+                if
+                    candidate[0] != nil,
+                    candidate[1] != nil
+                {
+                    /// If both original keys are present, then this is a
+                    /// value shrink.
+                    continue
+                }
+                
+                /// One key changed. The shrunken key must not map to the
+                /// other entry's value, which would indicate a collision
+                /// that was not skipped.
+                ///
+                /// `1` shrinks to `0`, but `0` already exists. So no candidate
+                /// may have a key of `0` mapped to a value of `"b"`.
+                if let valueAt0: String = candidate[0]
+                {
+                    XCTAssertEqual(valueAt0, "a")
+                }
+            }
+        }
+    }
+    
+    
+    
+    func testDictionaryShrinkContainsSubsetsOfExpectedSizes()
+    {
+        let value       : [Int : Int]       = [10: 1, 20: 2, 30: 3, 40: 4]
+        let candidates  : [[Int : Int]]     = value.shrink()
+        
+        XCTAssertTrue(candidates.contains([:]))
+        
+        /// Halving produces two 2-element subsets. Removal produces four
+        /// 3-element subsets.
+        let sizes: Set<Int> = Set(candidates.map { $0.count })
+        
+        XCTAssertTrue(sizes.contains(0))
+        XCTAssertTrue(sizes.contains(2))
+        XCTAssertTrue(sizes.contains(3))
+    }
+    
+    
+    
+    func testDictionaryShrinkTwoEntriesContainsAllSingletons()
+    {
+        let value       : [Int : Int]       = [10: 1, 20: 2]
+        let candidates  : [[Int : Int]]     = value.shrink()
+        
+        XCTAssertTrue(candidates.contains([10: 1]))
+        XCTAssertTrue(candidates.contains([20: 2]))
+    }
+    
+    
+    
+    func testDictionaryShrinkValuesPreservesKeys()
+    {
+        /// Value shrink candidates must preserve all original keys.
+        let value       : [Int : Int]       = [0: 50, 1: 100]
+        let candidates  : [[Int : Int]]     = value.shrink()
+        
+        let sameCountCandidates: [[Int : Int]]
+            = candidates.filter { $0.count == value.count }
+        
+        for candidate in sameCountCandidates
+        {
+            let originalKeys: Set<Int> = Set(value.keys)
+            
+            let allPossibleKeys: Set<Int> = originalKeys.union(
+                value.keys.flatMap { $0.shrink() }
+            )
+            
+            /// Same-count candidates come from key or value shrinking.
+            /// In either case, the candidate's key set must not be subset
+            /// of the expanded key set (original keys + shrunken keys).
+            XCTAssertTrue(Set(candidate.keys).isSubset(of: allPossibleKeys))
+        }
+    }
+    
+    
+    
+    func testDictionaryShrinkRemovalProducesCorrectSubsets()
+    {
+        /// Each removal candidate must be a strict subset of the original,
+        /// with exactly one entry missing.
+        let value       : [Int : Int]       = [10: 1, 20: 2, 30: 3]
+        let candidates  : [[Int : Int]]     = value.shrink()
+        
+        let removalCandidates: [[Int : Int]]
+            = candidates.filter { $0.count == value.count - 1 }
+        
+        /// There must be one removal candidate per entry.
+        XCTAssertEqual(removalCandidates.count, value.count)
+        
+        for candidate in removalCandidates
+        {
+            for (key, val) in candidate
+            {
+                /// Every key-value pair in the candidate must exist in the
+                /// original.
+                XCTAssertEqual(value[key], val)
+            }
+        }
+    }
+    
+    
+    
+    // MARK: - Set shrinking
+    
+    func testSetShrinkEmpty()
+    {
+        let value: Set<Int> = []
+        
+        XCTAssertEqual(value.shrink(), [])
+    }
+    
+    
+    
+    func testSetShrinkSingleZeroElement()
+    {
+        let value       : Set<Int>      = [0]
+        let candidates  : [Set<Int>]    = value.shrink()
+        
+        XCTAssertEqual(candidates, [Set()])
+    }
+    
+    
+    
+    func testSetShrinkSingleNonZeroElement()
+    {
+        let value       : Set<Int>      = [5]
+        let candidates  : [Set<Int>]    = value.shrink()
+        
+        XCTAssertFalse(candidates.isEmpty)
+        XCTAssertEqual(candidates.first, Set())
+        
+        for candidate in candidates
+        {
+            XCTAssertNotEqual(candidate, value)
+        }
+    }
+    
+    
+    
+    func testSetShrinkFirstCandidateEmpty()
+    {
+        let values: [Set<Int>] =
+        [
+            [0],
+            [1, 2],
+            [5, 10, 15, 20]
+        ]
+        
+        for value in values
+        {
+            let candidates: [Set<Int>] = value.shrink()
+            
+            XCTAssertEqual(candidates.first, Set())
+        }
+    }
+    
+    
+    
+    func testSetShrinkNoCandidateEqualsOriginal()
+    {
+        let values: [[Int]] =
+        [
+            [0],
+            [1, 2],
+            [5, 10, 15],
+            [10, 20, 30, 40]
+        ]
+        
+        for value in values
+        {
+            for candidate in value.shrink()
+            {
+                XCTAssertNotEqual(candidate, value)
+            }
+        }
+    }
+    
+    
+    
+    func testSetShrinkCandidatesContainShrunkenElements()
+    {
+        /// Use a set in which the elements do not shrink to each other,
+        /// so singletons remain distinct after array shrinking.
+        let value       : Set<Int>      = [50]
+        let candidates  : [Set<Int>]    = value.shrink()
+        
+        let elementCandidates: [Int] = 50.shrink()
+        
+        XCTAssertFalse(elementCandidates.isEmpty)
+        
+        for shrunk in elementCandidates
+        {
+            XCTAssertTrue(candidates.contains([shrunk]))
+        }
+    }
+    
+    
+    
+    func testSetShrinkContainsEmptyAndSubsets()
+    {
+        let value       : Set<Int>      = [10, 20]
+        let candidates  : [Set<Int>]    = value.shrink()
+        
+        XCTAssertTrue(candidates.contains(Set()))
+        XCTAssertTrue(candidates.contains([10]))
+        XCTAssertTrue(candidates.contains([20]))
+    }
+    
+    
+    
+    func testSetShrinkDuplicatesCollapsing()
+    {
+        let value       : Set<Int>      = [10, 20]
+        let candidates  : [Set<Int>]    = value.shrink()
+        
+        let singletons: [Set<Int>] = candidates.filter { $0.count == 1 }
+        
+        XCTAssertFalse(singletons.isEmpty)
+    }
+    
+    
+    
+    func testSetShrinkFourElements()
+    {
+        let value       : Set<Int>      = [10, 20, 30, 40]
+        let candidates  : [Set<Int>]    = value.shrink()
+        
+        XCTAssertTrue(candidates.contains(Set()))
+        
+        /// Halving produces two 2-element subsets. Removal produces four
+        /// 3-element subsets.
+        let sizes: Set<Int> = Set(candidates.map { $0.count })
+        
+        XCTAssertTrue(sizes.contains(0))
+        XCTAssertTrue(sizes.contains(2))
+        XCTAssertTrue(sizes.contains(3))
+    }
+    
+    
+    
+    func testSetShrinkCandidateCountMatchesArrayShrink()
+    {
+        let values: [Set<Int>] =
+        [
+            [],
+            [0],
+            [5],
+            [1, 2, 3],
+            [10, 20, 30, 40]
+        ]
+        
+        for value in values
+        {
+            let setCandidates   : [Set<Int>]    = value.shrink()
+            let arrayCandidates : [[Int]]       = Array(value).shrink()
+            
+            XCTAssertEqual(setCandidates.count, arrayCandidates.count)
+        }
+    }
+    
+    
+    
+    func testSetShrinkAllCandidatesStrictlySmaller()
+    {
+        let values: [Set<Int>] =
+        [
+            [5],
+            [1, 2],
+            [10, 20, 30],
+            [5, 10, 15, 20]
+        ]
+        
+        for value in values
+        {
+            for candidate in value.shrink()
+            {
+                XCTAssertLessThanOrEqual(candidate.count, value.count)
+                XCTAssertNotEqual(candidate, value)
+            }
+        }
+    }
+    
+    
+    
+    // MARK: - Array mutation
+    
+    func testArrayMutation()
+    {
+        validateMutation(of: Array<Int>.self)
+    }
+    
+    
+    
+    func testArrayMutateInPlaceChangesAtMostOneElement()
+    {
+        var verified: Int = 0
+        
+        for _ in 0..<10_000
+        {
+            let value   : [Int]     = [100, 200, 300, 400, 500]
+            let mutated : [Int]     = value.mutate(using: .random)
+            
+            guard mutated.count == value.count
+            else
+            {
+                continue
+            }
+            
+            let differences: Int = zip(value, mutated)
+                .filter { $0 != $1 }
+                .count
+            
+            XCTAssertLessThanOrEqual(differences, 1)
+            
+            verified += 1
+        }
+        
+        XCTAssertGreaterThan(verified, 0)
+    }
+    
+    
+    
+    func testArrayMutateInsertPreservesOriginalElement()
+    {
+        var verified: Int = 0
+        
+        for _ in 0..<10_000
+        {
+            let value   : [Int]     = [100, 200, 300]
+            let mutated : [Int]     = value.mutate(using: .random)
+            
+            guard mutated.count == value.count + 1
+            else
+            {
+                continue
+            }
+            
+            /// Removing an element from the mutated array must yield the
+            /// original array.
+            var found: Bool = false
+            
+            for index in mutated.indices
+            {
+                var candidate: [Int] = mutated
+                
+                candidate.remove(at: index)
+                
+                if candidate == value
+                {
+                    found = true
+                    break
+                }
+            }
+            
+            XCTAssertTrue(found)
+            
+            verified += 1
+        }
+        
+        XCTAssertGreaterThan(verified, 0)
+    }
+    
+    
+    
+    func testArrayMutateRemoveProducesSubsequence()
+    {
+        var verified: Int = 0
+        
+        for _ in 0..<10_000
+        {
+            let value   : [Int]     = [100, 200, 300, 400]
+            let mutated : [Int]     = value.mutate(using: .random)
+            
+            guard mutated.count == value.count - 1
+            else
+            {
+                continue
+            }
+            
+            /// Removing an element from the original array must yield the
+            /// mutated array.
+            var found: Bool = false
+            
+            for index in value.indices
+            {
+                var candidate: [Int] = value
+                
+                candidate.remove(at: index)
+                
+                if candidate == mutated
+                {
+                    found = true
+                    break
+                }
+            }
+            
+            XCTAssertTrue(found)
+            
+            verified += 1
+        }
+        
+        XCTAssertGreaterThan(verified, 0)
+    }
+    
+    
+    
+    func testArrayMutateSingleElementCannotProduceEmpty()
+    {
+        for _ in 0..<1000
+        {
+            let mutated: [Int] = [50].mutate(using: .random)
+            
+            XCTAssertFalse(mutated.isEmpty)
+        }
+    }
+    
+    
+    
+    // MARK: - CollectionOfOne mutation
+    
+    func testCollectionOfOneMutateMatchesElementMutate()
+    {
+        for _ in 0..<1000
+        {
+            let (context1, context2) = GenerationContext.sameRandomContexts
+            
+            let value       = CollectionOfOne<Int>(50)
+            let mutated     = value.mutate(using: context1)
+            let expected    = CollectionOfOne(50.mutate(using: context2))
+            
+            XCTAssertEqual(Array(mutated), Array(expected))
+        }
+    }
+    
+    
+    
+    // MARK: - Dictionary mutation
+    
+    func testDictionaryMutation()
+    {
+        validateMutation(of: Dictionary<Int, Int>.self)
+    }
+    
+    
+    
+    func testDictionaryMutateInPlacePreservesKeys()
+    {
+        var verified: Int = 0
+        
+        for _ in 0..<10_000
+        {
+            let value   : [Int : Int]   = [1: 100, 2: 200, 3: 300]
+            let mutated : [Int : Int]   = value.mutate(using: .random)
+            
+            guard mutated.count == value.count
+            else
+            {
+                continue
+            }
+            
+            XCTAssertEqual(Set(mutated.keys), Set(value.keys))
+            
+            let differences: Int = value.keys.filter
+            {
+                return mutated[$0] != value[$0]
+            }.count
+            
+            XCTAssertLessThanOrEqual(differences, 1)
+            
+            verified += 1
+        }
+        
+        XCTAssertGreaterThan(verified, 0)
+    }
+    
+    
+    
+    func testDictionaryMutateInsertAddsOneEntry()
+    {
+        var verified: Int = 0
+        
+        for _ in 0..<10_000
+        {
+            let value   : [Int : Int]   = [1: 100, 2: 200]
+            let mutated : [Int : Int]   = value.mutate(using: .random)
+            
+            guard mutated.count == value.count + 1
+            else
+            {
+                continue
+            }
+            
+            /// All original entries must be present in the mutated dictionary.
+            /// Insertion with a colliding key would overwrite, producing the
+            /// same count.
+            for (key, val) in value
+            {
+                XCTAssertEqual(mutated[key], val)
+            }
+            
+            verified += 1
+        }
+        
+        XCTAssertGreaterThan(verified, 0)
+    }
+    
+    
+    
+    func testDictionaryMutateRemovePreservesRemainingEntries()
+    {
+        var verified: Int = 0
+        
+        for _ in 0..<10_000
+        {
+            let value   : [Int : Int]   = [1: 100, 2: 200, 3: 300]
+            let mutated : [Int : Int]   = value.mutate(using: .random)
+            
+            guard mutated.count == value.count - 1
+            else
+            {
+                continue
+            }
+            
+            for (key, val) in mutated
+            {
+                XCTAssertEqual(value[key], val)
+            }
+            
+            verified += 1
+        }
+        
+        XCTAssertGreaterThan(verified, 0)
+    }
+    
+    
+    
+    func testDictionaryMutateSingleEntryCannotProduceEmpty()
+    {
+        for _ in 0..<1000
+        {
+            let mutated: [Int : Int] = [1: 50].mutate(using: .random)
+            
+            XCTAssertFalse(mutated.isEmpty)
+        }
+    }
+    
+    
+    
+    // MARK: - Set mutation
+    
+    func testSetMutation()
+    {
+        validateMutation(of: Set<Int>.self)
+    }
+    
+    
+    
+    func testSetMutateInPlaceChangesAtMostOneElement()
+    {
+        var verified: Int = 0
+        
+        for _ in 0..<10_000
+        {
+            let value   : Set<Int>  = [100, 200, 300, 400, 500]
+            let mutated : Set<Int>  = value.mutate(using: .random)
+            
+            guard mutated.count == value.count
+            else
+            {
+                continue
+            }
+            
+            let removed : Set<Int>  = value.subtracting(mutated)
+            let added   : Set<Int>  = mutated.subtracting(value)
+            
+            XCTAssertLessThanOrEqual(removed.count, 1)
+            XCTAssertLessThanOrEqual(added.count, 1)
+            
+            verified += 1
+        }
+        
+        XCTAssertGreaterThan(verified, 0)
+    }
+    
+    
+    
+    func testSetMutateInsertAddsOneElement()
+    {
+        var verified: Int = 0
+        
+        for _ in 0..<10_000
+        {
+            let value   : Set<Int>  = [100, 200, 300]
+            let mutated : Set<Int>  = value.mutate(using: .random)
+            
+            guard mutated.count == value.count + 1
+            else
+            {
+                continue
+            }
+            
+            XCTAssertTrue(value.isSubset(of: mutated))
+            
+            verified += 1
+        }
+        
+        XCTAssertGreaterThan(verified, 0)
+    }
+    
+    
+    
+    func testSetMutateRemoveProducesSubset()
+    {
+        var verified: Int = 0
+        
+        for _ in 0..<10_000
+        {
+            let value   : Set<Int>  = [100, 200, 300, 400]
+            let mutated : Set<Int>  = value.mutate(using: .random)
+            
+            guard mutated.count == value.count - 1
+            else
+            {
+                continue
+            }
+            
+            XCTAssertTrue(mutated.isSubset(of: value))
+            
+            verified += 1
+        }
+        
+        XCTAssertGreaterThan(verified, 0)
+    }
+    
+    
+    
+    func testSetMutateSingleEntryCannotProduceEmpty()
+    {
+        for _ in 0..<1000
+        {
+            let mutated: Set<Int> = Set([50]).mutate(using: .random)
+            
+            XCTAssertFalse(mutated.isEmpty)
+        }
+    }
+}
+
+
+
+// MARK: - Support
+
+extension CollectionArbitraryTests
+{
+    // MARK: - Generation support
+    
+    /// Validates arbitrary value generation of the given type.
+    /// - Parameter type: The type to evaluate.
+    private func validateGeneration<T>(
+        of type: T.Type
+    ) where T : Arbitrary & Collection & Equatable
+    {
+        validateSizeZeroProducesEmpty(for: type)
+        validateCountRespectsSizeBounds(for: type)
+        validateProducesEmptyAndNonEmpty(for: type)
+        validateProducesVariousCounts(for: type)
+    }
+    
+    
+    
+    /// Validates that a size of zero produces empty collections.
+    /// - Parameter type: The type to evaluate.
+    private func validateSizeZeroProducesEmpty<T>(
+        for type: T.Type
+    ) where T : Arbitrary & Collection
+    {
+        for _ in 0..<1000
+        {
+            let value = T.arbitrary(using: .randomZeroSize)
+            
+            XCTAssertTrue(value.isEmpty)
+        }
+    }
+    
+    
+    
+    /// Validates generated collection counts do not exceed the generation size.
+    /// - Parameter type: The type to evaluate.
+    private func validateCountRespectsSizeBounds<T>(
+        for type: T.Type
+    ) where T : Arbitrary & Collection
+    {
+        let size: Int = 10
+        
+        for _ in 0..<1000
+        {
+            let value = T.arbitrary(using: .randomSeed(size: size))
+            
+            XCTAssertLessThanOrEqual(value.count, size)
+        }
+    }
+    
+    
+    
+    /// Validates that arbitrary value generation produces both empty and
+    /// non-empty collections.
+    /// - Parameter type: The type to evaluate.
+    private func validateProducesEmptyAndNonEmpty<T>(
+        for type: T.Type
+    ) where T : Arbitrary & Collection
+    {
+        var hasEmpty    : Bool  = false
+        var hasNonEmpty : Bool  = false
+        
+        for _ in 0..<1000
+        {
+            let value = T.arbitrary(using: .random)
+            
+            if value.isEmpty
+            {
+                hasEmpty = true
+            }
+            else
+            {
+                hasNonEmpty = true
+            }
+            
+            if
+                hasEmpty,
+                hasNonEmpty
+            {
+                break
+            }
+        }
+        
+        XCTAssertTrue(hasEmpty)
+        XCTAssertTrue(hasNonEmpty)
+    }
+    
+    
+    
+    /// Validates that arbitrary value generation produces collections of
+    /// various counts.
+    /// - Parameter type: The type to evaluate.
+    private func validateProducesVariousCounts<T>(
+        for type: T.Type
+    ) where T : Arbitrary & Collection
+    {
+        let size    : Int       = 20
+        var counts  : Set<Int>  = []
+        
+        for _ in 0..<1000
+        {
+            let value = T.arbitrary(using: .randomSeed(size: size))
+            
+            counts.insert(value.count)
+        }
+        
+        XCTAssertGreaterThan(counts.count, 10)
+    }
+    
+    
+    
+    // MARK: Mutation support
+    
+    /// Validates arbitrary value mutation of the given type.
+    /// - Parameter type: The type to evaluate.
+    private func validateMutation<T>(
+        of type: T.Type
+    ) where T : Arbitrary & Collection & Equatable
+    {
+        validateMutateEmptyProducesNonEmpty(for: type)
+        validateMutateCountChangesByAtMostOne(for: type)
+        validateMutateProducesAllOperationTypes(for: type)
+    }
+    
+    
+    
+    /// Validates that mutating an empty collection produces a non-empty
+    /// collection.
+    /// - Parameter type: The type to evaluate.
+    private func validateMutateEmptyProducesNonEmpty<T>(
+        for type: T.Type
+    ) where T : Arbitrary & Collection
+    {
+        for _ in 0..<1000
+        {
+            let value = T.arbitrary(using: .randomZeroSize)
+            
+            XCTAssertTrue(value.isEmpty)
+            
+            let mutated = value.mutate(using: .random)
+            
+            XCTAssertEqual(mutated.count, 1)
+        }
+    }
+    
+    
+    
+    /// Validates that mutating a collection changes its count by at most one.
+    /// - Parameter type: The type to evaluate.
+    private func validateMutateCountChangesByAtMostOne<T>(
+        for type: T.Type
+    ) where T : Arbitrary & Collection
+    {
+        for _ in 0..<1000
+        {
+            let context : GenerationContext     = .randomSeed(size: 20)
+            let value   : T                     = T.arbitrary(using: context)
+            
+            guard !value.isEmpty
+            else
+            {
+                continue
+            }
+            
+            let mutated : T     = value.mutate(using: context)
+            let delta   : Int   = mutated.count - value.count
+            
+            XCTAssertTrue((-1...1).contains(delta))
+        }
+    }
+    
+    
+    
+    /// Validates that mutating a collection increases, decreases, and does
+    /// not change its count.
+    /// - Parameter type: The type to evaluate.
+    private func validateMutateProducesAllOperationTypes<T>(
+        for type: T.Type
+    ) where T : Arbitrary & Collection
+    {
+        var hasSameCount    : Bool  = false
+        var hasMoreCount    : Bool  = false
+        var hasFewerCount   : Bool  = false
+        
+        for _ in 0..<10_000
+        {
+            let value = T.arbitrary(using: .randomSeed(size: 20))
+            
+            guard !value.isEmpty
+            else
+            {
+                continue
+            }
+            
+            let mutated : T     = value.mutate(using: .random)
+            let delta   : Int   = mutated.count - value.count
+            
+            switch delta
+            {
+                case 0  : hasSameCount      = true
+                case 1  : hasMoreCount      = true
+                case -1 : hasFewerCount     = true
+                default : break
+            }
+            
+            if
+                hasSameCount,
+                hasMoreCount,
+                hasFewerCount
+            {
+                break
+            }
+        }
+        
+        XCTAssertTrue(hasSameCount)
+        XCTAssertTrue(hasMoreCount)
+        XCTAssertTrue(hasFewerCount)
+    }
+}

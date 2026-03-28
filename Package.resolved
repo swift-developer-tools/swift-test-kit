@@ -1,0 +1,42 @@
+{
+  "originHash" : "1a4735b0cd3546fc04c17147b09df4d8945bdbd267fe6a99635130c603bfee95",
+  "pins" : [
+    {
+      "identity" : "swift-docc-plugin",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/swiftlang/swift-docc-plugin",
+      "state" : {
+        "branch" : "main",
+        "revision" : "7935a77059e00713a088edf37e2a3485f87398ad"
+      }
+    },
+    {
+      "identity" : "swift-docc-symbolkit",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/swiftlang/swift-docc-symbolkit.git",
+      "state" : {
+        "revision" : "b45d1f2ed151d057b54504d653e0da5552844e34",
+        "version" : "1.0.0"
+      }
+    },
+    {
+      "identity" : "swift-reasync",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/swift-developer-tools/swift-reasync",
+      "state" : {
+        "branch" : "main",
+        "revision" : "a2be44d8217cbbb3fff68c1f43ecbd09face31a3"
+      }
+    },
+    {
+      "identity" : "swift-syntax",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/swiftlang/swift-syntax",
+      "state" : {
+        "revision" : "2b59c0c741e9184ab057fd22950b491076d42e91",
+        "version" : "603.0.0"
+      }
+    }
+  ],
+  "version" : 3
+}
