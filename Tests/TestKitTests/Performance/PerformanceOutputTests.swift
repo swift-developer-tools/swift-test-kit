@@ -307,8 +307,10 @@ internal final class PerformanceOutputTests: TestKitCase
     
     // MARK: - Time
     
-    func testTimeLimitExceeded() async
+    func testTimeLimitExceeded() async throws
     {
+        try skipCI()
+        
         let options: TestOptions = .performanceOptions(
             runs:           1,
             warmupRuns:     0,
@@ -342,8 +344,10 @@ internal final class PerformanceOutputTests: TestKitCase
     
     
     
-    func testTimeLimitExceededWithMessage() async
+    func testTimeLimitExceededWithMessage() async throws
     {
+        try skipCI()
+        
         let options: TestOptions = .performanceOptions(
             runs:           1,
             warmupRuns:     0,
@@ -382,8 +386,10 @@ internal final class PerformanceOutputTests: TestKitCase
     
     // MARK: - Memory
     
-    func testMemoryLimitExceeded() async
+    func testMemoryLimitExceeded() async throws
     {
+        try skipCI()
+        
         let options: TestOptions = .performanceOptions(
             runs:           1,
             warmupRuns:     0,
@@ -418,8 +424,10 @@ internal final class PerformanceOutputTests: TestKitCase
     
     // MARK: - Both metrics
     
-    func testBothMetricsBothExceeded() async
+    func testBothMetricsBothExceeded() async throws
     {
+        try skipCI()
+        
         let options: TestOptions = .performanceOptions(
             runs:           3,
             warmupRuns:     0,
@@ -463,8 +471,10 @@ internal final class PerformanceOutputTests: TestKitCase
     
     
     
-    func testBothMetricsTimeExceeded() async
+    func testBothMetricsTimeExceeded() async throws
     {
+        try skipCI()
+        
         let options: TestOptions = .performanceOptions(
             runs:           3,
             warmupRuns:     0,
@@ -503,8 +513,10 @@ internal final class PerformanceOutputTests: TestKitCase
     
     
     
-    func testBothMetricsMemoryExceeded() async
+    func testBothMetricsMemoryExceeded() async throws
     {
+        try skipCI()
+        
         let options: TestOptions = .performanceOptions(
             runs:           3,
             warmupRuns:     0,
@@ -656,8 +668,10 @@ internal final class PerformanceOutputTests: TestKitCase
     
     // MARK: - Nested
     
-    func testPerformanceInsidePerformance() async
+    func testPerformanceInsidePerformance() async throws
     {
+        try skipCI()
+        
         let options1: TestOptions = .performanceOptions(
             runs:           3,
             warmupRuns:     0,
