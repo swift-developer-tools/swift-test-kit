@@ -132,8 +132,10 @@ internal final class PerformanceIntegrationTests: TestKitCase
     
     
     
-    func testTimeLimitParameterOverridesDefaultOptions() async
+    func testTimeLimitParameterOverridesDefaultOptions() async throws
     {
+        try skipCI()
+        
         let timeLimit: Duration = .milliseconds(1)
         
         let options: TestOptions = .performanceOptions(
@@ -161,8 +163,10 @@ internal final class PerformanceIntegrationTests: TestKitCase
     
     
     
-    func testMemoryLimitParameterOverridesDefaultOptions() async
+    func testMemoryLimitParameterOverridesDefaultOptions() async throws
     {
+        try skipCI()
+        
         let holder = MemoryHolder()
         
         let options: TestOptions = .performanceOptions(

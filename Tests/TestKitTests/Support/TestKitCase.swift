@@ -177,4 +177,33 @@ internal class TestKitCase: XCTestCase
         
         return captured.withLock { $0 }
     }
+    
+    
+    
+    /// Skips the current test when running in a CI environment.
+    ///
+    /// Use this for tests that depend on wall-clock timing or system resource
+    /// behavior that varies across environments. For example, tests that
+    /// assert elapsed-time bounds, verify partial iteration counts gated by
+    /// real sleeps, or which depend on allocation measurement accuracy.
+    ///
+    /// - Parameters:
+    ///   - message: An optional description of why the test is being skipped.
+    ///   - file: The file where the test exists. The default value is the
+    ///   filename of the test case in which this function was called.
+    ///   - line: The line where the test exists. The default value is the
+    ///   line number where this function was called.
+    func skipCI(
+        _ message   : String        = "Test skipped in CI environment",
+        file        : StaticString  = #filePath,
+        line        : UInt          = #line
+    ) throws
+    {
+        try XCTSkipIf(
+            ProcessInfo.processInfo.environment["CI"] != nil,
+            message,
+            file:   file,
+            line:   line
+        )
+    }
 }

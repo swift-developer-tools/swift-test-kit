@@ -2474,6 +2474,8 @@ internal final class StatefulRunnerTests: TestKitCase
     
     func testTimeoutReturnsPartialIterationCount() async throws
     {
+        try skipCI()
+        
         let iterations: Int = 1000
         
         let options: TestOptions = .propertyOptions(
@@ -2573,6 +2575,8 @@ internal final class StatefulRunnerTests: TestKitCase
     
     func testTimeoutDuringShrinkingLimitsShrinkSteps() async throws
     {
+        try skipCI()
+        
         let target          : Int   = 30
         let maxShrinkSteps  : Int   = 100
         

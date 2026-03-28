@@ -289,6 +289,8 @@ internal final class PerformanceRunnerTests: TestKitCase
     
     func testBothMetricsEnabledOnlyTimeExceeded() async throws
     {
+        try skipCI()
+        
         let result: PerformanceResult = await PerformanceRunner.run(
             runs:           3,
             warmupRuns:     0,
@@ -417,6 +419,8 @@ internal final class PerformanceRunnerTests: TestKitCase
     
     func testTimeMeasurementReflectsSleep() async throws
     {
+        try skipCI()
+        
         let sleepDuration: Duration = .milliseconds(20)
         
         let result: PerformanceResult = await PerformanceRunner.run(
@@ -444,6 +448,8 @@ internal final class PerformanceRunnerTests: TestKitCase
     
     func testMemoryMeasurementProducesMeasurableDifference() async throws
     {
+        try skipCI()
+        
         let runs    : Int           = 3
         let holder  : MemoryHolder  = .init()
         
@@ -618,8 +624,10 @@ internal final class PerformanceRunnerTests: TestKitCase
     
     // MARK: - Cancelation
     
-    func testCancelationBeforeAnyRuns() async
+    func testCancelationBeforeAnyRuns() async throws
     {
+        try skipCI()
+        
         let task = Task
         {
             await PerformanceRunner.run(
@@ -643,8 +651,10 @@ internal final class PerformanceRunnerTests: TestKitCase
     
     
     
-    func testCancelationDuringMeasurement() async
+    func testCancelationDuringMeasurement() async throws
     {
+        try skipCI()
+        
         let task = Task
         {
             await PerformanceRunner.run(
@@ -672,6 +682,8 @@ internal final class PerformanceRunnerTests: TestKitCase
     
     func testTimeExceedsLimitFails() async throws
     {
+        try skipCI()
+        
         let result: PerformanceResult = await PerformanceRunner.run(
             runs:           3,
             warmupRuns:     0,

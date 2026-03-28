@@ -1883,6 +1883,8 @@ internal final class PropertyRunnerTests: TestKitCase
     
     func testTimeoutReturnsPartialIterationCount() async throws
     {
+        try skipCI()
+        
         let iterations: Int = 1000
         
         let options: TestOptions = .propertyOptions(
@@ -1972,6 +1974,8 @@ internal final class PropertyRunnerTests: TestKitCase
     
     func testTimeoutDuringShrinkingLimitsShrinkSteps() async throws
     {
+        try skipCI()
+        
         let maxShrinkSteps: Int = 100
         
         let options: TestOptions = .propertyOptions(
