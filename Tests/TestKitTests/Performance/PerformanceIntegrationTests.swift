@@ -44,7 +44,7 @@ internal final class PerformanceIntegrationTests: TestKitCase
         let options: TestOptions = .performanceOptions(
             runs:           3,
             warmupRuns:     0,
-            wallTimeLimit:  nil
+            wallTimeLimit:  .seconds(10)
         )
         
         await TKPerformance(options: options) { }
