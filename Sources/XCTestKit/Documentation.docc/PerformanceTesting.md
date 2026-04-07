@@ -6,8 +6,8 @@ and verify that median values stay within configurable limits.
 ## Overview
 
 Performance tests measure a closure across multiple runs, with optional 
-warmup runs, and fail if the median time or median physical memory footprint 
-exceeds the configured limits.
+warmup runs, and fail if the median wall-clock time, median CPU time, or median 
+physical memory footprint exceeds the configured limits.
 
 ## Topics
 
