@@ -542,7 +542,7 @@ internal final class AtomicOutputTests: TestKitCase
         let options: TestOptions = .performanceOptions(
             runs:           3,
             warmupRuns:     0,
-            timeLimit:      .seconds(10)
+            wallTimeLimit:  .seconds(10)
         )
         
         let actual: String? = await withOneExpectedFailure
@@ -742,7 +742,7 @@ internal final class AtomicOutputTests: TestKitCase
         let options: TestOptions = .performanceOptions(
             runs:           3,
             warmupRuns:     0,
-            timeLimit:      .seconds(10)
+            wallTimeLimit:  .seconds(10)
         )
         
         let actual: String? = await withOneExpectedFailure

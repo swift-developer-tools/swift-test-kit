@@ -32,7 +32,7 @@ internal final class PerformanceOutputTests: TestKitCase
         let options: TestOptions = .performanceOptions(
             runs:           3,
             warmupRuns:     1,
-            timeLimit:      .seconds(10)
+            wallTimeLimit:  .seconds(10)
         )
         
         let actual: String? = await withOneExpectedFailure
@@ -60,7 +60,7 @@ internal final class PerformanceOutputTests: TestKitCase
         let options: TestOptions = .performanceOptions(
             runs:           3,
             warmupRuns:     0,
-            timeLimit:      .seconds(10)
+            wallTimeLimit:  .seconds(10)
         )
         
         let actual: String? = await withOneExpectedFailure
@@ -88,7 +88,7 @@ internal final class PerformanceOutputTests: TestKitCase
         let options: TestOptions = .performanceOptions(
             runs:           3,
             warmupRuns:     0,
-            timeLimit:      .seconds(10)
+            wallTimeLimit:  .seconds(10)
         )
         
         let actual: String? = await withOneExpectedFailure
@@ -123,7 +123,7 @@ internal final class PerformanceOutputTests: TestKitCase
         let options: TestOptions = .performanceOptions(
             runs:           3,
             warmupRuns:     0,
-            timeLimit:      .seconds(10)
+            wallTimeLimit:  .seconds(10)
         )
         
         let actual: String? = await withOneExpectedFailure
@@ -160,7 +160,7 @@ internal final class PerformanceOutputTests: TestKitCase
         let options: TestOptions = .performanceOptions(
             runs:           3,
             warmupRuns:     3,
-            timeLimit:      .seconds(10)
+            wallTimeLimit:  .seconds(10)
         )
         
         let actual: String? = await withOneExpectedFailure
@@ -190,7 +190,7 @@ internal final class PerformanceOutputTests: TestKitCase
         let options: TestOptions = .performanceOptions(
             runs:           3,
             warmupRuns:     1,
-            timeLimit:      .seconds(10)
+            wallTimeLimit:  .seconds(10)
         )
         
         let actual: String? = await withOneExpectedFailure
@@ -218,7 +218,7 @@ internal final class PerformanceOutputTests: TestKitCase
         let options: TestOptions = .performanceOptions(
             runs:           3,
             warmupRuns:     0,
-            timeLimit:      .seconds(10)
+            wallTimeLimit:  .seconds(10)
         )
         
         let actual: String? = await withOneExpectedFailure
@@ -246,7 +246,7 @@ internal final class PerformanceOutputTests: TestKitCase
         let options: TestOptions = .performanceOptions(
             runs:           3,
             warmupRuns:     0,
-            timeLimit:      .seconds(10)
+            wallTimeLimit:  .seconds(10)
         )
         
         let actual: String? = await withOneExpectedFailure
@@ -279,7 +279,7 @@ internal final class PerformanceOutputTests: TestKitCase
         let options: TestOptions = .performanceOptions(
             runs:           3,
             warmupRuns:     0,
-            timeLimit:      .seconds(10)
+            wallTimeLimit:  .seconds(10)
         )
         
         let actual: String? = await withOneExpectedFailure
@@ -305,16 +305,16 @@ internal final class PerformanceOutputTests: TestKitCase
     
     
     
-    // MARK: - Time
+    // MARK: - Wall time
     
-    func testTimeLimitExceeded() async throws
+    func testWallTimeLimitExceeded() async throws
     {
         try skipCI()
         
         let options: TestOptions = .performanceOptions(
             runs:           1,
             warmupRuns:     0,
-            timeLimit:      .milliseconds(1)
+            wallTimeLimit:  .milliseconds(1)
         )
         
         let actual: String? = await withCapturedFailure
@@ -334,7 +334,7 @@ internal final class PerformanceOutputTests: TestKitCase
         """
         XCTKPerformance failed
         
-        Time:
+        Wall time:
             Threshold: 1 ms
             Median: <M> (1 run) ←
         """
@@ -344,14 +344,14 @@ internal final class PerformanceOutputTests: TestKitCase
     
     
     
-    func testTimeLimitExceededWithMessage() async throws
+    func testWallTimeLimitExceededWithMessage() async throws
     {
         try skipCI()
         
         let options: TestOptions = .performanceOptions(
             runs:           1,
             warmupRuns:     0,
-            timeLimit:      .milliseconds(1)
+            wallTimeLimit:  .milliseconds(1)
         )
         
         let actual: String? = await withCapturedFailure
@@ -372,7 +372,78 @@ internal final class PerformanceOutputTests: TestKitCase
         """
         XCTKPerformance failed
         
-        Time:
+        Wall time:
+            Threshold: 1 ms
+            Median: <M> (1 run) ←
+        
+        hello world
+        """
+        
+        XCTAssertEqual(expected, actual?.medianless)
+    }
+    
+    
+    
+    // MARK: - CPU time
+    
+    func testCPUTimeLimitExceeded() async throws
+    {
+        try skipCI()
+        
+        let options: TestOptions = .performanceOptions(
+            runs:           1,
+            warmupRuns:     0,
+            cpuTimeLimit:   .milliseconds(1)
+        )
+        
+        let actual: String? = await withOneExpectedFailure
+        {
+            await TKPerformance(options: options)
+            {
+                consumeCPU()
+            }
+        }
+        
+        let expected: String =
+        """
+        XCTKPerformance failed
+        
+        CPU time:
+            Threshold: 1 ms
+            Median: <M> (1 run) ←
+        """
+        
+        XCTAssertEqual(expected, actual?.medianless)
+    }
+    
+    
+    
+    func testCPUTimeLimitExceededWithMessage() async throws
+    {
+        try skipCI()
+        
+        let options: TestOptions = .performanceOptions(
+            runs:           1,
+            warmupRuns:     0,
+            cpuTimeLimit:   .milliseconds(1)
+        )
+        
+        let actual: String? = await withOneExpectedFailure
+        {
+            await TKPerformance(
+                "hello world",
+                options: options
+            )
+            {
+                consumeCPU()
+            }
+        }
+        
+        let expected: String =
+        """
+        XCTKPerformance failed
+        
+        CPU time:
             Threshold: 1 ms
             Median: <M> (1 run) ←
         
@@ -422,16 +493,17 @@ internal final class PerformanceOutputTests: TestKitCase
     
     
     
-    // MARK: - Both metrics
+    // MARK: - Multiple metrics
     
-    func testBothMetricsBothExceeded() async throws
+    func testMultipleMetricsAllExceeded() async throws
     {
         try skipCI()
         
         let options: TestOptions = .performanceOptions(
             runs:           3,
             warmupRuns:     0,
-            timeLimit:      .milliseconds(1),
+            wallTimeLimit:  .milliseconds(1),
+            cpuTimeLimit:   .nanoseconds(1),
             memoryLimit:    .bytes(1)
         )
         
@@ -447,6 +519,7 @@ internal final class PerformanceOutputTests: TestKitCase
             )
             {
                 holder.allocate()
+                consumeCPU()
                 try await Task.sleep(for: .milliseconds(50))
             }
             
@@ -457,8 +530,12 @@ internal final class PerformanceOutputTests: TestKitCase
         """
         XCTKPerformance failed
         
-        Time:
+        Wall time:
             Threshold: 1 ms
+            Median: <M> (3 runs) ←
+        
+        CPU time:
+            Threshold: 0 ms
             Median: <M> (3 runs) ←
         
         Memory:
@@ -471,14 +548,14 @@ internal final class PerformanceOutputTests: TestKitCase
     
     
     
-    func testBothMetricsTimeExceeded() async throws
+    func testMultipleMetricsWallTimeExceeded() async throws
     {
         try skipCI()
         
         let options: TestOptions = .performanceOptions(
             runs:           3,
             warmupRuns:     0,
-            timeLimit:      .milliseconds(1),
+            wallTimeLimit:  .milliseconds(1),
             memoryLimit:    .gigabytes(50)
         )
         
@@ -499,7 +576,7 @@ internal final class PerformanceOutputTests: TestKitCase
         """
         XCTKPerformance failed
         
-        Time:
+        Wall time:
             Threshold: 1 ms
             Median: <M> (3 runs) ←
         
@@ -513,14 +590,56 @@ internal final class PerformanceOutputTests: TestKitCase
     
     
     
-    func testBothMetricsMemoryExceeded() async throws
+    func testMultipleMetricsCPUTimeExceeded() async throws
     {
         try skipCI()
         
         let options: TestOptions = .performanceOptions(
             runs:           3,
             warmupRuns:     0,
-            timeLimit:      .seconds(10),
+            wallTimeLimit:  .seconds(10_000),
+            cpuTimeLimit:   .milliseconds(1),
+            memoryLimit:    .gigabytes(50)
+        )
+        
+        let actual: String? = await withOneExpectedFailure
+        {
+            await TKPerformance(options: options)
+            {
+                consumeCPU()
+            }
+        }
+        
+        let expected: String =
+        """
+        XCTKPerformance failed
+        
+        Wall time:
+            Threshold: 10,000 sec
+            Median: <M> (3 runs)
+        
+        CPU time:
+            Threshold: 1 ms
+            Median: <M> (3 runs) ←
+        
+        Memory:
+            Threshold: 50 GB
+            Median: <M> (3 runs)
+        """
+        
+        XCTAssertEqual(expected, actual?.medianless)
+    }
+    
+    
+    
+    func testMultipleMetricsMemoryExceeded() async throws
+    {
+        try skipCI()
+        
+        let options: TestOptions = .performanceOptions(
+            runs:           3,
+            warmupRuns:     0,
+            wallTimeLimit:  .seconds(10_000),
             memoryLimit:    .bytes(1)
         )
         
@@ -540,8 +659,8 @@ internal final class PerformanceOutputTests: TestKitCase
         """
         XCTKPerformance failed
         
-        Time:
-            Threshold: 10 sec
+        Wall time:
+            Threshold: 10,000 sec
             Median: <M> (3 runs)
         
         Memory:
@@ -561,7 +680,7 @@ internal final class PerformanceOutputTests: TestKitCase
         let options: TestOptions = .performanceOptions(
             runs:           3,
             warmupRuns:     0,
-            timeLimit:      .seconds(10)
+            wallTimeLimit:  .seconds(10)
         )
         
         let actual: String? = await withOneExpectedFailure
@@ -594,7 +713,7 @@ internal final class PerformanceOutputTests: TestKitCase
         let options: TestOptions = .performanceOptions(
             runs:           3,
             warmupRuns:     1,
-            timeLimit:      .seconds(10)
+            wallTimeLimit:  .seconds(10)
         )
         
         let actual: String? = await withOneExpectedFailure
@@ -632,7 +751,7 @@ internal final class PerformanceOutputTests: TestKitCase
         let options: TestOptions = .performanceOptions(
             runs:           3,
             warmupRuns:     0,
-            timeLimit:      .seconds(10)
+            wallTimeLimit:  .seconds(10)
         )
         
         let actual: String? = await withOneExpectedFailure
@@ -675,13 +794,13 @@ internal final class PerformanceOutputTests: TestKitCase
         let options1: TestOptions = .performanceOptions(
             runs:           3,
             warmupRuns:     0,
-            timeLimit:      .seconds(10)
+            wallTimeLimit:  .seconds(10)
         )
         
         let options2: TestOptions = .performanceOptions(
             runs:           1,
             warmupRuns:     0,
-            timeLimit:      .milliseconds(1)
+            wallTimeLimit:  .milliseconds(1)
         )
         
         let actual: String? = await withCapturedFailure
@@ -709,7 +828,7 @@ internal final class PerformanceOutputTests: TestKitCase
 
         XCTKPerformance failed
         
-        Time:
+        Wall time:
             Threshold: 1 ms
             Median: <M> (1 run) ←
         """
@@ -724,7 +843,7 @@ internal final class PerformanceOutputTests: TestKitCase
         let options: TestOptions = .performanceOptions(
             runs:           3,
             warmupRuns:     0,
-            timeLimit:      .seconds(10)
+            wallTimeLimit:  .seconds(10)
         )
         
         let actual: String? = await withOneExpectedFailure
@@ -757,7 +876,7 @@ internal final class PerformanceOutputTests: TestKitCase
         let options: TestOptions = .performanceOptions(
             runs:           3,
             warmupRuns:     0,
-            timeLimit:      .seconds(10)
+            wallTimeLimit:  .seconds(10)
         )
         
         let actual: String? = await withCapturedFailure
@@ -801,7 +920,7 @@ internal final class PerformanceOutputTests: TestKitCase
         let performanceOptions: TestOptions = .performanceOptions(
             runs:           3,
             warmupRuns:     0,
-            timeLimit:      .seconds(10)
+            wallTimeLimit:  .seconds(10)
         )
         
         let actual: String? = await withOneExpectedFailure
@@ -846,7 +965,7 @@ internal final class PerformanceOutputTests: TestKitCase
         let performanceOptions: TestOptions = .performanceOptions(
             runs:           3,
             warmupRuns:     0,
-            timeLimit:      .seconds(10)
+            wallTimeLimit:  .seconds(10)
         )
         
         let actual: String? = await withOneExpectedFailure

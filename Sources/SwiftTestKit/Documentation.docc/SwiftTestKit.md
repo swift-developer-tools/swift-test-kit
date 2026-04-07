@@ -25,8 +25,9 @@ unexpectedly, and which threw errors.
 Atomic tests group assertions into a single atomic evaluation and verify that 
 all assertions pass within a single execution.
 
-Performance tests measure execution time and physical memory footprint across
-multiple runs, and verify that median values stay within configurable limits.
+Performance tests measure wall-clock time, CPU time, and physical memory 
+footprint across multiple runs, and verify that median values stay within 
+configurable limits.
 
 Temporal tests poll assertions continuously for a given duration, or until all 
 assertions pass within a single execution.
@@ -364,26 +365,45 @@ await STKAtomic
 
 ## Performance Testing
 
-Performance tests measure execution time and physical memory footprint across
-multiple runs, and verify that median values stay within configurable limits.
+Performance tests measure wall-clock time, CPU time, and physical memory 
+footprint across multiple runs, and verify that median values stay within 
+configurable limits.
 
-### Time
+### Wall-Clock Time
 
-Verify the execution time:
+Verify the wall-clock execution time:
 
 ```swift
 // Assert that a custom sort function is working correctly,
 // and that it sorts within 50 milliseconds.
-await STKPerformance(timeLimit: .milliseconds(50))
+await STKPerformance(wallTimeLimit: .milliseconds(50))
 {
     STKAssertSorted(customSort(array), by: >=)
 }
 
 // STKPerformance failed
 // 
-// Time:
+// Wall time:
 //     Threshold: 50 ms
 //     Median:    77 ms (10 runs) ←
+```
+
+### CPU Time
+
+Verify the CPU execution time:
+
+```swift
+// Assert that a payload is compressed within 20 milliseconds of CPU time.
+await STKPerformance(cpuTimeLimit: .milliseconds(20))
+{
+    _ = try compress(payload)
+}
+
+// STKPerformance failed
+// 
+// CPU time:
+//     Threshold: 20 ms
+//     Median:    34 ms (10 runs) ←
 ```
 
 ### Memory
