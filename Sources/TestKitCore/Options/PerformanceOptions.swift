@@ -34,6 +34,26 @@ public struct PerformanceOptions: Equatable, Sendable
     /// process spends descheduled, blocked on I/O, or waiting on locks.
     public var wallTimeLimit    : Duration?
     
+    /// The CPU time limit.
+    ///
+    /// The default value is `nil` (CPU time measurement disabled). When
+    /// non-`nil`, the test fails if the median CPU time across measurement
+    /// runs exceeds this limit.
+    ///
+    /// CPU time measures only the time during which the process was actually
+    /// executing on a CPU core.
+    ///
+    /// - Note: CPU time is measured at process granularity, and is not scoped
+    /// to the measured block. When tests run in parallel within a single
+    /// process, the CPU time consumed by other concurrently-executing tests is
+    /// included in the measurement. For reliable CPU time assertions, run
+    /// tests serially or in isolation.
+    ///
+    /// - Note: CPU time is the incorrect measurement for I/O-bound or
+    /// lock-contended code, since the time spent blocked does not advance the
+    /// CPU clock. Use ``wallTimeLimit`` instead, or use both limits together.
+    public var cpuTimeLimit     : Duration?
+    
     /// The physical memory footprint limit.
     ///
     /// The default value is `nil` (memory measurement disabled). When
@@ -52,12 +72,13 @@ public struct PerformanceOptions: Equatable, Sendable
     ///
     /// - Precondition: `runs` must be positive.
     /// - Precondition: `warmupRuns` must not be negative.
-    /// - Precondition: `wallTimeLimit` and `memoryLimit` must be positive
-    /// or `nil`.
+    /// - Precondition: `wallTimeLimit`, `cpuTimeLimit`, and `memoryLimit`
+    /// must be positive or `nil`.
     public init(
         runs            : Int           = 10,
         warmupRuns      : Int           = 1,
         wallTimeLimit   : Duration?     = nil,
+        cpuTimeLimit    : Duration?     = nil,
         memoryLimit     : ByteCount?    = nil
     )
     {
@@ -79,6 +100,14 @@ public struct PerformanceOptions: Equatable, Sendable
             )
         }
         
+        if let cpuTimeLimit
+        {
+            precondition(
+                cpuTimeLimit > .zero,
+                "cpuTimeLimit must be positive"
+            )
+        }
+        
         if let memoryLimit
         {
             precondition(
@@ -90,6 +119,7 @@ public struct PerformanceOptions: Equatable, Sendable
         self.runs           = runs
         self.warmupRuns     = warmupRuns
         self.wallTimeLimit  = wallTimeLimit
+        self.cpuTimeLimit   = cpuTimeLimit
         self.memoryLimit    = memoryLimit
     }
 }

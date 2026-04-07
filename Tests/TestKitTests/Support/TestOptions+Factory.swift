@@ -71,6 +71,7 @@ internal extension TestOptions
         runs            : Int           = 10,
         warmupRuns      : Int           = 1,
         wallTimeLimit   : Duration?     = nil,
+        cpuTimeLimit    : Duration?     = nil,
         memoryLimit     : ByteCount?    = nil
     ) -> TestOptions
     {
@@ -78,6 +79,7 @@ internal extension TestOptions
             runs:           runs,
             warmupRuns:     warmupRuns,
             wallTimeLimit:  wallTimeLimit,
+            cpuTimeLimit:   cpuTimeLimit,
             memoryLimit:    memoryLimit
         )
         
