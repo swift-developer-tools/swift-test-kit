@@ -301,42 +301,17 @@ internal struct PerformanceRunner
     
     
     
-    /// Computes the median of the given durations.
+    /// Computes the median of the given values.
     ///
     /// If the given array has an even number of elements, the lower-middle
     /// value is used.
     ///
-    /// - Parameter values: The durations.
-    /// - Returns: The median of the given durations, or `nil` if the array
-    /// is empty.
-    private static func median(
-        of values: [Duration]
-    ) -> Duration?
-    {
-        guard !values.isEmpty
-        else
-        {
-            return nil
-        }
-        
-        let sorted: [Duration] = values.sorted()
-        
-        return sorted[(sorted.count - 1) / 2]
-    }
-    
-    
-    
-    /// Computes the median of the given byte counts.
-    ///
-    /// If the given array has an even number of elements, the lower-middle
-    /// value is used.
-    ///
-    /// - Parameter values: The byte counts.
+    /// - Parameter values: The values.
     /// - Returns: The median of the given values, or `nil` if the array
     /// is empty.
-    private static func median(
-        of values: [ByteCount]
-    ) -> ByteCount?
+    private static func median<T>(
+        of values: [T]
+    ) -> T? where T : Comparable
     {
         guard !values.isEmpty
         else
@@ -344,7 +319,7 @@ internal struct PerformanceRunner
             return nil
         }
         
-        let sorted: [ByteCount] = values.sorted()
+        let sorted: [T] = values.sorted()
         
         return sorted[(sorted.count - 1) / 2]
     }
