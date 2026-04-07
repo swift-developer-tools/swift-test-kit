@@ -68,16 +68,18 @@ internal extension TestOptions
     /// Initializes a ``TestOptions`` instance, optionally specifying values
     /// for its performance testing options property.
     static func performanceOptions(
-        runs        : Int           = 10,
-        warmupRuns  : Int           = 1,
-        timeLimit   : Duration?     = nil,
-        memoryLimit : ByteCount?    = nil
+        runs            : Int           = 10,
+        warmupRuns      : Int           = 1,
+        wallTimeLimit   : Duration?     = nil,
+        cpuTimeLimit    : Duration?     = nil,
+        memoryLimit     : ByteCount?    = nil
     ) -> TestOptions
     {
         let performanceOptions = PerformanceOptions(
             runs:           runs,
             warmupRuns:     warmupRuns,
-            timeLimit:      timeLimit,
+            wallTimeLimit:  wallTimeLimit,
+            cpuTimeLimit:   cpuTimeLimit,
             memoryLimit:    memoryLimit
         )
         

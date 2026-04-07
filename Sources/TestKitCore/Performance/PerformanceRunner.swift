@@ -19,20 +19,32 @@ internal struct PerformanceRunner
     /// - Parameters:
     ///   - runs: The number of measurement runs.
     ///   - warmupRuns: The number of warmup runs before measurement begins.
-    ///   - timeLimit: The time limit.
+    ///   - wallTimeLimit: The wall-clock time limit.
+    ///   - cpuTimeLimit: The CPU time limit.
     ///   - memoryLimit: The physical memory footprint limit.
     ///   - body: The performance body.
     /// - Returns: The result of the performance test.
     internal static func run(
-        runs        : Int,
-        warmupRuns  : Int,
-        timeLimit   : Duration?,
-        memoryLimit : ByteCount?,
-        body        : () async throws -> Void
+        runs            : Int,
+        warmupRuns      : Int,
+        wallTimeLimit   : Duration?,
+        cpuTimeLimit    : Duration?,
+        memoryLimit     : ByteCount?,
+        body            : () async throws -> Void
     ) async -> PerformanceResult
     {
-        let timeEnabled     : Bool  = timeLimit != nil
+        let wallTimeEnabled : Bool  = wallTimeLimit != nil
+        var cpuTimeEnabled  : Bool  = cpuTimeLimit != nil
         var memoryEnabled   : Bool  = memoryLimit != nil
+        
+        if
+            cpuTimeEnabled,
+            cpuTime() == nil
+        {
+            cpuTimeEnabled = false
+            
+            logger.warning("CPU time measurement unavailable")
+        }
         
         if
             memoryEnabled,
@@ -44,7 +56,8 @@ internal struct PerformanceRunner
         }
         
         guard
-            timeEnabled
+            wallTimeEnabled
+            || cpuTimeEnabled
             || memoryEnabled
         else
         {
@@ -99,8 +112,9 @@ internal struct PerformanceRunner
         
         
         
-        var timeMeasurements    : [Duration]    = []
-        var memoryMeasurements  : [ByteCount]   = []
+        var wallTimeMeasurements    : [Duration]    = []
+        var cpuTimeMeasurements     : [Duration]    = []
+        var memoryMeasurements      : [ByteCount]   = []
         
         for measurementRun in 0..<runs
         {
@@ -112,11 +126,17 @@ internal struct PerformanceRunner
             
             interceptor.reset()
             
-            /// Measure the memory footprint before starting the clock, and
-            /// then again after stopping the clock, so any memory measurement
-            /// overhead is not included in the time measurement.
+            /// Bracket the body in nesting order from outermost to innermost:
+            /// memory, CPU time, wall-clock time. The wall-clock time is the
+            /// tightest measurement, so it excludes the CPU time and memory
+            /// measurement overhead. CPU time also excludes the memory
+            /// measurement overhead.
             let preMemory: ByteCount? = memoryEnabled
                 ? physicalMemoryFootprint()
+                : nil
+            
+            let preCPU: Duration? = cpuTimeEnabled
+                ? cpuTime()
                 : nil
             
             let start       : ContinuousClock.Instant   = .now
@@ -136,6 +156,10 @@ internal struct PerformanceRunner
             
             let elapsed: Duration = start.elapsed
             
+            let postCPU: Duration? = cpuTimeEnabled
+                ? cpuTime()
+                : nil
+            
             let postMemory: ByteCount? = memoryEnabled
                 ? physicalMemoryFootprint()
                 : nil
@@ -152,9 +176,23 @@ internal struct PerformanceRunner
                 )
             }
             
-            if timeEnabled
+            if wallTimeEnabled
             {
-                timeMeasurements.append(elapsed)
+                wallTimeMeasurements.append(elapsed)
+            }
+            
+            if
+                cpuTimeEnabled,
+                let preCPU,
+                let postCPU
+            {
+                /// Prefer zero to an underflow if the clock time decreases
+                /// between pre- and post-clock start.
+                let difference: Duration = postCPU > preCPU
+                    ? postCPU - preCPU
+                    : .zero
+                
+                cpuTimeMeasurements.append(difference)
             }
             
             if
@@ -163,11 +201,11 @@ internal struct PerformanceRunner
                 let postMemory
             {
                 /// Prefer zero to an underflow if the footprint decreases
-                /// between pre- and post-clock-start.
+                /// between pre- and post-clock start.
                 let difference: UInt64
                     = postMemory.rawValue > preMemory.rawValue
                         ? postMemory.rawValue - preMemory.rawValue
-                        : 0
+                        : .zero
                 
                 memoryMeasurements.append(.bytes(difference))
             }
@@ -176,13 +214,16 @@ internal struct PerformanceRunner
         
         
         let measurements = PerformanceMeasurements(
-            runs:         runs,
-            time:         timeEnabled ? timeMeasurements : nil,
-            medianTime:   timeEnabled ? median(of: timeMeasurements) : nil,
-            timeLimit:    timeLimit,
-            memory:       memoryEnabled ? memoryMeasurements : nil,
-            medianMemory: memoryEnabled ? median(of: memoryMeasurements) : nil,
-            memoryLimit:  memoryLimit
+            runs:           runs,
+            wallTime:       wallTimeEnabled ? wallTimeMeasurements : nil,
+            medianWallTime: wallTimeEnabled ? median(of: wallTimeMeasurements) : nil,
+            wallTimeLimit:  wallTimeLimit,
+            cpuTime:        cpuTimeEnabled ? cpuTimeMeasurements : nil,
+            medianCPUTime:  cpuTimeEnabled ? median(of: cpuTimeMeasurements) : nil,
+            cpuTimeLimit:   cpuTimeLimit,
+            memory:         memoryEnabled ? memoryMeasurements : nil,
+            medianMemory:   memoryEnabled ? median(of: memoryMeasurements) : nil,
+            memoryLimit:    memoryLimit
         )
         
         return .completed(measurements: measurements)
@@ -196,6 +237,23 @@ internal struct PerformanceRunner
         subsystem:  "swift-test-kit",
         category:   "PerformanceRunner"
     )
+    
+    
+    
+    /// Gets the CPU time consumed by the process.
+    /// - Returns: The CPU time consumed by the process.
+    private static func cpuTime() -> Duration?
+    {
+        var spec = timespec()
+        
+        guard clock_gettime(CLOCK_PROCESS_CPUTIME_ID, &spec) == 0
+        else
+        {
+            return nil
+        }
+        
+        return .seconds(spec.tv_sec) + .nanoseconds(spec.tv_nsec)
+    }
     
     
     
@@ -243,42 +301,17 @@ internal struct PerformanceRunner
     
     
     
-    /// Computes the median of the given durations.
+    /// Computes the median of the given values.
     ///
     /// If the given array has an even number of elements, the lower-middle
     /// value is used.
     ///
-    /// - Parameter values: The durations.
-    /// - Returns: The median of the given durations, or `nil` if the array
-    /// is empty.
-    private static func median(
-        of values: [Duration]
-    ) -> Duration?
-    {
-        guard !values.isEmpty
-        else
-        {
-            return nil
-        }
-        
-        let sorted: [Duration] = values.sorted()
-        
-        return sorted[(sorted.count - 1) / 2]
-    }
-    
-    
-    
-    /// Computes the median of the given byte counts.
-    ///
-    /// If the given array has an even number of elements, the lower-middle
-    /// value is used.
-    ///
-    /// - Parameter values: The byte counts.
+    /// - Parameter values: The values.
     /// - Returns: The median of the given values, or `nil` if the array
     /// is empty.
-    private static func median(
-        of values: [ByteCount]
-    ) -> ByteCount?
+    private static func median<T>(
+        of values: [T]
+    ) -> T? where T : Comparable
     {
         guard !values.isEmpty
         else
@@ -286,7 +319,7 @@ internal struct PerformanceRunner
             return nil
         }
         
-        let sorted: [ByteCount] = values.sorted()
+        let sorted: [T] = values.sorted()
         
         return sorted[(sorted.count - 1) / 2]
     }

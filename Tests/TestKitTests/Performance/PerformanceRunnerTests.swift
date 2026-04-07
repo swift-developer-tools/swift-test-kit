@@ -20,12 +20,13 @@ internal final class PerformanceRunnerTests: TestKitCase
     
     // MARK: - No metrics
     
-    func testBothThresholdsNilReturnsNoMetrics() async
+    func testAllMetricsNilReturnsNoMetrics() async
     {
         let result: PerformanceResult = await PerformanceRunner.run(
             runs:           10,
             warmupRuns:     1,
-            timeLimit:      nil,
+            wallTimeLimit:  nil,
+            cpuTimeLimit:   nil,
             memoryLimit:    nil,
             body:           { }
         )
@@ -46,7 +47,8 @@ internal final class PerformanceRunnerTests: TestKitCase
         let result: PerformanceResult = await PerformanceRunner.run(
             runs:           runs,
             warmupRuns:     warmupRuns,
-            timeLimit:      .seconds(10),
+            wallTimeLimit:  .seconds(10),
+            cpuTimeLimit:   nil,
             memoryLimit:    nil,
             body:           { await counter.increment() }
         )
@@ -57,7 +59,7 @@ internal final class PerformanceRunnerTests: TestKitCase
         let totalCalls: Int = await counter.value
         
         XCTAssertEqual(totalCalls, warmupRuns + runs)
-        XCTAssertEqual(measurements.time?.count, runs)
+        XCTAssertEqual(measurements.wallTime?.count, runs)
         XCTAssertEqual(measurements.runs, runs)
     }
     
@@ -70,7 +72,8 @@ internal final class PerformanceRunnerTests: TestKitCase
         let result: PerformanceResult = await PerformanceRunner.run(
             runs:           1,
             warmupRuns:     0,
-            timeLimit:      .seconds(10),
+            wallTimeLimit:  .seconds(10),
+            cpuTimeLimit:   nil,
             memoryLimit:    nil,
             body:           { await counter.increment() }
         )
@@ -93,7 +96,8 @@ internal final class PerformanceRunnerTests: TestKitCase
         let result: PerformanceResult = await PerformanceRunner.run(
             runs:           5,
             warmupRuns:     2,
-            timeLimit:      .seconds(10),
+            wallTimeLimit:  .seconds(10),
+            cpuTimeLimit:   nil,
             memoryLimit:    nil,
             body:           { FailureInterceptor.current?.recordFailure() }
         )
@@ -113,7 +117,8 @@ internal final class PerformanceRunnerTests: TestKitCase
         let result: PerformanceResult = await PerformanceRunner.run(
             runs:           5,
             warmupRuns:     2,
-            timeLimit:      .seconds(10),
+            wallTimeLimit:  .seconds(10),
+            cpuTimeLimit:   nil,
             memoryLimit:    nil,
             body:           { throw TestError() }
         )
@@ -134,7 +139,8 @@ internal final class PerformanceRunnerTests: TestKitCase
         let result: PerformanceResult = await PerformanceRunner.run(
             runs:           5,
             warmupRuns:     2,
-            timeLimit:      .seconds(10),
+            wallTimeLimit:  .seconds(10),
+            cpuTimeLimit:   nil,
             memoryLimit:    nil,
             body:
             {
@@ -160,7 +166,8 @@ internal final class PerformanceRunnerTests: TestKitCase
         let result: PerformanceResult = await PerformanceRunner.run(
             runs:           5,
             warmupRuns:     1,
-            timeLimit:      .seconds(10),
+            wallTimeLimit:  .seconds(10),
+            cpuTimeLimit:   nil,
             memoryLimit:    nil,
             body:
             {
@@ -190,7 +197,8 @@ internal final class PerformanceRunnerTests: TestKitCase
         let result: PerformanceResult = await PerformanceRunner.run(
             runs:           5,
             warmupRuns:     3,
-            timeLimit:      .seconds(10),
+            wallTimeLimit:  .seconds(10),
+            cpuTimeLimit:   nil,
             memoryLimit:    nil,
             body:
             {
@@ -221,7 +229,8 @@ internal final class PerformanceRunnerTests: TestKitCase
         let result: PerformanceResult = await PerformanceRunner.run(
             runs:           5,
             warmupRuns:     2,
-            timeLimit:      .seconds(10),
+            wallTimeLimit:  .seconds(10),
+            cpuTimeLimit:   nil,
             memoryLimit:    nil,
             body:
             {
@@ -255,14 +264,15 @@ internal final class PerformanceRunnerTests: TestKitCase
     
     // MARK: - Measurement (passing)
     
-    func testBothMetricsEnabledBothPassing() async throws
+    func testMultipleMetricsEnabledAllPassing() async throws
     {
         let runs: Int = 3
         
         let result: PerformanceResult = await PerformanceRunner.run(
             runs:           runs,
             warmupRuns:     0,
-            timeLimit:      .seconds(10),
+            wallTimeLimit:  .seconds(10),
+            cpuTimeLimit:   .seconds(10),
             memoryLimit:    .bytes(UInt64.max),
             body:           { }
         )
@@ -272,11 +282,17 @@ internal final class PerformanceRunnerTests: TestKitCase
         
         XCTAssertTrue(measurements.success)
         
-        XCTAssertNotNil(measurements.time)
-        XCTAssertEqual(measurements.time?.count, runs)
-        XCTAssertNotNil(measurements.medianTime)
-        XCTAssertNotNil(measurements.timeLimit)
-        XCTAssertFalse(measurements.timeLimitExceeded)
+        XCTAssertNotNil(measurements.wallTime)
+        XCTAssertEqual(measurements.wallTime?.count, runs)
+        XCTAssertNotNil(measurements.medianWallTime)
+        XCTAssertNotNil(measurements.wallTimeLimit)
+        XCTAssertFalse(measurements.wallTimeLimitExceeded)
+        
+        XCTAssertNotNil(measurements.cpuTime)
+        XCTAssertEqual(measurements.cpuTime?.count, runs)
+        XCTAssertNotNil(measurements.medianCPUTime)
+        XCTAssertNotNil(measurements.cpuTimeLimit)
+        XCTAssertFalse(measurements.cpuTimeLimitExceeded)
         
         XCTAssertNotNil(measurements.memory)
         XCTAssertEqual(measurements.memory?.count, runs)
@@ -287,14 +303,15 @@ internal final class PerformanceRunnerTests: TestKitCase
     
     
     
-    func testBothMetricsEnabledOnlyTimeExceeded() async throws
+    func testMultipleMetricsEnabledOnlyWallTimeExceeded() async throws
     {
         try skipCI()
         
         let result: PerformanceResult = await PerformanceRunner.run(
             runs:           3,
             warmupRuns:     0,
-            timeLimit:      .nanoseconds(1),
+            wallTimeLimit:  .nanoseconds(1),
+            cpuTimeLimit:   nil,
             memoryLimit:    .bytes(UInt64.max),
             body:           { try? await Task.sleep(for: .milliseconds(5)) }
         )
@@ -304,7 +321,7 @@ internal final class PerformanceRunnerTests: TestKitCase
         
         XCTAssertFalse(measurements.success)
         
-        XCTAssertTrue(measurements.timeLimitExceeded)
+        XCTAssertTrue(measurements.wallTimeLimitExceeded)
         XCTAssertFalse(measurements.memoryLimitExceeded)
         
         XCTAssertNotNil(measurements.memory)
@@ -313,14 +330,43 @@ internal final class PerformanceRunnerTests: TestKitCase
     
     
     
-    func testMedianTimeWithOddRunCount() async throws
+    func testMultipleMetricsEnabledOnlyCPUTimeExceeded() async throws
+    {
+        try skipCI()
+        
+        let result: PerformanceResult = await PerformanceRunner.run(
+            runs:           3,
+            warmupRuns:     0,
+            wallTimeLimit:  .seconds(50),
+            cpuTimeLimit:   .nanoseconds(1),
+            memoryLimit:    .bytes(UInt64.max),
+            body:           { consumeCPU() }
+        )
+        
+        let measurements: PerformanceMeasurements
+            = try XCTUnwrap(result.assertCompleted())
+        
+        XCTAssertFalse(measurements.success)
+        
+        XCTAssertFalse(measurements.wallTimeLimitExceeded)
+        XCTAssertTrue(measurements.cpuTimeLimitExceeded)
+        XCTAssertFalse(measurements.memoryLimitExceeded)
+        
+        XCTAssertNotNil(measurements.wallTime)
+        XCTAssertNotNil(measurements.memory)
+    }
+    
+    
+    
+    func testMedianWallTimeWithOddRunCount() async throws
     {
         let runs: Int = 3
         
         let result: PerformanceResult = await PerformanceRunner.run(
             runs:           runs,
             warmupRuns:     0,
-            timeLimit:      .seconds(10),
+            wallTimeLimit:  .seconds(10),
+            cpuTimeLimit:   nil,
             memoryLimit:    nil,
             body:           { }
         )
@@ -328,25 +374,26 @@ internal final class PerformanceRunnerTests: TestKitCase
         let measurements: PerformanceMeasurements
             = try XCTUnwrap(result.assertCompleted())
         
-        XCTAssertNotNil(measurements.medianTime)
-        XCTAssertEqual(measurements.time?.count, runs)
+        XCTAssertNotNil(measurements.medianWallTime)
+        XCTAssertEqual(measurements.wallTime?.count, runs)
         
-        let sorted: [Duration] = measurements.time!.sorted()
+        let sorted: [Duration] = measurements.wallTime!.sorted()
         
         /// The median is the middle element.
-        XCTAssertEqual(measurements.medianTime, sorted[1])
+        XCTAssertEqual(measurements.medianWallTime, sorted[1])
     }
     
     
     
-    func testMedianTimeWithEvenRunCount() async throws
+    func testMedianWallTimeWithEvenRunCount() async throws
     {
         let runs: Int = 4
         
         let result: PerformanceResult = await PerformanceRunner.run(
             runs:           runs,
             warmupRuns:     0,
-            timeLimit:      .seconds(10),
+            wallTimeLimit:  .seconds(10),
+            cpuTimeLimit:   nil,
             memoryLimit:    nil,
             body:           { }
         )
@@ -354,13 +401,13 @@ internal final class PerformanceRunnerTests: TestKitCase
         let measurements: PerformanceMeasurements
             = try XCTUnwrap(result.assertCompleted())
         
-        XCTAssertNotNil(measurements.medianTime)
-        XCTAssertEqual(measurements.time?.count, runs)
+        XCTAssertNotNil(measurements.medianWallTime)
+        XCTAssertEqual(measurements.wallTime?.count, runs)
         
-        let sorted: [Duration] = measurements.time!.sorted()
+        let sorted: [Duration] = measurements.wallTime!.sorted()
         
         /// The median is the lower-middle element.
-        XCTAssertEqual(measurements.medianTime, sorted[1])
+        XCTAssertEqual(measurements.medianWallTime, sorted[1])
     }
     
     
@@ -372,7 +419,8 @@ internal final class PerformanceRunnerTests: TestKitCase
         let result: PerformanceResult = await PerformanceRunner.run(
             runs:           runs,
             warmupRuns:     0,
-            timeLimit:      .seconds(10),
+            wallTimeLimit:  .seconds(10),
+            cpuTimeLimit:   nil,
             memoryLimit:    nil,
             body:           { }
         )
@@ -380,20 +428,25 @@ internal final class PerformanceRunnerTests: TestKitCase
         let measurements: PerformanceMeasurements
             = try XCTUnwrap(result.assertCompleted())
         
-        XCTAssertEqual(measurements.time?.count, runs)
-        XCTAssertEqual(measurements.medianTime, measurements.time?.first)
+        XCTAssertEqual(measurements.wallTime?.count, runs)
+        
+        XCTAssertEqual(
+            measurements.medianWallTime,
+            measurements.wallTime?.first
+        )
     }
     
     
     
-    func testTimeWithinLimitPasses() async throws
+    func testWallTimeWithinLimitPasses() async throws
     {
         let runs: Int = 3
         
         let result: PerformanceResult = await PerformanceRunner.run(
             runs:           runs,
             warmupRuns:     0,
-            timeLimit:      .seconds(10),
+            wallTimeLimit:  .seconds(10),
+            cpuTimeLimit:   nil,
             memoryLimit:    nil,
             body:           { }
         )
@@ -403,11 +456,11 @@ internal final class PerformanceRunnerTests: TestKitCase
         
         XCTAssertTrue(measurements.success)
         
-        XCTAssertNotNil(measurements.time)
-        XCTAssertEqual(measurements.time?.count, runs)
-        XCTAssertNotNil(measurements.medianTime)
-        XCTAssertNotNil(measurements.timeLimit)
-        XCTAssertFalse(measurements.timeLimitExceeded)
+        XCTAssertNotNil(measurements.wallTime)
+        XCTAssertEqual(measurements.wallTime?.count, runs)
+        XCTAssertNotNil(measurements.medianWallTime)
+        XCTAssertNotNil(measurements.wallTimeLimit)
+        XCTAssertFalse(measurements.wallTimeLimitExceeded)
         
         XCTAssertNil(measurements.memory)
         XCTAssertNil(measurements.medianMemory)
@@ -417,7 +470,44 @@ internal final class PerformanceRunnerTests: TestKitCase
     
     
     
-    func testTimeMeasurementReflectsSleep() async throws
+    func testCPUTimeWithinLimitPasses() async throws
+    {
+        let runs: Int = 3
+        
+        let result: PerformanceResult = await PerformanceRunner.run(
+            runs:           runs,
+            warmupRuns:     0,
+            wallTimeLimit:  nil,
+            cpuTimeLimit:   .seconds(10),
+            memoryLimit:    nil,
+            body:           { }
+        )
+        
+        let measurements: PerformanceMeasurements
+            = try XCTUnwrap(result.assertCompleted())
+        
+        XCTAssertTrue(measurements.success)
+        
+        XCTAssertNil(measurements.wallTime)
+        XCTAssertNil(measurements.medianWallTime)
+        XCTAssertNil(measurements.wallTimeLimit)
+        XCTAssertFalse(measurements.wallTimeLimitExceeded)
+        
+        XCTAssertNotNil(measurements.cpuTime)
+        XCTAssertEqual(measurements.cpuTime?.count, runs)
+        XCTAssertNotNil(measurements.medianCPUTime)
+        XCTAssertNotNil(measurements.cpuTimeLimit)
+        XCTAssertFalse(measurements.cpuTimeLimitExceeded)
+        
+        XCTAssertNil(measurements.memory)
+        XCTAssertNil(measurements.medianMemory)
+        XCTAssertNil(measurements.memoryLimit)
+        XCTAssertFalse(measurements.memoryLimitExceeded)
+    }
+    
+    
+    
+    func testWallTimeMeasurementReflectsSleep() async throws
     {
         try skipCI()
         
@@ -426,7 +516,8 @@ internal final class PerformanceRunnerTests: TestKitCase
         let result: PerformanceResult = await PerformanceRunner.run(
             runs:           3,
             warmupRuns:     0,
-            timeLimit:      .seconds(10),
+            wallTimeLimit:  .seconds(10),
+            cpuTimeLimit:   nil,
             memoryLimit:    nil,
             body:           { try? await Task.sleep(for: sleepDuration) }
         )
@@ -435,13 +526,99 @@ internal final class PerformanceRunnerTests: TestKitCase
             = try XCTUnwrap(result.assertCompleted())
         
         XCTAssertTrue(measurements.success)
-        XCTAssertNotNil(measurements.medianTime)
-        XCTAssertGreaterThanOrEqual(measurements.medianTime!, sleepDuration)
+        XCTAssertNotNil(measurements.medianWallTime)
+        
+        XCTAssertGreaterThanOrEqual(
+            measurements.medianWallTime!,
+            sleepDuration
+        )
         
         XCTAssertLessThan(
-            measurements.medianTime!,
+            measurements.medianWallTime!,
             sleepDuration + .milliseconds(200)
         )
+    }
+    
+    
+    
+    func testCPUTimeMeasurementReflectsWork() async throws
+    {
+        try skipCI()
+        
+        let runs: Int = 3
+        
+        let result: PerformanceResult = await PerformanceRunner.run(
+            runs:           runs,
+            warmupRuns:     0,
+            wallTimeLimit:  nil,
+            cpuTimeLimit:   .seconds(60),
+            memoryLimit:    nil,
+            body:           { consumeCPU() }
+        )
+        
+        let measurements: PerformanceMeasurements
+            = try XCTUnwrap(result.assertCompleted())
+        
+        XCTAssertTrue(measurements.success)
+        XCTAssertNotNil(measurements.cpuTime)
+        XCTAssertEqual(measurements.cpuTime?.count, runs)
+        
+        for measurement in measurements.cpuTime ?? []
+        {
+            XCTAssertGreaterThan(measurement, .zero)
+        }
+    }
+    
+    
+    
+    func testCPUTimeUnaffectedByPureSleep() async throws
+    {
+        try skipCI()
+        
+        let sleepDuration   : Duration  = .milliseconds(50)
+        let cpuCeiling      : Duration  = .milliseconds(25)
+        
+        let result: PerformanceResult = await PerformanceRunner.run(
+            runs:           3,
+            warmupRuns:     0,
+            wallTimeLimit:  .seconds(10),
+            cpuTimeLimit:   .seconds(10),
+            memoryLimit:    nil,
+            body:           { try? await Task.sleep(for: sleepDuration) }
+        )
+        
+        let measurements: PerformanceMeasurements
+            = try XCTUnwrap(result.assertCompleted())
+        
+        XCTAssertTrue(measurements.success)
+        XCTAssertLessThan(measurements.medianCPUTime!, cpuCeiling)
+        
+        XCTAssertGreaterThanOrEqual(
+            measurements.medianWallTime!,
+            sleepDuration
+        )
+    }
+    
+    
+    
+    func testCPUTimeExceedsLimitFails() async throws
+    {
+        try skipCI()
+        
+        let result: PerformanceResult = await PerformanceRunner.run(
+            runs:           5,
+            warmupRuns:     0,
+            wallTimeLimit:  nil,
+            cpuTimeLimit:   .nanoseconds(1),
+            memoryLimit:    nil,
+            body:           { consumeCPU() }
+        )
+        
+        let measurements: PerformanceMeasurements
+            = try XCTUnwrap(result.assertCompleted())
+        
+        XCTAssertFalse(measurements.success)
+        XCTAssertTrue(measurements.cpuTimeLimitExceeded)
     }
     
     
@@ -456,7 +633,8 @@ internal final class PerformanceRunnerTests: TestKitCase
         let result: PerformanceResult = await PerformanceRunner.run(
             runs:           runs,
             warmupRuns:     0,
-            timeLimit:      nil,
+            wallTimeLimit:  nil,
+            cpuTimeLimit:   nil,
             memoryLimit:    .bytes(UInt64.max),
             body:           { holder.allocate() }
         )
@@ -468,10 +646,10 @@ internal final class PerformanceRunnerTests: TestKitCase
         
         XCTAssertTrue(measurements.success)
         
-        XCTAssertNil(measurements.time)
-        XCTAssertNil(measurements.medianTime)
-        XCTAssertNil(measurements.timeLimit)
-        XCTAssertFalse(measurements.timeLimitExceeded)
+        XCTAssertNil(measurements.wallTime)
+        XCTAssertNil(measurements.medianWallTime)
+        XCTAssertNil(measurements.wallTimeLimit)
+        XCTAssertFalse(measurements.wallTimeLimitExceeded)
         
         XCTAssertNotNil(measurements.memory)
         XCTAssertEqual(measurements.memory?.count, runs)
@@ -494,7 +672,8 @@ internal final class PerformanceRunnerTests: TestKitCase
         let result: PerformanceResult = await PerformanceRunner.run(
             runs:           5,
             warmupRuns:     0,
-            timeLimit:      .seconds(10),
+            wallTimeLimit:  .seconds(10),
+            cpuTimeLimit:   nil,
             memoryLimit:    nil,
             body:           { FailureInterceptor.current?.recordFailure() }
         )
@@ -514,7 +693,8 @@ internal final class PerformanceRunnerTests: TestKitCase
         let result: PerformanceResult = await PerformanceRunner.run(
             runs:           5,
             warmupRuns:     0,
-            timeLimit:      .seconds(10),
+            wallTimeLimit:  .seconds(10),
+            cpuTimeLimit:   nil,
             memoryLimit:    nil,
             body:           { throw TestError() }
         )
@@ -535,7 +715,8 @@ internal final class PerformanceRunnerTests: TestKitCase
         let result: PerformanceResult = await PerformanceRunner.run(
             runs:           5,
             warmupRuns:     0,
-            timeLimit:      .seconds(10),
+            wallTimeLimit:  .seconds(10),
+            cpuTimeLimit:   nil,
             memoryLimit:    nil,
             body:
             {
@@ -562,7 +743,8 @@ internal final class PerformanceRunnerTests: TestKitCase
         let result: PerformanceResult = await PerformanceRunner.run(
             runs:           5,
             warmupRuns:     0,
-            timeLimit:      .seconds(10),
+            wallTimeLimit:  .seconds(10),
+            cpuTimeLimit:   nil,
             memoryLimit:    nil,
             body:
             {
@@ -590,7 +772,8 @@ internal final class PerformanceRunnerTests: TestKitCase
         let result: PerformanceResult = await PerformanceRunner.run(
             runs:           5,
             warmupRuns:     0,
-            timeLimit:      .seconds(10),
+            wallTimeLimit:  .seconds(10),
+            cpuTimeLimit:   nil,
             memoryLimit:    nil,
             body:
             {
@@ -633,7 +816,8 @@ internal final class PerformanceRunnerTests: TestKitCase
             await PerformanceRunner.run(
                 runs:           5,
                 warmupRuns:     1,
-                timeLimit:      .seconds(10),
+                wallTimeLimit:  .seconds(10),
+                cpuTimeLimit:   nil,
                 memoryLimit:    nil,
                 body:
                 {
@@ -660,7 +844,8 @@ internal final class PerformanceRunnerTests: TestKitCase
             await PerformanceRunner.run(
                 runs:           100,
                 warmupRuns:     0,
-                timeLimit:      .seconds(60),
+                wallTimeLimit:  .seconds(60),
+                cpuTimeLimit:   nil,
                 memoryLimit:    nil,
                 body:
                 {
@@ -680,14 +865,15 @@ internal final class PerformanceRunnerTests: TestKitCase
     
     
     
-    func testTimeExceedsLimitFails() async throws
+    func testWallTimeExceedsLimitFails() async throws
     {
         try skipCI()
         
         let result: PerformanceResult = await PerformanceRunner.run(
             runs:           3,
             warmupRuns:     0,
-            timeLimit:      .nanoseconds(1),
+            wallTimeLimit:  .nanoseconds(1),
+            cpuTimeLimit:   nil,
             memoryLimit:    nil,
             body:           { try? await Task.sleep(for: .milliseconds(5)) }
         )
@@ -696,7 +882,7 @@ internal final class PerformanceRunnerTests: TestKitCase
             = try XCTUnwrap(result.assertCompleted())
         
         XCTAssertFalse(measurements.success)
-        XCTAssertTrue(measurements.timeLimitExceeded)
+        XCTAssertTrue(measurements.wallTimeLimitExceeded)
     }
     
     
@@ -712,7 +898,8 @@ internal final class PerformanceRunnerTests: TestKitCase
             let result: PerformanceResult = await PerformanceRunner.run(
                 runs:           3,
                 warmupRuns:     0,
-                timeLimit:      .seconds(10),
+                wallTimeLimit:  .seconds(10),
+                cpuTimeLimit:   nil,
                 memoryLimit:    nil,
                 body:           { FailureInterceptor.current?.recordFailure() }
             )
@@ -735,7 +922,8 @@ internal final class PerformanceRunnerTests: TestKitCase
             _ = await PerformanceRunner.run(
                 runs:           1,
                 warmupRuns:     0,
-                timeLimit:      .seconds(10),
+                wallTimeLimit:  .seconds(10),
+                cpuTimeLimit:   nil,
                 memoryLimit:    nil,
                 body:           { }
             )
@@ -755,7 +943,8 @@ internal final class PerformanceRunnerTests: TestKitCase
             _ = await PerformanceRunner.run(
                 runs:           1,
                 warmupRuns:     0,
-                timeLimit:      .seconds(10),
+                wallTimeLimit:  .seconds(10),
+                cpuTimeLimit:   nil,
                 memoryLimit:    nil,
                 body:
                 {
@@ -780,7 +969,8 @@ internal final class PerformanceRunnerTests: TestKitCase
         let result: PerformanceResult = await PerformanceRunner.run(
             runs:           runs,
             warmupRuns:     0,
-            timeLimit:      .seconds(10),
+            wallTimeLimit:  .seconds(10),
+            cpuTimeLimit:   nil,
             memoryLimit:    nil,
             body:
             {

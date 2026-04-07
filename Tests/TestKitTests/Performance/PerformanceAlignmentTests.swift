@@ -17,17 +17,14 @@ import XCTest
 /// output tests remove the non-deterministic values and alignment.
 internal final class PerformanceAlignmentTests: TestKitCase
 {
-    func testTimeEqualWidth()
+    func testWallTimeEqualWidth()
     {
-        let result: PerformanceResult = .completed(measurements: .init(
-            runs:           5,
-            time:           Array(repeating: .milliseconds(50), count: 5),
-            medianTime:     .milliseconds(50),
-            timeLimit:      .milliseconds(10),
-            memory:         nil,
-            medianMemory:   nil,
-            memoryLimit:    nil
-        ))
+        let result: PerformanceResult = .makeCompleted(
+            runs:               5,
+            wallTime:           Array(repeating: .milliseconds(50), count: 5),
+            medianWallTime:     .milliseconds(50),
+            wallTimeLimit:      .milliseconds(10)
+        )
         
         let actual: String? = emit(result)
         
@@ -35,7 +32,7 @@ internal final class PerformanceAlignmentTests: TestKitCase
         """
         XCTKPerformance failed
         
-        Time:
+        Wall time:
             Threshold: 10 ms
             Median:    50 ms (5 runs) ←
         """
@@ -45,17 +42,14 @@ internal final class PerformanceAlignmentTests: TestKitCase
     
     
     
-    func testTimeDifferentWidth()
+    func testWallTimeDifferentWidth()
     {
-        let result: PerformanceResult = .completed(measurements: .init(
-            runs:           5,
-            time:           Array(repeating: .milliseconds(123), count: 5),
-            medianTime:     .milliseconds(123),
-            timeLimit:      .milliseconds(50),
-            memory:         nil,
-            medianMemory:   nil,
-            memoryLimit:    nil
-        ))
+        let result: PerformanceResult = .makeCompleted(
+            runs:               5,
+            wallTime:           Array(repeating: .milliseconds(123), count: 5),
+            medianWallTime:     .milliseconds(123),
+            wallTimeLimit:      .milliseconds(50)
+        )
         
         let actual: String? = emit(result)
         
@@ -63,7 +57,7 @@ internal final class PerformanceAlignmentTests: TestKitCase
         """
         XCTKPerformance failed
         
-        Time:
+        Wall time:
             Threshold:  50 ms
             Median:    123 ms (5 runs) ←
         """
@@ -73,17 +67,39 @@ internal final class PerformanceAlignmentTests: TestKitCase
     
     
     
+    func testCPUTimeDifferentWidth()
+    {
+        let result: PerformanceResult = .makeCompleted(
+            runs:           5,
+            cpuTime:        Array(repeating: .milliseconds(234), count: 5),
+            medianCPUTime:  .milliseconds(234),
+            cpuTimeLimit:   .milliseconds(60)
+        )
+        
+        let actual: String? = emit(result)
+        
+        let expected: String =
+        """
+        XCTKPerformance failed
+        
+        CPU time:
+            Threshold:  60 ms
+            Median:    234 ms (5 runs) ←
+        """
+        
+        XCTAssertEqual(expected, actual)
+    }
+    
+    
+    
     func testMemoryDifferentWidth()
     {
-        let result: PerformanceResult = .completed(measurements: .init(
+        let result: PerformanceResult = .makeCompleted(
             runs:           3,
-            time:           nil,
-            medianTime:     nil,
-            timeLimit:      nil,
             memory:         Array(repeating: .kilobytes(512), count: 3),
             medianMemory:   .kilobytes(512),
             memoryLimit:    .kilobytes(1)
-        ))
+        )
         
         let actual: String? = emit(result)
         
@@ -101,17 +117,17 @@ internal final class PerformanceAlignmentTests: TestKitCase
     
     
     
-    func testBothOneExceeded()
+    func testMultipleMetricsOneExceeded()
     {
-        let result: PerformanceResult = .completed(measurements: .init(
-            runs:           5,
-            time:           Array(repeating: .milliseconds(5), count: 5),
-            medianTime:     .milliseconds(5),
-            timeLimit:      .milliseconds(500),
-            memory:         Array(repeating: .megabytes(2.5), count: 5),
-            medianMemory:   .megabytes(2.5),
-            memoryLimit:    .megabytes(1)
-        ))
+        let result: PerformanceResult = .makeCompleted(
+            runs:               5,
+            wallTime:           Array(repeating: .milliseconds(5), count: 5),
+            medianWallTime:     .milliseconds(5),
+            wallTimeLimit:      .milliseconds(500),
+            memory:             Array(repeating: .megabytes(2.5), count: 5),
+            medianMemory:       .megabytes(2.5),
+            memoryLimit:        .megabytes(1)
+        )
         
         let actual: String? = emit(result)
         
@@ -119,7 +135,7 @@ internal final class PerformanceAlignmentTests: TestKitCase
         """
         XCTKPerformance failed
         
-        Time:
+        Wall time:
             Threshold: 500 ms
             Median:      5 ms (5 runs)
         
@@ -133,17 +149,20 @@ internal final class PerformanceAlignmentTests: TestKitCase
     
     
     
-    func testBothExceeded()
+    func testAllMetricsExceeded()
     {
-        let result: PerformanceResult = .completed(measurements: .init(
-            runs:           5,
-            time:           Array(repeating: .milliseconds(123), count: 5),
-            medianTime:     .milliseconds(123),
-            timeLimit:      .milliseconds(50),
-            memory:         Array(repeating: .megabytes(2.5), count: 5),
-            medianMemory:   .megabytes(2.5),
-            memoryLimit:    .megabytes(1)
-        ))
+        let result: PerformanceResult = .makeCompleted(
+            runs:               5,
+            wallTime:           Array(repeating: .milliseconds(123), count: 5),
+            medianWallTime:     .milliseconds(123),
+            wallTimeLimit:      .milliseconds(50),
+            cpuTime:            Array(repeating: .milliseconds(234), count: 5),
+            medianCPUTime:      .milliseconds(234),
+            cpuTimeLimit:       .milliseconds(60),
+            memory:             Array(repeating: .megabytes(2.5), count: 5),
+            medianMemory:       .megabytes(2.5),
+            memoryLimit:        .megabytes(1)
+        )
         
         let actual: String? = emit(result)
         
@@ -151,9 +170,13 @@ internal final class PerformanceAlignmentTests: TestKitCase
         """
         XCTKPerformance failed
         
-        Time:
+        Wall time:
             Threshold:  50 ms
             Median:    123 ms (5 runs) ←
+        
+        CPU time:
+            Threshold:  60 ms
+            Median:    234 ms (5 runs) ←
         
         Memory:
             Threshold:   1 MB
@@ -197,5 +220,39 @@ extension PerformanceAlignmentTests
         )
         
         return captured.withLock { $0 }
+    }
+}
+
+
+
+private extension PerformanceResult
+{
+    /// Creates a ``PerformanceResult/completed(measurements:)`` instance from
+    /// the given values.
+    static func makeCompleted(
+        runs           : Int,
+        wallTime       : [Duration]?    = nil,
+        medianWallTime : Duration?      = nil,
+        wallTimeLimit  : Duration?      = nil,
+        cpuTime        : [Duration]?    = nil,
+        medianCPUTime  : Duration?      = nil,
+        cpuTimeLimit   : Duration?      = nil,
+        memory         : [ByteCount]?   = nil,
+        medianMemory   : ByteCount?     = nil,
+        memoryLimit    : ByteCount?     = nil
+    ) -> PerformanceResult
+    {
+        return .completed(measurements: .init(
+            runs:               runs,
+            wallTime:           wallTime,
+            medianWallTime:     medianWallTime,
+            wallTimeLimit:      wallTimeLimit,
+            cpuTime:            cpuTime,
+            medianCPUTime:      medianCPUTime,
+            cpuTimeLimit:       cpuTimeLimit,
+            memory:             memory,
+            medianMemory:       medianMemory,
+            memoryLimit:        memoryLimit
+        ))
     }
 }

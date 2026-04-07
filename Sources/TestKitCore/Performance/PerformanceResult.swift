@@ -48,14 +48,23 @@ internal struct PerformanceMeasurements: Equatable, Sendable
     /// The number of measurement runs.
     internal let runs           : Int
     
-    /// The per-run time measurements.
-    internal let time           : [Duration]?
+    /// The per-run wall-clock time measurements.
+    internal let wallTime       : [Duration]?
     
-    /// The median time.
-    internal let medianTime     : Duration?
+    /// The median wall-clock time.
+    internal let medianWallTime : Duration?
     
-    /// The time limit.
-    internal let timeLimit      : Duration?
+    /// The wall-clock time limit.
+    internal let wallTimeLimit  : Duration?
+    
+    /// The per-run CPU time measurements.
+    internal let cpuTime        : [Duration]?
+    
+    /// The median CPU time.
+    internal let medianCPUTime  : Duration?
+    
+    /// The CPU time limit.
+    internal let cpuTimeLimit   : Duration?
     
     /// The per-run memory measurements.
     internal let memory         : [ByteCount]?
@@ -68,18 +77,34 @@ internal struct PerformanceMeasurements: Equatable, Sendable
     
     
     
-    /// Whether the time limit was exceeded.
-    internal var timeLimitExceeded: Bool
+    /// Whether the wall-clock time limit was exceeded.
+    internal var wallTimeLimitExceeded: Bool
     {
         guard
-            let medianTime,
-            let timeLimit
+            let medianWallTime,
+            let wallTimeLimit
         else
         {
             return false
         }
         
-        return medianTime > timeLimit
+        return medianWallTime > wallTimeLimit
+    }
+    
+    
+    
+    /// Whether the CPU time limit was exceeded.
+    internal var cpuTimeLimitExceeded: Bool
+    {
+        guard
+            let medianCPUTime,
+            let cpuTimeLimit
+        else
+        {
+            return false
+        }
+        
+        return medianCPUTime > cpuTimeLimit
     }
     
     
@@ -103,7 +128,8 @@ internal struct PerformanceMeasurements: Equatable, Sendable
     /// Whether all thresholds were met.
     internal var success: Bool
     {
-        return !timeLimitExceeded
+        return !wallTimeLimitExceeded
+            && !cpuTimeLimitExceeded
             && !memoryLimitExceeded
     }
 }

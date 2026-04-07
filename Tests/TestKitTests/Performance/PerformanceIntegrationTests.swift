@@ -30,7 +30,7 @@ internal final class PerformanceIntegrationTests: TestKitCase
     func testNoMetricsPasses() async
     {
         let options: TestOptions = .performanceOptions(
-            timeLimit:      nil,
+            wallTimeLimit:  nil,
             memoryLimit:    nil
         )
         
@@ -39,12 +39,25 @@ internal final class PerformanceIntegrationTests: TestKitCase
     
     
     
-    func testTimeLimitPasses() async
+    func testWallTimeLimitPasses() async
     {
         let options: TestOptions = .performanceOptions(
             runs:           3,
             warmupRuns:     0,
-            timeLimit:      nil
+            wallTimeLimit:  .seconds(10_000)
+        )
+        
+        await TKPerformance(options: options) { }
+    }
+    
+    
+    
+    func testCPUTimeLimitPasses() async
+    {
+        let options: TestOptions = .performanceOptions(
+            runs:           3,
+            warmupRuns:     0,
+            cpuTimeLimit:   .seconds(10_000)
         )
         
         await TKPerformance(options: options) { }
@@ -57,7 +70,7 @@ internal final class PerformanceIntegrationTests: TestKitCase
         let options: TestOptions = .performanceOptions(
             runs:           3,
             warmupRuns:     0,
-            memoryLimit:    .megabytes(100)
+            memoryLimit:    .gigabytes(50)
         )
         
         await TKPerformance(options: options) { }
@@ -65,13 +78,14 @@ internal final class PerformanceIntegrationTests: TestKitCase
     
     
     
-    func testBothLimitsPass() async
+    func testMultipleLimitsPass() async
     {
         let options: TestOptions = .performanceOptions(
             runs:           3,
             warmupRuns:     0,
-            timeLimit:      .seconds(10),
-            memoryLimit:    .megabytes(100)
+            wallTimeLimit:  .seconds(10_000),
+            cpuTimeLimit:   .seconds(10_000),
+            memoryLimit:    .gigabytes(50)
         )
         
         await TKPerformance(options: options) { }
@@ -90,7 +104,7 @@ internal final class PerformanceIntegrationTests: TestKitCase
         let options: TestOptions = .performanceOptions(
             runs:           10,
             warmupRuns:     0,
-            timeLimit:      .seconds(10)
+            wallTimeLimit:  .seconds(10_000)
         )
         
         await TKPerformance(
@@ -116,7 +130,7 @@ internal final class PerformanceIntegrationTests: TestKitCase
         let options: TestOptions = .performanceOptions(
             runs:           runs,
             warmupRuns:     5,
-            timeLimit:      .seconds(10)
+            wallTimeLimit:  .seconds(10_000)
         )
         
         await TKPerformance(
@@ -132,16 +146,16 @@ internal final class PerformanceIntegrationTests: TestKitCase
     
     
     
-    func testTimeLimitParameterOverridesDefaultOptions() async throws
+    func testWallTimeLimitParameterOverridesDefaultOptions() async throws
     {
         try skipCI()
         
-        let timeLimit: Duration = .milliseconds(1)
+        let wallTimeLimit: Duration = .milliseconds(1)
         
         let options: TestOptions = .performanceOptions(
             runs:           1,
             warmupRuns:     0,
-            timeLimit:      .seconds(10)
+            wallTimeLimit:  .seconds(10_000)
         )
         
         let actual: String? = await withCapturedFailure
@@ -149,12 +163,40 @@ internal final class PerformanceIntegrationTests: TestKitCase
             context in
             
             await TKPerformance(
-                timeLimit:  timeLimit,
-                options:    options,
-                context:    context
+                wallTimeLimit:  wallTimeLimit,
+                options:        options,
+                context:        context
             )
             {
                 try await Task.sleep(for: .milliseconds(50))
+            }
+        }
+        
+        XCTAssertNotNil(actual)
+    }
+    
+    
+    
+    func testCPUTimeLimitParameterOverridesDefaultOptions() async throws
+    {
+        try skipCI()
+        
+        let cpuTimeLimit: Duration = .nanoseconds(1)
+        
+        let options: TestOptions = .performanceOptions(
+            runs:           1,
+            warmupRuns:     0,
+            cpuTimeLimit:   .seconds(10_000)
+        )
+        
+        let actual: String? = await withOneExpectedFailure
+        {
+            await TKPerformance(
+                cpuTimeLimit:   cpuTimeLimit,
+                options:        options
+            )
+            {
+                consumeCPU()
             }
         }
         
@@ -172,7 +214,7 @@ internal final class PerformanceIntegrationTests: TestKitCase
         let options: TestOptions = .performanceOptions(
             runs:           1,
             warmupRuns:     0,
-            memoryLimit:    .megabytes(100)
+            memoryLimit:    .gigabytes(50)
         )
         
         let actual: String? = await withOneExpectedFailure
