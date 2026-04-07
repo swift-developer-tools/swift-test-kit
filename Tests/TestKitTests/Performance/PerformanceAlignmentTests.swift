@@ -67,6 +67,31 @@ internal final class PerformanceAlignmentTests: TestKitCase
     
     
     
+    func testCPUTimeDifferentWidth()
+    {
+        let result: PerformanceResult = .makeCompleted(
+            runs:           5,
+            cpuTime:        Array(repeating: .milliseconds(234), count: 5),
+            medianCPUTime:  .milliseconds(234),
+            cpuTimeLimit:   .milliseconds(60)
+        )
+        
+        let actual: String? = emit(result)
+        
+        let expected: String =
+        """
+        XCTKPerformance failed
+        
+        CPU time:
+            Threshold:  60 ms
+            Median:    234 ms (5 runs) ←
+        """
+        
+        XCTAssertEqual(expected, actual)
+    }
+    
+    
+    
     func testMemoryDifferentWidth()
     {
         let result: PerformanceResult = .makeCompleted(
@@ -131,6 +156,9 @@ internal final class PerformanceAlignmentTests: TestKitCase
             wallTime:           Array(repeating: .milliseconds(123), count: 5),
             medianWallTime:     .milliseconds(123),
             wallTimeLimit:      .milliseconds(50),
+            cpuTime:            Array(repeating: .milliseconds(234), count: 5),
+            medianCPUTime:      .milliseconds(234),
+            cpuTimeLimit:       .milliseconds(60),
             memory:             Array(repeating: .megabytes(2.5), count: 5),
             medianMemory:       .megabytes(2.5),
             memoryLimit:        .megabytes(1)
@@ -145,6 +173,10 @@ internal final class PerformanceAlignmentTests: TestKitCase
         Wall time:
             Threshold:  50 ms
             Median:    123 ms (5 runs) ←
+        
+        CPU time:
+            Threshold:  60 ms
+            Median:    234 ms (5 runs) ←
         
         Memory:
             Threshold:   1 MB

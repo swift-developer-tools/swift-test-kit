@@ -272,7 +272,7 @@ internal final class PerformanceRunnerTests: TestKitCase
             runs:           runs,
             warmupRuns:     0,
             wallTimeLimit:  .seconds(10),
-            cpuTimeLimit:   nil,
+            cpuTimeLimit:   .seconds(10),
             memoryLimit:    .bytes(UInt64.max),
             body:           { }
         )
@@ -287,6 +287,12 @@ internal final class PerformanceRunnerTests: TestKitCase
         XCTAssertNotNil(measurements.medianWallTime)
         XCTAssertNotNil(measurements.wallTimeLimit)
         XCTAssertFalse(measurements.wallTimeLimitExceeded)
+        
+        XCTAssertNotNil(measurements.cpuTime)
+        XCTAssertEqual(measurements.cpuTime?.count, runs)
+        XCTAssertNotNil(measurements.medianCPUTime)
+        XCTAssertNotNil(measurements.cpuTimeLimit)
+        XCTAssertFalse(measurements.cpuTimeLimitExceeded)
         
         XCTAssertNotNil(measurements.memory)
         XCTAssertEqual(measurements.memory?.count, runs)
@@ -320,6 +326,34 @@ internal final class PerformanceRunnerTests: TestKitCase
         
         XCTAssertNotNil(measurements.memory)
         XCTAssertNotNil(measurements.medianMemory)
+    }
+    
+    
+    
+    func testMultipleMetricsEnabledOnlyCPUTimeExceeded() async throws
+    {
+        try skipCI()
+        
+        let result: PerformanceResult = await PerformanceRunner.run(
+            runs:           3,
+            warmupRuns:     0,
+            wallTimeLimit:  .seconds(50),
+            cpuTimeLimit:   .nanoseconds(1),
+            memoryLimit:    .bytes(UInt64.max),
+            body:           { consumeCPU() }
+        )
+        
+        let measurements: PerformanceMeasurements
+            = try XCTUnwrap(result.assertCompleted())
+        
+        XCTAssertFalse(measurements.success)
+        
+        XCTAssertFalse(measurements.wallTimeLimitExceeded)
+        XCTAssertTrue(measurements.cpuTimeLimitExceeded)
+        XCTAssertFalse(measurements.memoryLimitExceeded)
+        
+        XCTAssertNotNil(measurements.wallTime)
+        XCTAssertNotNil(measurements.memory)
     }
     
     
@@ -436,6 +470,43 @@ internal final class PerformanceRunnerTests: TestKitCase
     
     
     
+    func testCPUTimeWithinLimitPasses() async throws
+    {
+        let runs: Int = 3
+        
+        let result: PerformanceResult = await PerformanceRunner.run(
+            runs:           runs,
+            warmupRuns:     0,
+            wallTimeLimit:  nil,
+            cpuTimeLimit:   .seconds(10),
+            memoryLimit:    nil,
+            body:           { }
+        )
+        
+        let measurements: PerformanceMeasurements
+            = try XCTUnwrap(result.assertCompleted())
+        
+        XCTAssertTrue(measurements.success)
+        
+        XCTAssertNil(measurements.wallTime)
+        XCTAssertNil(measurements.medianWallTime)
+        XCTAssertNil(measurements.wallTimeLimit)
+        XCTAssertFalse(measurements.wallTimeLimitExceeded)
+        
+        XCTAssertNotNil(measurements.cpuTime)
+        XCTAssertEqual(measurements.cpuTime?.count, runs)
+        XCTAssertNotNil(measurements.medianCPUTime)
+        XCTAssertNotNil(measurements.cpuTimeLimit)
+        XCTAssertFalse(measurements.cpuTimeLimitExceeded)
+        
+        XCTAssertNil(measurements.memory)
+        XCTAssertNil(measurements.medianMemory)
+        XCTAssertNil(measurements.memoryLimit)
+        XCTAssertFalse(measurements.memoryLimitExceeded)
+    }
+    
+    
+    
     func testWallTimeMeasurementReflectsSleep() async throws
     {
         try skipCI()
@@ -466,6 +537,88 @@ internal final class PerformanceRunnerTests: TestKitCase
             measurements.medianWallTime!,
             sleepDuration + .milliseconds(200)
         )
+    }
+    
+    
+    
+    func testCPUTimeMeasurementReflectsWork() async throws
+    {
+        try skipCI()
+        
+        let runs: Int = 3
+        
+        let result: PerformanceResult = await PerformanceRunner.run(
+            runs:           runs,
+            warmupRuns:     0,
+            wallTimeLimit:  nil,
+            cpuTimeLimit:   .seconds(60),
+            memoryLimit:    nil,
+            body:           { consumeCPU() }
+        )
+        
+        let measurements: PerformanceMeasurements
+            = try XCTUnwrap(result.assertCompleted())
+        
+        XCTAssertTrue(measurements.success)
+        XCTAssertNotNil(measurements.cpuTime)
+        XCTAssertEqual(measurements.cpuTime?.count, runs)
+        
+        for measurement in measurements.cpuTime ?? []
+        {
+            XCTAssertGreaterThan(measurement, .zero)
+        }
+    }
+    
+    
+    
+    func testCPUTimeUnaffectedByPureSleep() async throws
+    {
+        try skipCI()
+        
+        let sleepDuration   : Duration  = .milliseconds(50)
+        let cpuCeiling      : Duration  = .milliseconds(25)
+        
+        let result: PerformanceResult = await PerformanceRunner.run(
+            runs:           3,
+            warmupRuns:     0,
+            wallTimeLimit:  .seconds(10),
+            cpuTimeLimit:   .seconds(10),
+            memoryLimit:    nil,
+            body:           { try? await Task.sleep(for: sleepDuration) }
+        )
+        
+        let measurements: PerformanceMeasurements
+            = try XCTUnwrap(result.assertCompleted())
+        
+        XCTAssertTrue(measurements.success)
+        XCTAssertLessThan(measurements.medianCPUTime!, cpuCeiling)
+        
+        XCTAssertGreaterThanOrEqual(
+            measurements.medianWallTime!,
+            sleepDuration
+        )
+    }
+    
+    
+    
+    func testCPUTimeExceedsLimitFails() async throws
+    {
+        try skipCI()
+        
+        let result: PerformanceResult = await PerformanceRunner.run(
+            runs:           5,
+            warmupRuns:     0,
+            wallTimeLimit:  nil,
+            cpuTimeLimit:   .nanoseconds(1),
+            memoryLimit:    nil,
+            body:           { consumeCPU() }
+        )
+        
+        let measurements: PerformanceMeasurements
+            = try XCTUnwrap(result.assertCompleted())
+        
+        XCTAssertFalse(measurements.success)
+        XCTAssertTrue(measurements.cpuTimeLimitExceeded)
     }
     
     

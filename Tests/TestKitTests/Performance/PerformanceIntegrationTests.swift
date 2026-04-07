@@ -52,6 +52,19 @@ internal final class PerformanceIntegrationTests: TestKitCase
     
     
     
+    func testCPUTimeLimitPasses() async
+    {
+        let options: TestOptions = .performanceOptions(
+            runs:           3,
+            warmupRuns:     0,
+            cpuTimeLimit:   .seconds(10_000)
+        )
+        
+        await TKPerformance(options: options) { }
+    }
+    
+    
+    
     func testMemoryLimitPasses() async
     {
         let options: TestOptions = .performanceOptions(
@@ -71,6 +84,7 @@ internal final class PerformanceIntegrationTests: TestKitCase
             runs:           3,
             warmupRuns:     0,
             wallTimeLimit:  .seconds(10_000),
+            cpuTimeLimit:   .seconds(10_000),
             memoryLimit:    .gigabytes(50)
         )
         
@@ -155,6 +169,34 @@ internal final class PerformanceIntegrationTests: TestKitCase
             )
             {
                 try await Task.sleep(for: .milliseconds(50))
+            }
+        }
+        
+        XCTAssertNotNil(actual)
+    }
+    
+    
+    
+    func testCPUTimeLimitParameterOverridesDefaultOptions() async throws
+    {
+        try skipCI()
+        
+        let cpuTimeLimit: Duration = .nanoseconds(1)
+        
+        let options: TestOptions = .performanceOptions(
+            runs:           1,
+            warmupRuns:     0,
+            cpuTimeLimit:   .seconds(10_000)
+        )
+        
+        let actual: String? = await withOneExpectedFailure
+        {
+            await TKPerformance(
+                cpuTimeLimit:   cpuTimeLimit,
+                options:        options
+            )
+            {
+                consumeCPU()
             }
         }
         

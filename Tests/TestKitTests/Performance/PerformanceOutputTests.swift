@@ -384,6 +384,77 @@ internal final class PerformanceOutputTests: TestKitCase
     
     
     
+    // MARK: - CPU time
+    
+    func testCPUTimeLimitExceeded() async throws
+    {
+        try skipCI()
+        
+        let options: TestOptions = .performanceOptions(
+            runs:           1,
+            warmupRuns:     0,
+            cpuTimeLimit:   .milliseconds(1)
+        )
+        
+        let actual: String? = await withOneExpectedFailure
+        {
+            await TKPerformance(options: options)
+            {
+                consumeCPU()
+            }
+        }
+        
+        let expected: String =
+        """
+        XCTKPerformance failed
+        
+        CPU time:
+            Threshold: 1 ms
+            Median: <M> (1 run) ←
+        """
+        
+        XCTAssertEqual(expected, actual?.medianless)
+    }
+    
+    
+    
+    func testCPUTimeLimitExceededWithMessage() async throws
+    {
+        try skipCI()
+        
+        let options: TestOptions = .performanceOptions(
+            runs:           1,
+            warmupRuns:     0,
+            cpuTimeLimit:   .milliseconds(1)
+        )
+        
+        let actual: String? = await withOneExpectedFailure
+        {
+            await TKPerformance(
+                "hello world",
+                options: options
+            )
+            {
+                consumeCPU()
+            }
+        }
+        
+        let expected: String =
+        """
+        XCTKPerformance failed
+        
+        CPU time:
+            Threshold: 1 ms
+            Median: <M> (1 run) ←
+        
+        hello world
+        """
+        
+        XCTAssertEqual(expected, actual?.medianless)
+    }
+    
+    
+    
     // MARK: - Memory
     
     func testMemoryLimitExceeded() async throws
@@ -432,6 +503,7 @@ internal final class PerformanceOutputTests: TestKitCase
             runs:           3,
             warmupRuns:     0,
             wallTimeLimit:  .milliseconds(1),
+            cpuTimeLimit:   .nanoseconds(1),
             memoryLimit:    .bytes(1)
         )
         
@@ -447,6 +519,7 @@ internal final class PerformanceOutputTests: TestKitCase
             )
             {
                 holder.allocate()
+                consumeCPU()
                 try await Task.sleep(for: .milliseconds(50))
             }
             
@@ -459,6 +532,10 @@ internal final class PerformanceOutputTests: TestKitCase
         
         Wall time:
             Threshold: 1 ms
+            Median: <M> (3 runs) ←
+        
+        CPU time:
+            Threshold: 0 ms
             Median: <M> (3 runs) ←
         
         Memory:
@@ -513,6 +590,48 @@ internal final class PerformanceOutputTests: TestKitCase
     
     
     
+    func testMultipleMetricsCPUTimeExceeded() async throws
+    {
+        try skipCI()
+        
+        let options: TestOptions = .performanceOptions(
+            runs:           3,
+            warmupRuns:     0,
+            wallTimeLimit:  .seconds(10_000),
+            cpuTimeLimit:   .milliseconds(1),
+            memoryLimit:    .gigabytes(50)
+        )
+        
+        let actual: String? = await withOneExpectedFailure
+        {
+            await TKPerformance(options: options)
+            {
+                consumeCPU()
+            }
+        }
+        
+        let expected: String =
+        """
+        XCTKPerformance failed
+        
+        Wall time:
+            Threshold: 10,000 sec
+            Median: <M> (3 runs)
+        
+        CPU time:
+            Threshold: 1 ms
+            Median: <M> (3 runs) ←
+        
+        Memory:
+            Threshold: 50 GB
+            Median: <M> (3 runs)
+        """
+        
+        XCTAssertEqual(expected, actual?.medianless)
+    }
+    
+    
+    
     func testMultipleMetricsMemoryExceeded() async throws
     {
         try skipCI()
@@ -520,7 +639,7 @@ internal final class PerformanceOutputTests: TestKitCase
         let options: TestOptions = .performanceOptions(
             runs:           3,
             warmupRuns:     0,
-            wallTimeLimit:  .seconds(10),
+            wallTimeLimit:  .seconds(10_000),
             memoryLimit:    .bytes(1)
         )
         
@@ -541,7 +660,7 @@ internal final class PerformanceOutputTests: TestKitCase
         XCTKPerformance failed
         
         Wall time:
-            Threshold: 10 sec
+            Threshold: 10,000 sec
             Median: <M> (3 runs)
         
         Memory:
