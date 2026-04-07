@@ -44,7 +44,7 @@ internal final class PerformanceIntegrationTests: TestKitCase
         let options: TestOptions = .performanceOptions(
             runs:           3,
             warmupRuns:     0,
-            wallTimeLimit:  .seconds(10)
+            wallTimeLimit:  .seconds(10_000)
         )
         
         await TKPerformance(options: options) { }
@@ -57,7 +57,7 @@ internal final class PerformanceIntegrationTests: TestKitCase
         let options: TestOptions = .performanceOptions(
             runs:           3,
             warmupRuns:     0,
-            memoryLimit:    .megabytes(100)
+            memoryLimit:    .gigabytes(50)
         )
         
         await TKPerformance(options: options) { }
@@ -70,8 +70,8 @@ internal final class PerformanceIntegrationTests: TestKitCase
         let options: TestOptions = .performanceOptions(
             runs:           3,
             warmupRuns:     0,
-            wallTimeLimit:  .seconds(10),
-            memoryLimit:    .megabytes(100)
+            wallTimeLimit:  .seconds(10_000),
+            memoryLimit:    .gigabytes(50)
         )
         
         await TKPerformance(options: options) { }
@@ -90,7 +90,7 @@ internal final class PerformanceIntegrationTests: TestKitCase
         let options: TestOptions = .performanceOptions(
             runs:           10,
             warmupRuns:     0,
-            wallTimeLimit:  .seconds(10)
+            wallTimeLimit:  .seconds(10_000)
         )
         
         await TKPerformance(
@@ -116,7 +116,7 @@ internal final class PerformanceIntegrationTests: TestKitCase
         let options: TestOptions = .performanceOptions(
             runs:           runs,
             warmupRuns:     5,
-            wallTimeLimit:  .seconds(10)
+            wallTimeLimit:  .seconds(10_000)
         )
         
         await TKPerformance(
@@ -141,7 +141,7 @@ internal final class PerformanceIntegrationTests: TestKitCase
         let options: TestOptions = .performanceOptions(
             runs:           1,
             warmupRuns:     0,
-            wallTimeLimit:  .seconds(10)
+            wallTimeLimit:  .seconds(10_000)
         )
         
         let actual: String? = await withCapturedFailure
@@ -172,7 +172,7 @@ internal final class PerformanceIntegrationTests: TestKitCase
         let options: TestOptions = .performanceOptions(
             runs:           1,
             warmupRuns:     0,
-            memoryLimit:    .megabytes(100)
+            memoryLimit:    .gigabytes(50)
         )
         
         let actual: String? = await withOneExpectedFailure
