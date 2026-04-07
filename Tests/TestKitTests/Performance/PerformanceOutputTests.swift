@@ -535,7 +535,7 @@ internal final class PerformanceOutputTests: TestKitCase
             Median: <M> (3 runs) ←
         
         CPU time:
-            Threshold: 0 ms
+            Threshold: 1 ns
             Median: <M> (3 runs) ←
         
         Memory:
