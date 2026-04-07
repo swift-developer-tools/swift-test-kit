@@ -32,7 +32,7 @@ internal final class PerformanceOutputTests: TestKitCase
         let options: TestOptions = .performanceOptions(
             runs:           3,
             warmupRuns:     1,
-            timeLimit:      .seconds(10)
+            wallTimeLimit:  .seconds(10)
         )
         
         let actual: String? = await withOneExpectedFailure
@@ -60,7 +60,7 @@ internal final class PerformanceOutputTests: TestKitCase
         let options: TestOptions = .performanceOptions(
             runs:           3,
             warmupRuns:     0,
-            timeLimit:      .seconds(10)
+            wallTimeLimit:  .seconds(10)
         )
         
         let actual: String? = await withOneExpectedFailure
@@ -88,7 +88,7 @@ internal final class PerformanceOutputTests: TestKitCase
         let options: TestOptions = .performanceOptions(
             runs:           3,
             warmupRuns:     0,
-            timeLimit:      .seconds(10)
+            wallTimeLimit:  .seconds(10)
         )
         
         let actual: String? = await withOneExpectedFailure
@@ -123,7 +123,7 @@ internal final class PerformanceOutputTests: TestKitCase
         let options: TestOptions = .performanceOptions(
             runs:           3,
             warmupRuns:     0,
-            timeLimit:      .seconds(10)
+            wallTimeLimit:  .seconds(10)
         )
         
         let actual: String? = await withOneExpectedFailure
@@ -160,7 +160,7 @@ internal final class PerformanceOutputTests: TestKitCase
         let options: TestOptions = .performanceOptions(
             runs:           3,
             warmupRuns:     3,
-            timeLimit:      .seconds(10)
+            wallTimeLimit:  .seconds(10)
         )
         
         let actual: String? = await withOneExpectedFailure
@@ -190,7 +190,7 @@ internal final class PerformanceOutputTests: TestKitCase
         let options: TestOptions = .performanceOptions(
             runs:           3,
             warmupRuns:     1,
-            timeLimit:      .seconds(10)
+            wallTimeLimit:  .seconds(10)
         )
         
         let actual: String? = await withOneExpectedFailure
@@ -218,7 +218,7 @@ internal final class PerformanceOutputTests: TestKitCase
         let options: TestOptions = .performanceOptions(
             runs:           3,
             warmupRuns:     0,
-            timeLimit:      .seconds(10)
+            wallTimeLimit:  .seconds(10)
         )
         
         let actual: String? = await withOneExpectedFailure
@@ -246,7 +246,7 @@ internal final class PerformanceOutputTests: TestKitCase
         let options: TestOptions = .performanceOptions(
             runs:           3,
             warmupRuns:     0,
-            timeLimit:      .seconds(10)
+            wallTimeLimit:  .seconds(10)
         )
         
         let actual: String? = await withOneExpectedFailure
@@ -279,7 +279,7 @@ internal final class PerformanceOutputTests: TestKitCase
         let options: TestOptions = .performanceOptions(
             runs:           3,
             warmupRuns:     0,
-            timeLimit:      .seconds(10)
+            wallTimeLimit:  .seconds(10)
         )
         
         let actual: String? = await withOneExpectedFailure
@@ -305,16 +305,16 @@ internal final class PerformanceOutputTests: TestKitCase
     
     
     
-    // MARK: - Time
+    // MARK: - Wall time
     
-    func testTimeLimitExceeded() async throws
+    func testWallTimeLimitExceeded() async throws
     {
         try skipCI()
         
         let options: TestOptions = .performanceOptions(
             runs:           1,
             warmupRuns:     0,
-            timeLimit:      .milliseconds(1)
+            wallTimeLimit:  .milliseconds(1)
         )
         
         let actual: String? = await withCapturedFailure
@@ -344,14 +344,14 @@ internal final class PerformanceOutputTests: TestKitCase
     
     
     
-    func testTimeLimitExceededWithMessage() async throws
+    func testWallTimeLimitExceededWithMessage() async throws
     {
         try skipCI()
         
         let options: TestOptions = .performanceOptions(
             runs:           1,
             warmupRuns:     0,
-            timeLimit:      .milliseconds(1)
+            wallTimeLimit:  .milliseconds(1)
         )
         
         let actual: String? = await withCapturedFailure
@@ -422,16 +422,16 @@ internal final class PerformanceOutputTests: TestKitCase
     
     
     
-    // MARK: - Both metrics
+    // MARK: - Multiple metrics
     
-    func testBothMetricsBothExceeded() async throws
+    func testMultipleMetricsAllExceeded() async throws
     {
         try skipCI()
         
         let options: TestOptions = .performanceOptions(
             runs:           3,
             warmupRuns:     0,
-            timeLimit:      .milliseconds(1),
+            wallTimeLimit:  .milliseconds(1),
             memoryLimit:    .bytes(1)
         )
         
@@ -471,14 +471,14 @@ internal final class PerformanceOutputTests: TestKitCase
     
     
     
-    func testBothMetricsTimeExceeded() async throws
+    func testMultipleMetricsWallTimeExceeded() async throws
     {
         try skipCI()
         
         let options: TestOptions = .performanceOptions(
             runs:           3,
             warmupRuns:     0,
-            timeLimit:      .milliseconds(1),
+            wallTimeLimit:  .milliseconds(1),
             memoryLimit:    .gigabytes(50)
         )
         
@@ -513,14 +513,14 @@ internal final class PerformanceOutputTests: TestKitCase
     
     
     
-    func testBothMetricsMemoryExceeded() async throws
+    func testMultipleMetricsMemoryExceeded() async throws
     {
         try skipCI()
         
         let options: TestOptions = .performanceOptions(
             runs:           3,
             warmupRuns:     0,
-            timeLimit:      .seconds(10),
+            wallTimeLimit:  .seconds(10),
             memoryLimit:    .bytes(1)
         )
         
@@ -561,7 +561,7 @@ internal final class PerformanceOutputTests: TestKitCase
         let options: TestOptions = .performanceOptions(
             runs:           3,
             warmupRuns:     0,
-            timeLimit:      .seconds(10)
+            wallTimeLimit:  .seconds(10)
         )
         
         let actual: String? = await withOneExpectedFailure
@@ -594,7 +594,7 @@ internal final class PerformanceOutputTests: TestKitCase
         let options: TestOptions = .performanceOptions(
             runs:           3,
             warmupRuns:     1,
-            timeLimit:      .seconds(10)
+            wallTimeLimit:  .seconds(10)
         )
         
         let actual: String? = await withOneExpectedFailure
@@ -632,7 +632,7 @@ internal final class PerformanceOutputTests: TestKitCase
         let options: TestOptions = .performanceOptions(
             runs:           3,
             warmupRuns:     0,
-            timeLimit:      .seconds(10)
+            wallTimeLimit:  .seconds(10)
         )
         
         let actual: String? = await withOneExpectedFailure
@@ -675,13 +675,13 @@ internal final class PerformanceOutputTests: TestKitCase
         let options1: TestOptions = .performanceOptions(
             runs:           3,
             warmupRuns:     0,
-            timeLimit:      .seconds(10)
+            wallTimeLimit:  .seconds(10)
         )
         
         let options2: TestOptions = .performanceOptions(
             runs:           1,
             warmupRuns:     0,
-            timeLimit:      .milliseconds(1)
+            wallTimeLimit:  .milliseconds(1)
         )
         
         let actual: String? = await withCapturedFailure
@@ -724,7 +724,7 @@ internal final class PerformanceOutputTests: TestKitCase
         let options: TestOptions = .performanceOptions(
             runs:           3,
             warmupRuns:     0,
-            timeLimit:      .seconds(10)
+            wallTimeLimit:  .seconds(10)
         )
         
         let actual: String? = await withOneExpectedFailure
@@ -757,7 +757,7 @@ internal final class PerformanceOutputTests: TestKitCase
         let options: TestOptions = .performanceOptions(
             runs:           3,
             warmupRuns:     0,
-            timeLimit:      .seconds(10)
+            wallTimeLimit:  .seconds(10)
         )
         
         let actual: String? = await withCapturedFailure
@@ -801,7 +801,7 @@ internal final class PerformanceOutputTests: TestKitCase
         let performanceOptions: TestOptions = .performanceOptions(
             runs:           3,
             warmupRuns:     0,
-            timeLimit:      .seconds(10)
+            wallTimeLimit:  .seconds(10)
         )
         
         let actual: String? = await withOneExpectedFailure
@@ -846,7 +846,7 @@ internal final class PerformanceOutputTests: TestKitCase
         let performanceOptions: TestOptions = .performanceOptions(
             runs:           3,
             warmupRuns:     0,
-            timeLimit:      .seconds(10)
+            wallTimeLimit:  .seconds(10)
         )
         
         let actual: String? = await withOneExpectedFailure

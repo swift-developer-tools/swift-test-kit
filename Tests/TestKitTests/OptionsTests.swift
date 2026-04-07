@@ -133,7 +133,7 @@ internal final class OptionsTests: TestKitCase
         
         XCTAssertEqual(options.runs, 10)
         XCTAssertEqual(options.warmupRuns, 1)
-        XCTAssertNil(options.timeLimit)
+        XCTAssertNil(options.wallTimeLimit)
         XCTAssertNil(options.memoryLimit)
     }
     

@@ -17,16 +17,16 @@ import XCTest
 /// output tests remove the non-deterministic values and alignment.
 internal final class PerformanceAlignmentTests: TestKitCase
 {
-    func testTimeEqualWidth()
+    func testWallTimeEqualWidth()
     {
         let result: PerformanceResult = .completed(measurements: .init(
-            runs:           5,
-            time:           Array(repeating: .milliseconds(50), count: 5),
-            medianTime:     .milliseconds(50),
-            timeLimit:      .milliseconds(10),
-            memory:         nil,
-            medianMemory:   nil,
-            memoryLimit:    nil
+            runs:               5,
+            wallTime:           Array(repeating: .milliseconds(50), count: 5),
+            medianWallTime:     .milliseconds(50),
+            wallTimeLimit:      .milliseconds(10),
+            memory:             nil,
+            medianMemory:       nil,
+            memoryLimit:        nil
         ))
         
         let actual: String? = emit(result)
@@ -45,16 +45,16 @@ internal final class PerformanceAlignmentTests: TestKitCase
     
     
     
-    func testTimeDifferentWidth()
+    func testWallTimeDifferentWidth()
     {
         let result: PerformanceResult = .completed(measurements: .init(
-            runs:           5,
-            time:           Array(repeating: .milliseconds(123), count: 5),
-            medianTime:     .milliseconds(123),
-            timeLimit:      .milliseconds(50),
-            memory:         nil,
-            medianMemory:   nil,
-            memoryLimit:    nil
+            runs:               5,
+            wallTime:           Array(repeating: .milliseconds(123), count: 5),
+            medianWallTime:     .milliseconds(123),
+            wallTimeLimit:      .milliseconds(50),
+            memory:             nil,
+            medianMemory:       nil,
+            memoryLimit:        nil
         ))
         
         let actual: String? = emit(result)
@@ -76,13 +76,13 @@ internal final class PerformanceAlignmentTests: TestKitCase
     func testMemoryDifferentWidth()
     {
         let result: PerformanceResult = .completed(measurements: .init(
-            runs:           3,
-            time:           nil,
-            medianTime:     nil,
-            timeLimit:      nil,
-            memory:         Array(repeating: .kilobytes(512), count: 3),
-            medianMemory:   .kilobytes(512),
-            memoryLimit:    .kilobytes(1)
+            runs:               3,
+            wallTime:           nil,
+            medianWallTime:     nil,
+            wallTimeLimit:      nil,
+            memory:             Array(repeating: .kilobytes(512), count: 3),
+            medianMemory:       .kilobytes(512),
+            memoryLimit:        .kilobytes(1)
         ))
         
         let actual: String? = emit(result)
@@ -101,16 +101,16 @@ internal final class PerformanceAlignmentTests: TestKitCase
     
     
     
-    func testBothOneExceeded()
+    func testMultipleMetricsOneExceeded()
     {
         let result: PerformanceResult = .completed(measurements: .init(
-            runs:           5,
-            time:           Array(repeating: .milliseconds(5), count: 5),
-            medianTime:     .milliseconds(5),
-            timeLimit:      .milliseconds(500),
-            memory:         Array(repeating: .megabytes(2.5), count: 5),
-            medianMemory:   .megabytes(2.5),
-            memoryLimit:    .megabytes(1)
+            runs:               5,
+            wallTime:           Array(repeating: .milliseconds(5), count: 5),
+            medianWallTime:     .milliseconds(5),
+            wallTimeLimit:      .milliseconds(500),
+            memory:             Array(repeating: .megabytes(2.5), count: 5),
+            medianMemory:       .megabytes(2.5),
+            memoryLimit:        .megabytes(1)
         ))
         
         let actual: String? = emit(result)
@@ -133,16 +133,16 @@ internal final class PerformanceAlignmentTests: TestKitCase
     
     
     
-    func testBothExceeded()
+    func testAllMetricsExceeded()
     {
         let result: PerformanceResult = .completed(measurements: .init(
-            runs:           5,
-            time:           Array(repeating: .milliseconds(123), count: 5),
-            medianTime:     .milliseconds(123),
-            timeLimit:      .milliseconds(50),
-            memory:         Array(repeating: .megabytes(2.5), count: 5),
-            medianMemory:   .megabytes(2.5),
-            memoryLimit:    .megabytes(1)
+            runs:               5,
+            wallTime:           Array(repeating: .milliseconds(123), count: 5),
+            medianWallTime:     .milliseconds(123),
+            wallTimeLimit:      .milliseconds(50),
+            memory:             Array(repeating: .megabytes(2.5), count: 5),
+            medianMemory:       .megabytes(2.5),
+            memoryLimit:        .megabytes(1)
         ))
         
         let actual: String? = emit(result)

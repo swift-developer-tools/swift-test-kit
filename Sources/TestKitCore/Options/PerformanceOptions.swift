@@ -13,7 +13,7 @@ public struct PerformanceOptions: Equatable, Sendable
     /// The number of measurement runs.
     ///
     /// The default value is `10`.
-    public var runs         : Int
+    public var runs             : Int
     
     /// The number of warmup runs before measurement begins.
     ///
@@ -22,14 +22,17 @@ public struct PerformanceOptions: Equatable, Sendable
     /// Warmup runs execute the body without recording measurements. Use this
     /// to prime caches and other system state to reduce noise in the
     /// measured runs.
-    public var warmupRuns   : Int
+    public var warmupRuns       : Int
     
-    /// The time limit.
+    /// The wall-clock time limit.
     ///
-    /// The default value is `nil` (time measurement disabled). When non-`nil`,
-    /// the test fails if the median time across measurement runs exceeds this
-    /// limit.
-    public var timeLimit    : Duration?
+    /// The default value is `nil` (wall-clock time measurement disabled).
+    /// When non-`nil`, the test fails if the median wall-clock time across
+    /// measurement runs exceeds this limit.
+    ///
+    /// Wall-clock time measures elapsed real time, including the time the
+    /// process spends descheduled, blocked on I/O, or waiting on locks.
+    public var wallTimeLimit    : Duration?
     
     /// The physical memory footprint limit.
     ///
@@ -40,7 +43,7 @@ public struct PerformanceOptions: Equatable, Sendable
     /// - Note: This measures the physical memory footprint of the entire
     /// process, not memory scoped to the measured block. Measurements may
     /// vary between runs due to system-level allocations.
-    public var memoryLimit  : ByteCount?
+    public var memoryLimit      : ByteCount?
     
     
     
@@ -49,13 +52,13 @@ public struct PerformanceOptions: Equatable, Sendable
     ///
     /// - Precondition: `runs` must be positive.
     /// - Precondition: `warmupRuns` must not be negative.
-    /// - Precondition: `timeLimit` and `memoryLimit` must be positive
+    /// - Precondition: `wallTimeLimit` and `memoryLimit` must be positive
     /// or `nil`.
     public init(
-        runs        : Int           = 10,
-        warmupRuns  : Int           = 1,
-        timeLimit   : Duration?     = nil,
-        memoryLimit : ByteCount?    = nil
+        runs            : Int           = 10,
+        warmupRuns      : Int           = 1,
+        wallTimeLimit   : Duration?     = nil,
+        memoryLimit     : ByteCount?    = nil
     )
     {
         precondition(
@@ -68,11 +71,11 @@ public struct PerformanceOptions: Equatable, Sendable
             "warmupRuns must not be negative"
         )
         
-        if let timeLimit
+        if let wallTimeLimit
         {
             precondition(
-                timeLimit > .zero,
-                "timeLimit must be positive"
+                wallTimeLimit > .zero,
+                "wallTimeLimit must be positive"
             )
         }
         
@@ -86,7 +89,7 @@ public struct PerformanceOptions: Equatable, Sendable
         
         self.runs           = runs
         self.warmupRuns     = warmupRuns
-        self.timeLimit      = timeLimit
+        self.wallTimeLimit  = wallTimeLimit
         self.memoryLimit    = memoryLimit
     }
 }

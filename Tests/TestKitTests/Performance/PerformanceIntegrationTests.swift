@@ -30,7 +30,7 @@ internal final class PerformanceIntegrationTests: TestKitCase
     func testNoMetricsPasses() async
     {
         let options: TestOptions = .performanceOptions(
-            timeLimit:      nil,
+            wallTimeLimit:  nil,
             memoryLimit:    nil
         )
         
@@ -39,12 +39,12 @@ internal final class PerformanceIntegrationTests: TestKitCase
     
     
     
-    func testTimeLimitPasses() async
+    func testWallTimeLimitPasses() async
     {
         let options: TestOptions = .performanceOptions(
             runs:           3,
             warmupRuns:     0,
-            timeLimit:      nil
+            wallTimeLimit:  nil
         )
         
         await TKPerformance(options: options) { }
@@ -65,12 +65,12 @@ internal final class PerformanceIntegrationTests: TestKitCase
     
     
     
-    func testBothLimitsPass() async
+    func testMultipleLimitsPass() async
     {
         let options: TestOptions = .performanceOptions(
             runs:           3,
             warmupRuns:     0,
-            timeLimit:      .seconds(10),
+            wallTimeLimit:  .seconds(10),
             memoryLimit:    .megabytes(100)
         )
         
@@ -90,7 +90,7 @@ internal final class PerformanceIntegrationTests: TestKitCase
         let options: TestOptions = .performanceOptions(
             runs:           10,
             warmupRuns:     0,
-            timeLimit:      .seconds(10)
+            wallTimeLimit:  .seconds(10)
         )
         
         await TKPerformance(
@@ -116,7 +116,7 @@ internal final class PerformanceIntegrationTests: TestKitCase
         let options: TestOptions = .performanceOptions(
             runs:           runs,
             warmupRuns:     5,
-            timeLimit:      .seconds(10)
+            wallTimeLimit:  .seconds(10)
         )
         
         await TKPerformance(
@@ -132,16 +132,16 @@ internal final class PerformanceIntegrationTests: TestKitCase
     
     
     
-    func testTimeLimitParameterOverridesDefaultOptions() async throws
+    func testWallTimeLimitParameterOverridesDefaultOptions() async throws
     {
         try skipCI()
         
-        let timeLimit: Duration = .milliseconds(1)
+        let wallTimeLimit: Duration = .milliseconds(1)
         
         let options: TestOptions = .performanceOptions(
             runs:           1,
             warmupRuns:     0,
-            timeLimit:      .seconds(10)
+            wallTimeLimit:  .seconds(10)
         )
         
         let actual: String? = await withCapturedFailure
@@ -149,9 +149,9 @@ internal final class PerformanceIntegrationTests: TestKitCase
             context in
             
             await TKPerformance(
-                timeLimit:  timeLimit,
-                options:    options,
-                context:    context
+                wallTimeLimit:  wallTimeLimit,
+                options:        options,
+                context:        context
             )
             {
                 try await Task.sleep(for: .milliseconds(50))

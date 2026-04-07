@@ -27,7 +27,7 @@ import TestKitCore
 ///   which falls back to the resolved options.
 ///   - warmupRuns: The number of warmup runs before measurement begins.
 ///   The default value is `nil`, which falls back to the resolved options.
-///   - timeLimit: The time limit.
+///   - wallTimeLimit: The wall-clock time limit.
 ///   - memoryLimit: The physical memory footprint limit. The default value
 ///   is `nil`, which falls back to the resolved options.
 ///   - message: An optional description of a failure. The default value is
@@ -44,23 +44,23 @@ import TestKitCore
 ///   falls back to the resolved options.
 ///   - body: The performance body.
 public func XCTKPerformance(
-    runs        : @autoclosure () -> Int?           = nil,
-    warmupRuns  : @autoclosure () -> Int?           = nil,
-    timeLimit   : @autoclosure () -> Duration?      = nil,
-    memoryLimit : @autoclosure () -> ByteCount?     = nil,
-    _ message   : @autoclosure () -> String         = "",
-    fileID      : StaticString                      = #fileID,
-    file        : StaticString                      = #filePath,
-    line        : UInt                              = #line,
-    column      : UInt                              = #column,
-    options     : TestOptions?                      = nil,
-    _ body      : () async throws -> Void
+    runs            : @autoclosure () -> Int?           = nil,
+    warmupRuns      : @autoclosure () -> Int?           = nil,
+    wallTimeLimit   : @autoclosure () -> Duration?      = nil,
+    memoryLimit     : @autoclosure () -> ByteCount?     = nil,
+    _ message       : @autoclosure () -> String         = "",
+    fileID          : StaticString                      = #fileID,
+    file            : StaticString                      = #filePath,
+    line            : UInt                              = #line,
+    column          : UInt                              = #column,
+    options         : TestOptions?                      = nil,
+    _ body          : () async throws -> Void
 ) async
 {
     await TKPerformance(
         runs:           runs,
         warmupRuns:     warmupRuns,
-        timeLimit:      timeLimit,
+        wallTimeLimit:  wallTimeLimit,
         memoryLimit:    memoryLimit,
         message,
         fileID:         fileID,

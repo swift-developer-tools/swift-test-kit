@@ -13,7 +13,7 @@ exceeds the configured limits.
 
 ### Measuring Performance
 
-- ``STKPerformance(runs:warmupRuns:timeLimit:memoryLimit:_:fileID:file:line:column:options:_:)``
+- ``STKPerformance(runs:warmupRuns:wallTimeLimit:memoryLimit:_:fileID:file:line:column:options:_:)``
 - ``ByteCount``
 
 ### Configuration

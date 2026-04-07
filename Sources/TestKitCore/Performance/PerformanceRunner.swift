@@ -19,19 +19,19 @@ internal struct PerformanceRunner
     /// - Parameters:
     ///   - runs: The number of measurement runs.
     ///   - warmupRuns: The number of warmup runs before measurement begins.
-    ///   - timeLimit: The time limit.
+    ///   - wallTimeLimit: The wall-clock time limit.
     ///   - memoryLimit: The physical memory footprint limit.
     ///   - body: The performance body.
     /// - Returns: The result of the performance test.
     internal static func run(
-        runs        : Int,
-        warmupRuns  : Int,
-        timeLimit   : Duration?,
-        memoryLimit : ByteCount?,
-        body        : () async throws -> Void
+        runs            : Int,
+        warmupRuns      : Int,
+        wallTimeLimit   : Duration?,
+        memoryLimit     : ByteCount?,
+        body            : () async throws -> Void
     ) async -> PerformanceResult
     {
-        let timeEnabled     : Bool  = timeLimit != nil
+        let wallTimeEnabled : Bool  = wallTimeLimit != nil
         var memoryEnabled   : Bool  = memoryLimit != nil
         
         if
@@ -44,7 +44,7 @@ internal struct PerformanceRunner
         }
         
         guard
-            timeEnabled
+            wallTimeEnabled
             || memoryEnabled
         else
         {
@@ -114,7 +114,7 @@ internal struct PerformanceRunner
             
             /// Measure the memory footprint before starting the clock, and
             /// then again after stopping the clock, so any memory measurement
-            /// overhead is not included in the time measurement.
+            /// overhead is not included in the wall-clock time measurement.
             let preMemory: ByteCount? = memoryEnabled
                 ? physicalMemoryFootprint()
                 : nil
@@ -152,7 +152,7 @@ internal struct PerformanceRunner
                 )
             }
             
-            if timeEnabled
+            if wallTimeEnabled
             {
                 timeMeasurements.append(elapsed)
             }
@@ -176,13 +176,13 @@ internal struct PerformanceRunner
         
         
         let measurements = PerformanceMeasurements(
-            runs:         runs,
-            time:         timeEnabled ? timeMeasurements : nil,
-            medianTime:   timeEnabled ? median(of: timeMeasurements) : nil,
-            timeLimit:    timeLimit,
-            memory:       memoryEnabled ? memoryMeasurements : nil,
-            medianMemory: memoryEnabled ? median(of: memoryMeasurements) : nil,
-            memoryLimit:  memoryLimit
+            runs:           runs,
+            wallTime:       wallTimeEnabled ? timeMeasurements : nil,
+            medianWallTime: wallTimeEnabled ? median(of: timeMeasurements) : nil,
+            wallTimeLimit:  wallTimeLimit,
+            memory:         memoryEnabled ? memoryMeasurements : nil,
+            medianMemory:   memoryEnabled ? median(of: memoryMeasurements) : nil,
+            memoryLimit:    memoryLimit
         )
         
         return .completed(measurements: measurements)

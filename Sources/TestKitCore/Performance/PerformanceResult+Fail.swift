@@ -168,17 +168,17 @@ extension PerformanceResult
         lines.append("\(functionName) failed")
         
         if
-            let timeLimit   : Duration  = measurements.timeLimit,
-            let medianTime  : Duration  = measurements.medianTime
+            let wallTimeLimit   : Duration  = measurements.wallTimeLimit,
+            let medianWallTime  : Duration  = measurements.medianWallTime
         {
             lines.append("")
             lines.append("Time:")
             
             lines.append(contentsOf: formatMetricLines(
-                threshold:  timeLimit.readable,
-                median:     medianTime.readable,
+                threshold:  wallTimeLimit.readable,
+                median:     medianWallTime.readable,
                 runs:       measurements.runs,
-                exceeded:   measurements.timeLimitExceeded
+                exceeded:   measurements.wallTimeLimitExceeded
             ))
         }
         
