@@ -35,7 +35,7 @@ internal final class PerformanceAlignmentTests: TestKitCase
         """
         XCTKPerformance failed
         
-        Time:
+        Wall time:
             Threshold: 10 ms
             Median:    50 ms (5 runs) ←
         """
@@ -63,7 +63,7 @@ internal final class PerformanceAlignmentTests: TestKitCase
         """
         XCTKPerformance failed
         
-        Time:
+        Wall time:
             Threshold:  50 ms
             Median:    123 ms (5 runs) ←
         """
@@ -119,7 +119,7 @@ internal final class PerformanceAlignmentTests: TestKitCase
         """
         XCTKPerformance failed
         
-        Time:
+        Wall time:
             Threshold: 500 ms
             Median:      5 ms (5 runs)
         
@@ -151,7 +151,7 @@ internal final class PerformanceAlignmentTests: TestKitCase
         """
         XCTKPerformance failed
         
-        Time:
+        Wall time:
             Threshold:  50 ms
             Median:    123 ms (5 runs) ←
         

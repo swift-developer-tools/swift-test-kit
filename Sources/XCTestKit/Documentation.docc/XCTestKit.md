@@ -374,14 +374,14 @@ Verify the execution time:
 ```swift
 // Assert that a custom sort function is working correctly,
 // and that it sorts within 50 milliseconds.
-await XCTKPerformance(timeLimit: .milliseconds(50))
+await XCTKPerformance(wallTimeLimit: .milliseconds(50))
 {
     XCTKAssertSorted(customSort(array), by: >=)
 }
 
 // XCTKPerformance failed
 // 
-// Time:
+// Wall time:
 //     Threshold: 50 ms
 //     Median:    77 ms (10 runs) ←
 ```

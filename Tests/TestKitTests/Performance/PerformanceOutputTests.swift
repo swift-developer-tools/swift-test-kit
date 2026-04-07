@@ -334,7 +334,7 @@ internal final class PerformanceOutputTests: TestKitCase
         """
         XCTKPerformance failed
         
-        Time:
+        Wall time:
             Threshold: 1 ms
             Median: <M> (1 run) ←
         """
@@ -372,7 +372,7 @@ internal final class PerformanceOutputTests: TestKitCase
         """
         XCTKPerformance failed
         
-        Time:
+        Wall time:
             Threshold: 1 ms
             Median: <M> (1 run) ←
         
@@ -457,7 +457,7 @@ internal final class PerformanceOutputTests: TestKitCase
         """
         XCTKPerformance failed
         
-        Time:
+        Wall time:
             Threshold: 1 ms
             Median: <M> (3 runs) ←
         
@@ -499,7 +499,7 @@ internal final class PerformanceOutputTests: TestKitCase
         """
         XCTKPerformance failed
         
-        Time:
+        Wall time:
             Threshold: 1 ms
             Median: <M> (3 runs) ←
         
@@ -540,7 +540,7 @@ internal final class PerformanceOutputTests: TestKitCase
         """
         XCTKPerformance failed
         
-        Time:
+        Wall time:
             Threshold: 10 sec
             Median: <M> (3 runs)
         
@@ -709,7 +709,7 @@ internal final class PerformanceOutputTests: TestKitCase
 
         XCTKPerformance failed
         
-        Time:
+        Wall time:
             Threshold: 1 ms
             Median: <M> (1 run) ←
         """

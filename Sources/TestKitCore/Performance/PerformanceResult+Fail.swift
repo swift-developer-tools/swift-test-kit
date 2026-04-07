@@ -172,7 +172,7 @@ extension PerformanceResult
             let medianWallTime  : Duration  = measurements.medianWallTime
         {
             lines.append("")
-            lines.append("Time:")
+            lines.append("Wall time:")
             
             lines.append(contentsOf: formatMetricLines(
                 threshold:  wallTimeLimit.readable,
