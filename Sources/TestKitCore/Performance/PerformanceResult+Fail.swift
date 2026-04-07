@@ -183,6 +183,21 @@ extension PerformanceResult
         }
         
         if
+            let cpuTimeLimit    : Duration  = measurements.cpuTimeLimit,
+            let medianCPUTime   : Duration  = measurements.medianCPUTime
+        {
+            lines.append("")
+            lines.append("CPU time:")
+            
+            lines.append(contentsOf: formatMetricLines(
+                threshold:  cpuTimeLimit.readable,
+                median:     medianCPUTime.readable,
+                runs:       measurements.runs,
+                exceeded:   measurements.cpuTimeLimitExceeded
+            ))
+        }
+        
+        if
             let memoryLimit     : ByteCount     = measurements.memoryLimit,
             let medianMemory    : ByteCount     = measurements.medianMemory
         {

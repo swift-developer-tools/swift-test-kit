@@ -57,6 +57,15 @@ internal struct PerformanceMeasurements: Equatable, Sendable
     /// The wall-clock time limit.
     internal let wallTimeLimit  : Duration?
     
+    /// The per-run CPU time measurements.
+    internal let cpuTime        : [Duration]?
+    
+    /// The median CPU time.
+    internal let medianCPUTime  : Duration?
+    
+    /// The CPU time limit.
+    internal let cpuTimeLimit   : Duration?
+    
     /// The per-run memory measurements.
     internal let memory         : [ByteCount]?
     
@@ -84,6 +93,22 @@ internal struct PerformanceMeasurements: Equatable, Sendable
     
     
     
+    /// Whether the CPU time limit was exceeded.
+    internal var cpuTimeLimitExceeded: Bool
+    {
+        guard
+            let medianCPUTime,
+            let cpuTimeLimit
+        else
+        {
+            return false
+        }
+        
+        return medianCPUTime > cpuTimeLimit
+    }
+    
+    
+    
     /// Whether the memory limit was exceeded.
     internal var memoryLimitExceeded: Bool
     {
@@ -104,6 +129,7 @@ internal struct PerformanceMeasurements: Equatable, Sendable
     internal var success: Bool
     {
         return !wallTimeLimitExceeded
+            && !cpuTimeLimitExceeded
             && !memoryLimitExceeded
     }
 }

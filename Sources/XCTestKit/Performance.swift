@@ -28,6 +28,7 @@ import TestKitCore
 ///   - warmupRuns: The number of warmup runs before measurement begins.
 ///   The default value is `nil`, which falls back to the resolved options.
 ///   - wallTimeLimit: The wall-clock time limit.
+///   - cpuTimeLimit: The CPU time limit.
 ///   - memoryLimit: The physical memory footprint limit. The default value
 ///   is `nil`, which falls back to the resolved options.
 ///   - message: An optional description of a failure. The default value is
@@ -47,6 +48,7 @@ public func XCTKPerformance(
     runs            : @autoclosure () -> Int?           = nil,
     warmupRuns      : @autoclosure () -> Int?           = nil,
     wallTimeLimit   : @autoclosure () -> Duration?      = nil,
+    cpuTimeLimit    : @autoclosure () -> Duration?      = nil,
     memoryLimit     : @autoclosure () -> ByteCount?     = nil,
     _ message       : @autoclosure () -> String         = "",
     fileID          : StaticString                      = #fileID,
@@ -61,6 +63,7 @@ public func XCTKPerformance(
         runs:           runs,
         warmupRuns:     warmupRuns,
         wallTimeLimit:  wallTimeLimit,
+        cpuTimeLimit:   cpuTimeLimit,
         memoryLimit:    memoryLimit,
         message,
         fileID:         fileID,

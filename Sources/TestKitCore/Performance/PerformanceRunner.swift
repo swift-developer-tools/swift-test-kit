@@ -20,6 +20,7 @@ internal struct PerformanceRunner
     ///   - runs: The number of measurement runs.
     ///   - warmupRuns: The number of warmup runs before measurement begins.
     ///   - wallTimeLimit: The wall-clock time limit.
+    ///   - cpuTimeLimit: The CPU time limit.
     ///   - memoryLimit: The physical memory footprint limit.
     ///   - body: The performance body.
     /// - Returns: The result of the performance test.
@@ -27,12 +28,23 @@ internal struct PerformanceRunner
         runs            : Int,
         warmupRuns      : Int,
         wallTimeLimit   : Duration?,
+        cpuTimeLimit    : Duration?,
         memoryLimit     : ByteCount?,
         body            : () async throws -> Void
     ) async -> PerformanceResult
     {
         let wallTimeEnabled : Bool  = wallTimeLimit != nil
+        var cpuTimeEnabled  : Bool  = cpuTimeLimit != nil
         var memoryEnabled   : Bool  = memoryLimit != nil
+        
+        if
+            cpuTimeEnabled,
+            cpuTime() == nil
+        {
+            cpuTimeEnabled = false
+            
+            logger.warning("CPU time measurement unavailable")
+        }
         
         if
             memoryEnabled,
@@ -45,6 +57,7 @@ internal struct PerformanceRunner
         
         guard
             wallTimeEnabled
+            || cpuTimeEnabled
             || memoryEnabled
         else
         {
@@ -99,8 +112,9 @@ internal struct PerformanceRunner
         
         
         
-        var timeMeasurements    : [Duration]    = []
-        var memoryMeasurements  : [ByteCount]   = []
+        var wallTimeMeasurements    : [Duration]    = []
+        var cpuTimeMeasurements     : [Duration]    = []
+        var memoryMeasurements      : [ByteCount]   = []
         
         for measurementRun in 0..<runs
         {
@@ -112,11 +126,17 @@ internal struct PerformanceRunner
             
             interceptor.reset()
             
-            /// Measure the memory footprint before starting the clock, and
-            /// then again after stopping the clock, so any memory measurement
-            /// overhead is not included in the wall-clock time measurement.
+            /// Bracket the body in nesting order from outermost to innermost:
+            /// memory, CPU time, wall-clock time. The wall-clock time is the
+            /// tightest measurement, so it excludes the CPU time and memory
+            /// measurement overhead. CPU time also excludes the memory
+            /// measurement overhead.
             let preMemory: ByteCount? = memoryEnabled
                 ? physicalMemoryFootprint()
+                : nil
+            
+            let preCPU: Duration? = cpuTimeEnabled
+                ? cpuTime()
                 : nil
             
             let start       : ContinuousClock.Instant   = .now
@@ -136,6 +156,10 @@ internal struct PerformanceRunner
             
             let elapsed: Duration = start.elapsed
             
+            let postCPU: Duration? = cpuTimeEnabled
+                ? cpuTime()
+                : nil
+            
             let postMemory: ByteCount? = memoryEnabled
                 ? physicalMemoryFootprint()
                 : nil
@@ -154,7 +178,21 @@ internal struct PerformanceRunner
             
             if wallTimeEnabled
             {
-                timeMeasurements.append(elapsed)
+                wallTimeMeasurements.append(elapsed)
+            }
+            
+            if
+                cpuTimeEnabled,
+                let preCPU,
+                let postCPU
+            {
+                /// Prefer zero to an underflow if the clock time decreases
+                /// between pre- and post-clock start.
+                let difference: Duration = postCPU > preCPU
+                    ? postCPU - preCPU
+                    : .zero
+                
+                cpuTimeMeasurements.append(difference)
             }
             
             if
@@ -163,11 +201,11 @@ internal struct PerformanceRunner
                 let postMemory
             {
                 /// Prefer zero to an underflow if the footprint decreases
-                /// between pre- and post-clock-start.
+                /// between pre- and post-clock start.
                 let difference: UInt64
                     = postMemory.rawValue > preMemory.rawValue
                         ? postMemory.rawValue - preMemory.rawValue
-                        : 0
+                        : .zero
                 
                 memoryMeasurements.append(.bytes(difference))
             }
@@ -177,9 +215,12 @@ internal struct PerformanceRunner
         
         let measurements = PerformanceMeasurements(
             runs:           runs,
-            wallTime:       wallTimeEnabled ? timeMeasurements : nil,
-            medianWallTime: wallTimeEnabled ? median(of: timeMeasurements) : nil,
+            wallTime:       wallTimeEnabled ? wallTimeMeasurements : nil,
+            medianWallTime: wallTimeEnabled ? median(of: wallTimeMeasurements) : nil,
             wallTimeLimit:  wallTimeLimit,
+            cpuTime:        cpuTimeEnabled ? cpuTimeMeasurements : nil,
+            medianCPUTime:  cpuTimeEnabled ? median(of: cpuTimeMeasurements) : nil,
+            cpuTimeLimit:   cpuTimeLimit,
             memory:         memoryEnabled ? memoryMeasurements : nil,
             medianMemory:   memoryEnabled ? median(of: memoryMeasurements) : nil,
             memoryLimit:    memoryLimit
@@ -196,6 +237,23 @@ internal struct PerformanceRunner
         subsystem:  "swift-test-kit",
         category:   "PerformanceRunner"
     )
+    
+    
+    
+    /// Gets the CPU time consumed by the process.
+    /// - Returns: The CPU time consumed by the process.
+    private static func cpuTime() -> Duration?
+    {
+        var spec = timespec()
+        
+        guard clock_gettime(CLOCK_PROCESS_CPUTIME_ID, &spec) == 0
+        else
+        {
+            return nil
+        }
+        
+        return .seconds(spec.tv_sec) + .nanoseconds(spec.tv_nsec)
+    }
     
     
     

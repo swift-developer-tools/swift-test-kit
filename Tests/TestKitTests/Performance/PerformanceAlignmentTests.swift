@@ -19,15 +19,12 @@ internal final class PerformanceAlignmentTests: TestKitCase
 {
     func testWallTimeEqualWidth()
     {
-        let result: PerformanceResult = .completed(measurements: .init(
+        let result: PerformanceResult = .makeCompleted(
             runs:               5,
             wallTime:           Array(repeating: .milliseconds(50), count: 5),
             medianWallTime:     .milliseconds(50),
-            wallTimeLimit:      .milliseconds(10),
-            memory:             nil,
-            medianMemory:       nil,
-            memoryLimit:        nil
-        ))
+            wallTimeLimit:      .milliseconds(10)
+        )
         
         let actual: String? = emit(result)
         
@@ -47,15 +44,12 @@ internal final class PerformanceAlignmentTests: TestKitCase
     
     func testWallTimeDifferentWidth()
     {
-        let result: PerformanceResult = .completed(measurements: .init(
+        let result: PerformanceResult = .makeCompleted(
             runs:               5,
             wallTime:           Array(repeating: .milliseconds(123), count: 5),
             medianWallTime:     .milliseconds(123),
-            wallTimeLimit:      .milliseconds(50),
-            memory:             nil,
-            medianMemory:       nil,
-            memoryLimit:        nil
-        ))
+            wallTimeLimit:      .milliseconds(50)
+        )
         
         let actual: String? = emit(result)
         
@@ -75,15 +69,12 @@ internal final class PerformanceAlignmentTests: TestKitCase
     
     func testMemoryDifferentWidth()
     {
-        let result: PerformanceResult = .completed(measurements: .init(
-            runs:               3,
-            wallTime:           nil,
-            medianWallTime:     nil,
-            wallTimeLimit:      nil,
-            memory:             Array(repeating: .kilobytes(512), count: 3),
-            medianMemory:       .kilobytes(512),
-            memoryLimit:        .kilobytes(1)
-        ))
+        let result: PerformanceResult = .makeCompleted(
+            runs:           3,
+            memory:         Array(repeating: .kilobytes(512), count: 3),
+            medianMemory:   .kilobytes(512),
+            memoryLimit:    .kilobytes(1)
+        )
         
         let actual: String? = emit(result)
         
@@ -103,7 +94,7 @@ internal final class PerformanceAlignmentTests: TestKitCase
     
     func testMultipleMetricsOneExceeded()
     {
-        let result: PerformanceResult = .completed(measurements: .init(
+        let result: PerformanceResult = .makeCompleted(
             runs:               5,
             wallTime:           Array(repeating: .milliseconds(5), count: 5),
             medianWallTime:     .milliseconds(5),
@@ -111,7 +102,7 @@ internal final class PerformanceAlignmentTests: TestKitCase
             memory:             Array(repeating: .megabytes(2.5), count: 5),
             medianMemory:       .megabytes(2.5),
             memoryLimit:        .megabytes(1)
-        ))
+        )
         
         let actual: String? = emit(result)
         
@@ -135,7 +126,7 @@ internal final class PerformanceAlignmentTests: TestKitCase
     
     func testAllMetricsExceeded()
     {
-        let result: PerformanceResult = .completed(measurements: .init(
+        let result: PerformanceResult = .makeCompleted(
             runs:               5,
             wallTime:           Array(repeating: .milliseconds(123), count: 5),
             medianWallTime:     .milliseconds(123),
@@ -143,7 +134,7 @@ internal final class PerformanceAlignmentTests: TestKitCase
             memory:             Array(repeating: .megabytes(2.5), count: 5),
             medianMemory:       .megabytes(2.5),
             memoryLimit:        .megabytes(1)
-        ))
+        )
         
         let actual: String? = emit(result)
         
@@ -197,5 +188,39 @@ extension PerformanceAlignmentTests
         )
         
         return captured.withLock { $0 }
+    }
+}
+
+
+
+private extension PerformanceResult
+{
+    /// Creates a ``PerformanceResult/completed(measurements:)`` instance from
+    /// the given values.
+    static func makeCompleted(
+        runs           : Int,
+        wallTime       : [Duration]?    = nil,
+        medianWallTime : Duration?      = nil,
+        wallTimeLimit  : Duration?      = nil,
+        cpuTime        : [Duration]?    = nil,
+        medianCPUTime  : Duration?      = nil,
+        cpuTimeLimit   : Duration?      = nil,
+        memory         : [ByteCount]?   = nil,
+        medianMemory   : ByteCount?     = nil,
+        memoryLimit    : ByteCount?     = nil
+    ) -> PerformanceResult
+    {
+        return .completed(measurements: .init(
+            runs:               runs,
+            wallTime:           wallTime,
+            medianWallTime:     medianWallTime,
+            wallTimeLimit:      wallTimeLimit,
+            cpuTime:            cpuTime,
+            medianCPUTime:      medianCPUTime,
+            cpuTimeLimit:       cpuTimeLimit,
+            memory:             memory,
+            medianMemory:       medianMemory,
+            memoryLimit:        memoryLimit
+        ))
     }
 }

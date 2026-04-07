@@ -26,6 +26,7 @@ internal final class PerformanceRunnerTests: TestKitCase
             runs:           10,
             warmupRuns:     1,
             wallTimeLimit:  nil,
+            cpuTimeLimit:   nil,
             memoryLimit:    nil,
             body:           { }
         )
@@ -47,6 +48,7 @@ internal final class PerformanceRunnerTests: TestKitCase
             runs:           runs,
             warmupRuns:     warmupRuns,
             wallTimeLimit:  .seconds(10),
+            cpuTimeLimit:   nil,
             memoryLimit:    nil,
             body:           { await counter.increment() }
         )
@@ -71,6 +73,7 @@ internal final class PerformanceRunnerTests: TestKitCase
             runs:           1,
             warmupRuns:     0,
             wallTimeLimit:  .seconds(10),
+            cpuTimeLimit:   nil,
             memoryLimit:    nil,
             body:           { await counter.increment() }
         )
@@ -94,6 +97,7 @@ internal final class PerformanceRunnerTests: TestKitCase
             runs:           5,
             warmupRuns:     2,
             wallTimeLimit:  .seconds(10),
+            cpuTimeLimit:   nil,
             memoryLimit:    nil,
             body:           { FailureInterceptor.current?.recordFailure() }
         )
@@ -114,6 +118,7 @@ internal final class PerformanceRunnerTests: TestKitCase
             runs:           5,
             warmupRuns:     2,
             wallTimeLimit:  .seconds(10),
+            cpuTimeLimit:   nil,
             memoryLimit:    nil,
             body:           { throw TestError() }
         )
@@ -135,6 +140,7 @@ internal final class PerformanceRunnerTests: TestKitCase
             runs:           5,
             warmupRuns:     2,
             wallTimeLimit:  .seconds(10),
+            cpuTimeLimit:   nil,
             memoryLimit:    nil,
             body:
             {
@@ -161,6 +167,7 @@ internal final class PerformanceRunnerTests: TestKitCase
             runs:           5,
             warmupRuns:     1,
             wallTimeLimit:  .seconds(10),
+            cpuTimeLimit:   nil,
             memoryLimit:    nil,
             body:
             {
@@ -191,6 +198,7 @@ internal final class PerformanceRunnerTests: TestKitCase
             runs:           5,
             warmupRuns:     3,
             wallTimeLimit:  .seconds(10),
+            cpuTimeLimit:   nil,
             memoryLimit:    nil,
             body:
             {
@@ -222,6 +230,7 @@ internal final class PerformanceRunnerTests: TestKitCase
             runs:           5,
             warmupRuns:     2,
             wallTimeLimit:  .seconds(10),
+            cpuTimeLimit:   nil,
             memoryLimit:    nil,
             body:
             {
@@ -263,6 +272,7 @@ internal final class PerformanceRunnerTests: TestKitCase
             runs:           runs,
             warmupRuns:     0,
             wallTimeLimit:  .seconds(10),
+            cpuTimeLimit:   nil,
             memoryLimit:    .bytes(UInt64.max),
             body:           { }
         )
@@ -295,6 +305,7 @@ internal final class PerformanceRunnerTests: TestKitCase
             runs:           3,
             warmupRuns:     0,
             wallTimeLimit:  .nanoseconds(1),
+            cpuTimeLimit:   nil,
             memoryLimit:    .bytes(UInt64.max),
             body:           { try? await Task.sleep(for: .milliseconds(5)) }
         )
@@ -321,6 +332,7 @@ internal final class PerformanceRunnerTests: TestKitCase
             runs:           runs,
             warmupRuns:     0,
             wallTimeLimit:  .seconds(10),
+            cpuTimeLimit:   nil,
             memoryLimit:    nil,
             body:           { }
         )
@@ -347,6 +359,7 @@ internal final class PerformanceRunnerTests: TestKitCase
             runs:           runs,
             warmupRuns:     0,
             wallTimeLimit:  .seconds(10),
+            cpuTimeLimit:   nil,
             memoryLimit:    nil,
             body:           { }
         )
@@ -373,6 +386,7 @@ internal final class PerformanceRunnerTests: TestKitCase
             runs:           runs,
             warmupRuns:     0,
             wallTimeLimit:  .seconds(10),
+            cpuTimeLimit:   nil,
             memoryLimit:    nil,
             body:           { }
         )
@@ -398,6 +412,7 @@ internal final class PerformanceRunnerTests: TestKitCase
             runs:           runs,
             warmupRuns:     0,
             wallTimeLimit:  .seconds(10),
+            cpuTimeLimit:   nil,
             memoryLimit:    nil,
             body:           { }
         )
@@ -431,6 +446,7 @@ internal final class PerformanceRunnerTests: TestKitCase
             runs:           3,
             warmupRuns:     0,
             wallTimeLimit:  .seconds(10),
+            cpuTimeLimit:   nil,
             memoryLimit:    nil,
             body:           { try? await Task.sleep(for: sleepDuration) }
         )
@@ -465,6 +481,7 @@ internal final class PerformanceRunnerTests: TestKitCase
             runs:           runs,
             warmupRuns:     0,
             wallTimeLimit:  nil,
+            cpuTimeLimit:   nil,
             memoryLimit:    .bytes(UInt64.max),
             body:           { holder.allocate() }
         )
@@ -503,6 +520,7 @@ internal final class PerformanceRunnerTests: TestKitCase
             runs:           5,
             warmupRuns:     0,
             wallTimeLimit:  .seconds(10),
+            cpuTimeLimit:   nil,
             memoryLimit:    nil,
             body:           { FailureInterceptor.current?.recordFailure() }
         )
@@ -523,6 +541,7 @@ internal final class PerformanceRunnerTests: TestKitCase
             runs:           5,
             warmupRuns:     0,
             wallTimeLimit:  .seconds(10),
+            cpuTimeLimit:   nil,
             memoryLimit:    nil,
             body:           { throw TestError() }
         )
@@ -544,6 +563,7 @@ internal final class PerformanceRunnerTests: TestKitCase
             runs:           5,
             warmupRuns:     0,
             wallTimeLimit:  .seconds(10),
+            cpuTimeLimit:   nil,
             memoryLimit:    nil,
             body:
             {
@@ -571,6 +591,7 @@ internal final class PerformanceRunnerTests: TestKitCase
             runs:           5,
             warmupRuns:     0,
             wallTimeLimit:  .seconds(10),
+            cpuTimeLimit:   nil,
             memoryLimit:    nil,
             body:
             {
@@ -599,6 +620,7 @@ internal final class PerformanceRunnerTests: TestKitCase
             runs:           5,
             warmupRuns:     0,
             wallTimeLimit:  .seconds(10),
+            cpuTimeLimit:   nil,
             memoryLimit:    nil,
             body:
             {
@@ -642,6 +664,7 @@ internal final class PerformanceRunnerTests: TestKitCase
                 runs:           5,
                 warmupRuns:     1,
                 wallTimeLimit:  .seconds(10),
+                cpuTimeLimit:   nil,
                 memoryLimit:    nil,
                 body:
                 {
@@ -669,6 +692,7 @@ internal final class PerformanceRunnerTests: TestKitCase
                 runs:           100,
                 warmupRuns:     0,
                 wallTimeLimit:  .seconds(60),
+                cpuTimeLimit:   nil,
                 memoryLimit:    nil,
                 body:
                 {
@@ -696,6 +720,7 @@ internal final class PerformanceRunnerTests: TestKitCase
             runs:           3,
             warmupRuns:     0,
             wallTimeLimit:  .nanoseconds(1),
+            cpuTimeLimit:   nil,
             memoryLimit:    nil,
             body:           { try? await Task.sleep(for: .milliseconds(5)) }
         )
@@ -721,6 +746,7 @@ internal final class PerformanceRunnerTests: TestKitCase
                 runs:           3,
                 warmupRuns:     0,
                 wallTimeLimit:  .seconds(10),
+                cpuTimeLimit:   nil,
                 memoryLimit:    nil,
                 body:           { FailureInterceptor.current?.recordFailure() }
             )
@@ -744,6 +770,7 @@ internal final class PerformanceRunnerTests: TestKitCase
                 runs:           1,
                 warmupRuns:     0,
                 wallTimeLimit:  .seconds(10),
+                cpuTimeLimit:   nil,
                 memoryLimit:    nil,
                 body:           { }
             )
@@ -764,6 +791,7 @@ internal final class PerformanceRunnerTests: TestKitCase
                 runs:           1,
                 warmupRuns:     0,
                 wallTimeLimit:  .seconds(10),
+                cpuTimeLimit:   nil,
                 memoryLimit:    nil,
                 body:
                 {
@@ -789,6 +817,7 @@ internal final class PerformanceRunnerTests: TestKitCase
             runs:           runs,
             warmupRuns:     0,
             wallTimeLimit:  .seconds(10),
+            cpuTimeLimit:   nil,
             memoryLimit:    nil,
             body:
             {
