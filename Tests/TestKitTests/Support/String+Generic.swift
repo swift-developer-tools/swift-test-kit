@@ -30,7 +30,7 @@ extension String
     internal var timeless: String
     {
         return replacing(
-            /failed after \d+(\.\d+)?\s*(ms|sec)/,
+            /failed after \d+(\.\d+)?\s*(ns|μs|ms|sec)/,
             with: "failed after <T>"
         )
     }
