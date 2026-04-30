@@ -521,6 +521,19 @@ internal struct Formatter
         emitPath()
         emitLine(makeLabel(.expected, renderText(expected.rendered)))
         emitLine(makeLabel(.actual, renderText(actual.rendered)))
+        
+        if expected == actual
+        {
+            /// ``Comparator`` has concluded that the values are not equal,
+            /// but the rendered output does not disambiguate them.
+            ///
+            /// This is generally caused by a `RawRepresentable` implementation
+            /// that considers state beyond the raw value, or a
+            /// `CustomStringConvertible` implementation that collapses unequal
+            /// values to the same description.
+            emitLine("Note: Values are not equal but produce identical output.")
+        }
+        
         emitBlankLine()
         
         context.emittedDiffCount += 1
