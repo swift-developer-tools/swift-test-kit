@@ -15,10 +15,10 @@ import Synchronization
 
 /// Intercepts assertion failures.
 ///
-/// This class must use `@unchecked Sendable` since it is subclassed by
-/// ``PropertyInterceptor`` and ``TemporalInterceptor``, and therefore cannot
-/// be `final`. Unchecked `Sendable` conformance is safe since mutable state
-/// is protected by `Mutex`, and subclassing is restricted to this package.
+/// This class must use `@unchecked Sendable` since it is subclassed by the
+/// interceptors of various evaluators, and therefore cannot be `final`.
+/// Unchecked `Sendable` conformance is safe since mutable state is protected
+/// by `Mutex`, and subclassing is restricted to this package.
 package class FailureInterceptor: @unchecked Sendable
 {
     /// The current interceptor.
