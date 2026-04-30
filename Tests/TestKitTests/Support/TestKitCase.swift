@@ -39,7 +39,7 @@ internal class TestKitCase: XCTestCase
     /// - Parameter body: The closure to call.
     /// - Returns: The return value of the given closure.
     @Reasync
-    func withContinuationAfterFailure<T>(
+    internal func withContinuationAfterFailure<T>(
         _ body: () async throws -> T
     ) async rethrows -> T
     {
@@ -67,7 +67,7 @@ internal class TestKitCase: XCTestCase
     /// - Returns: The failure message of the given closure.
     @Reasync
     @discardableResult
-    func withOneExpectedFailure(
+    internal func withOneExpectedFailure(
         _ body: () async throws -> Void
     ) async -> String?
     {
@@ -160,7 +160,7 @@ internal class TestKitCase: XCTestCase
     /// - Returns: The failure message of the given closure.
     @Reasync
     @discardableResult
-    func withCapturedFailure(
+    internal static func withCapturedFailure(
         _ body: (FailureContext) async throws -> Void
     ) async -> String?
     {
@@ -193,7 +193,7 @@ internal class TestKitCase: XCTestCase
     ///   filename of the test case in which this function was called.
     ///   - line: The line where the test exists. The default value is the
     ///   line number where this function was called.
-    func skipCI(
+    internal static func skipCI(
         _ message   : String        = "Test skipped in CI environment",
         file        : StaticString  = #filePath,
         line        : UInt          = #line

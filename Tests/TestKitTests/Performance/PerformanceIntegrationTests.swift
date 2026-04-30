@@ -148,7 +148,7 @@ internal final class PerformanceIntegrationTests: TestKitCase
     
     func testWallTimeLimitParameterOverridesDefaultOptions() async throws
     {
-        try skipCI()
+        try Self.skipCI()
         
         let wallTimeLimit: Duration = .milliseconds(1)
         
@@ -158,7 +158,7 @@ internal final class PerformanceIntegrationTests: TestKitCase
             wallTimeLimit:  .seconds(10_000)
         )
         
-        let actual: String? = await withCapturedFailure
+        let actual: String? = await Self.withCapturedFailure
         {
             context in
             
@@ -179,7 +179,7 @@ internal final class PerformanceIntegrationTests: TestKitCase
     
     func testCPUTimeLimitParameterOverridesDefaultOptions() async throws
     {
-        try skipCI()
+        try Self.skipCI()
         
         let cpuTimeLimit: Duration = .nanoseconds(1)
         
@@ -207,7 +207,7 @@ internal final class PerformanceIntegrationTests: TestKitCase
     
     func testMemoryLimitParameterOverridesDefaultOptions() async throws
     {
-        try skipCI()
+        try Self.skipCI()
         
         let holder = MemoryHolder()
         

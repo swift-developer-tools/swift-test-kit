@@ -541,14 +541,7 @@ internal final class ComparatorMiscTests: TestKitCase
             typeName:   typeName(of: exp),
             expected:   exp,
             actual:     act,
-            tree:
-            [
-                .makeLeaf(
-                    label:      .property(name: "rawValue"),
-                    expected:   exp.rawValue,
-                    actual:     act.rawValue
-                )
-            ]
+            tree:       []
         )
         
         XCTAssertEqual(expected, actual)

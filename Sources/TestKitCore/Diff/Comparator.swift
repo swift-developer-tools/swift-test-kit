@@ -311,6 +311,20 @@ internal struct Comparator
         let expectedMirror  = expMirror ?? Mirror(reflecting: expected)
         let actualMirror    = actMirror ?? Mirror(reflecting: actual)
         
+        /// Callers of this method have enforced type equality of `expected`
+        /// and `actual`, so it is only necessary to check one of them.
+        /// Both may need to be checked if additional callers are added.
+        if Self.isRawRepresentableLeaf(expected)
+        {
+            return .different(
+                expected:   DiffValue(expected),
+                actual:     DiffValue(actual),
+                tree:       []
+            )
+        }
+        
+        
+        
         /// The display style can be trusted since the type check in
         /// ``compareAny(expected:actual:depth:)`` used `type(of:)`, which
         /// ensures both values are of the same type.
@@ -1484,5 +1498,37 @@ internal struct Comparator
             
             return lhs < rhs
         }
+    }
+    
+    
+    
+    /// Checks whether the given value is a class or struct `RawRepresentable`
+    /// that should be compared as an opaque leaf using its raw value.
+    ///
+    /// The raw value is the identity of these wrapper types. Decomposing
+    /// them with `Mirror` exposes implementation details (for example,
+    /// the `_rawValue` property of bridged `NSString` constants like
+    /// `FileAttributeType`) and produces unexpected diffs that reference
+    /// private state.
+    ///
+    /// Enums are excluded since their case names are more user-facing
+    /// than their raw values. Override with ``CustomDiffRepresentable``.
+    ///
+    /// - Parameter value: The value to check.
+    /// - Returns: Whether the value should be compared as an opaque leaf.
+    internal static func isRawRepresentableLeaf(
+        _ value: Any
+    ) -> Bool
+    {
+        guard value is any RawRepresentable
+        else
+        {
+            return false
+        }
+        
+        let mirror = Mirror(reflecting: value)
+        
+        return mirror.displayStyle == .class
+            || mirror.displayStyle == .struct
     }
 }

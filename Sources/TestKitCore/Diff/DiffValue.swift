@@ -57,20 +57,32 @@ package struct RenderedValue: Equatable, Sendable, CustomStringConvertible
         
         self.typeName = String(describing: type(of: unwrapped))
         
-        if let string = unwrapped as? String
+        if Self.isStringLike(unwrapped)
         {
-            self.description    = string.escaped
-            self.kind           = .string
-        }
-        else if let character = unwrapped as? Character
-        {
-            self.description    = String(character).escaped
+            self.description    = String(describing: unwrapped).escaped
             self.kind           = .string
         }
         else if let convertible = unwrapped as? CustomDiffStringConvertible
         {
             self.description    = convertible.diffDescription.collapseLines()
             self.kind           = .other
+        }
+        else if
+            let rawRepresentable = unwrapped as? any RawRepresentable,
+            Comparator.isRawRepresentableLeaf(unwrapped)
+        {
+            let rawValue: Any = rawRepresentable.rawValue
+            
+            if Self.isStringLike(rawValue)
+            {
+                self.description    = String(describing: rawValue).escaped
+                self.kind           = .string
+            }
+            else
+            {
+                self.description    = String(describing: rawValue).collapseLines()
+                self.kind           = .other
+            }
         }
         else
         {
@@ -85,6 +97,22 @@ package struct RenderedValue: Equatable, Sendable, CustomStringConvertible
             self.description    = String(describing: unwrapped).collapseLines()
             self.kind           = .other
         }
+    }
+    
+    
+    
+    /// Checks whether the given value is string-like.
+    /// - Parameter value: The value to check.
+    /// - Returns: Whether the given value is string-like.
+    private static func isStringLike(
+        _ value: Any
+    ) -> Bool
+    {
+        /// `NSString` is bridged to `String`.
+        return value is String
+            || value is Substring
+            || value is Character
+            || value is Unicode.Scalar
     }
 }
 

@@ -329,4 +329,97 @@ internal final class FormatterIntegrationTests: TestKitCase
         
         XCTAssertEqual(expected, actual)
     }
+    
+    
+    
+    func testNoteEmittedWhenValuesProduceIdenticalOutput()
+    {
+        let exp     = TaggedRawRepresentable(rawValue: "x", tag: 1)
+        let act     = TaggedRawRepresentable(rawValue: "x", tag: 2)
+        
+        let node: DiffNode = Comparator.computeDiff(
+            expected:   exp,
+            actual:     act,
+            options:    .init()
+        )
+        
+        let actual: String = Formatter.formatDiff(
+            node,
+            options: .init()
+        )
+        
+        let expected: String =
+        """
+        \(LK.expected.rawValue)\(quote(exp.rawValue))
+        \(LK.actual.rawValue)\(quote(exp.rawValue))
+        Note: Values are not equal but produce identical output.
+        """
+        
+        XCTAssertEqual(expected, actual)
+    }
+    
+    
+    
+    func testNoteNotEmittedWhenValuesProduceDifferentOutput()
+    {
+        let exp : Int   = 30
+        let act : Int   = 60
+        
+        let node: DiffNode = Comparator.computeDiff(
+            expected:   exp,
+            actual:     act,
+            options:    .init()
+        )
+        
+        let actual: String = Formatter.formatDiff(
+            node,
+            options: .init()
+        )
+        
+        let expected: String =
+        """
+        \(LK.expected.rawValue)\(exp)
+        \(LK.actual.rawValue)\(act)
+        """
+        
+        XCTAssertEqual(expected, actual)
+    }
+    
+    
+    
+    func testNoteEmittedAtNestedPath()
+    {
+        struct Container: Equatable
+        {
+            let tagged: TaggedRawRepresentable
+        }
+        
+        let exp     = Container(tagged: .init(rawValue: "x", tag: 1))
+        let act     = Container(tagged: .init(rawValue: "x", tag: 2))
+        
+        let typeName: String = typeName(of: exp)
+        
+        let node: DiffNode = Comparator.computeDiff(
+            expected:   exp,
+            actual:     act,
+            options:    .init()
+        )
+        
+        let actual: String = Formatter.formatDiff(
+            node,
+            options: .init()
+        )
+        
+        let expected: String =
+        """
+        \(typeName) differs at:
+        
+            .tagged
+                \(LK.expected.rawValue)\(quote(exp.tagged.rawValue))
+                \(LK.actual.rawValue)\(quote(exp.tagged.rawValue))
+                Note: Values are not equal but produce identical output.
+        """
+        
+        XCTAssertEqual(expected, actual)
+    }
 }

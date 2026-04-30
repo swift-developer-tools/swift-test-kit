@@ -81,7 +81,7 @@ internal final class TemporalMessageTests: TestKitCase
         var count   : Int           = 0
         let message : () -> String  = { count += 1; return "msg" }
         
-        await withCapturedFailure
+        await Self.withCapturedFailure
         {
             context in
             
