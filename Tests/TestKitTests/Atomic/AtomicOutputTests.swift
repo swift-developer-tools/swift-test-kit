@@ -502,7 +502,7 @@ internal final class AtomicOutputTests: TestKitCase
             interval:   .milliseconds(10)
         )
         
-        let actual: String? = await withCapturedFailure
+        let actual: String? = await Self.withCapturedFailure
         {
             context in
             
@@ -705,7 +705,7 @@ internal final class AtomicOutputTests: TestKitCase
             interval:   .milliseconds(10)
         )
         
-        let actual: String? = await withCapturedFailure
+        let actual: String? = await Self.withCapturedFailure
         {
             context in
             

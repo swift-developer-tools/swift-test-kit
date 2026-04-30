@@ -309,7 +309,7 @@ internal final class PerformanceOutputTests: TestKitCase
     
     func testWallTimeLimitExceeded() async throws
     {
-        try skipCI()
+        try Self.skipCI()
         
         let options: TestOptions = .performanceOptions(
             runs:           1,
@@ -317,7 +317,7 @@ internal final class PerformanceOutputTests: TestKitCase
             wallTimeLimit:  .milliseconds(1)
         )
         
-        let actual: String? = await withCapturedFailure
+        let actual: String? = await Self.withCapturedFailure
         {
             context in
             
@@ -346,7 +346,7 @@ internal final class PerformanceOutputTests: TestKitCase
     
     func testWallTimeLimitExceededWithMessage() async throws
     {
-        try skipCI()
+        try Self.skipCI()
         
         let options: TestOptions = .performanceOptions(
             runs:           1,
@@ -354,7 +354,7 @@ internal final class PerformanceOutputTests: TestKitCase
             wallTimeLimit:  .milliseconds(1)
         )
         
-        let actual: String? = await withCapturedFailure
+        let actual: String? = await Self.withCapturedFailure
         {
             context in
             
@@ -388,7 +388,7 @@ internal final class PerformanceOutputTests: TestKitCase
     
     func testCPUTimeLimitExceeded() async throws
     {
-        try skipCI()
+        try Self.skipCI()
         
         let options: TestOptions = .performanceOptions(
             runs:           1,
@@ -420,7 +420,7 @@ internal final class PerformanceOutputTests: TestKitCase
     
     func testCPUTimeLimitExceededWithMessage() async throws
     {
-        try skipCI()
+        try Self.skipCI()
         
         let options: TestOptions = .performanceOptions(
             runs:           1,
@@ -459,7 +459,7 @@ internal final class PerformanceOutputTests: TestKitCase
     
     func testMemoryLimitExceeded() async throws
     {
-        try skipCI()
+        try Self.skipCI()
         
         let options: TestOptions = .performanceOptions(
             runs:           1,
@@ -497,7 +497,7 @@ internal final class PerformanceOutputTests: TestKitCase
     
     func testMultipleMetricsAllExceeded() async throws
     {
-        try skipCI()
+        try Self.skipCI()
         
         let options: TestOptions = .performanceOptions(
             runs:           3,
@@ -509,7 +509,7 @@ internal final class PerformanceOutputTests: TestKitCase
         
         let holder = MemoryHolder()
         
-        let actual: String? = await withCapturedFailure
+        let actual: String? = await Self.withCapturedFailure
         {
             context in
             
@@ -550,7 +550,7 @@ internal final class PerformanceOutputTests: TestKitCase
     
     func testMultipleMetricsWallTimeExceeded() async throws
     {
-        try skipCI()
+        try Self.skipCI()
         
         let options: TestOptions = .performanceOptions(
             runs:           3,
@@ -559,7 +559,7 @@ internal final class PerformanceOutputTests: TestKitCase
             memoryLimit:    .gigabytes(50)
         )
         
-        let actual: String? = await withCapturedFailure
+        let actual: String? = await Self.withCapturedFailure
         {
             context in
             
@@ -592,7 +592,7 @@ internal final class PerformanceOutputTests: TestKitCase
     
     func testMultipleMetricsCPUTimeExceeded() async throws
     {
-        try skipCI()
+        try Self.skipCI()
         
         let options: TestOptions = .performanceOptions(
             runs:           3,
@@ -634,7 +634,7 @@ internal final class PerformanceOutputTests: TestKitCase
     
     func testMultipleMetricsMemoryExceeded() async throws
     {
-        try skipCI()
+        try Self.skipCI()
         
         let options: TestOptions = .performanceOptions(
             runs:           3,
@@ -789,7 +789,7 @@ internal final class PerformanceOutputTests: TestKitCase
     
     func testPerformanceInsidePerformance() async throws
     {
-        try skipCI()
+        try Self.skipCI()
         
         let options1: TestOptions = .performanceOptions(
             runs:           3,
@@ -803,7 +803,7 @@ internal final class PerformanceOutputTests: TestKitCase
             wallTimeLimit:  .milliseconds(1)
         )
         
-        let actual: String? = await withCapturedFailure
+        let actual: String? = await Self.withCapturedFailure
         {
             context in
             
@@ -879,7 +879,7 @@ internal final class PerformanceOutputTests: TestKitCase
             wallTimeLimit:  .seconds(10)
         )
         
-        let actual: String? = await withCapturedFailure
+        let actual: String? = await Self.withCapturedFailure
         {
             context in
             

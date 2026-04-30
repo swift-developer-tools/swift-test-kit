@@ -36,7 +36,7 @@ internal final class TemporalRunnerTests: TestKitCase
     
     func testEventuallyPassesAfterFailures() async throws
     {
-        try skipCI()
+        try Self.skipCI()
         
         let start: ContinuousClock.Instant = .now
         
@@ -60,7 +60,7 @@ internal final class TemporalRunnerTests: TestKitCase
     
     func testEventuallyPassesAfterThrownErrors() async throws
     {
-        try skipCI()
+        try Self.skipCI()
         
         let start: ContinuousClock.Instant = .now
         
@@ -84,7 +84,7 @@ internal final class TemporalRunnerTests: TestKitCase
     
     func testEventuallyPassesAfterFailuresAndThrownErrors() async throws
     {
-        try skipCI()
+        try Self.skipCI()
         
         let start: ContinuousClock.Instant = .now
         
@@ -187,7 +187,7 @@ internal final class TemporalRunnerTests: TestKitCase
     
     func testEventuallyFailsOnTimeout() async throws
     {
-        try skipCI()
+        try Self.skipCI()
         
         let timeout: Duration = .milliseconds(100)
         
@@ -248,7 +248,7 @@ internal final class TemporalRunnerTests: TestKitCase
     
     func testEventuallyFailsWhenBodyAlwaysThrows() async throws
     {
-        try skipCI()
+        try Self.skipCI()
         
         let timeout: Duration = .milliseconds(100)
         
@@ -396,7 +396,7 @@ internal final class TemporalRunnerTests: TestKitCase
     
     func testAlwaysFailsOnFirstPoll() async throws
     {
-        try skipCI()
+        try Self.skipCI()
         
         let result: TemporalResult = await TemporalRunner.run(
             kind:       .always,
@@ -416,7 +416,7 @@ internal final class TemporalRunnerTests: TestKitCase
     
     func testAlwaysFailsAfterPassingPolls() async throws
     {
-        try skipCI()
+        try Self.skipCI()
         
         let start   : ContinuousClock.Instant   = .now
         let timeout : Duration                  = .milliseconds(500)
@@ -447,7 +447,7 @@ internal final class TemporalRunnerTests: TestKitCase
     
     func testAlwaysFailsOnFirstPollThrownError() async throws
     {
-        try skipCI()
+        try Self.skipCI()
         
         let result: TemporalResult = await TemporalRunner.run(
             kind:       .always,
@@ -468,7 +468,7 @@ internal final class TemporalRunnerTests: TestKitCase
     
     func testAlwaysFailsAfterPassingPollsThenThrownError() async throws
     {
-        try skipCI()
+        try Self.skipCI()
         
         let start   : ContinuousClock.Instant   = .now
         let timeout : Duration                  = .milliseconds(500)
@@ -635,7 +635,7 @@ internal final class TemporalRunnerTests: TestKitCase
     
     func testEventuallyCancelsWhenTaskCanceled() async throws
     {
-        try skipCI()
+        try Self.skipCI()
         
         let task = Task
         {
@@ -661,7 +661,7 @@ internal final class TemporalRunnerTests: TestKitCase
     
     func testAlwaysCancelsWhenTaskCanceled() async throws
     {
-        try skipCI()
+        try Self.skipCI()
         
         let task = Task
         {
@@ -729,7 +729,7 @@ internal final class TemporalRunnerTests: TestKitCase
     
     func testEventuallyCancelationMidBody() async throws
     {
-        try skipCI()
+        try Self.skipCI()
         
         let task = Task
         {
@@ -761,7 +761,7 @@ internal final class TemporalRunnerTests: TestKitCase
     
     func testAlwaysCancelationMidBody() async throws
     {
-        try skipCI()
+        try Self.skipCI()
         
         let task = Task
         {
@@ -816,7 +816,7 @@ internal final class TemporalRunnerTests: TestKitCase
     
     func testAlwaysNestedDoesNotLeak() async throws
     {
-        try skipCI()
+        try Self.skipCI()
         
         let outer = FailureInterceptor()
         
@@ -942,7 +942,7 @@ internal final class TemporalRunnerTests: TestKitCase
     
     func testNestedEventually() async throws
     {
-        try skipCI()
+        try Self.skipCI()
         
         let outerStart: ContinuousClock.Instant = .now
         
@@ -1228,7 +1228,7 @@ internal final class TemporalRunnerTests: TestKitCase
     
     func testEventuallyWithSlowBody() async throws
     {
-        try skipCI()
+        try Self.skipCI()
         
         let counter = Counter()
         
@@ -1256,7 +1256,7 @@ internal final class TemporalRunnerTests: TestKitCase
     
     func testAlwaysWithSlowBody() async throws
     {
-        try skipCI()
+        try Self.skipCI()
         
         let counter = Counter()
         
@@ -1286,7 +1286,7 @@ internal final class TemporalRunnerTests: TestKitCase
     
     func testEventuallyWithBodySlowerThanTimeout() async throws
     {
-        try skipCI()
+        try Self.skipCI()
         
         let timeout: Duration = .milliseconds(30)
         
@@ -1466,7 +1466,7 @@ internal final class TemporalRunnerTests: TestKitCase
     
     func testAlwaysStopsEarlyOnFailure() async throws
     {
-        try skipCI()
+        try Self.skipCI()
         
         let result: TemporalResult = await TemporalRunner.run(
             kind:       .always,
@@ -1484,7 +1484,7 @@ internal final class TemporalRunnerTests: TestKitCase
     
     func testEventuallyStopsEarlyOnSuccess() async throws
     {
-        try skipCI()
+        try Self.skipCI()
         
         let start: ContinuousClock.Instant = .now
         
@@ -1535,7 +1535,7 @@ internal final class TemporalRunnerTests: TestKitCase
     
     func testEventuallyPassesAfterErrorFailureSuccess() async throws
     {
-        try skipCI()
+        try Self.skipCI()
         
         let start: ContinuousClock.Instant = .now
         
@@ -1569,7 +1569,7 @@ internal final class TemporalRunnerTests: TestKitCase
     
     func testEventuallyPassesWhenErrorClearsBeforeFailure() async throws
     {
-        try skipCI()
+        try Self.skipCI()
         
         let start: ContinuousClock.Instant = .now
         
@@ -1604,7 +1604,7 @@ internal final class TemporalRunnerTests: TestKitCase
     
     func testAlwaysElapsedAccuracyOnDelayedFailure() async throws
     {
-        try skipCI()
+        try Self.skipCI()
         
         let start   : ContinuousClock.Instant   = .now
         let target  : Duration                  = .milliseconds(80)
@@ -1634,7 +1634,7 @@ internal final class TemporalRunnerTests: TestKitCase
     
     func testEventuallyElapsedAccuracy() async throws
     {
-        try skipCI()
+        try Self.skipCI()
         
         let timeout: Duration = .milliseconds(100)
         
@@ -1658,7 +1658,7 @@ internal final class TemporalRunnerTests: TestKitCase
     
     func testEventuallyDoesNotPollAfterSuccess() async throws
     {
-        try skipCI()
+        try Self.skipCI()
         
         let counter = Counter()
         
@@ -1686,7 +1686,7 @@ internal final class TemporalRunnerTests: TestKitCase
     
     func testAlwaysDoesNotPollAfterSuccess() async throws
     {
-        try skipCI()
+        try Self.skipCI()
         
         let counter = Counter()
         

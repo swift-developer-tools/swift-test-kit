@@ -175,7 +175,7 @@ internal final class TemporalOutputTests: TestKitCase
     {
         let count = Mutex<Int>(0)
         
-        let actual: String? = await withCapturedFailure
+        let actual: String? = await Self.withCapturedFailure
         {
             context in
             
@@ -254,7 +254,7 @@ internal final class TemporalOutputTests: TestKitCase
             interval:   .milliseconds(10)
         )
         
-        let actual: String? = await withCapturedFailure
+        let actual: String? = await Self.withCapturedFailure
         {
             context in
             
@@ -286,7 +286,7 @@ internal final class TemporalOutputTests: TestKitCase
             interval:   .milliseconds(10)
         )
         
-        let actual: String? = await withCapturedFailure
+        let actual: String? = await Self.withCapturedFailure
         {
             context in
             
@@ -321,7 +321,7 @@ internal final class TemporalOutputTests: TestKitCase
             interval:   .milliseconds(10)
         )
         
-        let actual: String? = await withCapturedFailure
+        let actual: String? = await Self.withCapturedFailure
         {
             context in
             
@@ -353,7 +353,7 @@ internal final class TemporalOutputTests: TestKitCase
             interval:   .milliseconds(10)
         )
         
-        let actual: String? = await withCapturedFailure
+        let actual: String? = await Self.withCapturedFailure
         {
             context in
             
@@ -388,7 +388,7 @@ internal final class TemporalOutputTests: TestKitCase
             interval:   .milliseconds(10)
         )
         
-        let actual: String? = await withCapturedFailure
+        let actual: String? = await Self.withCapturedFailure
         {
             context in
             
@@ -423,7 +423,7 @@ internal final class TemporalOutputTests: TestKitCase
             interval:   .milliseconds(10)
         )
         
-        let actual: String? = await withCapturedFailure
+        let actual: String? = await Self.withCapturedFailure
         {
             context in
             
@@ -460,7 +460,7 @@ internal final class TemporalOutputTests: TestKitCase
             interval:   .milliseconds(10)
         )
         
-        let actual: String? = await withCapturedFailure
+        let actual: String? = await Self.withCapturedFailure
         {
             context in
             
@@ -490,7 +490,7 @@ internal final class TemporalOutputTests: TestKitCase
     
     func testAlwaysInsideEventually() async
     {
-        let actual: String? = await withCapturedFailure
+        let actual: String? = await Self.withCapturedFailure
         {
             context in
             
@@ -523,7 +523,7 @@ internal final class TemporalOutputTests: TestKitCase
     
     func testEventuallyInsideAlways() async
     {
-        let actual: String? = await withCapturedFailure
+        let actual: String? = await Self.withCapturedFailure
         {
             context in
             
@@ -607,7 +607,7 @@ internal final class TemporalOutputTests: TestKitCase
             interval:   .milliseconds(10)
         )
         
-        let actual: String? = await withCapturedFailure
+        let actual: String? = await Self.withCapturedFailure
         {
             context in
             

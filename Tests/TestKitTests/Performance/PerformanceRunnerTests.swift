@@ -305,7 +305,7 @@ internal final class PerformanceRunnerTests: TestKitCase
     
     func testMultipleMetricsEnabledOnlyWallTimeExceeded() async throws
     {
-        try skipCI()
+        try Self.skipCI()
         
         let result: PerformanceResult = await PerformanceRunner.run(
             runs:           3,
@@ -332,7 +332,7 @@ internal final class PerformanceRunnerTests: TestKitCase
     
     func testMultipleMetricsEnabledOnlyCPUTimeExceeded() async throws
     {
-        try skipCI()
+        try Self.skipCI()
         
         let result: PerformanceResult = await PerformanceRunner.run(
             runs:           3,
@@ -509,7 +509,7 @@ internal final class PerformanceRunnerTests: TestKitCase
     
     func testWallTimeMeasurementReflectsSleep() async throws
     {
-        try skipCI()
+        try Self.skipCI()
         
         let sleepDuration: Duration = .milliseconds(20)
         
@@ -543,7 +543,7 @@ internal final class PerformanceRunnerTests: TestKitCase
     
     func testCPUTimeMeasurementReflectsWork() async throws
     {
-        try skipCI()
+        try Self.skipCI()
         
         let runs: Int = 3
         
@@ -573,7 +573,7 @@ internal final class PerformanceRunnerTests: TestKitCase
     
     func testCPUTimeUnaffectedByPureSleep() async throws
     {
-        try skipCI()
+        try Self.skipCI()
         
         let sleepDuration   : Duration  = .milliseconds(50)
         let cpuCeiling      : Duration  = .milliseconds(25)
@@ -603,7 +603,7 @@ internal final class PerformanceRunnerTests: TestKitCase
     
     func testCPUTimeExceedsLimitFails() async throws
     {
-        try skipCI()
+        try Self.skipCI()
         
         let result: PerformanceResult = await PerformanceRunner.run(
             runs:           5,
@@ -625,7 +625,7 @@ internal final class PerformanceRunnerTests: TestKitCase
     
     func testMemoryMeasurementProducesMeasurableDifference() async throws
     {
-        try skipCI()
+        try Self.skipCI()
         
         let runs    : Int           = 3
         let holder  : MemoryHolder  = .init()
@@ -809,7 +809,7 @@ internal final class PerformanceRunnerTests: TestKitCase
     
     func testCancelationBeforeAnyRuns() async throws
     {
-        try skipCI()
+        try Self.skipCI()
         
         let task = Task
         {
@@ -837,7 +837,7 @@ internal final class PerformanceRunnerTests: TestKitCase
     
     func testCancelationDuringMeasurement() async throws
     {
-        try skipCI()
+        try Self.skipCI()
         
         let task = Task
         {
@@ -867,7 +867,7 @@ internal final class PerformanceRunnerTests: TestKitCase
     
     func testWallTimeExceedsLimitFails() async throws
     {
-        try skipCI()
+        try Self.skipCI()
         
         let result: PerformanceResult = await PerformanceRunner.run(
             runs:           3,
