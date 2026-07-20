@@ -852,7 +852,7 @@ await XCTKForAll
 {
     (array: [Int]) in
     
-    await XCTKPerformance(timeLimit: .milliseconds(50))
+    await XCTKPerformance(cpuTimeLimit: .milliseconds(50))
     {
         XCTKAssertSorted(customSort(array), by: >=)
     }
